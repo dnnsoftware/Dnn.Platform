@@ -1,4 +1,4 @@
-# api-users
+# bulk-install-api-users
 
 
 
@@ -6,10 +6,6 @@
 
 
 ## Dependencies
-
-### Used by
-
- - [dnn-bulk-install](../../dnn-bulk-install)
 
 ### Depends on
 
@@ -21,15 +17,14 @@
 ### Graph
 ```mermaid
 graph TD;
-  api-users --> dnn-button
-  api-users --> dnn-modal
-  api-users --> dnn-input
-  api-users --> dnn-checkbox
+  bulk-install-api-users --> dnn-button
+  bulk-install-api-users --> dnn-modal
+  bulk-install-api-users --> dnn-input
+  bulk-install-api-users --> dnn-checkbox
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
   dnn-input --> dnn-fieldset
-  dnn-bulk-install --> api-users
-  style api-users fill:#f9f,stroke:#333,stroke-width:4px
+  style bulk-install-api-users fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

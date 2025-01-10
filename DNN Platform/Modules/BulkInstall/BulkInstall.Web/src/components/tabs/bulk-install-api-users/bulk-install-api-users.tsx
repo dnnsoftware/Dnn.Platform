@@ -1,12 +1,12 @@
 import { Component, Host, h } from '@stencil/core';
-import { User } from './api-user.model';
+import { User } from './bulk-install-api-users.model';
 
 @Component({
-  tag: 'api-users',
-  styleUrl: 'api-users.scss',
+  tag: 'bulk-install-api-users',
+  styleUrl: 'bulk-install-api-users.scss',
   shadow: true,
 })
-export class ApiUsers {
+export class BulkInstallApiUsers {
 
   private users: User[] = [];
   private newUser: User = {

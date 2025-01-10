@@ -1,12 +1,12 @@
 import { Component, Host, h } from '@stencil/core';
-import { Ip } from './ip-safelist.model';
+import { Ip } from './bulk-install-ip-safelist.model';
 
 @Component({
-  tag: 'ip-safelist',
-  styleUrl: 'ip-safelist.scss',
+  tag: 'bulk-install-ip-safelist',
+  styleUrl: 'bulk-install-ip-safelist.scss',
   shadow: true,
 })
-export class IpSafelist {
+export class BulkInstallIpSafelist {
 
   private ipSafelist: Ip[] = [];
   private newIp: Ip = {
@@ -33,7 +33,6 @@ export class IpSafelist {
   render() {
     return (
       <Host>
-
         <div class="row">
           <div class="col">
             <div class="panel">
@@ -53,7 +52,6 @@ export class IpSafelist {
               </div>
             </div>
           </div>
-  
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
@@ -81,7 +79,6 @@ export class IpSafelist {
               </div>
             </div>
           </div>
-
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
@@ -97,12 +94,10 @@ export class IpSafelist {
                     <dnn-button appearance="primary" onClick={() => this.saveIpSafelistConfiguration(this.enableIpSafelist)}>Save</dnn-button>
                   </div>
                 </div>
-  
                 <div class="clearfix"></div>
               </div>
             </div>
           </div>
-
         </div>
       </Host>
     );
