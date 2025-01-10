@@ -15,6 +15,8 @@ export class ApiUsers {
     encryptionKey: '',
     bypassIPWhitelist: false,
   }
+  
+  private newUserModal: HTMLDnnModalElement;
 
   private createUser(_newUser: User): (event: MouseEvent) => void {
     alert('Method not implemented.');
@@ -29,30 +31,11 @@ export class ApiUsers {
   render() {
     return (
       <Host>
-
         <div class="row">
           <div class="col">
-            <div class="panel">
-              <div class="panel-heading">
-                <h3 class="panel-title">New API User</h3>
-              </div>
-              <div class="panel-body">
-                <div class="form-horizontal">
-                  <div class="form-group">
-                    <dnn-input type="text" label="Name" helpText="Enter API User name" required></dnn-input>
-                    <label>
-                      <dnn-checkbox checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}></dnn-checkbox>
-                      Bypass IP Allow List
-                    </label>
-                    <dnn-button appearance="primary" onClick={() => this.createUser(this.newUser)}>Create</dnn-button>
-                  </div>
-                </div>
-                <div class="clearfix"></div>
-              </div>
+            <div class="button-row">
+              <dnn-button size="small" onClick={() => this.newUserModal.show()}>New API User</dnn-button>
             </div>
-          </div>
-  
-          <div class="col">
             <div class="panel">
               <div class="panel-heading">
                 <h3 class="panel-title">API Users</h3>
@@ -84,6 +67,31 @@ export class ApiUsers {
             </div>
           </div>
         </div>
+        <dnn-modal
+          ref={(el) => this.newUserModal = el}
+          backdropDismiss
+        >
+          <form
+            class="create-user"
+            onSubmit={(event) => {
+              event.preventDefault();
+              this.createUser(this.newUser);
+            }}
+          >
+            <h4>New API User</h4>
+            <dnn-input
+              type="text"
+              label="Name"
+              helpText="Enter API User Name"
+              required
+            />
+            <label>
+              <dnn-checkbox checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}></dnn-checkbox>
+              Bypass IP Allow List
+            </label>
+            <dnn-button formButtonType="submit">Create</dnn-button>
+          </form>
+        </dnn-modal>
       </Host>
     );
   }
