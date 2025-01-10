@@ -82,7 +82,7 @@ export class ApiUsers {
             <dnn-input
               type="text"
               label="Name"
-              helpText="Enter API User name"
+              helpText="Enter API User Name"
               required
             />
             <label>
