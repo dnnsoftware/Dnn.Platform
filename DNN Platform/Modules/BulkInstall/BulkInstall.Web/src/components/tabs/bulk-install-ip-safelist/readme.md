@@ -1,4 +1,4 @@
-# ip-safelist
+# bulk-install-ip-safelist
 
 
 
@@ -6,10 +6,6 @@
 
 
 ## Dependencies
-
-### Used by
-
- - [dnn-bulk-install](../../dnn-bulk-install)
 
 ### Depends on
 
@@ -20,14 +16,13 @@
 ### Graph
 ```mermaid
 graph TD;
-  ip-safelist --> dnn-input
-  ip-safelist --> dnn-button
-  ip-safelist --> dnn-toggle
+  bulk-install-ip-safelist --> dnn-input
+  bulk-install-ip-safelist --> dnn-button
+  bulk-install-ip-safelist --> dnn-toggle
   dnn-input --> dnn-fieldset
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
-  dnn-bulk-install --> ip-safelist
-  style ip-safelist fill:#f9f,stroke:#333,stroke-width:4px
+  style bulk-install-ip-safelist fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------

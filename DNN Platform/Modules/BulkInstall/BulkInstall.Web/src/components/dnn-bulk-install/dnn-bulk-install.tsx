@@ -15,16 +15,16 @@ export class DnnBulkInstall {
               <div class="tab-content">Install UI goes here.</div>
             </dnn-tab>
             <dnn-tab tabTitle="Event Log">
-              <event-log></event-log>
+              <bulk-install-logs></bulk-install-logs>
             </dnn-tab>
             <dnn-tab tabTitle="API Users">
               <div class="tab-content">
-                <api-users></api-users>
+                <bulk-install-api-users></bulk-install-api-users>
               </div>
             </dnn-tab>
             <dnn-tab tabTitle="IP Safelist">
               <div class="tab-content">
-                <ip-safelist></ip-safelist>
+                <bulk-install-ip-safelist></bulk-install-ip-safelist>
               </div>
             </dnn-tab>
           </dnn-tabs>

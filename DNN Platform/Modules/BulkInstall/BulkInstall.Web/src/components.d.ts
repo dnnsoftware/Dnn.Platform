@@ -6,21 +6,33 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface ApiUsers {
+    interface BulkInstallApiUsers {
+    }
+    interface BulkInstallIpSafelist {
+    }
+    interface BulkInstallLogs {
     }
     interface DnnBulkInstall {
     }
-    interface EventLog {
-    }
-    interface IpSafelist {
-    }
 }
 declare global {
-    interface HTMLApiUsersElement extends Components.ApiUsers, HTMLStencilElement {
+    interface HTMLBulkInstallApiUsersElement extends Components.BulkInstallApiUsers, HTMLStencilElement {
     }
-    var HTMLApiUsersElement: {
-        prototype: HTMLApiUsersElement;
-        new (): HTMLApiUsersElement;
+    var HTMLBulkInstallApiUsersElement: {
+        prototype: HTMLBulkInstallApiUsersElement;
+        new (): HTMLBulkInstallApiUsersElement;
+    };
+    interface HTMLBulkInstallIpSafelistElement extends Components.BulkInstallIpSafelist, HTMLStencilElement {
+    }
+    var HTMLBulkInstallIpSafelistElement: {
+        prototype: HTMLBulkInstallIpSafelistElement;
+        new (): HTMLBulkInstallIpSafelistElement;
+    };
+    interface HTMLBulkInstallLogsElement extends Components.BulkInstallLogs, HTMLStencilElement {
+    }
+    var HTMLBulkInstallLogsElement: {
+        prototype: HTMLBulkInstallLogsElement;
+        new (): HTMLBulkInstallLogsElement;
     };
     interface HTMLDnnBulkInstallElement extends Components.DnnBulkInstall, HTMLStencilElement {
     }
@@ -28,49 +40,37 @@ declare global {
         prototype: HTMLDnnBulkInstallElement;
         new (): HTMLDnnBulkInstallElement;
     };
-    interface HTMLEventLogElement extends Components.EventLog, HTMLStencilElement {
-    }
-    var HTMLEventLogElement: {
-        prototype: HTMLEventLogElement;
-        new (): HTMLEventLogElement;
-    };
-    interface HTMLIpSafelistElement extends Components.IpSafelist, HTMLStencilElement {
-    }
-    var HTMLIpSafelistElement: {
-        prototype: HTMLIpSafelistElement;
-        new (): HTMLIpSafelistElement;
-    };
     interface HTMLElementTagNameMap {
-        "api-users": HTMLApiUsersElement;
+        "bulk-install-api-users": HTMLBulkInstallApiUsersElement;
+        "bulk-install-ip-safelist": HTMLBulkInstallIpSafelistElement;
+        "bulk-install-logs": HTMLBulkInstallLogsElement;
         "dnn-bulk-install": HTMLDnnBulkInstallElement;
-        "event-log": HTMLEventLogElement;
-        "ip-safelist": HTMLIpSafelistElement;
     }
 }
 declare namespace LocalJSX {
-    interface ApiUsers {
+    interface BulkInstallApiUsers {
+    }
+    interface BulkInstallIpSafelist {
+    }
+    interface BulkInstallLogs {
     }
     interface DnnBulkInstall {
     }
-    interface EventLog {
-    }
-    interface IpSafelist {
-    }
     interface IntrinsicElements {
-        "api-users": ApiUsers;
+        "bulk-install-api-users": BulkInstallApiUsers;
+        "bulk-install-ip-safelist": BulkInstallIpSafelist;
+        "bulk-install-logs": BulkInstallLogs;
         "dnn-bulk-install": DnnBulkInstall;
-        "event-log": EventLog;
-        "ip-safelist": IpSafelist;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "api-users": LocalJSX.ApiUsers & JSXBase.HTMLAttributes<HTMLApiUsersElement>;
+            "bulk-install-api-users": LocalJSX.BulkInstallApiUsers & JSXBase.HTMLAttributes<HTMLBulkInstallApiUsersElement>;
+            "bulk-install-ip-safelist": LocalJSX.BulkInstallIpSafelist & JSXBase.HTMLAttributes<HTMLBulkInstallIpSafelistElement>;
+            "bulk-install-logs": LocalJSX.BulkInstallLogs & JSXBase.HTMLAttributes<HTMLBulkInstallLogsElement>;
             "dnn-bulk-install": LocalJSX.DnnBulkInstall & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
-            "event-log": LocalJSX.EventLog & JSXBase.HTMLAttributes<HTMLEventLogElement>;
-            "ip-safelist": LocalJSX.IpSafelist & JSXBase.HTMLAttributes<HTMLIpSafelistElement>;
         }
     }
 }

@@ -1,19 +1,18 @@
 import { Component, Host, h } from '@stencil/core';
-import { Event } from './event-log.model';
+import { Event } from './bulk-install-logs.model';
 
 @Component({
-  tag: 'event-log',
-  styleUrl: 'event-log.scss',
+  tag: 'bulk-install-logs',
+  styleUrl: 'bulk-install-logs.scss',
   shadow: true,
 })
-export class EventLog {
+export class BulkInstallLogs {
 
   private events: Event[] = [];
 
   render() {
     return (
       <Host>
-
         <div class="row">
           <div class="col">
             <div class="panel">
