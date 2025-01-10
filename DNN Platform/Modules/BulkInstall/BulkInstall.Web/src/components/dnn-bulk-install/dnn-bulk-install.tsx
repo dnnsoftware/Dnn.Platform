@@ -15,7 +15,7 @@ export class DnnBulkInstall {
               <div class="tab-content">Install UI goes here.</div>
             </dnn-tab>
             <dnn-tab tabTitle="Event Log">
-              <div class="tab-content">Event Log UI goes here.</div>
+              <event-log></event-log>
             </dnn-tab>
             <dnn-tab tabTitle="API Users">
               <div class="tab-content">

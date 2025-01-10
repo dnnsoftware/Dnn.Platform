@@ -9,7 +9,7 @@
 
 ### Used by
 
- - [dnn-bulk-install](../dnn-bulk-install)
+ - [dnn-bulk-install](../../dnn-bulk-install)
 
 ### Depends on
 
