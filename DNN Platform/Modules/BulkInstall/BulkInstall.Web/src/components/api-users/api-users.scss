@@ -12,6 +12,13 @@
     padding: 1em 0;
   }
 
+  .button-row{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    margin-bottom: 1rem;
+  }
+
   /* Panel styling */
   .panel {
     border: 1px solid var(--dnn-color-neutral, #ededee);
@@ -80,6 +87,17 @@
     content: "";
     display: table;
     clear: both;
+  }
+
+  form.create-user{
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    h4{
+      margin: 0;
+      text-align: center;
+    }
   }
 
 }

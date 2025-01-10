@@ -21,12 +21,13 @@ graph TD;
   dnn-bulk-install --> dnn-tab
   dnn-bulk-install --> api-users
   dnn-bulk-install --> ip-safelist
+  api-users --> dnn-button
+  api-users --> dnn-modal
   api-users --> dnn-input
   api-users --> dnn-checkbox
-  api-users --> dnn-button
-  dnn-input --> dnn-fieldset
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
+  dnn-input --> dnn-fieldset
   ip-safelist --> dnn-input
   ip-safelist --> dnn-button
   ip-safelist --> dnn-toggle
