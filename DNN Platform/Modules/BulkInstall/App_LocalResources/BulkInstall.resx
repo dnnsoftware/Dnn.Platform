@@ -162,17 +162,29 @@
   <data name="Message" xml:space="preserve">
     <value>Message</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="ApiUserNameText" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="NewApiUser" xml:space="preserve">
     <value>New API User</value>
   </data>
+  <data name="NewIpSafelistEntry" xml:space="preserve">
+    <value>New IP Safelist Entry</value>
+  </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ApiUserNameHelp" xml:space="preserve">
     <value>Enter API User Name</value>
+  </data>
+  <data name="IPSafeListEntries" xml:space="preserve">
+    <value>IP Safelist Entries</value>
   </data>
   <data name="IPSafeListItemNameText" xml:space="preserve">
     <value>Name</value>

@@ -1,5 +1,6 @@
 import { Component, Host, h } from '@stencil/core';
 import { Event } from './bulk-install-logs.model';
+import state from "../../../stores/store";
 
 @Component({
   tag: 'bulk-install-logs',
@@ -17,15 +18,15 @@ export class BulkInstallLogs {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">Events</h3>
+                <h3 class="panel-title">{state.resx.Events}</h3>
               </div>
               <div class="panel-body">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>Date</th>
-                      <th>Type</th>
-                      <th>Message</th>
+                      <th>{state.resx.Date}</th>
+                      <th>{state.resx.Type}</th>
+                      <th>{state.resx.Message}</th>
                     </tr>
                   </thead>
                   <tbody>

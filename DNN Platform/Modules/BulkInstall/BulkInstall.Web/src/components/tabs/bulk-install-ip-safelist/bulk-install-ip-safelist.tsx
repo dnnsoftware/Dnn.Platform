@@ -1,5 +1,6 @@
 import { Component, Host, h } from '@stencil/core';
 import { Ip } from './bulk-install-ip-safelist.model';
+import state from "../../../stores/store";
 
 @Component({
   tag: 'bulk-install-ip-safelist',
@@ -37,14 +38,28 @@ export class BulkInstallIpSafelist {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">New IP Safelist Entry</h3>
+                <h3 class="panel-title">{state.resx.NewIpSafelistEntry}</h3>
               </div>
               <div class="panel-body">
                 <div class="form-horizontal">
                   <div class="form-group">
-                    <dnn-input type="text" label="Name" helpText="Enter IP Address name" required></dnn-input>
-                    <dnn-input type="text" label="IP Address" helpText="Enter IP Address" required></dnn-input>
-                    <dnn-button appearance="primary" onClick={() => this.createIp(this.newIp)}>Add</dnn-button>
+                    <dnn-input
+                      type="text"
+                      label={state.resx.IPSafeListItemNameText}
+                      helpText={state.resx.IPSafeListItemNameHelp}
+                      required
+                    />
+                    <dnn-input
+                      type="text"
+                      label={state.resx.IPSafeListItemIpAddressText}
+                      helpText={state.resx.IPSafeListItemIpAddressHelp}
+                      required
+                    />
+                    <dnn-button
+                      onClick={() => this.createIp(this.newIp)}
+                    >
+                      {state.resx.Add}
+                    </dnn-button>
                   </div>
                 </div>
   
@@ -55,15 +70,15 @@ export class BulkInstallIpSafelist {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">IP Safelist Entries</h3>
+                <h3 class="panel-title">{state.resx.IPSafeListEntries}</h3>
               </div>
               <div class="panel-body">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>IP Address</th>
-                      <th>Action</th>
+                      <th>{state.resx.Name}</th>
+                      <th>{state.resx.IPAddress}</th>
+                      <th>{state.resx.Action}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -71,7 +86,15 @@ export class BulkInstallIpSafelist {
                       <tr>
                         <td>{ip.name}</td>
                         <td>{ip.ipAddress}</td>
-                        <td><dnn-button appearance="danger" size="small" onClick={() => this.deleteIp(ip)}>Delete</dnn-button></td>
+                        <td>
+                          <dnn-button
+                            appearance="danger"
+                            size="small"
+                            onClick={() => this.deleteIp(ip)}
+                          >
+                            {state.resx.Delete}
+                          </dnn-button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -82,16 +105,20 @@ export class BulkInstallIpSafelist {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">IP Safelist Configuration</h3>
+                <h3 class="panel-title">{state.resx.IPSafeListConfiguration}</h3>
               </div>
               <div class="panel-body">
                 <div class="form-horizontal">
                   <div class="form-group">
                     <label>
                       <dnn-toggle name="enableIpSafelist" checked={this.enableIpSafelist}></dnn-toggle>
-                      Enable IP Safelist
+                      {state.resx.EnableIpSafeList}
                     </label> 
-                    <dnn-button appearance="primary" onClick={() => this.saveIpSafelistConfiguration(this.enableIpSafelist)}>Save</dnn-button>
+                    <dnn-button
+                      onClick={() => this.saveIpSafelistConfiguration(this.enableIpSafelist)}
+                    >
+                      {state.resx.Save}
+                    </dnn-button>
                   </div>
                 </div>
                 <div class="clearfix"></div>

@@ -1,5 +1,6 @@
 import { Component, Host, h } from '@stencil/core';
 import { User } from './bulk-install-api-users.model';
+import state from "../../../stores/store";
 
 @Component({
   tag: 'bulk-install-api-users',
@@ -34,21 +35,26 @@ export class BulkInstallApiUsers {
         <div class="row">
           <div class="col">
             <div class="button-row">
-              <dnn-button size="small" onClick={() => this.newUserModal.show()}>New API User</dnn-button>
+              <dnn-button
+                size="small"
+                onClick={() => this.newUserModal.show()}
+              >
+                {state.resx.NewApiUser}
+              </dnn-button>
             </div>
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">API Users</h3>
+                <h3 class="panel-title">{state.resx.ApiUsers}</h3>
               </div>
               <div class="panel-body">
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>API Key</th>
-                      <th>Encryption Key</th>
-                      <th>Bypass IP Allow List</th>
-                      <th>Action</th>
+                      <th>{state.resx.Name}</th>
+                      <th>{state.resx.ApiKey}</th>
+                      <th>{state.resx.EncryptionKey}</th>
+                      <th>{state.resx.BypassIpAllowList}</th>
+                      <th>{state.resx.Action}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -58,7 +64,15 @@ export class BulkInstallApiUsers {
                         <td>{user.apiKey}</td>
                         <td>{user.encryptionKey}</td>
                         <td>{String(user.bypassIPWhitelist)}</td>
-                        <td><dnn-button appearance="danger" size="small" onClick={() => this.deleteUser(user)}>Delete</dnn-button></td>
+                        <td>
+                          <dnn-button
+                            appearance="danger"
+                            size="small"
+                            onClick={() => this.deleteUser(user)}
+                          >
+                            {state.resx.Delete}
+                          </dnn-button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -78,18 +92,18 @@ export class BulkInstallApiUsers {
               this.createUser(this.newUser);
             }}
           >
-            <h4>New API User</h4>
+            <h4>{state.resx.NewApiUser}</h4>
             <dnn-input
               type="text"
-              label="Name"
-              helpText="Enter API User Name"
+              label={state.resx.ApiUserNameText}
+              helpText={state.resx.ApiUserNameHelp}
               required
             />
             <label>
               <dnn-checkbox checked={this.newUser.bypassIPWhitelist ? 'checked' : 'unchecked'}></dnn-checkbox>
-              Bypass IP Allow List
+              {state.resx.BypassIpAllowList}
             </label>
-            <dnn-button formButtonType="submit">Create</dnn-button>
+            <dnn-button formButtonType="submit">{state.resx.Create}</dnn-button>
           </form>
         </dnn-modal>
       </Host>
