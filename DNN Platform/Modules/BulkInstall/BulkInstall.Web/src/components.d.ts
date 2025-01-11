@@ -13,6 +13,7 @@ export namespace Components {
     interface BulkInstallLogs {
     }
     interface DnnBulkInstall {
+        "moduleId": number;
     }
 }
 declare global {
@@ -55,6 +56,7 @@ declare namespace LocalJSX {
     interface BulkInstallLogs {
     }
     interface DnnBulkInstall {
+        "moduleId": number;
     }
     interface IntrinsicElements {
         "bulk-install-api-users": BulkInstallApiUsers;
