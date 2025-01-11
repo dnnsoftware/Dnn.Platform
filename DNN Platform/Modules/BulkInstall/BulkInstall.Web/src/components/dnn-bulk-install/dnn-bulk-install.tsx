@@ -33,16 +33,16 @@ export class DnnBulkInstall {
               <div class="tab-content">Install UI goes here.</div>
             </dnn-tab>
             <dnn-tab tabTitle={state.resx.Events}>
-              <div class="tab-content">Event Log UI goes here.</div>
+              <bulk-install-logs></bulk-install-logs>
             </dnn-tab>
             <dnn-tab tabTitle={state.resx.ApiUsers}>
               <div class="tab-content">
-                <api-users></api-users>
+                <bulk-install-api-users></bulk-install-api-users>
               </div>
             </dnn-tab>
             <dnn-tab tabTitle={state.resx.IPSafeList}>
               <div class="tab-content">
-                <ip-safelist></ip-safelist>
+                <bulk-install-ip-safelist></bulk-install-ip-safelist>
               </div>
             </dnn-tab>
           </dnn-tabs>
