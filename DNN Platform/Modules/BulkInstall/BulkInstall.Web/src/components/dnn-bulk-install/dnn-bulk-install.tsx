@@ -12,10 +12,14 @@ export class DnnBulkInstall {
         <div class="container">
           <dnn-tabs>
             <dnn-tab tabTitle="Install">
-              <div class="tab-content">Install UI goes here.</div>
+              <div class="tab-content">
+                <bulk-install-install></bulk-install-install>
+              </div>
             </dnn-tab>
             <dnn-tab tabTitle="Event Log">
-              <bulk-install-logs></bulk-install-logs>
+              <div class="tab-content">
+                <bulk-install-logs></bulk-install-logs>
+              </div>
             </dnn-tab>
             <dnn-tab tabTitle="API Users">
               <div class="tab-content">

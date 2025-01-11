@@ -8,6 +8,8 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface BulkInstallApiUsers {
     }
+    interface BulkInstallInstall {
+    }
     interface BulkInstallIpSafelist {
     }
     interface BulkInstallLogs {
@@ -21,6 +23,12 @@ declare global {
     var HTMLBulkInstallApiUsersElement: {
         prototype: HTMLBulkInstallApiUsersElement;
         new (): HTMLBulkInstallApiUsersElement;
+    };
+    interface HTMLBulkInstallInstallElement extends Components.BulkInstallInstall, HTMLStencilElement {
+    }
+    var HTMLBulkInstallInstallElement: {
+        prototype: HTMLBulkInstallInstallElement;
+        new (): HTMLBulkInstallInstallElement;
     };
     interface HTMLBulkInstallIpSafelistElement extends Components.BulkInstallIpSafelist, HTMLStencilElement {
     }
@@ -42,6 +50,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "bulk-install-api-users": HTMLBulkInstallApiUsersElement;
+        "bulk-install-install": HTMLBulkInstallInstallElement;
         "bulk-install-ip-safelist": HTMLBulkInstallIpSafelistElement;
         "bulk-install-logs": HTMLBulkInstallLogsElement;
         "dnn-bulk-install": HTMLDnnBulkInstallElement;
@@ -49,6 +58,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface BulkInstallApiUsers {
+    }
+    interface BulkInstallInstall {
     }
     interface BulkInstallIpSafelist {
     }
@@ -58,6 +69,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "bulk-install-api-users": BulkInstallApiUsers;
+        "bulk-install-install": BulkInstallInstall;
         "bulk-install-ip-safelist": BulkInstallIpSafelist;
         "bulk-install-logs": BulkInstallLogs;
         "dnn-bulk-install": DnnBulkInstall;
@@ -68,6 +80,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "bulk-install-api-users": LocalJSX.BulkInstallApiUsers & JSXBase.HTMLAttributes<HTMLBulkInstallApiUsersElement>;
+            "bulk-install-install": LocalJSX.BulkInstallInstall & JSXBase.HTMLAttributes<HTMLBulkInstallInstallElement>;
             "bulk-install-ip-safelist": LocalJSX.BulkInstallIpSafelist & JSXBase.HTMLAttributes<HTMLBulkInstallIpSafelistElement>;
             "bulk-install-logs": LocalJSX.BulkInstallLogs & JSXBase.HTMLAttributes<HTMLBulkInstallLogsElement>;
             "dnn-bulk-install": LocalJSX.DnnBulkInstall & JSXBase.HTMLAttributes<HTMLDnnBulkInstallElement>;
