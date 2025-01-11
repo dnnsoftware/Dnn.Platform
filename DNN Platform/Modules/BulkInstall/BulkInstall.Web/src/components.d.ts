@@ -9,6 +9,7 @@ export namespace Components {
     interface ApiUsers {
     }
     interface DnnBulkInstall {
+        "moduleId": number;
     }
     interface IpSafelist {
     }
@@ -42,6 +43,7 @@ declare namespace LocalJSX {
     interface ApiUsers {
     }
     interface DnnBulkInstall {
+        "moduleId": number;
     }
     interface IpSafelist {
     }
