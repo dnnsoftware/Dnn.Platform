@@ -32,6 +32,7 @@
     "@stencil/store": "^2.0.13"
   },
   "devDependencies": {
+    "@stencil/store": "^2.0.16",
     "@types/node": "^16.18.11"
   },
   "license": "MIT"
