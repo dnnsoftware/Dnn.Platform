@@ -30,7 +30,9 @@ export class DnnBulkInstall {
         <div class="container">
           <dnn-tabs>
             <dnn-tab tabTitle={state.resx.Install}>
-              <div class="tab-content">Install UI goes here.</div>
+              <div class="tab-content">
+                <bulk-install-install></bulk-install-install>
+              </div>
             </dnn-tab>
             <dnn-tab tabTitle={state.resx.Events}>
               <div class="tab-content">
