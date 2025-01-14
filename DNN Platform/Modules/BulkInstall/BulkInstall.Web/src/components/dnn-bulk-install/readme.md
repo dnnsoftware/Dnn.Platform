@@ -5,6 +5,13 @@
 <!-- Auto Generated Below -->
 
 
+## Properties
+
+| Property                | Attribute   | Description | Type     | Default     |
+| ----------------------- | ----------- | ----------- | -------- | ----------- |
+| `moduleId` _(required)_ | `module-id` |             | `number` | `undefined` |
+
+
 ## Dependencies
 
 ### Depends on
