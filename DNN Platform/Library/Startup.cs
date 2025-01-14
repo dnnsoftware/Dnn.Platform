@@ -91,7 +91,7 @@ namespace DotNetNuke
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
 
-            services.AddSingleton<IDataContext>(x =>
+            services.AddTransient<IDataContext>(x =>
             {
                 var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
 
