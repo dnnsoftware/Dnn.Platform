@@ -7,7 +7,7 @@ using DotNetNuke.BulkInstall.DeployClient;
 
 public static class TestHelpers
 {
-    public static DeployInput CreateDeployInput(string? targetUri = null, string? apiKey = null, string? encryptionKey = null, int? installationStatusTimeout = null, string? packagesDirectoryPath = null, LogLevel? logLevel = null)
+    public static DeployInput CreateDeployInput(string? targetUri = null, string? apiKey = null, string? encryptionKey = null, int? installationStatusTimeout = null, string? packagesDirectoryPath = null, LogLevel? logLevel = null, bool? legacyApi = null)
     {
         return new DeployInput
         {
@@ -17,6 +17,7 @@ public static class TestHelpers
             InstallationStatusTimeout = installationStatusTimeout ?? 0,
             PackagesDirectoryPath = packagesDirectoryPath ?? A.Dummy<string>(),
             LogLevel = logLevel ?? A.Dummy<LogLevel>(),
+            LegacyApi = legacyApi ?? false,
         };
     }
 }

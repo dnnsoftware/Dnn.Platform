@@ -155,12 +155,11 @@ public class Installer : IInstaller
 
         async Task<WebResult> SendRequest()
         {
-            using var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri(options.GetTargetUri(), "DesktopModules/PolyDeploy/API/Remote/" + path),
-                Method = method,
-                Content = content,
-            };
+            var basePath = options.LegacyApi ? "DesktopModules/PolyDeploy/API/Remote/" : "/DesktopModules/BulkInstall/API/Remote/";
+            using var request = new HttpRequestMessage();
+            request.RequestUri = new Uri(options.GetTargetUri(), basePath + path);
+            request.Method = method;
+            request.Content = content;
 
             request.Headers.Add("x-api-key", options.ApiKey);
             request.Headers.UserAgent.Add(new ProductInfoHeaderValue("PolyDeploy", DeployClientVersion.Replace(" ", "_")));

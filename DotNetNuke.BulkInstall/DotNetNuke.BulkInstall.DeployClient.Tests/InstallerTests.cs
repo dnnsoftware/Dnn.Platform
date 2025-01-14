@@ -12,15 +12,22 @@ using DotNetNuke.BulkInstall.DeployClient;
 
 public class InstallerTests
 {
-    [Fact]
-    public async Task StartSessionAsync_CallsCreateSessionApi()
+    public static TheoryData<bool, string> ApiData => new()
+    {
+        { true, "/DesktopModules/PolyDeploy/API/Remote/" },
+        { false, "/DesktopModules/BulkInstall/API/Remote/" },
+    };
+
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task StartSessionAsync_CallsCreateSessionApi(bool legacyApi, string baseUri)
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
+            new Uri(targetUri, baseUri + "CreateSession"),
             new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { Guid = expectedSessionId })), });
         var installer = CreateInstaller(handler);
 
@@ -32,14 +39,15 @@ public class InstallerTests
         sessionId.ShouldBe(expectedSessionId);
     }
 
-    [Fact]
-    public async Task StartSessionAsync_CallsSessionPostApi_NotFound_ThrowsHttpRequestException()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task StartSessionAsync_CallsSessionPostApi_NotFound_ThrowsHttpRequestException(bool legacyApi, string baseUri)
     {
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
+            new Uri(targetUri, baseUri + "CreateSession"),
             new HttpResponseMessage(HttpStatusCode.NotFound));
 
         var installer = CreateInstaller(handler);
@@ -49,15 +57,16 @@ public class InstallerTests
         exception.InnerException.ShouldBeAssignableTo<HttpRequestException>();
     }
 
-    [Fact]
-    public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectSessionId()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectSessionId(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}AddPackages?sessionGuid={sessionId}"),
             null);
         var installer = CreateInstaller(handler);
 
@@ -74,15 +83,16 @@ public class InstallerTests
         (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
     }
 
-    [Fact]
-    public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectFileName()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectFileName(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}AddPackages?sessionGuid={sessionId}"),
             null);
         var installer = CreateInstaller(handler);
 
@@ -95,15 +105,16 @@ public class InstallerTests
         disposition.FileName.ShouldBe("Jamestown_install_5.5.7.zip");
     }
 
-    [Fact]
-    public async Task UploadPackageAsync_WhenApiErrors_ThrowWrappedException()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task UploadPackageAsync_WhenApiErrors_ThrowWrappedException(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}AddPackages?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.InternalServerError));
         var installer = CreateInstaller(handler);
 
@@ -119,15 +130,16 @@ public class InstallerTests
         exception.Message.ShouldBe("An Error Occurred While Uploading the Packages");
     }
 
-    [Fact]
-    public async Task InstallPackagesAsync_WhenAPIErrors_ThrowsWrappedException()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task InstallPackagesAsync_WhenAPIErrors_ThrowsWrappedException(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}Install?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.InternalServerError));
         var installer = CreateInstaller(handler);
 
@@ -136,15 +148,16 @@ public class InstallerTests
         exception.Message.ShouldBe("An Error Occurred While Installing the Packages");
     }
 
-    [Fact]
-    public async Task InstallPackagesAsync_DoesGetInstall()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task InstallPackagesAsync_DoesGetInstall(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/Install?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}Install?sessionGuid={sessionId}"),
             null);
         var installer = CreateInstaller(handler);
 
@@ -155,12 +168,13 @@ public class InstallerTests
         handler.Request.ShouldHaveApiKeyHeader(options.ApiKey);
     }
 
-    [Fact]
-    public async Task GetSessionAsync_DeserializesInProgressResponse()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task GetSessionAsync_DeserializesInProgressResponse(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), legacyApi: legacyApi);
 
         var response = @"{
                 ""SessionID"":219,
@@ -189,7 +203,7 @@ public class InstallerTests
             }".Replace('\r', ' ').Replace('\n', ' ');
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/GetSession?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}GetSession?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(response), });
 
         var installer = CreateInstaller(handler);
@@ -221,16 +235,17 @@ public class InstallerTests
         sessionResponse.CanInstall.ShouldBeTrue();
     }
 
-    [Fact]
-    public async Task GetSessionAsync_TimeoutResponse_Exception()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task GetSessionAsync_TimeoutResponse_Exception(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5);
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/GetSession?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}GetSession?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.NotFound));
         var installer = CreateInstaller(handler, stopwatch);
 
@@ -240,16 +255,17 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(3);
     }
 
-    [Fact]
-    public async Task GetSessionAsync_GoodResponseAfterNotFound_Succeeds()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task GetSessionAsync_GoodResponseAfterNotFound_Succeeds(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5);
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/GetSession?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}GetSession?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.NotFound));
         handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.NotFound));
         handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(@"{""Status"":1,""Response"":null}") });
@@ -259,16 +275,17 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(3);
     }
 
-    [Fact]
-    public async Task GetSessionAsync_GoodResponseAfterHttpException_Succeeds()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task GetSessionAsync_GoodResponseAfterHttpException_Succeeds(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5);
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/GetSession?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}GetSession?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.NotFound));
         handler.ExceptionsBeforeResponses.Enqueue(new HttpRequestException("An error occurred while sending the request.", new IOException("Unable to read the data from the transport connection: An existing connection was forcibly closed by the remote host.", new SocketException())));
         handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(@"{""Status"":1,""Response"":null}") });
@@ -278,16 +295,17 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(2);
     }
 
-    [Fact]
-    public async Task UploadPackageAsync_DoesNotRetryAfterFailure()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task UploadPackageAsync_DoesNotRetryAfterFailure(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5);
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}AddPackages?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.NotFound));
         handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.NotFound));
         handler.Responses.Enqueue(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(@"{""Status"":1,""Response"":null}") });
@@ -304,16 +322,17 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(1);
     }
 
-    [Fact]
-    public async Task UploadPackageAsync_TracksUploadProgress()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task UploadPackageAsync_TracksUploadProgress(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5);
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), installationStatusTimeout: 5, legacyApi: legacyApi);
         var stopwatch = new TestStopwatch(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(6));
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, $"/DesktopModules/PolyDeploy/API/Remote/AddPackages?sessionGuid={sessionId}"),
+            new Uri(targetUri, $"{baseUri}AddPackages?sessionGuid={sessionId}"),
             new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("""{"Status":1,"Response":null}""") });
         var installer = CreateInstaller(handler, stopwatch);
 
@@ -334,15 +353,16 @@ public class InstallerTests
         progressResults.Count.ShouldBeGreaterThan(1);
     }
 
-    [Fact]
-    public async Task StartSessionAsync_SetsUserAgentHeader()
+    [Theory]
+    [MemberData(nameof(ApiData))]
+    public async Task StartSessionAsync_SetsUserAgentHeader(bool legacyApi, string baseUri)
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
         var targetUri = new Uri("https://polydeploy.example.com/");
-        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString());
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), legacyApi: legacyApi);
 
         var handler = new FakeMessageHandler(
-            new Uri(targetUri, "/DesktopModules/PolyDeploy/API/Remote/CreateSession"),
+            new Uri(targetUri, baseUri + "CreateSession"),
             new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { Guid = expectedSessionId })), });
         var installer = CreateInstaller(handler);
 

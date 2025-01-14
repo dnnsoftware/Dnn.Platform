@@ -54,6 +54,12 @@ public class DeployInput : CommandSettings
     [DefaultValue(LogLevel.Information)]
     public LogLevel LogLevel { get; set; }
 
+    /// <summary>Gets or sets a value indicating whether to use the legacy PolyDeploy API.</summary>
+    [CommandOption("--legacy-api")]
+    [Description("Whether to use the PolyDeploy API instead of the BulkInstall API.")]
+    [DefaultValue(false)]
+    public bool LegacyApi { get; set; }
+
     /// <summary>Gets the URI of the site to which to deploy the packages.</summary>
     /// <returns>An absolute <see cref="Uri"/>.</returns>
     public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);
