@@ -1,0 +1,30 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+-- Drop the existing constraint
+ALTER TABLE {databaseOwner}[{objectQualifier}Lists] 
+DROP CONSTRAINT [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID];
+GO
+
+-- Add the new constraint with PortalId as the first field
+ALTER TABLE {databaseOwner}[{objectQualifier}Lists] 
+ADD CONSTRAINT [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID]
+UNIQUE NONCLUSTERED ([PortalId], [ListName], [Value], [Text], [ParentID]);
+GO
+
+-- Drop the existing index
+DROP INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists];
+GO
+
+-- Create the new index with PortalId as the first column
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_ParentID]
+ON {databaseOwner}[{objectQualifier}Lists] ([PortalId], [ParentID], [ListName], [Value])
+INCLUDE ([DefinitionID], [SortOrder], [Text]);
+GO

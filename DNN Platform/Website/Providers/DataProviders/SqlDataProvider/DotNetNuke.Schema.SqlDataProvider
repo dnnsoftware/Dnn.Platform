@@ -264,11 +264,11 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_ListName_ParentID] ON {data
 GO
 PRINT N'Adding constraints to {databaseOwner}[{objectQualifier}Lists]'
 GO
-ALTER TABLE {databaseOwner}[{objectQualifier}Lists] ADD CONSTRAINT [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID] UNIQUE NONCLUSTERED  ([ListName], [Value], [Text], [ParentID])
+ALTER TABLE {databaseOwner}[{objectQualifier}Lists] ADD CONSTRAINT [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID] UNIQUE NONCLUSTERED  ([PortalId], [ListName], [Value], [Text], [ParentID])
 GO
 PRINT N'Creating index [IX_{objectQualifier}Lists_ParentID] on {databaseOwner}[{objectQualifier}Lists]'
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists] ([ParentID], [ListName], [Value]) INCLUDE ([DefinitionID], [SortOrder], [Text])
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists] ([PortalId], [ParentID], [ListName], [Value]) INCLUDE ([DefinitionID], [SortOrder], [Text])
 GO
 PRINT N'Creating index [IX_{objectQualifier}Lists_SortOrder] on {databaseOwner}[{objectQualifier}Lists]'
 GO
