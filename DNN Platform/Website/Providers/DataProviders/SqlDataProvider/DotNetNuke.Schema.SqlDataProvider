@@ -12069,7 +12069,7 @@ AS
 		SET @SortOrder = 0
 
 	-- Check if this entry exists
-	If EXISTS (SELECT [EntryID] From {databaseOwner}[{objectQualifier}Lists] WHERE [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
+	If EXISTS (SELECT [EntryID] From {databaseOwner}[{objectQualifier}Lists] WHERE [PortalID] = @PortalID AND [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
 	BEGIN
 		SELECT -1
 		RETURN 
