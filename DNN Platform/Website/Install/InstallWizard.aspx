@@ -8,12 +8,9 @@
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/10.0.0/default.css?refresh" />
     <link rel="stylesheet" type="text/css" href="Install.css?refresh" />
     <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnn.PasswordStrength.css?refresh" />
-     <!--[if IE]>
-	<link rel="stylesheet" type="text/css" href="../Portals/_default/ie.css?refresh" />
-    <![endif]-->
     <link rel="stylesheet" type="text/css" href="../Portals/_default/skins/_default/WebControlSkin/default/combobox.default.css?refresh" />
     <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js"></script>

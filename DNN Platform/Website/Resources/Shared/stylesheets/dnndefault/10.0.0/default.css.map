@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../../../../Dnn.ClientSide/src/styles/default-css/10.0.0/default.scss"],"names":[],"mappings":"AAAA,KAEE,qBAAuB,CADvB,wBAAyB,CAEzB,YACF,CAEA,IACE,wBAAiB,CAAjB,qBAAiB,CAAjB,gBACF","file":"default.css","sourcesContent":["body {\n  border: 2px solid skyblue;\n  background-color: white;\n  display: flex;\n}\n\ndiv {\n  user-select: none;\n}"]}
