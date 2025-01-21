@@ -278,7 +278,7 @@ namespace DotNetNuke.Modules.Html
             var tab = TabController.Instance.GetTab(tabId, portalId);
 
             var workFlowId = tab.StateID == Null.NullInteger
-                ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(PortalSettings.Current.PortalId)
+                ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId)
                 : WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).WorkflowID;
 
             var workFlowType = WorkflowManager.Instance.GetWorkflow(workFlowId).WorkflowName;
