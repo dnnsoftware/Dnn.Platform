@@ -34,6 +34,48 @@ IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databas
     END
 GO
 
+-- Update StateID in HtmlText when possible (only default workflows)
+DECLARE @CountResult INT;
+
+SELECT @CountResult = COUNT(*)
+FROM {databaseOwner}{objectQualifier}WorkflowStates AS s1
+INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates AS s2
+    ON s1.StateID = s2.StateID
+    AND s1.WorkflowID = s2.WorkflowID
+    AND s1.StateName = s2.StateName;
+
+IF @CountResult = 3 -- The count should be 3 for the default workflows
+BEGIN
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        -- Perform the update
+        UPDATE {databaseOwner}{objectQualifier}HtmlText
+        SET StateID = s2.StateID
+        FROM {databaseOwner}{objectQualifier}HtmlText AS h
+        INNER JOIN {databaseOwner}{objectQualifier}Modules AS m ON h.ModuleID = m.ModuleID
+        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates AS s1 ON h.StateID = s1.StateID
+        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows AS w1 ON s1.WorkflowID = w1.WorkflowID
+        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows AS w2 ON w1.WorkflowKey = w2.WorkflowKey AND m.PortalID = w2.PortalID
+        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates AS s2 ON s1.StateName = s2.StateName AND w2.WorkflowID = s2.WorkflowID;
+
+        -- Commit the transaction
+        COMMIT TRANSACTION;
+        PRINT 'Transaction committed successfully.';
+    END TRY
+    BEGIN CATCH
+        -- Rollback the transaction in case of an error
+        ROLLBACK TRANSACTION;
+        PRINT 'Transaction rolled back due to an error.';
+        PRINT ERROR_MESSAGE();
+    END CATCH
+END
+ELSE
+BEGIN
+    PRINT 'The count is not equal to 3. No action was taken.';
+END
+GO
+
 -- Drop Table Workflow if it exists
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Workflow') AND type in (N'U'))
     BEGIN
@@ -76,18 +118,18 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}GetAllHtmlText
     @ModuleID INT
 AS
 BEGIN
-    SELECT dbo.HtmlText.*,
-           dbo.ContentWorkflowStates.*,
-           dbo.ContentWorkflows.WorkflowName,
-           dbo.Users.DisplayName,
-           dbo.Modules.PortalID
-    FROM dbo.HtmlText
-    INNER JOIN dbo.Modules ON dbo.Modules.ModuleID = dbo.HtmlText.ModuleID
-    INNER JOIN dbo.ContentWorkflowStates ON dbo.ContentWorkflowStates.StateID = dbo.HtmlText.StateID
-    INNER JOIN dbo.ContentWorkflows ON dbo.ContentWorkflowStates.WorkflowID = dbo.ContentWorkflows.WorkflowID
-    LEFT OUTER JOIN dbo.Users ON dbo.HtmlText.LastModifiedByUserID = dbo.Users.UserID
-    WHERE dbo.HtmlText.ModuleID = @ModuleID
-    ORDER BY dbo.HtmlText.LastModifiedOnDate DESC
+    SELECT {databaseOwner}{objectQualifier}HtmlText.*,
+           {databaseOwner}{objectQualifier}ContentWorkflowStates.*,
+           {databaseOwner}{objectQualifier}ContentWorkflows.WorkflowName,
+           {databaseOwner}{objectQualifier}Users.DisplayName,
+           {databaseOwner}{objectQualifier}Modules.PortalID
+    FROM {databaseOwner}{objectQualifier}HtmlText
+    INNER JOIN {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}HtmlText.ModuleID
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates ON {databaseOwner}{objectQualifier}ContentWorkflowStates.StateID = {databaseOwner}{objectQualifier}HtmlText.StateID
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows ON {databaseOwner}{objectQualifier}ContentWorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}ContentWorkflows.WorkflowID
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users ON {databaseOwner}{objectQualifier}HtmlText.LastModifiedByUserID = {databaseOwner}{objectQualifier}Users.UserID
+    WHERE {databaseOwner}{objectQualifier}HtmlText.ModuleID = @ModuleID
+    ORDER BY {databaseOwner}{objectQualifier}HtmlText.LastModifiedOnDate DESC
 END
 GO
 
@@ -104,17 +146,17 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}GetHtmlText
     @ItemID INT
 AS
 BEGIN
-    SELECT dbo.HtmlText.*,
-           dbo.ContentWorkflowStates.*,
-           dbo.ContentWorkflows.WorkflowName,
-           dbo.Users.DisplayName,
-           dbo.Modules.PortalID
-    FROM dbo.HtmlText
-    INNER JOIN dbo.Modules ON dbo.Modules.ModuleID = dbo.HtmlText.ModuleID
-    INNER JOIN dbo.ContentWorkflowStates ON dbo.ContentWorkflowStates.StateID = dbo.HtmlText.StateID
-    INNER JOIN dbo.ContentWorkflows ON dbo.ContentWorkflowStates.WorkflowID = dbo.ContentWorkflows.WorkflowID
-    LEFT OUTER JOIN dbo.Users ON dbo.HtmlText.LastModifiedByUserID = dbo.Users.UserID
-    WHERE dbo.HtmlText.ModuleID = @ModuleID
+    SELECT {databaseOwner}{objectQualifier}HtmlText.*,
+           {databaseOwner}{objectQualifier}ContentWorkflowStates.*,
+           {databaseOwner}{objectQualifier}ContentWorkflows.WorkflowName,
+           {databaseOwner}{objectQualifier}Users.DisplayName,
+           {databaseOwner}{objectQualifier}Modules.PortalID
+    FROM {databaseOwner}{objectQualifier}HtmlText
+    INNER JOIN {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}HtmlText.ModuleID
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates ON {databaseOwner}{objectQualifier}ContentWorkflowStates.StateID = {databaseOwner}{objectQualifier}HtmlText.StateID
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows ON {databaseOwner}{objectQualifier}ContentWorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}ContentWorkflows.WorkflowID
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users ON {databaseOwner}{objectQualifier}HtmlText.LastModifiedByUserID = {databaseOwner}{objectQualifier}Users.UserID
+    WHERE {databaseOwner}{objectQualifier}HtmlText.ModuleID = @ModuleID
       AND ItemID = @ItemID
 END
 GO
@@ -139,9 +181,9 @@ BEGIN
            HtmlTextLog.CreatedByUserID,
            Users.DisplayName,
            HtmlTextLog.CreatedOnDate
-    FROM dbo.HtmlTextLog
-    INNER JOIN dbo.ContentWorkflowStates ON dbo.HtmlTextLog.StateID = dbo.ContentWorkflowStates.StateID
-    LEFT OUTER JOIN dbo.Users ON dbo.HtmlTextLog.CreatedByUserID = dbo.Users.UserID
+    FROM {databaseOwner}{objectQualifier}HtmlTextLog
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates ON {databaseOwner}{objectQualifier}HtmlTextLog.StateID = {databaseOwner}{objectQualifier}ContentWorkflowStates.StateID
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users ON {databaseOwner}{objectQualifier}HtmlTextLog.CreatedByUserID = {databaseOwner}{objectQualifier}Users.UserID
     WHERE ItemID = @ItemID
     ORDER BY HtmlTextLog.CreatedOnDate DESC
 END
@@ -161,8 +203,8 @@ AS
 BEGIN
     SELECT HtmlTextUsers.*,
            ContentWorkflowStates.StateName
-    FROM dbo.HtmlTextUsers
-    INNER JOIN dbo.ContentWorkflowStates ON dbo.HtmlTextUsers.StateID = dbo.ContentWorkflowStates.StateID
+    FROM {databaseOwner}{objectQualifier}HtmlTextUsers
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates ON {databaseOwner}{objectQualifier}HtmlTextUsers.StateID = {databaseOwner}{objectQualifier}ContentWorkflowStates.StateID
     WHERE HtmlTextUsers.UserID = @UserID
     ORDER BY HtmlTextUsers.CreatedOnDate ASC
 END
@@ -181,19 +223,19 @@ CREATE PROCEDURE {databaseOwner}{objectQualifier}GetTopHtmlText
     @IsPublished BIT
 AS
 BEGIN
-    SELECT TOP 1 dbo.HtmlText.*,
-                 dbo.ContentWorkflowStates.*,
-                 dbo.ContentWorkflows.WorkflowName,
-                 dbo.Users.DisplayName,
-                 dbo.Modules.PortalID
-    FROM dbo.HtmlText
-    INNER JOIN dbo.Modules ON dbo.Modules.ModuleID = dbo.HtmlText.ModuleID
-    INNER JOIN dbo.ContentWorkflowStates ON dbo.ContentWorkflowStates.StateID = dbo.HtmlText.StateID
-    INNER JOIN dbo.ContentWorkflows ON dbo.ContentWorkflowStates.WorkflowID = dbo.ContentWorkflows.WorkflowID
-    LEFT OUTER JOIN dbo.Users ON dbo.HtmlText.LastModifiedByUserID = dbo.Users.UserID
-    WHERE dbo.HtmlText.ModuleID = @ModuleID
+    SELECT TOP 1 {databaseOwner}{objectQualifier}HtmlText.*,
+                 {databaseOwner}{objectQualifier}ContentWorkflowStates.*,
+                 {databaseOwner}{objectQualifier}ContentWorkflows.WorkflowName,
+                 {databaseOwner}{objectQualifier}Users.DisplayName,
+                 {databaseOwner}{objectQualifier}Modules.PortalID
+    FROM {databaseOwner}{objectQualifier}HtmlText
+    INNER JOIN {databaseOwner}{objectQualifier}Modules ON {databaseOwner}{objectQualifier}Modules.ModuleID = {databaseOwner}{objectQualifier}HtmlText.ModuleID
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates ON {databaseOwner}{objectQualifier}ContentWorkflowStates.StateID = {databaseOwner}{objectQualifier}HtmlText.StateID
+    INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows ON {databaseOwner}{objectQualifier}ContentWorkflowStates.WorkflowID = {databaseOwner}{objectQualifier}ContentWorkflows.WorkflowID
+    LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users ON {databaseOwner}{objectQualifier}HtmlText.LastModifiedByUserID = {databaseOwner}{objectQualifier}Users.UserID
+    WHERE {databaseOwner}{objectQualifier}HtmlText.ModuleID = @ModuleID
       AND (IsPublished = @IsPublished OR @IsPublished = 0)
-    ORDER BY dbo.HtmlText.LastModifiedOnDate DESC
+    ORDER BY {databaseOwner}{objectQualifier}HtmlText.LastModifiedOnDate DESC
 END
 GO
 
