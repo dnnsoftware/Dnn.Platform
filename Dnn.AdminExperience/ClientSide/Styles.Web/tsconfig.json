@@ -9,6 +9,7 @@
       "dom",
       "es2017"
     ],
+    "skipLibCheck": true,
     "moduleResolution": "node",
     "module": "esnext",
     "target": "es2017",

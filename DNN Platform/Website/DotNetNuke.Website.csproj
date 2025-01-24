@@ -1219,6 +1219,7 @@
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
+    <Content Include="Resources\Shared\stylesheets\dnndefault\10.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
