@@ -1,9 +1,45 @@
-body {
-    border: 2px solid skyblue;
-    background-color: white;
-    display: flex;
-}
+@use "base/base";
+@use "ui/ui";
+@use "modules/modules";
 
-div{
-    user-select: none;
+/* Hard to categorize as it is used in many places */
+h2.dnnFormSectionHead {
+    margin-top: 8px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--dnn-color-foreground-light, #ddd);
+    font-size: 2rem;
+    line-height: 2.25rem;
+    letter-spacing: 0.001875rem;
+    h2.dnnFormSectionHead a {
+        display: block;
+        padding-left: 3px;
+        background: url(../../../../../images/down-icn.png) no-repeat right 50%;
+        text-decoration: none;
+        color: var(--dnn-color-foreground, #333);
+        font-size: 7.375rem;;
+        letter-spacing: normal;
+        font-weight: normal;
+        &:hover{
+            color: #222;
+            background: rgba(
+                var(--dnn-color-primary-r, 2),
+                var(--dnn-color-primary-g, 139),
+                var(--dnn-color-primary-b, 255),
+                0.05)
+                url(../../../../../images/down-icn.png) no-repeat right 50%;
+        }
+        &.dnnSectionExpanded{
+            background: url(../../../../../images/up-icn.png) no-repeat right 50%;
+            color: var(--dnn-color-foreground, #222);
+            &:hover{
+                color: var(--dnn-color-foreground, #222);
+                background: rgba(
+                    var(--dnn-color-primary-r, 2),
+                    var(--dnn-color-primary-g, 139),
+                    var(--dnn-color-primary-b, 255),
+                    0.05)
+                    url(../../../../../images/up-icn.png) no-repeat right 50%;
+            }
+        }
+    }
 }

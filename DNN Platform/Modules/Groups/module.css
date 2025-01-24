@@ -150,3 +150,19 @@
 .groupPager{text-align:right;}
 .groupPager a{display:inline-block; border:1px solid #cdcdcd; background-color:#fff; font-size:16px;padding:2px 8px 2px 8px;margin-right:4px; font-weight:bold;}
 .groupPager a.pagerItemSelected{background-color:#ffffcc;}
+input.dnnFixedSizeComboBox {
+    width: 200px !important;
+    margin-right: 10px;
+    float: left;
+}
+
+div.dnnFixedSizeComboBox {
+    width: 218px !important;
+    margin-right: 15px;
+    float: left;
+}
+
+.dnnFixedSizeComboBox + a.dnnSecondaryAction {
+    float: left;
+    margin-right: 10px;
+}

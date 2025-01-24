@@ -438,3 +438,110 @@ a.videoLink:hover {
   display: block;
   padding: 6px 0 100px 0;
 }
+.dnnWizardTab.ui-tabs {
+  position: relative;
+  padding: 0;
+}
+
+  .dnnWizardTab.ui-tabs .ui-tabs-nav {
+      display: block;
+      height: 46px;
+      margin: 0;
+      padding: 0;
+      background: transparent url(../../../../../images/InstallWizardBG.png) repeat-x;
+  }
+
+      .dnnWizardTab.ui-tabs .ui-tabs-nav li {
+          float: left;
+          position: relative;
+          margin: 0;
+          padding: 0;
+          border-bottom: 0 !important;
+          list-style: none;
+          white-space: nowrap;
+      }
+
+          .dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+              margin-bottom: 0;
+          }
+
+              .dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active a,
+              .ui-tabs .ui-tabs-nav li.ui-state-disabled a,
+              .ui-tabs .ui-tabs-nav li.ui-state-processing a {
+                  cursor: text;
+              }
+
+          .dnnWizardTab.ui-tabs .ui-tabs-nav li a,
+          .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active a {
+              cursor: pointer;
+          }
+
+  .dnnWizardTab.ui-tabs .ui-tabs-panel {
+      clear: both;
+      display: block;
+      padding: 3em 1em 1.4em;
+      border-width: 0;
+      background: none;
+  }
+
+  .dnnWizardTab.ui-tabs .ui-tabs-hide {
+      display: none !important;
+  }
+
+  .dnnWizardTab.ui-tabs .ui-tabs-nav li a {
+      display: block;
+  }
+
+.dnnWizardStep > span {
+  display: block;
+  float: left;
+}
+
+.dnnWizardStep {
+  height: 46px;
+  padding: 0 0 0 20px;
+  background: transparent url(../../../../../images/InstallWizardBG.png) repeat-x;
+  background-position: 0 0;
+  cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-nav li:first-child .dnnWizardStep {
+  padding-left: 30px;
+}
+
+.dnnWizardStepNumber {
+  margin: 10px 10px 0 0;
+  padding: 3px 8px 3px 8px;
+  background-color: #999;
+  -webkit-border-radius: 18px;
+  border-radius: 18px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.dnnWizardStepTitle {
+  margin: 13px 20px 0 0;
+  color: #999;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.dnnWizardStepArrow {
+  width: 25px;
+  height: 46px;
+  background: transparent url(../../../../../images/InstallWizardBG.png) no-repeat;
+  background-position: 0 -401px;
+}
+
+.dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active .dnnWizardStep {
+  height: 46px;
+  background-position: 0 -100px;
+}
+
+.dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active .dnnWizardStepNumber {
+  background-color: #333;
+}
+
+.dnnWizardTab.ui-tabs .ui-tabs-nav li.ui-tabs-active .dnnWizardStepTitle {
+  color: #333;
+}

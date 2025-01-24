@@ -1,0 +1,88 @@
+@use "resizable";
+@use "spinner";
+@use "tabs";
+
+/* jQuery UI overrides. */
+/* We may be able to remove the dnnForm scope if tested to work good with a single jQuery UI theme. */
+.dnnForm {
+    .ui-helper-hidden {
+        display: none;
+    }
+
+    .ui-helper-hidden-accessible {
+        position: absolute !important;
+        clip: rect(1px 1px 1px 1px);
+    }
+
+    .ui-state-highlight,
+    .ui-widget-content .ui-state-highlight,
+    .ui-widget-header .ui-state-highlight {
+        border: 1px solid var(--dnn-color-warning-dark, #fed22f);
+        background: var(--dnn-color-warning, #ffe45c);
+        color: var(--dnn-color-warning-contrast, #363636);
+        a {
+            color: var(--dnn-color-warning-contrast, #363636);
+        }
+    }
+
+    .ui-state-error,
+    .ui-widget-content .ui-state-error,
+    .ui-widget-header .ui-state-error {
+        border: 1px solid var(--dnn-color-danger-dark, #cd0a0a);
+        background: var(--dnn-color-danger, #b81900);
+        color: var(--dnn-color-danger-contrast, #ffffff);
+        a {
+            color: var(--dnn-color-danger-contrast, #ffffff);
+        }
+    }
+
+    .ui-state-error-text,
+    .ui-widget-content .ui-state-error-text,
+    .ui-widget-header .ui-state-error-text {
+        color: var(--dnn-color-danger-contrast, #ffffff);
+    }
+
+    .ui-priority-primary,
+    .ui-widget-content .ui-priority-primary,
+    .ui-widget-header .ui-priority-primary {
+        font-weight: bold;
+    }
+
+    .ui-priority-secondary,
+    .ui-widget-content .ui-priority-secondary,
+    .ui-widget-header .ui-priority-secondary {
+        opacity: .7;
+        font-weight: normal;
+    }
+
+    .ui-state-disabled,
+    .ui-widget-content .ui-state-disabled,
+    .ui-widget-header .ui-state-disabled {
+        opacity: .35;
+        background-image: none;
+    }
+
+    .ui-draggable {
+        cursor: move;
+    }
+
+    .ui-corner-all,
+    .ui-corner-top,
+    .ui-corner-left,
+    .ui-corner-tl,
+    .dnnForm .ui-corner-right,
+    .dnnForm .ui-corner-tr {
+        border-radius: var(--dnn-controls-radius, 4px);
+    }
+}
+
+/* Popup Menu */
+.ui-widget-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+	z-index: 9999;
+}

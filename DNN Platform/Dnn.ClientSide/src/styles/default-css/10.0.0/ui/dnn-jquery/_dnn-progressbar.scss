@@ -1,0 +1,28 @@
+/* Progressbar */
+/*
+Currently used by the installer/upgrade wizards and module injection.
+Purposely leaving hardcoded values for sizes and not using css-variables 
+because it is used in the installer and rarely visible in the module injection.
+*/
+.dnnProgressbar {
+    height: 25px !important;
+    padding: 18px 10px 0 10px;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    border-radius: 3px;
+}
+.ui-progressbar {
+    height: 10px !important;
+    overflow: hidden;
+    background-color: #ccc;
+    text-align: left;
+    .ui-progressbar-value {
+        margin: 0;
+        height: 100%;
+        background-color: #1a82f7;
+        background: -moz-linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, right top, color-stop(0%,#2b7fda), color-stop(100%,#3fbdff)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* W3C */
+    }
+}
