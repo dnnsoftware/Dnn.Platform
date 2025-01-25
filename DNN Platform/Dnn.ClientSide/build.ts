@@ -24,8 +24,16 @@ const files: FileConfig[] = [
     input: "src/styles/default-css/10.0.0/default.scss",
     output:
       mode === "build"
-      ? path.relative(process.cwd(), path.resolve("../Website/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css"))
-      : path.resolve(settings.WebsitePath, "Resources/Shared/stylesheets/dnndefault/10.0.0/default.css") },
+      ? path.relative(process.cwd(), path.resolve("../Website/Install/Install.css/Shared/stylesheets/dnndefault/10.0.0/default.css"))
+      : path.resolve(settings.WebsitePath, "Resources/Shared/stylesheets/dnndefault/10.0.0/default.css"),
+  },
+  {
+    input: "src/styles/install/install.scss",
+    output:
+      mode === "build"
+      ? path.relative(process.cwd(), path.resolve("../Website/Website/Install/Install.css"))
+      : path.resolve(settings.WebsitePath, "Install/Install.css"),
+  }
   // { input: "src/scripts/test.ts", output: "dist/scripts/test.js" },
 ];
 
@@ -121,10 +129,11 @@ async function buildAll(): Promise<void> {
 // Watch for changes (optional)
 function watchFiles(): void {
   const watcher = chokidar.watch(
-    "src/styles/**/*.scss",
+    "./src",
   {
     ignored: /(^|[\/\\])\../, // Ignore dotfiles
     persistent: true,
+    ignoreInitial: true,
   });
   buildAll();
   watcher.on("all", async (event, filePath) => {
