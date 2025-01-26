@@ -2,16 +2,14 @@ html {
     font-family: Arial, Helvetica, sans-serif;
     color: var(--dnn-color-foreground, #222);
     font-size: var(--dnn-base-font-size, 16px);
-    body{
-        font-family: inherit;
-        font-size: 1rem;
-        color: inherit;
-        line-height: 1.5;
-        margin: 0;
-        background-color: var(--dnn-color-background, #fff);
-    }
 }
-
+body{
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    background-color: var(--dnn-color-background, #fff);
+}
 h1, h2, h3, h4, h5, h6{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
@@ -42,4 +40,9 @@ a:hover, a:focus, a:active {
 
 p a, p a:visited {
     line-height: inherit;
+}
+
+ul, ol{
+    padding-inline-start: 1.5rem;
+    list-style-position: outside;
 }

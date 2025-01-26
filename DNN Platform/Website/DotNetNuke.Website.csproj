@@ -1219,7 +1219,6 @@
     <Content Include="Resources\Shared\components\TimePicker\Themes\jquery.ui.theme.css" />
     <Content Include="Resources\Shared\stylesheets\dnn.PasswordStrength.css" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\7.0.0\default.css" />
-    <Content Include="Resources\Shared\stylesheets\dnndefault\10.0.0\default.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\css\dnnicon.min.css" />
     <Content Include="Resources\Shared\stylesheets\dnnicons\fonts\dnnicon.svg" />
@@ -2777,7 +2776,6 @@
     <Content Include="Install\Config\PlaceHolder.txt" />
     <Content Include="Install\Container\PlaceHolder.txt" />
     <Content Include="Install\install.aspx" />
-    <Content Include="Install\Install.css" />
     <Content Include="Install\Install.htm" />
     <Content Include="Install\Install.template.htm" />
     <Content Include="Install\installbg.gif" />
