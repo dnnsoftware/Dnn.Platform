@@ -216,7 +216,6 @@ namespace DotNetNuke.Web.Common.Internal
                     app.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddDays(-1);
                 }
             }
-            }
 
             var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
             if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") && Endings.Any(requestUrl.EndsWith))
