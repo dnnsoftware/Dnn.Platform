@@ -213,8 +213,9 @@ namespace DotNetNuke.Web.Common.Internal
                 var persisted = AuthCookieController.Instance.Find(authCookie.Value);
                 if (persisted != null && persisted.ExpiresOn <= DateTime.UtcNow)
                 {
-                    app.Request.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                    app.Response.Cookies[FormsAuthentication.FormsCookieName].Expires = DateTime.Now.AddDays(-1);
                 }
+            }
             }
 
             var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
