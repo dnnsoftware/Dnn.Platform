@@ -1,0 +1,96 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+-- Drop the existing constraint
+ALTER TABLE {databaseOwner}[{objectQualifier}Lists] 
+DROP CONSTRAINT [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID];
+GO
+
+-- Add the new constraint with PortalId as the first field
+ALTER TABLE {databaseOwner}[{objectQualifier}Lists] 
+ADD CONSTRAINT [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID]
+UNIQUE NONCLUSTERED ([PortalId], [ListName], [Value], [Text], [ParentID]);
+GO
+
+-- Drop the existing index
+DROP INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists];
+GO
+
+-- Create the new index with PortalId as the first column
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_ParentID]
+ON {databaseOwner}[{objectQualifier}Lists] ([PortalId], [ParentID], [ListName], [Value])
+INCLUDE ([DefinitionID], [SortOrder], [Text]);
+GO
+
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}AddListEntry]
+
+	@ListName nvarchar(50), 
+	@Value nvarchar(100), 
+	@Text nvarchar(150),
+	@ParentID int,
+	@Level int, 
+	@EnableSortOrder bit,
+	@DefinitionID int, 
+	@Description nvarchar(500),
+	@PortalID int,
+	@SystemList bit,
+	@CreatedByUserID	int
+
+AS
+	DECLARE @SortOrder int
+
+	IF @EnableSortOrder = 1
+		SET @SortOrder = IsNull((SELECT MAX ([SortOrder]) From {databaseOwner}[{objectQualifier}Lists] Where [ListName] = @ListName), 0) + 1
+	ELSE
+		SET @SortOrder = 0
+
+	-- Check if this entry exists
+	If EXISTS (SELECT [EntryID] From {databaseOwner}[{objectQualifier}Lists] WHERE [PortalID] = @PortalID AND [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
+	BEGIN
+		SELECT -1
+		RETURN 
+	END
+
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] 
+		(
+  		[ListName],
+		[Value],
+		[Text],
+		[Level],
+		[SortOrder],
+		[DefinitionID],
+		[ParentID],
+		[Description],
+		[PortalID],
+		[SystemList],
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+		)
+	VALUES (
+		@ListName,
+		@Value,
+		@Text,
+		@Level,
+		@SortOrder,
+		@DefinitionID,
+		@ParentID,
+		@Description,
+		@PortalID,
+		@SystemList,
+  		@CreatedByUserID,
+	  	getdate(),
+	  	@CreatedByUserID,
+	  	getdate()	
+		)
+
+	SELECT SCOPE_IDENTITY()
+GO
