@@ -323,11 +323,12 @@ BEGIN
 			@curord = @curord + 1
 	RETURN    CAST(SUBSTRING(@str, @pos, CHARINDEX(@delim, @str + @delim, @pos) - @pos) AS INT)
 END
+ALTER TABLE {databaseOwner}[{objectQualifier}Lists] ADD CONSTRAINT [IX_{objectQualifier}Lists_ListName_Value_Text_ParentID] UNIQUE NONCLUSTERED  ([PortalId], [ListName], [Value], [Text], [ParentID])
 GO
 /****** Object:  UserDefinedFunction {databaseOwner}[{objectQualifier}GetFileFolderFunc]    Script Date: 15/05/2024 23:15:28 ******/
 SET ANSI_NULLS ON
 GO
-SET QUOTED_IDENTIFIER ON
+CREATE UNIQUE NONCLUSTERED INDEX [IX_{objectQualifier}Lists_ParentID] ON {databaseOwner}[{objectQualifier}Lists] ([PortalId], [ParentID], [ListName], [Value]) INCLUDE ([DefinitionID], [SortOrder], [Text])
 GO
 CREATE FUNCTION {databaseOwner}[{objectQualifier}GetFileFolderFunc](@FolderD INT)
 RETURNS nvarchar(246) 
@@ -12913,6 +12914,48 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}DeleteSkinPackage]
 
 	@SkinPackageID		int
 
+	-- Check if this entry exists
+	If EXISTS (SELECT [EntryID] From {databaseOwner}[{objectQualifier}Lists] WHERE [PortalID] = @PortalID AND [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
+	BEGIN
+		SELECT -1
+		RETURN 
+	END
+
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] 
+		(
+  		[ListName],
+		[Value],
+		[Text],
+		[Level],
+		[SortOrder],
+		[DefinitionID],
+		[ParentID],
+		[Description],
+		[PortalID],
+		[SystemList],
+		[CreatedByUserID],
+		[CreatedOnDate],
+		[LastModifiedByUserID],
+		[LastModifiedOnDate]
+		)
+	VALUES (
+		@ListName,
+		@Value,
+		@Text,
+		@Level,
+		@SortOrder,
+		@DefinitionID,
+		@ParentID,
+		@Description,
+		@PortalID,
+		@SystemList,
+  		@CreatedByUserID,
+	  	getdate(),
+	  	@CreatedByUserID,
+	  	getdate()	
+		)
+
+	SELECT SCOPE_IDENTITY()
 AS
     DELETE
 	    FROM	{databaseOwner}{objectQualifier}SkinPackages

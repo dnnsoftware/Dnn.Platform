@@ -24630,17 +24630,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svg-url-loader@npm:^7.1.1":
-  version: 7.1.1
-  resolution: "svg-url-loader@npm:7.1.1"
+svg-url-loader@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/svg-url-loader/-/svg-url-loader-8.0.0.tgz#05d57af5b19d7caa39624a88e3cd535243634991"
+  integrity sha512-5doSXvl18hY1fGsRLdhWAU5jgzgxJ06/gc/26cpuDnN0xOz1HmmfhkpL29SSrdIvhtxQ1UwGzmk7wTT/l48mKw==
   dependencies:
-    file-loader: "npm:~6.2.0"
-    loader-utils: "npm:~2.0.0"
-  peerDependencies:
-    webpack: ^4.0.0 || ^5.0.0
-  checksum: 10/1af23e34ecda9c99735237da97dff07b8af62640f575c7fc8859e8178856a4e8630e566c00a1b80f32fb24b0ffb4542d9a57029afdaddd3ab4180e61f72c30db
-  languageName: node
-  linkType: hard
+    file-loader "~6.2.0"
 
 "svgo@npm:^1.2.2":
   version: 1.3.2
@@ -25648,6 +25643,10 @@ __metadata:
   checksum: 10/583ac7bbf4ff69931d3985f4762cde2690bb607844c16a5e2fbb92ed312fe4fa1b365e953032d469fa28ba8b224e88a595f0b10a449332f83fa77c695e567dbe
   languageName: node
   linkType: hard
+undici@^6.19.5:
+  version "6.21.1"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-6.21.1.tgz#336025a14162e6837e44ad7b819b35b6c6af0e05"
+  integrity sha512-q/1rj5D0/zayJB2FraXdaWxbhWiNKDvu8naDT2dl1yTlvJp4BLtOcp2a5BvgGNQpYYJzau7tf1WgKv3b+7mqpQ==
 
 "undici@npm:^6.19.5":
   version: 6.21.1
