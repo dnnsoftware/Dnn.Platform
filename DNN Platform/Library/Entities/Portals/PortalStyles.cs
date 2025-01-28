@@ -316,7 +316,7 @@ namespace DotNetNuke.Entities.Portals
                     --dnn-controls-radius: {{this.ControlsRadius}}px;
                     --dnn-controls-padding: {{this.ControlsPadding}}px;
                     --dnn-base-font-size: {{this.BaseFontSize}}px;
-                    --variation-opacity: {{this.VariationOpacity}};
+                    --dnn-variation-opacity: {{this.VariationOpacity}};
                 }
              """;
         }
