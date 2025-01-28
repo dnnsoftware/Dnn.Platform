@@ -47,7 +47,7 @@ AS
 	DECLARE @SortOrder int
 
 	IF @EnableSortOrder = 1
-		SET @SortOrder = IsNull((SELECT MAX ([SortOrder]) From dbo.[Lists] Where [ListName] = @ListName), 0) + 1
+		SET @SortOrder = IsNull((SELECT MAX ([SortOrder]) From {databaseOwner}[{objectQualifier}Lists] Where [ListName] = @ListName), 0) + 1
 	ELSE
 		SET @SortOrder = 0
 
