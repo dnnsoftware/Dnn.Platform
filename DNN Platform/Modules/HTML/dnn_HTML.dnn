@@ -95,6 +95,11 @@
               <name>07.02.01.SqlDataProvider</name>
               <version>07.02.01</version>
             </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>10.00.00.SqlDataProvider</name>
+              <version>10.00.00</version>
+            </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Uninstall.SqlDataProvider</name>
