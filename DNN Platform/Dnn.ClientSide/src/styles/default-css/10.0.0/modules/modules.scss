@@ -1,0 +1,73 @@
+@use "edit-in-place";
+@use "login";
+@use "tables";
+
+/* Module headings */
+.Head{
+    display: inline-block;
+    margin-bottom: 0.375rem;
+}
+td.SubHead{
+    display: table-cell;
+    margin-bottom: 0;
+}
+
+/* Set text size in modules */
+.Normal,
+.NormalDisabled,
+.NormalDeleted {
+    color: var(--dnn-color-foreground, #444);
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.125rem;
+    word-wrap: break-word;
+}
+
+/* Disabled text styles */
+.NormalDisabled,
+.NormalDeleted {
+    color: var(--dnn-color-neutral, #999);
+}
+
+/* Text style used for rendered text which requires emphasis */
+.NormalBold {
+    font-weight: bold;
+}
+
+/* Text style used for error messages */
+.NormalRed {
+    font-weight: bold;
+    color: var(--dnn-color-danger, red);
+}
+
+/* Text style used for rendered text which should appear deleted */
+.NormalDeleted {
+    text-decoration: line-through;
+}
+
+/* text style used for help text rendered by modules */
+.Help {
+    padding: 2px;
+    border: var(--dnn-color-warning-contrast, #000) 1px solid;
+    background-color: var(--dnn-color-warning, #ff9);
+    font-weight: normal;
+    font-size: 0.6875rem;
+    color: var(--dnn-color-warning-contrast, #000);
+}
+
+/* used to set the different module align options - from module settings */
+.DNNAlignleft {
+    text-align: left;
+}
+.DNNAlignright {
+    text-align: right;
+}
+.DNNAligncenter {
+    text-align: center;
+}
+/* I think only used by CKEditor options. */
+.Hidden {
+    display: none;
+}
+/*Critical Error Messages (querystring error=something)*/
+div.errorWin p{ margin: 0 0 10px 0;}

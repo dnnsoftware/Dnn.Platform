@@ -9,7 +9,7 @@
   <title></title>
   <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
   <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-  <link rel="stylesheet" type="text/css" class="needVer" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />
+  <link rel="stylesheet" type="text/css" class="needVer" href="../Resources/Shared/stylesheets/dnndefault/10.0.0/default.css?refresh" />
   <link rel="stylesheet" type="text/css" class="needVer" href="Install.css?refresh" />
   <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
   <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
@@ -26,7 +26,7 @@
       <script type="text/javascript" src="../Resources/Shared/Scripts/dnn.jquery.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
     </asp:PlaceHolder>
 
-    <div id="languageFlags" style="float: right;">
+    <div id="languageFlags">
       <asp:LinkButton ID="lang_en_US" class="flag" runat="server" value="en-US" OnClientClick="upgradeWizard.changePageLocale('lang_en_US','en-US');"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
       <asp:LinkButton ID="lang_de_DE" class="flag" runat="server" value="de-DE" OnClientClick="upgradeWizard.changePageLocale('lang_de_DE','de-DE');"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
       <asp:LinkButton ID="lang_es_ES" class="flag" runat="server" value="es-ES" OnClientClick="upgradeWizard.changePageLocale('lang_es_ES','es-ES');"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton>
