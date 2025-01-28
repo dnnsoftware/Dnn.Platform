@@ -29,7 +29,7 @@ ON {databaseOwner}[{objectQualifier}Lists] ([PortalId], [ParentID], [ListName], 
 INCLUDE ([DefinitionID], [SortOrder], [Text]);
 GO
 
-ALTER PROCEDURE [dbo].[AddListEntry]
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}AddListEntry]
 
 	@ListName nvarchar(50), 
 	@Value nvarchar(100), 
@@ -52,13 +52,13 @@ AS
 		SET @SortOrder = 0
 
 	-- Check if this entry exists
-	If EXISTS (SELECT [EntryID] From dbo.[Lists] WHERE [PortalID] = @PortalID AND [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
+	If EXISTS (SELECT [EntryID] From {databaseOwner}[{objectQualifier}Lists] WHERE [PortalID] = @PortalID AND [ListName] = @ListName And [Value] = @Value And [Text] = @Text And [ParentID] = @ParentID)
 	BEGIN
 		SELECT -1
 		RETURN 
 	END
 
-	INSERT INTO dbo.[Lists] 
+	INSERT INTO {databaseOwner}[{objectQualifier}Lists] 
 		(
   		[ListName],
 		[Value],
