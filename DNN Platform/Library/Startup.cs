@@ -17,6 +17,8 @@ namespace DotNetNuke
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Data;
+    using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
@@ -88,6 +90,13 @@ namespace DotNetNuke
             services.AddTransient<IModuleController, ModuleController>();
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
+
+            services.AddTransient<IDataContext>(x =>
+            {
+                var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
+
+                return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+            });
 
             services.AddTransient<ModuleInjectionManager>();
             RegisterModuleInjectionFilters(services);
