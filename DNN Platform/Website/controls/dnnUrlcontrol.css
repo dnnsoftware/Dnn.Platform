@@ -1,0 +1,104 @@
+/*-------------------------------------*/
+/* URL ACTION */
+/*-------------------------------------*/
+.urlControl label {
+    width: auto;
+    margin-top: 0;
+    font-weight: normal;
+}
+
+.urlControlLinkType {
+    width: auto;
+}
+
+.urlControlLinkType span,
+.dnnFormItem .urlControlLinkType span {
+    float: none;
+    display: block;
+    width: auto;
+    text-align: left;
+}
+
+.dnnFormItem .ucLinkTypeRadioButtons label {
+    display: inline-block;
+    width: 260px;
+    padding-right: 0;
+    margin-top: 0;
+    font-weight: normal;
+    text-align: left;
+}
+
+.urlControlLinkType span input {
+    min-width: 3%;
+}
+
+.dnnForm.dnnModuleSettings .dnnFormItem .urlControlLinkType span label {
+    text-align: left;
+}
+
+.urlControlFileRow {
+    clear: both;
+}
+
+.urlControlFileRow span.dnnFormLabel {
+    width: auto;
+    text-align: right;
+}
+
+.urlControlFileRow select,
+.urlControlFileRow input[type=file] {
+    clear: both;
+}
+
+.urlControlImagesRow {
+    overflow: hidden;
+    clear: both;
+}
+
+.urlControlImagesRow span.dnnFormLabel {
+    width: auto;
+    text-align: right;
+}
+
+.urlControlImagesRow select {
+    clear: both;
+}
+
+/*-------------------------------------*/
+/* URL Control
+/*-------------------------------------*/
+
+.urlControl {
+    float: left;
+    display: block;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+}
+
+.urlControl select,
+.urlControl input {
+    width: 180px;
+    margin-bottom: 10px;
+}
+
+.urlControl dnnFormItem>a.dnnSecondaryAction {
+    margin: 10px 10px 0 0;
+    float: left;
+}
+
+.urlControl .urlControlLinkType {
+    float: left;
+    width: 100%;
+}
+
+.urlControl .urlControlLinkType .dnnFormLabel {
+    float: left;
+    width: auto;
+    margin-right: 5px;
+}
+
+.urlControl .urlControlLinkType input[type="radio"] {
+    width: auto;
+    margin-right: 5px;
+}

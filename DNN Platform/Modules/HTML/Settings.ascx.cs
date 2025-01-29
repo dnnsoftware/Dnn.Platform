@@ -6,8 +6,11 @@ namespace DotNetNuke.Modules.Html
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Services.Exceptions;
@@ -21,6 +24,7 @@ namespace DotNetNuke.Modules.Html
     public partial class Settings : ModuleSettingsBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
 
         private HtmlModuleSettings moduleSettings;
 
@@ -46,21 +50,12 @@ namespace DotNetNuke.Modules.Html
                 if (!this.Page.IsPostBack)
                 {
                     var htmlTextController = new HtmlTextController(this.navigationManager);
-                    var workflowStateController = new WorkflowStateController();
 
                     this.chkReplaceTokens.Checked = this.ModuleSettings.ReplaceTokens;
                     this.cbDecorate.Checked = this.ModuleSettings.UseDecorate;
 
                     // get workflow/version settings
-                    var workflows = new ArrayList();
-                    foreach (WorkflowStateInfo state in workflowStateController.GetWorkflows(this.PortalId))
-                    {
-                        if (!state.IsDeleted)
-                        {
-                            workflows.Add(state);
-                        }
-                    }
-
+                    var workflows = this.workflowManager.GetWorkflows(this.PortalId);
                     this.cboWorkflow.DataSource = workflows;
                     this.cboWorkflow.DataBind();
                     var workflow = htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId);
@@ -150,17 +145,14 @@ namespace DotNetNuke.Modules.Html
         {
             if (this.cboWorkflow.SelectedValue != null)
             {
-                var objWorkflow = new WorkflowStateController();
                 var strDescription = string.Empty;
-                var arrStates = objWorkflow.GetWorkflowStates(int.Parse(this.cboWorkflow.SelectedValue));
+                var arrStates = this.workflowManager.GetWorkflow(int.Parse(this.cboWorkflow.SelectedValue)).States.ToList();
                 if (arrStates.Count > 0)
                 {
-                    foreach (WorkflowStateInfo objState in arrStates)
+                    foreach (var objState in arrStates)
                     {
                         strDescription = strDescription + " >> " + "<strong>" + objState.StateName + "</strong>";
                     }
-
-                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
                 }
 
                 this.lblDescription.Text = strDescription;

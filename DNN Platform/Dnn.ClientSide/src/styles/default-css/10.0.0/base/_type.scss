@@ -1,0 +1,48 @@
+html {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--dnn-color-foreground, #222);
+    font-size: var(--dnn-base-font-size, 16px);
+}
+body{
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    background-color: var(--dnn-color-background, #fff);
+}
+h1, h2, h3, h4, h5, h6{
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: var(--dnn-color-foreground-light, #333);
+    font-weight: inherit;
+    line-height: 1.4;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+h1{ font-size: 2.375rem }
+h2{ font-size: 2rem }
+h3{ font-size: 1.75rem }
+h4{ font-size: 1.375rem }
+h5{ font-size: 1.125rem }
+h6{ font-size: 1rem }
+
+p{ margin-bottom: 1.125rem; }
+
+a, a:visited {
+    color: var(--dnn-color-primary, rgb(2,139,255));
+    text-decoration: underline;
+}
+
+a:hover, a:focus, a:active {
+    color: var(--dnn-color-foreground-light, #222);
+}
+
+p a, p a:visited {
+    line-height: inherit;
+}
+
+ul, ol{
+    padding-inline-start: 1.5rem;
+    list-style-position: outside;
+}

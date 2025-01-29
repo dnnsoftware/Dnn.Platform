@@ -1,0 +1,44 @@
+/* Styles the DnnGrid webforms control */
+
+table.dnnGrid,
+table.dnnASPGrid {
+    margin-bottom: 20px;
+    border: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+}
+.dnnGridHeader td,
+thead.dnnGridHeader th,
+tr.dnnGridHeader th{
+    padding: 0.375rem 0.75rem 0.375rem 0.75rem;
+    border-bottom: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+    border-right: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+    background: var(--dnn-color-background-dark, #f0f2f1);
+}
+.dnnGridItem,
+.dnnGridAltItem {
+    td{
+        padding: 0.375rem;
+        border-right: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
+        input{
+            margin-bottom: none;
+        }
+    }
+    &:hover {
+        background-color: rgba(
+            var(--dnn-color-primary-r, 0),
+            var(--dnn-color-primary-g, 165),
+            var(--dnn-color-primary-b, 224),
+            0.2);
+    }
+}
+.dnnGridAltItem {
+    background: var(--dnn-color-background-dark, #F2F2F2);
+}
+td.dnnGridHeaderTD-NoBorder {
+    border-right: none !important;
+}
+tr.dnnGridItem td, tr.dnnGridAltItem td {
+    border-right: none;
+}
+tr.dnnGridItem td input {
+    margin-bottom: 0;
+}
