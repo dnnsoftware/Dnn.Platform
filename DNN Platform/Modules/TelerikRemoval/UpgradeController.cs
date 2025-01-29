@@ -22,9 +22,6 @@ namespace Dnn.Modules.TelerikRemoval
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeController));
 
-        /// <summary>Key of the Telerik unintall option in the host settings.</summary>
-        private static readonly string TelerikUninstallOptionSettingKey = "telerikUninstallOption";
-
         private readonly IServiceProvider serviceProvider = GetServiceProvider();
 
         /// <inheritdoc/>
@@ -49,7 +46,7 @@ namespace Dnn.Modules.TelerikRemoval
                 Logger.Info("Added Telerik Removal host menu item.");
             }
 
-            var option = this.GetHostSetting(TelerikUninstallOptionSettingKey);
+            var option = this.GetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey);
 
             // we have read the value, and now we need to delete the setting
             // to prevent this process from getting triggered if the user
@@ -58,9 +55,9 @@ namespace Dnn.Modules.TelerikRemoval
             // this is an upgrade or a manual installation because this
             // method is executed during Application startup, after the
             // upgrade process has already finished.
-            this.DeleteHostSetting(TelerikUninstallOptionSettingKey);
+            this.DeleteHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey);
 
-            if ("Y".Equals(option, StringComparison.OrdinalIgnoreCase))
+            if (DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue.Equals(option, StringComparison.OrdinalIgnoreCase))
             {
                 this.GetService<ITelerikUninstaller>().Execute();
             }

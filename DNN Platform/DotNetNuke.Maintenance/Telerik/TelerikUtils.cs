@@ -93,6 +93,12 @@ namespace DotNetNuke.Maintenance.Telerik
             }
         }
 
+        /// <inheritdoc />
+        public bool IsTelerikVersionVulnerable(Version version)
+        {
+            return version < new Version(2014, 0);
+        }
+
         private bool AssemblyDependsOnTelerik(string path, AppDomain domain)
         {
             try
