@@ -1,3 +1,8 @@
 <Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1738743">
-
+	<PropertyGroup>
+	  <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
+	</PropertyGroup>
+	<Target Name="YarnInstall" BeforeTargets="BeforeRestore">
+	  <Exec Command="yarn install" />
+	</Target>
 </Project>
