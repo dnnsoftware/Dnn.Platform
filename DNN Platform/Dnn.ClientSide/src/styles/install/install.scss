@@ -28,6 +28,7 @@ body {
                 display: flex;
                 list-style-type: none;
                 width: 100%;
+                padding: 0;
                 >li{
                     &:last-child{
                         flex-grow: 1;
