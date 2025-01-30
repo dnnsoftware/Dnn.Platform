@@ -226,7 +226,7 @@
     <value>Your installation is utilizing Telerik in the following assemblies:</value>
   </data>
   <data name="TelerikInstalledAndUsedWarning.Text" xml:space="preserve">
-    <value>It appears that you have extensions that depended on Telerik. We are unable to remove the dependencies we've detected and listed above for you. However, this upgrade process &lt;em&gt;will&lt;/em&gt; remove the known-vulnerable Telerik components. Please ensure you have a backup of the site before continuing with the upgrade process.</value>
+    <value>It appears that you have extensions that depended on Telerik. We are unable to remove the dependencies we've detected and listed above for you. However, this upgrade process &lt;em&gt;will&lt;/em&gt; remove the known-vulnerable Telerik components. Please ensure you have a backup of the site before continuing with the upgrade process.  After the upgrade completes, it is possible that your website will stop functioning, manually restoring the &lt;code&gt;Telerik.Web.UI.dll&lt;/code&gt; may allow you to restore operation until you can uninstall the impacted extensions.</value>
   </data>
   <data name="TelerikInstalledButNotUsedInfo.Text" xml:space="preserve">
     <value>Your installation does NOT appear to be utilizing any of these components, the Telerik component will automatically be uninstalled. Please ensure you have a backup of the site before continuing with the upgrade process.</value>
