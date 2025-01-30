@@ -17,7 +17,7 @@
     <PackageReference Include="Cake.BuildSystems.Module" Version="7.1.0" />
     <PackageReference Include="Cake.FileHelpers" Version="7.0.0" />
     <PackageReference Include="Cake.Frosting" Version="5.0.0" />
-    <PackageReference Include="Cake.Frosting.Git" Version="4.0.0" />
+    <PackageReference Include="Cake.Frosting.Git" Version="5.0.1" />
     <PackageReference Include="Cake.Issues" Version="5.5.0" />
     <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="5.5.0" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
