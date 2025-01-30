@@ -23,7 +23,7 @@
     <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="5.5.0" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
     <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
-    <PackageReference Include="Dnn.CakeUtils" Version="2.0.2" />
+    <PackageReference Include="Dnn.CakeUtils" Version="2.1.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
