@@ -62,7 +62,7 @@
                 <processorCommand>UpgradeModule</processorCommand>
                 <attributes>
                     <businessControllerClass>Dnn.Modules.TelerikRemoval.UpgradeController, Dnn.Modules.TelerikRemoval</businessControllerClass>
-                    <upgradeVersionsList>install</upgradeVersionsList>
+                    <upgradeVersionsList>install,upgrade</upgradeVersionsList>
                 </attributes>
             </eventMessage>
         </package>
