@@ -5,6 +5,7 @@
 namespace Dnn.Modules.TelerikRemoval
 {
     using System;
+    using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -59,7 +60,20 @@ namespace Dnn.Modules.TelerikRemoval
 
             if (DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue.Equals(option, StringComparison.OrdinalIgnoreCase))
             {
-                this.GetService<ITelerikUninstaller>().Execute();
+                var uninstaller = this.GetService<ITelerikUninstaller>();
+                uninstaller.Execute();
+                return string.Join(
+                    Environment.NewLine,
+                    uninstaller.Progress.Select((step, i) =>
+                    {
+                        var status = "🔲";
+                        if (step.Success.HasValue)
+                        {
+                            status = step.Success.Value ? "✅" : "🚨";
+                        }
+
+                        return $"{i}. {step.StepName} {status} - {step.Notes}";
+                    }));
             }
 
             return "Success";
