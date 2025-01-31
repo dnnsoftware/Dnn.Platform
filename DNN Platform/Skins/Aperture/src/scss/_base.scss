@@ -1,3 +1,6 @@
+@use "variables/colors";
+@use "variables/type";
+
 *,
 *:before,
 *:after {
@@ -13,16 +16,16 @@ body {
   font-size: 16px;
   font-weight: 200;
   line-height: 1.5;
-  font-family: $ubuntu;
-  color: color('foreground');
-  background-color: color('background');
+  font-family: type.$ubuntu;
+  color: colors.color('foreground');
+  background-color: colors.color('background');
   -webkit-font-smoothing: antialiased;
   margin: 0;
   padding: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: $ubuntu;
+	font-family: type.$ubuntu;
   font-weight: 500;
 }
 
@@ -119,17 +122,17 @@ sub {
 //–––––––––––––––––––––––––––––––––––––––––––––––––
 
 a {
-  color: color('primary');
+  color: colors.color('primary');
   text-decoration:none;
   transition:.25s ease-in-out all;
 
   &:hover {
-    color: color('primary-light');
+    color: colors.color('primary-light');
     text-decoration:none;
   }
 }
 header a, footer a {
-	color: color('tertiary-contrast');
+	color: colors.color('tertiary-contrast');
 	font-weight: 400;
 }
 
@@ -143,13 +146,13 @@ hr {
   height:1px;
   width:25%;
   border:0;
-  border-top:1px solid color('primary');
+  border-top:1px solid colors.color('primary');
   margin-top:1.5rem;
   margin-bottom:1.5rem;
   padding: 0;
 }
 
 pre {
-  background: color('neutral');
+  background: colors.color('neutral');
   padding:10px 15px;
 }

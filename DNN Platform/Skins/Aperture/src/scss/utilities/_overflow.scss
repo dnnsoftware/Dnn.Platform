@@ -1,3 +1,4 @@
+@use "sass:string";
 // Define a map for overflow properties
 $overflow-properties: (
     'overflow-auto': auto,
@@ -16,9 +17,9 @@ $overflow-properties: (
 
 // Overflow Mixin
 @mixin overflow($class, $value) {
-    @if str-index($class, 'x') {
+    @if string.index($class, 'x') {
         overflow-x: $value;
-    } @else if str-index($class, 'y') {
+    } @else if string.index($class, 'y') {
         overflow-y: $value;
     } @else {
         overflow: $value;

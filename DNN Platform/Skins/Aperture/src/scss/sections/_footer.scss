@@ -1,7 +1,9 @@
+@use "../variables/colors";
+
 footer {
-  background-color: color('tertiary');
+  background-color: colors.color('tertiary');
   padding: .5rem 0;
-  color: color('foreground-contrast');
+  color: colors.color('foreground-contrast');
   margin: 0;
   padding: 2rem 0;
   .aperture-container {

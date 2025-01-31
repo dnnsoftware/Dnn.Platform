@@ -1,3 +1,5 @@
+@use "dimension";
+
 // Position Mixin
 @mixin position($type) {
     position: if($type == 'sticky', '-webkit-sticky', $type);
@@ -10,7 +12,7 @@
 }
 
 // Define a map for sizes
-$sizes: (
+dimension.$sizes: (
     0: 0,
     1: 0.25rem,
     2: 0.5rem,
@@ -27,7 +29,7 @@ $sizes: (
 .aperture-sticky { @include position(sticky); }
 
 // Edge Classes
-@each $key, $value in $sizes {
+@each $key, $value in dimension.$sizes {
     .aperture-top-#{$key} { @include edge-offset(top, $value); }
     .aperture-end-#{$key} { @include edge-offset(right, $value); }
     .aperture-bottom-#{$key} { @include edge-offset(bottom, $value); }

@@ -1,10 +1,12 @@
+@use "../variables/colors";
+
 header {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
     z-index: 1000;
     .eyebrow-bar {
-        background-color: color('tertiary');
+        background-color: colors.color('tertiary');
         padding: .5rem 0;
         .aperture-container {
             display: flex;
@@ -15,8 +17,9 @@ header {
         margin: 0;
     }
     .logo-menu-bar {
-        background-color: color('tertiary-light');
+        background-color: colors.color('tertiary-light');
         padding: .5rem 0;
+        margin: 0;
         .aperture-container {
             display: flex;
             align-items: center;
@@ -33,6 +36,5 @@ header {
                 }
             }
         }
-        margin: 0;
     }
 }
