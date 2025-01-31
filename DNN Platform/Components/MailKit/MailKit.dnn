@@ -35,7 +35,7 @@
             <assembly>
               <path>bin</path>
               <name>System.Buffers.dll</name>
-              <version>4.6.28619.01</version>
+              <version>4.600.24.56208</version>
             </assembly>
           </assemblies>
         </component>
