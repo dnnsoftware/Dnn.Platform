@@ -30,7 +30,7 @@
             <assembly>
               <path>bin</path>
               <name>BouncyCastle.Cryptography.dll</name>
-              <version>2.1.1</version>
+              <version>2.5.0.6119</version>
             </assembly>
             <assembly>
               <path>bin</path>
