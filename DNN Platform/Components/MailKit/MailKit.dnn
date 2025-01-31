@@ -37,6 +37,11 @@
               <name>System.Buffers.dll</name>
               <version>4.600.24.56208</version>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Memory.dll</name>
+              <version>4.600.24.56208</version>
+            </assembly>
           </assemblies>
         </component>
         <component type="Cleanup">
