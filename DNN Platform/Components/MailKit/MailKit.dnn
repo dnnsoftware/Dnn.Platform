@@ -12,7 +12,7 @@
       </owner>
       <license src="License.txt"/>
       <releaseNotes>
-        This package includes MailKit assembly version 4.0.0 and MimeKit assembly version 4.0.0.
+        This package includes MailKit assembly version 4.0.0 and MimeKit assembly version 4.10.0.
         Please go to http://www.mimekit.com/ to view release notes on this particular version.</releaseNotes>
       <components>
         <component type="Assembly">
@@ -25,7 +25,7 @@
             <assembly>
               <path>bin</path>
               <name>MimeKit.dll</name>
-              <version>4.0.0.0</version>
+              <version>4.10.0.0</version>
             </assembly>
             <assembly>
               <path>bin</path>
