@@ -1,3 +1,4 @@
+@use "sass:map";
 $controls: (
     "radius": var(--dnn-controls-radius, 0),
     "padding": var(--dnn-controls-radius, 9px),
@@ -5,5 +6,5 @@ $controls: (
 
 // Control function
 @function control($control-name) {
-    @return map-get($controls, $control-name);
+    @return map.get($controls, $control-name);
  }

@@ -1,6 +1,7 @@
+@use "sass:meta";
 .aperture-theme {
-    @import 'header';
-    @import 'footer';
+    @include meta.load-css('header');
+    @include meta.load-css('footer');
 
     .aperture-container {
         display: flex;

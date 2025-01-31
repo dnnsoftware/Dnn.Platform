@@ -1,3 +1,4 @@
+@use "sass:map";
 // Color Array
 $colors: (
     "primary": var(--dnn-color-primary, #00a5e0),
@@ -196,6 +197,6 @@ $colors: (
     @if($rgb) {
         @return var(--dnn-color-#{$color-name}-r) + ', ' + var(--dnn-color-#{$color-name}-g) + ', ' + var(--dnn-color-#{$color-name}-b);
     } @else {
-        @return map-get($colors, $color-name);
+        @return map.get($colors, $color-name);
     }
 }

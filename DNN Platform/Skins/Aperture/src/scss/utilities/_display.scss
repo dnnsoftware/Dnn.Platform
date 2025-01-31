@@ -1,3 +1,5 @@
+@use "../variables/breakpoints";
+
 // Mixin for generating display media queries
 //usage: @include responsive-display('d', 'none');
 @mixin responsive-display($prop, $value) {
@@ -5,7 +7,7 @@
         display: #{$value};
     }
 
-    @each $breakpoint, $min-width in $breakpoints {
+    @each $breakpoint, $min-width in breakpoints.$breakpoints {
         @media (min-width: $min-width) {
             .aperture-#{$prop}-#{$breakpoint}-#{$value} {
                 display: #{$value} !important;

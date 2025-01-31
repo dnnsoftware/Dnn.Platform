@@ -1,3 +1,6 @@
+@use "../variables/breakpoints";
+@use "../variables/colors";
+
 // Define a map for border radius sizes
 $border-radius-sizes: (
     0: 0,
@@ -19,7 +22,7 @@ $border-radius-sizes: (
         .aperture-#{$class-suffix}-#{$size} {
             @include border-radius($value);
         }
-        @each $breakpoint, $min-width in $breakpoints {
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
             @media (min-width: $min-width) {
                 .aperture-#{$class-suffix}-#{$breakpoint}-#{$size} {
                     @include border-radius($value, true);
@@ -33,8 +36,8 @@ $border-radius-sizes: (
 @include responsive-border-radius('border-radius');
 
 // border classes from current color scheme
-@each $color, $value in $colors {
+@each $color, $value in colors.$colors {
     .aperture-border-#{$color} {
-        border-color: color($color);
+        border-color: colors.color($color);
     }
 }
