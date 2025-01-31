@@ -374,6 +374,7 @@ namespace DotNetNuke.Services.Install
                     CreateParagraph("TelerikInstalledBulletin"),
                     CreateParagraph("TelerikInstalledAndUsedInfo"),
                     CreateTable(assemblies, maxRows: 3, maxColumns: 4),
+                    new Literal { Text = "<br />" },
                     CreateParagraph("TelerikInstalledAndUsedWarning")),
             };
         }

@@ -471,6 +471,7 @@ namespace DotNetNuke.Services.Install
                                     this.Response.Write($"{a}<br/>");
                                 }
 
+                                this.Response.Write("<br>");
                                 this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedWarning"));
                                 this.Response.Write("<br>");
                             }
