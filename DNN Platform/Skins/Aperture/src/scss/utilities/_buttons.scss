@@ -77,16 +77,16 @@
 
 // button iterations for each color
 @each $color, $value in colors.$colors {
-  .aperture-btn-#{$color} {
+  .aperture-btn-#{$color}, a.aperture-btn-#{$color} {
     @include button-variant($color,.8);
   }
-  .aperture-btn-outline-#{$color} {
+  .aperture-btn-outline-#{$color}, a.aperture-btn-outline-#{$color} {
     @include button-outline-variant($color);
   }
-  .aperture-btn-reverse-outline-#{$color} {
+  .aperture-btn-reverse-outline-#{$color} a.aperture-btn-reverse-outline-#{$color} {
     @include button-reverse-outline-variant($color);
   }
-  .aperture-btn-inverse-#{$color} {
+  .aperture-btn-inverse-#{$color}, a.aperture-btn-inverse-#{$color} {
     @include button-inverse-variant($color,.9);
   }
 }
