@@ -341,9 +341,7 @@ async function packageFiles(): Promise<void> {
 
   // Copy package to Install/Skin
   console.log("Copying package to Install/Skin...");
-  var skinInstallPath = settings.WebsitePath
-    ? `${path.resolve(settings.WebsitePath, "Install/Skin")}`
-    : "../../../Website/Install/Skin";
+  var skinInstallPath = "../../../Website/Install/Skin";
   console.log(`Copying ${packageName} to ${skinInstallPath}`);
   fs.copyFileSync(
       packagePath,
