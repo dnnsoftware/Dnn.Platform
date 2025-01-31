@@ -15,7 +15,7 @@ body {
   line-height: 1.5;
   font-family: $ubuntu;
   color: color('foreground');
-  background-color: #fff;
+  background-color: color('background');
   -webkit-font-smoothing: antialiased;
   margin: 0;
   padding: 0;
