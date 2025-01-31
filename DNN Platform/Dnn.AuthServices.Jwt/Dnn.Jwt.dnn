@@ -49,6 +49,10 @@
             </assembly>
             <assembly>
               <path>bin</path>
+              <name>System.IO.Pipelines.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>System.Text.Encodings.Web.dll</name>
             </assembly>
             <assembly>
