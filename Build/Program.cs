@@ -12,7 +12,7 @@ namespace DotNetNuke.Build
     public class Program
     {
         /// <summary>The version of the Microsoft.TestPlatform NuGet package.</summary>
-        internal const string MicrosoftTestPlatformVersion = "17.6.2";
+        internal const string MicrosoftTestPlatformVersion = "17.12.0";
 
         /// <summary>The version of the NUnit3TestAdapter NuGet package.</summary>
         internal const string NUnit3TestAdapterVersion = "4.5.0";
