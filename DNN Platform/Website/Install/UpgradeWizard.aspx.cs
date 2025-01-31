@@ -46,8 +46,8 @@ namespace DotNetNuke.Services.Install
         /// <summary>Client ID of the hidden input containing the Telerik anti-forgery token.</summary>
         protected static readonly string TelerikAntiForgeryTokenClientID = "telerikAntiForgeryToken";
 
-        /// <summary>Client Id of the Telerik unintall radio buttons.</summary>
-        protected static readonly string TelerikUninstallOptionClientID = "telerikUninstallOption";
+        /// <summary>Client Id of the Telerik uninstall radio buttons.</summary>
+        protected static readonly string TelerikUninstallOptionClientID = DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey;
 
         /// <summary>Form value when user selects Yes.</summary>
         protected static readonly string OptionYes = "Y";
@@ -142,10 +142,7 @@ namespace DotNetNuke.Services.Install
 
         public static Tuple<bool, string, SecurityTabResult> GetSecurityTab(Dictionary<string, string> accountInfo)
         {
-            string errorMsg;
-            var result = VerifyHostUser(accountInfo, out errorMsg);
-
-            if (!result)
+            if (!VerifyHostUser(accountInfo, out var errorMsg))
             {
                 return Tuple.Create(false, errorMsg, default(SecurityTabResult));
             }
@@ -160,7 +157,14 @@ namespace DotNetNuke.Services.Install
                     GetTelerikNotInstalledResult());
             }
 
-            var version = telerikUtils.GetTelerikVersion().ToString();
+            var version = telerikUtils.GetTelerikVersion();
+            if (!telerikUtils.IsTelerikVersionVulnerable(version))
+            {
+                return Tuple.Create(
+                    true,
+                    default(string),
+                    GetTelerikInstalledWithVersionNotKnownToBeVulnerable(version));
+            }
 
             var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
                 .Select(a => Path.GetFileName(a));
@@ -199,7 +203,7 @@ namespace DotNetNuke.Services.Install
                 }
 
                 var option = accountInfo[TelerikUninstallOptionClientID];
-                SetHostSetting(TelerikUninstallOptionClientID, option);
+                SetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey, option);
 
                 upgradeRunning = false;
                 LaunchUpgrade();
@@ -329,56 +333,63 @@ namespace DotNetNuke.Services.Install
             };
         }
 
-        private static SecurityTabResult GetTelerikInstalledButNotUsedResult(string version)
+        private static SecurityTabResult GetTelerikInstalledWithVersionNotKnownToBeVulnerable(Version version)
         {
-            var yesButton = new ListItem(LocalizeStringStatic("TelerikUninstallYes"), OptionYes);
-            var noButton = new ListItem(LocalizeStringStatic("TelerikUninstallNo"), OptionNo);
-
             return new SecurityTabResult
             {
                 CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
+                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallNoValue),
                     CreateTelerikInstalledHeader(version),
+                    CreateParagraph("TelerikVersionNotKnownToBeVulnerableInfo")),
+            };
+        }
+
+        private static SecurityTabResult GetTelerikInstalledButNotUsedResult(Version version)
+        {
+            return new SecurityTabResult
+            {
+                CanProceed = true,
+                View = RenderControls(
+                    CreateTelerikAntiForgeryTokenField(),
+                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue),
+                    CreateTelerikInstalledHeader(version),
+                    CreateParagraph("TelerikInstalledBulletin"),
                     CreateParagraph("TelerikInstalledButNotUsedInfo"),
-                    CreateParagraph("TelerikUninstallInfo"),
-                    new RadioButtonList
-                    {
-                        ID = TelerikUninstallOptionClientID,
-                        Items = { yesButton, noButton },
-                        SelectedValue = OptionYes,
-                    }),
+                    CreateParagraph("TelerikUninstallInfo")),
             };
         }
 
         private static SecurityTabResult GetTelerikInstalledAndUsedResult(
-            IEnumerable<string> assemblies, string version)
+            IEnumerable<string> assemblies, Version version)
         {
             return new SecurityTabResult
             {
                 CanProceed = true,
                 View = RenderControls(
                     CreateTelerikAntiForgeryTokenField(),
-                    CreateHiddenField(TelerikUninstallOptionClientID, OptionNo),
+                    CreateHiddenField(TelerikUninstallOptionClientID, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue),
                     CreateTelerikInstalledHeader(version),
-                    CreateParagraph($"TelerikInstalledAndUsedInfo"),
+                    CreateParagraph("TelerikInstalledBulletin"),
+                    CreateParagraph("TelerikInstalledAndUsedInfo"),
                     CreateTable(assemblies, maxRows: 3, maxColumns: 4),
-                    CreateParagraph($"TelerikInstalledAndUsedWarning")),
+                    new Literal { Text = "<br />" },
+                    CreateParagraph("TelerikInstalledAndUsedWarning")),
             };
         }
 
         private static Control CreateTelerikAntiForgeryTokenField() =>
             CreateHiddenField(TelerikAntiForgeryTokenClientID, CreateTelerikAntiForgeryToken());
 
-        private static Control CreateTelerikInstalledHeader(string version)
+        private static Control CreateTelerikInstalledHeader(Version version)
         {
             return CreateBundle(
                 CreateHeading("TelerikInstalledHeading"),
-                CreateTelerikInstalledDetectedParagraph(version),
-                CreateParagraph("TelerikInstalledBulletin"));
+                CreateTelerikInstalledDetectedParagraph(version));
         }
 
-        private static Control CreateTelerikInstalledDetectedParagraph(string version)
+        private static Control CreateTelerikInstalledDetectedParagraph(Version version)
         {
             return new HtmlGenericControl("p")
             {
@@ -386,7 +397,7 @@ namespace DotNetNuke.Services.Install
                 {
                     new Label { Text = LocalizeStringStatic("TelerikInstalledDetected") },
                     new Literal { Text = " " },
-                    new Label { Text = version, CssClass = "telerikVersion" },
+                    new Label { Text = version.ToString(), CssClass = "telerikVersion" },
                 },
             };
         }
