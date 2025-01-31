@@ -1,6 +1,0 @@
-2024-11-01 08:12:39.841+01:00 [Laptop-Sander][D:2][T:9][ERROR] DotNetNuke.Services.Localization.LocalizationProvider - System.NullReferenceException: De objectverwijzing is niet op een exemplaar van een object ingesteld.
-   bij DotNetNuke.Common.Globals.get_Status() in C:\svn projects\DNNsources\DnnPlatform\DNN Platform\Library\Common\Globals.cs:regel 420
-   bij DotNetNuke.Services.Localization.LocalizationProvider.TryGetStringInternal(String key, String userLanguage, String resourceFile, PortalSettings portalSettings, String& resourceValue) in C:\svn projects\DNNsources\DnnPlatform\DNN Platform\Library\Services\Localization\LocalizationProvider.cs:regel 525
-2024-11-01 08:12:39.935+01:00 [Laptop-Sander][D:2][T:9][ERROR] DotNetNuke.Services.Localization.LocalizationProvider - System.NullReferenceException: De objectverwijzing is niet op een exemplaar van een object ingesteld.
-   bij DotNetNuke.Common.Globals.get_Status() in C:\svn projects\DNNsources\DnnPlatform\DNN Platform\Library\Common\Globals.cs:regel 420
-   bij DotNetNuke.Services.Localization.LocalizationProvider.TryGetStringInternal(String key, String userLanguage, String resourceFile, PortalSettings portalSettings, String& resourceValue) in C:\svn projects\DNNsources\DnnPlatform\DNN Platform\Library\Services\Localization\LocalizationProvider.cs:regel 525
