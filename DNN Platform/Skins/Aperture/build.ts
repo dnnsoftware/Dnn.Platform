@@ -341,11 +341,13 @@ async function packageFiles(): Promise<void> {
 
   // Copy package to Install/Skin
   console.log("Copying package to Install/Skin...");
-  var skinInstallPath = "../../../Website/Install/Skin";
+  var skinInstallPath = "../../../Website/Install/Skin/";
   console.log(`Copying ${packageName} to ${skinInstallPath}`);
+  var destinationPath = `${skinInstallPath}/${packageName}`
+  ensureDirectoryExists(destinationPath);
   fs.copyFileSync(
       packagePath,
-      `${skinInstallPath}/${packageName}`);
+      destinationPath);
   deleteDirectoryWithRetry(artifactsDir);
   console.log(`Package copied to ${skinInstallPath}/${packageName}.`);
 }
