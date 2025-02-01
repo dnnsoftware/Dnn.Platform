@@ -2142,9 +2142,9 @@
   integrity sha512-ET3EByKlmNyTA8O+tcp5YWePOiVnPIiuoiIaxTrf3zFFVo7JWVsVoak9IE0UTn3MkIM0ubR9lgxvi70uN588/A==
 
 "@storybook/addon-actions@^8.3.6":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-8.4.7.tgz#210c6bb5a7e17c3664c300b4b69b6243ec34b9cd"
-  integrity sha512-mjtD5JxcPuW74T6h7nqMxWTvDneFtokg88p6kQ5OnC1M259iAXb//yiSZgu/quunMHPCXSiqn4FNOSgASTSbsA==
+  version "8.5.3"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-8.5.3.tgz#09086c0309220610759d63e201915b3b2e551f5f"
+  integrity sha512-7a+SD4EZdZocm+NG1Kx4yV6Aw7+YUlRIyGvKcxsGtYMOLaqrUewApqveXF83+FbYWMoezXcoZCLQFROtS/Z6Fw==
   dependencies:
     "@storybook/global" "^5.0.0"
     "@types/uuid" "^9.0.1"
