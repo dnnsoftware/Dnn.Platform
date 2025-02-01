@@ -32,6 +32,17 @@ header {
 		margin: 0;
 		padding: 0;
 		gap: 2rem;
+		ul {
+			flex-direction: column;
+			gap: 0.5rem;
+			li {
+				a {
+					&:hover {
+						color: colors.color('tertiary-light');
+					}
+				}
+			}
+		}
 	}
 
 	li {
@@ -87,8 +98,9 @@ header {
 			position: absolute;
 			flex-direction: column;
 			top: 100%;
-			min-width: 250px;
+			min-width: max-content;
 			max-width: 100%;
+			padding-right: 2rem;
 			background: colors.color('tertiary');
 			box-shadow: 1px 1px 5px 1px rgba(colors.color('foreground', true), 0.2);
 
