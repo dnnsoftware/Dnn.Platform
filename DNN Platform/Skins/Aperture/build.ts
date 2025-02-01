@@ -17,9 +17,16 @@ import { Zip } from 'zip-lib';
 
 const browserSync = bs.create("Aperture");
 const mode = process.argv.includes("--watch") ? "watch" : "build";
+const deploy = settings.WebsitePath.length > 0;
+
 const packageName = packageJson.name.charAt(0).toUpperCase() + packageJson.name.substr(1).toLowerCase();
-const containersDist = settings.WebsitePath + '/Portals/_default/Containers/' + packageName;
-const skinDist = settings.WebsitePath + '/Portals/_default/Skins/' + packageName;
+const tempDir = "./temp";
+const containersDist = deploy
+  ? settings.WebsitePath + '/Portals/_default/Containers/' + packageName
+  : `${tempDir}/Containers`;
+const skinDist = deploy
+  ? settings.WebsitePath + '/Portals/_default/Skins/' + packageName
+  : `${tempDir}/Skin`;
 
 /** Configuration for a file that needs transpiling. */
 interface TranspiledFileConfig {
@@ -38,11 +45,11 @@ interface StaticFileConfig {
 const transpiledFiles: TranspiledFileConfig[] = [
     {
         input: "src/scripts/main.ts",
-        output: path.resolve(settings.WebsitePath, "Portals/_default/Skins/Aperture/js/skin.min.js"),
+        output: path.resolve(skinDist, "js/skin.min.js"),
     },
     {
         input: "src/scss/style.scss",
-        output: path.resolve(settings.WebsitePath, "Portals/_default/Skins/Aperture/css/skin.min.css"),
+        output: path.resolve(skinDist, "css/skin.min.css"),
     },
 ];
 
@@ -52,6 +59,8 @@ const copyFiles: StaticFileConfig[] = [
   { src: "menus/footer/*", dest: skinDist + "/menus/footer" },
   { src: "menus/mobile/*", dest: skinDist + "/menus/mobile" },
   { src: "partials/*", dest: skinDist + "/partials" },
+  { src: "src/fonts/*", dest: skinDist + "/fonts" },
+  { src: "src/images/*", dest: skinDist + "/images" },
   { src: "*.{ascx,png,dnn,xml,txt}", dest: skinDist },
 ];
 
@@ -153,18 +162,19 @@ async function buildJs(input: string, output: string): Promise<void> {
 
 /** Process all files */
 async function buildAll(firstRun = true): Promise<void> {
-    for (const { input, output } of transpiledFiles) {
-        if (input.endsWith(".scss")) {
-            await buildScss(input, output);
-        } else if (input.endsWith(".ts") || input.endsWith(".js")) {
-            await buildJs(input, output);
-        }
-    }
+  for (const { input, output } of transpiledFiles) {
+      if (input.endsWith(".scss")) {
+          await buildScss(input, output);
+      } else if (input.endsWith(".ts") || input.endsWith(".js")) {
+          await buildJs(input, output);
+      }
+  }
 
-    if (firstRun){
-      copyFilesPreservingStructure(copyFiles);
-    }
+  if (firstRun){
+    copyFilesPreservingStructure(copyFiles);
+  }
 }
+
 
 /** Watch for changes (optional) */
 function watchFiles(): void {
@@ -353,6 +363,7 @@ async function packageFiles(): Promise<void> {
 }
 
 // THE FUN STARTS HERE - MAIN ENTRY POINT
+deleteDirectoryWithRetry(tempDir);
 if (mode === "watch") {
     console.log("Watching for changes...");
     watchFiles();
