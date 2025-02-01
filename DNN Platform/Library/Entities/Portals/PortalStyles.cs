@@ -102,15 +102,15 @@ namespace DotNetNuke.Entities.Portals
 
         /// <inheritdoc/>
         [PortalSetting(Prefix = Prefix)]
-        public string ColorForeground { get; set; } = "323232";
+        public string ColorForeground { get; set; } = "472A2B";
 
         /// <inheritdoc/>
         [PortalSetting(Prefix = Prefix)]
-        public string ColorForegroundLight { get; set; } = "A2A2A2";
+        public string ColorForegroundLight { get; set; } = "673D3E";
 
         /// <inheritdoc/>
         [PortalSetting(Prefix = Prefix)]
-        public string ColorForegroundDark { get; set; } = "000000";
+        public string ColorForegroundDark { get; set; } = "231717";
 
         /// <inheritdoc/>
         [PortalSetting(Prefix = Prefix)]
