@@ -12,10 +12,10 @@ namespace DotNetNuke.Build
     public class Program
     {
         /// <summary>The version of the Microsoft.TestPlatform NuGet package.</summary>
-        internal const string MicrosoftTestPlatformVersion = "17.12.0";
+        internal const string MicrosoftTestPlatformVersion = "17.6.2";
 
         /// <summary>The version of the NUnit3TestAdapter NuGet package.</summary>
-        internal const string NUnit3TestAdapterVersion = "4.6.0";
+        internal const string NUnit3TestAdapterVersion = "4.5.0";
 
         /// <summary>Runs the build process.</summary>
         /// <param name="args">The arguments from the command line.</param>
@@ -30,7 +30,7 @@ namespace DotNetNuke.Build
                 .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=5.12.0"))
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
-                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=6.12.2"))
+                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=6.5.0"))
                 .Run(args);
         }
     }

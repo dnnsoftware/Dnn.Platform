@@ -134,7 +134,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
 
         var response = new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail).Result;
         var credential = new UserCredential(codeFlow, accountEmail, response);
-        if (credential.Token.IsStale)
+        if (credential.Token.IsExpired(SystemClock.Default))
         {
             _ = credential.RefreshTokenAsync(CancellationToken.None).Result;
         }
@@ -155,7 +155,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
 
         var response = await new GoogleCredentialDataStore(portalId, this.hostSettingsService).GetAsync<TokenResponse>(accountEmail);
         var credential = new UserCredential(codeFlow, accountEmail, response);
-        if (credential.Token.IsStale)
+        if (credential.Token.IsExpired(SystemClock.Default))
         {
             _ = await credential.RefreshTokenAsync(cancellationToken);
         }
