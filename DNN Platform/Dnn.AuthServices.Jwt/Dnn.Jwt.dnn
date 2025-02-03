@@ -83,6 +83,14 @@
               <path>bin</path>
               <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.Memory.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.TimeProvider.dll</name>
+            </assembly>
           </assemblies>
         </component>
         <component type="Script">
