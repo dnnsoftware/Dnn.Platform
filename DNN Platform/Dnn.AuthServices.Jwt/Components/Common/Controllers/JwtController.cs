@@ -6,7 +6,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -25,9 +24,8 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.IdentityModel.JsonWebTokens;
     using Microsoft.IdentityModel.Tokens;
-
-    using Newtonsoft.Json;
 
     /// <summary>Controls JWT features.</summary>
     internal class JwtController : ServiceLocator<IJwtController, JwtController>, IJwtController
@@ -83,7 +81,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return false;
             }
 
-            var jwt = new JwtSecurityToken(rawToken);
+            var jwt = new JsonWebToken(rawToken);
             var sessionId = GetJwtSessionValue(jwt);
             if (string.IsNullOrEmpty(sessionId))
             {
@@ -155,7 +153,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // save hash values in DB so no one with access can create JWT header from existing data
             var sessionId = NewSessionId;
             var now = DateTime.UtcNow;
-            string renewalToken = string.Empty;
+            string renewalToken;
             lock (hasherLock)
             {
                 renewalToken = EncodeBase64(Hasher.ComputeHash(Guid.NewGuid().ToByteArray()));
@@ -318,17 +316,16 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 Subject = subject,
                 SigningCredentials = signingCredentials,
             };
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(securityToken);
+            var tokenHandler = new JsonWebTokenHandler();
+            return tokenHandler.CreateToken(tokenDescriptor);
         }
 
-        private static JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
+        private static JsonWebToken GetAndValidateJwt(string rawToken, bool checkExpiry)
         {
-            JwtSecurityToken jwt;
+            JsonWebToken jwt;
             try
             {
-                jwt = new JwtSecurityToken(rawToken);
+                jwt = new JsonWebToken(rawToken);
             }
             catch (Exception ex)
             {
@@ -364,7 +361,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return jwt;
         }
 
-        private static string GetJwtSessionValue(JwtSecurityToken jwt)
+        private static string GetJwtSessionValue(JsonWebToken jwt)
         {
             var sessionClaim = jwt?.Claims?.FirstOrDefault(claim => SessionClaimType.Equals(claim.Type));
             return sessionClaim?.Value;
@@ -396,7 +393,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         private static string GetHashedStr(string data)
         {
-            string hash = string.Empty;
+            string hash;
             lock (hasherLock)
             {
                 hash = EncodeBase64(Hasher.ComputeHash(TextEncoder.GetBytes(data)));
@@ -496,14 +493,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return null;
             }
 
-            var header = JsonConvert.DeserializeObject<JwtHeader>(decoded);
-            if (!this.IsValidSchemeType(header))
+            var jwt = GetAndValidateJwt(authorization, true);
+            if (jwt == null)
             {
                 return null;
             }
 
-            var jwt = GetAndValidateJwt(authorization, true);
-            if (jwt == null)
+            if (!this.IsValidSchemeType(jwt))
             {
                 return null;
             }
@@ -512,13 +508,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return userInfo?.Username;
         }
 
-        private bool IsValidSchemeType(JwtHeader header)
+        private bool IsValidSchemeType(JsonWebToken token)
         {
-            if (!this.SchemeType.Equals(header["typ"] as string, StringComparison.OrdinalIgnoreCase))
+            if (!this.SchemeType.Equals(token.Typ, StringComparison.OrdinalIgnoreCase))
             {
                 if (Logger.IsTraceEnabled)
                 {
-                    Logger.Trace("Unsupported authentication scheme type " + header.Typ);
+                    Logger.Trace("Unsupported authentication scheme type " + token.Typ);
                 }
 
                 return false;
@@ -527,7 +523,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return true;
         }
 
-        private UserInfo TryGetUser(JwtSecurityToken jwt, bool checkExpiry)
+        private UserInfo TryGetUser(JsonWebToken jwt, bool checkExpiry)
         {
             // validate against DB saved data
             var sessionId = GetJwtSessionValue(jwt);
@@ -556,7 +552,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 }
             }
 
-            if (persistedToken.TokenHash != GetHashedStr(jwt.RawData))
+            if (persistedToken.TokenHash != GetHashedStr(jwt.EncodedToken))
             {
                 if (Logger.IsTraceEnabled)
                 {
