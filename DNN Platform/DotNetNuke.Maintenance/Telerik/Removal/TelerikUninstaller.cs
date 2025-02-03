@@ -42,6 +42,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
                 this.RemoveUninstalledExtensionFiles("App_Data/ExtensionPackages", "Module_DNNSecurityHotFix*"),
                 this.RemoveFile("bin", "Telerik.Web.UI.dll"),
                 this.RemoveFile("bin", "Telerik.Web.UI.Skins.dll"),
+                this.RemoveExtension("TelerikRemoval"),
             };
 
             var skip = false;
