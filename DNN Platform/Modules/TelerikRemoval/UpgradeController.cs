@@ -12,10 +12,8 @@ namespace Dnn.Modules.TelerikRemoval
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
-    using DotNetNuke.Services.Upgrade;
     using DotNetNuke.Web;
 
     /// <summary>An <see cref="IUpgradeable"/> implementation.</summary>
@@ -28,25 +26,6 @@ namespace Dnn.Modules.TelerikRemoval
         /// <inheritdoc/>
         public string UpgradeModule(string version)
         {
-            // ensure we have Host level page with this module on it
-            Logger.Info("Adding Telerik Removal host menu item.");
-            ModuleDefinitionInfo mDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Telerik Removal");
-
-            // Add tab to Admin Menu
-            if (mDef != null)
-            {
-                var hostPage = Upgrade.AddHostPage(
-                    "Telerik Removal",
-                    "Remove Telerik from this installation",
-                    "~/Icons/Sigma/SecurityRoles_16x16_Standard.png",
-                    "~/Icons/Sigma/SecurityRoles_32x32_Standard.png",
-                    true);
-
-                // Add module to page
-                var moduleId = Upgrade.AddModuleToPage(hostPage, mDef.ModuleDefID, "Telerik Removal", "~/Icons/Sigma/SecurityRoles_32x32_Standard.png", true);
-                Logger.Info("Added Telerik Removal host menu item.");
-            }
-
             var option = this.GetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey);
 
             // we have read the value, and now we need to delete the setting

@@ -46,6 +46,12 @@
                                 </moduleControls>
                             </moduleDefinition>
                         </moduleDefinitions>
+                        <page type="host" common="false">
+                            <name>Telerik Removal</name>
+                            <icon>~/Icons/Sigma/SecurityRoles_16x16_Standard.png</icon>
+                            <largeIcon>~/Icons/Sigma/SecurityRoles_32x32_Standard.png</largeIcon>
+                            <description>Remove Telerik from this installation</description>
+                        </page>
                     </desktopModule>
                 </component>
                 <component type="Assembly">
