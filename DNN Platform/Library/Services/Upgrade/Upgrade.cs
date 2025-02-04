@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
@@ -1288,12 +1289,12 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveAdminPages:" + tabPath);
 
             var portals = PortalController.Instance.GetPortals();
-            foreach (PortalInfo portal in portals)
+            foreach (IPortalInfo portal in portals)
             {
-                var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+                var tabID = TabController.GetTabByTabPath(portal.PortalId, tabPath, Null.NullString);
                 if (tabID != Null.NullInteger)
                 {
-                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
+                    TabController.Instance.DeleteTab(tabID, portal.PortalId);
                 }
             }
         }
@@ -1301,10 +1302,18 @@ namespace DotNetNuke.Services.Upgrade
         public static void RemoveHostPage(string pageName)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveHostPage:" + pageName);
-            TabInfo skinsTab = TabController.Instance.GetTabByName(pageName, Null.NullInteger);
-            if (skinsTab != null)
+            var hostTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host", Null.NullString);
+            if (hostTabId == Null.NullInteger)
             {
-                TabController.Instance.DeleteTab(skinsTab.TabID, Null.NullInteger);
+                return;
+            }
+
+            var tabPath = Globals.GenerateTabPath(hostTabId, pageName);
+
+            var hostModuleTabId = TabController.GetTabByTabPath(Null.NullInteger, tabPath, Null.NullString);
+            if (hostModuleTabId != Null.NullInteger)
+            {
+                TabController.Instance.DeleteTab(hostModuleTabId, Null.NullInteger);
             }
         }
 

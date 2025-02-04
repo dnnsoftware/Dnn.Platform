@@ -3,22 +3,23 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Installers
 {
-using System;
-using System.IO;
-using System.Xml.XPath;
+    using System;
+    using System.IO;
+    using System.Xml.XPath;
 
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.EventQueue;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.EventQueue;
 
     /// <summary>The ModuleInstaller installs Module Components to a DotNetNuke site.</summary>
-public class ModuleInstaller : ComponentInstallerBase
+    public class ModuleInstaller : ComponentInstallerBase
     {
         private DesktopModuleInfo desktopModule;
         private EventMessage eventMessage;
@@ -255,17 +256,21 @@ public class ModuleInstaller : ComponentInstallerBase
                     // remove admin/host pages
                     if (!string.IsNullOrEmpty(tempDesktopModule.AdminPage))
                     {
-                        string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
-
-                        var portals = PortalController.Instance.GetPortals();
-                        foreach (PortalInfo portal in portals)
+                        foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
                         {
-                            var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-
-                            TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
-                            if (temp != null)
+                            var adminTabId = TabController.GetTabByTabPath(portal.PortalId, "//Admin", Null.NullString);
+                            if (adminTabId == Null.NullInteger)
                             {
-                                var mods = TabModulesController.Instance.GetTabModules(temp);
+                                continue;
+                            }
+
+                            var tabPath = Globals.GenerateTabPath(adminTabId, tempDesktopModule.AdminPage);
+                            var moduleAdminTabId = TabController.GetTabByTabPath(portal.PortalId, tabPath, Null.NullString);
+
+                            TabInfo moduleAdminTab = TabController.Instance.GetTab(moduleAdminTabId, portal.PortalId);
+                            if (moduleAdminTab != null)
+                            {
+                                var mods = TabModulesController.Instance.GetTabModules(moduleAdminTab);
                                 bool noOtherTabModule = true;
                                 foreach (ModuleInfo mod in mods)
                                 {
@@ -277,11 +282,11 @@ public class ModuleInstaller : ComponentInstallerBase
 
                                 if (noOtherTabModule)
                                 {
-                                    this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
-                                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
+                                    this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalId));
+                                    TabController.Instance.DeleteTab(moduleAdminTabId, portal.PortalId);
                                 }
 
-                                this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                                this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalId));
                             }
                         }
                     }
@@ -298,8 +303,7 @@ public class ModuleInstaller : ComponentInstallerBase
                     // Remove all the tab versions related with the module.
                     foreach (var module in modules)
                     {
-                        var moduleInfo = module as ModuleInfo;
-                        if (moduleInfo != null)
+                        if (module is ModuleInfo moduleInfo)
                         {
                             TabVersionController.Instance.DeleteTabVersionDetailByModule(moduleInfo.ModuleID);
                         }
