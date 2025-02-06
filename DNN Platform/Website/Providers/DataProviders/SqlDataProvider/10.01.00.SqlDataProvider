@@ -1,0 +1,33 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+IF NOT EXISTS (
+    SELECT 1 
+    FROM INFORMATION_SCHEMA.COLUMNS 
+    WHERE TABLE_NAME = 'ProfilePropertyDefinition' 
+    AND TABLE_SCHEMA = 'dbo'
+    AND COLUMN_NAME = 'Encrypted'
+)
+BEGIN
+    ALTER TABLE dbo.ProfilePropertyDefinition 
+    ADD Encrypted BIT NOT NULL DEFAULT (0);
+END
+
+
+IF NOT EXISTS (
+    SELECT 1 
+    FROM INFORMATION_SCHEMA.COLUMNS 
+    WHERE TABLE_NAME = 'UserProfile' 
+    AND TABLE_SCHEMA = 'dbo'
+    AND COLUMN_NAME = 'PropertyIsSecure'
+)
+BEGIN
+    ALTER TABLE dbo.UserProfile 
+    ADD PropertyIsSecure BIT NOT NULL DEFAULT (0);
+END
