@@ -65,8 +65,7 @@ namespace DotNetNuke.Security.Permissions
         private const string ViewPagePermissionKey = "VIEW";
 
         // A list of advanced roles such as "Content Editors" and "Content Managers" that are checked and created if necessary.
-        private static readonly List<string> AdvancedRoles =
-            [ContentEditors, ContentManagers];
+        private readonly List<string> advancedRoles = new List<string>() { ContentEditors, ContentManagers };
 
         // Dependencies
         private readonly IModuleController moduleController = ModuleController.Instance;
@@ -76,7 +75,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// <inheritdoc/>
         public override bool IsPortalEditor()
-            => AdvancedRoles.Any(PortalSecurity.IsInRole)
+            => this.advancedRoles.Any(PortalSecurity.IsInRole)
             || base.IsPortalEditor();
 
         /// <inheritdoc/>
@@ -106,14 +105,18 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc/>
         public override FolderPermissionCollection GetFolderPermissionsCollectionByFolder(int portalId, string folder)
         {
-            var permissions = base.GetFolderPermissionsCollectionByFolder(portalId, folder);
+            var basePermissions = base.GetFolderPermissionsCollectionByFolder(portalId, folder);
+
+            // Create a new permission collection and copy base permissions
+            var permissions = new FolderPermissionCollection();
+            permissions.AddRange(basePermissions);
 
             var folderPermissions = permissions.Cast<FolderPermissionInfo>().ToList();
             var folderId = GetFolderId(folderPermissions);
             var folderPath = GetFolderPath(folderPermissions);
 
             var virtualPermissions = this.GenerateVirtualFolderPermissions(folderPermissions.ToList<PermissionInfoBase>(), portalId, folderId, folderPath);
-            virtualPermissions.ForEach(v => permissions.Add(v));
+            permissions.AddRange(virtualPermissions);
 
             return permissions;
         }
@@ -158,7 +161,12 @@ namespace DotNetNuke.Security.Permissions
             }
 
             var tab = this.tabController.GetTab(tabId, module.PortalID);
-            var permissions = base.GetModulePermissions(moduleId, tabId);
+            var basePermissions = base.GetModulePermissions(moduleId, tabId);
+
+            // Create a new permission collection and copy base permissions
+            var permissions = new ModulePermissionCollection();
+            permissions.AddRange(basePermissions);
+
             if (this.tabController.IsHostOrAdminPage(tab))
             {
                 return permissions;
@@ -262,7 +270,12 @@ namespace DotNetNuke.Security.Permissions
                 return new TabPermissionCollection();
             }
 
-            var permissions = base.GetTabPermissions(tabId, portalId);
+            var basePermissions = base.GetTabPermissions(tabId, portalId);
+
+            // Create a new permission collection and copy base permissions
+            var permissions = new TabPermissionCollection();
+            permissions.AddRange(basePermissions);
+
             if (this.tabController.IsHostOrAdminPage(tab))
             {
                 return permissions;
@@ -271,7 +284,7 @@ namespace DotNetNuke.Security.Permissions
             var tabPermissions = permissions.Cast<PermissionInfoBase>().ToList();
 
             var virtualPermissions = this.GenerateVirtualTabPermissions(tabPermissions, tab.PortalID, tab.TabID);
-            virtualPermissions.ForEach(v => permissions.Add(v));
+            permissions.AddRange(virtualPermissions);
 
             return permissions;
         }
@@ -308,9 +321,9 @@ namespace DotNetNuke.Security.Permissions
             => folderPermissions.FirstOrDefault()?.FolderID ?? Null.NullInteger;
 
         private IEnumerable<RoleInfo> GetOrCreateAdvancedRoles(int portalId)
-            => portalId >= 0 ?
-            AdvancedRoles.Select(roleName => this.GetOrCreateAdvancedRole(portalId, roleName)) :
-            [];
+            => portalId >= 0
+            ? this.advancedRoles.Select(roleName => this.GetOrCreateAdvancedRole(portalId, roleName)).ToList()
+            : new List<RoleInfo>();
 
         private RoleInfo GetOrCreateAdvancedRole(int portalId, string roleName)
         {
