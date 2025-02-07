@@ -23,6 +23,6 @@ because it is used in the installer and rarely visible in the module injection.
         background: -moz-linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* FF3.6+ */
         background: -webkit-gradient(linear, left top, right top, color-stop(0%,#2b7fda), color-stop(100%,#3fbdff)); /* Chrome,Safari4+ */
         background: -webkit-linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* Chrome10+,Safari5.1+ */
-        background: linear-gradient(left, #2b7fda 0%, #3fbdff 100%); /* W3C */
+        background: linear-gradient(to right, #2b7fda 0%, #3fbdff 100%); /* W3C */
     }
 }
