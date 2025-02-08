@@ -230,7 +230,7 @@ namespace Dnn.PersonaBar.Sites.Components
             var intPortalId = -1;
 
             // check template validity
-            var schemaFilename = HttpContext.Current.Server.MapPath("~/DesktopModules/Admin/Portals/portal.template.xsd");
+            var schemaFilename = HttpContext.Current.Server.MapPath("~/Components/Portals/portal.template.xsd");
             var xmlFilename = template.TemplateFilePath;
             var xval = new PortalTemplateValidator();
             if (!xval.Validate(xmlFilename, schemaFilename))
