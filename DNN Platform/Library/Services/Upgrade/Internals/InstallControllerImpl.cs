@@ -335,25 +335,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 installConfig.SuperUser = superUserConfig;
             }
 
-            // Parse the license node
-            XmlNode licenseNode = installTemplate.SelectSingleNode("//dotnetnuke/license");
-            if (licenseNode != null)
-            {
-                var licenseConfig = new LicenseConfig();
-
-                licenseConfig.AccountEmail = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "accountEmail");
-                licenseConfig.InvoiceNumber = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "invoiceNumber");
-                licenseConfig.WebServer = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "webServer");
-                licenseConfig.LicenseType = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "licenseType");
-
-                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial")))
-                {
-                    licenseConfig.TrialRequest = bool.Parse(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial"));
-                }
-
-                installConfig.License = licenseConfig;
-            }
-
             // Parse the settings node
             XmlNode settingsNode = installTemplate.SelectSingleNode("//dotnetnuke/settings");
             if (settingsNode != null)

@@ -264,15 +264,6 @@ namespace DotNetNuke.Services.Install
                             Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
                         }
 
-                        var licenseConfig = installConfig.License;
-                        bool isProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
-                                                  File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-                        if (isProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
-                            !string.IsNullOrEmpty(licenseConfig.InvoiceNumber))
-                        {
-                            Upgrade.Upgrade.ActivateLicense();
-                        }
-
                         // Adding ClientDependency Resources config to web.config
                         if (!ClientResourceManager.IsInstalled())
                         {

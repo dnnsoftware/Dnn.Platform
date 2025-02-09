@@ -1092,9 +1092,6 @@ Please do not reply to this email.</value>
   <data name="LogEnd.Text" xml:space="preserve">
     <value>End </value>
   </data>
-  <data name="ActivatingLicense.Text" xml:space="preserve">
-    <value>Activating License</value>
-  </data>
   <data name="ModulePermissions.Action" xml:space="preserve">
     <value>Permissions</value>
   </data>

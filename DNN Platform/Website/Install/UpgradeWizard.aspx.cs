@@ -111,14 +111,6 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the acting user needs to accept the terms.
-        /// </summary>
-        protected bool NeedAcceptTerms
-        {
-            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
-        }
-
         private static string StatusFile
         {
             get
@@ -326,8 +318,6 @@ namespace DotNetNuke.Services.Install
             }
 
             base.OnLoad(e);
-
-            this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
             this.LocalizePage();
 
             if (this.Request.RawUrl.EndsWith("?complete"))
@@ -338,8 +328,6 @@ namespace DotNetNuke.Services.Install
             // Create Status Files
             if (!this.Page.IsPostBack)
             {
-                // Reset the accept terms flag
-                HostController.Instance.Update("AcceptDnnTerms", OptionNo);
                 if (!File.Exists(StatusFile))
                 {
                     File.CreateText(StatusFile).Close();
@@ -791,12 +779,6 @@ namespace DotNetNuke.Services.Install
             else
             {
                 IsAuthenticated = true;
-            }
-
-            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != OptionYes))
-            {
-                result = false;
-                errorMsg = LocalizeStringStatic("AcceptTerms.Required");
             }
 
             return result;

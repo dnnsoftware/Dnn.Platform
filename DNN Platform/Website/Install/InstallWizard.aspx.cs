@@ -55,10 +55,7 @@ namespace DotNetNuke.Services.Install
         private static readonly IInstallationStep InstallExtensionsStep = new InstallExtensionsStep();
         private static readonly IInstallationStep InstallSiteStep = new InstallSiteStep();
         private static readonly IInstallationStep InstallSuperUserStep = new InstallSuperUserStep();
-        private static readonly IInstallationStep ActivateLicenseStep = new ActivateLicenseStep();
 
-        // Hide Licensing Step for Community Edition
-        private static readonly bool IsProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallWizard));
 
         // Ordered List of Steps (and weight in percentage) to be executed
@@ -72,10 +69,9 @@ namespace DotNetNuke.Services.Install
             { new UpdateLanguagePackStep(), 5 },
             { InstallSiteStep, 20 },
             { InstallSuperUserStep, 5 },
-            { new AddFcnModeStep(), 1 },
-            { ActivateLicenseStep, 3 },
-            { new InstallVersionStep(), 1 },
-            { new InstallSslStep(), 1 },
+            { new AddFcnModeStep(), 2 },
+            { new InstallVersionStep(), 2 },
+            { new InstallSslStep(), 2 },
         };
 
         private static string localResourceFile = "~/Install/App_LocalResources/InstallWizard.aspx.resx";
@@ -140,12 +136,6 @@ namespace DotNetNuke.Services.Install
         protected bool SupportLocalization
         {
             get { return installConfig.SupportLocalization; }
-        }
-
-        /// <summary>Gets a value indicating whether the user needs to accept the license terms.</summary>
-        protected bool NeedAcceptTerms
-        {
-            get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
         }
 
         /// <summary>Gets or sets a value indicating whether the permissions are valid.</summary>
@@ -290,8 +280,7 @@ namespace DotNetNuke.Services.Install
             var errorMsg = string.Empty;
 
             // Check Required Fields
-            if (!installInfo.ContainsKey("acceptTerms") || installInfo["acceptTerms"] != "Y" ||
-                installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
+            if (installInfo["username"] == string.Empty || installInfo["password"] == string.Empty || installInfo["confirmPassword"] == string.Empty
                  || installInfo["websiteName"] == string.Empty || installInfo["email"] == string.Empty)
             {
                 result = false;
@@ -617,15 +606,6 @@ namespace DotNetNuke.Services.Install
                 File.CreateText(StatusFile).Close();
             }
 
-            // Hide Licensing Step if no License Info is available
-            this.LicenseActivation.Visible = IsProOrEnterprise && !string.IsNullOrEmpty(installConfig.License.AccountEmail) && !string.IsNullOrEmpty(installConfig.License.InvoiceNumber);
-            this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
-
-            if ((!IsProOrEnterprise) && this.templateList.FindItemByValue("Mobile Website.template") != null)
-            {
-                this.templateList.Items.Remove(this.templateList.FindItemByValue("Mobile Website.template"));
-            }
-
             if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall"))
             {
                 var synchConnectionString = new SynchConnectionStringStep();
@@ -636,12 +616,6 @@ namespace DotNetNuke.Services.Install
             {
                 try
                 {
-                    if (HttpContext.Current.Request.QueryString["acceptterms"] != "true")
-                    {
-                        // Redirect back to first page if not accept terms.
-                        this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&executeinstall", string.Empty), true);
-                    }
-
                     installerRunning = true;
                     LaunchAutoInstall();
                 }
@@ -779,11 +753,6 @@ namespace DotNetNuke.Services.Install
             {
                 currentStep = step.Key;
 
-                if (currentStep.GetType().Name == "ActivateLicenseStep" && !IsProOrEnterprise)
-                {
-                    continue;
-                }
-
                 try
                 {
                     currentStep.Activity += CurrentStepActivity;
@@ -848,7 +817,6 @@ namespace DotNetNuke.Services.Install
                 check2 = InstallExtensionsStep.Status.ToString() + (InstallExtensionsStep.Errors.Count == 0 ? string.Empty : " Errors " + InstallExtensionsStep.Errors.Count),
                 check3 = InstallSiteStep.Status.ToString() + (InstallSiteStep.Errors.Count == 0 ? string.Empty : " Errors " + InstallSiteStep.Errors.Count),
                 check4 = InstallSuperUserStep.Status.ToString() + (InstallSuperUserStep.Errors.Count == 0 ? string.Empty : " Errors " + InstallSuperUserStep.Errors.Count),
-                check5 = ActivateLicenseStep.Status.ToString() + (ActivateLicenseStep.Errors.Count == 0 ? string.Empty : " Errors " + ActivateLicenseStep.Errors.Count),
             };
 
             try

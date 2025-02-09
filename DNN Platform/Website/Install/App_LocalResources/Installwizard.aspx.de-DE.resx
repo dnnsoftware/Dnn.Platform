@@ -386,9 +386,6 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
   <data name="LegacyLangaugePack.Text" xml:space="preserve">
     <value>Das Sprachpaket ist älter als die altuelle Version der Anwendung: </value>
   </data>
-  <data name="LicenseActivation.Text" xml:space="preserve">
-    <value>Lizenz aktivieren</value>
-  </data>
   <data name="NoErrorsLogged.Text" xml:space="preserve">
     <value>Es wurden bei der Installation keine Fehler aufgezeichnet.</value>
   </data>

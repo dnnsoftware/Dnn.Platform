@@ -101,10 +101,6 @@
             <li>
               <asp:LinkButton ID="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="NextStep" />
             </li>
-            <li id="pnlAcceptTerms" runat="server" class="accept-terms">
-              <asp:CheckBox ID="chkAcceptTerms" runat="server" />
-              <asp:Label runat="server" ResourceKey="AcceptTerms" />
-            </li>
           </ul>
         </div>
         <div class="upgradeSecurity dnnClear" id="upgradeSecurity">
@@ -297,27 +293,17 @@
       //****************************************************************************************
       // EVENT HANDLER FUNCTIONS
       //****************************************************************************************
-      var $acceptTerms = $('#<%= chkAcceptTerms.ClientID %>');
-      if ($acceptTerms.length) {
-        $acceptTerms.click(function () {
-          if (!$(this).is(':checked')) {
-            disable("#<%= continueLink.ClientID %>");
-              } else {
-                enable("#<%= continueLink.ClientID %>");
-              }
-            });
-          } else {
-            enable("#<%= continueLink.ClientID %>");
-      }
+
+      enable("#<%= continueLink.ClientID %>");
+
       //Next Step
       $('#<%= continueLink.ClientID %>').click(function () {
 
         if (!$(this).hasClass('dnnDisabledAction')) {
           upgradeWizard.accountInfo = {
             username: $('#<%= txtUsername.ClientID %>')[0].value,
-                password: $('#<%= txtPassword.ClientID %>')[0].value,
-                acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "<%= OptionYes %>" : "<%= OptionNo %>"
-              };
+            password: $('#<%= txtPassword.ClientID %>')[0].value
+          };
 
               disable("#<%= continueLink.ClientID %>");
               disable('#seeLogs, #visitSite, #retry');

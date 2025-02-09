@@ -726,33 +726,6 @@ namespace DotNetNuke.Services.Install
         protected global::System.Web.UI.WebControls.LinkButton continueLink;
 
         /// <summary>
-        /// pnlAcceptTerms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlAcceptTerms;
-
-        /// <summary>
-        /// chkAcceptTerms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkAcceptTerms;
-
-        /// <summary>
-        /// valAcceptTerms control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CustomValidator valAcceptTerms;
-
-        /// <summary>
         /// lblInstallationIntroInfo control.
         /// </summary>
         /// <remarks>
@@ -778,15 +751,6 @@ namespace DotNetNuke.Services.Install
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton visitSite;
-
-        /// <summary>
-        /// LicenseActivation control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl LicenseActivation;
 
         /// <summary>
         /// installViewWebsite control.

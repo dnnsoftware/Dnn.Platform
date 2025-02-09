@@ -1841,36 +1841,6 @@ namespace DotNetNuke.Services.Upgrade
             return false;
         }
 
-        public static string ActivateLicense()
-        {
-            var isLicensable = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-            var activationResult = string.Empty;
-
-            if (isLicensable)
-            {
-                var sku = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")) ? "DNNENT" : "DNNPRO";
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.GetString("ActivatingLicense", Localization.GlobalResourceFile));
-
-                var installConfig = InstallController.Instance.GetInstallConfig();
-                var licenseConfig = (installConfig != null) ? installConfig.License : null;
-
-                if (licenseConfig != null)
-                {
-                    dynamic licenseActivation = Reflection.CreateObject(Reflection.CreateType("DotNetNuke.Professional.LicenseActivation.ViewLicx"));
-                    licenseActivation.AutoActivation(licenseConfig.AccountEmail, licenseConfig.InvoiceNumber, licenseConfig.WebServer, licenseConfig.LicenseType, sku);
-                    activationResult = licenseActivation.LicenseResult;
-
-                    // Log Event to Event Log
-                    EventLogController.Instance.AddLog(
-                        "License Activation",
-                        "License Activated during install for: " + licenseConfig.AccountEmail + " | invoice: " + licenseConfig.InvoiceNumber,
-                        EventLogController.EventLogType.HOST_ALERT);
-                }
-            }
-
-            return activationResult;
-        }
-
         public static bool RemoveInvalidAntiForgeryCookie()
         {
             // DNN-9394: when upgrade from old version which use MVC version below than 5, it may saved antiforgery cookie
