@@ -184,7 +184,7 @@
     <value>View Logs</value>
   </data>
   <data name="NoErrorsLogged.Text" xml:space="preserve">
-    <value>No Upgrade errors have been logged</value>
+    <value>No upgrade errors have been logged</value>
   </data>
   <data name="TimerMinutes.Text" xml:space="preserve">
     <value>Minutes</value>
