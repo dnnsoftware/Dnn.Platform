@@ -394,6 +394,7 @@ legend.required:after {
     color: var(--dnn-color-primary-contrast, #efefef);
     &:hover, &:active{
         background: var(--dnn-color-primary-light, #6cb6f3);
+        color: var(--dnn-color-primary-contrast, #fff);
     }
     &[disabled], &[disabled]:hover, &[disabled]:active {
         background: var(--dnn-color-neutral-light, #ebebeb);
@@ -411,6 +412,7 @@ legend.required:after {
     color: var(--dnn-color-secondary-contrast, #333);
     &:hover, &:active{
         background: var(--dnn-color-secondary-light, #fefefe);
+        color: var(--dnn-color-secondary-contrast, #333);
     }
     &[disabled], &[disabled]:hover, &[disabled]:active {
         background: var(--dnn-color-neutral-light, #ebebeb);
@@ -426,6 +428,7 @@ legend.required:after {
     color: var(--dnn-color-tertiary-contrast, #333);
     &:hover, &:active{
         background: var(--dnn-color-tertiary-dark, #d8d8d8);
+        color: var(--dnn-color-tertiary-contrast, #333);
     }
 }
 
