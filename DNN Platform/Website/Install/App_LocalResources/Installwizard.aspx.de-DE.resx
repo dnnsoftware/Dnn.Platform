@@ -351,10 +351,10 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
     <value>Ihr Datenbank-Benutzer verfügt nicht über die DBO-Berechtigungen.</value>
   </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke erfordert mindestens Version 2008 R2 des Microsoft SQL Servers (Express oder höher).</value>
+    <value>DotNetNuke erfordert mindestens Version 2017 des Microsoft SQL Servers (Express oder höher).</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Prüfe, ob mindestens SQL-Server 2008 R2 (Express oder höher) installiert ist.</value>
+    <value>Prüfe, ob mindestens SQL-Server 2017 (Express oder höher) installiert ist.</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>Wählen Sie hier die Standardsprache, die Sie für Ihre Website verwenden wollen.</value>
@@ -394,6 +394,9 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
   </data>
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Es gibt kein Installationsprotokoll</value>
+  </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Installationsprotokolle werden geladen, bitte warten...</value>
   </data>
   <data name="PageTitle.Text" xml:space="preserve">
     <value>Installation</value>
@@ -524,7 +527,7 @@ Gehen Sie im Windows Explorer zum Basisverzeichnis Ihrer Website ({0}). Klicken 
   <data name="AcceptTerms.Text" xml:space="preserve">
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
-  <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>DNN benötigt .Net Framework in der Version 4.7.2 oder neuer. Bitte prüfen Sie verfügbare Updates für Windows, bevor Sie mit der Installation fortfahren.</value>
+  <data name="DotNetVersion48Required.Text" xml:space="preserve">
+    <value>DNN benötigt .Net Framework in der Version 4.8 oder neuer. Bitte prüfen Sie verfügbare Updates für Windows, bevor Sie mit der Installation fortfahren.</value>
   </data>
 </root>

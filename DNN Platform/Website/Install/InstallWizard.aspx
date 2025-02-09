@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.InstallWizard" CodeFile="InstallWizard.aspx.cs" %>
+<%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.InstallWizard" CodeBehind="InstallWizard.aspx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
@@ -870,6 +870,8 @@
                 if (!$(this).hasClass('dnnDisabledAction')) {
                     $(this).addClass('dnnDisabledAction');
                     $('#installation-log-container').show();
+                    var loading = '<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("LoadingInstallationLog"))%>';
+                    $('#installation-log').html(loading);
                     getInstallationLog();
                 }
             });

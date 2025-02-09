@@ -211,10 +211,10 @@
     <value>Your database user does not have dbo permissions</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Checking database version is SQL 2008 R2 (express or full product) or higher to work</value>
+    <value>Checking database version is SQL 2017 (express or full product) or higher to work</value>
   </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DNN requires SQL 2008 R2 (express or full product) to work</value>
+    <value>DNN requires SQL 2017 (express or full product) to work</value>
   </data>
   <data name="Language.Text" xml:space="preserve">
     <value>Language</value>
@@ -408,6 +408,9 @@
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>No Installation Log</value>
   </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Loading installation logs, please wait...</value>
+  </data>
   <data name="NoErrorsLogged.Text" xml:space="preserve">
     <value>No Installation errors have been logged</value>
   </data>
@@ -528,8 +531,8 @@ Using Windows Explorer, browse to the folders of your website ( {0} ). Right-cli
   <data name="AcceptTerms.Required" xml:space="preserve">
     <value>Accept the terms of the license agreement to continue.</value>
   </data>
-  <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>.Net Framework 4.7.2 is required. Check for Windows updates before proceeding.</value>
+  <data name="DotNetVersion48Required.Text" xml:space="preserve">
+    <value>.Net Framework 4.8 is required. Check for Windows updates before proceeding.</value>
   </data>
   <data name="WebsiteSsl.Help" xml:space="preserve">
     <value>Website will be configured to run on HTTPS</value>

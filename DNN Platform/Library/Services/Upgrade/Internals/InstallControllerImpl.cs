@@ -449,27 +449,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
                     int versionNumber = int.Parse(serverVersionDetails[0]);
 
-                    switch (versionNumber)
-                    {
-                        case 8:
-                        // sql 2000
-                        case 9:
-                            // sql 2005
-                            isValidVersion = false;
-                            break;
-                        case 10:
-                        // sql 2008
-                        case 11:
-                        // sql 2010
-                        case 12:
-                            // sql 2012
-                            isValidVersion = true;
-                            break;
-                        default:
-                            // covers unknown versions and later releases
-                            isValidVersion = true;
-                            break;
-                    }
+                    // SQL Server 2017 and up.
+                    isValidVersion = versionNumber >= 14;
                 }
             }
             catch (Exception)

@@ -502,6 +502,8 @@
         if (!$(this).hasClass('dnnDisabledAction')) {
           disable(this);
           $('#installation-log-container').show();
+          var loading = '<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("LoadingInstallationLog"))%>';
+          $('#installation-log').html(loading);
           getInstallationLog();
         }
       });

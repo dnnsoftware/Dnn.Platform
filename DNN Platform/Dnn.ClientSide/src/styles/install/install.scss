@@ -200,3 +200,9 @@ a.dnnDisabledAction:link, a.dnnDisabledAction:visited, a.dnnDisabledAction:activ
 .dnnInstall{
     margin-bottom:2rem;
 }
+#installation-log-container {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    display: none;
+    height: 15rem;
+}
