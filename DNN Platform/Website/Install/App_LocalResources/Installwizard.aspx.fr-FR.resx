@@ -346,10 +346,10 @@
     <value>Votre utilisateur de base de données n'a pas les permissions dbo</value>
   </data>
   <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
-    <value>DotNetNuke requiert SQL 2008 R2 (express ou complet) pour fonctionner</value>
+    <value>DotNetNuke requiert SQL 2017 (express ou complet) pour fonctionner</value>
   </data>
   <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
-    <value>Vérification de la version de base de données. SQL 2008 R2 (express ou complet) ou supérieur est nécessaire pour le fonctionnement de DotNetNuke.</value>
+    <value>Vérification de la version de base de données. SQL 2017 (express ou complet) ou supérieur est nécessaire pour le fonctionnement de DotNetNuke.</value>
   </data>
   <data name="Language.Help" xml:space="preserve">
     <value>La langue que vous souhaitez utiliser pour votre site Web.</value>
@@ -389,6 +389,9 @@
   </data>
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>Aucun journal d'Installation</value>
+  </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Chargement des journaux d'installation, veuillez patienter...</value>
   </data>
   <data name="PageTitle.Text" xml:space="preserve">
     <value>Installation</value>
@@ -520,7 +523,7 @@
   <data name="AcceptTerms.Text" xml:space="preserve">
     <value>I accept the terms of the &lt;a href="../Licenses/Dnn_Corp_License.pdf" target="_blank"&gt;license agreement&lt;/a&gt;</value>
   </data>
-  <data name="DotNetVersion472Required.Text" xml:space="preserve">
-    <value>.Net Framework 4.7.2 est requis. Vérifiez les mises à jour Windows avant de continuer.</value>
+  <data name="DotNetVersion48Required.Text" xml:space="preserve">
+    <value>.Net Framework 4.8 est requis. Vérifiez les mises à jour Windows avant de continuer.</value>
   </data>
 </root>

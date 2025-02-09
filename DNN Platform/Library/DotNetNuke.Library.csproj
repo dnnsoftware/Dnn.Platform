@@ -1537,7 +1537,6 @@
     <Compile Include="Services\Upgrade\Internals\Steps\InstallSslStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\InstallVersionStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\IISVerificationStep.cs" />
-    <Compile Include="Services\Upgrade\Internals\Steps\ActivateLicenseStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\InitializeHostSettingsStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\SynchConnectionStringStep.cs" />
     <Compile Include="Services\Upgrade\Internals\Steps\InstallDatabaseStep.cs" />

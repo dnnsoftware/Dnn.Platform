@@ -58,6 +58,9 @@
   <data name="NoInstallationLog.Text">
     <value xml:space="preserve">No hay ningún registro de instalación</value>
   </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Cargando registros de instalación, por favor espere...</value>
+  </data>
   <data name="Password.Help">
     <value xml:space="preserve">Introduzca la contraseña del superusuario.</value>
   </data>
@@ -69,6 +72,9 @@
   </data>
   <data name="SeeLogs.Text">
     <value xml:space="preserve">Ver el registro</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>No se han registrado errores de actualización</value>
   </data>
   <data name="TimerMinutes.Text">
     <value xml:space="preserve">Minutos</value>

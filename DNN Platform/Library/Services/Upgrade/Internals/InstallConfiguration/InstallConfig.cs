@@ -29,8 +29,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 
         public ConnectionConfig Connection { get; set; }
 
-        public LicenseConfig License { get; set; }
-
         public IList<PortalConfig> Portals { get; set; }
 
         public IList<HostSettingConfig> Settings { get; set; }

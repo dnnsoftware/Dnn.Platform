@@ -168,6 +168,9 @@
   <data name="NoInstallationLog.Text" xml:space="preserve">
     <value>No Installation Log</value>
   </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Loading installation logs, please wait...</value>
+  </data>
   <data name="Password.Help" xml:space="preserve">
     <value>The password for the Super User account.</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="SeeLogs.Text" xml:space="preserve">
     <value>View Logs</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>No upgrade errors have been logged</value>
   </data>
   <data name="TimerMinutes.Text" xml:space="preserve">
     <value>Minutes</value>
