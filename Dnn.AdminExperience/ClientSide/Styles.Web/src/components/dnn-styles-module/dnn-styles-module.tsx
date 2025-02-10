@@ -105,7 +105,12 @@ export class DnnStylesModule {
   render() {
     return (
       <Host>
-        <form>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            this.handleSave();
+          }}
+        >
           <p>{this.resx?.ModuleDescription}</p>
           {this.styles && this.resx &&
             <div class="sections">
@@ -332,7 +337,7 @@ export class DnnStylesModule {
               {this.resx?.RestoreDefault}
             </dnn-button>
             <dnn-button
-              onClick={() => this.handleSave()}
+              formButtonType='submit'
             >
               {this.resx?.Save}
             </dnn-button>
