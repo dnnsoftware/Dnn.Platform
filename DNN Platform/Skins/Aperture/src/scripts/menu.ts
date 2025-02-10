@@ -62,3 +62,9 @@ export const navFunctions = (() => {
 		bodyOverlay.classList.toggle('aperture-d-none');
 	});
 });
+
+// Reset menu state for firefox
+window.addEventListener("pageshow", () => {
+	const hamburgerMenu: HTMLInputElement = document.querySelector('#menuToggle input[type="checkbox"]')!;
+	hamburgerMenu.checked = false;
+});
