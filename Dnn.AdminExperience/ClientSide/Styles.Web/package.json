@@ -29,7 +29,7 @@
     "@stencil/core": "^4.22.2"
   },
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.24.1",
+    "@dnncommunity/dnn-elements": "^0.26.0",
     "@stencil/sass": "^3.0.12",
     "@types/node": "^22.9.0"
   }
