@@ -1,4 +1,4 @@
-﻿$(window).on('load', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
     window.cookieconsentoptions = window.cookieconsentoptions || {};
     window.cookieconsentoptions.content = {
         message: window.dnn.getVar('cc_message'),
@@ -8,15 +8,15 @@
     if (window.dnn.getVar('cc_morelink') != '') {
         window.cookieconsentoptions.content.href = window.dnn.getVar('cc_morelink')
     }
-	if (!window.cookieconsentoptions.palette) {
-		window.cookieconsentoptions.palette = {
-			"popup": {
-      "background": "#000"
-    },
-    "button": {
-      "background": "#f1d600"
+    if (!window.cookieconsentoptions.palette) {
+        window.cookieconsentoptions.palette = {
+            "popup": {
+                "background": "#000"
+            },
+            "button": {
+                "background": "#f1d600"
+            }
+        }
     }
-		}
-	}
     window.cookieconsent.initialise(window.cookieconsentoptions);
-});    
+});
