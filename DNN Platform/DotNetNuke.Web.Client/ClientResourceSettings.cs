@@ -9,8 +9,11 @@ namespace DotNetNuke.Web.Client
     using System.Reflection;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     // note: this class is duplicated in ClientDependency.Core.Config.DnnConfiguration, any updates need to be synced between the two.
     public partial class ClientResourceSettings
@@ -202,19 +205,28 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
+        private static IServiceScope GetServiceScope()
+        {
+            var getOrCreateServiceScopeMethod = CommonGlobalsType.GetMethod("GetOrCreateServiceScope", BindingFlags.NonPublic | BindingFlags.Static);
+            var serviceScope = getOrCreateServiceScopeMethod.Invoke(null, Array.Empty<object>());
+            return (IServiceScope)serviceScope;
+        }
+
         private static string GetPortalSettingThroughReflection(int? portalId, string settingKey)
         {
+            if (portalId is null)
+            {
+                return null;
+            }
+
             try
             {
-                if (portalId.HasValue)
+                var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary", BindingFlags.NonPublic | BindingFlags.Static);
+                var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
+                string value;
+                if (dictionary.TryGetValue(settingKey, out value))
                 {
-                    var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary", BindingFlags.NonPublic | BindingFlags.Static);
-                    var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
-                    string value;
-                    if (dictionary.TryGetValue(settingKey, out value))
-                    {
-                        return value;
-                    }
+                    return value;
                 }
             }
             catch (Exception exception)
@@ -234,16 +246,11 @@ namespace DotNetNuke.Web.Client
                     return null;
                 }
 
-                var instanceProperty = PortalAliasControllerType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
-                var instance = instanceProperty.GetValue(null);
+                using var scope = GetServiceScope();
+                var portalAliasService = scope.ServiceProvider.GetRequiredService<IPortalAliasService>();
+                var alias = portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
 
-                var getPortalAliasMethod = IPortalAliasControllerType.GetMethod("GetPortalAlias", BindingFlags.Public, null, new[] { typeof(string), }, Array.Empty<ParameterModifier>());
-                var portalAliasInfo = getPortalAliasMethod.Invoke(instance, new object[] { HttpContext.Current.Request.Url.Host, });
-                if (portalAliasInfo != null)
-                {
-                    object portalId = IPortalAliasControllerType.GetProperty("PortalId").GetValue(portalAliasInfo);
-                    return (int)portalId;
-                }
+                return alias.PortalId;
             }
             catch (Exception exception)
             {
