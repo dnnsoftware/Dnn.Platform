@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Client
     using System.Reflection;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
@@ -30,9 +31,6 @@ namespace DotNetNuke.Web.Client
         public static readonly string VersionKey = "CrmVersion";
 
         private static readonly Type PortalControllerType;
-        private static readonly Type PortalAliasControllerType;
-        private static readonly Type IPortalAliasControllerType;
-        private static readonly Type HostControllerType;
         private static readonly Type CommonGlobalsType;
 
         private bool statusChecked;
@@ -45,33 +43,11 @@ namespace DotNetNuke.Web.Client
                 // all these types are part of the same library, so we don't need a separate catch for each one
                 CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
                 PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
-                PortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
-                IPortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.IPortalAliasController, DotNetNuke");
-                HostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
             }
             catch (Exception exception)
             {
                 LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to get get types for reflection", exception);
             }
-        }
-
-        private enum UpgradeStatus
-        {
-            /// <summary>The application need update to a higher version.</summary>
-            Upgrade = 0,
-
-            /// <summary>The application need to install itself.</summary>
-            Install = 1,
-
-            /// <summary>The application is normal running.</summary>
-            None = 2,
-
-            /// <summary>The application occur error when running.</summary>
-            Error = 3,
-
-            /// <summary>The application status is unknown,</summary>
-            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown = 4,
         }
 
         private UpgradeStatus Status
@@ -264,12 +240,11 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = HostControllerType.GetMethod("GetSettingsDictionary");
-                var property = HostControllerType.BaseType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
-                var instance = property.GetValue(null, Type.EmptyTypes);
-                var dictionary = (Dictionary<string, string>)method.Invoke(instance, Type.EmptyTypes);
-                string value;
-                if (dictionary.TryGetValue(settingKey, out value))
+                using var scope = GetServiceScope();
+                var hostSettingsService = scope.ServiceProvider.GetRequiredService<IHostSettingsService>();
+
+                var dictionary = hostSettingsService.GetSettingsDictionary();
+                if (dictionary.TryGetValue(settingKey, out var value))
                 {
                     return value;
                 }
@@ -314,9 +289,9 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var property = CommonGlobalsType.GetProperty("Status", BindingFlags.Static | BindingFlags.Public);
-                var status = (UpgradeStatus)property.GetValue(null, null);
-                return status;
+                using var scope = GetServiceScope();
+                var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+                return applicationStatusInfo.Status;
             }
             catch (Exception exception)
             {
