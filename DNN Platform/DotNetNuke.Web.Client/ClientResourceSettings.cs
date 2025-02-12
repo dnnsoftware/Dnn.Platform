@@ -28,6 +28,7 @@ namespace DotNetNuke.Web.Client
 
         private static readonly Type PortalControllerType;
         private static readonly Type PortalAliasControllerType;
+        private static readonly Type IPortalAliasControllerType;
         private static readonly Type HostControllerType;
         private static readonly Type CommonGlobalsType;
 
@@ -42,6 +43,7 @@ namespace DotNetNuke.Web.Client
                 CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
                 PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
                 PortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
+                IPortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.IPortalAliasController, DotNetNuke");
                 HostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
             }
             catch (Exception exception)
@@ -227,11 +229,19 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = PortalAliasControllerType.GetMethod("GetPortalAliasInfo");
-                var portalAliasInfo = HttpContext.Current != null ? method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host }) : null;
+                if (HttpContext.Current == null)
+                {
+                    return null;
+                }
+
+                var instanceProperty = PortalAliasControllerType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
+                var instance = instanceProperty.GetValue(null);
+
+                var getPortalAliasMethod = IPortalAliasControllerType.GetMethod("GetPortalAlias", BindingFlags.Public, null, new[] { typeof(string), }, Array.Empty<ParameterModifier>());
+                var portalAliasInfo = getPortalAliasMethod.Invoke(instance, new object[] { HttpContext.Current.Request.Url.Host, });
                 if (portalAliasInfo != null)
                 {
-                    object portalId = portalAliasInfo.GetType().GetProperty("PortalID").GetValue(portalAliasInfo, new object[] { });
+                    object portalId = IPortalAliasControllerType.GetProperty("PortalId").GetValue(portalAliasInfo);
                     return (int)portalId;
                 }
             }
