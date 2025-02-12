@@ -197,10 +197,12 @@ namespace DotNetNuke.Web.Client
 
             try
             {
-                var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary", BindingFlags.NonPublic | BindingFlags.Static);
-                var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
-                string value;
-                if (dictionary.TryGetValue(settingKey, out value))
+                using var scope = GetServiceScope();
+                var portalController = ActivatorUtilities.GetServiceOrCreateInstance(scope.ServiceProvider, PortalControllerType);
+                var method = PortalControllerType.GetMethod("GetPortalSettings", BindingFlags.Public | BindingFlags.Instance);
+                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, new object[] { portalId.Value, });
+
+                if (dictionary.TryGetValue(settingKey, out var value))
                 {
                     return value;
                 }
