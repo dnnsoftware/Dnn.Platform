@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Client
     using System.Reflection;
     using System.Web;
 
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
     // note: this class is duplicated in ClientDependency.Core.Config.DnnConfiguration, any updates need to be synced between the two.
@@ -43,9 +44,9 @@ namespace DotNetNuke.Web.Client
                 PortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
                 HostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to get get types for reflection", exception);
             }
         }
 
@@ -214,9 +215,9 @@ namespace DotNetNuke.Web.Client
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Portal Setting Through Reflection", exception);
             }
 
             return null;
@@ -234,9 +235,9 @@ namespace DotNetNuke.Web.Client
                     return (int)portalId;
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Portal ID Through Reflection", exception);
             }
 
             return null;
@@ -256,9 +257,9 @@ namespace DotNetNuke.Web.Client
                     return value;
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Host Setting Through Reflection", exception);
             }
 
             return null;
@@ -300,8 +301,9 @@ namespace DotNetNuke.Web.Client
                 var status = (UpgradeStatus)property.GetValue(null, null);
                 return status;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Status By Reflection", exception);
                 return UpgradeStatus.Unknown;
             }
         }
