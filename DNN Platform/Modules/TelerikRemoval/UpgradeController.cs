@@ -37,7 +37,7 @@ namespace Dnn.Modules.TelerikRemoval
             // upgrade process has already finished.
             this.DeleteHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey);
 
-            if (DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue.Equals(option, StringComparison.OrdinalIgnoreCase))
+            if (!DotNetNuke.Maintenance.Constants.TelerikUninstallNoValue.Equals(option, StringComparison.OrdinalIgnoreCase))
             {
                 var uninstaller = this.GetService<ITelerikUninstaller>();
                 uninstaller.Execute();
