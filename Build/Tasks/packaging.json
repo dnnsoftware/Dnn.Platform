@@ -45,13 +45,14 @@
     "/bin/System.Web.WebPages.Razor.dll",
     "/bin/WebMatrix.Data.dll",
     "/bin/WebMatrix.WebData.dll",
-    "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
     "/bin/WebFormsMvp.dll",
     "/bin/Microsoft.Web.Infrastructure.dll",
     "/bin/Newtonsoft.Json.Bson.dll",
     "/bin/System.Memory.dll",
     "/bin/System.Threading.Tasks.Extensions",
-    "/bin/System.Runtime.CompilerServices.Unsafe.dll"
+    "/bin/System.Runtime.CompilerServices.Unsafe.dll",
+    "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
+    "/Install/Module/DNNCE_TelerikRemoval_*_Install.zip"
   ],
   "installInclude": ["/Install/InstallWizard.aspx.cs"],
   "upgradeExclude": [
@@ -69,6 +70,9 @@
     "/bin/System.Memory.dll",
     "/bin/System.Threading.Tasks.Extensions.dll",
     "/bin/System.Runtime.CompilerServices.Unsafe.dll"
+  ],
+  "upgradeInclude": [
+    "/Install/Module/DNNCE_TelerikRemoval_*_Install.zip"
   ],
   "symbolsInclude": [
     "/bin/*.pdb",
