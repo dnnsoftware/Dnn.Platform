@@ -53,7 +53,6 @@
     "/bin/System.Threading.Tasks.Extensions.dll",
     "/bin/System.Runtime.CompilerServices.Unsafe.dll",
     "/bin/BouncyCastle.Cryptography.dll",
-    "/bin/Microsoft.Bcl.AsyncInterfaces.dll",
     "/bin/Microsoft.Bcl.Memory.dll",
     "/bin/Microsoft.Bcl.TimeProvider.dll",
     "/bin/System.Text.Encodings.Web.dll",
