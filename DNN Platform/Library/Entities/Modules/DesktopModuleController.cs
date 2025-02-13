@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Xml;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
@@ -500,7 +501,14 @@ namespace DotNetNuke.Entities.Modules
 
         internal static void AddDesktopModulePageToPortal(DesktopModuleInfo desktopModule, string pageName, int portalId, ref bool createdNewPage, ref bool addedNewModule)
         {
-            var tabPath = string.Format("//{0}//{1}", portalId == Null.NullInteger ? "Host" : "Admin", pageName);
+            var hostTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host", Null.NullString);
+            if (hostTabId == Null.NullInteger)
+            {
+                return;
+            }
+
+            var tabPath = Globals.GenerateTabPath(hostTabId, pageName);
+
             var tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
             TabInfo existTab = TabController.Instance.GetTab(tabId, portalId);
             if (existTab == null)
