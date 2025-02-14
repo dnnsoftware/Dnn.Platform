@@ -1,6 +1,7 @@
 @use "resizable";
 @use "spinner";
 @use "tabs";
+@use "dialog";
 
 /* jQuery UI overrides. */
 /* We may be able to remove the dnnForm scope if tested to work good with a single jQuery UI theme. */
