@@ -9,7 +9,12 @@ namespace DotNetNuke.Web.Client
     using System.Reflection;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     // note: this class is duplicated in ClientDependency.Core.Config.DnnConfiguration, any updates need to be synced between the two.
     public partial class ClientResourceSettings
@@ -26,8 +31,6 @@ namespace DotNetNuke.Web.Client
         public static readonly string VersionKey = "CrmVersion";
 
         private static readonly Type PortalControllerType;
-        private static readonly Type PortalAliasControllerType;
-        private static readonly Type HostControllerType;
         private static readonly Type CommonGlobalsType;
 
         private bool statusChecked;
@@ -40,32 +43,11 @@ namespace DotNetNuke.Web.Client
                 // all these types are part of the same library, so we don't need a separate catch for each one
                 CommonGlobalsType = Type.GetType("DotNetNuke.Common.Globals, DotNetNuke");
                 PortalControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalController, DotNetNuke");
-                PortalAliasControllerType = Type.GetType("DotNetNuke.Entities.Portals.PortalAliasController, DotNetNuke");
-                HostControllerType = Type.GetType("DotNetNuke.Entities.Controllers.HostController, DotNetNuke");
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to get get types for reflection", exception);
             }
-        }
-
-        private enum UpgradeStatus
-        {
-            /// <summary>The application need update to a higher version.</summary>
-            Upgrade = 0,
-
-            /// <summary>The application need to install itself.</summary>
-            Install = 1,
-
-            /// <summary>The application is normal running.</summary>
-            None = 2,
-
-            /// <summary>The application occur error when running.</summary>
-            Error = 3,
-
-            /// <summary>The application status is unknown,</summary>
-            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown = 4,
         }
 
         private UpgradeStatus Status
@@ -199,24 +181,35 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
+        private static IServiceScope GetServiceScope()
+        {
+            var getOrCreateServiceScopeMethod = CommonGlobalsType.GetMethod("GetOrCreateServiceScope", BindingFlags.NonPublic | BindingFlags.Static);
+            var serviceScope = getOrCreateServiceScopeMethod.Invoke(null, Array.Empty<object>());
+            return (IServiceScope)serviceScope;
+        }
+
         private static string GetPortalSettingThroughReflection(int? portalId, string settingKey)
         {
+            if (portalId is null)
+            {
+                return null;
+            }
+
             try
             {
-                if (portalId.HasValue)
+                using var scope = GetServiceScope();
+                var portalController = ActivatorUtilities.GetServiceOrCreateInstance(scope.ServiceProvider, PortalControllerType);
+                var method = PortalControllerType.GetMethod("GetPortalSettings", BindingFlags.Public | BindingFlags.Instance);
+                var dictionary = (Dictionary<string, string>)method.Invoke(portalController, new object[] { portalId.Value, });
+
+                if (dictionary.TryGetValue(settingKey, out var value))
                 {
-                    var method = PortalControllerType.GetMethod("GetPortalSettingsDictionary", BindingFlags.NonPublic | BindingFlags.Static);
-                    var dictionary = (Dictionary<string, string>)method.Invoke(null, new object[] { portalId.Value });
-                    string value;
-                    if (dictionary.TryGetValue(settingKey, out value))
-                    {
-                        return value;
-                    }
+                    return value;
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Portal Setting Through Reflection", exception);
             }
 
             return null;
@@ -226,17 +219,20 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = PortalAliasControllerType.GetMethod("GetPortalAliasInfo");
-                var portalAliasInfo = HttpContext.Current != null ? method.Invoke(null, new object[] { HttpContext.Current.Request.Url.Host }) : null;
-                if (portalAliasInfo != null)
+                if (HttpContext.Current == null)
                 {
-                    object portalId = portalAliasInfo.GetType().GetProperty("PortalID").GetValue(portalAliasInfo, new object[] { });
-                    return (int)portalId;
+                    return null;
                 }
+
+                using var scope = GetServiceScope();
+                var portalAliasService = scope.ServiceProvider.GetRequiredService<IPortalAliasService>();
+                var alias = portalAliasService.GetPortalAlias(HttpContext.Current.Request.Url.Host);
+
+                return alias.PortalId;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Portal ID Through Reflection", exception);
             }
 
             return null;
@@ -246,19 +242,18 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var method = HostControllerType.GetMethod("GetSettingsDictionary");
-                var property = HostControllerType.BaseType.GetProperty("Instance", BindingFlags.Static | BindingFlags.Public);
-                var instance = property.GetValue(null, Type.EmptyTypes);
-                var dictionary = (Dictionary<string, string>)method.Invoke(instance, Type.EmptyTypes);
-                string value;
-                if (dictionary.TryGetValue(settingKey, out value))
+                using var scope = GetServiceScope();
+                var hostSettingsService = scope.ServiceProvider.GetRequiredService<IHostSettingsService>();
+
+                var dictionary = hostSettingsService.GetSettingsDictionary();
+                if (dictionary.TryGetValue(settingKey, out var value))
                 {
                     return value;
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignore
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Host Setting Through Reflection", exception);
             }
 
             return null;
@@ -296,12 +291,13 @@ namespace DotNetNuke.Web.Client
         {
             try
             {
-                var property = CommonGlobalsType.GetProperty("Status", BindingFlags.Static | BindingFlags.Public);
-                var status = (UpgradeStatus)property.GetValue(null, null);
-                return status;
+                using var scope = GetServiceScope();
+                var applicationStatusInfo = scope.ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+                return applicationStatusInfo.Status;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to Get Status By Reflection", exception);
                 return UpgradeStatus.Unknown;
             }
         }
