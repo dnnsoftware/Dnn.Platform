@@ -46,11 +46,19 @@
     "/bin/WebMatrix.Data.dll",
     "/bin/WebMatrix.WebData.dll",
     "/bin/WebFormsMvp.dll",
+    "/bin/ICSharpCode.SharpZipLib.dll",
     "/bin/Microsoft.Web.Infrastructure.dll",
     "/bin/Newtonsoft.Json.Bson.dll",
     "/bin/System.Memory.dll",
-    "/bin/System.Threading.Tasks.Extensions",
     "/bin/System.Runtime.CompilerServices.Unsafe.dll",
+    "/bin/BouncyCastle.Cryptography.dll",
+    "/bin/Microsoft.Bcl.Memory.dll",
+    "/bin/Microsoft.Bcl.TimeProvider.dll",
+    "/bin/System.Text.Encodings.Web.dll",
+    "/bin/System.Text.Json.dll",
+    "/bin/System.ValueTuple.dll",
+    "/bin/System.Numerics.Vectors.dll",
+    "/bin/System.Formats.Asn1.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
     "/Install/Module/DNNCE_TelerikRemoval_*_Install.zip"
   ],
@@ -64,12 +72,7 @@
     "/bin/Providers/DotNetNuke.Providers.AspNetClientCapabilityProvider.dll",
     "/bin/Newtonsoft.Json.dll",
     "/Config/DotNetNuke.config",
-    "/Install/InstallWizard.aspx",
-    "/bin/WebFormsMvp.dll",
-    "/bin/ICSharpCode.SharpZipLib.dll",
-    "/bin/System.Memory.dll",
-    "/bin/System.Threading.Tasks.Extensions.dll",
-    "/bin/System.Runtime.CompilerServices.Unsafe.dll"
+    "/Install/InstallWizard.aspx"
   ],
   "upgradeInclude": [
     "/Install/Module/DNNCE_TelerikRemoval_*_Install.zip"

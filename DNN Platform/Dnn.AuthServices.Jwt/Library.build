@@ -29,5 +29,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Threading.Tasks.Extensions.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.ValueTuple.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Bcl.AsyncInterfaces.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Bcl.Memory.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Bcl.TimeProvider.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>

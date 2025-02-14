@@ -49,6 +49,10 @@
             </assembly>
             <assembly>
               <path>bin</path>
+              <name>System.IO.Pipelines.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
               <name>System.Text.Encodings.Web.dll</name>
             </assembly>
             <assembly>
@@ -78,6 +82,14 @@
             <assembly>
               <path>bin</path>
               <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.Memory.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.TimeProvider.dll</name>
             </assembly>
           </assemblies>
         </component>
