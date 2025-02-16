@@ -8,7 +8,6 @@ namespace DotNetNuke.Services.Upgrade
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -1392,54 +1391,11 @@ namespace DotNetNuke.Services.Upgrade
 
             try
             {
-                if (version.Revision == -1)
+                switch (version.ToString(3))
                 {
-                    switch (version.ToString(3))
-                    {
-                        case "9.1.0":
-                            UpgradeToVersion910();
-                            break;
-                        case "9.2.0":
-                            UpgradeToVersion920();
-                            break;
-                        case "9.2.1":
-                            UpgradeToVersion921();
-                            break;
-                        case "9.3.0":
-                            UpgradeToVersion930();
-                            break;
-                        case "9.4.1":
-                            UpgradeToVersion941();
-                            break;
-                        case "9.6.0":
-                            UpgradeToVersion960();
-                            break;
-                    }
-                }
-                else
-                {
-                    // Incremental
-                    switch (version.ToString(4))
-                    {
-                        case "8.0.0.6":
-                            UpgradeToVersion8006();
-                            break;
-                        case "8.0.0.7":
-                            UpgradeToVersion8007();
-                            break;
-                        case "8.0.0.13":
-                            UpgradeToVersion80013();
-                            break;
-                        case "8.0.0.16":
-                            UpgradeToVersion80016();
-                            break;
-                        case "8.0.0.26":
-                            UpgradeToVersion80026();
-                            break;
-                        case "8.0.0.27":
-                            UpgradeToVersion80027();
-                            break;
-                    }
+                    case "10.0.0":
+                        UpgradeToVersion10_0_0();
+                        break;
                 }
             }
             catch (Exception ex)
@@ -2568,146 +2524,8 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static void UpgradeToVersion8006()
+        private static void UpgradeToVersion10_0_0()
         {
-            RemoveAdminPages("//Admin//Languages");
-            RemoveAdminPages("//Admin//Lists");
-            RemoveAdminPages("//Admin//LogViewer");
-            RemoveAdminPages("//Admin//Newsletters");
-            RemoveAdminPages("//Admin//Pages");
-            RemoveAdminPages("//Admin//RecycleBin");
-            RemoveAdminPages("//Admin//SiteLog");
-            RemoveAdminPages("//Admin//SiteWizard");
-            RemoveAdminPages("//Admin//Vendors");
-            RemoveHostPage("Lists");
-            RemoveHostPage("Vendors");
-
-            var package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.Vendors");
-            if (package != null)
-            {
-                PackageController.Instance.DeleteExtensionPackage(package);
-            }
-
-            package = PackageController.Instance.GetExtensionPackage(-1, p => p.Name == "DotNetNuke.SiteLog");
-            if (package != null)
-            {
-                PackageController.Instance.DeleteExtensionPackage(package);
-            }
-        }
-
-        private static void UpgradeToVersion8007()
-        {
-            RemoveHostPage("Dashboard");
-            RemoveHostPage("SQL");
-            RemoveHostPage("Configuration Manager");
-
-            UninstallPackage("DotNetNuke.ProfessionalPreview", "Module");
-            UninstallPackage("DotNetNuke.Dashboard", "Module");
-            UninstallPackage("DotNetNuke.Configuration Manager", "Module");
-        }
-
-        private static void UpgradeToVersion80013()
-        {
-            UninstallPackage("DotNetNuke.Newsletters", "Module");
-        }
-
-        private static void UpgradeToVersion80016()
-        {
-            UninstallPackage("Solutions", "Module");
-
-            RemoveAdminPages("//Admin//GoogleAnalytics");
-            UninstallPackage("DotNetNuke.Google Analytics", "Module");
-
-            RemoveAdminPages("//Admin//AdvancedSettings");
-            UninstallPackage("DotNetNuke.AdvancedSettings", "Module");
-            UninstallPackage("DotNetNuke.ContentList", "Module");
-
-            RemoveAdminPages("//Admin//Skins");
-            UninstallPackage("DotNetNuke.Skins", "Module");
-            UninstallPackage("DotNetNuke.Skin Designer", "Module");
-            UninstallPackage("DotNetNuke.Banners", "Module");
-
-            RemoveGettingStartedPages();
-        }
-
-        private static void UpgradeToVersion80026()
-        {
-            FixTabsMissingLocalizedFields();
-        }
-
-        private static void UpgradeToVersion80027()
-        {
-            RemoveAdminPages("//Admin//DynamicContentTypeManager");
-            UninstallPackage("Dnn.DynamicContentManager", "Module");
-            UninstallPackage("Dnn.DynamicContentViewer", "Module");
-        }
-
-        private static void UpgradeToVersion910()
-        {
-            RemoveHostPage("Host Settings");
-            RemoveHostPage("Site Management");
-            RemoveHostPage("Schedule");
-            RemoveHostPage("Superuser Accounts");
-            RemoveHostPage("Extensions");
-            RemoveHostPage("Device Detection Management");
-
-            RemoveAdminPages("//Admin//Extensions");
-            RemoveAdminPages("//Admin//SiteSettings");
-            RemoveAdminPages("//Admin//SecurityRoles");
-            RemoveAdminPages("//Admin//Taxonomy");
-            RemoveAdminPages("//Admin//SiteRedirectionManagement");
-            RemoveAdminPages("//Admin//DevicePreviewManagement");
-            RemoveAdminPages("//Admin//SearchAdmin");
-
-            // Normal Modules
-            UninstallPackage("DotNetNuke.MobileManagement", "Module");
-            UninstallPackage("DotNetNuke.Modules.PreviewProfileManagement", "Module");
-
-            UninstallPackage("DotNetNuke.Dashboard.WebServer", "DashboardControl");
-            UninstallPackage("DotNetNuke.Dashboard.Database", "DashboardControl");
-            UninstallPackage("DotNetNuke.Dashboard.Host", "DashboardControl");
-            UninstallPackage("DotNetNuke.Dashboard.Portals", "DashboardControl");
-            UninstallPackage("DotNetNuke.Dashboard.Modules", "DashboardControl");
-            UninstallPackage("DotNetNuke.Dashboard.Skins", "DashboardControl");
-
-            // Admin Modules
-            UninstallPackage("DotNetNuke.HostSettings", "Module");
-            UninstallPackage("DotNetNuke.Languages", "Module");
-            UninstallPackage("DotNetNuke.Lists", "Module");
-            UninstallPackage("DotNetNuke.LogViewer", "Module");
-            UninstallPackage("DotNetNuke.RecycleBin", "Module");
-            UninstallPackage("DotNetNuke.Sitemap", "Module");
-            UninstallPackage("DotNetNuke.SiteWizard", "Module");
-            UninstallPackage("Dnn.Themes", "Module"); // aka. Skin Management
-            UninstallPackage("DotNetNuke.Tabs", "Module");
-
-            // at last remove "/Admin" / "/Host" pages
-            UninstallPackage("DotNetNuke.Portals", "Module");
-            UninstallPackage("DotNetNuke.Scheduler", "Module");
-            UninstallPackage("DotNetNuke.SearchAdmin", "Module");
-            UninstallPackage("DotNetNuke.SQL", "Module");
-            UninstallPackage("DotNetNuke.Extensions", "Module");
-            UninstallPackage("DotNetNuke.Configuration Manager", "Module");
-            UninstallPackage("DotNetNuke.Dashboard", "Module");
-            UninstallPackage("DotNetNuke.Google Analytics", "Module");
-            UninstallPackage("DotNetNuke.Taxonomy", "Module");
-
-            UninstallPackage("UrlManagement", "Library", false);
-        }
-
-        private static void UpgradeToVersion920()
-        {
-            DataProvider.Instance().UnRegisterAssembly(Null.NullInteger, "SharpZipLib.dll");
-            DataProvider.Instance().RegisterAssembly(Null.NullInteger, "ICSharpCode.SharpZipLib.dll", "0.86.0");
-
-            RemoveAdminPages("//Admin//SearchEngineSiteMap");
-            RemoveAdminPages("//Admin//Solutions");
-            RemoveAdminPages("//Admin//BulkEmail");
-
-            RemoveHostPage("Marketplace");
-            RemoveHostPage("Module Definitions");
-            RemoveHostPage("Portals");
-
             if (!HostTabExists("Superuser Accounts"))
             {
                 // add SuperUser Accounts module and tab
@@ -2729,125 +2547,6 @@ namespace DotNetNuke.Services.Upgrade
                     AddModuleToPage(newPage, moduleDefId, "SuperUser Accounts", "~/Icons/Sigma/Users_32X32_Standard.png");
                 }
             }
-
-            var portalController = PortalController.Instance;
-            foreach (PortalInfo portal in portalController.GetPortals())
-            {
-                if (!string.IsNullOrEmpty(portal.ProcessorPassword))
-                {
-                    portalController.UpdatePortalInfo(portal);
-                }
-            }
-        }
-
-        private static void UpgradeToVersion921()
-        {
-            UninstallPackage("jQuery", "Javascript_Library", true, "1.9.1");
-            UninstallPackage("jQuery-UI", "Javascript_Library", true, "1.11.3");
-            UninstallPackage("jQuery-Migrate", "Javascript_Library", true, "1.2.1");
-        }
-
-        private static void UpgradeToVersion930()
-        {
-            var applicationName = System.Web.Security.Membership.ApplicationName;
-            if (string.IsNullOrWhiteSpace(applicationName))
-            {
-                Logger.Warn("Unable to run orphaned user check. Application name is missing or not defined.");
-                return;
-            }
-
-            using (var reader = DataProvider.Instance().ExecuteReader("DeleteOrphanedAspNetUsers", applicationName))
-            {
-                while (reader.Read())
-                {
-                    var errorMsg = reader["ErrorMessage"];
-                    if (errorMsg != null)
-                    {
-                        Logger.Error("Failed to remove orphaned aspnet users. Error: " +
-                            errorMsg.ToString());
-                    }
-                }
-            }
-        }
-
-        private static void UpgradeToVersion941()
-        {
-            // It's possible previous versions of DNN created invalid binding redirects with <dependentAssembly xmlns="">, which are ignored
-            // This finds these and removes them, adding a correct binding redirect if one doesn't exist
-            var webConfig = Config.Load();
-
-            var ns = new XmlNamespaceManager(webConfig.NameTable);
-            ns.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
-
-            var invalidDependentAssemblies = webConfig.SelectNodes("/configuration/runtime/ab:assemblyBinding/dependentAssembly", ns);
-            foreach (XmlNode dependentAssembly in invalidDependentAssemblies)
-            {
-                var assemblyBindingElement = dependentAssembly.ParentNode;
-                var assemblyIdentity = dependentAssembly.ChildNodes.Cast<XmlNode>().SingleOrDefault(n => n.LocalName.Equals("assemblyIdentity", StringComparison.Ordinal));
-                if (assemblyIdentity == null)
-                {
-                    assemblyBindingElement.RemoveChild(dependentAssembly);
-                    continue;
-                }
-
-                var name = assemblyIdentity.Attributes["name"]?.Value;
-                var publicKeyToken = assemblyIdentity.Attributes["publicKeyToken"]?.Value;
-                if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(publicKeyToken))
-                {
-                    assemblyBindingElement.RemoveChild(dependentAssembly);
-                    continue;
-                }
-
-                var dependentAssemblyXPath = $"/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='{name}'][ab:assemblyIdentity/@publicKeyToken='{publicKeyToken}']";
-                var validDependentAssembly = webConfig.SelectSingleNode(dependentAssemblyXPath, ns);
-                if (validDependentAssembly != null)
-                {
-                    // a valid dependentAssembly exists for this assembly, just remove the invalid element
-                    assemblyBindingElement.RemoveChild(dependentAssembly);
-                    continue;
-                }
-
-                // otherwise, replace the invalid dependentAssembly with a valid version of it
-                AssemblyName assemblyName;
-                try
-                {
-                    assemblyName = AssemblyName.GetAssemblyName(Path.Combine(Globals.ApplicationMapPath, "bin", name + ".dll"));
-                }
-                catch
-                {
-                    assemblyBindingElement.RemoveChild(dependentAssembly);
-                    continue;
-                }
-
-                var validAssemblyIdentity = webConfig.CreateElement("assemblyIdentity", "urn:schemas-microsoft-com:asm.v1");
-                validAssemblyIdentity.AddAttribute("name", name);
-                validAssemblyIdentity.AddAttribute("publicKeyToken", publicKeyToken);
-
-                var validBindingRedirect = webConfig.CreateElement("bindingRedirect", "urn:schemas-microsoft-com:asm.v1");
-                validBindingRedirect.AddAttribute("oldVersion", "0.0.0.0-32767.32767.32767.32767");
-                validBindingRedirect.AddAttribute("newVersion", assemblyName.Version.ToString());
-
-                validDependentAssembly = webConfig.CreateElement("dependentAssembly", "urn:schemas-microsoft-com:asm.v1");
-                validDependentAssembly.AppendChild(validAssemblyIdentity);
-                validDependentAssembly.AppendChild(validBindingRedirect);
-
-                assemblyBindingElement.ReplaceChild(validDependentAssembly, dependentAssembly);
-            }
-
-            if (invalidDependentAssemblies.Count > 0)
-            {
-                Config.Save(webConfig);
-            }
-        }
-
-        private static void UpgradeToVersion960()
-        {
-            // Set default end user upload extension whitelist - ensure we don't add extensions that were not in the master list before
-            var toAdd = new List<string> { ".export" };
-            HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
-            var exts = new FileExtensionWhitelist("jpg,jpeg,jpe,gif,bmp,png,svg,doc,docx,xls,xlsx,ppt,pptx,pdf,txt,zip,rar,ico,avi,mpg,mpeg,mp3,wmv,mov,wav,mp4,webm,ogv,export");
-            exts.RestrictBy(Host.AllowedExtensionWhitelist);
-            HostController.Instance.Update("DefaultEndUserExtensionWhitelist", exts.ToStorageString());
         }
 
         private static void FixFipsCompilanceAssembly(string filePath)
