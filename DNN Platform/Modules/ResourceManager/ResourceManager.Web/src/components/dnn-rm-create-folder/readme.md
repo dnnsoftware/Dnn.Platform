@@ -20,12 +20,18 @@
 
 ### Depends on
 
+- dnn-input
+- dnn-select
 - dnn-button
 
 ### Graph
 ```mermaid
 graph TD;
+  dnn-rm-create-folder --> dnn-input
+  dnn-rm-create-folder --> dnn-select
   dnn-rm-create-folder --> dnn-button
+  dnn-input --> dnn-fieldset
+  dnn-select --> dnn-fieldset
   dnn-button --> dnn-modal
   dnn-button --> dnn-button
   dnn-action-create-folder --> dnn-rm-create-folder
