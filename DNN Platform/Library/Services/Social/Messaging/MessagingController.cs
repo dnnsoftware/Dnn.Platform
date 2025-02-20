@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Social.Messaging
                                 IMessagingController
     {
         private const int MaxRecipients = 2000;
-        private const int MaxSubjectLenght = 400;
+        private const int MaxSubjectLength = 400;
         private const double DefaultMessagingThrottlingIntervalMinutes = 0.5;
 
         private readonly IDataService dataService;
@@ -82,9 +82,9 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new ArgumentException(Localization.GetString("PrivateMessageDisabledError", Localization.ExceptionsResourceFile));
             }
 
-            if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > MaxSubjectLenght)
+            if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > MaxSubjectLength)
             {
-                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), MaxSubjectLenght, message.Subject.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), MaxSubjectLength, message.Subject.Length));
             }
 
             if (roles != null && roles.Count > 0 && !this.IsAdminOrHost(sender))
