@@ -738,6 +738,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
+            this._folderManager.Setup(fm => fm.GetUserFolder(It.IsAny<UserInfo>())).Returns(new FolderInfo { FolderID = -1, FolderPath = "path" });
+
             InternalMessagingController.SetTestableInstance(this._mockInternalMessagingController.Object);
             this._mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
@@ -1283,7 +1285,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this._adminUserInfo.PortalID = Constants.CONTENT_ValidPortalId;
 
-            this._mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), this._adminUserInfo.PortalID, Null.NullInteger)).Returns(1);
             this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(true);
 
             var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._adminUserInfo);
@@ -1297,7 +1298,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this._user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
 
-            this._mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), this._user12UserInfo.PortalID, Null.NullInteger)).Returns(1);
             this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(false);
 
             this._mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(this._user12UserInfo)).Returns((Message)null);
@@ -1521,7 +1521,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 AdministratorRoleName = Constants.RoleName_Administrators,
             };
 
-            this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
+            this._portalController.Setup(pc => pc.GetCurrentSettings()).Returns(portalSettings);
         }
 
         private void SetupCachingProvider()
