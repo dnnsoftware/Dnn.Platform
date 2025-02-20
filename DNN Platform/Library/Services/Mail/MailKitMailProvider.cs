@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        private (ISmtpOAuthProvider, int) GetOAuthProvider(SmtpClient smtpClient, SmtpInfo smtpInfo)
+        private (ISmtpOAuthProvider AuthProvider, int PortalId) GetOAuthProvider(SmtpClient smtpClient, SmtpInfo smtpInfo)
         {
             var usingOAuth = smtpInfo.Authentication == "3";
             if (usingOAuth)
