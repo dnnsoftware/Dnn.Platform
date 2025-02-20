@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>dotnetnuke.log4net</name>
+        <name>DotNetNuke.Log4Net</name>
     </assembly>
     <members>
         <member name="T:log4net.Util.PatternConverter">

@@ -48,9 +48,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke.log4net">
+    <Reference Include="DotNetNuke.Log4Net">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DotNetNuke.Log4net\bin\dotnetnuke.log4net.dll</HintPath>
+      <HintPath>..\DotNetNuke.Log4net\bin\DotNetNuke.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
