@@ -6,13 +6,13 @@ namespace DotNetNuke.Entities.Users
     /// <summary>DefaultRelationshipType defined in system.</summary>
     public enum DefaultRelationshipTypes
     {
-        /// <summary>Friends Relationship Type</summary>
+        /// <summary>Friends Relationship Type.</summary>
         Friends = 1,
 
-        /// <summary>Followers Relationship Type</summary>
+        /// <summary>Followers Relationship Type.</summary>
         Followers = 2,
 
-        /// <summary>A user-owned custom-list, e.g. my best friends</summary>
+        /// <summary>A user-owned custom-list, e.g. my best friends.</summary>
         CustomList = 3,
     }
 }

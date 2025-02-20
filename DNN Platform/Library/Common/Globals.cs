@@ -233,16 +233,16 @@ namespace DotNetNuke.Common
         /// </remarks>
         public enum PerformanceSettings
         {
-            /// <summary>No Caching</summary>
+            /// <summary>No Caching.</summary>
             NoCaching = 0,
 
-            /// <summary>Caching for a short time</summary>
+            /// <summary>Caching for a short time.</summary>
             LightCaching = 1,
 
-            /// <summary>Caching for moderate time</summary>
+            /// <summary>Caching for moderate time.</summary>
             ModerateCaching = 3,
 
-            /// <summary>Caching for a long time</summary>
+            /// <summary>Caching for a long time.</summary>
             HeavyCaching = 6,
         }
 
@@ -260,7 +260,7 @@ namespace DotNetNuke.Common
         /// </remarks>
         public enum PortalRegistrationType
         {
-            /// <summary>Disabled Registration</summary>
+            /// <summary>Disabled Registration.</summary>
             NoRegistration = 0,
 
             /// <summary>Account need be approved by portal's administrator.</summary>
@@ -288,7 +288,7 @@ namespace DotNetNuke.Common
             /// <summary>The application occur error when running.</summary>
             Error = 3,
 
-            /// <summary>The application status is unknown,</summary>
+            /// <summary>The application status is unknown.</summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
             Unknown = 4,
         }
