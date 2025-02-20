@@ -183,7 +183,8 @@ namespace DotNetNuke.Web.InternalServices
                                 state =>
                                     {
                                         returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
-                                    }, null);
+                                    },
+                                null);
                         }
 
                         /* Response Content Type cannot be application/json

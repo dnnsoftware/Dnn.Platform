@@ -1749,7 +1749,8 @@ namespace DotNetNuke.Services.FileSystem
                     string.Format(
                         Localization.GetExceptionMessage(
                             "AddFileExtensionNotAllowed",
-                            "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
+                            "The extension '{0}' is not allowed. The file has not been added."),
+                        Path.GetExtension(fileName)));
             }
 
             if (!this.IsValidFilename(fileName))
@@ -1758,7 +1759,8 @@ namespace DotNetNuke.Services.FileSystem
                     string.Format(
                         Localization.GetExceptionMessage(
                             "AddFilenameNotAllowed",
-                            "The file name '{0}' is not allowed. The file has not been added."), fileName));
+                            "The file name '{0}' is not allowed. The file has not been added."),
+                        fileName));
             }
         }
 

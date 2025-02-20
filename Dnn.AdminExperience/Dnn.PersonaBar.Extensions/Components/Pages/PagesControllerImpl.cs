@@ -1581,7 +1581,8 @@ namespace Dnn.PersonaBar.Pages.Components
                                 UserID = permission.UserID,
                                 PermissionKey = permission.PermissionKey,
                                 AllowAccess = permission.AllowAccess,
-                            }, true);
+                            },
+                            true);
                     }
 
                     ModulePermissionController.SaveModulePermissions(newModule);
