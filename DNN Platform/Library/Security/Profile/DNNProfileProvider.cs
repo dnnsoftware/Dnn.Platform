@@ -49,6 +49,7 @@ namespace DotNetNuke.Security.Profile
                 }
                 else
                 {
+                    var objSecurity = PortalSecurity.Instance;
                     using (var dr = this.dataProvider.GetUserProfile(user.UserID))
                     {
                         while (dr.Read())
@@ -63,7 +64,15 @@ namespace DotNetNuke.Security.Profile
                             profProperty = properties.GetById(definitionId);
                             if (profProperty != null)
                             {
-                                profProperty.PropertyValue = Convert.ToString(dr["PropertyValue"]);
+                                if (Convert.ToBoolean(dr["PropertyIsSecure"]) == true)
+                                {
+                                    profProperty.PropertyValue = objSecurity.DecryptString(Convert.ToString(dr["PropertyValue"]), DotNetNuke.Common.Utilities.Config.GetDecryptionkey());
+                                }
+                                else
+                                {
+                                    profProperty.PropertyValue = Convert.ToString(dr["PropertyValue"]);
+                                }
+
                                 var extendedVisibility = string.Empty;
                                 var schemaTable = dr.GetSchemaTable();
                                 if (schemaTable != null && schemaTable.Select("ColumnName = 'ExtendedVisibility'").Length > 0)
@@ -146,12 +155,19 @@ namespace DotNetNuke.Security.Profile
                 {
                     var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
+
+                    if (profProperty.Encrypted == true)
+                    {
+                        propertyValue = objSecurity.EncryptString(propertyValue, DotNetNuke.Common.Utilities.Config.GetDecryptionkey());
+                    }
+
                     this.dataProvider.UpdateProfileProperty(
                         Null.NullInteger,
                         user.UserID,
                         profProperty.PropertyDefinitionId,
                         propertyValue,
                         (int)profProperty.ProfileVisibility.VisibilityMode,
+                        profProperty.Encrypted,
                         profProperty.ProfileVisibility.ExtendedVisibilityString(),
                         DateTime.Now);
                     EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");

@@ -153,6 +153,9 @@
   <data name="ProfilePropertyDefinition_ValidationExpression.Help" xml:space="preserve">
     <value>You can provide a regular expression to validate the data entered for this property.</value>
   </data>
+  <data name="ProfilePropertyDefinition_PropertyEncryption.Help" xml:space="preserve">
+    <value>Use this to add encryption. Existing values will not be encrypted or decrypted. Only new values are affected..</value>
+  </data>
   <data name="ProfilePropertyDefinition_ViewOrder.Text" xml:space="preserve">
     <value>View Order:</value>
   </data>

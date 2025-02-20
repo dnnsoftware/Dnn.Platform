@@ -27,6 +27,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 
         public bool ReadOnly { get; set; }
 
+        public bool Encrypted { get; set; }
+
         public bool Visible { get; set; }
 
         public int ViewOrder { get; set; }

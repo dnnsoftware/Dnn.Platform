@@ -650,6 +650,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         profileProperty.Required,
                         profileProperty.ReadOnly,
                         profileProperty.Visible,
+                        profileProperty.Encrypted,
                         profileProperty.ViewOrder,
                         DefaultVisibility = (int)profileProperty.DefaultVisibility,
                     }
@@ -873,6 +874,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         PropertyName = request.PropertyName,
                         ReadOnly = request.ReadOnly,
                         Required = request.Required,
+                        Encrypted = request.Encrypted,
                         ValidationExpression = request.ValidationExpression,
                         ViewOrder = request.ViewOrder,
                         Visible = request.Visible,
