@@ -144,7 +144,7 @@
                     HTTPAlias = GenericHost,
                 },
                 DoRewrite = true,
-                RewritePath = RewritePath
+                RewritePath = RewritePath,
             };
             urlAction.SetRedirectAllowed(string.Empty, friendlyUrlSettings);
             var requestType = string.Empty;
@@ -161,7 +161,7 @@
                     urlAction,
                     requestType,
                     friendlyUrlSettings,
-                    portalHomeTabId
+                    portalHomeTabId,
                 });
 
             // Assert
@@ -215,7 +215,7 @@
                 "LastModifiedOnDate",
                 "StateID",
                 "HasBeenPublished",
-                "IsSystem"
+                "IsSystem",
             };
             foreach (var column in tabColumns)
             {
@@ -387,7 +387,7 @@
                 "BrowserType",
                 "Skin",
                 "CultureCode",
-                "IsPrimary"
+                "IsPrimary",
             };
             foreach (var column in portalAliasColumns)
             {

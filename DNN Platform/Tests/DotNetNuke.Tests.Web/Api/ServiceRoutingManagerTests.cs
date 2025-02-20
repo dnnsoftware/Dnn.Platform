@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Web.Api
     {
         private static readonly List<string[]> EmptyStringArrays = new List<string[]>
         {
-            null, Array.Empty<string>(), new[] { string.Empty }, new string[] { null }
+            null, Array.Empty<string>(), new[] { string.Empty }, new string[] { null },
         };
 
         private Mock<IPortalController> mockPortalController;
