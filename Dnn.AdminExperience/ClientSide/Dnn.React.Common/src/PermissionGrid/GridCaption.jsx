@@ -5,9 +5,6 @@ import Label from "../Label";
 import RoleGroupFilter from "./RoleGroupFilter";
 import Suggestion from "./Suggestion";
 
-const nameColumnSpace = 15;
-const actionColumnSpace = 10;
-
 class GridCaption extends Component {
 
     constructor() {
