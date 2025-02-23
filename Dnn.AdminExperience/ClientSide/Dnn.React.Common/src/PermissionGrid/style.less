@@ -1,5 +1,8 @@
 @import "../../styles/index";
 .permissions-grid {
+    >div{
+        overflow-x: auto;
+    }
     .grid-caption {
         border-bottom: 1px solid var(--dnn-color-foreground-light, @alto);
         padding: 0;
@@ -112,5 +115,44 @@
         color: var(--dnn-color-foreground-light, @alto);
         font-weight: bold;
         text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 1px solid var(--dnn-color-foreground-light, #666);
+        tr{
+            th{
+                writing-mode: vertical-rl;
+                min-width: 2rem;
+                span{
+                    display: block;
+                    transform: translate(50%, 0) rotate(-135deg);
+                    text-align: left;
+                }
+                &:first-child {
+                    writing-mode: horizontal-tb;
+                    padding-left: 1rem;
+                    padding-bottom: 0.75rem;
+                    vertical-align: bottom;
+                    span{
+                        transform: none;
+                    }
+                }
+            }
+            td{
+                border-right: 1px solid var(--dnn-color-foreground-light, #666);
+                text-align: center;
+                a{
+                    svg{
+                        width: 2rem;
+                    }
+                }
+                &:first-child {
+                    text-align: left;
+                    padding-left: 1rem;
+                }
+            }
+        }
     }
 }

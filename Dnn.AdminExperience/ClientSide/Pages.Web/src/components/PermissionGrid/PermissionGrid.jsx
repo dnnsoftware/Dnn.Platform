@@ -37,8 +37,26 @@ class PermissionGrid extends Component {
                         allGroupsText: Localization.get("AllGroups"),
                         roleText: Localization.get("Role"),
                         userText: Localization.get("User"),
-                        ViewTab: Localization.get("ViewTab"),
-                        EditTab: Localization.get("EditTab")
+                        PermissionViewTab: Localization.get("PermissionViewTab"),
+                        PermissionViewTabDescription: Localization.get("PermissionViewTabDescription"),
+                        PermissionAdd: Localization.get("PermissionAdd"),
+                        PermissionAddDescription: Localization.get("PermissionAddDescription"),
+                        PermissionContent: Localization.get("PermissionContent"),
+                        PermissionContentDescription: Localization.get("PermissionContentDescription"),
+                        PermissionCopy: Localization.get("PermissionCopy"),
+                        PermissionCopyDescription: Localization.get("PermissionCopyDescription"),
+                        PermissionDelete: Localization.get("PermissionDelete"),
+                        PermissionDeleteDescription: Localization.get("PermissionDeleteDescription"),
+                        PermissionExport: Localization.get("PermissionExport"),
+                        PermissionExportDescription: Localization.get("PermissionExportDescription"),
+                        PermissionImport: Localization.get("PermissionImport"),
+                        PermissionImportDescription: Localization.get("PermissionImportDescription"),
+                        PermissionManage: Localization.get("PermissionManage"),
+                        PermissionManageDescription: Localization.get("PermissionManageDescription"),
+                        PermissionNavigate: Localization.get("PermissionNavigate"),
+                        PermissionNavigateDescription: Localization.get("PermissionNavigateDescription"),
+                        PermissionEditTag: Localization.get("PermissionEditTab"),
+                        PermissionEditTabDescription: Localization.get("PermissionEditTabDescription"),
                     }}
                     permissions={cloneDeep(this.props.permissions)} 
                     onPermissionsChanged={this.onPermissionsChanged.bind(this)}
