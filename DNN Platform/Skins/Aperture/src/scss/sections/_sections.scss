@@ -11,8 +11,12 @@
         max-width: 1280px;
     }
 	
-	// Edit mode: Content Minimum height even if there are no Modules on the Page.
-    @at-root .personabar-visible & .aperture-main{
-        min-height: 20vh;
+    // Sticky footer
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+    .aperture-main{
+        flex-grow: 1;
     }
 }
