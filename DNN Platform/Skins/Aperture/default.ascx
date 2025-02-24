@@ -6,7 +6,7 @@
   <!--#include file="partials/_header.ascx" -->
   
   <!-- Main Content -->
-  <main>
+  <main class="aperture-main">
     <div id="BannerPane" runat="server"></div>
     <div id="ContentPane" class="aperture-content-pane" runat="server"></div> 
     <div id="FluidPane" runat="server"></div>
