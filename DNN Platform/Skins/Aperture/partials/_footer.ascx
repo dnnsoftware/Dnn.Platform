@@ -1,4 +1,4 @@
-<footer>
+<footer class="aperture-footer">
   <div class="aperture-container">
         <div class="footer-left">
           <div class="footer-menu">

@@ -1,4 +1,4 @@
-<header>
+<header class="aperture-header">
   <div class="eyebrow-bar">
     <div class="aperture-container">
       <dnn:Login runat="server" id="dnnLogin" />
