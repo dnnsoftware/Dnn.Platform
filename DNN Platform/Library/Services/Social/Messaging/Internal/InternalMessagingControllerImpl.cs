@@ -22,15 +22,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
     /// <summary>The Controller class for social Messaging.</summary>
     internal class InternalMessagingControllerImpl : IInternalMessagingController
     {
-        internal const int ConstMaxTo = 2000;
-        internal const int ConstMaxSubject = 400;
-        internal const int ConstDefaultPageIndex = 0;
-        internal const int ConstDefaultPageSize = 10;
-        internal const string ConstSortColumnDate = "CreatedOnDate";
-        internal const string ConstSortColumnFrom = "From";
-        internal const string ConstSortColumnSubject = "Subject";
-        internal const bool ConstAscending = true;
-        internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
+        private const int DefaultPageIndex = 0;
+        private const int DefaultPageSize = 10;
+        private const string ConstSortColumnDate = "CreatedOnDate";
+        private const bool ConstAscending = true;
+        private const double DefaultMessagingThrottlingIntervalMinutes = 0.5;
 
         private readonly IDataService dataService;
 
@@ -41,7 +37,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         }
 
         /// <summary>Initializes a new instance of the <see cref="InternalMessagingControllerImpl"/> class.</summary>
-        /// <param name="dataService"></param>
+        /// <param name="dataService">The data service to use.</param>
         public InternalMessagingControllerImpl(IDataService dataService)
         {
             // Argument Contract
@@ -170,7 +166,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             var waitTime = 0;
 
             // MessagingThrottlingInterval contains the number of MINUTES to wait before sending the next message
-            var interval = this.GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingInterval) * 60;
+            var interval = this.GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingIntervalMinutes) * 60;
             if (interval > 0 && !this.IsAdminOrHost(sender))
             {
                 var lastSentMessage = this.GetLastSentMessage(sender);
@@ -277,7 +273,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <inheritdoc/>
         public virtual MessageBoxView GetRecentInbox(int userId)
         {
-            return this.GetRecentInbox(userId, ConstDefaultPageIndex, ConstDefaultPageSize);
+            return this.GetRecentInbox(userId, DefaultPageIndex, DefaultPageSize);
         }
 
         /// <inheritdoc/>
@@ -289,7 +285,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <inheritdoc/>
         public virtual MessageBoxView GetRecentSentbox(int userId)
         {
-            return this.GetRecentSentbox(userId, ConstDefaultPageIndex, ConstDefaultPageSize);
+            return this.GetRecentSentbox(userId, DefaultPageIndex, DefaultPageSize);
         }
 
         /// <inheritdoc/>
@@ -463,36 +459,75 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             this.dataService.MarkMessageAsSent(messageId, recipientId);
         }
 
+        /// <summary>
+        /// Gets the date time now (virtual so it can be mocked in test).
+        /// </summary>
+        /// <returns>The current <see cref="DateTime"/>.</returns>
         internal virtual DateTime GetDateTimeNow()
         {
             return DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Gets the current user information (virtual so it can be mocked in tests).
+        /// </summary>
+        /// <returns><see cref="UserInfo"/>.</returns>
         internal virtual UserInfo GetCurrentUserInfo()
         {
             return UserController.Instance.GetCurrentUserInfo();
         }
 
+        /// <summary>
+        /// Gets a portal setting (virtual so it can be mocked in tests).
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="defaultValue">The default value in case the setting does not exist.</param>
+        /// <returns>The value of the setting as an integer.</returns>
         internal virtual int GetPortalSettingAsInteger(string key, int portalId, int defaultValue)
         {
             return PortalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
         }
 
+        /// <summary>
+        /// Gets a portal setting (virtual so it can be mocked in tests).
+        /// </summary>
+        /// <param name="key">The key of the setting.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="defaultValue">The default value if the setting does not exist.</param>
+        /// <returns>The setting value as a double.</returns>
         internal virtual double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
         {
             return PortalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
         }
 
+        /// <summary>
+        /// Gets a portal setting (virtual so it can be mocked in tests).
+        /// </summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="defaultValue">The default value if the setting does not exist.</param>
+        /// <returns>The setting value as a string.</returns>
         internal virtual string GetPortalSetting(string settingName, int portalId, string defaultValue)
         {
             return PortalController.GetPortalSetting(settingName, portalId, defaultValue);
         }
 
+        /// <summary>
+        /// Determines whether the user is an admin or a host.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        /// <returns>A value indicating whether the user is an admin or a host.</returns>
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentSettings().AdministratorRoleName);
         }
 
+        /// <summary>
+        /// Filters user input.
+        /// </summary>
+        /// <param name="input">The input to filter.</param>
+        /// <returns>The filtered string.</returns>
         internal virtual string InputFilter(string input)
         {
             var ps = PortalSecurity.Instance;
