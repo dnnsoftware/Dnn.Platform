@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// </summary>
         /// <param name="request">The `HttpRequestMessage` instance that contains the token.</param>
         /// <returns>A tuple object containing an `ApiToken` object and a `UserInfo` object.</returns>
-        (ApiToken, UserInfo) ValidateToken(HttpRequestMessage request);
+        (ApiToken Token, UserInfo User) ValidateToken(HttpRequestMessage request);
 
         /// <summary>
         /// Sets the API token of the current thread.

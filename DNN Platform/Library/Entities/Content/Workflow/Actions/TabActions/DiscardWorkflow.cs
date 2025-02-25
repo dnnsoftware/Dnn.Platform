@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions.TabActions
 
         /// <inheritdoc />
         public ActionMessage GetActionMessage(StateTransaction stateTransaction, WorkflowState currentState)
-            => new ()
+            => new ActionMessage()
             {
                 Subject = GetString($"{nameof(DiscardWorkflow)}{nameof(ActionMessage.Subject)}", "Page Discarded"),
                 Body = GetString($"{nameof(DiscardWorkflow)}{nameof(ActionMessage.Body)}", "Edits for page '{0}' have been discarded.", GetTab(stateTransaction.ContentItemId).LocalizedTabName),

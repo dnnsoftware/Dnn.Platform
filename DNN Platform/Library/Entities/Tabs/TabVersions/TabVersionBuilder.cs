@@ -857,7 +857,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                         ModuleVersion = moduleVersion,
                         PaneName = module.PaneName,
                         TabVersionId = tabVersion.TabVersionId,
-                    }, module.CreatedByUserID);
+                    },
+                    module.CreatedByUserID);
             }
         }
 

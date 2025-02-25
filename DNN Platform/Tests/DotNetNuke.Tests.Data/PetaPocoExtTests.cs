@@ -44,7 +44,7 @@
                 new object[]
                 {
                     sql,
-                    args
+                    args,
                 });
 
             // Assert

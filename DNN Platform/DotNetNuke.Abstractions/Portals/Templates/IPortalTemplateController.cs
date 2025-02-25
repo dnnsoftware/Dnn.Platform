@@ -39,7 +39,7 @@ namespace DotNetNuke.Abstractions.Portals.Templates
         /// <param name="includeProfile">Whether to include user profile settings.</param>
         /// <param name="includeRoles">Whether to include the portal's roles.</param>
         /// <returns>A boolean indicating success and a string with an (success or error) message.</returns>
-        (bool success, string message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles);
+        (bool Success, string Message) ExportPortalTemplate(int portalId, string fileName, string description, bool isMultiLanguage, IEnumerable<string> locales, string localizationCulture, IEnumerable<int> exportTabIds, bool includeContent, bool includeFiles, bool includeModules, bool includeProfile, bool includeRoles);
 
         /// <summary>Load info for a portal template.</summary>
         /// <param name="templatePath">Full path to the portal template.</param>

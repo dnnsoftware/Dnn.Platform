@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions.TabActions
 
         /// <inheritdoc />
         public ActionMessage GetActionMessage(StateTransaction stateTransaction, WorkflowState currentState)
-            => new ()
+            => new ActionMessage()
             {
                 Subject = GetString($"{nameof(CompleteState)}{nameof(ActionMessage.Subject)}", "Page Approval"),
                 Body = GetString($"{nameof(CompleteState)}{nameof(ActionMessage.Body)}", "Page '{0}' is in the '{1}' state and awaits review and approval.", GetTab(stateTransaction.ContentItemId).LocalizedTabName, currentState.StateName),

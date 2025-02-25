@@ -52,13 +52,13 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>  Represents a possible mode for the File Control.</summary>
         protected enum FileControlMode
         {
-            /// <summary>  The File Control is in its Normal mode</summary>
+            /// <summary>  The File Control is in its Normal mode.</summary>
             Normal = 0,
 
-            /// <summary>  The File Control is in the Upload File mode</summary>
+            /// <summary>  The File Control is in the Upload File mode.</summary>
             UpLoadFile = 1,
 
-            /// <summary>  The File Control is in the Preview mode</summary>
+            /// <summary>  The File Control is in the Preview mode.</summary>
             Preview = 2,
         }
 

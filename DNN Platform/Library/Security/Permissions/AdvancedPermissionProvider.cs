@@ -187,7 +187,7 @@ namespace DotNetNuke.Security.Permissions
             return accessLevel switch
             {
                 SecurityAccessLevel.Admin or SecurityAccessLevel.Host => hasModuleAccess,
-                _ => this.ForAdvancedRoles(moduleConfiguration) | hasModuleAccess
+                _ => this.ForAdvancedRoles(moduleConfiguration) | hasModuleAccess,
             };
         }
 

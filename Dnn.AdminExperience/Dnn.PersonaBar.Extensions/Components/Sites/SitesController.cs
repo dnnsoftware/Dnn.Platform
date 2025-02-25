@@ -217,8 +217,8 @@ namespace Dnn.PersonaBar.Sites.Components
                 request.IncludeProfile,
                 request.IncludeRoles);
 
-            success = exportResult.Item1;
-            return exportResult.Item2;
+            success = exportResult.Success;
+            return exportResult.Message;
         }
 
         public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias, string siteDescription, string siteKeywords, bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email, string password, string confirm, string question = "", string answer = "")

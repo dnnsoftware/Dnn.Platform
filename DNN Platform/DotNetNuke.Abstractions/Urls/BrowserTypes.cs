@@ -9,7 +9,7 @@ namespace DotNetNuke.Abstractions.Urls
         /// <summary>Standard web browser.</summary>
         Normal = 0,
 
-        /// <summary>Mobile web browser</summary>
+        /// <summary>Mobile web browser.</summary>
         Mobile = 1,
     }
 }

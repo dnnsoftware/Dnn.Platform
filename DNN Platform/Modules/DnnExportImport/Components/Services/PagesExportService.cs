@@ -1890,7 +1890,8 @@ namespace Dnn.ExportImport.Components.Services
                                 Version = package.Version,
                                 PackageType = package.PackageType,
                                 PackageFileName = InstallerUtil.GetPackageBackupName(package),
-                            }, null);
+                            },
+                            null);
 
                         this.exportedModuleDefinitions.Add(exportModule.ModuleDefID);
                         return 1;

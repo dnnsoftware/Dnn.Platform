@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions.TabActions
 
         /// <inheritdoc />
         public ActionMessage GetActionMessage(StateTransaction stateTransaction, WorkflowState currentState)
-            => new ()
+            => new ActionMessage()
             {
                 Subject = GetString($"{nameof(CompleteWorkflow)}{nameof(ActionMessage.Subject)}", "Page Published"),
                 Body = GetString($"{nameof(CompleteWorkflow)}{nameof(ActionMessage.Body)}", "Page '{0}' has been published and is now live.", GetTab(stateTransaction.ContentItemId).LocalizedTabName),
