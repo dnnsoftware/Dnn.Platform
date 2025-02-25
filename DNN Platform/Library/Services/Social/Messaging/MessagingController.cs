@@ -28,15 +28,9 @@ namespace DotNetNuke.Services.Social.Messaging
                                 : ServiceLocator<IMessagingController, MessagingController>,
                                 IMessagingController
     {
-        internal const int ConstMaxTo = 2000;
-        internal const int ConstMaxSubject = 400;
-        internal const int ConstDefaultPageIndex = 0;
-        internal const int ConstDefaultPageSize = 10;
-        internal const string ConstSortColumnDate = "CreatedOnDate";
-        internal const string ConstSortColumnFrom = "From";
-        internal const string ConstSortColumnSubject = "Subject";
-        internal const bool ConstAscending = true;
-        internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
+        private const int MaxRecipients = 2000;
+        private const int MaxSubjectLength = 400;
+        private const double DefaultMessagingThrottlingIntervalMinutes = 0.5;
 
         private readonly IDataService dataService;
 
@@ -47,12 +41,10 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>Initializes a new instance of the <see cref="MessagingController"/> class.</summary>
-        /// <param name="dataService"></param>
+        /// <param name="dataService">The data service to use.</param>
         public MessagingController(IDataService dataService)
         {
-            // Argument Contract
             Requires.NotNull("dataService", dataService);
-
             this.dataService = dataService;
         }
 
@@ -90,9 +82,9 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new ArgumentException(Localization.GetString("PrivateMessageDisabledError", Localization.ExceptionsResourceFile));
             }
 
-            if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > ConstMaxSubject)
+            if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > MaxSubjectLength)
             {
-                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), ConstMaxSubject, message.Subject.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), MaxSubjectLength, message.Subject.Length));
             }
 
             if (roles != null && roles.Count > 0 && !this.IsAdminOrHost(sender))
@@ -127,16 +119,16 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new ArgumentException(Localization.GetString("MsgEmptyToListFoundError", Localization.ExceptionsResourceFile));
             }
 
-            if (sbTo.Length > ConstMaxTo)
+            if (sbTo.Length > MaxRecipients)
             {
-                throw new ArgumentException(string.Format(Localization.GetString("MsgToListTooBigError", Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgToListTooBigError", Localization.ExceptionsResourceFile), MaxRecipients, sbTo.Length));
             }
 
             // Cannot send message if within ThrottlingInterval
             var waitTime = InternalMessagingController.Instance.WaitTimeForNextMessage(sender);
             if (waitTime > 0)
             {
-                var interval = this.GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingInterval);
+                var interval = this.GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingIntervalMinutes);
                 throw new ThrottlingIntervalNotMetException(string.Format(Localization.GetString("MsgThrottlingIntervalNotMet", Localization.ExceptionsResourceFile), interval));
             }
 
@@ -184,7 +176,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 foreach (var attachment in fileIDs.Select(fileId => new MessageAttachment { MessageAttachmentID = Null.NullInteger, FileID = fileId, MessageID = message.MessageID }))
                 {
-                    if (this.CanViewFile(attachment.FileID))
+                    if (this.CanViewFile(attachment.FileID) && this.IsFileInUserFolder(attachment.FileID, sender))
                     {
                         this.dataService.SaveMessageAttachment(attachment, UserController.Instance.GetCurrentUserInfo().UserID);
                     }
@@ -232,35 +224,58 @@ namespace DotNetNuke.Services.Social.Messaging
             InternalMessagingController.Instance.MarkRead(message.MessageID, sender.UserID);
         }
 
+        /// <summary>
+        /// Gets the current user information (virtual so it can be mocked from tests).
+        /// </summary>
+        /// <returns><see cref="UserInfo"/>.</returns>
         internal virtual UserInfo GetCurrentUserInfo()
         {
             return UserController.Instance.GetCurrentUserInfo();
         }
 
+        /// <summary>
+        /// Gets a portal setting (virtual so it can be mocked from tests).
+        /// </summary>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The setting value as a string.</returns>
         internal virtual string GetPortalSetting(string settingName, int portalId, string defaultValue)
         {
             return PortalController.GetPortalSetting(settingName, portalId, defaultValue);
         }
 
-        internal virtual int GetPortalSettingAsInteger(string key, int portalId, int defaultValue)
-        {
-            return PortalController.GetPortalSettingAsInteger(key, portalId, defaultValue);
-        }
-
+        /// <summary>
+        /// Gets a portal setting as double (virtual so it can be mocked in tests).
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>The setting value as a double.</returns>
         internal virtual double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
         {
             return PortalController.GetPortalSettingAsDouble(key, portalId, defaultValue);
         }
 
+        /// <summary>
+        /// Gets the input filter (virtual so it can be mocked in tests).
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>A string representing the input filter to use.</returns>
         internal virtual string InputFilter(string input)
         {
             var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
         }
 
+        /// <summary>
+        /// Determines whether the user is an admin or host user (virtual so it can be mocked in tests).
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        /// <returns>Whether the user is an admin or host user.</returns>
         internal virtual bool IsAdminOrHost(UserInfo userInfo)
         {
-            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName);
+            return userInfo.IsSuperUser || userInfo.IsInRole(PortalController.Instance.GetCurrentSettings().AdministratorRoleName);
         }
 
         /// <inheritdoc/>
@@ -279,6 +294,41 @@ namespace DotNetNuke.Services.Social.Messaging
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             return folder != null && FolderPermissionController.Instance.CanViewFolder(folder);
+        }
+
+        private bool IsFileInUserFolder(int fileID, UserInfo sender)
+        {
+            var file = FileManager.Instance.GetFile(fileID);
+            if (file == null)
+            {
+                return false;
+            }
+
+            var userFolder = FolderManager.Instance.GetUserFolder(sender);
+            if (userFolder is null)
+            {
+                return false;
+            }
+
+            var folderId = file.FolderId;
+
+            while (folderId != Null.NullInteger)
+            {
+                var folder = FolderManager.Instance.GetFolder(folderId);
+                if (folder == null)
+                {
+                    return false;
+                }
+
+                if (folder.FolderID == userFolder.FolderID)
+                {
+                    return true;
+                }
+
+                folderId = folder.ParentID;
+            }
+
+            return false;
         }
     }
 }

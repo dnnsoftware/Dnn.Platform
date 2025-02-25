@@ -281,6 +281,7 @@
     <Compile Include="Services\ClientCapability\TestClientCapability.cs" />
     <Compile Include="Services\CryptographyProviders\FipsCompilanceCryptographyProviderTests.cs" />
     <Compile Include="Services\CryptographyProviders\CoreCryptographyProviderTests.cs" />
+    <Compile Include="Services\GeneratedImage\UriValidatorTests.cs" />
     <Compile Include="Services\Installer\AssemblyInstallerTests.cs" />
     <Compile Include="Services\Installer\CleanupInstallerTests.cs" />
     <Compile Include="Services\Localization\LocalizationTests.cs" />
