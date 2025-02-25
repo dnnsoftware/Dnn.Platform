@@ -1,5 +1,5 @@
 <footer class="aperture-footer">
-  <div class="aperture-container">
+  <div class="aperture-wrapper">
         <div class="footer-left">
           <div class="footer-menu">
             <dnn:MENU id="menu_footer" CssClass="aperture-d-none aperture-d-md-block" MenuStyle="menus/footer" runat="server" NodeSelector="*,0,0"></dnn:MENU>
