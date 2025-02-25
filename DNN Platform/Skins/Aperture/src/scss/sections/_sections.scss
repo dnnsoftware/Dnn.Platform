@@ -3,7 +3,7 @@
     @include meta.load-css('header');
     @include meta.load-css('footer');
 
-    .aperture-wrapper {
+    .aperture-container {
         display: flex;
         margin: 0 auto;
         padding: 0 2rem;
