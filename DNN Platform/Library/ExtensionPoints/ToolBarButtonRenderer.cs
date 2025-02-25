@@ -5,7 +5,7 @@
 namespace DotNetNuke.ExtensionPoints
 {
     using System.Text;
-
+    using System.Web;
     using DotNetNuke.Common;
 
     public class ToolBarButtonRenderer : IExtensionControlRenderer
@@ -29,15 +29,13 @@ namespace DotNetNuke.ExtensionPoints
                 icon = Globals.ResolveUrl(icon);
             }
 
-            var quote = action.Contains("'") ? "\"" : "'";
             var str = new StringBuilder();
             str.AppendFormat(
-                "<button id=\"{0}\" class=\"{1}\" onclick={4}{2}; return false;{4} title=\"{3}\">",
+                "<button id=\"{0}\" class=\"{1}\" onclick=\"{2}\" title=\"{3}\">",
                 extension.ButtonId,
                 cssClass,
-                action,
-                extension.Text,
-                quote);
+                HttpUtility.HtmlAttributeEncode($"{action}; return false;"),
+                extension.Text);
 
             str.AppendFormat(
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
