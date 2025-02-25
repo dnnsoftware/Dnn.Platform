@@ -8,7 +8,7 @@
     .eyebrow-bar {
         background-color: colors.color('tertiary');
         padding: .5rem 0;
-        .aperture-wrapper {
+        .aperture-container {
             display: flex;
             align-items: center;
             justify-content: flex-end;
@@ -20,7 +20,7 @@
         background-color: colors.color('tertiary-light');
         padding: .5rem 0;
         margin: 0;
-        .aperture-wrapper {
+        .aperture-container {
             display: flex;
             align-items: center;
             justify-content: space-between;
