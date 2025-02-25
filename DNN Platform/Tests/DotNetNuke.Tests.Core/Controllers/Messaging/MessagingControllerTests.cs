@@ -742,6 +742,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this.mockMessagingController.Setup(mc => mc.IsAdminOrHost(this.adminUserInfo)).Returns(true);
 
+            this.folderManager.Setup(fm => fm.GetUserFolder(It.IsAny<UserInfo>())).Returns(new FolderInfo { FolderID = -1, FolderPath = "path" });
+
             InternalMessagingController.SetTestableInstance(this.mockInternalMessagingController.Object);
             this.mockInternalMessagingController.Setup(ims => ims.GetMessageRecipient(It.IsAny<int>(), It.IsAny<int>())).Returns((MessageRecipient)null);
 
@@ -1287,7 +1289,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this.adminUserInfo.PortalID = Constants.CONTENT_ValidPortalId;
 
-            this.mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), this.adminUserInfo.PortalID, Null.NullInteger)).Returns(1);
             this.mockMessagingController.Setup(mc => mc.IsAdminOrHost(this.adminUserInfo)).Returns(true);
 
             var result = this.mockInternalMessagingController.Object.WaitTimeForNextMessage(this.adminUserInfo);
@@ -1301,7 +1302,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this.user12UserInfo.PortalID = Constants.CONTENT_ValidPortalId;
 
-            this.mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), this.user12UserInfo.PortalID, Null.NullInteger)).Returns(1);
             this.mockMessagingController.Setup(mc => mc.IsAdminOrHost(this.adminUserInfo)).Returns(false);
 
             this.mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(this.user12UserInfo)).Returns((Message)null);
@@ -1525,7 +1525,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 AdministratorRoleName = Constants.RoleName_Administrators,
             };
 
-            this.portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
+            this.portalController.Setup(pc => pc.GetCurrentSettings()).Returns(portalSettings);
         }
 
         private void SetupCachingProvider()

@@ -36,7 +36,18 @@ namespace DotNetNuke.UI.WebControls
         private const string RENDERURLDEFAULT = "ImageChallenge.captcha.aspx";
         private const string CHARSDEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
-        private static readonly string[] FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" };
+        private static readonly string[] FontFamilies =
+        {
+            "Comic Sans MS",
+            "Consolas",
+            "Courier New",
+            "Franklin Gothic Medium",
+            "Georgia",
+            "Impact",
+            "Lucida Console",
+            "MS Sans Serif",
+            "Trebuchet MS",
+        };
 
         private static readonly Random Rand = new Random();
         private static string separator = ":-:";
@@ -63,6 +74,9 @@ namespace DotNetNuke.UI.WebControls
             this.expiration = HostController.Instance.GetInteger("EXPIRATION_DEFAULT", EXPIRATIONDEFAULT);
         }
 
+        /// <summary>
+        /// Occurs when the user has validated the captcha.
+        /// </summary>
         public event ServerValidateEventHandler UserValidated;
 
         /// <summary>Gets and sets the BackGroundColor.</summary>
@@ -344,8 +358,6 @@ namespace DotNetNuke.UI.WebControls
                     }
 
                     g = Graphics.FromImage(bmp);
-
-                    // Create Text
                     GraphicsPath textPath = CreateText(text, width, height, g);
                     if (string.IsNullOrEmpty(backgroundImage))
                     {
@@ -449,6 +461,10 @@ namespace DotNetNuke.UI.WebControls
             base.OnPreRender(e);
         }
 
+        /// <summary>
+        /// Raises the <see cref="E:UserValidated" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="ServerValidateEventArgs"/> instance containing the event data.</param>
         protected virtual void OnUserValidated(ServerValidateEventArgs e)
         {
             ServerValidateEventHandler handler = this.UserValidated;
@@ -572,6 +588,8 @@ namespace DotNetNuke.UI.WebControls
                 false);
             g.FillRectangle(b, rectF);
 
+            AddNoise(g, width, height);
+
             if (Rand.Next(2) == 1)
             {
                 DistortImage(ref bmp, Rand.Next(5, 20));
@@ -584,6 +602,27 @@ namespace DotNetNuke.UI.WebControls
             return bmp;
         }
 
+        private static void AddNoise(Graphics g, int width, int height)
+        {
+            Random rand = new Random();
+            int numDots = rand.Next(width * height / 50, width * height / 25);
+
+            using (Pen pen = new Pen(Color.Black, 1))
+            {
+                for (int i = 0; i < numDots; i++)
+                {
+                    int x = rand.Next(0, width);
+                    int y = rand.Next(0, height);
+
+                    // Choose random brightness for noise
+                    int brightness = rand.Next(40, 240);
+                    pen.Color = Color.FromArgb(rand.Next(40, 100), brightness, brightness, brightness);
+
+                    g.DrawRectangle(pen, x, y, 1, 1); // Draw tiny noise dot
+                }
+            }
+        }
+
         /// <summary>Creates the Text.</summary>
         /// <param name="text">The text to display.</param>
         /// <param name="width">The width of the image.</param>
@@ -592,46 +631,115 @@ namespace DotNetNuke.UI.WebControls
         private static GraphicsPath CreateText(string text, int width, int height, Graphics g)
         {
             var textPath = new GraphicsPath();
-            var ff = GetFont();
-            var emSize = Convert.ToInt32(width * 2 / text.Length);
-            Font f = null;
+            var maxFontSize = height * 1f;
+            var minFontSize = height * 0.8f;
+            float leftMargin = 10;
+            float rightMargin = 10;
+            float availableWidth = width - leftMargin - rightMargin;
+            float xOffset = leftMargin;
+            float charSpacing = availableWidth / text.Length;
+            Random rand = new Random();
+
             try
             {
-                var measured = new SizeF(0, 0);
-                var workingSize = new SizeF(width, height);
-                while (emSize > 2)
+                foreach (char c in text)
                 {
-                    f = new Font(ff, emSize);
-                    measured = g.MeasureString(text, f);
-                    if (!(measured.Width > workingSize.Width || measured.Height > workingSize.Height))
+                    var ff = GetFont(); // Get a random font for each character
+                    var emSize = maxFontSize;
+
+                    Font f;
+                    SizeF charSize;
+
+                    // Find the largest font size that fits within the available space
+                    do
                     {
-                        break;
+                        f = new Font(ff, emSize, FontStyle.Bold);
+                        charSize = g.MeasureString(c.ToString(), f);
+                        emSize -= 1;
+                    }
+                    while ((charSize.Width > charSpacing || charSize.Height > height) && emSize > minFontSize);
+
+                    // Ensure the character doesn't exceed the available width
+                    float jitter = RandomJitter(-3, 3, rand);
+                    if (xOffset + charSize.Width + jitter > width - rightMargin)
+                    {
+                        jitter = -Math.Abs(jitter); // Adjust jitter to avoid overflow
+                    }
+
+                    // Calculate position (centered vertically, random X jitter)
+                    float yOffset = ((height - charSize.Height) / 2) + RandomJitter(-5, 5, rand);
+                    float charX = xOffset + jitter;
+
+                    // Generate a random rotation angle (-15° to 15°)
+                    float rotationAngle = RandomJitter(-15, 15, rand);
+                    float charCenterX = charX + (charSize.Width / 2);
+                    float charCenterY = yOffset + (charSize.Height / 2);
+                    using (Matrix transform = new Matrix())
+                    {
+                        transform.Translate(charCenterX, charCenterY);
+                        transform.Rotate(rotationAngle);
+                        transform.Translate(-charCenterX, -charCenterY);
+
+                        GraphicsPath charPath = new GraphicsPath();
+                        charPath.AddString(
+                            c.ToString(),
+                            f.FontFamily,
+                            Convert.ToInt32(f.Style),
+                            f.Size,
+                            new PointF(charX, yOffset),
+                            new StringFormat());
+
+                        // Apply transformation only to the character, not the entire path
+                        charPath.Transform(transform);
+                        textPath.AddPath(charPath, false);
                     }
 
                     f.Dispose();
-                    emSize -= 2;
+
+                    // Move X position for the next character
+                    xOffset += charSpacing;
                 }
 
-                emSize += 8;
-                f = new Font(ff, emSize);
-
-                var fmt = new StringFormat();
-                fmt.Alignment = StringAlignment.Center;
-                fmt.LineAlignment = StringAlignment.Center;
-
-                textPath.AddString(text, f.FontFamily, Convert.ToInt32(f.Style), f.Size, new RectangleF(0, 0, width, height), fmt);
                 WarpText(ref textPath, new Rectangle(0, 0, width, height));
+                DrawRandomLines(g, width, height, rand);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
-            finally
-            {
-                f.Dispose();
-            }
 
             return textPath;
+        }
+
+        private static void DrawRandomLines(Graphics g, int width, int height, Random rand)
+        {
+            int numLines = rand.Next(3, 7);
+            using (Pen pen = new Pen(Color.Empty))
+            {
+                pen.DashStyle = (DashStyle)rand.Next(0, 4);
+                for (int i = 0; i < numLines; i++)
+                {
+                    int x1 = rand.Next(0, width);
+                    int y1 = rand.Next(0, height);
+                    int x2 = rand.Next(0, width);
+                    int y2 = rand.Next(0, height);
+
+                    // Generate a color with random transparency
+                    pen.Color = Color.FromArgb(
+                        rand.Next(100, 200), // Opacity
+                        rand.Next(150, 200), // Red
+                        rand.Next(150, 200), // Green
+                        rand.Next(150, 200)); // Blue
+                    pen.Width = rand.Next(1, 3);
+
+                    g.DrawLine(pen, x1, y1, x2, y2);
+                }
+            }
+        }
+
+        private static float RandomJitter(float min, float max, Random rand)
+        {
+            return (float)((rand.NextDouble() * (max - min)) + min);
         }
 
         /// <summary>Decrypts the CAPTCHA Text.</summary>
@@ -733,7 +841,7 @@ namespace DotNetNuke.UI.WebControls
             int intWarpDivisor;
             var rectF = new RectangleF(0, 0, rect.Width, rect.Height);
 
-            intWarpDivisor = Rand.Next(4, 8);
+            intWarpDivisor = Rand.Next(4, 6);
 
             int intHrange = Convert.ToInt32(rect.Height / intWarpDivisor);
             int intWrange = Convert.ToInt32(rect.Width / intWarpDivisor);
