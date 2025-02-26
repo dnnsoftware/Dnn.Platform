@@ -566,8 +566,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     this.Response.Write("<script type=\"text/javascript\">");
                     this.Response.Write(
-                        string.Format(
-                            "javascript:alert('{0}');", this.LocalizeString("Error5.Text")));
+                        $"javascript:alert({HttpUtility.JavaScriptStringEncode(this.LocalizeString("Error5.Text"), addDoubleQuotes: true)});");
                     this.Response.Write("</script>");
 
                     this.Response.End();
@@ -623,10 +622,10 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             return
                 string.Format(
-                    "var E = window.top.opener;E.CKEDITOR.tools.callFunction({0},'{1}','{2}') ;self.close();",
+                    "var E = window.top.opener;E.CKEDITOR.tools.callFunction({0},{1},{2}) ;self.close();",
                     funcNum,
-                    fileUrl.Replace("'", "\\'"),
-                    errorMsg.Replace("'", "\\'"));
+                    HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true),
+                    HttpUtility.JavaScriptStringEncode(errorMsg, addDoubleQuotes: true));
         }
 
         /// <summary>Gets the java script upload code.</summary>
@@ -650,10 +649,10 @@ namespace DNNConnect.CKEditorProvider.Browser
             funcNum = Regex.Replace(funcNum, @"[^0-9]", string.Empty, RegexOptions.None);
 
             return string.Format(
-                "var E = window.parent;E['CKEDITOR'].tools.callFunction({0},'{1}','{2}') ;",
+                "var E = window.parent;E['CKEDITOR'].tools.callFunction({0},{1},{2}) ;",
                 funcNum,
-                GlobalObject.escape(fileUrl),
-                errorMsg.Replace("'", "\\'"));
+                HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true),
+                HttpUtility.JavaScriptStringEncode(errorMsg, addDoubleQuotes: true));
         }
 
         /// <summary>Handles the Page Changed event of the Pager FileLinks control.</summary>
@@ -1001,11 +1000,8 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
             else
             {
-                var errorScript = string.Format(
-                    "javascript:alert('{0}');self.close();", this.LocalizeString("Error1.Text"));
-
                 this.Response.Write("<script type=\"text/javascript\">");
-                this.Response.Write(errorScript);
+                this.Response.Write($"javascript:alert({HttpUtility.JavaScriptStringEncode(this.LocalizeString("Error1.Text"), addDoubleQuotes: true)});self.close();");
                 this.Response.Write("</script>");
 
                 this.Response.End();
@@ -1074,13 +1070,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             catch (Exception exception)
             {
                 this.Response.Write("<script type=\"text/javascript\">");
-
-                var message =
-                    exception.Message.Replace("'", string.Empty).Replace("\r\n", string.Empty).Replace(
-                        "\n", string.Empty).Replace("\r", string.Empty);
-
-                this.Response.Write(string.Format("javascript:alert('{0}');", this.Context.Server.HtmlEncode(message)));
-
+                this.Response.Write($"javascript:alert({HttpUtility.JavaScriptStringEncode(exception.Message, addDoubleQuotes: true)});");
                 this.Response.Write("</script>");
             }
             finally
@@ -1820,12 +1810,13 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// </param>
         private void ScrollToSelectedFile(string elementId)
         {
-            StringBuilder sbScript1 = new StringBuilder();
-
-            sbScript1.AppendFormat("document.getElementById('{0}').scrollIntoView();", elementId);
+            var sbScript1 = $"document.getElementById({HttpUtility.JavaScriptStringEncode(elementId, addDoubleQuotes: true)}).scrollIntoView();";
 
             this.Page.ClientScript.RegisterStartupScript(
-                this.GetType(), string.Format("ScrollToSelected{0}", Guid.NewGuid()), sbScript1.ToString(), true);
+                this.GetType(),
+                $"ScrollToSelected{Guid.NewGuid()}",
+                sbScript1,
+                true);
         }
 
         /// <summary>Select a folder and the file inside the Browser.</summary>
@@ -2233,8 +2224,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.Page.ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "errorcloseScript",
-                    string.Format(
-                        "javascript:alert('{0}')", this.LocalizeString("FileToBigMessage.Text")),
+                    $"javascript:alert({HttpUtility.JavaScriptStringEncode(this.LocalizeString("FileToBigMessage.Text"), addDoubleQuotes: true)})",
                     true);
 
                 this.Response.End();
@@ -2415,7 +2405,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                     this.Response.ClearContent();
                     this.Response.ContentType = "application/json";
-                    this.Response.Write($"{{\"default\": \"{fileUrl}\"}}");
+                    this.Response.Write($"{{\"default\": {HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}");
                 }
                 else
                 {
@@ -2425,7 +2415,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                         this.Response.ClearContent();
                         this.Response.ContentType = "application/json";
-                        this.Response.Write($"{{\"uploaded\": 1, \"fileName\": \"{fileName}\", \"url\": \"{fileUrl}\"}}");
+                        this.Response.Write($"{{\"uploaded\": 1, \"fileName\": {HttpUtility.JavaScriptStringEncode(fileName, addDoubleQuotes: true)}, \"url\": {HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}");
                     }
                     else
                     {
@@ -2442,8 +2432,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.Page.ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "errorcloseScript",
-                    string.Format(
-                        "javascript:alert('{0}')", this.LocalizeString("Error2.Text")),
+                    $"javascript:alert({HttpUtility.JavaScriptStringEncode(this.LocalizeString("Error2.Text"), addDoubleQuotes: true)})",
                     true);
 
                 this.Response.End();
@@ -2509,13 +2498,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 catch (Exception exception)
                 {
                     this.Response.Write("<script type=\"text/javascript\">");
-
-                    var message =
-                    exception.Message.Replace("'", string.Empty).Replace("\r\n", string.Empty).Replace(
-                        "\n", string.Empty).Replace("\r", string.Empty);
-
-                    this.Response.Write(string.Format("javascript:alert('{0}');", this.Context.Server.HtmlEncode(message)));
-
+                    this.Response.Write($"javascript:alert({HttpUtility.JavaScriptStringEncode(exception.Message, addDoubleQuotes: true)});");
                     this.Response.Write("</script>");
                 }
                 finally
@@ -2792,7 +2775,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             sbCropZoom.Append("},");
 
             sbCropZoom.Append("image: {");
-            sbCropZoom.AppendFormat("source: '{0}',", sFilePath);
+            sbCropZoom.AppendFormat("source: {0},", HttpUtility.JavaScriptStringEncode(sFilePath, addDoubleQuotes: true));
             sbCropZoom.AppendFormat("width: {0},", file.Width);
             sbCropZoom.AppendFormat("height: {0},", file.Height);
             sbCropZoom.Append("minZoom: 10,");
@@ -2822,13 +2805,16 @@ namespace DNNConnect.CKEditorProvider.Browser
             sbCropZoom.Append("jQuery('#CropNow').click(function(e) {");
             sbCropZoom.Append("e.preventDefault();");
             sbCropZoom.Append(
-                "cropzoom.send('ProcessImage.ashx', 'POST', { newFileName:  jQuery('#txtCropImageName').val(), saveFile: true, fileId: " + file.FileId + " }, function(){ javascript: __doPostBack('cmdCropNow', ''); });");
+                $"cropzoom.send('ProcessImage.ashx', 'POST', {{ newFileName:  jQuery('#txtCropImageName').val(), saveFile: true, fileId: {file.FileId} }}, function(){{ javascript: __doPostBack('cmdCropNow', ''); }});");
             sbCropZoom.Append("});");
 
             sbCropZoom.Append("});");
 
             this.Page.ClientScript.RegisterStartupScript(
-                this.GetType(), string.Format("CropZoomScript{0}", Guid.NewGuid()), sbCropZoom.ToString(), true);
+                this.GetType(),
+                $"CropZoomScript{Guid.NewGuid()}",
+                sbCropZoom.ToString(),
+                true);
         }
 
         /// <summary>Cancel Upload - Hide Upload Controls.</summary>

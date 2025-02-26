@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Content.Common;
@@ -90,7 +91,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             this.Options.Load = $@"function(query, callback) {{
                                 $.ajax({{
-                                        url: '{apiPath}' + encodeURIComponent(query),
+                                    url: {HttpUtility.JavaScriptStringEncode(apiPath, addDoubleQuotes: true)} + encodeURIComponent(query),
                                     type: 'GET',
                                     error: function() {{
                                         callback();
