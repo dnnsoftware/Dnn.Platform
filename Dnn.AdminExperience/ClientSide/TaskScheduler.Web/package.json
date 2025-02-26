@@ -1,6 +1,6 @@
 {
   "name": "task-scheduler",
-  "version": "9.13.8",
+  "version": "9.13.9",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
@@ -14,7 +14,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
-    "@dnnsoftware/dnn-react-common": "9.13.8",
+    "@dnnsoftware/dnn-react-common": "9.13.9",
     "array.prototype.find": "2.2.3",
     "array.prototype.findindex": "2.2.1",
     "babel-loader": "8.3.0",
