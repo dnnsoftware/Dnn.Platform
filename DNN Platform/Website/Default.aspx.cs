@@ -33,6 +33,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI;
     using DotNetNuke.UI.Internals;
     using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
@@ -184,25 +185,7 @@ namespace DotNetNuke.Framework
             // set global page settings
             this.InitializePage();
 
-            // load skin control and register UI js
-            UI.Skins.Skin ctlSkin;
-            if (this.PortalSettings.EnablePopUps)
-            {
-                ctlSkin = UrlUtils.InPopUp() ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
-
-                // register popup js
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
-
-                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
-                                   ? "~/js/Debug/dnn.modalpopup.js"
-                                   : "~/js/dnn.modalpopup.js";
-
-                ClientResourceManager.RegisterScript(this, popupFilePath, FileOrder.Js.DnnModalPopup);
-            }
-            else
-            {
-                ctlSkin = UI.Skins.Skin.GetSkin(this);
-            }
+            var ctlSkin = this.GetSkin();
 
             // DataBind common paths for the client resource loader
             this.ClientResourceLoader.DataBind();
@@ -687,6 +670,31 @@ namespace DotNetNuke.Framework
             // Find the placeholder control and render the doctype
             this.skinDocType.Text = this.PortalSettings.ActiveTab.SkinDoctype;
             this.attributeList.Text = this.HtmlAttributeList;
+        }
+
+        private Skin GetSkin()
+        {
+            // We always want to the popup skin if we are in a popup
+            // even if we have popups disabled because we could be inside a PersonaBar iframe.
+            if (UrlUtils.InPopUp())
+            {
+                this.LoadPopupScriptsIfNeeded();
+                return Skin.GetPopUpSkin(this);
+            }
+
+            return Skin.GetSkin(this);
+        }
+
+        private void LoadPopupScriptsIfNeeded()
+        {
+            if (this.PortalSettings.EnablePopUps)
+            {
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
+                                   ? "~/js/Debug/dnn.modalpopup.js"
+                                   : "~/js/dnn.modalpopup.js";
+                ClientResourceManager.RegisterScript(this, popupFilePath, FileOrder.Js.DnnModalPopup);
+            }
         }
 
         private void ManageFavicon()
