@@ -1,6 +1,6 @@
 {
   "name": "site-import-export",
-  "version": "9.13.8",
+  "version": "9.13.9",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
@@ -15,7 +15,7 @@
     "@babel/plugin-transform-react-jsx": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
-    "@dnnsoftware/dnn-react-common": "9.13.8",
+    "@dnnsoftware/dnn-react-common": "9.13.9",
     "babel-eslint": "^10.1.0",
     "babel-loader": "8.3.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
