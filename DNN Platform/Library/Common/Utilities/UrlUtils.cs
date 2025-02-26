@@ -232,10 +232,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void OpenNewWindow(Page page, Type type, string url)
         {
-            page.ClientScript.RegisterStartupScript(
-                type,
-                "DotNetNuke.NewWindow",
-                $"<script>window.open({HttpUtility.JavaScriptStringEncode(url, addDoubleQuotes: true)},'new')</script>");
+            page.ClientScript.RegisterStartupScript(type, "DotNetNuke.NewWindow", string.Format("<script>window.open('{0}','new')</script>", url));
         }
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect)
@@ -270,20 +267,22 @@ namespace DotNetNuke.Common.Utilities
                 popUpUrl = popUpUrl.Replace("'", string.Empty);
             }
 
-            var delimiter = popUpUrl.Contains("?") ? '&' : '?';
+            var delimiter = popUpUrl.Contains("?") ? "&" : "?";
+            var popUpScriptFormat = string.Empty;
 
-            // create the querystring for use on a Response.Redirect
+            // create a the querystring for use on a Response.Redirect
             if (responseRedirect)
             {
-                popUpUrl = $"{popUpUrl}{delimiter}popUp=true";
+                popUpScriptFormat = "{0}{1}popUp=true";
+                popUpUrl = string.Format(popUpScriptFormat, popUpUrl, delimiter);
             }
             else
             {
                 if (!popUpUrl.Contains("dnnModal.show"))
                 {
+                    popUpScriptFormat = "dnnModal.show('{0}{1}popUp=true',/*showReturn*/{2},{3},{4},{5},'{6}')";
                     closingUrl = (closingUrl != Null.NullString) ? closingUrl : string.Empty;
-                    popUpUrl =
-                        $"javascript:dnnModal.show({HttpUtility.JavaScriptStringEncode(popUpUrl, addDoubleQuotes: true)} + '{delimiter}popUp=true',/*showReturn*/{onClickEvent.ToString().ToLowerInvariant()},{windowHeight},{windowWidth},{refresh.ToString().ToLower()},{HttpUtility.JavaScriptStringEncode(closingUrl, addDoubleQuotes: true)})";
+                    popUpUrl = "javascript:" + string.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
                 }
                 else
                 {

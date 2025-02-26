@@ -196,10 +196,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.lblHelp.Text = this.lblInfo.Text = string.Empty;
 
             // redirect page after 5 seconds
-            var script = string.Format(
-                "setTimeout(function(){{location.href = {0};}}, {1});",
-                HttpUtility.JavaScriptStringEncode(redirectUrl, addDoubleQuotes: true),
-                RedirectTimeout);
+            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectUrl, RedirectTimeout);
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
                 // respect MS AJAX

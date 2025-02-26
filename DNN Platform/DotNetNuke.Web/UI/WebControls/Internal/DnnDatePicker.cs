@@ -6,7 +6,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -66,8 +65,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return new Dictionary<string, object>
             {
-                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date({HttpUtility.JavaScriptStringEncode(this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture), addDoubleQuotes: true)})$" : string.Empty },
-                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date({HttpUtility.JavaScriptStringEncode(this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture), addDoubleQuotes: true)})$" : string.Empty },
+                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
+                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
                 { "format", this.ClientFormat },
             };
         }

@@ -4,7 +4,6 @@
 namespace DotNetNuke.Modules.Html
 {
     using System;
-    using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
@@ -235,9 +234,9 @@ namespace DotNetNuke.Modules.Html
                 {
                     var resetScript = $@"
 if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof dnn.controls.controls !== 'undefined'){{
-    var control = dnn.controls.controls[{HttpUtility.JavaScriptStringEncode(this.lblContent.ClientID, addDoubleQuotes: true)}];
-    if(control && control.container !== $get({HttpUtility.JavaScriptStringEncode(this.lblContent.ClientID, addDoubleQuotes: true)})){{
-        dnn.controls.controls[{HttpUtility.JavaScriptStringEncode(this.lblContent.ClientID, addDoubleQuotes: true)}] = null;
+    var control = dnn.controls.controls['{this.lblContent.ClientID}'];
+    if(control && control.container !== $get('{this.lblContent.ClientID}')){{
+        dnn.controls.controls['{this.lblContent.ClientID}'] = null;
     }}
 }};";
                     ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), $"ResetHtmlModule{this.ClientID}", resetScript, true);

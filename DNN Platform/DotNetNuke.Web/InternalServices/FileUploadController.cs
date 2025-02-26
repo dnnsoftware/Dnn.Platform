@@ -545,9 +545,9 @@ namespace DotNetNuke.Web.InternalServices
                         var filesCount = FileManager.Instance.UnzipFile(file, destinationFolder, invalidFiles);
 
                         var invalidFilesJson = invalidFiles.Count > 0
-                            ? string.Join(",", invalidFiles.Select(invalidFile => HttpUtility.JavaScriptStringEncode(invalidFile, addDoubleQuotes: true)))
+                            ? string.Format("\"{0}\"", string.Join("\",\"", invalidFiles))
                             : string.Empty;
-                        result.Prompt = $"{{\"invalidFiles\":[{invalidFilesJson}], \"totalCount\": {filesCount}}}";
+                        result.Prompt = string.Format("{{\"invalidFiles\":[{0}], \"totalCount\": {1}}}", invalidFilesJson, filesCount);
                     }
 
                     result.FileId = file.FileId;

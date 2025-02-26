@@ -5,7 +5,6 @@
 namespace DotNetNuke.UI.WebControls.Internal
 {
     using System;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -66,24 +65,29 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public static string GetInitScript(Control ctl)
         {
-            LookupScriptValues(ctl, out var grantImagePath, out var denyImagePath, out var nullImagePath, out _, out var grantAltText, out var denyAltText, out var nullAltText);
+            string grantImagePath, denyImagePath, nullImagePath, lockImagePath, grantAltText, denyAltText, nullAltText;
 
-            return string.Format(
-                @"jQuery(document).ready(
+            LookupScriptValues(ctl, out grantImagePath, out denyImagePath, out nullImagePath, out lockImagePath, out grantAltText, out denyAltText, out nullAltText);
+
+            string script =
+                    string.Format(
+                        @"jQuery(document).ready(
                             function() {{
-                                var images = {{ 'True': {0}, 'False': {1}, 'Null': {2} }};
-                                var toolTips = {{ 'True': {3}, 'False': {4}, 'Null': {5} }};
+                                var images = {{ 'True': '{0}', 'False': '{1}', 'Null': '{2}' }};
+                                var toolTips = {{ 'True': '{3}', 'False': '{4}', 'Null': '{5}' }};
                                 var tsm = dnn.controls.triStateManager(images, toolTips);
                                 jQuery('.tristate').each( function(i, elem) {{
                                   tsm.initControl( elem );
                                 }});
                              }});",
-                HttpUtility.JavaScriptStringEncode(grantImagePath, addDoubleQuotes: true),
-                HttpUtility.JavaScriptStringEncode(denyImagePath, addDoubleQuotes: true),
-                HttpUtility.JavaScriptStringEncode(nullImagePath, addDoubleQuotes: true),
-                HttpUtility.JavaScriptStringEncode(grantAltText, addDoubleQuotes: true),
-                HttpUtility.JavaScriptStringEncode(denyAltText, addDoubleQuotes: true),
-                HttpUtility.JavaScriptStringEncode(nullAltText, addDoubleQuotes: true));
+                        grantImagePath,
+                        denyImagePath,
+                        nullImagePath,
+                        grantAltText,
+                        denyAltText,
+                        nullAltText);
+
+            return script;
         }
 
         /// <inheritdoc/>

@@ -11,7 +11,6 @@ namespace DotNetNuke.Services.Connections
     using System.Dynamic;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using System.Web.Script.Serialization;
 
     public sealed class DynamicJsonConverter : JavaScriptConverter
@@ -125,17 +124,17 @@ namespace DotNetNuke.Services.Connections
                     var name = pair.Key;
                     if (value is string)
                     {
-                        sb.AppendFormat("{0}:{1}", HttpUtility.JavaScriptStringEncode(name, addDoubleQuotes: true), HttpUtility.JavaScriptStringEncode(value, addDoubleQuotes: true));
+                        sb.AppendFormat("{0}:\"{1}\"", name, value);
                     }
-                    else if (value is IDictionary<string, object> dict)
+                    else if (value is IDictionary<string, object>)
                     {
-                        new DynamicJsonObject(dict).ToString(sb);
+                        new DynamicJsonObject((IDictionary<string, object>)value).ToString(sb);
                     }
-                    else if (value is ArrayList list)
+                    else if (value is ArrayList)
                     {
                         sb.Append(name + ":[");
                         var firstInArray = true;
-                        foreach (var arrayValue in list)
+                        foreach (var arrayValue in (ArrayList)value)
                         {
                             if (!firstInArray)
                             {
@@ -144,17 +143,17 @@ namespace DotNetNuke.Services.Connections
 
                             firstInArray = false;
 
-                            if (arrayValue is IDictionary<string, object> dictValue)
+                            if (arrayValue is IDictionary<string, object>)
                             {
-                                sb.Append(new DynamicJsonObject(dictValue));
+                                sb.Append(new DynamicJsonObject((IDictionary<string, object>)arrayValue).ToString());
                             }
-                            else if (arrayValue is string stringValue)
+                            else if (arrayValue is string)
                             {
-                                sb.Append(HttpUtility.JavaScriptStringEncode(stringValue, addDoubleQuotes: true));
+                                sb.AppendFormat("\"{0}\"", arrayValue);
                             }
                             else
                             {
-                                sb.Append(arrayValue);
+                                sb.AppendFormat("{0}", arrayValue);
                             }
                         }
 

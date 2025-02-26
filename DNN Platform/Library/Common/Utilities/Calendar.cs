@@ -5,7 +5,6 @@ namespace DotNetNuke.Common.Utilities
 {
     using System.Globalization;
     using System.Text;
-    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -53,16 +52,7 @@ namespace DotNetNuke.Common.Utilities
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));
             return
-                string.Format(
-                    "javascript:popupCal('Cal',{0},{1},{2},{3},{4},{5},{6},{7});",
-                    HttpUtility.JavaScriptStringEncode(field.ClientID, addDoubleQuotes: true),
-                    HttpUtility.JavaScriptStringEncode(formatString, addDoubleQuotes: true),
-                    HttpUtility.JavaScriptStringEncode(monthNameString, addDoubleQuotes: true),
-                    HttpUtility.JavaScriptStringEncode(dayNameString, addDoubleQuotes: true),
-                    HttpUtility.JavaScriptStringEncode(strToday, addDoubleQuotes: true),
-                    HttpUtility.JavaScriptStringEncode(strClose, addDoubleQuotes: true),
-                    HttpUtility.JavaScriptStringEncode(strCalendar, addDoubleQuotes: true),
-                    (int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek);
+                $"javascript:popupCal('Cal','{field.ClientID}','{formatString}','{monthNameString}','{dayNameString}','{strToday}','{strClose}','{strCalendar}',{(int)DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek});";
         }
     }
 }

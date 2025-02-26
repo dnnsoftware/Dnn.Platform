@@ -9,7 +9,6 @@ namespace Dnn.Modules.Console
     using System.IO;
     using System.Linq;
     using System.Text;
-    using System.Web;
     using System.Web.UI.WebControls;
 
     using Dnn.Modules.Console.Components;
@@ -390,11 +389,11 @@ namespace Dnn.Modules.Console
             }
 
             return string.Format(
-                "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: {2}, showDetails: {3}, tabModuleID: {4}, showTooltip: {5}",
+                "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
                 this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
                 this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
-                HttpUtility.JavaScriptStringEncode(this.DefaultSize, addDoubleQuotes: true),
-                HttpUtility.JavaScriptStringEncode(this.DefaultView, addDoubleQuotes: true),
+                this.DefaultSize,
+                this.DefaultView,
                 tabModuleId,
                 this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
         }
