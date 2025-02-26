@@ -127,7 +127,7 @@ class ApiTokenSettingsPanelBody extends Component {
                 );
             }
             return (
-                <div className={styles.apiTokenSettings}>
+                <div id="apiTokenSettings-container">
                     {warningBox}
                     <InputGroup>
                         <div className="apiTokenSettings-row_switch">
