@@ -135,32 +135,55 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>The ReadManifest method reads the manifest file for the config compoent.</summary>
+        /// <summary>The ReadManifest method reads the manifest file for the config component.</summary>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.fileName = Util.ReadAttribute(manifestNav, "fileName");
             this.uninstallFileName = Util.ReadAttribute(manifestNav, "unInstallFileName");
 
-            if (string.IsNullOrEmpty(this.fileName))
+            if (!string.IsNullOrEmpty(this.fileName))
             {
-                XPathNavigator nav = manifestNav.SelectSingleNode("config");
-
-                // Get the name of the target config file to update
-                XPathNavigator nodeNav = nav.SelectSingleNode("configFile");
-                string targetFileName = nodeNav.Value;
-                if (!string.IsNullOrEmpty(targetFileName))
-                {
-                    this.targetFile = new InstallFile(targetFileName, string.Empty, this.Package.InstallerInfo);
-                }
-
-                // Get the Install config changes
-                nodeNav = nav.SelectSingleNode("install");
-                this.installConfig = nodeNav.InnerXml;
-
-                // Get the UnInstall config changes
-                nodeNav = nav.SelectSingleNode("uninstall");
-                this.unInstallConfig = nodeNav.InnerXml;
+                return;
             }
+
+            XPathNavigator nav = manifestNav.SelectSingleNode("config");
+            if (nav is null)
+            {
+                this.Log.AddFailure("config element was missing");
+                return;
+            }
+
+            // Get the name of the target config file to update
+            XPathNavigator nodeNav = nav.SelectSingleNode("configFile");
+            if (nodeNav is null)
+            {
+                this.Log.AddFailure("configFile element was missing");
+                return;
+            }
+
+            string targetFileName = nodeNav.Value;
+            if (!string.IsNullOrEmpty(targetFileName))
+            {
+                this.targetFile = new InstallFile(targetFileName, string.Empty, this.Package.InstallerInfo);
+            }
+
+            // Get the Install config changes
+            nodeNav = nav.SelectSingleNode("install");
+            if (nodeNav is null)
+            {
+                this.Log.AddFailure("install element was missing");
+            }
+
+            this.installConfig = nodeNav?.InnerXml ?? Null.NullString;
+
+            // Get the UnInstall config changes
+            nodeNav = nav.SelectSingleNode("uninstall");
+            if (nodeNav is null)
+            {
+                this.Log.AddWarning("uninstall element was missing");
+            }
+
+            this.unInstallConfig = nodeNav?.InnerXml ?? Null.NullString;
         }
 
         /// <summary>
