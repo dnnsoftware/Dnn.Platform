@@ -188,6 +188,7 @@
     <Compile Include="Application\AssemblyStatusAttribute.cs" />
     <Compile Include="Application\DotNetNukeContext.cs" />
     <Compile Include="Application\ApplicationStatusInfo.cs" />
+    <Compile Include="Collections\AbstractionList.cs" />
     <Compile Include="Collections\PageSelector{T}.cs" />
     <Compile Include="Common\Controls\Form.cs" />
     <Compile Include="Common\Extensions\HttpContextDependencyInjectionExtensions.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Common\Utilities\FileSystemExtensions.cs" />
     <Compile Include="Common\Utilities\JsonExtensionsWeb.cs" />
     <Compile Include="Common\Utilities\RegexUtils.cs" />
+    <Compile Include="Common\Utilities\SkinUtils.cs" />
     <Compile Include="Common\Utilities\ValidationUtils.cs" />
     <Compile Include="Data\ControllerBase.cs" />
     <Compile Include="Data\DatabaseConnectionProvider.cs" />
