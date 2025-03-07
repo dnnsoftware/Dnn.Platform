@@ -127,9 +127,9 @@
     <value>Track for Administrators:</value>
   </data>
   <data name="TrackingCodeFormat.ErrorMessage" xml:space="preserve">
-    <value>Tracking Code Cannot Be Empty</value>
+    <value>Container ID Cannot Be Empty</value>
   </data>
   <data name="GtmID.Text" xml:space="preserve">
-    <value>Tag Manager ID:</value>
+    <value>Container ID:</value>
   </data>
 </root>
