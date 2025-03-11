@@ -371,7 +371,7 @@ namespace DNNConnect.CKEditorProvider
                 this.Page.ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "errorcloseScript",
-                    $"javascript:alert('{Localization.GetString("Error1.Text", this.ResXFile, this.LangCode)}');self.close();",
+                    $"javascript:alert({HttpUtility.JavaScriptStringEncode(Localization.GetString("Error1.Text", this.ResXFile, this.LangCode), addDoubleQuotes: true)});self.close();",
                     true);
             }
         }
@@ -3054,7 +3054,11 @@ namespace DNNConnect.CKEditorProvider
                 this.Page,
                 this.GetType(),
                 $"notification_{Guid.NewGuid()}",
-                $"ShowNotificationBar('{message}','{type}','{this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/")}');",
+                string.Format(
+                    "ShowNotificationBar({0},{1},{2});",
+                    HttpUtility.JavaScriptStringEncode(message, addDoubleQuotes: true),
+                    HttpUtility.JavaScriptStringEncode(type, addDoubleQuotes: true),
+                    HttpUtility.JavaScriptStringEncode(this.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/images/"), addDoubleQuotes: true)),
                 true);
         }
 
