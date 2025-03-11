@@ -470,6 +470,9 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public bool EnableRegisterNotification { get; internal set; }
 
+        /// <summary>Gets a value indicating whether to send an admin notification when an unapproved user resets their password.</summary>
+        public bool EnableUnapprovedPasswordReminderNotification { get; internal set; }
+
         /// <inheritdoc />
         [Obsolete("Deprecated in DotNetNuke 9.8.1. This setting is no longer relevant as skin widgets are no longer supported. Scheduled removal in v11.0.0.")]
         public bool EnableSkinWidgets { get; internal set; }
