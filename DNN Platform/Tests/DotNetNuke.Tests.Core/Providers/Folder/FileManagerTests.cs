@@ -242,6 +242,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         }
 
         [TestCase("invalid_script.svg")]
+        [TestCase("invalid_namespaced-script.svg")]
         [TestCase("invalid_onload.svg")]
         [TestCase("invalid_onerror.svg")]
 
