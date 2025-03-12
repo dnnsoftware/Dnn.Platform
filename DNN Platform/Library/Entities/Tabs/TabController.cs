@@ -1221,7 +1221,8 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            this.DeleteTab(tabId, portalId);
+            this.HardDeleteTabInternal(tabId, portalId);
+            this.ClearCache(portalId);
         }
 
         /// <summary>Delete a Setting of a tab instance.</summary>
