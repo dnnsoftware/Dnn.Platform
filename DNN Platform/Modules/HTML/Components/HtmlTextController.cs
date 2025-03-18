@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -670,7 +671,7 @@ namespace DotNetNuke.Modules.Html
             if (objHtmlText.StateID != this.workflowManager.GetWorkflow(objHtmlText.WorkflowID).FirstState.StateID && objHtmlText.IsPublished == false)
             {
                 // get users from permissions for state
-                foreach (WorkflowStatePermissionInfo permission in WorkflowStatePermissionController.GetWorkflowStatePermissions(objHtmlText.StateID))
+                foreach (var permission in WorkflowStatePermissionsRepository.Instance.GetWorkflowStatePermissionByState(objHtmlText.StateID))
                 {
                     if (permission.AllowAccess)
                     {

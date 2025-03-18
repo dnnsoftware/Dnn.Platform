@@ -15,29 +15,21 @@
 
 -- Drop Foreign Keys if they exist
 IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlText_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlText'))
-    BEGIN
-        ALTER TABLE {databaseOwner}{objectQualifier}HtmlText DROP CONSTRAINT FK_HtmlText_WorkflowStates;
-    END
+    ALTER TABLE {databaseOwner}{objectQualifier}HtmlText DROP CONSTRAINT FK_HtmlText_WorkflowStates;
 GO
 
 IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlTextLog_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlTextLog'))
-    BEGIN
-        ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog DROP CONSTRAINT FK_HtmlTextLog_WorkflowStates;
-    END
+    ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog DROP CONSTRAINT FK_HtmlTextLog_WorkflowStates;
 GO
 
 IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_WorkflowStates_Workflow') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}WorkflowStates'))
-    BEGIN
-        ALTER TABLE {databaseOwner}{objectQualifier}WorkflowStates DROP CONSTRAINT FK_WorkflowStates_Workflow;
-    END
+    ALTER TABLE {databaseOwner}{objectQualifier}WorkflowStates DROP CONSTRAINT FK_WorkflowStates_Workflow;
 GO
 
 -- Create a robust workflow migration process
 -- Now create a procedure to ensure that missing content workflows and states are populated before running the migration
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CreateMissingContentWorkflows') AND type in (N'P', N'PC'))
-    BEGIN
-        DROP PROCEDURE {databaseOwner}{objectQualifier}CreateMissingContentWorkflows;
-    END
+    DROP PROCEDURE {databaseOwner}{objectQualifier}CreateMissingContentWorkflows;
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}CreateMissingContentWorkflows
@@ -220,11 +212,8 @@ GO
 
 -- Now create a procedure to migrate HTML module content from old workflows to new
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}MigrateHtmlWorkflows') AND type in (N'P', N'PC'))
-    BEGIN
-        DROP PROCEDURE {databaseOwner}{objectQualifier}MigrateHtmlWorkflows;
-    END
+    DROP PROCEDURE {databaseOwner}{objectQualifier}MigrateHtmlWorkflows;
 GO
-
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}MigrateHtmlWorkflows
 AS
@@ -324,41 +313,29 @@ GO
 --     END
 -- GO
 
--- Drop Table Workflow if it exists
+-- Drop Workflow table
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Workflow') AND type in (N'U'))
-    BEGIN
-        DROP TABLE {databaseOwner}{objectQualifier}Workflow;
-    END
+    DROP TABLE {databaseOwner}{objectQualifier}Workflow;
 GO
 
--- Drop Table WorkflowStates if it exists
+-- Drop WorkflowStates table
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}WorkflowStates') AND type in (N'U'))
-    BEGIN
-        DROP TABLE {databaseOwner}{objectQualifier}WorkflowStates;
-    END
+    DROP TABLE {databaseOwner}{objectQualifier}WorkflowStates;
 GO
 
 -- Create Foreign Key FK_HtmlText_WorkflowStates if it does not exist
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlText_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlText'))
-    BEGIN
-        ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH NOCHECK
-            ADD CONSTRAINT FK_HtmlText_WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
-    END
+    ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH NOCHECK ADD CONSTRAINT FK_HtmlText_WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
 GO
 
 -- Create Foreign Key FK_HtmlTextLog_WorkflowStates if it does not exist
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}FK_HtmlTextLog_WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlTextLog'))
-    BEGIN
-        ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH NOCHECK
-            ADD CONSTRAINT FK_HtmlTextLog_WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
-    END
+    ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH NOCHECK ADD CONSTRAINT FK_HtmlTextLog_WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
 GO
 
--- Drop Procedure GetAllHtmlText if it exists
+-- Drop Procedure GetAllHtmlText
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetAllHtmlText') AND type in (N'P', N'PC'))
-    BEGIN
-        DROP PROCEDURE {databaseOwner}{objectQualifier}GetAllHtmlText;
-    END
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetAllHtmlText;
 GO
 
 -- Create Procedure GetAllHtmlText
@@ -381,11 +358,9 @@ BEGIN
 END
 GO
 
--- Drop Procedure GetHtmlText if it exists
+-- Drop Procedure GetHtmlText
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetHtmlText') AND type in (N'P', N'PC'))
-    BEGIN
-        DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlText;
-    END
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlText;
 GO
 
 -- Create Procedure GetHtmlText
@@ -409,11 +384,9 @@ BEGIN
 END
 GO
 
--- Drop Procedure GetHtmlTextLog if it exists
+-- Drop Procedure GetHtmlTextLog
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetHtmlTextLog') AND type in (N'P', N'PC'))
-    BEGIN
-        DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextLog;
-    END
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextLog;
 GO
 
 -- Create Procedure GetHtmlTextLog
@@ -437,11 +410,9 @@ BEGIN
 END
 GO
 
--- Drop Procedure GetHtmlTextUser if it exists
+-- Drop Procedure GetHtmlTextUser
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetHtmlTextUser') AND type in (N'P', N'PC'))
-    BEGIN
-        DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextUser;
-    END
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextUser;
 GO
 
 -- Create Procedure GetHtmlTextUser
@@ -458,11 +429,9 @@ BEGIN
 END
 GO
 
--- Drop Procedure GetTopHtmlText if it exists
+-- Drop Procedure GetTopHtmlText
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetTopHtmlText') AND type in (N'P', N'PC'))
-    BEGIN
-        DROP PROCEDURE {databaseOwner}{objectQualifier}GetTopHtmlText;
-    END
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetTopHtmlText;
 GO
 
 -- Create Procedure GetTopHtmlText
@@ -490,4 +459,92 @@ GO
 -- Enable constraints after checking existing data
 ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH CHECK CHECK CONSTRAINT FK_HtmlText_WorkflowStates;
 ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH CHECK CHECK CONSTRAINT FK_HtmlTextLog_WorkflowStates;
+GO
+
+-- Drop WorkflowStatePermission table
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}WorkflowStatePermission]') AND OBJECTPROPERTY(id, N'IsTable') = 1)
+    DROP TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission]
+GO
+
+-- Drop WorkflowStatePermission view
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_WorkflowStatePermissions]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_WorkflowStatePermissions]
+GO
+
+-- Removed old unused stored procedures
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflows') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflows
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowStates') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflowStates
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddWorkflow
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateWorkflow
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflow
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddWorkflowState
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateWorkflowState
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflowState
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteWorkflowState
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetPermissionsByStateID]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetPermissionsByStateID]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetWorkflowStatePermission]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermission]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetWorkflowStatePermissions]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermissions]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}GetWorkflowStatePermissionsByStateID]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}GetWorkflowStatePermissionsByStateID]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteWorkflowStatePermission]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermission]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByStateID]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByStateID]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByUserID]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}DeleteWorkflowStatePermissionsByUserID]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}AddWorkflowStatePermission]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}AddWorkflowStatePermission]
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateWorkflowStatePermission]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateWorkflowStatePermission]
+GO
+
+-- Delete WorkflowState permission if it exists
+IF EXISTS (SELECT 1 FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_WORKFLOWSTATE' AND PermissionKey = 'REVIEW')
+    DELETE FROM {databaseOwner}{objectQualifier}Permission WHERE PermissionCode = 'SYSTEM_WORKFLOWSTATE' AND PermissionKey = 'REVIEW'
 GO

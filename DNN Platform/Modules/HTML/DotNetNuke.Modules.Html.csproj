@@ -130,7 +130,6 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Components\CompareWorkflowStatePermissions.cs" />
     <Compile Include="Components\DataProvider.cs" />
     <Compile Include="Components\HtmlModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -143,9 +142,6 @@
     <Compile Include="Components\HtmlTextLogInfo.cs" />
     <Compile Include="Components\HtmlTextUserController.cs" />
     <Compile Include="Components\HtmlTextUserInfo.cs" />
-    <Compile Include="Components\WorkflowStatePermissionCollection.cs" />
-    <Compile Include="Components\WorkflowStatePermissionController.cs" />
-    <Compile Include="Components\WorkflowStatePermissionInfo.cs" />
     <Compile Include="EditHtml.ascx.cs">
       <DependentUpon>EditHtml.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -186,6 +182,7 @@
     <Content Include="05.02.00.txt" />
     <Content Include="07.03.00.txt" />
     <Content Include="05.04.03.txt" />
+    <Content Include="10.00.00.txt" />
     <Content Include="App_LocalResources\EditHtml.ascx.resx" />
     <Content Include="App_LocalResources\HtmlModule.ascx.resx" />
     <Content Include="App_LocalResources\MyWork.ascx.resx" />
@@ -223,7 +220,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\06.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
-    <None Include="Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
