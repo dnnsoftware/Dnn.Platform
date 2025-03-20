@@ -9,9 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using System.Web.Mvc;
 
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Mobile;
 
     public class ModuleSettingsModel
     {

@@ -9,12 +9,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     using System.Web.Routing;
     using System.Web.SessionState;
 
-    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.HttpModules.Membership;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.MvcPipeline.Routing;
 
     public class DnnMvcPageHandler : MvcHandler, IHttpHandler, IRequiresSessionState
     {

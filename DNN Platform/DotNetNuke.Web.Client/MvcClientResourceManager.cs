@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Web;
     using System.Web.Hosting;
@@ -18,7 +17,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using ClientDependency.Core;
     using ClientDependency.Core.CompositeFiles.Providers;
     using ClientDependency.Core.Config;
-    using ClientDependency.Core.Mvc;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
@@ -317,8 +315,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             // include.HtmlAttributes["defer"] = "defer";
             include.HtmlAttributes["nonce"] = HttpContext.Current.Items["CSP-NONCE"].ToString();
-            var loader = page.GetLoader();
-            loader.RegisterDependency(include, include.HtmlAttributes);
+
+            // TODO: fix this as GetLoader is missing
+            // var loader = page.GetLoader();
+            // loader.RegisterDependency(include, include.HtmlAttributes);
 
             // page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
         }
@@ -464,8 +464,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 }
             }
 
-            var loader = page.GetLoader();
-            loader.RegisterDependency(include);
+            // TODO: fix this as GetLoader is missing
+            // var loader = page.GetLoader();
+            // loader.RegisterDependency(include);
 
             // page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
         }

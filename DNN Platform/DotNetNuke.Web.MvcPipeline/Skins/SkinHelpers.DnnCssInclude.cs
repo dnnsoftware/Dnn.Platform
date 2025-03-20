@@ -4,15 +4,10 @@
 
 namespace DotNetNuke.Web.MvcPipeline.Skins
 {
-    using System;
-    using System.Linq;
-    using System.Net.NetworkInformation;
     using System.Web;
     using System.Web.Mvc;
 
     using ClientDependency.Core;
-    using ClientDependency.Core.Mvc;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Models;
 
@@ -20,7 +15,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString DnnCssInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
         {
-            helper.RequiresCss(filePath, pathNameAlias, priority);
+            // TODO: ClientDependency Core is deprecated and will not load.
+            // helper.RequiresCss(filePath, pathNameAlias, priority);
+
             if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)
             {
                 return new MvcHtmlString(string.Format("<!--CDF({0}|{1}|{2}|{3})-->", ClientDependencyType.Css, filePath, forceProvider, priority));
