@@ -276,6 +276,7 @@
     <Compile Include="Entities\Portals\Templates\PortalTemplateExtensions.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateImporter.cs" />
     <Compile Include="Entities\Portals\Templates\PortalTemplateInfo.cs" />
+    <Compile Include="Entities\Urls\MvcAdvancedUrlRewriter.cs" />
     <Compile Include="Entities\Urls\TabPathHelper.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidPasswordException.cs" />
     <Compile Include="Entities\Users\Exceptions\InvalidUserRegisterException.cs" />
@@ -307,6 +308,8 @@
     <Compile Include="ExtensionPoints\PanelEditPagePanelExtensionControl.cs" />
     <Compile Include="ExtensionPoints\PanelTabExtensionControl.cs" />
     <Compile Include="Modules\NavigationEventArgs.cs" />
+    <Compile Include="Mvc\MvcClientAPI.cs" />
+    <Compile Include="Mvc\MvcUtils.cs" />
     <Compile Include="Obsolete\EventLogController.cs" />
     <Compile Include="Obsolete\HostController.cs" />
     <Compile Include="Obsolete\LogInfo.cs" />
@@ -700,6 +703,7 @@
     <Compile Include="Framework\ServicesFramework.cs" />
     <Compile Include="Framework\ServicesFrameworkImpl.cs" />
     <Compile Include="Framework\ServicesFrameworkInternal.cs" />
+    <Compile Include="Properties\AssemblyInfoMvc.cs" />
     <Compile Include="Security\Cookies\AuthCookieController.cs" />
     <Compile Include="Security\Cookies\IAuthCookieController.cs" />
     <Compile Include="Security\Cookies\PersistedAuthCookie.cs" />

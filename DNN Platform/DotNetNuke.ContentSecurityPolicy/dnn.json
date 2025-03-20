@@ -1,0 +1,16 @@
+{
+  "projectType": "library",
+  "name": "Dnn_DotNetNukeContentSecurityPolicy",
+  "friendlyName": "Dnn DotNetNukeContentSecurityPolicy",
+  "description": "Dnn DotNetNukeContentSecurityPolicy Library",
+  "packageName": "Dnn_DotNetNukeContentSecurityPolicy",
+  "folder": "Dnn/DotNetNukeContentSecurityPolicy",
+  "library": {},
+  "pathsAndFiles": {
+    "pathToAssemblies": "./bin",
+    "pathToScripts": "./Server/SqlScripts",
+    "assemblies": ["DotNetNuke.ContentSecurityPolicy.dll"],
+    "releaseFiles": [],
+    "zipName": "Dnn.DotNetNukeContentSecurityPolicy"
+  }
+}
