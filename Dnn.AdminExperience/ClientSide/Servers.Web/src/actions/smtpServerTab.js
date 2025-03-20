@@ -17,7 +17,7 @@ const smtpServeTabActions = {
                         smtpServerInfo: response
                     }
                 })]).then(() => {
-                    if(typeof callback === "function"){
+                    if (typeof callback === "function") {
                         callback();
                     }
                 }); 
@@ -39,7 +39,7 @@ const smtpServeTabActions = {
                     smtpServeMode
                 }
             })]).then(() => {
-                if(typeof callback === "function"){
+                if (typeof callback === "function") {
                     callback();
                 }
             });
@@ -83,7 +83,7 @@ const smtpServeTabActions = {
                     type: ActionTypes.UPDATED_SMTP_SERVER_SETTINGS,
                     payload: payload
                 })]).then(() => {
-                    if(typeof callback === "function"){
+                    if (typeof callback === "function") {
                         callback(payload);
                     }
                 });
@@ -137,7 +137,7 @@ const smtpServeTabActions = {
                         providerChanged: false
                     }
                 })]).then(() => {
-                    if(typeof callback === "function"){
+                    if (typeof callback === "function") {
                         callback();
                     }
                 }); 

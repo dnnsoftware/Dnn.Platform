@@ -1,6 +1,6 @@
 {
   "name": "dnn-sites-list-view",
-  "version": "9.13.6",
+  "version": "9.13.9",
   "description": "DNN Sites List View",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,7 @@
     "@babel/plugin-transform-object-assign": "7.25.9",
     "@babel/preset-env": "7.26.0",
     "@babel/preset-react": "7.25.9",
-    "@dnnsoftware/dnn-react-common": "9.13.6",
+    "@dnnsoftware/dnn-react-common": "9.13.9",
     "babel-loader": "8.3.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-polyfill": "6.26.0",

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
+    using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Modules;
@@ -64,8 +65,12 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.pnlNoAgreement.Visible = false;
             }
 
-            this.chkAgree.Attributes.Add("onclick", string.Format("document.getElementById('{0}').disabled = !this.checked;", this.cmdSubmit.ClientID));
-            this.cmdDeleteMe.Attributes.Add("onclick", string.Format("if (!confirm('{0}')) this.preventDefault();", this.DeleteMeConfirmString));
+            this.chkAgree.Attributes.Add(
+                "onclick",
+                $"document.getElementById({HttpUtility.JavaScriptStringEncode(this.cmdSubmit.ClientID, addDoubleQuotes: true)}).disabled = !this.checked;");
+            this.cmdDeleteMe.Attributes.Add(
+                "onclick",
+                $"if (!confirm({HttpUtility.JavaScriptStringEncode(this.DeleteMeConfirmString, addDoubleQuotes: true)})) this.preventDefault();");
         }
 
         private void CmdCancel_Click(object sender, EventArgs e)

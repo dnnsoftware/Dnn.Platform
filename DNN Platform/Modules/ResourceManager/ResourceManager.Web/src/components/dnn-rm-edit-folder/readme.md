@@ -29,6 +29,7 @@
 
 - dnn-tabs
 - dnn-tab
+- dnn-input
 - dnn-permissions-grid
 - dnn-button
 
@@ -37,8 +38,10 @@
 graph TD;
   dnn-rm-edit-folder --> dnn-tabs
   dnn-rm-edit-folder --> dnn-tab
+  dnn-rm-edit-folder --> dnn-input
   dnn-rm-edit-folder --> dnn-permissions-grid
   dnn-rm-edit-folder --> dnn-button
+  dnn-input --> dnn-fieldset
   dnn-permissions-grid --> dnn-checkbox
   dnn-permissions-grid --> dnn-button
   dnn-permissions-grid --> dnn-searchbox

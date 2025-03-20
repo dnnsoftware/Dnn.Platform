@@ -130,7 +130,7 @@ export default function smtpServerTabReducer(state = {
             const providerChanged = action.payload.providerChanged;
             const smtpServerInfo = {...state.smtpServerInfo};
 
-            if(success === false){
+            if (success === false) {
                 return { ...state,
                     errorMessage: errors.join("<br />"),
                     infoMessage: ""

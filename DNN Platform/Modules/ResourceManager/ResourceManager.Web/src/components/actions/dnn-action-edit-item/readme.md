@@ -34,8 +34,10 @@ graph TD;
   dnn-action-edit-item --> dnn-rm-edit-file
   dnn-rm-edit-folder --> dnn-tabs
   dnn-rm-edit-folder --> dnn-tab
+  dnn-rm-edit-folder --> dnn-input
   dnn-rm-edit-folder --> dnn-permissions-grid
   dnn-rm-edit-folder --> dnn-button
+  dnn-input --> dnn-fieldset
   dnn-permissions-grid --> dnn-checkbox
   dnn-permissions-grid --> dnn-button
   dnn-permissions-grid --> dnn-searchbox
@@ -44,7 +46,10 @@ graph TD;
   dnn-button --> dnn-button
   dnn-rm-edit-file --> dnn-tabs
   dnn-rm-edit-file --> dnn-tab
+  dnn-rm-edit-file --> dnn-input
+  dnn-rm-edit-file --> dnn-textarea
   dnn-rm-edit-file --> dnn-button
+  dnn-textarea --> dnn-fieldset
   dnn-rm-actions-bar --> dnn-action-edit-item
   dnn-rm-file-context-menu --> dnn-action-edit-item
   dnn-rm-folder-context-menu --> dnn-action-edit-item
