@@ -16,8 +16,9 @@ namespace DotNetNuke.MvcPipeline
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
 
-  public static class PermissionTriStateHelper
+    public static class PermissionTriStateHelper
     {
         public static MvcHtmlString PermissionTriState(
             this HtmlHelper helper,

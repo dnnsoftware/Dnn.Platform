@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinHelpers

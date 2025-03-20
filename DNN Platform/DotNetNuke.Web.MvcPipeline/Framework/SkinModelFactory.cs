@@ -34,6 +34,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
+    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 

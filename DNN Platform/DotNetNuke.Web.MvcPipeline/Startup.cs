@@ -4,26 +4,27 @@
 
 namespace DotNetNuke.Web.MvcPipeline
 {
-  using DotNetNuke.Common;
-  using DotNetNuke.ContentSecurityPolicy;
-  using DotNetNuke.DependencyInjection;
-  using DotNetNuke.Web.Mvc.Extensions;
-  using Microsoft.Extensions.DependencyInjection;
-  using System.Web.Mvc;
+    using DotNetNuke.Common;
+    using DotNetNuke.ContentSecurityPolicy;
+    using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Web.Mvc.Extensions;
+    using DotNetNuke.Web.MvcPipeline.Framework;
+    using Microsoft.Extensions.DependencyInjection;
+    using System.Web.Mvc;
 
-  public class Startup : IDnnStartup
-  {
-    /// <inheritdoc/>
-    public void ConfigureServices(IServiceCollection services)
+    public class Startup : IDnnStartup
     {
-      services.AddMvcControllers();
+        /// <inheritdoc/>
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvcControllers();
             services.AddTransient<IPageModelFactory, PageModelFactory>();
             services.AddTransient<ISkinModelFactory, SkinModelFactory>();
             services.AddTransient<IPaneModelFactory, PaneModelFactory>();
             services.AddTransient<IContainerModelFactory, ContainerModelFactory>();
 
-      DependencyResolver.SetResolver(new DnnMvcPipelineDependencyResolver(Globals.DependencyProvider));
-      services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
+            DependencyResolver.SetResolver(new DnnMvcPipelineDependencyResolver(Globals.DependencyProvider));
+            services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
+        }
     }
-  }
 }

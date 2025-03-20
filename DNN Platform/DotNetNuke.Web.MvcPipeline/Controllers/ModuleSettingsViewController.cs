@@ -22,6 +22,7 @@ namespace DotNetNuke.Website.Controllers
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
+    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public class ModuleSettingsViewController : ModuleControllerBase

@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Mvc;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class HtmlHelpers
@@ -100,9 +101,9 @@ namespace DotNetNuke.Web.MvcPipeline
 
         public static IHtmlString RegisterAjaxScriptIfRequired(this HtmlHelper htmlHelper)
         {
-            if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
+            if (MvcServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
             {
-                ServicesFrameworkInternal.Instance.RegisterAjaxScript(htmlHelper.ViewContext.Controller.ControllerContext);
+                MvcServicesFrameworkInternal.Instance.RegisterAjaxScript(htmlHelper.ViewContext.Controller.ControllerContext);
             }
 
             return new MvcHtmlString(string.Empty);

@@ -1,13 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information
-namespace DotNetNuke.Framework.JavaScriptLibraries
+﻿namespace DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries
 {
     using System;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Web;
+    using System.Web.Mvc;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -16,15 +14,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Mvc;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.MvcPipeline.Integration.Mvc;
-    using DotNetNuke.Web.MvcPipeline.Integration.Web.Client.ClientResourceManagement;
-
-    using Globals = DotNetNuke.Common.Globals;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public class MvcJavaScript
     {
@@ -52,7 +50,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <returns>whether to use the debug script.</returns>
         public static bool UseDebugScript()
         {
-            if (Globals.Status != Globals.UpgradeStatus.None)
+            if (DotNetNuke.Common.Globals.Status != DotNetNuke.Common.Globals.UpgradeStatus.None)
             {
                 return false;
             }
@@ -130,7 +128,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="page">reference to the current page.</param>
         public static void Register(ControllerContext page)
         {
-            HandlePreInstallorLegacyItemRequests(page);
             IEnumerable<string> scripts = GetScriptVersions();
             IEnumerable<JavaScriptLibrary> finalScripts = ResolveVersionConflicts(scripts);
             foreach (JavaScriptLibrary jsl in finalScripts)
@@ -304,7 +301,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static JavaScriptLibrary GetHighestVersionLibrary(string jsname)
         {
-            if (Globals.Status == Globals.UpgradeStatus.Install)
+            if (DotNetNuke.Common.Globals.Status == DotNetNuke.Common.Globals.UpgradeStatus.Install)
             {
                 // if in install process, then do not use JSL but all use the legacy versions.
                 return null;
@@ -323,7 +320,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static string GetScriptPath(JavaScriptLibrary js, HttpRequest request)
+        private static string GetScriptPath(JavaScriptLibrary js, HttpRequestBase request)
         {
             if (Host.CdnEnabled)
             {
@@ -347,7 +344,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 }
             }
 
-            return "~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName;
+            return "~/Resources/libraries/" + js.LibraryName + "/" + DotNetNuke.Common.Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName;
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)
@@ -434,7 +431,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 return;
             }
 
-            MvcClientResourceManager.RegisterScript(page, GetScriptPath(jsl, HttpContext.Current.Request), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
+            MvcClientResourceManager.RegisterScript(page, GetScriptPath(jsl, HttpContextSource.Current?.Request), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
             /*
             if (Host.CdnEnabled && !string.IsNullOrEmpty(jsl.ObjectName))
             {
@@ -483,75 +480,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 default:
                     return jsl.PackageID + (int)FileOrder.Js.DefaultPriority;
             }
-        }
-
-        private static void HandlePreInstallorLegacyItemRequests(ControllerContext page)
-        {
-            List<string> legacyScripts = (from object item in HttpContextSource.Current.Items.Keys
-                                          where item.ToString().StartsWith(LegacyPrefix)
-                                          select item.ToString().Substring(7)).ToList();
-#pragma warning disable 618
-            foreach (string legacyScript in legacyScripts)
-            {
-                switch (legacyScript)
-                {
-                    case CommonJs.jQuery:
-                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
-                        {
-                            MvcClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        /*
-                        if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
-                        {
-                            MvcClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate,
-                                "DnnPageHeaderProvider");
-                        }
-                        */
-                        break;
-                    case CommonJs.jQueryUI:
-                        // register dependency
-                        if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
-                        {
-                            MvcClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryScriptReference(),
-                                FileOrder.Js.jQuery,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        /*
-                        if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
-                        {
-                            MvcClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryMigrateScriptReference(),
-                                FileOrder.Js.jQueryMigrate,
-                                "DnnPageHeaderProvider");
-                        }
-                        */
-
-                        // actual jqueryui
-                        if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
-                        {
-                            MvcClientResourceManager.RegisterScript(
-                                page,
-                                jQuery.GetJQueryUIScriptReference(),
-                                FileOrder.Js.jQueryUI,
-                                "DnnPageHeaderProvider");
-                        }
-
-                        break;
-                }
-            }
-#pragma warning restore 618
         }
     }
 }
