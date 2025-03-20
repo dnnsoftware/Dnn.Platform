@@ -685,6 +685,11 @@ namespace DotNetNuke.Web.InternalServices
                     newModule.PortalID = PortalSettings.Current.PortalId;
                     ModulePermissionController.SaveModulePermissions(newModule);
                 }
+                else
+                {
+                    // copy existing permissions when in the same portal
+                    newModule.ModulePermissions = moduleInfo.ModulePermissions;
+                }
 
                 // Add Event Log
                 EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
