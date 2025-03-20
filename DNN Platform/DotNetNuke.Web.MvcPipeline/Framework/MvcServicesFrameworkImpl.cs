@@ -9,10 +9,10 @@
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Mvc;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
     internal class MvcServicesFrameworkImpl : IMvcServicesFramework, IMvcServiceFrameworkInternals
     {

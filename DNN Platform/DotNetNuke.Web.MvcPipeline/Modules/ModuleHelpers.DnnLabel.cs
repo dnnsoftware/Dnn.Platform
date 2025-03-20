@@ -6,26 +6,13 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Linq;
     using System.Linq.Expressions;
-    using System.Text;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
-    using System.Web.UI;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Mvc;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-
+    
     public static partial class ModuleHelpers
     {
         public static IHtmlString DnnLabelFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string resourceFile)

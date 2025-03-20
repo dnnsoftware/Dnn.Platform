@@ -4,19 +4,14 @@
 
 namespace DotNetNuke.MvcPipeline
 {
-    using System;
-    using System.Runtime.CompilerServices;
     using System.Web.Mvc;
-    using System.Web.UI;
 
     using DotNetNuke.Entities.Icons;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Mvc;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
     public static class PermissionTriStateHelper
     {

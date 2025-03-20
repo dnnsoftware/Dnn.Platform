@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
@@ -15,13 +13,12 @@ namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Mvc;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Security.Models;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
     public class ModulePermissionsGridController : PermissionsGridController
     {

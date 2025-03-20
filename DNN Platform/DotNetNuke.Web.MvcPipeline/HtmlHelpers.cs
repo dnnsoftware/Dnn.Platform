@@ -5,24 +5,18 @@
 namespace DotNetNuke.Web.MvcPipeline
 {
     using System;
-    using System.IO;
     using System.Web;
     using System.Web.Helpers;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
-    using DotNetNuke.Framework.JavaScriptLibraries;
 
     // using DotNetNuke.Framework.Models;
-    using DotNetNuke.Mvc;
-    using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
     public static partial class HtmlHelpers
     {

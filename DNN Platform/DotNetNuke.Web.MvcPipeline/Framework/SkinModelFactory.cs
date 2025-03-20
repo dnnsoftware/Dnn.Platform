@@ -20,7 +20,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Mvc;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
@@ -31,11 +30,11 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
 
     public class SkinModelFactory : ISkinModelFactory
@@ -584,7 +583,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             return blnExpired;
         }
 
-        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
+        private void EnsureContentItemForTab(TabInfo tabInfo)
         {
             // If tab exists but ContentItem not, then we create it
             if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)

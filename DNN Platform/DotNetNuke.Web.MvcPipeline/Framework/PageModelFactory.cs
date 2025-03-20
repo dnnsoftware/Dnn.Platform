@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             if (UrlUtils.InPopUp())
             {
                 var strTitle = new StringBuilder(page.PortalSettings.PortalName);
-                var slaveModule = UI.UIUtilities.GetSlaveModule(page.PortalSettings.ActiveTab.TabID);
+                var slaveModule = DotNetNuke.UI.UIUtilities.GetSlaveModule(page.PortalSettings.ActiveTab.TabID);
 
                 // Skip is popup is just a tab (no slave module)
                 if (slaveModule.DesktopModuleID != Null.NullInteger)

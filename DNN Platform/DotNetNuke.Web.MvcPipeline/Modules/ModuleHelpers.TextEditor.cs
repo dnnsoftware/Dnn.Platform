@@ -6,25 +6,15 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Linq;
     using System.Linq.Expressions;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
-    using System.Web.UI;
 
-    // using DNNConnect.CKEditorProvider.Constants;
-    // using DNNConnect.CKEditorProvider.Utilities;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Mvc;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     public static partial class ModuleHelpers

@@ -6,7 +6,6 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-    using System.Web.UI;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -15,14 +14,13 @@
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Mvc;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
     public class MvcJavaScript
     {
