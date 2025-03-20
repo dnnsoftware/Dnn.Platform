@@ -1003,6 +1003,7 @@ namespace DotNetNuke.Entities.Modules
                 DefaultLanguageGuid = this.DefaultLanguageGuid,
                 LocalizedVersionGuid = this.LocalizedVersionGuid,
                 CultureCode = this.CultureCode,
+                ModulePermissions = this.ModulePermissions,                
             };
 
             // localized properties
