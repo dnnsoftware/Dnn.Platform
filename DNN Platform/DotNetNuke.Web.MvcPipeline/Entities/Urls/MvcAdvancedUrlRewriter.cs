@@ -55,100 +55,11 @@
                 parentTraceId);
         }
 
-        internal static bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
-        {
-            bool mvcCtl = false;
-            var skinSrc = string.Empty;
-
-            if (context.Items.Contains("PortalSettings"))
-            {
-                var ps = (PortalSettings)context.Items["PortalSettings"];
-                if (ps != null)
-                {
-                    skinSrc = PortalSettings.Current.ActiveTab.SkinSrc;
-                    if (string.IsNullOrEmpty(skinSrc))
-                    {
-                        skinSrc = PortalSettings.Current.DefaultPortalSkin;
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(skinSrc) && tabId > 0 && portalId > -1)
-            {
-                var tab = TabController.Instance.GetTab(tabId, portalId, false);
-                if (tab != null)
-                {
-                    skinSrc = tab.SkinSrc;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(skinSrc))
-            {
-                mvcCtl = skinSrc.ToLowerInvariant().StartsWith("[m]");
-            }
-
-            /*
-                  var mvcCtls = new[] { "Module", "Terms", "Privacy" };
-            bool mvcSkin = false;
-            if (context.Items.Contains("PortalSettings"))
-            {
-                var ps = (PortalSettings)context.Items["PortalSettings"];
-                if (ps != null)
-                {
-                    mvcSkin = !string.IsNullOrEmpty(PortalSettings.Current.ActiveTab.SkinSrc) &&
-                            PortalSettings.Current.ActiveTab.SkinSrc.EndsWith("mvc");
-                }
-            }
-
-            if (result.RewritePath.Contains("&ctl="))
-            {
-              foreach (var item in mvcCtls)
-              {
-                mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
-              }
-
-              if (mvcCtl && result.RewritePath.Contains("&ctl=Module"))
-              {
-                TabInfo tab = null;
-                if (tabId > 0 && portalId > -1)
-                {
-                  tab = TabController.Instance.GetTab(tabId, portalId, false);
-                  if (tab != null)
-                  {
-                    mvcCtl = tab.GetTags().Contains("mvc");
-                  }
-                }
-
-                // mvcCtl = queryStringCol["ReturnURL"] != null && queryStringCol["ReturnURL"].EndsWith("mvc");
-              }
-            }
-            else
-            {
-              TabInfo tab = null;
-              if (tabId > 0 && portalId > -1)
-              {
-                tab = TabController.Instance.GetTab(tabId, portalId, false);
-                if (tab != null)
-                {
-                  mvcCtl = tab.GetTags().Contains("mvc");
-                }
-              }
-
-              // mvcCtl = result.RawUrl.EndsWith("mvc");
-            }
-
-            mvcCtl = mvcCtl && !result.RewritePath.Contains("mvcpage=no") && queryStringCol["mvcpage"] != "no";
-            mvcCtl = mvcCtl || result.RewritePath.Contains("mvcpage=yes") || queryStringCol["mvcpage"] == "yes";
-                              */
-
-            return mvcCtl;
-        }
-
         internal static void RewriteAsChildAliasRoot(
-            HttpContext context,
-            UrlAction result,
-            string aliasQueryString,
-            FriendlyUrlSettings settings)
+             HttpContext context,
+             UrlAction result,
+             string aliasQueryString,
+             FriendlyUrlSettings settings)
         {
             string culture = null;
 
@@ -2359,7 +2270,7 @@
                         }
                         else
                         {
-                            if (IsMvc(result, queryStringCol, context, result.TabId, result.PortalId))
+                            if (MvcUrlRewriterController.IsMvc(result, queryStringCol, context, result.TabId, result.PortalId))
                             {
                                 RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath.Replace(Globals.glbDefaultPage, "DesktopModules/Default/Page/" + result.TabId + "/" + result.CultureCode));
                             }
