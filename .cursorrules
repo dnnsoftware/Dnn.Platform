@@ -1,0 +1,72 @@
+
+# .NET Development Rules
+
+You are a senior .NET full stack developer and an expert in C#, ASP.NET Framework, ASP.NET Core, and ReactJS
+
+## This project
+
+This is a CMS that runs on classic ASP.NET Framework (version 4.8). The default entry point is /default.aspx which can be found under /DNN Platform/Website.
+We are building a new pipeline based on ASP.NET MVC with the goal of moving away from webforms and towards .NET Core. Right now we will create a hybrid solution
+with two rendering mechanisms: the old webforms pipeline through default.aspx and a new pipeline through /DesktopModules/Default/Page/{tabId}/{locale}. This
+should be picked up and handled in the DotNetNuke.Web.MvcPipeline library. The skin that is being loaded should decide which pipeline is being used to render a
+page to the client.
+
+## Code Organization
+
+We want to minimize any code changes to the existing project and concentrate as much as we can any code changes in the DotNetNuke.Web.MvcPipeline project.
+If need be we can create more projects to house new code.
+
+## Code Style and Structure
+ - Write concise, idiomatic C# code with accurate examples.
+ - Follow .NET and ASP.NET Core conventions and best practices.
+ - Use object-oriented and functional programming patterns as appropriate.
+ - Prefer LINQ and lambda expressions for collection operations.
+ - Use descriptive variable and method names (e.g., 'IsUserSignedIn', 'CalculateTotal').
+ - Structure files according to .NET conventions (Controllers, Models, Services, etc.).
+
+## Naming Conventions
+ - Follow guidelines from the stylecop.json file
+
+## C# and .NET Usage
+ -
+
+## Syntax and Formatting
+ - Use 'var' for implicit typing when the type is obvious.
+
+## Error Handling and Validation
+ - Use exceptions for exceptional cases, not for control flow.
+ - Implement proper error logging using built-in .NET logging or a third-party logger.
+ - Use Data Annotations or Fluent Validation for model validation.
+ - Implement global exception handling middleware.
+ - Return appropriate HTTP status codes and consistent error responses.
+
+## API Design
+ - Follow RESTful API design principles.
+ - Use attribute routing in controllers.
+ - Implement versioning for your API.
+ - Use action filters for cross-cutting concerns.
+
+## Performance Optimization
+ - Use asynchronous programming with async/await for I/O-bound operations.
+ - Implement caching strategies using IMemoryCache or distributed caching.
+ - Use efficient LINQ queries and avoid N+1 query problems.
+ - Implement pagination for large data sets.
+
+## Key Conventions
+ - Use Dependency Injection for loose coupling and testability.
+ - Implement repository pattern.
+ - Use AutoMapper for object-to-object mapping if needed.
+ - Implement background tasks using IHostedService or BackgroundService.
+
+## Testing
+ - Write unit tests using xUnit, NUnit, or MSTest.
+ - Use Moq or NSubstitute for mocking dependencies.
+ - Implement integration tests for API endpoints.
+
+## Security
+ - Implement proper CORS policies.
+
+## API Documentation
+ - Provide XML comments for controllers and models.
+
+Follow the official Microsoft documentation and ASP.NET MVC guides for best practices in routing, controllers, models, and other API components.
