@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
 
             if (!string.IsNullOrEmpty(skinSrc))
             {
-                mvcCtl = skinSrc.ToLowerInvariant().StartsWith("[m]");
+                mvcCtl = skinSrc.ToLowerInvariant().EndsWith(".cshtml");
             }
 
             /*
