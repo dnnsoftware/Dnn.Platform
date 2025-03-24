@@ -674,11 +674,12 @@ namespace DotNetNuke.Framework
 
         private Skin GetSkin()
         {
-            // We always want to the popup skin if we are in a popup
-            // even if we have popups disabled because we could be inside a PersonaBar iframe.
+            // We want the popup scripts to be loaded only if popups are enabled.
+            this.LoadPopupScriptsIfNeeded();
+
+            // But the popup skin should only be used if we are inside a popup.
             if (UrlUtils.InPopUp())
             {
-                this.LoadPopupScriptsIfNeeded();
                 return Skin.GetPopUpSkin(this);
             }
 
