@@ -681,14 +681,6 @@ namespace DotNetNuke.Modules.Html
             return htmlContent;
         }
 
-        /// <summary>Returns whether or not the user has review permissions to this module.</summary>
-        /// <param name="htmlContent">Content of the HTML.</param>
-        /// <returns><see langword="true"/> if the user has review permission for the given <paramref name="htmlContent"/>, otherwise <see langword="false"/>.</returns>
-        private bool UserCanReview(HtmlTextInfo htmlContent)
-        {
-            return (htmlContent != null) && WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(htmlContent.StateID), "REVIEW");
-        }
-
         /// <summary>Gets the last published version of this module.</summary>
         /// <param name="publishedStateID">The published state ID.</param>
         /// <returns>An <see cref="HtmlTextInfo"/> instance.</returns>
