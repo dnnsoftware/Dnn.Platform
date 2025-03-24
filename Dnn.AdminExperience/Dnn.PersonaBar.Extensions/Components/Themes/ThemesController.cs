@@ -164,6 +164,7 @@ namespace Dnn.PersonaBar.Themes.Components
         public void ApplyTheme(int portalId, ThemeFileInfo themeFile, ApplyThemeScope scope)
         {
             var skinPath = themeFile.Path + ".ascx";
+            skinPath = skinPath.Replace(".cshtml.ascx", ".cshtml"); // 4MVCPL
 
             switch (themeFile.Type)
             {

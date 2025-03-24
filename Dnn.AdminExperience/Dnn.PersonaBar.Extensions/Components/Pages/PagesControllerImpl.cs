@@ -1463,6 +1463,8 @@ namespace Dnn.PersonaBar.Pages.Components
                 return null;
             }
 
+            pageSettings.SkinSrc = pageSettings.SkinSrc.Replace(".cshtml.ascx", ".cshtml"); // 4MVCPL
+
             return pageSettings.SkinSrc;
         }
 
