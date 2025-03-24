@@ -480,6 +480,12 @@
   <data name="plEnableRegisterNotification.Text" xml:space="preserve">
     <value>Receive User Registration Notification</value>
   </data>
+  <data name="plEnableUnapprovedPasswordReminderNotification.Help" xml:space="preserve">
+    <value>Check this box to send email notifications to the Primary Administrator when an unapproved user requests a password reminder/reset.</value>
+  </data>
+  <data name="plEnableUnapprovedPasswordReminderNotification.Text" xml:space="preserve">
+    <value>Receive Unapproved User Password Reminder Notification</value>
+  </data>
   <data name="Registration_UseAuthProviders.Help" xml:space="preserve">
     <value>Select this option to use authentication providers during registration.  Note that not all providers support this option.</value>
   </data>

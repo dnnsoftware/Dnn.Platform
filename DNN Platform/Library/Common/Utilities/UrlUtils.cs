@@ -245,7 +245,10 @@ namespace DotNetNuke.Common.Utilities
 
         public static void OpenNewWindow(Page page, Type type, string url)
         {
-            page.ClientScript.RegisterStartupScript(type, "DotNetNuke.NewWindow", string.Format("<script>window.open('{0}','new')</script>", url));
+            page.ClientScript.RegisterStartupScript(
+                type,
+                "DotNetNuke.NewWindow",
+                $"<script>window.open({HttpUtility.JavaScriptStringEncode(url, addDoubleQuotes: true)},'new')</script>");
         }
 
         public static string PopUpUrl(string url, Control control, PortalSettings portalSettings, bool onClickEvent, bool responseRedirect)
@@ -280,22 +283,20 @@ namespace DotNetNuke.Common.Utilities
                 popUpUrl = popUpUrl.Replace("'", string.Empty);
             }
 
-            var delimiter = popUpUrl.Contains("?") ? "&" : "?";
-            var popUpScriptFormat = string.Empty;
+            var delimiter = popUpUrl.Contains("?") ? '&' : '?';
 
-            // create a the querystring for use on a Response.Redirect
+            // create the querystring for use on a Response.Redirect
             if (responseRedirect)
             {
-                popUpScriptFormat = "{0}{1}popUp=true";
-                popUpUrl = string.Format(popUpScriptFormat, popUpUrl, delimiter);
+                popUpUrl = $"{popUpUrl}{delimiter}popUp=true";
             }
             else
             {
                 if (!popUpUrl.Contains("dnnModal.show"))
                 {
-                    popUpScriptFormat = "dnnModal.show('{0}{1}popUp=true',/*showReturn*/{2},{3},{4},{5},'{6}')";
                     closingUrl = (closingUrl != Null.NullString) ? closingUrl : string.Empty;
-                    popUpUrl = "javascript:" + string.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
+                    popUpUrl =
+                        $"javascript:dnnModal.show('{HttpUtility.JavaScriptStringEncode(popUpUrl)}{delimiter}popUp=true',/*showReturn*/{onClickEvent.ToString().ToLowerInvariant()},{windowHeight},{windowWidth},{refresh.ToString().ToLower()},'{HttpUtility.JavaScriptStringEncode(closingUrl)}')";
                 }
                 else
                 {
@@ -329,8 +330,8 @@ namespace DotNetNuke.Common.Utilities
         {
             var protocol = onClickEvent ? string.Empty : "javascript:";
             var refreshBool = refresh.ToString().ToLowerInvariant();
-            var urlString = HttpUtility.JavaScriptStringEncode(url, addDoubleQuotes: true);
-            return $"{protocol}dnnModal.closePopUp({refreshBool}, {urlString})";
+            var urlString = HttpUtility.JavaScriptStringEncode(url);
+            return $"{protocol}dnnModal.closePopUp({refreshBool}, '{urlString}')";
         }
 
         /// <summary>Replaces a query string parameter's value in a URL.</summary>

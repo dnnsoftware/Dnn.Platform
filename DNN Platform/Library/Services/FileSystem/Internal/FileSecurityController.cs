@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             var extension = Path.GetExtension(fileName);
             var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
 
-            // when there is no specfic file check for the file type, then treat it as validated.
+            // when there is no specific file check for the file type, then treat it as validated.
             if (checker == null)
             {
                 return true;

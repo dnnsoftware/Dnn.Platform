@@ -358,12 +358,11 @@ namespace Dnn.EditBar.UI.Controllers
 
             var panes = string.Join(",", this.PortalSettings.ActiveTab.Panes.Cast<string>());
             var panesClientIds = this.GetPanesClientIds(this.GetPaneClientIdCollection());
-            const string scriptFormat = @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});";
             var script = string.Format(
-                scriptFormat,
-                panes,
+                @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});",
+                HttpUtility.JavaScriptStringEncode(panes),
                 this.SupportAjax ? "true" : "false",
-                panesClientIds);
+                HttpUtility.JavaScriptStringEncode(panesClientIds));
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -383,40 +382,40 @@ namespace Dnn.EditBar.UI.Controllers
 
         private void RegisterLocalResources()
         {
-            const string scriptFormat = @"dnn.ContentEditorManagerResources = {{
-                                                                                    title: '{0}',
-                                                                                    nomodules: '{1}',
-                                                                                    dragtip: '{2}',
-                                                                                    pendingsave: '{3}',
-                                                                                    confirmTitle: '{4}',
-                                                                                    confirmYes: '{5}',
-                                                                                    confirmNo: '{6}',
-                                                                                    cancelConfirm: '{7}',
-                                                                                    deleteModuleConfirm: '{8}',
-                                                                                    cancel: '{9}',
-                                                                                    searchPlaceHolder: '{10}',
-                                                                                    categoryRecommended: '{11}',
-                                                                                    categoryAll: '{12}',
-                                                                                    pagePicker_clearButtonTooltip: '{13}',
-                                                                                    pagePicker_loadingResultText: '{14}',
-                                                                                    pagePicker_resultsText: '{15}',
-                                                                                    pagePicker_searchButtonTooltip: '{16}',
-                                                                                    pagePicker_searchInputPlaceHolder: '{17}',
-                                                                                    pagePicker_selectedItemCollapseTooltip: '{18}',
-                                                                                    pagePicker_selectedItemExpandTooltip: '{19}',
-                                                                                    pagePicker_selectItemDefaultText: '{20}',
-                                                                                    pagePicker_sortAscendingButtonTitle: '{21}',
-                                                                                    pagePicker_sortAscendingButtonTooltip: '{22}',
-                                                                                    pagePicker_sortDescendingButtonTooltip: '{23}',
-                                                                                    pagePicker_unsortedOrderButtonTooltip: '{24}',
-                                                                                    site: '{25}',
-                                                                                    page: '{26}',
-                                                                                    addExistingModule: '{27}',
-                                                                                    makeCopy: '{28}'
-                                                                                }};";
-
             var script = string.Format(
-                scriptFormat,
+                """
+                dnn.ContentEditorManagerResources = {{
+                    title: '{0}',
+                    nomodules: '{1}',
+                    dragtip: '{2}',
+                    pendingsave: '{3}',
+                    confirmTitle: '{4}',
+                    confirmYes: '{5}',
+                    confirmNo: '{6}',
+                    cancelConfirm: '{7}',
+                    deleteModuleConfirm: '{8}',
+                    cancel: '{9}',
+                    searchPlaceHolder: '{10}',
+                    categoryRecommended: '{11}',
+                    categoryAll: '{12}',
+                    pagePicker_clearButtonTooltip: '{13}',
+                    pagePicker_loadingResultText: '{14}',
+                    pagePicker_resultsText: '{15}',
+                    pagePicker_searchButtonTooltip: '{16}',
+                    pagePicker_searchInputPlaceHolder: '{17}',
+                    pagePicker_selectedItemCollapseTooltip: '{18}',
+                    pagePicker_selectedItemExpandTooltip: '{19}',
+                    pagePicker_selectItemDefaultText: '{20}',
+                    pagePicker_sortAscendingButtonTitle: '{21}',
+                    pagePicker_sortAscendingButtonTooltip: '{22}',
+                    pagePicker_sortDescendingButtonTooltip: '{23}',
+                    pagePicker_unsortedOrderButtonTooltip: '{24}',
+                    site: '{25}',
+                    page: '{26}',
+                    addExistingModule: '{27}',
+                    makeCopy: '{28}'
+                }};
+                """,
                 Localization.GetSafeJSString("AddModule.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("NoModules.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("DragTip.Text", this.LocalResourcesFile),
