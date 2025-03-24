@@ -47,5 +47,12 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
+
+  <Import Project="..\..\DNN_Platform.build" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\DotNetNuke.Web.MvcPipeline*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\DotNetNuke.ContentSecurityPolicy*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
+  </Target>
+
 </Project>
 
