@@ -437,6 +437,7 @@ namespace Dnn.PersonaBar.Security.Services
                         {
                             portal.UserRegistration,
                             EnableRegisterNotification = PortalController.GetPortalSettingAsBoolean("EnableRegisterNotification", this.PortalId, true),
+                            EnableUnapprovedPasswordReminderNotification = PortalController.GetPortalSettingAsBoolean("EnableUnapprovedPasswordReminderNotification", this.PortalId, true),
                             UseAuthenticationProviders = PortalController.GetPortalSettingAsBoolean("Registration_UseAuthProviders", this.PortalId, false),
                             ExcludedTerms = PortalController.GetPortalSetting("Registration_ExcludeTerms", this.PortalId, string.Empty),
                             UseProfanityFilter = PortalController.GetPortalSettingAsBoolean("Registration_UseProfanityFilter", this.PortalId, false),
@@ -545,6 +546,7 @@ namespace Dnn.PersonaBar.Security.Services
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
                 PortalController.UpdatePortalSetting(this.PortalId, "EnableRegisterNotification", request.EnableRegisterNotification.ToString(), false);
+                PortalController.UpdatePortalSetting(this.PortalId, "EnableUnapprovedPasswordReminderNotification", request.EnableUnapprovedPasswordReminderNotification.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseAuthProviders", request.UseAuthenticationProviders.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_ExcludeTerms", request.ExcludedTerms, false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_UseProfanityFilter", request.UseProfanityFilter.ToString(), false);

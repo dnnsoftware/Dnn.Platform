@@ -118,7 +118,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             }
             else
             {
-                result = string.Format("\"{0}\"", obj.ToString().Replace("\"", "\\\""));
+                result = $"'{HttpUtility.JavaScriptStringEncode(obj.ToString())}'";
             }
 
             return result;

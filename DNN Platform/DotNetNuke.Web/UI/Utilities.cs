@@ -267,7 +267,12 @@ namespace DotNetNuke.Web.UI
             AddMessageWindow(ctrl);
 
             // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle)
-            return string.Format("return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');", message.Message, message.WindowWidth, message.WindowHeight, message.Title);
+            return string.Format(
+                "return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');",
+                HttpUtility.JavaScriptStringEncode(message.Message),
+                HttpUtility.JavaScriptStringEncode(message.WindowWidth.ToString()),
+                HttpUtility.JavaScriptStringEncode(message.WindowHeight.ToString()),
+                HttpUtility.JavaScriptStringEncode(message.Title));
         }
 
         public static string GetViewStateAsString(object value, string defaultValue)

@@ -5,6 +5,7 @@
 namespace DotNetNuke.UI.WebControls.Internal
 {
     using System;
+    using System.Web;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -65,13 +66,10 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public static string GetInitScript(Control ctl)
         {
-            string grantImagePath, denyImagePath, nullImagePath, lockImagePath, grantAltText, denyAltText, nullAltText;
+            LookupScriptValues(ctl, out var grantImagePath, out var denyImagePath, out var nullImagePath, out _, out var grantAltText, out var denyAltText, out var nullAltText);
 
-            LookupScriptValues(ctl, out grantImagePath, out denyImagePath, out nullImagePath, out lockImagePath, out grantAltText, out denyAltText, out nullAltText);
-
-            string script =
-                    string.Format(
-                        @"jQuery(document).ready(
+            return string.Format(
+                @"jQuery(document).ready(
                             function() {{
                                 var images = {{ 'True': '{0}', 'False': '{1}', 'Null': '{2}' }};
                                 var toolTips = {{ 'True': '{3}', 'False': '{4}', 'Null': '{5}' }};
@@ -80,14 +78,12 @@ namespace DotNetNuke.UI.WebControls.Internal
                                   tsm.initControl( elem );
                                 }});
                              }});",
-                        grantImagePath,
-                        denyImagePath,
-                        nullImagePath,
-                        grantAltText,
-                        denyAltText,
-                        nullAltText);
-
-            return script;
+                HttpUtility.JavaScriptStringEncode(grantImagePath),
+                HttpUtility.JavaScriptStringEncode(denyImagePath),
+                HttpUtility.JavaScriptStringEncode(nullImagePath),
+                HttpUtility.JavaScriptStringEncode(grantAltText),
+                HttpUtility.JavaScriptStringEncode(denyAltText),
+                HttpUtility.JavaScriptStringEncode(nullAltText));
         }
 
         /// <inheritdoc/>
