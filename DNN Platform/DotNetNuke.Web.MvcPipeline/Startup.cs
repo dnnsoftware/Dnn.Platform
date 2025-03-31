@@ -5,11 +5,14 @@
 namespace DotNetNuke.Web.MvcPipeline
 {
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Web.Mvc.Extensions;
     using DotNetNuke.Web.MvcPipeline.Framework;
+    using DotNetNuke.Web.MvcPipeline.Routing;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using System.Web.Mvc;
 
     public class Startup : IDnnStartup
@@ -17,6 +20,8 @@ namespace DotNetNuke.Web.MvcPipeline
         /// <inheritdoc/>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.TryAddEnumerable(new ServiceDescriptor(typeof(IRoutingManager), typeof(MvcRoutingManager), ServiceLifetime.Singleton));
+
             services.AddMvcControllers();
             services.AddTransient<IPageModelFactory, PageModelFactory>();
             services.AddTransient<ISkinModelFactory, SkinModelFactory>();

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.MvcPipeline.Routing
 {
     using System;
+    using System.Web.Configuration;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -47,19 +48,22 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             return !string.IsNullOrEmpty(configValue) && Convert.ToBoolean(configValue);
         }
 
-        private void RegisterSystemRoutes()
-        {
-            var route = new Route(
-                "DesktopModules/{controller}/{action}/{tabid}/{language}",
-                new RouteValueDictionary(new { action = "Index", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
-                new DnnMvcPageRouteHandler());
+    private void RegisterSystemRoutes()
+    {
+      var dataTokens = new RouteValueDictionary();
+      var ns = new string[] { "DotNetNuke.Web.MvcPipeline.Website.Controllers" };
+      dataTokens["Namespaces"] = ns;
 
-            // route.DataTokens = new RouteValueDictionary();
-            // ConstraintValidation.Validate(route);
-            // route.SetNameSpaces(new string[] { "DotNetNuke.Framework.Controllers" });
-            // route.SetName("Default");
-            this.routes.Add(route);
-        }
+      var route = new Route(
+          "DesktopModules/{controller}/{action}/{tabid}/{language}",
+          new RouteValueDictionary(new { action = "Index", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
+          null, // No constraints
+          dataTokens,
+          new DnnMvcPageRouteHandler()
+      );
+
+      this.routes.Add(route);
+    }
 
         private void LocateServicesAndMapRoutes()
         {
