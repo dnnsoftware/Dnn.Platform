@@ -121,7 +121,7 @@
     <value>Styles</value>
   </data>
   <data name="ModuleDescription" xml:space="preserve">
-    <value>DNN Provides css-varialbes (custom properties) to designers and developers to allow them to style their solutions to the site branding preferences. These style preferences may or may not be implemented by a theme or extension.</value>
+    <value>DNN Provides CSS variables (custom properties) to designers and developers to allow them to style their solutions to the site branding preferences. These style preferences may or may not be implemented by a theme or extension.</value>
   </data>
   <data name="BrandColors" xml:space="preserve">
     <value>Brand Colors</value>
@@ -238,7 +238,8 @@
     <value>Restore Default</value>
   </data>
   <data name="RestoreDefaultMessage" xml:space="preserve">
-    <value>Are you sure you want to restore the styles to their original defaults?\nYour current settings will be lost.</value>
+    <value>Are you sure you want to restore the styles to their original defaults?
+Your current settings will be lost.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>

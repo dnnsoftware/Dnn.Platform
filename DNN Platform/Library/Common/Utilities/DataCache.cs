@@ -20,6 +20,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.OutputCache;
 
+    [Obsolete("Deprecated in DotNetNuke 9.13.8. This type has no known use. Scheduled for removal in v11.0.0.")]
     public enum CoreCacheType
     {
         Host = 1,
