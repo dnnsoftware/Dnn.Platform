@@ -98,10 +98,6 @@ namespace Dnn.PersonaBar.Themes.Components
 
                 var canDeleteSkin = SkinController.CanDeleteSkin(themePath, portalSettings.HomeDirectoryMapPath);
                 var arrFiles = Directory.GetFiles(themePath, "*.ascx");
-                if (arrFiles.Count() == 0)
-                {
-                    arrFiles = Directory.GetFiles(themePath, "*.cshtml");
-                }
 
                 foreach (var strFile in arrFiles)
                 {
@@ -164,7 +160,6 @@ namespace Dnn.PersonaBar.Themes.Components
         public void ApplyTheme(int portalId, ThemeFileInfo themeFile, ApplyThemeScope scope)
         {
             var skinPath = themeFile.Path + ".ascx";
-            skinPath = skinPath.Replace(".cshtml.ascx", ".cshtml"); // 4MVCPL
 
             switch (themeFile.Type)
             {
@@ -519,10 +514,6 @@ namespace Dnn.PersonaBar.Themes.Components
             var themeFiles = new List<string>();
             var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
             themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
-            if (themeFiles.Count == 0)
-            {
-                themeFiles.AddRange(Directory.GetFiles(folderPath, "*.cshtml"));
-            }
 
             var defaultFile = themeFiles.FirstOrDefault(i =>
             {

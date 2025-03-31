@@ -1067,8 +1067,7 @@ namespace DotNetNuke.Entities.Tabs
             var xmlSkinDocType = new XmlDocument { XmlResolver = null };
 
             // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-            var skinSrc = this.SkinSrc.Substring(0, this.SkinSrc.LastIndexOf('.'));
-            var skinFileName = HttpContext.Current.Server.MapPath(skinSrc + ".doctype.xml");
+            var skinFileName = HttpContext.Current.Server.MapPath(this.SkinSrc.Replace(".ascx", ".doctype.xml"));
             if (File.Exists(skinFileName))
             {
                 xmlSkinDocType.Load(skinFileName);
