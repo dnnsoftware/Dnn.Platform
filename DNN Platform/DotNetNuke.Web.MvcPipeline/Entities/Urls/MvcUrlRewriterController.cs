@@ -10,38 +10,9 @@ namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
     {
         internal static bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
         {
+            var mvcCtls = new[] { "Module", "Terms", "Privacy" };
             bool mvcCtl = false;
-            var skinSrc = string.Empty;
-
-            if (context.Items.Contains("PortalSettings"))
-            {
-                var ps = (PortalSettings)context.Items["PortalSettings"];
-                if (ps != null)
-                {
-                    skinSrc = PortalSettings.Current.ActiveTab.SkinSrc;
-                    if (string.IsNullOrEmpty(skinSrc))
-                    {
-                        skinSrc = PortalSettings.Current.DefaultPortalSkin;
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(skinSrc) && tabId > 0 && portalId > -1)
-            {
-                var tab = TabController.Instance.GetTab(tabId, portalId, false);
-                if (tab != null)
-                {
-                    skinSrc = tab.SkinSrc;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(skinSrc))
-            {
-                mvcCtl = skinSrc.ToLowerInvariant().EndsWith(".cshtml");
-            }
-
             /*
-                  var mvcCtls = new[] { "Module", "Terms", "Privacy" };
             bool mvcSkin = false;
             if (context.Items.Contains("PortalSettings"))
             {
@@ -52,48 +23,47 @@ namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
                             PortalSettings.Current.ActiveTab.SkinSrc.EndsWith("mvc");
                 }
             }
+            */
 
             if (result.RewritePath.Contains("&ctl="))
             {
-              foreach (var item in mvcCtls)
-              {
-                mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
-              }
-
-              if (mvcCtl && result.RewritePath.Contains("&ctl=Module"))
-              {
-                TabInfo tab = null;
-                if (tabId > 0 && portalId > -1)
+                foreach (var item in mvcCtls)
                 {
-                  tab = TabController.Instance.GetTab(tabId, portalId, false);
-                  if (tab != null)
-                  {
-                    mvcCtl = tab.GetTags().Contains("mvc");
-                  }
+                    mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
                 }
 
-                // mvcCtl = queryStringCol["ReturnURL"] != null && queryStringCol["ReturnURL"].EndsWith("mvc");
-              }
+                if (mvcCtl && result.RewritePath.Contains("&ctl=Module"))
+                {
+                    TabInfo tab = null;
+                    if (tabId > 0 && portalId > -1)
+                    {
+                        tab = TabController.Instance.GetTab(tabId, portalId, false);
+                        if (tab != null)
+                        {
+                            mvcCtl = tab.GetTags().Contains("mvc");
+                        }
+                    }
+
+                    // mvcCtl = queryStringCol["ReturnURL"] != null && queryStringCol["ReturnURL"].EndsWith("mvc");
+                }
             }
             else
             {
-              TabInfo tab = null;
-              if (tabId > 0 && portalId > -1)
-              {
-                tab = TabController.Instance.GetTab(tabId, portalId, false);
-                if (tab != null)
+                TabInfo tab = null;
+                if (tabId > 0 && portalId > -1)
                 {
-                  mvcCtl = tab.GetTags().Contains("mvc");
+                    tab = TabController.Instance.GetTab(tabId, portalId, false);
+                    if (tab != null)
+                    {
+                        mvcCtl = tab.GetTags().Contains("mvc");
+                    }
                 }
-              }
 
-              // mvcCtl = result.RawUrl.EndsWith("mvc");
+                // mvcCtl = result.RawUrl.EndsWith("mvc");
             }
 
             mvcCtl = mvcCtl && !result.RewritePath.Contains("mvcpage=no") && queryStringCol["mvcpage"] != "no";
             mvcCtl = mvcCtl || result.RewritePath.Contains("mvcpage=yes") || queryStringCol["mvcpage"] == "yes";
-                              */
-
             return mvcCtl;
         }
     }
