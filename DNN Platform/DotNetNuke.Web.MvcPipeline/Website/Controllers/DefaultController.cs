@@ -113,7 +113,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
             this.RegisterScriptsAndStylesheets(model);
 
             // this.Response.AddHeader("Content-Security-Policy", $"default-src 'self';base-uri 'self';form-action 'self';object-src 'none'; img-src *; style-src 'self' 'unsafe-inline';font-src *; script-src * 'unsafe-inline';");
-            return this.View(model.Skin.RazorFile, "Layout", model);
+            return this.View(model.Skin.RazorFile, model);
         }
 
         private void RegisterScriptsAndStylesheets(PageModel page)
