@@ -1,0 +1,168 @@
+@using DotNetNuke.Modules.Html.Models
+@using DotNetNuke.Web.MvcPipeline
+@using DotNetNuke.Services.Localization
+@model EditHtmlViewModel
+
+<div class="dnnForm dnnEditHtml dnnClear" id="dnnEditHtml" data-returnurl="@Model.RedirectUrl" data-portalid="@Model.PortalId" data-tabid="@Model.TabId" data-moduleid="@Model.ModuleId">
+    @using (Html.BeginForm("Save", "DNN_HTML"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.TabId)
+        @Html.HiddenFor(x => x.ModuleId)
+        @Html.HiddenFor(x => x.WorkflowType)
+        <div class="ehCurrentContent dnnClear" id="ehCurrentContent">
+            <div class="ehccContent dnnClear @Model.CurrentView">
+                @if (Model.ShowEditView)
+                {
+                    @Html.Partial("~/DeskTopModules/Html/Views/_Edit.cshtml", Model)
+                }
+                @if (Model.ShowPreviewView)
+                {
+                    <fieldset>
+                        @if (Model.ShowPreviewVersion)
+                        {
+                            <div class="dnnFormItem" id="divPreviewVersion">
+                                <label>@Localization.GetString("PreviewVersion", Model.LocalResourceFile)</label>
+                                <span>Model.PreviewVersion</span>
+                            </div>
+                            <div class="dnnFormItem" id="divPreviewWorkflow">
+                                <label>@Localization.GetString("PreviewWorkflowInUse", Model.LocalResourceFile)</label>
+                                <span>Model.PreviewWorkflowInUse</span>
+                            </div>
+                            <div class="dnnFormItem" id="divPreviewWorkflowState">
+                                <label>@Localization.GetString("PreviewWorkflowState", Model.LocalResourceFile)</label>
+                                <span>Model.PreviewWorkflowState</span>
+                            </div>
+                        }
+                        <div id="divPreview" class="html_preview">
+                            @Html.Raw(Model.PreviewContent)
+                        </div>
+                    </fieldset>
+                    @*
+                    <h2 id="dnnSitePanelEditHTMLHistory" class="dnnFormSectionHead"><a href="">@Localization.GetString("dshHistory", Model.LocalResourceFile)</a></h2>
+                    <fieldset id="fsEditHtmlHistory">
+                        Html.Partial("_HistoryGrid", Model.HistoryItems)
+                    </fieldset>
+                    *@
+                }
+
+                @if (Model.ShowHistoryView)
+                {
+                    <fieldset>
+                        <div class="ehvContent">
+                            <div class="dnnFormItem">
+                                <label>@Localization.GetString("MaxVersions", Model.LocalResourceFile)</label>
+                                <span>@Model.MaxVersions</span>
+                            </div>
+                            @Html.Partial("~/DesktopModules/HTML/Views/_History.cshtml", Model)
+                        </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+        <div class="ehActions">
+            <ul class="dnnActions dnnClear">
+                <li>
+                    <button type="submit" class="dnnPrimaryAction" id="cmdSave">@Localization.GetString("cmdSave", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <a href="@Model.RedirectUrl" class="dnnSecondaryAction">@Localization.GetString("cmdCancel", Model.LocalResourceFile)</a>
+                </li>
+                <li>
+                    <button type="button" data-action="@Url.Action("ShowEdit", "DNN_HTML")" class="@(Model.ShowEditView ? "aspNetDisabled" : "dnnSecondaryAction" )" id="cmdEdit" @(Model.ShowEditView ? "disabled" : "" ) >@Localization.GetString("cmdEdit", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <button type="button" data-action="@Url.Action("ShowPreview", "DNN_HTML")" class="@(Model.ShowPreviewView ? "aspNetDisabled" : "dnnSecondaryAction" )" id="cmdPreview" @(Model.ShowPreviewView ? "disabled" : "" )>@Localization.GetString("cmdPreview", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <button type="button" data-action="@Url.Action("ShowHistory", "DNN_HTML")" class="@(Model.ShowHistoryView ? "aspNetDisabled" : "dnnSecondaryAction" )" id="cmdHistory" @(Model.ShowHistoryView ? "disabled" : "" ) >@Localization.GetString("cmdHistory", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <span class="separator"></span>
+                </li>
+                @*<li>
+                        <div class="dnnFormItem">
+                            @Html.DropDownListFor(m => m.SelectedRenderOption, Model.RenderOptions, new { @class = "dnnSecondaryAction", id = "ddlRender" })
+                        </div>
+                    </li>*@
+                @if (Model.ShowMasterContentButton)
+                {
+                    <li>
+                        <span class="separator"></span>
+                    </li>
+                    <li>
+                        <button type="button" class="dnnSecondaryAction" id="cmdMasterContent">Model.MasterContentButtonText</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
+
+@*
+    @section Scripts {
+        <script>
+            (function ($, Sys) {
+                function setupDnnEditHtml() {
+                    $('#dnnEditHtml').dnnPanels();
+                    if (window.frameElement && window.frameElement.id == "iPopUp") {
+                        var ckeditorid = $(".ehCurrentContent textarea.editor").attr('id');
+                        if (ckeditorid) {
+                            CKEDITOR.on("instanceReady", function (event) {
+                                editor = event.editor;
+                                resizeDnnEditHtml();
+                            });
+                        } else {
+                            resizeDnnEditHtml();
+                        }
+                        $(window).resize(function () {
+                            var timeout;
+                            if (timeout) clearTimeout(timeout);
+                            timeout = setTimeout(function () {
+                                timeout = null;
+                                resizeDnnEditHtml();
+                            }, 50);
+                        });
+                    }
+                }
+
+                function resizeDnnEditHtml() {
+                    $('.ehCurrentContent').height($(window).height() - $('.ehActions').height() - $('.dnnEditHtml ').outerHeight(true) + $('.dnnEditHtml ').innerHeight());
+                    $('window.frameElement, body, html').css('overflow', 'hidden');
+                    if ($('.ehccContent.EditView').length) {
+                        // Ajuster la taille de l'éditeur en fonction du type (RadEditor, CKEditor, ou éditeur de base)
+                        // ... (code pour ajuster la taille de l'éditeur)
+                    }
+                }
+
+                $(document).ready(function () {
+                    setupDnnEditHtml();
+                    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+                        setupDnnEditHtml();
+                    });
+
+                    // Ajouter des gestionnaires d'événements pour les boutons
+                    $('#cmdEdit').click(function () {
+                        // Logique pour passer en mode édition
+                    });
+
+                    $('#cmdPreview').click(function () {
+                        // Logique pour passer en mode prévisualisation
+                    });
+
+                    $('#cmdHistory').click(function () {
+                        // Logique pour afficher l'historique
+                    });
+
+                    $('#ddlRender').change(function () {
+                        // Logique pour changer le mode de rendu
+                    });
+
+                    $('#cmdMasterContent').click(function () {
+                        // Logique pour afficher/masquer le contenu maître
+                    });
+                });
+            }(jQuery, window.Sys));
+        </script>
+    }
+*@
