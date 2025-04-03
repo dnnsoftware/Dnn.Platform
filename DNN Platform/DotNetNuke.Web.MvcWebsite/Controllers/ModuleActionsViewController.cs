@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
+namespace DotNetNuke.Web.MvcWebsite.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
-    using DotNetNuke.Web.MvcPipeline.Website.Models;
+    using DotNetNuke.Web.MvcWebsite.Models;
 
     public class ModuleActionsViewController : Controller
     {
@@ -169,7 +169,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
         {
             // base.OnLoad(e);
             this.ModuleContext = new ModuleInstanceContext() { Configuration = moduleInfo };
-            ModuleActionCollection moduleActions = new ModuleActionCollection();
+            var moduleActions = new ModuleActionCollection();
             var desktopModule = DesktopModuleController.GetDesktopModule(moduleInfo.DesktopModuleID, moduleInfo.PortalID);
             if (!string.IsNullOrEmpty(desktopModule.BusinessControllerClass))
             {
@@ -213,11 +213,12 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
                     }
                     */
                     moduleSpecificActions.Actions.Add(action);
-
+                    
                     if (!UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
                     {
                         action.ClientScript = UrlUtils.PopUpUrl(action.Url, null, this.PortalSettings, true, false);
                     }
+                    
                 }
             }
 
@@ -263,8 +264,8 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
                         {
                             if (action.Visible)
                             {
-                                if ((this.EditMode && Globals.IsAdminControl() == false) ||
-                                    (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
+                                if (this.EditMode && Globals.IsAdminControl() == false ||
+                                    action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View)
                                 {
                                     if (!action.Icon.Contains("://")
                                             && !action.Icon.StartsWith("/")

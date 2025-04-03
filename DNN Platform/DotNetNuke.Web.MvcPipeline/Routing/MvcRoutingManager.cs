@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
     private void RegisterSystemRoutes()
     {
       var dataTokens = new RouteValueDictionary();
-      var ns = new string[] { "DotNetNuke.Web.MvcPipeline.Website.Controllers" };
+      var ns = new string[] { "DotNetNuke.Web.MvcWebsite.Controllers" };
       dataTokens["Namespaces"] = ns;
 
       var route = new Route(

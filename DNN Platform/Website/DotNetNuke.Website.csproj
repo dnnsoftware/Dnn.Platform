@@ -77,6 +77,9 @@
     <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
     </Reference>
+    <Reference Include="ClientDependency.Core.Mvc">
+      <HintPath>..\..\Refs\ClientDependency.Core.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
@@ -1268,6 +1271,18 @@
     <Content Include="Install\Config\09.13.04.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.04.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
+    <Content Include="Views\Default\Layout.cshtml" />
+    <Content Include="Views\ModuleActionsView\Invoke.cshtml" />
+    <Content Include="Views\ModulePermissionsGrid\Index.cshtml" />
+    <Content Include="Views\ModuleSettingsView\Invoke.cshtml" />
+    <Content Include="Views\PersonaBarContainer\Index.cshtml" />
+    <Content Include="Views\PrivacyView\Invoke.cshtml" />
+    <Content Include="Views\Shared\Portals\_default\Containers\Xcillion\NoTitle.cshtml" />
+    <Content Include="Views\Shared\Portals\_default\Skins\Xcillion\Inner.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_PermissionTriState.cshtml" />
+    <Content Include="Views\TermsView\Invoke.cshtml" />
+    <Content Include="Views\web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -3506,5 +3521,17 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.dll" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.pdb" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.xml" DestinationFolder="$(WebsitePath)\bin" />
+  </Target>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <ViewFiles Include="$(MSBuildProjectDirectory)\Views\**\*.*" />
+    </ItemGroup>
+  </Target>
+  <Target Name="DebugProject">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Website.xml" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="@(ViewFiles)" DestinationFiles="@(ViewFiles->'$(WebsitePath)\Views\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\js\mvc.js" DestinationFolder="$(WebsitePath)\js" />
   </Target>
 </Project>

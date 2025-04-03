@@ -7,19 +7,29 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using System.IO;
 
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.UI.Modules;
 
     public class ContainerModel
     {
         private ModuleInfo moduleConfiguration;
         private ModuleHostModel moduleHost;
+        private PortalSettings portalSettings;
 
-        public ContainerModel(ModuleInfo moduleConfiguration)
+        public ContainerModel(ModuleInfo moduleConfiguration, PortalSettings portalSettings)
         {
             this.moduleConfiguration = moduleConfiguration;
             this.moduleHost = new ModuleHostModel(moduleConfiguration);
+            this.portalSettings = portalSettings;
         }
 
+        public PortalSettings PortalSettings
+        {
+            get
+            {
+                return this.portalSettings;
+            }
+        }
         public ModuleHostModel ModuleHost
         {
             get

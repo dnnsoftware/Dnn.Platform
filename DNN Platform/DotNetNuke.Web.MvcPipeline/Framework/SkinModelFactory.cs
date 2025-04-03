@@ -338,9 +338,12 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
         private void LoadPanes(PortalSettings portalSettings)
         {
+            /*
             portalSettings.ActiveTab.Panes.Add("HeaderPane");
             portalSettings.ActiveTab.Panes.Add("ContentPane");
             portalSettings.ActiveTab.Panes.Add("ContentPaneLower");
+            */
+
             /*
             // iterate page controls
             foreach (Control ctlControl in this.Controls)
