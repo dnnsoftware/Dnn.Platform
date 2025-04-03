@@ -88,5 +88,10 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// Directive qui spécifie où envoyer les rapports de violation au format JSON.
         /// </summary>
         ReportTo,
-    }
+
+        /// <summary>
+        /// Directive qui spécifie UpgradeInsecureRequests.
+        /// </summary>
+        UpgradeInsecureRequests,
+}
 }

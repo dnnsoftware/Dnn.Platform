@@ -13,15 +13,15 @@ namespace DotNetNuke.ContentSecurityPolicy
     /// <summary>
     /// Contributor for reporting directives.
     /// </summary>
-    public class ReportingCspContributor : BaseCspContributor
+    public class ReportingEndpointContributor : BaseCspContributor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ReportingCspContributor"/> class.
+        /// Initializes a new instance of the <see cref="ReportingEndpointContributor"/> class.
         /// </summary>
-        /// <param name="directiveType">Le type de directive de rapport (ReportUri ou ReportTo).</param>
-        public ReportingCspContributor(CspDirectiveType directiveType)
+        /// <param name="directiveType">Le type de directive de rapport (ReportUri).</param>
+        public ReportingEndpointContributor(CspDirectiveType directiveType)
         {
-            if (directiveType != CspDirectiveType.ReportUri && directiveType != CspDirectiveType.ReportTo)
+            if (directiveType != CspDirectiveType.ReportUri)
             {
                 throw new ArgumentException("Invalid reporting directive type");
             }
@@ -32,28 +32,29 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Gets collection of reporting endpoints.
         /// </summary>
-        private List<string> ReportingEndpoints { get; } = new List<string>();
+        private Dictionary<string, string> ReportingEndpoints { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Adds a reporting endpoint.
         /// </summary>
+        /// <param name="name">Le nom de l'endpoint où envoyer les rapports.</param>
         /// <param name="endpoint">L'URL de l'endpoint où envoyer les rapports.</param>
-        public void AddReportingEndpoint(string endpoint)
+        public void AddReportingEndpoint(string name, string endpoint)
         {
             this.ValidateReportingEndpoint(endpoint);
-            if (!this.ReportingEndpoints.Contains(endpoint))
+            if (!this.ReportingEndpoints.ContainsKey(name))
             {
-                this.ReportingEndpoints.Add(endpoint);
+                this.ReportingEndpoints.Add(name, endpoint);
             }
         }
 
         /// <summary>
         /// Removes a reporting endpoint.
         /// </summary>
-        /// <param name="endpoint">The endpoint to remove.</param>
-        public void RemoveReportingEndpoint(string endpoint)
+        /// <param name="name">The endpoint to remove.</param>
+        public void RemoveReportingEndpoint(string name)
         {
-            this.ReportingEndpoints.Remove(endpoint);
+            this.ReportingEndpoints.Remove(name);
         }
 
         /// <summary>
@@ -67,7 +68,8 @@ namespace DotNetNuke.ContentSecurityPolicy
                 return string.Empty;
             }
 
-            return $"{CspDirectiveNameMapper.GetDirectiveName(this.DirectiveType)} {string.Join(" ", this.ReportingEndpoints)}";
+            var endpoints = this.ReportingEndpoints.Select(ep => $"{ep.Key}=\"{ep.Value}\"").ToList();
+            return $"{string.Join(" ", endpoints)}";
         }
 
         /// <summary>

@@ -60,6 +60,16 @@ namespace DotNetNuke.ContentSecurityPolicy
         SourceCspContributor FrameSource { get; }
 
         /// <summary>
+        /// Gets the frame ancestors contributor.
+        /// </summary>
+        SourceCspContributor FrameAncestors { get; }
+
+        /// <summary>
+        /// Gets the Form action source contributor.
+        /// </summary>
+        SourceCspContributor FormAction { get; }
+
+        /// <summary>
         /// Gets the base URI source contributor.
         /// </summary>
         SourceCspContributor BaseUriSource { get; }
@@ -99,8 +109,9 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Ajoute une URI de rapport à la politique.
         /// </summary>
-        /// <param name="value">L'URI où envoyer les rapports de violation.</param>
-        void AddReportUri(string value);
+        /// <param name="name">Le nom où les rapports de violation seront envoyés.</param>
+        /// <param name="value">L'URI où les rapports de violation seront envoyés.</param>
+        public void AddReportEndpoint(string name, string value);
 
         /// <summary>
         /// Ajoute une destination de rapport à la politique.
@@ -113,5 +124,16 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// </summary>
         /// <returns>La politique de sécurité complète sous forme de chaîne.</returns>
         string GeneratePolicy();
+
+        /// <summary>
+        /// Génère la politique de sécurité complète.
+        /// </summary>
+        /// <returns>Reporting Endpoints sous forme de chaîne.</returns>
+        string GenerateReportingEndpoints();
+
+        /// <summary>
+        /// Upgrade Insecure Requests.
+        /// </summary>
+        void UpgradeInsecureRequests();
     }
 }

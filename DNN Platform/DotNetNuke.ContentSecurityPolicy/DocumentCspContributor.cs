@@ -44,6 +44,11 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <returns>The directive string.</returns>
         public override string GenerateDirective()
         {
+            if (this.DirectiveType == CspDirectiveType.UpgradeInsecureRequests)
+            {
+                return $"{CspDirectiveNameMapper.GetDirectiveName(this.DirectiveType)}";
+            }
+
             if (string.IsNullOrWhiteSpace(this.DirectiveValue))
             {
                 return string.Empty;
