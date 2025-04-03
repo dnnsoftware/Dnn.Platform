@@ -142,7 +142,7 @@ namespace DotNetNuke.Web.NewDDRMenu
             var imagePathOption =
                 this.menuSettings.ClientOptions.Find(o => o.Name.Equals("PathImage", StringComparison.InvariantCultureIgnoreCase));
             this.RootNode.ApplyContext(
-                imagePathOption == null ? this.hostPortalSettings.HomeDirectory : imagePathOption.Value);
+                imagePathOption == null ? this.HostPortalSettings.HomeDirectory : imagePathOption.Value);
 
             // this.TemplateDef.PreRender();
         }
