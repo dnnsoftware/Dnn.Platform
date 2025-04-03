@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using ClientDependency.Core;
     using ClientDependency.Core.CompositeFiles.Providers;
     using ClientDependency.Core.Config;
+    using ClientDependency.Core.Mvc;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
@@ -316,9 +317,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             // include.HtmlAttributes["defer"] = "defer";
             include.HtmlAttributes["nonce"] = HttpContext.Current.Items["CSP-NONCE"].ToString();
 
-            // TODO: fix this as GetLoader is missing
-            // var loader = page.GetLoader();
-            // loader.RegisterDependency(include, include.HtmlAttributes);
+            var loader = page.GetLoader();
+            loader.RegisterDependency(include, include.HtmlAttributes);
 
             // page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
         }
@@ -464,9 +464,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 }
             }
 
-            // TODO: fix this as GetLoader is missing
-            // var loader = page.GetLoader();
-            // loader.RegisterDependency(include);
+            var loader = page.GetLoader();
+            loader.RegisterDependency(include);
 
             // page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
         }
