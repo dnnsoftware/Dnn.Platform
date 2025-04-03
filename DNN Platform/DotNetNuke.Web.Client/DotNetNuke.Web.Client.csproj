@@ -126,6 +126,7 @@
     <Compile Include="Providers\DnnFileRegistrationProvider.cs" />
     <Compile Include="Providers\DnnFormBottomProvider.cs" />
     <Compile Include="Providers\DnnPageHeaderProvider.cs" />
+    <Compile Include="Providers\DnnStandardRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
