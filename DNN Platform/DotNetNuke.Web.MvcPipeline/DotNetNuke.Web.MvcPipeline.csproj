@@ -41,6 +41,9 @@
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core.Mvc">
+      <HintPath>..\..\Refs\ClientDependency.Core.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />

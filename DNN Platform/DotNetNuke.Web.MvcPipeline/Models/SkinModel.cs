@@ -13,6 +13,13 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     public class SkinModel
     {
         private Dictionary<string, PaneModel> panes;
+
+        public SkinModel()
+        {
+            this.PageMessages = new List<ModuleMessageModel>();
+            this.ModuleMessages = new List<ModuleMessageModel>();
+        }
+
         /*
         private PageModel pageModel;
 

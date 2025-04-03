@@ -111,6 +111,10 @@
     <Reference Include="System.Web.Http.WebHost, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.WebHost.5.3.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -123,6 +127,8 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admin\personaBar\Mvc\PersonaBarContainerController.cs" />
+    <Compile Include="admin\personaBar\Mvc\PersonaBarContainerModel.cs" />
     <Compile Include="admin\personaBar\UserControls\PersonaBarContainer.ascx.cs">
       <DependentUpon>PersonaBarContainer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -297,6 +303,10 @@
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
+      <Project>{AA3EE19B-81A0-3766-E8F4-424C2425A8D3}</Project>
+      <Name>DotNetNuke.Web.MvcPipeline</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj">
       <Project>{4912f062-f8a8-4f9d-8f8e-244ebee1acbd}</Project>

@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
     {
         internal static bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
         {
-            var mvcCtls = new[] { "Module", "Terms", "Privacy" };
+            var mvcCtls = new[] { /*"Module",*/ "Terms", "Privacy" };
             bool mvcCtl = false;
             /*
             bool mvcSkin = false;
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
                 {
                     mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
                 }
-
+                /*
                 if (mvcCtl && result.RewritePath.Contains("&ctl=Module"))
                 {
                     TabInfo tab = null;
@@ -46,6 +46,7 @@ namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
 
                     // mvcCtl = queryStringCol["ReturnURL"] != null && queryStringCol["ReturnURL"].EndsWith("mvc");
                 }
+                */
             }
             else
             {
@@ -58,8 +59,6 @@ namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
                         mvcCtl = tab.GetTags().Contains("mvc");
                     }
                 }
-
-                // mvcCtl = result.RawUrl.EndsWith("mvc");
             }
 
             mvcCtl = mvcCtl && !result.RewritePath.Contains("mvcpage=no") && queryStringCol["mvcpage"] != "no";

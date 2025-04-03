@@ -17,8 +17,10 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
@@ -30,6 +32,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
@@ -149,6 +152,10 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 }
             }
 
+            // register css variables
+            var cssVariablesStyleSheet = this.GetCssVariablesStylesheet(page.PortalSettings.PortalId, page.PortalSettings.GetStyles(), page.PortalSettings.HomeSystemDirectory);
+            skin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = cssVariablesStyleSheet, FileOrder = FileOrder.Css.DefaultCss });
+
             // register the custom stylesheet of current page
             if (page.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(page.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
             {
@@ -248,7 +255,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 // Process the Panes attributes
                 foreach (var key in ctlSkin.Panes.Keys)
                 {
-                    ctlSkin.Panes[key] = this.paneModelFactory.ProcessPane(ctlSkin.Panes[key]);
+                    /*ctlSkin.Panes[key] =*/ this.paneModelFactory.ProcessPane(ctlSkin.Panes[key]);
                 }
 
                 // this.InvokeSkinEvents(SkinEventType.OnSkinPreRender);
@@ -331,9 +338,12 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
         private void LoadPanes(PortalSettings portalSettings)
         {
+            /*
             portalSettings.ActiveTab.Panes.Add("HeaderPane");
             portalSettings.ActiveTab.Panes.Add("ContentPane");
             portalSettings.ActiveTab.Panes.Add("ContentPaneLower");
+            */
+
             /*
             // iterate page controls
             foreach (Control ctlControl in this.Controls)
@@ -613,6 +623,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 {
                     // ControlPanel processing
                     skin.ControlPanelRazor = Path.GetFileNameWithoutExtension(Host.ControlPanel);
+                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
                     /*
                     var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
@@ -709,5 +720,44 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             var styleSheet = itemArgs.Params[0].ToString();
             return FileManager.Instance.GetFile((int)itemArgs.Params[1], styleSheet);
         }
+
+
+        private string GetCssVariablesStylesheet(int portalId, Abstractions.Portals.IPortalStyles portalStyles, string homeSystemDirectory)
+        {
+            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, portalId);
+            var cacheArgs = new CacheItemArgs(
+                cacheKey,
+                DataCache.PortalCacheTimeOut,
+                DataCache.PortalCachePriority,
+                portalStyles,
+                homeSystemDirectory);
+            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            return filePath;
+        }
+
+        private string GetCssVariablesStylesheetCallback(CacheItemArgs args)
+        {
+            var portalStyles = (PortalStyles)args.Params[0];
+            var directory = (string)args.Params[1];
+
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var webPath = $"{directory}{portalStyles.FileName}";
+
+            var physicalPath = $"{directory}{portalStyles.FileName}";
+            if (File.Exists(physicalPath))
+            {
+                return webPath;
+            }
+
+            var styles = portalStyles.ToString();
+            File.WriteAllText(physicalPath, styles);
+
+            return webPath;
+        }
+
     }
 }

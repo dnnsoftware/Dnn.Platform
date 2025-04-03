@@ -1,0 +1,130 @@
+@using ClientDependency.Core
+@using ClientDependency.Core.Mvc
+@using DotNetNuke.Web.MvcPipeline
+@model DotNetNuke.Web.MvcPipeline.Models.PageModel
+@{
+    var SkinPath = Path.GetDirectoryName(Model.Skin.SkinSrc).Replace("\\","/");
+    DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries.MvcJavaScript.Register(this.ViewContext);
+
+   
+    //DotNetNuke.Framework.Controllers.DefaultController.RegisterAjaxScript(this.ViewContext.Controller.ControllerContext);
+}
+<!DOCTYPE html>
+<html lang="@Model.Language">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    @if (!string.IsNullOrEmpty(Model.MetaRefresh))
+    {
+        <meta id="MetaRefresh" http-equiv="Refresh" name="Refresh" content="Model.MetaRefresh" />
+    }
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <meta id="MetaDescription" name="description" content="@Model.Description" />
+    }
+    @if (!string.IsNullOrEmpty(Model.KeyWords))
+    {
+        <meta id="MetaKeywords" name="keywords" content="@Model.KeyWords" />
+    }
+    @if (!string.IsNullOrEmpty(Model.Copyright))
+    {
+        <meta id="MetaCopyright" name="copyright" content="@Model.Copyright" />
+    }
+    @if (!string.IsNullOrEmpty(Model.Generator))
+    {
+        <meta id="MetaGenerator" name="generator" Visible="@Model.Generator" />
+    }
+    @*<meta id="MetaAuthor" name="author" Visible="" />*@
+    @if (!string.IsNullOrEmpty(Model.MetaRobots))
+    {
+        <meta id="MetaRobots" name="robots" Visible="@Model.MetaRobots" />
+    }
+    @if (!string.IsNullOrEmpty(Model.CanonicalLinkUrl))
+    {
+        <link rel="canonical" href="@Model.CanonicalLinkUrl" />
+    }
+    @if (!string.IsNullOrEmpty(Model.FavIconLink))
+    {
+        @Html.Raw(Model.FavIconLink)
+    }
+    <title>[MVC] @Model.Title</title>
+    @Html.RegisterAjaxScriptIfRequired()
+    @RenderSection("head", required: false)
+    @Html.RenderCssHere(new BasicPath("SkinPath", SkinPath), new BasicPath("SharedScripts", "~/Resources/Shared/Scripts/"))
+    @RenderSection("stylesheets", required: false)
+    @Html.RenderJsHere(new BasicPath("SkinPath", SkinPath), new BasicPath("SharedScripts", "~/Resources/Shared/Scripts/"))
+    @RenderSection("scripts", required: false)
+</head>
+<body class="@(Model.Skin.BodyCssClass)">
+    <form id="Form">
+        <div class="aspNetHidden">
+            <input name="ScrollTop" type="hidden" id="ScrollTop" />
+            <input name="__dnnVariable" type="hidden" id="__dnnVariable" autocomplete="off" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClientVariables)">
+            @*@Html.Raw(Model.AntiForgery)*@
+            @Html.AntiForgeryIfRequired()
+        </div>
+    </form>
+    @if (!string.IsNullOrEmpty(Model.Skin.ControlPanelRazor))
+    {
+        @Html.Action("Index", Model.Skin.ControlPanelRazor, Model);
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Skin.SkinError))
+    {
+        <div class="NormalRed">Model.Skin.SkinError</div>
+    }
+
+    @if (Model.Skin.PageMessages.Any() || Model.Skin.ModuleMessages.Any())
+    {
+        <div id="dnnSkinMessage">
+            @foreach (var msg in Model.Skin.PageMessages)
+            {
+                <div class="dnnModuleMessage">
+                    <div CssClass="dnnModMessageHeading">@msg.Heading</div>
+                    <div>@msg.Text</div>
+                </div>
+            }
+            @foreach (var msg in Model.Skin.ModuleMessages)
+            {
+                <div>
+                    <div class="dnnModuleMessage">
+                        <div CssClass="dnnModMessageHeading">@msg.Heading</div>
+                        <div>@msg.Text</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <script type="text/javascript">
+            jQuery(document).ready(function ($) {
+                var $body = window.opera ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
+                var scrollTop = $('#dnnSkinMessage').offset().top - parseInt($(document.body).css("margin-top"));
+                $body.animate({ scrollTop: scrollTop }, 'fast');
+            });
+        </script>
+    }
+    @RenderBody()
+    @if (Model.IsEditMode)
+    {
+        <script nonce="@Model.ContentSecurityPolicy.Nonce">
+            var dnn = dnn || {};
+            dnn.panes = [];
+            dnn.panesClientIds = [];
+            $(".dnnPane").each(function () {
+                //$(this).removeClass('DNNEmptyPane').addClass('dnnDropEmptyPanes');
+                dnn.panes.push($(this).attr("data-name"));
+                dnn.panesClientIds.push($(this).attr("id"));
+            });
+        </script>
+    }
+    @if (Model.StartupScripts.Any())
+    {
+        <script nonce="@Model.ContentSecurityPolicy.Nonce">
+        // startup scripts
+        @foreach (var s in Model.StartupScripts)
+        {
+            <text>// @s.Key </text>
+	        @Html.Raw(s.Value);
+        }
+        </script>
+    }
+</body>
+</html>

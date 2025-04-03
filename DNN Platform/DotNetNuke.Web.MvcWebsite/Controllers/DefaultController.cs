@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
+namespace DotNetNuke.Web.MvcWebsite.Controllers
 {
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
-
+    using Dnn.EditBar.UI.Mvc;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ContentSecurityPolicy;
@@ -45,14 +45,6 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
             this.pageModelFactory = pageModelFactory;
         }
 
-        public static void RegisterAjaxScript(ControllerContext context)
-        {
-            if (MvcServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
-            {
-                MvcServicesFrameworkInternal.Instance.RegisterAjaxScript(context);
-            }
-        }
-
         public ActionResult Page(int tabid, string language)
         {
             this.HttpContext.Items.Add("CSP-NONCE", this.contentSecurityPolicy.Nonce);
@@ -62,10 +54,13 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
             this.contentSecurityPolicy.FontSource.AddSelf();
             this.contentSecurityPolicy.StyleSource.AddSelf();
             this.contentSecurityPolicy.FrameSource.AddSelf();
+            this.contentSecurityPolicy.FormAction.AddSelf();
+            this.contentSecurityPolicy.FrameAncestors.AddSelf();
             this.contentSecurityPolicy.ObjectSource.AddNone();
             this.contentSecurityPolicy.BaseUriSource.AddNone();
             this.contentSecurityPolicy.ScriptSource.AddNonce(this.contentSecurityPolicy.Nonce);
-            this.contentSecurityPolicy.AddReportUri(this.Request.Url.Scheme + "://" + this.Request.Url.Host + "/mvc/Csp/Report");
+            this.contentSecurityPolicy.AddReportTo("csp-endpoint");
+            this.contentSecurityPolicy.AddReportEndpoint("csp-endpoint", this.Request.Url.Scheme + "://" + this.Request.Url.Host + "/DesktopModules/Csp/Report");
 
             if (this.Request.IsAuthenticated)
             {
@@ -83,7 +78,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
             if (PortalSettings.Current.UserId > 0)
             {
                 // TODO: should we do this? It creates a dependency towards the PersonaBar which is probably not a great idea
-                // MvcContentEditorManager.CreateManager(this);
+                MvcContentEditorManager.CreateManager(this);
             }
 
             // Configure the ActiveTab with Skin/Container information
@@ -113,7 +108,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
             this.RegisterScriptsAndStylesheets(model);
 
             // this.Response.AddHeader("Content-Security-Policy", $"default-src 'self';base-uri 'self';form-action 'self';object-src 'none'; img-src *; style-src 'self' 'unsafe-inline';font-src *; script-src * 'unsafe-inline';");
-            return this.View(model.Skin.RazorFile, model);
+            return this.View(model.Skin.RazorFile, "Layout", model);
         }
 
         private void RegisterScriptsAndStylesheets(PageModel page)
@@ -145,11 +140,11 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
             {
-                TabInfo tab = TabController.Instance.GetTabByName(this.Request.QueryString["TabName"], this.PortalSettings.PortalId);
+                var tab = TabController.Instance.GetTabByName(this.Request.QueryString["TabName"], this.PortalSettings.PortalId);
                 if (tab != null)
                 {
                     var parameters = new List<string>(); // maximum number of elements
-                    for (int intParam = 0; intParam <= this.Request.QueryString.Count - 1; intParam++)
+                    for (var intParam = 0; intParam <= this.Request.QueryString.Count - 1; intParam++)
                     {
                         switch (this.Request.QueryString.Keys[intParam].ToLowerInvariant())
                         {
@@ -174,7 +169,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
                 }
             }
 
-            string cacheability = this.Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
+            var cacheability = this.Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
 
             switch (cacheability)
             {

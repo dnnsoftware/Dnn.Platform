@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web.Mvc;
 
     using ClientDependency.Core;
+    using ClientDependency.Core.Mvc;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinHelpers
@@ -26,7 +28,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             }
 
             // TODO: ClientDependency Core is deprecated
-            // helper.RequiresJs(filePath, pathNameAlias, priority, htmlAttibs);
+            helper.RequiresJs(filePath, pathNameAlias, priority, htmlAttibs);
 
             if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)
             {

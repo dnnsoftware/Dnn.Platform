@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 
     public static partial class SkinHelpers
     {
-        public static IHtmlString Content(this HtmlHelper<ContainerModel> htmlHelper, PortalSettings portalSettings)
+        public static IHtmlString Content(this HtmlHelper<ContainerModel> htmlHelper)
         {
             var model = htmlHelper.ViewData.Model;
             if (model == null)
@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 moduleContentPaneDiv.AddCssClass(model.ContentPaneCssClass);
             }
 
-            if (!ModuleHostModel.IsViewMode(model.ModuleConfiguration, portalSettings) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
+            if (!ModuleHostModel.IsViewMode(model.ModuleConfiguration, model.PortalSettings) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
             {
                 MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (model.EditMode && model.ModuleConfiguration.ModuleID > 0)

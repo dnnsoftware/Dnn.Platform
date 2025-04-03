@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
         public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings)
         {
-            var container = new ContainerModel(configuration);
+            var container = new ContainerModel(configuration, portalSettings);
             container = this.ProcessModule(container, portalSettings);
             return container;
         }
@@ -187,9 +187,11 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, container.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
             container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerPath + "container.css", FileOrder = FileOrder.Css.ContainerCss });
 
-            // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, container.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
-            container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerSrc.Replace(".ascx", ".css"), FileOrder = FileOrder.Css.SpecificContainerCss });
-
+            if (!string.IsNullOrEmpty(container.ContainerSrc))
+            {
+                // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, container.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
+                container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerSrc.Replace(".ascx", ".css"), FileOrder = FileOrder.Css.SpecificContainerCss });
+            }
             // process the base class module properties
             if (includeModuleCss)
             {

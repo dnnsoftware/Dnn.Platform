@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
+namespace DotNetNuke.Web.MvcWebsite.Controllers
 {
     using System.Web.Mvc;
 
@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Web.MvcPipeline.Website.Models;
+    using DotNetNuke.Web.MvcWebsite.Models;
 
     public class ModuleActionsController : Controller
     {
@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.MvcPipeline.Website.Controllers
             var user = UserController.Instance.GetCurrentUserInfo();
             if (!module.IsShared)
             {
-                foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
+                foreach (var instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
                 {
                     if (instance.IsShared)
                     {

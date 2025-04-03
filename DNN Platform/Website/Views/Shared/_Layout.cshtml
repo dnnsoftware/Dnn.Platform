@@ -1,0 +1,13 @@
+@using DotNetNuke.Web.Mvc.Helpers
+
+<!-- Mode basique -->
+@Html.Login()
+
+<!-- Mode personnalisé -->
+@Html.Login(
+    text: "Se connecter",
+    cssClass: "custom-login",
+    logoffText: "Se déconnecter",
+    legacyMode: false,
+    showInErrorPage: true
+) 

@@ -94,6 +94,17 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
+        /// Gets the connect frame ancestors for managing connect-src directives.
+        /// </summary>
+        public SourceCspContributor FrameAncestors
+        {
+            get
+            {
+                return this.GetOrCreateDirective(CspDirectiveType.FrameAncestors);
+            }
+        }
+
+        /// <summary>
         /// Gets the font source contributor for managing font-src directives.
         /// </summary>
         public SourceCspContributor FontSource
@@ -138,6 +149,17 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
+        /// Gets the Form Action source contributor for managing frame-src directives.
+        /// </summary>
+        public SourceCspContributor FormAction
+        {
+            get
+            {
+                return this.GetOrCreateDirective(CspDirectiveType.FormAction);
+            }
+        }
+
+        /// <summary>
         /// Gets the base URI source contributor for managing base-uri directives.
         /// </summary>
         public SourceCspContributor BaseUriSource
@@ -151,20 +173,12 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Gets collection of CSP contributors.
         /// </summary>
-        private List<BaseCspContributor> Contributors { get; } = new List<BaseCspContributor>();
+        private List<BaseCspContributor> ContentSecurityPolicyContributors { get; } = new List<BaseCspContributor>();
 
         /// <summary>
-        /// Generates the complete Content Security Policy.
+        /// Gets collection of CSP contributors.
         /// </summary>
-        /// <returns>The complete Content Security Policy.</returns>
-        public string GeneratePolicy()
-        {
-            return string.Join(
-                "; ",
-                this.Contributors
-                    .Select(c => c.GenerateDirective())
-                    .Where(d => !string.IsNullOrEmpty(d)));
-        }
+        private List<BaseCspContributor> ReportingEndpointsContributors { get; } = new List<BaseCspContributor>();
 
         /// <summary>
         /// Supprime les sources de script du type spécifié de la politique CSP.
@@ -216,10 +230,12 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Ajoute une URI de rapport à la politique CSP.
         /// </summary>
+        /// <param name="name">Le nom où les rapports de violation seront envoyés.</param>
         /// <param name="value">L'URI où les rapports de violation seront envoyés.</param>
-        public void AddReportUri(string value)
+        public void AddReportEndpoint(string name, string value)
         {
             this.AddReportingDirective(CspDirectiveType.ReportUri, value);
+            this.AddReportingEndpointsDirective(name, value);
         }
 
         /// <summary>
@@ -231,9 +247,43 @@ namespace DotNetNuke.ContentSecurityPolicy
             this.AddReportingDirective(CspDirectiveType.ReportTo, value);
         }
 
+        /// <summary>
+        /// Upgrade Insecure Requests.
+        /// </summary>
+        public void UpgradeInsecureRequests()
+        {
+            this.SetDocumentDirective(CspDirectiveType.UpgradeInsecureRequests, string.Empty);
+        }
+
+        /// <summary>
+        /// Generates the complete Content Security Policy.
+        /// </summary>
+        /// <returns>The complete Content Security Policy.</returns>
+        public string GeneratePolicy()
+        {
+            return string.Join(
+                "; ",
+                this.ContentSecurityPolicyContributors
+                    .Select(c => c.GenerateDirective())
+                    .Where(d => !string.IsNullOrEmpty(d)));
+        }
+
+        /// <summary>
+        /// Génère la politique de sécurité complète.
+        /// </summary>
+        /// <returns>Reporting Endpoints sous forme de chaîne.</returns>
+        public string GenerateReportingEndpoints()
+        {
+            return string.Join(
+                  "; ",
+                  this.ReportingEndpointsContributors
+                      .Select(c => c.GenerateDirective())
+                      .Where(d => !string.IsNullOrEmpty(d)));
+        }
+
         private SourceCspContributor GetOrCreateDirective(CspDirectiveType directiveType)
         {
-            var directive = this.Contributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
+            var directive = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
             if (directive == null)
             {
                 directive = new SourceCspContributor(directiveType);
@@ -249,13 +299,23 @@ namespace DotNetNuke.ContentSecurityPolicy
         private void AddContributor(BaseCspContributor contributor)
         {
             // Remove any existing contributor of the same directive type
-            this.Contributors.RemoveAll(c => c.DirectiveType == contributor.DirectiveType);
-            this.Contributors.Add(contributor);
+            this.ContentSecurityPolicyContributors.RemoveAll(c => c.DirectiveType == contributor.DirectiveType);
+            this.ContentSecurityPolicyContributors.Add(contributor);
+        }
+
+        /// <summary>
+        /// Adds a contributor to the policy.
+        /// </summary>
+        private void AddReportingEndpointsContributors(BaseCspContributor contributor)
+        {
+            // Remove any existing contributor of the same directive type
+            this.ReportingEndpointsContributors.RemoveAll(c => c.DirectiveType == contributor.DirectiveType);
+            this.ReportingEndpointsContributors.Add(contributor);
         }
 
         private void AddSource(CspDirectiveType directiveType, CspSourceType sourceType, string value = null)
         {
-            var contributor = this.Contributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
+            var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
             if (contributor == null)
             {
                 contributor = new SourceCspContributor(directiveType);
@@ -272,7 +332,7 @@ namespace DotNetNuke.ContentSecurityPolicy
 
         private void RemoveSources(CspDirectiveType directiveType, CspSourceType sourceType)
         {
-            var contributor = this.Contributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
+            var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
             if (contributor == null)
             {
                 contributor = new SourceCspContributor(directiveType);
@@ -284,7 +344,7 @@ namespace DotNetNuke.ContentSecurityPolicy
 
         private void SetDocumentDirective(CspDirectiveType directiveType, string value)
         {
-            var contributor = this.Contributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
+            var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
             if (contributor == null)
             {
                 contributor = new DocumentCspContributor(directiveType, value);
@@ -296,7 +356,7 @@ namespace DotNetNuke.ContentSecurityPolicy
 
         private void AddDocumentDirective(CspDirectiveType directiveType, string value)
         {
-            var contributor = this.Contributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
+            var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
             if (contributor == null)
             {
                 contributor = new DocumentCspContributor(directiveType, value);
@@ -308,7 +368,7 @@ namespace DotNetNuke.ContentSecurityPolicy
 
         private void AddReportingDirective(CspDirectiveType directiveType, string value)
         {
-            var contributor = this.Contributors.FirstOrDefault(c => c.DirectiveType == directiveType) as ReportingCspContributor;
+            var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as ReportingCspContributor;
             if (contributor == null)
             {
                 contributor = new ReportingCspContributor(directiveType);
@@ -316,6 +376,18 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
 
             contributor.AddReportingEndpoint(value);
+        }
+
+        private void AddReportingEndpointsDirective(string name, string value)
+        {
+            var contributor = this.ReportingEndpointsContributors.FirstOrDefault(c => c.DirectiveType == CspDirectiveType.ReportUri) as ReportingEndpointContributor;
+            if (contributor == null)
+            {
+                contributor = new ReportingEndpointContributor(CspDirectiveType.ReportUri);
+                this.AddReportingEndpointsContributors(contributor);
+            }
+
+            contributor.AddReportingEndpoint(name, value);
         }
     }
 }

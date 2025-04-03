@@ -36,6 +36,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 CspDirectiveType.FrameAncestors => "frame-ancestors",
                 CspDirectiveType.ReportUri => "report-uri",
                 CspDirectiveType.ReportTo => "report-to",
+                CspDirectiveType.UpgradeInsecureRequests => "upgrade-insecure-requests",
                 _ => throw new ArgumentException("Unknown directive type")
             };
         }

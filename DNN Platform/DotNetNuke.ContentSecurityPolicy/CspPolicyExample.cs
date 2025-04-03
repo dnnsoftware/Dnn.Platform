@@ -28,7 +28,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             csp.AddSandboxDirective("allow-scripts allow-same-origin");
 
             // Add a reporting contributor
-            csp.AddReportUri("https://example.com/csp-report");
+            csp.AddReportEndpoint("name", "https://example.com/csp-report");
 
             // Generate the complete policy
             string policy = csp.GeneratePolicy();

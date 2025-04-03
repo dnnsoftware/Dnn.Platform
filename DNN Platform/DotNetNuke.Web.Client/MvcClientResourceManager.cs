@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using ClientDependency.Core;
     using ClientDependency.Core.CompositeFiles.Providers;
     using ClientDependency.Core.Config;
+    using ClientDependency.Core.Mvc;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
@@ -101,6 +102,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                                                 <add name=""LoaderControlProvider"" type=""ClientDependency.Core.FileRegistration.Providers.LoaderControlProvider, ClientDependency.Core"" enableCompositeFiles=""false""/>
                                               </providers>
                                             </fileRegistration>
+                                             <mvc defaultRenderer=""DnnStandardRenderer"">
+                                                  <renderers>
+                                                    <add name=""DnnStandardRenderer"" type=""DotNetNuke.Web.Client.Providers.DnnStandardRenderer, DotNetNuke.Web.Client"" enableCompositeFiles=""false"" />
+                                                    <add name=""LazyLoadRenderer"" type=""ClientDependency.Core.FileRegistration.Providers.LazyLoadRenderer, ClientDependency.Core"" enableCompositeFiles=""false"" />
+                                                  </renderers>
+                                             </mvc>
                                             <compositeFiles defaultFileProcessingProvider=""DnnCompositeFileProcessor"" compositeFileHandlerPath=""~/DependencyHandler.axd"">
                                               <fileProcessingProviders>
                                                 <!-- For webfarms update the urlType attribute to Base64QueryStrings, default setting is MappedId -->
@@ -315,10 +322,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             // include.HtmlAttributes["defer"] = "defer";
             include.HtmlAttributes["nonce"] = HttpContext.Current.Items["CSP-NONCE"].ToString();
-
-            // TODO: fix this as GetLoader is missing
-            // var loader = page.GetLoader();
-            // loader.RegisterDependency(include, include.HtmlAttributes);
+            var loader = page.GetLoader();
+            loader.RegisterDependency(include, include.HtmlAttributes);
 
             // page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
         }
@@ -464,9 +469,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 }
             }
 
-            // TODO: fix this as GetLoader is missing
-            // var loader = page.GetLoader();
-            // loader.RegisterDependency(include);
+            var loader = page.GetLoader();
+            loader.RegisterDependency(include);
 
             // page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
         }

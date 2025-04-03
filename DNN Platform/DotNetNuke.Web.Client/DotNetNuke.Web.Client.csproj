@@ -53,6 +53,9 @@
     <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
     </Reference>
+    <Reference Include="ClientDependency.Core.Mvc">
+      <HintPath>..\..\Refs\ClientDependency.Core.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
@@ -123,6 +126,7 @@
     <Compile Include="Providers\DnnFileRegistrationProvider.cs" />
     <Compile Include="Providers\DnnFormBottomProvider.cs" />
     <Compile Include="Providers\DnnPageHeaderProvider.cs" />
+    <Compile Include="Providers\DnnStandardRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

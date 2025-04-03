@@ -1,4 +1,4 @@
-﻿namespace DotNetNuke.Web.MvcPipeline.Website.Models
+﻿namespace DotNetNuke.Web.MvcWebsite.Models
 {
     using System.Collections.Generic;
 

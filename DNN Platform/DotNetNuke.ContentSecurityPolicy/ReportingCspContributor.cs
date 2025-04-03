@@ -7,6 +7,7 @@ namespace DotNetNuke.ContentSecurityPolicy
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -72,7 +73,30 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Validates reporting endpoint.
         /// </summary>
-        private void ValidateReportingEndpoint(string endpoint)
+        private void ValidateReportingEndpoint(string value)
+        {
+            switch (this.DirectiveType)
+            {
+                case CspDirectiveType.ReportUri:
+                    this.ValidateReportUri(value);
+                    break;
+                case CspDirectiveType.ReportTo:
+                    this.ValidateReportTo(value);
+                    break;
+
+                    // Add more specific validations as needed
+            }
+        }
+
+        private void ValidateReportTo(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Reporting to cannot be empty");
+            }
+        }
+
+        private void ValidateReportUri(string endpoint)
         {
             if (string.IsNullOrWhiteSpace(endpoint))
             {

@@ -1,25 +1,41 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <AssemblyName>DotNetNuke.ContentSecurityPolicy</AssemblyName>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.ContentSecurityPolicy.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
     <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
-    <OutputPath>bin</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <Authors>Sacha Trauwaen</Authors>
-    <Company>Dnn</Company>
-    <Product>ContentSecurityPolicy</Product>
-    <Copyright>2025</Copyright>
-    <PackageId>ContentSecurityPolicy</PackageId>
-    <AssemblyVersion>0.0.1.0</AssemblyVersion>
-    <FileVersion>0.0.1.0</FileVersion>
-    <Description>DNN MVC-pipeline project</Description>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <ApplicationIcon />
-    <OutputType>Library</OutputType>
   </PropertyGroup>
-  <ItemGroup>
-  </ItemGroup>
-</Project>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <Import Project="..\..\DNN_Platform.build" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\netstandard2.0\DotNetNuke.ContentSecurityPolicy*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
+  </Target>
+
+</Project>

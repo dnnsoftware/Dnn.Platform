@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.MvcPipeline.Framework;
 
     public abstract class DnnPageController : Controller, IMvcController
     {
@@ -63,6 +64,14 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             base.Initialize(requestContext);
 
             // this.Url = new DnnUrlHelper(requestContext, this);
+        }
+
+        public static void RegisterAjaxScript(ControllerContext context)
+        {
+            if (MvcServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
+            {
+                MvcServicesFrameworkInternal.Instance.RegisterAjaxScript(context);
+            }
         }
     }
 }
