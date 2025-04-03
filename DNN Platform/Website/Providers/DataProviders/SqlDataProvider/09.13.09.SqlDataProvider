@@ -7,3 +7,27 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}FilePath]') AND type = N'FN')
+    DROP FUNCTION {databaseOwner}[{objectQualifier}FilePath]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}FilePath]
+(
+    @StrMayContainFileId nvarchar(255)
+)
+	RETURNS 			 nvarchar(500)
+AS
+	BEGIN
+		DECLARE @Path AS nvarchar(500);
+
+		IF ISNULL(@StrMayContainFileId,'') = ''
+			SET @Path = ''
+		ELSE IF LOWER(@StrMayContainFileId) LIKE 'fileid=%'
+			SELECT @Path = ISNULL(Folder, '') + FileName FROM {databaseOwner}[{objectQualifier}vw_Files]
+			WHERE FileId = CAST(SUBSTRING(@StrMayContainFileId, 8, 10) AS int)
+		ELSE
+			SET @Path = @StrMayContainFileId
+		RETURN ISNULL(@Path, '')
+	END
+GO
