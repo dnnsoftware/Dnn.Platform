@@ -88,7 +88,7 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             bool isValid;
             errorMessage = string.Empty;
-            var importFolder = Path.Combine(ExportFolder, packageId);
+            var importFolder = Path.Combine(ExportFolder, Path.GetFileName(packageId));
             if (!IsValidImportFolder(importFolder))
             {
                 return false;
