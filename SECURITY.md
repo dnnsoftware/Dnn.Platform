@@ -10,24 +10,24 @@ All submitted information is viewed only by members of the DNN Security Task For
 * **Moderate** means the issue can compromise data or functionality on a portal/website only if some other condition is met (e.g. a particular module or a user within a particular role is required). Moderate issue security bulletins typically include recommended actions to resolve the issue.
 * **Low** means the issue is very difficult to exploit or has a limited potential impact.
 
-Once an issue has been resolved via a public release of DNN Platform the release notes on GitHub are updated to reflect that security bulletins exist for the release.  Additionally the [DNN Community Security Center](https://dnncommunity.org/security) is updated with the vulnerability details.  We strongly suggest using the "Watch" option on GitHub for "Releases" at a minimum to receive notifications of updated DNN Platform Releases.
+Once an issue has been resolved via a public release of DNN Platform, the release notes on GitHub are updated to reflect security bulletins exist for the release.  Additionally, the [DNN Security Center](https://dnncommunity.org/security) is updated with the vulnerability details.  We strongly suggest using the "Watch" option on GitHub for "Releases" at a minimum to receive notifications of DNN Platform releases.
 
 ## Coordinated Disclosure & Timelines
 DNN Platform follows a policy of coordinated disclosure, meaning we aim to provide clear and timely communication about security issues after a fix has been implemented and released.
 
-As an open-source project maintained by a volunteer-driven community, we cannot guarantee fixed release dates for patches. While we take all reports seriously, the time required to validate, fix, test, and publish a release depends entirely on the availability of community contributors.
+As an open-source project maintained by a volunteer-driven community, we cannot guarantee release dates for patches. While we take all reports seriously, the time required to validate, fix, test, and publish a release depends entirely on the availability of community contributors.
 
-If you're a security researcher, we appreciate your patience and understanding. We are not a commercial vendor with dedicated security engineers on staff—our ability to respond depends on the time and effort of volunteers. You can help speed up resolution by:
+If you are a security researcher, we appreciate your patience and understanding. DNN Platform is not maintained by a commercial entity with dedicated security engineers on staff.  Instead, it is maintained by the DNN Community and our ability to respond depends on the time and effort of volunteers. You can help speed up resolution by:
 
 - Providing detailed reproduction steps.
 - Suggesting mitigation strategies.
-- Contributing a patch or fix via a pull request (let us know if you're interested—we're happy to collaborate securely).
+- Contributing a patch or fix via a pull request (let us know if you are interested and we will be happy to collaborate securely).
 
-We understand the desire to know which version will include the fix and when it will be disclosed, but please note that we are unable to commit to specific timelines until a fix is implemented and verified.
+We understand the desire to know which version will include the fix and when it will be disclosed, but please note that we are unable to commit to specific timelines. We will know more about which version the fix is targeting once it is implemented and verified.
 
 ## Public Disclosure and Notifications
-Once a fix has been publicly released, the vulnerability will be documented in the [DNN Community Security Center](https://dnncommunity.org/security), and in the [GitHub repository security advisory tab](https://github.com/dnnsoftware/Dnn.Platform/security/advisories)
+Once a fix has been released, the vulnerability will be documented in the [DNN Security Center](https://dnncommunity.org/security), and in the [GitHub repository security advisory tab](https://github.com/dnnsoftware/Dnn.Platform/security/advisories).
 
-We typically wait about 30 days after a release before disclosing any details of a resolved vulnerability. This delay allows site administrators time to apply updates before specific exploitation techniques are made public. But this timing can vary depending of multiple factors.
+We typically wait about 30 days after a release before disclosing any details of a resolved vulnerability. This delay allows site administrators time to apply updates before specific exploitation techniques are made public. However, this timing can vary depending on several factors.
 
 As a general policy, DNN Platform does not issue Hot Fix releases to prior versions of DNN Platform.  If a remediation is possible via configuration it shall be noted as applicable in the posted bulletins.
