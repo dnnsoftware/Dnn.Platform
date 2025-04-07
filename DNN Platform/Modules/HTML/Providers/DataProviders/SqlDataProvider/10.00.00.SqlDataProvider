@@ -313,23 +313,23 @@ GO
 --     END
 -- GO
 
--- Drop Workflow table
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Workflow') AND type in (N'U'))
-    DROP TABLE {databaseOwner}{objectQualifier}Workflow;
-GO
-
 -- Drop WorkflowStates table
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}WorkflowStates') AND type in (N'U'))
     DROP TABLE {databaseOwner}{objectQualifier}WorkflowStates;
 GO
 
+-- Drop Workflow table
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Workflow') AND type in (N'U'))
+    DROP TABLE {databaseOwner}{objectQualifier}Workflow;
+GO
+
 -- Create Foreign Key FK_HtmlText_WorkflowStates if it does not exist
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlText'))
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlText'))
     ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH NOCHECK ADD CONSTRAINT FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
 GO
 
 -- Create Foreign Key FK_HtmlTextLog_WorkflowStates if it does not exist
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlTextLog'))
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlTextLog'))
     ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH NOCHECK ADD CONSTRAINT FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
 GO
 
