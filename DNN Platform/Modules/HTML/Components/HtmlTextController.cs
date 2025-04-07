@@ -365,51 +365,6 @@ namespace DotNetNuke.Modules.Html
             TrackModuleModification(htmlContent.ModuleID, moduleVersion);
         }
 
-        /// <summary>UpdateWorkFlow updates the currently active Workflow.</summary>
-        /// <param name="objectID">The ID of the object to apply the update to (depends on WorkFlowType).</param>
-        /// <param name="workFlowType">The type of workflow (Module | Page | Site).</param>
-        /// <param name="workflowID">The ID of the Workflow.</param>
-        /// <param name="replaceExistingSettings">Should existing settings be overwritten?.</param>
-        public void UpdateWorkflow(int objectID, string workFlowType, int workflowID, bool replaceExistingSettings)
-        {
-            switch (workFlowType)
-            {
-                case "Module":
-                    ModuleController.Instance.UpdateModuleSetting(objectID, "WorkflowID", workflowID.ToString());
-                    break;
-                case "Page":
-                    TabController.Instance.UpdateTabSetting(objectID, "WorkflowID", workflowID.ToString());
-                    if (replaceExistingSettings)
-                    {
-                        // Get All Modules on the current Tab
-                        foreach (var kvp in ModuleController.Instance.GetTabModules(objectID))
-                        {
-                            this.ClearModuleSettings(kvp.Value);
-                        }
-                    }
-
-                    break;
-                case "Site":
-                    PortalController.UpdatePortalSetting(objectID, "WorkflowID", workflowID.ToString());
-                    if (replaceExistingSettings)
-                    {
-                        // Get All Tabs aon the Site
-                        foreach (var kvp in TabController.Instance.GetTabsByPortal(objectID))
-                        {
-                            TabController.Instance.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
-                        }
-
-                        // Get All Modules in the current Site
-                        foreach (ModuleInfo objModule in ModuleController.Instance.GetModules(objectID))
-                        {
-                            this.ClearModuleSettings(objModule);
-                        }
-                    }
-
-                    break;
-            }
-        }
-
         /// <summary>GetMaximumVersionHistory retrieves the maximum number of versions to store for a module.</summary>
         /// <param name="portalID">The ID of the Portal.</param>
         /// <returns>The maximum number of versions for the portal (defaults to <c>5</c>).</returns>
