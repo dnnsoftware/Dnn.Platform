@@ -5,15 +5,18 @@ namespace DotNetNuke.UI.Skins
 {
     using System;
 
+    using DotNetNuke.Abstractions.Skins;
+
     /// Project  : DotNetNuke
     /// Class    : SkinInfo
     ///
     /// <summary>    Handles the Business Object for Skins.</summary>
     [Serializable]
-    public class SkinInfo
+    public class SkinInfo : ISkinInfo
     {
         private int portalId;
         private int skinId;
+        private int skinPackageId;
         private string skinRoot;
         private string skinSrc;
         private SkinType skinType;
@@ -28,6 +31,19 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 this.skinId = value;
+            }
+        }
+
+        public int SkinPackageId
+        {
+            get
+            {
+                return this.skinPackageId;
+            }
+
+            set
+            {
+                this.skinPackageId = value;
             }
         }
 
@@ -57,6 +73,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. No replacement. Scheduled removal in v12.0.0.")]
         public SkinType SkinType
         {
             get
