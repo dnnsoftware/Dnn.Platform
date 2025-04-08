@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.Html
             DirectPublish = 1,
             SaveDraft = 2,
             ContentApproval = 3,
+            CustomWorkflow = 4,
         }
 
         protected string CurrentView
@@ -188,6 +189,9 @@ namespace DotNetNuke.Modules.Html
                         case SystemWorkflowManager.ContentAprovalWorkflowKey:
                             this.CurrentWorkflowType = WorkflowType.ContentApproval;
                             break;
+                        default:
+                            this.CurrentWorkflowType = WorkflowType.CustomWorkflow;
+                            break;
                     }
 
                     if (htmlContentItemID != -1)
@@ -253,8 +257,7 @@ namespace DotNetNuke.Modules.Html
                         this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
 
                         break;
-                    case WorkflowType.SaveDraft:
-                    case WorkflowType.ContentApproval:
+                    default:
                         // if it's already published set it back to draft
                         if (htmlContent.StateID == publishedStateID)
                         {
