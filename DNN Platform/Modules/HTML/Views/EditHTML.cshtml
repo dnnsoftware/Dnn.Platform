@@ -8,16 +8,23 @@
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(x => x.TabId)
+        @Html.HiddenFor(x => x.PortalId)
         @Html.HiddenFor(x => x.ModuleId)
-        @Html.HiddenFor(x => x.WorkflowType)
+        @Html.HiddenFor(x => x.CurrentWorkflowType)
+
         <div class="ehCurrentContent dnnClear" id="ehCurrentContent">
             <div class="ehccContent dnnClear @Model.CurrentView">
                 @if (Model.ShowEditView)
                 {
                     @Html.Partial("~/DeskTopModules/Html/Views/_Edit.cshtml", Model)
                 }
+                else
+                {
+                    @Html.HiddenFor(x => x.EditorContent)
+                }
                 @if (Model.ShowPreviewView)
                 {
+
                     <fieldset>
                         @if (Model.ShowPreviewVersion)
                         {
@@ -38,14 +45,7 @@
                             @Html.Raw(Model.PreviewContent)
                         </div>
                     </fieldset>
-                    @*
-                    <h2 id="dnnSitePanelEditHTMLHistory" class="dnnFormSectionHead"><a href="">@Localization.GetString("dshHistory", Model.LocalResourceFile)</a></h2>
-                    <fieldset id="fsEditHtmlHistory">
-                        Html.Partial("_HistoryGrid", Model.HistoryItems)
-                    </fieldset>
-                    *@
                 }
-
                 @if (Model.ShowHistoryView)
                 {
                     <fieldset>
@@ -69,13 +69,13 @@
                     <a href="@Model.RedirectUrl" class="dnnSecondaryAction">@Localization.GetString("cmdCancel", Model.LocalResourceFile)</a>
                 </li>
                 <li>
-                    <button type="button" data-action="@Url.Action("ShowEdit", "DNN_HTML")" class="@(Model.ShowEditView ? "aspNetDisabled" : "dnnSecondaryAction" )" id="cmdEdit" @(Model.ShowEditView ? "disabled" : "" ) >@Localization.GetString("cmdEdit", Model.LocalResourceFile)</button>
+                    <button type="button" data-action="@Url.Action("ShowEdit", "DNN_HTML")" class="dnnSecondaryAction @(Model.ShowEditView ? "aspNetDisabled" : "" )" id="cmdEdit" @(Model.ShowEditView ? "disabled" : "" )>@Localization.GetString("cmdEdit", Model.LocalResourceFile)</button>
                 </li>
                 <li>
-                    <button type="button" data-action="@Url.Action("ShowPreview", "DNN_HTML")" class="@(Model.ShowPreviewView ? "aspNetDisabled" : "dnnSecondaryAction" )" id="cmdPreview" @(Model.ShowPreviewView ? "disabled" : "" )>@Localization.GetString("cmdPreview", Model.LocalResourceFile)</button>
+                    <button type="button" data-action="@Url.Action("ShowPreview", "DNN_HTML")" class="dnnSecondaryAction @(Model.ShowPreviewView ? "aspNetDisabled" : "" )" id="cmdPreview" @(Model.ShowPreviewView ? "disabled" : "" )>@Localization.GetString("cmdPreview", Model.LocalResourceFile)</button>
                 </li>
                 <li>
-                    <button type="button" data-action="@Url.Action("ShowHistory", "DNN_HTML")" class="@(Model.ShowHistoryView ? "aspNetDisabled" : "dnnSecondaryAction" )" id="cmdHistory" @(Model.ShowHistoryView ? "disabled" : "" ) >@Localization.GetString("cmdHistory", Model.LocalResourceFile)</button>
+                    <button type="button" data-action="@Url.Action("ShowHistory", "DNN_HTML")" class="dnnSecondaryAction @(Model.ShowHistoryView ? "aspNetDisabled" : "" )" id="cmdHistory" @(Model.ShowHistoryView ? "disabled" : "" )>@Localization.GetString("cmdHistory", Model.LocalResourceFile)</button>
                 </li>
                 <li>
                     <span class="separator"></span>

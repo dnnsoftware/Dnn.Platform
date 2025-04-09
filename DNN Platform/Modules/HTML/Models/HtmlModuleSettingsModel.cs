@@ -13,24 +13,16 @@ namespace DotNetNuke.Modules.Html.Models
 
     public class HtmlModuleSettingsModel : ModuleSettingsModel
     {
-        [Display(Name = "plReplaceTokens")] // ID de Settings.ascx
         public bool ReplaceTokens { get; set; }
 
-        [Display(Name = "plDecorate")] // ID de Settings.ascx
         public bool UseDecorate { get; set; }
 
-        [Display(Name = "plSearchDescLength")] // ID de Settings.ascx
         public int SearchDescLength { get; set; }
 
-        public List<WorkflowStateInfo> Workflows { get; set; }
-
-        [Display(Name = "plWorkflow")] // ID de Settings.ascx
         public string SelectedWorkflow { get; set; }
 
-        [Display(Name = "plApplyTo")] // ID de Settings.ascx
         public string ApplyTo { get; set; }
 
-        [Display(Name = "chkReplace")] // ID de Settings.ascx
         public bool Replace { get; set; }
     }
 }
