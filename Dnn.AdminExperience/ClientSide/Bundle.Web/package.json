@@ -26,7 +26,7 @@
     "dayjs": "^1.11.9",
     "es6-object-assign": "1.1.0",
     "es6-promise": "4.2.8",
-    "eslint": "7.32.0",
+    "eslint": "9.24.0",
     "eslint-plugin-react": "7.37.1",
     "eslint-plugin-spellcheck": "0.0.20",
     "eslint-webpack-plugin": "^4.2.0",
