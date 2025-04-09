@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
@@ -63,18 +63,6 @@ namespace DotNetNuke.UI.WebControls
                 }
 
                 return intValue;
-            }
-        }
-
-        /// <summary>Gets list gets the List associated with the control.</summary>
-        [Obsolete("Deprecated in DotNetNuke 6.0.1. Use ListEntries instead. Scheduled for removal in v10.0.0.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        protected ListEntryInfoCollection List
-        {
-            get
-            {
-                var listController = new ListController();
-                return listController.GetListEntryInfoCollection(this.ListName, this.ParentKey, this.PortalId);
             }
         }
 

@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public UserAndLogin()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>

@@ -118,7 +118,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial void AddCodeSubDirectory(string name)
         {
             AddCodeSubDirectory(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 name);
         }
 
@@ -169,7 +169,7 @@ namespace DotNetNuke.Common.Utilities
         [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
         public static partial void BackupConfig()
         {
-            BackupConfig(Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+            BackupConfig(Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Creates a backup of the web.config file.</summary>
@@ -257,7 +257,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial long GetMaxUploadSize()
         {
             return GetMaxUploadSize(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Returns the maximum file size allowed to be uploaded to the application in bytes.</summary>
@@ -299,7 +299,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial long GetRequestFilterSize()
         {
             return GetRequestFilterSize(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Returns the maximum file size allowed to be uploaded based on the request filter limit.</summary>
@@ -331,7 +331,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial void SetMaxUploadSize(long newSize)
         {
             SetMaxUploadSize(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 newSize);
         }
 
@@ -458,7 +458,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial int GetAuthCookieTimeout()
         {
             return GetAuthCookieTimeout(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Gets the authentication cookie timeout value.</summary>
@@ -492,7 +492,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial int GetPersistentCookieTimeout()
         {
             return GetPersistentCookieTimeout(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Gets optional persistent cookie timeout value from web.config.</summary>
@@ -568,7 +568,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string GetCustomErrorMode()
         {
             return GetCustomErrorMode(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Gets the currently configured custom error mode.</summary>
@@ -597,7 +597,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial XmlDocument Load(string filename)
         {
             return Load(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 filename);
         }
 
@@ -634,7 +634,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial void RemoveCodeSubDirectory(string name)
         {
             RemoveCodeSubDirectory(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 name);
         }
 
@@ -705,7 +705,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string Save(XmlDocument xmlDoc, string filename)
         {
             return Save(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 xmlDoc,
                 filename);
         }
@@ -782,7 +782,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial bool Touch()
         {
             return Touch(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Touches the web.config file to force the application to reload.</summary>
@@ -810,7 +810,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial void UpdateConnectionString(string conn)
         {
             UpdateConnectionString(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 conn);
         }
 
@@ -842,7 +842,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial void UpdateDataProvider(string name, string databaseOwner, string objectQualifier)
         {
             UpdateDataProvider(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 name,
                 databaseOwner,
                 objectQualifier);
@@ -873,7 +873,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial void UpdateUpgradeConnectionString(string name, string upgradeConnectionString)
         {
             UpdateUpgradeConnectionString(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 name,
                 upgradeConnectionString);
         }
@@ -900,7 +900,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string UpdateMachineKey()
         {
             return UpdateMachineKey(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Updates the unique machine key. Warning: Do not change this after installation unless you know what your are doing.</summary>
@@ -958,7 +958,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string UpdateValidationKey()
         {
             return UpdateValidationKey(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()));
         }
 
         /// <summary>Updates the validation key. WARNING: Do not call this API unless you now what you are doing.</summary>
@@ -1038,7 +1038,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string GetPathToFile(ConfigFileType file, bool overwrite)
         {
             return GetPathToFile(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 file,
                 overwrite);
         }
@@ -1074,7 +1074,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string UpdateInstallVersion(Version version)
         {
             return UpdateInstallVersion(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 version);
         }
 
@@ -1133,7 +1133,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string AddFCNMode(FcnMode fcnMode)
         {
             return AddFCNMode(
-                Globals.DependencyProvider.GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
+                Globals.GetCurrentServiceProvider().GetService<IApplicationStatusInfo>() ?? new ApplicationStatusInfo(new Application()),
                 fcnMode);
         }
 

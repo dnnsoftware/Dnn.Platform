@@ -3,13 +3,13 @@
   margin: 0 auto;
   width: 175px;
   min-height: 109px;
-  background: white;
+  background: var(--dnn-color-background, white);
   .container {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
     position: relative;
-    background: white;
+    background: var(--dnn-color-background, white);
   
     padding: 0px;
   }
@@ -44,7 +44,7 @@
       .scrollbar {
         width: 20px;
         height: 6px;
-        background: black;
+        background: var(--dnn-color-foreground, black);
         margin-top: 1px;
         border-collapse: separate;
         border-radius: 3px;
@@ -60,7 +60,7 @@
       .scrollbar {
         width: 6px;
         height: 20px;
-        background: black;
+        background: var(--dnn-color-foreground, black);
         margin-left: 1px;
         border-collapse: separate;
         border-radius: 3px;
@@ -79,12 +79,12 @@
     transition: all 0.4s;
 
     &:hover {
-      background: white;
+      background: var(--dnn-color-background, white);
       opacity: 0.6 !important;
     }
 
     &:active {
-      background: white;
+      background: var(--dnn-color-background, white);
       opacity: 0.6 !important;
     }
   }

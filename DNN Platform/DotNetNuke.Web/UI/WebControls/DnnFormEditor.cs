@@ -118,12 +118,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        [DnnDeprecated(7, 4, 1, "Please add encryptIds")]
-        internal static partial void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
-        {
-            SetUpItems(items, parentControl, localResourceFile, false);
-        }
-
         internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
         {
             foreach (DnnFormItemBase item in items)

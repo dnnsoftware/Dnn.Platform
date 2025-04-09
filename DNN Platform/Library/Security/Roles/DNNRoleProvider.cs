@@ -81,11 +81,11 @@ namespace DotNetNuke.Security.Roles
         /// <returns>An ArrayList of RoleInfo objects.</returns>
         public override ArrayList GetRoles(int portalId)
         {
-            var arrRoles = CBO.FillCollection(
+            return CBO.FillCollection(
                 portalId == Null.NullInteger
-                                        ? this.dataProvider.GetRoles()
-                                        : this.dataProvider.GetPortalRoles(portalId), typeof(RoleInfo));
-            return arrRoles;
+                    ? this.dataProvider.GetRoles()
+                    : this.dataProvider.GetPortalRoles(portalId),
+                typeof(RoleInfo));
         }
 
         /// <inheritdoc/>

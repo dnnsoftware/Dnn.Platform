@@ -481,7 +481,7 @@ class ExportModal extends Component {
                         </div>
                     </GridSystem>
                     <GridCell className="action-buttons">
-                        <Button type="secondary" onClick={this.cancelExport.bind(this)}>{Localization.get("Cancel")}</Button>
+                        <Button type="neutral" onClick={this.cancelExport.bind(this)}>{Localization.get("Cancel")}</Button>
                         <Button type="primary"
                             disabled={state.requestSubmitting}
                             onClick={this.onExport.bind(this)}>

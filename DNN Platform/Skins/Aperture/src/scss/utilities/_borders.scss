@@ -1,0 +1,43 @@
+@use "../variables/breakpoints";
+@use "../variables/colors";
+
+// Define a map for border radius sizes
+$border-radius-sizes: (
+    0: 0,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 1rem,
+    4: 2.5rem,
+    5: 5rem
+);
+
+// Border Radius Mixin
+@mixin border-radius($size, $important: false) {
+    border-radius: $size if($important, !important, null);
+}
+
+// Responsive Border Radius Mixin
+@mixin responsive-border-radius($class-suffix) {
+    @each $size, $value in $border-radius-sizes {
+        .aperture-#{$class-suffix}-#{$size} {
+            @include border-radius($value);
+        }
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
+            @media (min-width: $min-width) {
+                .aperture-#{$class-suffix}-#{$breakpoint}-#{$size} {
+                    @include border-radius($value, true);
+                }
+            }
+        }
+    }
+}
+
+// Generate border radius classes
+@include responsive-border-radius('border-radius');
+
+// border classes from current color scheme
+@each $color, $value in colors.$colors {
+    .aperture-border-#{$color} {
+        border-color: colors.color($color);
+    }
+}

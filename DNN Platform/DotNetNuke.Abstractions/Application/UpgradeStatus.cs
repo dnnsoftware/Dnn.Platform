@@ -18,7 +18,7 @@ namespace DotNetNuke.Abstractions.Application
         /// <summary>The application occur error when running.</summary>
         Error = 3,
 
-        /// <summary>The application status is unknown,</summary>
+        /// <summary>The application status is unknown.</summary>
         /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
         Unknown = 4,
     }

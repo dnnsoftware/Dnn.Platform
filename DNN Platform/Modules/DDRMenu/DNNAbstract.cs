@@ -26,10 +26,10 @@ namespace DotNetNuke.Web.DDRMenu
         public static string GetLoginUrl()
         {
             var request = HttpContext.Current.Request;
-
             if (request.IsAuthenticated)
             {
-                return Globals.DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL(PortalSettings.Current.ActiveTab.TabID, "Logoff");
+                var navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+                return navigationManager.NavigateURL(PortalSettings.Current.ActiveTab.TabID, "Logoff");
             }
 
             var returnUrl = HttpContext.Current.Request.RawUrl;
@@ -53,7 +53,8 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 if (portalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
                 {
-                    return Globals.RegisterURL(HttpUtility.UrlEncode(Globals.DependencyProvider.GetRequiredService<INavigationManager>().NavigateURL()), Null.NullString);
+                    var navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+                    return Globals.RegisterURL(HttpUtility.UrlEncode(navigationManager.NavigateURL()), Null.NullString);
                 }
             }
             else

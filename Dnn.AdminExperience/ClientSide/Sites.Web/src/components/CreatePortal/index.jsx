@@ -396,7 +396,7 @@ class CreatePortal extends Component {
                             </Collapse>
                         </GridCell>
                         <GridCell className="site-action-buttons">
-                            <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("cmdCancel")}</Button>
+                            <Button type="neutral" onClick={this.onCancel.bind(this)}>{Localization.get("cmdCancel")}</Button>
                             <Button type="primary" disabled={this.state.creatingPortal} onClick={this.createPortal.bind(this)}>{Localization.get("cmdCreateSite")}</Button>
                         </GridCell>
                     </GridCell>

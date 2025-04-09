@@ -15,12 +15,13 @@ namespace DotNetNuke.Framework
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
@@ -32,25 +33,32 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI;
     using DotNetNuke.UI.Internals;
     using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>
+    /// The DNN default page.
+    /// </summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
-
         private static readonly Regex HeaderTextRegex = new Regex(
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultPage"/> class.
+        /// </summary>
         public DefaultPage()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string CurrentSkinPath
@@ -85,8 +93,12 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <summary>Gets a service that provides navigation features.</summary>
         protected INavigationManager NavigationManager { get; }
 
+        /// <summary>
+        /// Gets a string representation of the list HTML attributes.
+        /// </summary>
         protected string HtmlAttributeList
         {
             get
@@ -149,13 +161,17 @@ namespace DotNetNuke.Framework
             return string.Empty;
         }
 
+        /// <summary>
+        /// Checks if the current version is not a production version.
+        /// </summary>
+        /// <returns>A value indicating whether the current version is not a production version.</returns>
         protected bool NonProductionVersion()
         {
             return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
         }
 
         /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event arguments.</param>
         /// <remarks>
         /// - obtain PortalSettings from Current Context
         /// - set global page settings.
@@ -169,25 +185,7 @@ namespace DotNetNuke.Framework
             // set global page settings
             this.InitializePage();
 
-            // load skin control and register UI js
-            UI.Skins.Skin ctlSkin;
-            if (this.PortalSettings.EnablePopUps)
-            {
-                ctlSkin = UrlUtils.InPopUp() ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
-
-                // register popup js
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
-
-                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
-                                   ? "~/js/Debug/dnn.modalpopup.js"
-                                   : "~/js/dnn.modalpopup.js";
-
-                ClientResourceManager.RegisterScript(this, popupFilePath, FileOrder.Js.DnnModalPopup);
-            }
-            else
-            {
-                ctlSkin = UI.Skins.Skin.GetSkin(this);
-            }
+            var ctlSkin = this.GetSkin();
 
             // DataBind common paths for the client resource loader
             this.ClientResourceLoader.DataBind();
@@ -260,9 +258,7 @@ namespace DotNetNuke.Framework
             }
 
             // add CSS links
-            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/7.0.0/default.css"));
-            ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
-
+            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css"));
             ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
             ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss);
 
@@ -291,7 +287,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -317,12 +313,6 @@ namespace DotNetNuke.Framework
                 this.MetaGenerator.Content = this.Generator;
                 this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
-                /*
-                 * Never show to be html5 compatible and stay backward compatible
-                 *
-                 * MetaCopyright.Content = Copyright;
-                 * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
-                 */
                 this.MetaKeywords.Content = this.KeyWords;
                 this.MetaKeywords.Visible = !string.IsNullOrEmpty(this.KeyWords);
                 this.MetaDescription.Content = this.Description;
@@ -369,7 +359,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        ///
+        /// Initializes the page.
         /// </summary>
         /// <remarks>
         /// - Obtain PortalSettings from Current Context
@@ -614,6 +604,10 @@ namespace DotNetNuke.Framework
                 this.Title += versionString;
             }
 
+            // register css variables
+            var cssVariablesStyleSheet = this.GetCssVariablesStylesheet();
+            ClientResourceManager.RegisterStyleSheet(this, cssVariablesStyleSheet, FileOrder.Css.DefaultCss);
+
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
             {
@@ -676,6 +670,32 @@ namespace DotNetNuke.Framework
             // Find the placeholder control and render the doctype
             this.skinDocType.Text = this.PortalSettings.ActiveTab.SkinDoctype;
             this.attributeList.Text = this.HtmlAttributeList;
+        }
+
+        private Skin GetSkin()
+        {
+            // We want the popup scripts to be loaded only if popups are enabled.
+            this.LoadPopupScriptsIfNeeded();
+
+            // But the popup skin should only be used if we are inside a popup.
+            if (UrlUtils.InPopUp())
+            {
+                return Skin.GetPopUpSkin(this);
+            }
+
+            return Skin.GetSkin(this);
+        }
+
+        private void LoadPopupScriptsIfNeeded()
+        {
+            if (this.PortalSettings.EnablePopUps)
+            {
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
+                                   ? "~/js/Debug/dnn.modalpopup.js"
+                                   : "~/js/dnn.modalpopup.js";
+                ClientResourceManager.RegisterScript(this, popupFilePath, FileOrder.Js.DnnModalPopup);
+            }
         }
 
         private void ManageFavicon()
@@ -745,6 +765,42 @@ namespace DotNetNuke.Framework
         {
             var styleSheet = itemArgs.Params[0].ToString();
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, styleSheet);
+        }
+
+        private string GetCssVariablesStylesheet()
+        {
+            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cacheArgs = new CacheItemArgs(
+                cacheKey,
+                DataCache.PortalCacheTimeOut,
+                DataCache.PortalCachePriority,
+                this.PortalSettings.GetStyles());
+            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            return filePath;
+        }
+
+        private string GetCssVariablesStylesheetCallback(CacheItemArgs args)
+        {
+            var portalStyles = (PortalStyles)args.Params[0];
+
+            var directory = this.PortalSettings.HomeSystemDirectoryMapPath;
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var webPath = $"{this.PortalSettings.HomeSystemDirectory}{portalStyles.FileName}";
+
+            var physicalPath = $"{directory}{portalStyles.FileName}";
+            if (File.Exists(physicalPath))
+            {
+                return webPath;
+            }
+
+            var styles = portalStyles.ToString();
+            File.WriteAllText(physicalPath, styles);
+
+            return webPath;
         }
     }
 }

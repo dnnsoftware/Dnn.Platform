@@ -226,7 +226,7 @@ class FromControl extends Component {
                     </div>
                 </GridSystem>
                 <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
+                    <Button type="neutral" onClick={props.onCancel.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
                     <Button type="primary"
                         onClick={this.onCreateNewModule.bind(this)}>{Localization.get("NewModule_Create.Button")}</Button>
                 </GridCell>

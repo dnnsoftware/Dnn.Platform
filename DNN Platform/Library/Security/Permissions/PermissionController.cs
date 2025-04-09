@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
@@ -230,14 +230,6 @@ namespace DotNetNuke.Security.Permissions
             }
 
             return result;
-        }
-
-        [DnnDeprecated(7, 3, 0, "Replaced by GetPermissionsByModule(int, int)", RemovalVersion = 10)]
-        public partial ArrayList GetPermissionsByModuleID(int moduleId)
-        {
-            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-
-            return this.GetPermissionsByModuleDefID(module.ModuleDefID);
         }
 
         /// <inheritdoc />

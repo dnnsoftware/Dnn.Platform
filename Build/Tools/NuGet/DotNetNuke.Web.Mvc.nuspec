@@ -21,12 +21,12 @@
       <dependency id="Microsoft.AspNet.Mvc" version="5.3.0" />
       <dependency id="Microsoft.AspNet.Razor" version="3.3.0" />
       <dependency id="Microsoft.AspNet.WebPages" version="3.3.0" />
-      <dependency id="Microsoft.Web.Infrastructure" version="1.0.0.0" />
+      <dependency id="Microsoft.Web.Infrastructure" version="2.0.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.dll" target="lib\net45\"/>
-    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.pdb" target="lib\net45\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.dll" target="lib\net48\"/>
+    <file src="..\..\..\Website\bin\DotNetNuke.Web.Mvc.pdb" target="lib\net48\"/>
     <file src="logo-for-nuget.png" target="images\"/>
   </files>
 </package>

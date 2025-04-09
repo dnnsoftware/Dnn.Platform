@@ -22,7 +22,6 @@ namespace DotNetNuke.Tests.Web.Api
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Tests.Utilities.Mocks;
-    using DotNetNuke.Web.ConfigSection;
     using Moq;
     using NUnit.Framework;
 
@@ -33,47 +32,47 @@ namespace DotNetNuke.Tests.Web.Api
         private const string ValidToken =
             "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ";
 
-        private Mock<DataProvider> _mockDataProvider;
-        private Mock<MembershipProvider> _mockMembership;
-        private Mock<Entities.Portals.Data.IDataService> _mockDataService;
-        private Mock<IDataService> _mockJwtDataService;
-        private Mock<IUserController> _mockUserController;
-        private Mock<IPortalController> _mockPortalController;
+        private Mock<DataProvider> mockDataProvider;
+        private Mock<MembershipProvider> mockMembership;
+        private Mock<Entities.Portals.Data.IDataService> mockDataService;
+        private Mock<IDataService> mockJwtDataService;
+        private Mock<IUserController> mockUserController;
+        private Mock<IPortalController> mockPortalController;
 
         public void SetupMockServices()
         {
             MockComponentProvider.CreateDataCacheProvider();
 
-            this._mockDataService = new Mock<Entities.Portals.Data.IDataService>();
-            this._mockDataProvider = MockComponentProvider.CreateDataProvider();
-            this._mockPortalController = new Mock<IPortalController>();
-            this._mockUserController = new Mock<IUserController>();
-            this._mockMembership = MockComponentProvider.CreateNew<MembershipProvider>();
+            this.mockDataService = new Mock<Entities.Portals.Data.IDataService>();
+            this.mockDataProvider = MockComponentProvider.CreateDataProvider();
+            this.mockPortalController = new Mock<IPortalController>();
+            this.mockUserController = new Mock<IUserController>();
+            this.mockMembership = MockComponentProvider.CreateNew<MembershipProvider>();
 
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-            this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
-            this._mockDataProvider.Setup(d => d.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(GetUser);
-            this._mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(this.GetPortalGroups);
-            Entities.Portals.Data.DataService.RegisterInstance(this._mockDataService.Object);
+            this.mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+            this.mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
+            this.mockDataProvider.Setup(d => d.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(GetUser);
+            this.mockDataService.Setup(ds => ds.GetPortalGroups()).Returns(this.GetPortalGroups);
+            Entities.Portals.Data.DataService.RegisterInstance(this.mockDataService.Object);
 
-            this._mockMembership.Setup(m => m.PasswordRetrievalEnabled).Returns(true);
-            this._mockMembership.Setup(m => m.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
+            this.mockMembership.Setup(m => m.PasswordRetrievalEnabled).Returns(true);
+            this.mockMembership.Setup(m => m.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => GetUserByIdCallback(portalId, userId));
 
-            this._mockJwtDataService = new Mock<IDataService>();
-            this._mockJwtDataService.Setup(x => x.GetTokenById(It.IsAny<string>())).Returns((string sid) => GetPersistedToken(sid));
-            DataService.RegisterInstance(this._mockJwtDataService.Object);
+            this.mockJwtDataService = new Mock<IDataService>();
+            this.mockJwtDataService.Setup(x => x.GetTokenById(It.IsAny<string>())).Returns((string sid) => GetPersistedToken(sid));
+            DataService.RegisterInstance(this.mockJwtDataService.Object);
 
-            PortalController.SetTestableInstance(this._mockPortalController.Object);
-            this._mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(
+            PortalController.SetTestableInstance(this.mockPortalController.Object);
+            this.mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(
                 new PortalInfo { PortalID = 0, PortalGroupID = -1, UserTabId = 55 });
-            this._mockPortalController.Setup(x => x.GetPortalSettings(It.IsAny<int>())).Returns((int portalId) => new Dictionary<string, string>());
-            this._mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(() => new PortalSettings());
+            this.mockPortalController.Setup(x => x.GetPortalSettings(It.IsAny<int>())).Returns((int portalId) => new Dictionary<string, string>());
+            this.mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(() => new PortalSettings());
 
-            UserController.SetTestableInstance(this._mockUserController.Object);
-            this._mockUserController.Setup(x => x.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
+            UserController.SetTestableInstance(this.mockUserController.Object);
+            this.mockUserController.Setup(x => x.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
                 (int portalId, int userId) => GetUserByIdCallback(portalId, userId));
 
-            // _mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
+            ////mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
         }
 
         [Test]
@@ -91,7 +90,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void MissingAuthoizationHeaderReturnsNullResponse()
+        public void MissingAuthorizationHeaderReturnsNullResponse()
         {
             // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
@@ -105,7 +104,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void WrongAuthoizationSchemeReturnsNullResponse()
+        public void WrongAuthorizationSchemeReturnsNullResponse()
         {
             // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
@@ -120,7 +119,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void MissingAuthoizationTokenReturnsNullResponse()
+        public void MissingAuthorizationTokenReturnsNullResponse()
         {
             // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
@@ -135,7 +134,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void AuthoizationTokenWithMissingComponentsReturnsNullResponse()
+        public void AuthorizationTokenWithMissingComponentsReturnsNullResponse()
         {
             // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
@@ -151,7 +150,7 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        public void AuthoizationTokenWithWrongSchemeTypeReturnsNullResponse()
+        public void AuthorizationTokenWithWrongSchemeTypeReturnsNullResponse()
         {
             // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
@@ -168,7 +167,7 @@ namespace DotNetNuke.Tests.Web.Api
 
         [Test]
 
-        public void AuthoizationTokenWithoorResponse()
+        public void AuthorizationTokenWithoutResponse()
         {
             // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");

@@ -1,0 +1,5 @@
+<h2>Aperture Theme</h2>
+<div><em>Default theme for DNN 10.</em></div>
+<hr />
+<div>&nbsp;</div>
+<div>Release notes are available on the <a href="https://github.com/dnnsoftware/Dnn.Platform" target="_blank">DNN Platform GitHub repo</a>.</div>

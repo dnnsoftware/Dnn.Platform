@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" type="Library" version="03.06.00" isSystem="false">
+    <package name="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" type="Library" version="04.01.00" isSystem="false">
       <friendlyName>Microsoft CodeDom .NET Compiler</friendlyName>
       <description>Provides compiler support for C# 7.3 and VB 15.</description>
       <dependencies/>
@@ -13,22 +13,182 @@
       <license/>
       <releaseNotes src="releaseNotes.txt"></releaseNotes>
       <components>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <!-- Prevents Roslyn from running to avoid potential compilation errors
+                       when a newer version of Roslyn is installed in the next steps.-->
+                  <node path="/configuration/system.codedom/compilers/compiler[@extension='.cs']" action="remove" />
+                  <node path="/configuration/system.codedom/compilers/compiler[@extension='.vb']" action="remove" />
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes/>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly Action="UnRegister">
+              <path>bin</path>
+              <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Cleanup" version="10.00.00">
+          <files>
+            <file>
+              <path>bin</path>
+              <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csc.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csc.exe.config</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csc.rsp</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csi.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csi.exe.config</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csi.rsp</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.Build.Tasks.CodeAnalysis.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.CSharp.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.CSharp.Scripting.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.Scripting.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.VisualBasic.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CSharp.Core.targets</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.DiaSymReader.Native.amd64.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.DiaSymReader.Native.x86.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.Managed.Core.targets</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.VisualBasic.Core.targets</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>roslyn.zip.manifest</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Buffers.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Collections.Immutable.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Memory.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Numerics.Vectors.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Reflection.Metadata.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Text.Encoding.CodePages.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>vbc.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>vbc.exe.config</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>vbc.rsp</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>VBCSCompiler.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>VBCSCompiler.exe.config</name>
+            </file>
+          </files>
+        </component>
         <component type="Assembly">
           <assemblies>
             <assembly>
               <path>bin</path>
               <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</name>
-              <version>3.6.0</version>
+              <version>4.1.0</version>
             </assembly>
           </assemblies>
         </component>
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>bin/roslyn</basePath>
-              <resourceFile>
-                <name>roslyn.zip</name>
-              </resourceFile>
-            </resourceFiles>
+            <resourceFile>
+              <name>roslyn.zip</name>
+            </resourceFile>
+          </resourceFiles>
         </component>
         <component type="Config">
           <config>
@@ -43,8 +203,8 @@
                     <compilers></compilers>
                   </node>
                   <node path="/configuration/system.codedom/compilers" action="update" key="extension" collision="overwrite">
-                    <compiler language="c#;cs;csharp" extension=".cs" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:7.3 /nowarn:1659;1699;1701;612;618" />
-                    <compiler language="vb;vbs;visualbasic;vbscript" extension=".vb" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:default /nowarn:41008,40000,40008 /define:_MYTYPE=\&quot;Web\&quot; /optionInfer+" />
+                    <compiler language="c#;cs;csharp" extension=".cs" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:default /nowarn:1659;1699;1701;612;618" />
+                    <compiler language="vb;vbs;visualbasic;vbscript" extension=".vb" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:default /nowarn:41008,40000,40008 /define:_MYTYPE=\&quot;Web\&quot; /optionInfer+" />
                   </node>
                 </nodes>
               </configuration>

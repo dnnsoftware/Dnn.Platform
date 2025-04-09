@@ -238,36 +238,6 @@
   <data name="plNewTabs.Text" xml:space="preserve">
     <value>Add to New Pages Only</value>
   </data>
-  <data name="plWebSlice.Help" xml:space="preserve">
-    <value>Check this box to make this module an IE8 Web Slice.</value>
-  </data>
-  <data name="plWebSlice.Text" xml:space="preserve">
-    <value>Is a WebSlice</value>
-  </data>
-  <data name="plWebSliceExpiry.Help" xml:space="preserve">
-    <value>Enter a date when the Web Slice will expire or leave blank to use the module's end date.</value>
-  </data>
-  <data name="plWebSliceExpiry.Text" xml:space="preserve">
-    <value>Web Slice Expires:</value>
-  </data>
-  <data name="plWebSliceTitle.Help" xml:space="preserve">
-    <value>Enter a title for the Web Slice or leave blank to use the module title.</value>
-  </data>
-  <data name="plWebSliceTitle.Text" xml:space="preserve">
-    <value>Web Slice Title:</value>
-  </data>
-  <data name="plWebSliceTTL.Help" xml:space="preserve">
-    <value>Enter the Time to Live (TTL) for this Web Slice in minutes or leave blank to use the module's cache time (converted to minutes).</value>
-  </data>
-  <data name="plWebSliceTTL.Text" xml:space="preserve">
-    <value>Web Slice TTL:</value>
-  </data>
-  <data name="valWebSliceExpiry.ErrorMessage" xml:space="preserve">
-    <value>Invalide Expiry Date</value>
-  </data>
-  <data name="valWebSliceTTL.ErrorMessage" xml:space="preserve">
-    <value>Invalid TTL - value must be an integer.</value>
-  </data>
   <data name="InstalledOn.Text" xml:space="preserve">
     <value>This module has been added to the following pages:</value>
   </data>

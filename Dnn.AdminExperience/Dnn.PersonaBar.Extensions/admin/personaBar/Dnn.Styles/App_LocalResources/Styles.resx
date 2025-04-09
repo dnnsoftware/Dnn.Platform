@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="nav_Styles.Text" xml:space="preserve">
+    <value>Styles</value>
+  </data>
+  <data name="ModuleDescription" xml:space="preserve">
+    <value>DNN Provides CSS variables (custom properties) to designers and developers to allow them to style their solutions to the site branding preferences. These style preferences may or may not be implemented by a theme or extension.</value>
+  </data>
+  <data name="BrandColors" xml:space="preserve">
+    <value>Brand Colors</value>
+  </data>
+  <data name="ActionColors" xml:space="preserve">
+    <value>Action Colors</value>
+  </data>
+  <data name="GeneralColors" xml:space="preserve">
+    <value>General Colors</value>
+  </data>
+  <data name="Colors" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="Controls" xml:space="preserve">
+    <value>Controls</value>
+  </data>
+  <data name="Typography" xml:space="preserve">
+    <value>Typography</value>
+  </data>
+  <data name="PrimaryColor" xml:space="preserve">
+    <value>Primary Color</value>
+  </data>
+  <data name="PrimaryColorHelp" xml:space="preserve">
+    <value>Used to style most primary controls (like Submit buttons)</value>
+  </data>
+  <data name="Contrast" xml:space="preserve">
+    <value>Contrast</value>
+  </data>
+  <data name="SecondaryColorHelp" xml:space="preserve">
+    <value>Used for most secondary actions like Copy, Merge</value>
+  </data>
+  <data name="SecondaryColor" xml:space="preserve">
+    <value>SecondaryColor</value>
+  </data>
+  <data name="TertiaryColor" xml:space="preserve">
+    <value>Tertiary Color</value>
+  </data>
+  <data name="TertiaryColorHelp" xml:space="preserve">
+    <value>An additional less used color</value>
+  </data>
+  <data name="NeutralColorHelp" xml:space="preserve">
+    <value>A muted neutral color often used for disabled controls</value>
+  </data>
+  <data name="NeutralColor" xml:space="preserve">
+    <value>Neutral Color</value>
+  </data>
+  <data name="BackgroundColor" xml:space="preserve">
+    <value>Background Color</value>
+  </data>
+  <data name="BackgroundColorHelp" xml:space="preserve">
+    <value>Used for the main background of the site</value>
+  </data>
+  <data name="SurfaceColorHelp" xml:space="preserve">
+    <value>Should have a slight contrast over the background, mainly used for separating sections like menus</value>
+  </data>
+  <data name="SurfaceColor" xml:space="preserve">
+    <value>Surface Color</value>
+  </data>
+  <data name="ForegroundColor" xml:space="preserve">
+    <value>Foreground Color</value>
+  </data>
+  <data name="ForegroundColorHelp" xml:space="preserve">
+    <value>The main text and other elements colors that should have higher contrast over the background</value>
+  </data>
+  <data name="InformationColor" xml:space="preserve">
+    <value>Information Color</value>
+  </data>
+  <data name="InformationColorHelp" xml:space="preserve">
+    <value>Used to display informational messages</value>
+  </data>
+  <data name="SuccessColorHelp" xml:space="preserve">
+    <value>A color that represents success</value>
+  </data>
+  <data name="SuccessColor" xml:space="preserve">
+    <value>Success Color</value>
+  </data>
+  <data name="WarningColor" xml:space="preserve">
+    <value>Warning Color</value>
+  </data>
+  <data name="WarningColorHelp" xml:space="preserve">
+    <value>Used to show a warning</value>
+  </data>
+  <data name="DangerColor" xml:space="preserve">
+    <value>Danger Color</value>
+  </data>
+  <data name="DangerColorHelp" xml:space="preserve">
+    <value>Use to identify dangerous actions such as a Delete button or Errors</value>
+  </data>
+  <data name="ControlsRadiusHelp" xml:space="preserve">
+    <value>Defines how rounded controls are</value>
+  </data>
+  <data name="ControlsRadius" xml:space="preserve">
+    <value>Controls Radius</value>
+  </data>
+  <data name="ControlsPaddingHelp" xml:space="preserve">
+    <value>Defines how spaced apart elements should be</value>
+  </data>
+  <data name="ControlsPadding" xml:space="preserve">
+    <value>Controls Padding</value>
+  </data>
+  <data name="BaseFontSize" xml:space="preserve">
+    <value>Base Font Size</value>
+  </data>
+  <data name="BaseFontSizeHelp" xml:space="preserve">
+    <value>Defines the font size in pixels of the main text</value>
+  </data>
+  <data name="ColorVariationOpacity" xml:space="preserve">
+    <value>Color Variation Opacity</value>
+  </data>
+  <data name="ColorVariationOpacityHelp" xml:space="preserve">
+    <value>The percentage of opacity when something should be transparent over the background color</value>
+  </data>
+  <data name="RestoreDefault" xml:space="preserve">
+    <value>Restore Default</value>
+  </data>
+  <data name="RestoreDefaultMessage" xml:space="preserve">
+    <value>Are you sure you want to restore the styles to their original defaults?
+Your current settings will be lost.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="GetStylesError" xml:space="preserve">
+    <value>There was an issue getting the current styles.</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>Styles saved successfully.</value>
+  </data>
+  <data name="SaveError" xml:space="preserve">
+    <value>There was an error trying to save the styles.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="AllowAdminEdits" xml:space="preserve">
+    <value>Allow Admin Edits</value>
+  </data>
+  <data name="AllowAdminEditsHelp" xml:space="preserve">
+    <value>If enabled, administrators of the site will be able to edit the styles for their site.</value>
+  </data>
+</root>

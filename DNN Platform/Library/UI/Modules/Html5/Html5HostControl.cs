@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.UI.Modules.Html5
 {
     using System;
@@ -9,6 +8,8 @@ namespace DotNetNuke.UI.Modules.Html5
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -17,16 +18,30 @@ namespace DotNetNuke.UI.Modules.Html5
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Html5HostControl : ModuleControlBase, IActionable
     {
         private readonly string html5File;
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private string fileContent;
 
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
-        /// <param name="html5File"></param>
+        /// <param name="html5File">The path to the HTML file.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File)
+            : this(html5File, null)
         {
             this.html5File = html5File;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
+        /// <param name="html5File">The path to the HTML file.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider)
+        {
+            this.html5File = html5File;
+            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         }
 
         /// <inheritdoc/>
@@ -56,7 +71,7 @@ namespace DotNetNuke.UI.Modules.Html5
                 this.fileContent = this.GetFileContent(this.html5File);
 
                 this.ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new Html5ModuleTokenReplace(this.Page, this.html5File, this.ModuleContext, this.ModuleActions);
+                var tokenReplace = new Html5ModuleTokenReplace(this.Page, this.businessControllerProvider, this.html5File, this.ModuleContext, this.ModuleActions);
                 this.fileContent = tokenReplace.ReplaceEnvironmentTokens(this.fileContent);
             }
 

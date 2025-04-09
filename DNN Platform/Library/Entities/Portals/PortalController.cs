@@ -17,6 +17,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Xml.Linq;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -28,29 +29,23 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals.Internal;
     using DotNetNuke.Entities.Portals.Templates;
-    using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Membership;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
-
-    // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Web.Client;
 
-    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+    using Microsoft.Extensions.DependencyInjection;
+
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
 
     /// <summary>PortalController provides business layer of portal.</summary>
@@ -63,6 +58,21 @@ namespace DotNetNuke.Entities.Portals
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+        private readonly IBusinessControllerProvider businessControllerProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="PortalController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
+        public PortalController()
+            : this(Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PortalController"/> class.</summary>
+        /// <param name="businessControllerProvider">The DI container.</param>
+        public PortalController(IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider;
+        }
 
         /// <summary>Adds the portal dictionary.</summary>
         /// <param name="portalId">The portal id.</param>
@@ -1344,7 +1354,7 @@ namespace DotNetNuke.Entities.Portals
         {
             var t = new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode);
             var portalTemplateImporter = new PortalTemplateImporter(t);
-            portalTemplateImporter.ParseTemplate(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
+            portalTemplateImporter.ParseTemplate(this.businessControllerProvider, portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         /// <summary>Processes the resource file for the template file selected.</summary>
@@ -1564,7 +1574,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         protected override Func<IPortalController> GetFactory()
         {
-            return () => new PortalController();
+            return Globals.DependencyProvider.GetRequiredService<IPortalController>;
         }
 
         private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
@@ -2031,7 +2041,7 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         this.CreatePredefinedFolderTypes(portalId);
-                        portalTemplateImporter.ParseTemplateInternal(portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
+                        portalTemplateImporter.ParseTemplateInternal(this.businessControllerProvider, portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
                     }
                     catch (Exception exc1)
                     {

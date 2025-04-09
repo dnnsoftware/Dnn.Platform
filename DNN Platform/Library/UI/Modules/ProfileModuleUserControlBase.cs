@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Modules
         /// <summary>Initializes a new instance of the <see cref="ProfileModuleUserControlBase"/> class.</summary>
         public ProfileModuleUserControlBase()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <inheritdoc/>
@@ -62,10 +62,10 @@ namespace DotNetNuke.UI.Modules
                 try
                 {
                     // Clicked on breadcrumb - don't know which user
-                    this.Response.Redirect(
-                        this.Request.IsAuthenticated
-                                          ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
-                                          : this.GetRedirectUrl(), true);
+                    var redirectUrl = this.Request.IsAuthenticated
+                        ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                        : this.GetRedirectUrl();
+                    this.Response.Redirect(redirectUrl, true);
                 }
                 catch (ThreadAbortException)
                 {

@@ -446,6 +446,126 @@ const securityActions = {
                 }
             });
         };
+    },
+    getPortalList(addAll, callback) {
+        return (dispatch) => {
+            ApplicationService.getPortalList(addAll, data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_PORTAL_LIST,
+                    data: {
+                        portalList: data.Results,
+                        totalCount: data.TotalResults
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getApiTokenSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getApiTokenSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_APITOKEN_SETTINGS,
+                    data: {
+                        apiTokenSettings: data.Results.ApiTokenSettings,
+                        apiTokenSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateApiTokenSettings(payload, callback) {
+        return (dispatch) => {
+            ApplicationService.updateApiTokenSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SECURITY_APITOKEN_SETTINGS,
+                    data: {
+                        apiTokenSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    apiTokenSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SECURITY_APITOKEN_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    apiTokenSettings: parameter,
+                    apiTokenSettingsClientModified: true
+                }
+            });
+        };
+    },
+    getApiTokenKeys(callback) {
+        return (dispatch) => {
+            ApplicationService.getApiTokenKeys(data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, callback) {
+        return (dispatch) => {
+            ApplicationService.getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    createApiToken(name, scope, tokenTimespan, apiKeys, callback) {
+        return (dispatch) => {
+            ApplicationService.createApiToken({
+                TokenName: name,
+                Scope: scope,
+                TokenTimespan: tokenTimespan,
+                ApiKeys: apiKeys
+            }, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    revokeOrDeleteApiToken(apiTokenId, isDelete, callback) {
+        return (dispatch) => {
+            ApplicationService.revokeOrDeleteApiToken({
+                ApiTokenId: apiTokenId,
+                Delete: isDelete
+            }, data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    deleteExpiredApiTokens(callback) {
+        return (dispatch) => {
+            ApplicationService.deleteExpiredApiTokens(data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    deleteExpiredAndRevokedApiTokens(callback) {
+        return (dispatch) => {
+            ApplicationService.deleteExpiredAndRevokedApiTokens(data => {
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
     }
 };
 

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <Import Project="..\..\DNN_Platform.build" />
   <PropertyGroup>
@@ -9,13 +10,13 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net48</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
     <Reference Include="System.Web" />
   </ItemGroup>
 
@@ -24,8 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -46,7 +48,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\net472\DotNetNuke.ModulePipeline.*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\net48\DotNetNuke.ModulePipeline.*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
   </Target>
 
 </Project>

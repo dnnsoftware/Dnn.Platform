@@ -1,6 +1,9 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Web.UI.WebControls.DnnUrlControl" %>
 <%@ Register TagPrefix="dnn" TagName="FilePickerUploader" Src="filepickeruploader.ascx" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<dnn:DnnCssInclude runat="server" FilePath="~/controls/dnnUrlControl.css" />
+
 <div class="urlControl">
     <asp:Panel ID="TypeRow" runat="server" CssClass="urlControlLinkType dnnClear">
         <asp:Label ID="lblURLType" runat="server" EnableViewState="False" resourcekey="Type" CssClass="dnnFormLabel" />

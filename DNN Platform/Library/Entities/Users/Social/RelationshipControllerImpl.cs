@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Users.Social
 
         /// <summary>Initializes a new instance of the <see cref="RelationshipControllerImpl"/> class.</summary>
         public RelationshipControllerImpl()
-            : this(DataService.Instance, Globals.DependencyProvider.GetRequiredService<IEventLogger>())
+            : this(DataService.Instance, Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
         {
         }
 

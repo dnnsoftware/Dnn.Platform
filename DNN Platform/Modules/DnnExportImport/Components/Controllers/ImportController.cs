@@ -11,12 +11,27 @@ namespace Dnn.ExportImport.Components.Controllers
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Components.Services;
     using Dnn.ExportImport.Repository;
     using Newtonsoft.Json;
 
     /// <summary>The import controller.</summary>
     public class ImportController : BaseController
     {
+        /// <summary>Initializes a new instance of the <see cref="ImportController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IEnumerable<BasePortableService>. Scheduled removal in v12.0.0.")]
+        public ImportController()
+            : base(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ImportController"/> class.</summary>
+        /// <param name="portableServices">The portable service implementations.</param>
+        public ImportController(IEnumerable<BasePortableService> portableServices)
+            : base(portableServices)
+        {
+        }
+
         /// <summary>Queues an import operation.</summary>
         /// <param name="userId">The user ID.</param>
         /// <param name="importDto">The import DTO.</param>
@@ -101,7 +116,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {
                     if (summary != null)
                     {
-                        BuildJobSummary(packageId, ctx, summary);
+                        BuildJobSummary(this.PortableServices, packageId, ctx, summary);
                     }
 
                     isValid = true;

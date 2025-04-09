@@ -192,7 +192,7 @@ class IpFilterEditor extends Component {
                 </GridSystem>
                 <div className="buttons-box">
                     <Button                        
-                        type="secondary"
+                        type="neutral"
                         onClick={this.props.Collapse.bind(this) }>
                         {resx.get("Cancel") }
                     </Button>

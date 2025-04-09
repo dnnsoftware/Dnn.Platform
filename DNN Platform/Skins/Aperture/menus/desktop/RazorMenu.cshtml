@@ -1,0 +1,37 @@
+@using DotNetNuke.Web.DDRMenu;
+@using System.Dynamic;
+@inherits DotNetNuke.Web.Razor.DotNetNukeWebPage<dynamic>
+    
+<ul class="desktop-menu h-100" id="nav-desktop">
+    @RenderPages(Model.Source.root.Children)
+</ul>
+
+@helper RenderPages(IEnumerable<MenuNode> pages)
+{
+    if (!pages.Any())
+    {
+        return;
+    }
+
+    foreach (var page in pages)
+    {
+        var hasChildren = page.HasChildren();
+        var attrTarget = !string.IsNullOrEmpty(page.Target) ? ("target=\"" + page.Target + "\"") :string.Empty;
+        var attrHref = page.Enabled ? page.Url : "javascript:void(0);";
+
+        <li class="@(page.Selected ? "selected" : string.Empty)">
+            <a href="@attrHref" @attrTarget>
+                @page.Text
+                @if (hasChildren && page.Depth == 0) {
+                    <span>&nbsp;&#x25BC;</span>
+                }
+            </a>
+            @if (hasChildren)
+            {
+                <ul>
+                    @RenderPages(page.Children)
+                </ul>
+            }
+        </li>
+    }
+}

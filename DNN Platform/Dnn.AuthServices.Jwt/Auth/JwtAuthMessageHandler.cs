@@ -12,7 +12,6 @@ namespace Dnn.AuthServices.Jwt.Auth
     using Dnn.AuthServices.Jwt.Components.Common.Controllers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api.Auth;
-    using DotNetNuke.Web.ConfigSection;
 
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.

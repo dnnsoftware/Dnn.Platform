@@ -240,7 +240,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>An empty string if succeeded or a list of errors in case of failures.</returns>
         public static string DeleteFiles(Array arrPaths)
         {
-            var applicationStatusInfo = Globals.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            var applicationStatusInfo = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             var strExceptions = string.Empty;
             for (var i = 0; i < arrPaths.Length; i++)
             {

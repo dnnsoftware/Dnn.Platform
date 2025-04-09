@@ -1,0 +1,51 @@
+@use "../variables/breakpoints";
+
+// Define a map for padding sizes
+$padding-sizes: (
+    0: 0,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 1rem,
+    4: 2.5rem,
+    5: 5rem
+);
+
+// Padding Mixin
+@mixin padding($side, $size, $important: false) {
+    @if $side == 'all' {
+        padding: $size if($important, !important, null);
+    } @else if $side == 'x' {
+        padding-left: $size if($important, !important, null);
+        padding-right: $size if($important, !important, null);
+    } @else if $side == 'y' {
+        padding-top: $size if($important, !important, null);
+        padding-bottom: $size if($important, !important, null);
+    } @else {
+        padding-#{$side}: $size if($important, !important, null);
+    }    
+}
+
+// Responsive Padding Mixin
+@mixin responsive-padding($class-suffix, $side) {
+    @each $size, $value in $padding-sizes {
+        .aperture-#{$class-suffix}-#{$size} {
+            @include padding($side, $value);
+        }
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
+            @media (min-width: $min-width) {
+                .aperture-#{$class-suffix}-#{$breakpoint}-#{$size} {
+                    @include padding($side, $value, true);
+                }
+            }
+        }
+    }
+}
+
+// Generate padding classes
+@include responsive-padding('p', 'all');
+@include responsive-padding('px', 'x');
+@include responsive-padding('py', 'y');
+@include responsive-padding('pt', 'top');
+@include responsive-padding('pb', 'bottom');
+@include responsive-padding('ps', 'left');
+@include responsive-padding('pe', 'right');

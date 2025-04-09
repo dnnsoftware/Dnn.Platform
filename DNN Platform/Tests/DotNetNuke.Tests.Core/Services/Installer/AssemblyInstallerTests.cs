@@ -3,40 +3,47 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Services.Installer
 {
-    using System;
     using System.IO;
-    using System.Linq;
     using System.Xml.XPath;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Installers;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
+
     using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
+
     using NUnit.Framework;
 
     public class AssemblyInstallerTests : DnnUnitTest
     {
+        private FakeServiceProvider serviceProvider;
+
         [SetUp]
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            var appInfo = new Mock<IApplicationStatusInfo>();
-            appInfo.SetupGet(app => app.Status).Returns(UpgradeStatus.None);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => appInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             var dataProvider = MockComponentProvider.CreateDataProvider();
             dataProvider.Setup(p => p.UnRegisterAssembly(It.IsAny<int>(), It.IsAny<string>())).Returns(true);
 
-            LocalizationProvider.SetTestableInstance(new Mock<ILocalizationProvider>().Object);
+            LocalizationProvider.SetTestableInstance(Mock.Of<ILocalizationProvider>());
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(dataProvider.Object);
+                    services.AddSingleton(LocalizationProvider.Instance);
+                });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]

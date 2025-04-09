@@ -161,7 +161,7 @@ class NewModuleModal extends Component {
                                     label={Localization.get("CreateNewModuleFrom.Label")}
                                     style={inputStyle} />
                                 {this.state.selectedType === "" &&
-                                    <Button type="secondary" onClick={this.onCancel.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
+                                    <Button type="neutral" onClick={this.onCancel.bind(this)}>{Localization.get("NewModule_Cancel.Button")}</Button>
                                 }
                             </GridCell>
                         </GridCell>

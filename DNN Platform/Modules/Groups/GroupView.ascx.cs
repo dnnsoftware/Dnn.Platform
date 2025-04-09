@@ -16,7 +16,6 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Modules.Groups.Components;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.WebControls;

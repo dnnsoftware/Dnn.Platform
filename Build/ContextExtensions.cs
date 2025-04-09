@@ -5,6 +5,7 @@
 namespace DotNetNuke.Build;
 
 using System.Diagnostics;
+
 using Cake.Common.IO;
 using Cake.Core.IO;
 

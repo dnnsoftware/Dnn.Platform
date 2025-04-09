@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Pages.Services
 {
     using System;
@@ -23,8 +22,8 @@ namespace Dnn.PersonaBar.Pages.Services
     using Dnn.PersonaBar.Themes.Components;
     using Dnn.PersonaBar.Themes.Components.DTO;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -57,22 +56,26 @@ namespace Dnn.PersonaBar.Pages.Services
         private readonly ITabController tabController;
         private readonly ILocaleController localeController;
         private readonly ISecurityService securityService;
+        private readonly IWorkflowManager workflowManager;
 
         /// <summary>Initializes a new instance of the <see cref="PagesController"/> class.</summary>
         /// <param name="navigationManager">the navigation manager to provide navigation features.</param>
-        public PagesController(INavigationManager navigationManager)
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="templateController">The template controller.</param>
+        public PagesController(INavigationManager navigationManager, IPagesController pagesController, ITemplateController templateController)
         {
             this.NavigationManager = navigationManager;
 
-            this.pagesController = Components.PagesController.Instance;
+            this.pagesController = pagesController;
             this.themesController = ThemesController.Instance;
             this.bulkPagesController = BulkPagesController.Instance;
-            this.templateController = TemplateController.Instance;
+            this.templateController = templateController;
             this.defaultPortalThemeController = DefaultPortalThemeController.Instance;
 
             this.tabController = TabController.Instance;
             this.localeController = LocaleController.Instance;
             this.securityService = SecurityService.Instance;
+            this.workflowManager = WorkflowManager.Instance;
         }
 
         /// <summary>Gets the Navigation Manager that provides navigation features.</summary>
@@ -969,6 +972,17 @@ namespace Dnn.PersonaBar.Pages.Services
                 Logger.Error(message, ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }
+        }
+
+        /// <summary>Gets the workflows.</summary>
+        /// <returns>List of portal workflows.</returns>
+        /// <example>GET /api/personabar/pages/GetWorkflows.</example>
+        [HttpGet]
+        [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "VIEW_PAGE_LIST,VIEW")]
+        public HttpResponseMessage GetWorkflows()
+        {
+            var workflows = this.workflowManager.GetWorkflows(this.PortalSettings.PortalId).Select(w => new { workflowId = w.WorkflowID, workflowName = w.WorkflowName });
+            return this.Request.CreateResponse(HttpStatusCode.OK, workflows);
         }
 
         private static string LocalizeString(string key)

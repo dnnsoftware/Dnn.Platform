@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
     using System;
@@ -9,16 +8,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Data;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Data;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +23,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
     using NUnit.Framework;
 
-    // ReSharper disable InconsistentNaming
     [TestFixture]
     public class PortalGroupControllerTests
     {
@@ -36,32 +31,31 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private UserCopiedCallback userCopied;
 #pragma warning restore 649
 
-        [SetUp]
+        private FakeServiceProvider serviceProvider;
 
+        [SetUp]
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             this.mockData = MockComponentProvider.CreateDataProvider();
-            DataTable hostSettingsTable = new DataTable("HostSettings");
 
-            var nameCol = hostSettingsTable.Columns.Add("SettingName");
+            var hostSettingsTable = new DataTable("HostSettings");
+            hostSettingsTable.PrimaryKey = new[] { hostSettingsTable.Columns.Add("SettingName"), };
             hostSettingsTable.Columns.Add("SettingValue");
             hostSettingsTable.Columns.Add("SettingIsSecure");
-            hostSettingsTable.PrimaryKey = new[] { nameCol };
-
             hostSettingsTable.Rows.Add("PerformanceSetting", "0", false);
             this.mockData.Setup(c => c.GetHostSettings()).Returns(hostSettingsTable.CreateDataReader());
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockData.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             MockComponentProvider.ResetContainer();
         }
 

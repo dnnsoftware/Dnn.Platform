@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public User()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.ShowUnreadMessages = true;
             this.ShowAvatar = true;
             this.LegacyMode = true;

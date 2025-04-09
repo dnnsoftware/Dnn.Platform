@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Modules
     using System.Xml;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content;
@@ -434,7 +435,7 @@ namespace DotNetNuke.Entities.Modules
             }
             else
             {
-                // Update ContentItem If neccessary
+                // Update ContentItem If necessary
                 if (desktopModule.ContentItemId == Null.NullInteger)
                 {
                     CreateContentItem(desktopModule);
@@ -500,7 +501,14 @@ namespace DotNetNuke.Entities.Modules
 
         internal static void AddDesktopModulePageToPortal(DesktopModuleInfo desktopModule, string pageName, int portalId, ref bool createdNewPage, ref bool addedNewModule)
         {
-            var tabPath = string.Format("//{0}//{1}", portalId == Null.NullInteger ? "Host" : "Admin", pageName);
+            var hostTabId = TabController.GetTabByTabPath(Null.NullInteger, "//Host", Null.NullString);
+            if (hostTabId == Null.NullInteger)
+            {
+                return;
+            }
+
+            var tabPath = Globals.GenerateTabPath(hostTabId, pageName);
+
             var tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
             TabInfo existTab = TabController.Instance.GetTab(tabId, portalId);
             if (existTab == null)
@@ -613,14 +621,11 @@ namespace DotNetNuke.Entities.Modules
 
         private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
         {
-            var businessController = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
-            var controller = Reflection.CreateObject(desktopModuleInfo.BusinessControllerClass, desktopModuleInfo.BusinessControllerClass);
+            var businessControllerType = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
 
-            desktopModuleInfo.IsPortable = businessController.GetInterfaces().Contains(typeof(IPortable));
-#pragma warning disable 0618
-            desktopModuleInfo.IsSearchable = (controller is ModuleSearchBase) || businessController.GetInterfaces().Contains(typeof(ISearchable));
-#pragma warning restore 0618
-            desktopModuleInfo.IsUpgradeable = businessController.GetInterfaces().Contains(typeof(IUpgradeable));
+            desktopModuleInfo.IsPortable = typeof(IPortable).IsAssignableFrom(businessControllerType);
+            desktopModuleInfo.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(businessControllerType);
+            desktopModuleInfo.IsUpgradeable = typeof(IUpgradeable).IsAssignableFrom(businessControllerType);
         }
     }
 }

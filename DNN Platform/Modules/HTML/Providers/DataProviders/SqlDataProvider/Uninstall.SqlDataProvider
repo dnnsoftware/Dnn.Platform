@@ -11,193 +11,204 @@
 /** Drop Stored Procedures **/
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflows') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetWorkflows
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflows
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowStates') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetWorkflowStates
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflowStates
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}AddHtmlText
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddHtmlText
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}UpdateHtmlText
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateHtmlText
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}DeleteHtmlText
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteHtmlText
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetHtmlText
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlText
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetTopHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetTopHtmlText
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetTopHtmlText
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetAllHtmlText') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetAllHtmlText
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetAllHtmlText
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlTextLog') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}AddHtmlTextLog
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddHtmlTextLog
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetHtmlTextUser') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetHtmlTextUser
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextUser
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddHtmlTextUser') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}AddHtmlTextUser
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddHtmlTextUser
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteHtmlTextUsers') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}DeleteHtmlTextUsers
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteHtmlTextUsers
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetHtmlTextLog') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetHtmlTextLog
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetHtmlTextLog
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}AddWorkflow
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddWorkflow
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}UpdateWorkflow
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateWorkflow
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflow') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetWorkflow
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflow
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}AddWorkflowState
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddWorkflowState
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}UpdateWorkflowState
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateWorkflowState
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetWorkflowState
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflowState
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteWorkflowState') AND OBJECTPROPERTY(id, N'IsPROCEDURE') = 1)
-    drop procedure {databaseOwner}{objectQualifier}DeleteWorkflowState
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteWorkflowState
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetPermissionsByStateID') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetPermissionsByStateID
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetPermissionsByStateID
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowStatePermission') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetWorkflowStatePermission
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflowStatePermission
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowStatePermissions') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetWorkflowStatePermissions
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflowStatePermissions
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}GetWorkflowStatePermissionsByStateID') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}GetWorkflowStatePermissionsByStateID
+    DROP PROCEDURE {databaseOwner}{objectQualifier}GetWorkflowStatePermissionsByStateID
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteWorkflowStatePermission') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}DeleteWorkflowStatePermission
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteWorkflowStatePermission
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteWorkflowStatePermissionsByStateID') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}DeleteWorkflowStatePermissionsByStateID
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteWorkflowStatePermissionsByStateID
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}DeleteWorkflowStatePermissionsByUserID') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}DeleteWorkflowStatePermissionsByUserID
+    DROP PROCEDURE {databaseOwner}{objectQualifier}DeleteWorkflowStatePermissionsByUserID
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}AddWorkflowStatePermission') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}AddWorkflowStatePermission
+    DROP PROCEDURE {databaseOwner}{objectQualifier}AddWorkflowStatePermission
 GO
 
 IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}UpdateWorkflowStatePermission') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    drop procedure {databaseOwner}{objectQualifier}UpdateWorkflowStatePermission
+    DROP PROCEDURE {databaseOwner}{objectQualifier}UpdateWorkflowStatePermission
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}CreateMissingContentWorkflows') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}{objectQualifier}CreateMissingContentWorkflows;
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}MigrateHtmlWorkflows') AND type in (N'P', N'PC'))
+    DROP PROCEDURE {databaseOwner}{objectQualifier}MigrateHtmlWorkflows;
 GO
 
 /** Drop Schema **/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_WorkflowStatePermissions]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_WorkflowStatePermissions]
+GO
 
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[vw_{objectQualifier}WorkflowStatePermissions]'))
-DROP VIEW {databaseOwner}[vw_{objectQualifier}WorkflowStatePermissions]
+    DROP VIEW {databaseOwner}[vw_{objectQualifier}WorkflowStatePermissions]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}Permission]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WorkflowStatePermission]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}Permission]
+    ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}Permission]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}WorkflowStates]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WorkflowStatePermission]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}WorkflowStates]
+    ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStatePermission_{objectQualifier}WorkflowStates]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}WorkflowStatePermissionUsers]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WorkflowStatePermission]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStatePermissionUsers]
+    ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStatePermissionUsers]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WorkflowStatePermission]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission]
+    DROP TABLE {databaseOwner}[{objectQualifier}WorkflowStatePermission]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}WorkflowStates_{objectQualifier}Workflow]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WorkflowStates]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStates] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStates_{objectQualifier}Workflow]
+    ALTER TABLE {databaseOwner}[{objectQualifier}WorkflowStates] DROP CONSTRAINT [FK_{objectQualifier}WorkflowStates_{objectQualifier}Workflow]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlText]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}HtmlText] DROP CONSTRAINT [FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates]
+    ALTER TABLE {databaseOwner}[{objectQualifier}HtmlText] DROP CONSTRAINT [FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlTextLog]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextLog] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates]
+    ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextLog] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WorkflowStates]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}WorkflowStates]
+    DROP TABLE {databaseOwner}[{objectQualifier}WorkflowStates]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}Workflow]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}Workflow]
+    DROP TABLE {databaseOwner}[{objectQualifier}Workflow]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}HtmlTextLog_{objectQualifier}HtmlText]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlTextLog]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextLog] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextLog_{objectQualifier}HtmlText]
+    ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextLog] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextLog_{objectQualifier}HtmlText]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlTextLog]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextLog] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates]
+    ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextLog] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlTextLog]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}HtmlTextLog]
+    DROP TABLE {databaseOwner}[{objectQualifier}HtmlTextLog]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}HtmlTextUsers_{objectQualifier}HtmlText]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlTextLog]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextUsers] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextUsers_{objectQualifier}HtmlText]
+    ALTER TABLE {databaseOwner}[{objectQualifier}HtmlTextUsers] DROP CONSTRAINT [FK_{objectQualifier}HtmlTextUsers_{objectQualifier}HtmlText]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlTextUsers]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}HtmlTextUsers]
+    DROP TABLE {databaseOwner}[{objectQualifier}HtmlTextUsers]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}HtmlText_{objectQualifier}Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlText]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}HtmlText] DROP CONSTRAINT [FK_{objectQualifier}HtmlText_{objectQualifier}Modules]
+    ALTER TABLE {databaseOwner}[{objectQualifier}HtmlText] DROP CONSTRAINT [FK_{objectQualifier}HtmlText_{objectQualifier}Modules]
 GO
 
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlText]'))
-ALTER TABLE {databaseOwner}[{objectQualifier}HtmlText] DROP CONSTRAINT [FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates]
+    ALTER TABLE {databaseOwner}[{objectQualifier}HtmlText] DROP CONSTRAINT [FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HtmlText]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}HtmlText]
+    DROP TABLE {databaseOwner}[{objectQualifier}HtmlText]
 GO
 
 /************************************************************/

@@ -71,7 +71,7 @@ namespace DotNetNuke.Tests.Urls
 
             this.DeleteTab(TestPage);
             this.UpdateTabName(this.tabId, "About Us");
-            this.UpdateTabSkin(this.tabId, "[G]Skins/Xcillion/Inner.ascx");
+            this.UpdateTabSkin(this.tabId, "[G]Skins/Aperture/default.ascx");
 
             if (!string.IsNullOrEmpty(this.securePageName))
             {

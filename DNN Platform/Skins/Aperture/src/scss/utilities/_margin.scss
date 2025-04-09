@@ -1,0 +1,52 @@
+@use "../variables/breakpoints";
+
+// Define a map for margin sizes
+$margin-sizes: (
+    0: 0,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 1rem,
+    4: 2.5rem,
+    5: 5rem,
+    auto: auto
+);
+
+// Margin Mixin
+@mixin margin($side, $size, $important: false) {
+    @if $side == 'all' {
+        margin: $size if($important, !important, null);
+    } @else if $side == 'x' {
+        margin-left: $size if($important, !important, null);
+        margin-right: $size if($important, !important, null);
+    } @else if $side == 'y' {
+        margin-top: $size if($important, !important, null);
+        margin-bottom: $size if($important, !important, null);
+    } @else {
+        margin-#{$side}: $size if($important, !important, null);
+    }    
+}
+
+// Responsive Margin Mixin
+@mixin responsive-margin($class-suffix, $side) {
+    @each $size, $value in $margin-sizes {
+        .aperture-#{$class-suffix}-#{$size} {
+            @include margin($side, $value);
+        }
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
+            @media (min-width: $min-width) {
+                .aperture-#{$class-suffix}-#{$breakpoint}-#{$size} {
+                    @include margin($side, $value, true);
+                }
+            }
+        }
+    }
+}
+
+// Generate margin classes
+@include responsive-margin('m', 'all');
+@include responsive-margin('mx', 'x');
+@include responsive-margin('my', 'y');
+@include responsive-margin('mt', 'top');
+@include responsive-margin('mb', 'bottom');
+@include responsive-margin('ms', 'left');
+@include responsive-margin('me', 'right');

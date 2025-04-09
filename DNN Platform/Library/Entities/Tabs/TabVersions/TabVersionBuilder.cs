@@ -8,6 +8,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using System.Data.SqlClient;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
@@ -17,10 +19,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class TabVersionBuilder : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
         private const int DefaultVersionNumber = 1;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly ITabController tabController;
         private readonly IModuleController moduleController;
         private readonly ITabVersionSettings tabVersionSettings;
@@ -29,8 +34,17 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private readonly PortalSettings portalSettings;
 
         /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public TabVersionBuilder()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TabVersionBuilder"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public TabVersionBuilder(IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider;
             this.tabController = TabController.Instance;
             this.moduleController = ModuleController.Instance;
             this.tabVersionSettings = TabVersionSettings.Instance;
@@ -255,13 +269,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         public int GetModuleContentLatestVersion(ModuleInfo module)
         {
             var versionableController = this.GetVersionableController(module);
-            return versionableController != null ? versionableController.GetLatestVersion(module.ModuleID) : DefaultVersionNumber;
+            return versionableController?.GetLatestVersion(module.ModuleID) ?? DefaultVersionNumber;
         }
 
         /// <inheritdoc/>
         protected override Func<ITabVersionBuilder> GetFactory()
         {
-            return () => new TabVersionBuilder();
+            return Globals.DependencyProvider.GetRequiredService<ITabVersionBuilder>;
         }
 
         private static IEnumerable<TabVersionDetail> GetSnapShot(IEnumerable<TabVersionDetail> tabVersionDetails)
@@ -792,7 +806,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 return versionableController.GetPublishedVersion(moduleInfo.ModuleID);
             }
 
-            return versionableController.RollBackVersion(unPublishedDetail.ModuleId, unPublishedDetail.ModuleVersion);
+            return versionableController.RollBackVersion(
+                unPublishedDetail.ModuleId,
+                unPublishedDetail.ModuleVersion);
         }
 
         private void PublishDetail(int tabId, TabVersionDetail unPublishedDetail)
@@ -805,10 +821,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             var versionableController = this.GetVersionableController(moduleInfo);
-            if (versionableController != null)
-            {
-                versionableController.PublishVersion(unPublishedDetail.ModuleId, unPublishedDetail.ModuleVersion);
-            }
+            versionableController?.PublishVersion(unPublishedDetail.ModuleId, unPublishedDetail.ModuleVersion);
         }
 
         private void DiscardDetail(int tabId, TabVersionDetail unPublishedDetail)
@@ -821,26 +834,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             var versionableController = this.GetVersionableController(moduleInfo);
-            if (versionableController != null)
-            {
-                versionableController.DeleteVersion(unPublishedDetail.ModuleId, unPublishedDetail.ModuleVersion);
-            }
+            versionableController?.DeleteVersion(unPublishedDetail.ModuleId, unPublishedDetail.ModuleVersion);
         }
 
         private IVersionable GetVersionableController(ModuleInfo moduleInfo)
         {
-            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
-            {
-                return null;
-            }
-
-            object controller = Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
-            if (controller is IVersionable)
-            {
-                return controller as IVersionable;
-            }
-
-            return null;
+            return this.businessControllerProvider.GetInstance<IVersionable>(moduleInfo.DesktopModule.BusinessControllerClass);
         }
 
         private void CreateFirstTabVersion(int tabId, TabInfo tab, IEnumerable<ModuleInfo> modules)
@@ -858,14 +857,15 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                         ModuleVersion = moduleVersion,
                         PaneName = module.PaneName,
                         TabVersionId = tabVersion.TabVersionId,
-                    }, module.CreatedByUserID);
+                    },
+                    module.CreatedByUserID);
             }
         }
 
         private int GetModuleContentPublishedVersion(ModuleInfo module)
         {
             var versionableController = this.GetVersionableController(module);
-            return versionableController != null ? versionableController.GetPublishedVersion(module.ModuleID) : Null.NullInteger;
+            return versionableController?.GetPublishedVersion(module.ModuleID) ?? Null.NullInteger;
         }
     }
 }

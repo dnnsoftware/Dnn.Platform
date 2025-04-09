@@ -108,6 +108,30 @@ class PageTypeSelector extends Component {
                                 {page.tabId}
                             </span>
                         </div>
+                        <div className="page-info-item">
+                            <span className="page-info-item-label">
+                                {Localization.get("PublishStatus") + ": "}
+                            </span>
+                            <span className="page-info-item-value">
+                                {page.publishStatus}
+                            </span>
+                        </div>
+                        <div className="page-info-item">
+                            <span className="page-info-item-label">
+                                {Localization.get("Versioning") + ": "}
+                            </span>
+                            <span className="page-info-item-value">
+                                {page.enabledVersioning ? Localization.get("On") : Localization.get("Off")}
+                            </span>
+                        </div>
+                        <div className="page-info-item">
+                            <span className="page-info-item-label">
+                                {Localization.get("Workflow") + ": "}
+                            </span>
+                            <span className="page-info-item-value">
+                                {page.enabledVersioning && page.workflowEnabled ? page.workflowName + " (" + page.stateName + ")" : Localization.get("Off")}                    
+                            </span>
+                        </div>
                     </div>
                     <div className="page-info-row">
                         <div className="page-info-item page-type">

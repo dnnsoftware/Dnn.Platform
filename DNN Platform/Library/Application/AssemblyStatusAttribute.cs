@@ -21,19 +21,19 @@ namespace DotNetNuke.Application
     /// </value>
     public enum ReleaseMode
     {
-        /// <summary>Not assigned</summary>
+        /// <summary>Not assigned.</summary>
         None = 0,
 
-        /// <summary>Alpha release</summary>
+        /// <summary>Alpha release.</summary>
         Alpha = 1,
 
-        /// <summary>Beta release</summary>
+        /// <summary>Beta release.</summary>
         Beta = 2,
 
-        /// <summary>Release candidate</summary>
+        /// <summary>Release candidate.</summary>
         RC = 3,
 
-        /// <summary>Stable release version</summary>
+        /// <summary>Stable release version.</summary>
         Stable = 4,
     }
 

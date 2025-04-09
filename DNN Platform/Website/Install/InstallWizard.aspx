@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.InstallWizard" CodeFile="InstallWizard.aspx.cs" %>
+<%@ Page Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.Services.Install.InstallWizard" CodeBehind="InstallWizard.aspx.cs" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
@@ -8,12 +8,9 @@
     <title></title>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
-    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/7.0.0/default.css?refresh" />
+    <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnndefault/10.0.0/default.css?refresh" />
     <link rel="stylesheet" type="text/css" href="Install.css?refresh" />
     <link rel="stylesheet" type="text/css" href="../Resources/Shared/stylesheets/dnn.PasswordStrength.css?refresh" />
-     <!--[if IE]>
-	<link rel="stylesheet" type="text/css" href="../Portals/_default/ie.css?refresh" />
-    <![endif]-->
     <link rel="stylesheet" type="text/css" href="../Portals/_default/skins/_default/WebControlSkin/default/combobox.default.css?refresh" />
     <script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="../Resources/Shared/scripts/jquery/jquery-migrate.min.js"></script>
@@ -35,7 +32,7 @@
 
     <br/>
 
-    <div id="languageFlags" runat="server" clientidmode="Static" style="float: right;">
+    <div id="languageFlags" runat="server" clientidmode="Static">
         <asp:LinkButton  id="lang_en_US" class="flag" runat="server" value="en-US" title="English (United States)" OnClientClick="installWizard.changePageLocale('lang_en_US','en-US');" CausesValidation="false"><img src="../images/flags/en-US.gif" alt="en-US" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_de_DE" class="flag" runat="server" value="de-DE" title="Deutsch (Deutschland)" OnClientClick="installWizard.changePageLocale('lang_de_DE','de-DE');" CausesValidation="false"><img src="../images/flags/de-DE.gif" alt="de-DE" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_es_ES" class="flag" runat="server" value="es-ES" title="Español (España)" OnClientClick="installWizard.changePageLocale('lang_es_ES','es-ES');" CausesValidation="false"><img src="../images/flags/es-ES.gif" alt="es-ES" class="flagimage"/></asp:LinkButton>
@@ -216,13 +213,6 @@
                     <li>
                         <asp:LinkButton id="continueLink" runat="server" CssClass="dnnPrimaryAction dnnDisabledAction" resourcekey="cmdContinue" />
                     </li>
-                    <li id="pnlAcceptTerms" runat="server" class="accept-terms">
-                        <asp:CheckBox ID="chkAcceptTerms" runat="server" />
-                        <asp:Label runat="server" ResourceKey="AcceptTerms" />
-                        <asp:CustomValidator runat="server" ID="valAcceptTerms" EnableClientScript="true"
-                            CssClass="dnnFormMessage dnnFormError dnnRequired" resourcekey="AcceptTerms.Required" Display="Dynamic"
-                            ClientValidationFunction="validateAcceptTerms" />
-                    </li>
                 </ul>
             </div>
             <div class="installInstallation dnnClear" id="installInstallation">
@@ -250,7 +240,6 @@
                             <p class="step-notstarted" id="ExtensionsInstallation"><span class="states-icons"></span><%= LocalizeString("ExtensionsInstallation") %></p>
                             <p class="step-notstarted" id="WebsiteCreation"><span class="states-icons"></span><%= LocalizeString("WebsiteCreation") %></p>
                             <p class="step-notstarted" id="SuperUserCreation"><span class="states-icons"></span><%= LocalizeString("SuperUserCreation") %></p>
-                            <p class="step-notstarted" id="LicenseActivation" runat="server"><span class="states-icons"></span><%= LocalizeString("LicenseActivation") %></p>
                         </div>
                     </div>
                 </div>
@@ -273,9 +262,6 @@
 
     <!-- InstallWizard() -->
     <script type="text/javascript">
-        function validateAcceptTerms(sender, args) {
-            args.IsValid = $('input[id$="chkAcceptTerms"]').is(':checked');
-        }
         var installWizard = new InstallWizard();
         function InstallWizard() {
             this.installInfo = { };
@@ -635,18 +621,8 @@
                 installWizard.validatePassword();
             });
 
-            $('#<%=chkAcceptTerms.ClientID%>').click(function () {
-                $(this).data('show-error', true);
-                if (!installWizard.validateInput()) {
-                    $("#continueLink").addClass('dnnDisabledAction');
-                } else {
-                    $("#continueLink").removeClass('dnnDisabledAction');
-                }
-            });
             //Next Step
             $('#<%= continueLink.ClientID %>').click(function () {
-                var $acceptTerms = $('#<%= chkAcceptTerms.ClientID %>');
-                $acceptTerms.data('show-error', true);
                 if (!$("#continueLink").hasClass('dnnDisabledAction')) {
                     $("#continueLink").addClass('dnnDisabledAction');
                     if (installWizard.confirmPasswords()) {
@@ -670,7 +646,6 @@
                             databaseUsername: "",
                             databasePassword: "",
                             databaseRunAsOwner: null,
-                            acceptTerms: $acceptTerms.length === 0 || $acceptTerms.is(":checked") ? "Y" : "N"
                         };
                         $('#<%= lblAccountInfoError.ClientID %>').css('display', 'none');
                         var databaseType = $('#<%= databaseSetupType.ClientID %> input:checked').val();
@@ -698,7 +673,7 @@
                                     if (valid.Item1) {
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
                                         //Restart app to refresh config from web.config
-                                        window.location.replace(window.location + "?culture=" + $("#PageLocale")[0].value + "&acceptterms=true&initiateinstall");
+                                        window.location.replace(window.location + "?culture=" + $("#PageLocale")[0].value + "&initiateinstall");
                                     } else {
                                         $("#databaseError").show();
                                         $('#<%= lblDatabaseInfoMsg.ClientID %>').removeClass("promptMessage");
@@ -766,7 +741,6 @@
                 $.applyCssStyle(result.check2, $('#ExtensionsInstallation'));
                 $.applyCssStyle(result.check3, $('#WebsiteCreation'));
                 $.applyCssStyle(result.check4, $('#SuperUserCreation'));
-                $.applyCssStyle(result.check5, $('#LicenseActivation'));
                 //If operation is complete
                 if (result.progress >= 100 || result.details == '<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("InstallationDone"))%>') {
                     installWizard.finishInstall();
@@ -776,9 +750,8 @@
                 else {
                     if (installationError) { // if error in installation
                         $.stopProgressbarOnError();
-                        //Allow user to visit site even if only license step error occurs.
-                        if (result["check4"] === "Done" && result.check5.indexOf("Error" > -1)) {
-                            $.applyCssStyle("Error", $('#LicenseActivation'));
+                        //Allow user to visit site as long as check 4 worked.
+                        if (result["check4"] === "Done") {
                             $('#visitSite').removeClass('dnnDisabledAction');
                         }
                     }
@@ -873,6 +846,8 @@
                 if (!$(this).hasClass('dnnDisabledAction')) {
                     $(this).addClass('dnnDisabledAction');
                     $('#installation-log-container').show();
+                    var loading = '<%= DotNetNuke.Services.Localization.Localization.GetSafeJSString(LocalizeString("LoadingInstallationLog"))%>';
+                    $('#installation-log').html(loading);
                     getInstallationLog();
                 }
             });

@@ -15,7 +15,7 @@
     <AssemblyName>Dnn.EditBar.UI</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OptionInfer>On</OptionInfer>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -96,6 +96,12 @@
     <Compile Include="HttpModules\EditBarModule.cs" />
     <Compile Include="Items\AddExistingModuleMenu.cs" />
     <Compile Include="Items\AddModuleMenu.cs" />
+    <Compile Include="Items\WorkflowBaseMenuItem.cs" />
+    <Compile Include="Items\WorkflowStateMenu.cs" />
+    <Compile Include="Items\CompleteWorkflowMenu.cs" />
+    <Compile Include="Items\DiscardWorkflowMenu.cs" />
+    <Compile Include="Items\DiscardStateMenu.cs" />
+    <Compile Include="Items\CompleteStateMenu.cs" />
     <Compile Include="Items\QuickAddModuleMenu.cs" />
     <Compile Include="Items\ExitEditModeMenu.cs" />
     <Compile Include="Items\PageSettingsMenu.cs" />
@@ -123,9 +129,19 @@
     <None Include="editBar\css\SourceCodePro-Regular.ttf.woff" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf" />
     <None Include="editBar\css\SourceCodePro-Semibold.ttf.woff" />
+    <Content Include="editBar\css\WorkflowState.css" />
+    <Content Include="editBar\css\CompleteWorkflow.css" />
+    <Content Include="editBar\css\DiscardWorkflow.css" />
+    <Content Include="editBar\css\DiscardState.css" />
+    <Content Include="editBar\css\CompleteState.css" />
     <Content Include="editBar\css\QuickAddModule.css" />
     <Content Include="editBar\css\theme.css" />
     <Content Include="editBar\QuickAddModule.html" />
+    <Content Include="editBar\scripts\WorkflowState.js" />
+    <Content Include="editBar\scripts\CompleteWorkflow.js" />
+    <Content Include="editBar\scripts\DiscardWorkflow.js" />
+    <Content Include="editBar\scripts\DiscardState.js" />
+    <Content Include="editBar\scripts\CompleteState.js" />
     <Content Include="editBar\scripts\QuickAddModule.js" />
     <Content Include="Module.build">
       <SubType>Designer</SubType>
@@ -212,6 +228,10 @@
     <Content Include="releaseNotes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
       <Name>DotNetNuke.Instrumentation</Name>
@@ -236,6 +256,10 @@
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Dnn.PersonaBar.Extensions\Dnn.PersonaBar.Extensions.csproj">
+      <Project>{9CCA271F-CFAA-42A3-B577-7D5CBB38C646}</Project>
+      <Name>Dnn.PersonaBar.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Library\Dnn.PersonaBar.Library\Dnn.PersonaBar.Library.csproj">
       <Project>{8b50ba8b-0a08-41b8-81b8-ea70707c7379}</Project>
       <Name>Dnn.PersonaBar.Library</Name>
@@ -255,17 +279,18 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <HintPath>..\..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.Bson.1.0.3\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
@@ -273,11 +298,11 @@
       <HintPath>..\..\..\packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -290,8 +315,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Module.build" />

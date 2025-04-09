@@ -6,10 +6,10 @@ namespace DNNConnect.CKEditorProvider.Constants
     /// <summary>The Toolbar Location.</summary>
     public enum ToolBarLocation
     {
-        /// <summary>Toolbar Location at the Top</summary>
+        /// <summary>Toolbar Location at the Top.</summary>
         Top = 0,
 
-        /// <summary>Toolbar Location at the Bottom</summary>
+        /// <summary>Toolbar Location at the Bottom.</summary>
         Bottom = 1,
     }
 }

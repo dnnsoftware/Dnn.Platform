@@ -1,13 +1,16 @@
 @import "../../styles/index";
 .permissions-grid {
+    >div{
+        overflow-x: auto;
+    }
     .grid-caption {
-        border-bottom: 1px solid @alto;
+        border-bottom: 1px solid var(--dnn-color-foreground-light, @alto);
         padding: 0;
         & > .dnn-label {
             line-height: 38px;
             margin-top: 35px;
             font-weight: bold;
-            color: @bulgarianRose;
+            color: var(--dnn-color-foreground, @bulgarianRose);
         }
         .title {
             text-transform: uppercase;
@@ -20,14 +23,16 @@
         margin-top: 20px;
         min-height: 40px;
         height: auto;
-        border: 1px solid @alto;
+        border: 1px solid var(--dnn-color-foreground-light, @alto);
         font-weight: 600;
         text-transform: uppercase;
         .dnn-grid-cell {
-            border-left: 1px solid @alto;
+            border-left: 1px solid var(--dnn-color-foreground-light, @alto);
             min-height: 40px;
             position: relative;
             text-align: center;
+            display: flex;
+            align-items: center;
             &:first-child {
                 border-left: none;
                 padding-left: 5px;
@@ -48,13 +53,14 @@
     }
     .grid-row {
         min-height: 40px;
-        border: 1px solid @alto;
+        border: 1px solid var(--dnn-color-foreground-light, @alto);
         border-top: none;
         .dnn-grid-cell {
-            border-left: 1px solid @alto;
+            border-left: 1px solid var(--dnn-color-foreground-light, @alto);
             min-height: 40px;
-            text-align: center;
-            padding-top: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             &:first-child {
                 border-left: none;
                 padding-left: 5px;
@@ -62,7 +68,7 @@
                 text-overflow: ellipsis;
                 overflow:hidden;
                 span {
-                    display : block;
+                    display: block;
                     text-overflow: ellipsis;
                     overflow:hidden;
                     white-space: nowrap;
@@ -76,16 +82,22 @@
                 width: 16px;
                 height: 16px;
                 svg {
-                    fill: @rollingStone;
+                    fill: var(--dnn-color-foreground, @rollingStone);
                     width: 16px;
+                }
+                &[aria-label=trash] {
+                    svg {
+                        fill: var(--dnn-color-danger, @alizarinCrimson);
+                    }
                 }
             }
             .icon-flat.locked, .icon-button.locked {
                 svg {
-                    fill: @alto;
-                    background-color: @mercury;
+                    fill: var(--dnn-color-foreground, @alto);
+                    background-color: transparent;
                     width: 14px;
                     height: 14px;
+                    opacity: 0.5;
                 }
             }
             &.col-actions {
@@ -98,10 +110,49 @@
         height: 70px;
         line-height: 70px;
         text-transform: uppercase;
-        border: 1px solid @alto;
+        border: 1px solid var(--dnn-color-foreground-light, @alto);
         border-top: none;
-        color: @alto;
+        color: var(--dnn-color-foreground-light, @alto);
         font-weight: bold;
         text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+        border: 1px solid var(--dnn-color-foreground-light, #666);
+        tr{
+            th{
+                writing-mode: vertical-rl;
+                min-width: 2rem;
+                span{
+                    display: block;
+                    transform: translate(50%, 0) rotate(-135deg);
+                    text-align: left;
+                }
+                &:first-child {
+                    writing-mode: horizontal-tb;
+                    padding-left: 1rem;
+                    padding-bottom: 0.75rem;
+                    vertical-align: bottom;
+                    span{
+                        transform: none;
+                    }
+                }
+            }
+            td{
+                border-right: 1px solid var(--dnn-color-foreground-light, #666);
+                text-align: center;
+                a{
+                    svg{
+                        width: 2rem;
+                    }
+                }
+                &:first-child {
+                    text-align: left;
+                    padding-left: 1rem;
+                }
+            }
+        }
     }
 }

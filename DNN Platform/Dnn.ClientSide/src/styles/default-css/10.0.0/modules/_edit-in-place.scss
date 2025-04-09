@@ -1,0 +1,78 @@
+/*Edit In Place Tool Bar Classes*/
+.eipbackimg {
+	position:absolute;
+	margin-top:-32px;
+	white-space:nowrap;
+	background:url(../../../../../images/eip_toolbar.png) repeat-x;
+	height:32px;
+	z-index: 1;
+	&.editMode {
+		background: linear-gradient(to bottom, #303030 0%,#191919 100%) !important;
+		opacity: 0.8;
+		.eipbuttonbackimg {
+			border-left: 1px solid #1f1f1f;
+			border-right: 1px solid #393939;
+			opacity: 0.5;
+		}
+		&.containerTitle {
+			.eipbuttonbackimg {
+				border: none;
+				opacity: 1;
+			}
+			.eipborderhover {
+				background-color: inherit;
+			}
+		}
+		.eipborderhover {
+			background-color: #333;
+			opacity: 1;
+		}
+	}
+	&.containerTitle {
+		margin-top: -8px;
+		&.editMode {
+			left: auto;
+			right: 0px;
+			margin-top: -2px;
+			background: none !important;
+			border: none !important;
+		}
+		.eipbutton_cancel {
+			background: url(../../../../../images/eip_title_cancel.png) no-repeat center center;
+		}
+		.eipbutton_save {
+			background-image: url(../../../../../images/eip_title_save.png);
+		}
+	}
+}
+.eipbuttonbackimg{
+	width: 32px;
+	height: 32px; 
+	cursor: pointer;
+	float:left;
+	background: url(../../../../../images/eip_toolbar.png) no-repeat;
+	&.eipbutton_cancel{ background-position: -32px 0;}
+	&.eipbutton_bold{ background-position: -64px 0;}
+	&.eipbutton_italic{ background-position: -96px 0;}
+	&.eipbutton_underline{ background-position: -128px 0;}
+	&.eipbutton_justifyleft{ background-position: -160px 0;}
+	&.eipbutton_justifycenter{ background-position: -192px 0;}
+	&.eipbutton_justifyright{ background-position: -224px 0;}
+	&.eipbutton_orderedlist{ background-position: -256px 0;}
+	&.eipbutton_unorderedlist{ background-position: -288px 0;}
+	&.eipbutton_outdent{ background-position: -320px 0;}
+	&.eipbutton_indent{ background-position: -352px 0;}
+	&.eipbutton_createlink{ background-position: -384px 0;}
+}
+
+.eipbutton_edit {
+	background: url(../../../../../images/eip_edit.png) no-repeat 100% center;
+	float:left;
+}
+
+.eipbutton_save {
+	background: url(../../../../../images/eip_save.png) no-repeat 100% center;
+	float:left;
+}
+
+div[id$=titleLabel_tb].visible ~ span{ margin-left: 32px;}

@@ -9,7 +9,6 @@ namespace DotNetNuke.Entities.Groups
     using System.Xml.Serialization;
 
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
     using DotNetNuke.Services.Tokens;
 
     public class GroupInfo : RoleInfo, IPropertyAccess

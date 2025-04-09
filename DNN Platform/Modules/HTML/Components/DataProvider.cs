@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Modules.Html.Components
 {
-    using System;
     using System.Data;
 
     /// <summary>  The DataProvider is an abstract class that provides the Data Access Layer for the HtmlText module.</summary>
@@ -78,26 +77,6 @@ namespace DotNetNuke.Modules.Html.Components
         public virtual void DeleteHtmlTextUsers()
         {
             DotNetNuke.Data.DataProvider.Instance().ExecuteNonQuery("DeleteHtmlTextUsers");
-        }
-
-        public virtual IDataReader GetWorkflows(int portalID)
-        {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflows", portalID);
-        }
-
-        public virtual IDataReader GetWorkflowStates(int workflowID)
-        {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStates", workflowID);
-        }
-
-        public virtual IDataReader GetWorkflowStatePermissions()
-        {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStatePermissions");
-        }
-
-        public virtual IDataReader GetWorkflowStatePermissionsByStateID(int stateID)
-        {
-            return DotNetNuke.Data.DataProvider.Instance().ExecuteReader("GetWorkflowStatePermissionsByStateID", stateID);
         }
     }
 }

@@ -13,17 +13,23 @@ namespace Dnn.PersonaBar.Security.Services
     using System.Net;
     using System.Net.Http;
     using System.Text.RegularExpressions;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
     using System.Xml;
 
     using Dnn.PersonaBar.Extensions.Components.Security.Ssl;
+    using Dnn.PersonaBar.Extensions.Services.Dto;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Security.Helper;
     using Dnn.PersonaBar.Security.Services.Dto;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
@@ -37,6 +43,11 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
+    using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
+
+    using Constants = Dnn.PersonaBar.Library.Constants;
+    using Localization = DotNetNuke.Services.Localization.Localization;
 
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
@@ -44,25 +55,38 @@ namespace Dnn.PersonaBar.Security.Services
         private const string BULLETINXMLNODEPATH = "//channel/item";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController controller;
-        private readonly IPortalAliasController portalAliasController;
+        private readonly IPagesController pagesController;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IApiTokenController apiTokenController;
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
-        public SecurityController()
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="apiTokenController">The API token controller.</param>
+        public SecurityController(IPagesController pagesController, IPortalAliasService portalAliasService, IApiTokenController apiTokenController)
             : this(
                 new Components.SecurityController(),
-                PortalAliasController.Instance)
+                pagesController,
+                portalAliasService,
+                apiTokenController)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
         /// <param name="controller">The security controller.</param>
-        /// <param name="portalAliasController">The portal alias controller.</param>
+        /// <param name="pagesController">The pages controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="apiTokenController">The API token controller.</param>
         internal SecurityController(
             Components.SecurityController controller,
-            IPortalAliasController portalAliasController)
+            IPagesController pagesController,
+            IPortalAliasService portalAliasService,
+            IApiTokenController apiTokenController)
         {
+            this.pagesController = pagesController;
             this.controller = controller;
-            this.portalAliasController = portalAliasController;
+            this.portalAliasService = portalAliasService;
+            this.apiTokenController = apiTokenController;
         }
 
         /// GET: api/Security/GetBasicLoginSettings
@@ -784,7 +808,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.pagesController);
                 var results = audit.DoChecks(checkAll);
                 var response = new
                 {
@@ -810,7 +834,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var audit = new Components.AuditChecks();
+                var audit = new Components.AuditChecks(this.pagesController);
                 var result = audit.DoCheck(id);
                 var response = new
                 {
@@ -939,7 +963,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        /// GET: api/Security/GetRecentlyModifiedSettings
+        /// GET: api/Security/GetLastModifiedSettings
         /// <summary>Gets last modified settings.</summary>
         /// <returns>last modified settings.</returns>
         [HttpGet]
@@ -1012,6 +1036,345 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
+        /// GET: api/Security/GetApiTokenSettings
+        /// <summary>Gets settings for API tokens.</summary>
+        /// <returns>API token settings.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage GetApiTokenSettings()
+        {
+            try
+            {
+                var response = new
+                {
+                    Success = true,
+                    Results = new
+                    {
+                        ApiTokenSettings = ApiTokenSettings.GetSettings(this.PortalId),
+                    },
+                };
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/Security/UpdateApiTokenSettings
+        /// <summary>Updates API Token settings.</summary>
+        /// <param name="request">The update request.</param>
+        /// <returns>A response indicating success.</returns>
+        [HttpPost]
+        [RequireAdmin]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateApiTokenSettings(UpdateApiTokenSettingsRequest request)
+        {
+            try
+            {
+                var settings = ApiTokenSettings.GetSettings(this.PortalId);
+                var oldMax = (int)settings.MaximumSiteTimespan;
+                if (this.UserInfo.IsSuperUser)
+                {
+                    settings.MaximumSiteTimespan = (ApiTokenTimespan)request.MaximumSiteTimespan;
+                }
+
+                var newMax = (int)settings.MaximumSiteTimespan;
+                var maxHasBeenReduced = newMax < oldMax;
+
+                settings.UserTokenTimespan = (ApiTokenTimespan)request.UserTokenTimespan;
+                settings.AllowApiTokens = request.AllowApiTokens;
+                settings.SaveSettings(this.PortalId);
+
+                if (maxHasBeenReduced)
+                {
+                    foreach (IPortalInfo p in PortalController.Instance.GetPortalList(Null.NullString))
+                    {
+                        var tokenSettings = ApiTokenSettings.GetSettings(p.PortalId);
+                        var oldValue = (int)tokenSettings.UserTokenTimespan;
+                        if (oldValue > newMax)
+                        {
+                            tokenSettings.UserTokenTimespan = (ApiTokenTimespan)newMax;
+                            tokenSettings.SaveSettings(p.PortalId);
+                        }
+                    }
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a paged list of API tokens for the specified portal and page, with the specified page size.
+        /// </summary>
+        /// <param name="portalId">The ID of the portal for which to retrieve API tokens. Use -2 for all portals.</param>
+        /// <param name="filter">Value indicating which tokens to return based on status.</param>
+        /// <param name="apiKey">API key to filter the results by.</param>
+        /// <param name="scope">Filter the results by scope or use -2 for no scope.</param>
+        /// <param name="pageIndex">The page index (starting from 0) of the API token list to retrieve.</param>
+        /// <param name="pageSize">The number of API tokens per page to retrieve.</param>
+        /// <returns>A paged list of `ApiToken` objects for the specified portal and page.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+
+        public HttpResponseMessage GetApiTokens(int portalId, int filter, string apiKey, int scope, int pageIndex, int pageSize)
+        {
+            if (portalId < 0)
+            {
+                portalId = Null.NullInteger;
+            }
+
+            var noScopeDefined = scope == -2;
+            var requestedScope = ApiTokenScope.User;
+            var user = this.UserInfo;
+            var requestingUser = user.UserID;
+
+            if (user.IsSuperUser)
+            {
+                requestingUser = Null.NullInteger;
+                if (noScopeDefined)
+                {
+                    requestedScope = ApiTokenScope.Host;
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)scope;
+                }
+            }
+            else if (user.IsAdmin)
+            {
+                requestingUser = Null.NullInteger;
+                portalId = PortalSettings.Current.PortalId;
+                if (noScopeDefined)
+                {
+                    requestedScope = ApiTokenScope.Portal;
+                }
+                else if (scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)scope;
+                }
+            }
+            else
+            {
+                portalId = PortalSettings.Current.PortalId;
+                if (scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+            }
+
+            var response = this.apiTokenController.GetApiTokens(requestedScope, noScopeDefined, portalId, requestingUser, (ApiTokenFilter)filter, apiKey, pageIndex, pageSize);
+            return this.Request.CreateResponse(HttpStatusCode.OK, response.Serialize());
+        }
+
+        /// <summary>
+        /// Retrieves a dictionary with the API token keyword and its corresponding attribute based on the user scope.
+        /// </summary>
+        /// <returns>A dictionary with the API token keyword and its corresponding attribute.</returns>
+        [HttpGet]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage GetApiTokenKeys()
+        {
+            // The response.
+            var response = new SortedDictionary<string, ApiTokenAttribute>();
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+
+            if (user.IsSuperUser)
+            {
+                // If the user is a superuser, sets the API token scope to host.
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.Host, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+            else if (user.IsAdmin)
+            {
+                // If the user is an admin, sets the API token scope to portal.
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.Portal, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+            else
+            {
+                // If the user is regular, set the API token scope to user.
+                response = this.apiTokenController.ApiTokenKeyList(ApiTokenScope.User, Thread.CurrentThread.CurrentUICulture.Name);
+            }
+
+            // Returns the response.
+            return this.Request.CreateResponse(HttpStatusCode.OK, response.Values);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ApiToken"/> object with the specified parameters and returns it.
+        /// </summary>
+        /// <param name="data">The parameters for the creation of this token.</param>
+        /// <returns>A new <see cref="ApiToken"/> object.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+
+        public HttpResponseMessage CreateApiToken(CreateApiTokenRequest data)
+        {
+            var settings = ApiTokenSettings.GetSettings(this.PortalId);
+            if (!settings.ApiTokensEnabled || (!settings.AllowApiTokens && data.Scope != (int)ApiTokenScope.Host))
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "API tokens are disabled");
+            }
+
+            var requestedScope = ApiTokenScope.User;
+            var requestedTimespan = data.TokenTimespan;
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+            if (user.IsSuperUser)
+            {
+                requestedScope = (ApiTokenScope)data.Scope;
+            }
+            else if (user.IsAdmin)
+            {
+                if (data.Scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+                else
+                {
+                    requestedScope = (ApiTokenScope)data.Scope;
+                }
+
+                requestedTimespan = Math.Min(requestedTimespan, (int)settings.MaximumSiteTimespan);
+            }
+            else
+            {
+                if (data.Scope > 1)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid scope");
+                }
+
+                requestedTimespan = (int)settings.UserTokenTimespan;
+            }
+
+            // Check the expiration time
+            var expirationTime = DateTime.Now;
+            var setTimespan = (ApiTokenTimespan)requestedTimespan;
+            switch (setTimespan)
+            {
+                case ApiTokenTimespan.Days30:
+                    expirationTime = expirationTime.AddDays(30);
+                    break;
+                case ApiTokenTimespan.Days60:
+                    expirationTime = expirationTime.AddDays(60);
+                    break;
+                case ApiTokenTimespan.Days90:
+                    expirationTime = expirationTime.AddDays(90);
+                    break;
+                case ApiTokenTimespan.Days180:
+                    expirationTime = expirationTime.AddDays(180);
+                    break;
+                case ApiTokenTimespan.Years1:
+                    expirationTime = expirationTime.AddYears(1);
+                    break;
+                case ApiTokenTimespan.Years2:
+                    expirationTime = expirationTime.AddYears(2);
+                    break;
+            }
+
+            var token = this.apiTokenController.CreateApiToken(this.PortalId, data.TokenName.Trim(), requestedScope, expirationTime, data.ApiKeys, this.UserInfo.UserID);
+            return this.Request.CreateResponse(HttpStatusCode.OK, token);
+        }
+
+        /// <summary>
+        /// Revokes or deletes the specified API token of the user.
+        /// </summary>
+        /// <param name="data">The `RevokeDeleteApiTokenRequest` object which contains the ID of the API token to revoke or delete.</param>
+        /// <returns>An HTTP response message with a boolean value indicating whether the token was successfully revoked or deleted.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+
+        public HttpResponseMessage RevokeOrDeleteApiToken(RevokeDeleteApiTokenRequest data)
+        {
+            var token = this.apiTokenController.GetApiToken(data.ApiTokenId);
+            if (token == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid token");
+            }
+
+            // Checks if the user is authorized.
+            var user = this.UserInfo;
+            var canManage = false;
+            if (user.IsSuperUser)
+            {
+                canManage = true;
+            }
+            else if (user.IsAdmin)
+            {
+                if (token.PortalId != PortalSettings.Current.PortalId)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You have no access to this token.");
+                }
+                else
+                {
+                    canManage = true;
+                }
+            }
+            else
+            {
+                if (token.PortalId != PortalSettings.Current.PortalId || token.CreatedByUserId != user.UserID)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "You have no access to this token.");
+                }
+                else
+                {
+                    canManage = true;
+                }
+            }
+
+            if (canManage)
+            {
+                this.apiTokenController.RevokeOrDeleteApiToken(token, data.Delete, user.UserID);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true);
+        }
+
+        /// <summary>
+        /// Deletes expired API tokens.
+        /// </summary>
+        /// <remarks>
+        /// If the user is a SuperUser, all expired API tokens across all portals will be deleted.
+        /// If the user is an Admin, only the expired API tokens for the current portal will be deleted.
+        /// For all other users, only their own expired API tokens will be deleted.
+        /// </remarks>
+        /// <returns>An HTTP response message with a boolean value indicating whether expired API tokens were deleted.</returns>
+        [HttpPost]
+        [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
+        public HttpResponseMessage DeleteExpiredTokens()
+        {
+            var portalId = this.PortalId;
+            var user = this.UserInfo;
+            var userId = user.UserID;
+
+            if (user.IsSuperUser)
+            {
+                portalId = -1;
+                userId = -1;
+            }
+            else if (user.IsAdmin)
+            {
+                userId = -1;
+            }
+
+            this.apiTokenController.DeleteExpiredAndRevokedApiTokens(portalId, userId);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, true);
+        }
+
         internal string AddPortalAlias(string portalAlias, int portalId)
         {
             if (!string.IsNullOrEmpty(portalAlias))
@@ -1022,11 +1385,11 @@ namespace Dnn.PersonaBar.Security.Services
                     portalAlias = portalAlias.Remove(0, portalAlias.IndexOf("://", StringComparison.Ordinal) + 3);
                 }
 
-                var alias = this.portalAliasController.GetPortalAlias(portalAlias, portalId);
+                var alias = this.portalAliasService.GetPortalAlias(portalAlias, portalId);
                 if (alias == null)
                 {
                     alias = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias };
-                    this.portalAliasController.AddPortalAlias(alias);
+                    this.portalAliasService.AddPortalAlias(alias);
                 }
             }
 

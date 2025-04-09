@@ -140,7 +140,7 @@ class EditUrl extends Component {
                         </GridCell>
                     </GridCell>
                     <div className="buttons-box" style={{float: "left", margin: "0 0 20px 0"}}>
-                        <Button type="secondary" onClick={onCancel} disabled={saving}>
+                        <Button type="neutral" onClick={onCancel} disabled={saving}>
                             {Localization.get("Cancel")}
                         </Button>
                         <Button type="primary" onClick={onSave} disabled={!this.state.hasChanges || saving}>

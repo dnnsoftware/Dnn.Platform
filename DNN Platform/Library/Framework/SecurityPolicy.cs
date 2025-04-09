@@ -124,13 +124,6 @@ namespace DotNetNuke.Framework
             return hasPermission;
         }
 
-        [DnnDeprecated(7, 0, 0, "Replaced by correctly spelt method", RemovalVersion = 10)]
-        public static partial bool HasRelectionPermission()
-        {
-            GetPermissions();
-            return reflectionPermission;
-        }
-
         private static void GetPermissions()
         {
             if (!initialized)
