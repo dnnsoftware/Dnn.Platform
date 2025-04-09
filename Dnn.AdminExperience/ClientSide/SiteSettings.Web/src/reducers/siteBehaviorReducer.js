@@ -133,7 +133,8 @@ export default function siteBehavior(state = {
         case ActionTypes.RETRIEVED_SITESETTINGS_OTHER_SETTINGS:
             return { ...state,
                 otherSettings: action.data.settings,
-                otherSettingsClientModified: action.data.otherSettingsClientModified
+                otherSettingsClientModified: action.data.otherSettingsClientModified,
+                workflows: action.data.workflows
             };
         case ActionTypes.UPDATED_SITESETTINGS_OTHER_SETTINGS:
         case ActionTypes.CANCELED_SITESETTINGS_OTHER_SETTINGS_CLIENT_MODIFIED:

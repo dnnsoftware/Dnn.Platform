@@ -223,7 +223,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             this.LoadFolders();
-            jQuery.RegisterFileUpload(this.Page);
+            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }

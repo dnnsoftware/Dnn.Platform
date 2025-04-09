@@ -186,11 +186,5 @@ namespace DotNetNuke.Services.Journal
         /// <param name="userId">Id of current user.</param>
         /// <param name="displayName">User's display name.</param>
         void LikeComment(int journalId, int commentId, int userId, string displayName);
-
-        [Obsolete("Deprecated in DotNetNuke 7.2.2. Use SaveJournalItem(JournalItem, ModuleInfo). Scheduled for removal in v10.0.0.")]
-        void SaveJournalItem(JournalItem journalItem, int tabId);
-
-        [Obsolete("Deprecated in DotNetNuke 7.2.2. Use UpdateJournalItem(JournalItem, ModuleInfo). Scheduled for removal in v10.0.0.")]
-        void UpdateJournalItem(JournalItem journalItem, int tabId);
     }
 }

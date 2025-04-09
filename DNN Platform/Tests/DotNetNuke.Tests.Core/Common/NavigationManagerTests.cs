@@ -1,21 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Common
 {
     using System.Collections.Generic;
     using System.Linq;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using Microsoft.Extensions.DependencyInjection;
 
     using Moq;
@@ -32,6 +30,7 @@ namespace DotNetNuke.Tests.Core.Common
         private const string ControlKeyPattern = "&ctl={0}";
         private const string LanguagePattern = "&language={0}";
         private INavigationManager navigationManager;
+        private FakeServiceProvider serviceProvider;
 
         [OneTimeSetUp]
 
@@ -100,17 +99,19 @@ namespace DotNetNuke.Tests.Core.Common
                 return mockLocaleController.Object;
             }
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => this.navigationManager);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(PortalController.Instance);
+                    services.AddSingleton(TabController.Instance);
+                    services.AddSingleton(LocaleController.Instance);
+                });
         }
 
         [OneTimeTearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             this.navigationManager = null;
             TabController.ClearInstance();
             LocaleController.ClearInstance();

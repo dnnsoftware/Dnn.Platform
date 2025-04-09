@@ -15,6 +15,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
 
     /// <inheritdoc />
     public class Startup : IDnnStartup
@@ -30,11 +31,11 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
             services.AddTransient<ILocalizer, Localizer>();
 
             // core
-            services.AddTransient(provider => LocalizationProvider.Instance);
-            services.AddTransient(provider => LoggerSource.Instance);
-            services.AddTransient(provider => ModuleController.Instance);
-            services.AddTransient(provider => PackageController.Instance);
-            services.AddTransient(provider => TabController.Instance);
+            services.TryAddTransient(provider => LocalizationProvider.Instance);
+            services.TryAddTransient(provider => LoggerSource.Instance);
+            services.TryAddTransient(provider => ModuleController.Instance);
+            services.TryAddTransient(provider => PackageController.Instance);
+            services.TryAddTransient(provider => TabController.Instance);
 
             // shims
             services.AddTransient<IDataCache, DataCacheShim>();

@@ -7,13 +7,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.Data;
     using System.Drawing;
     using System.IO;
-    using System.IO.Compression;
     using System.Text;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -28,6 +24,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -61,6 +58,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFileLockingController> mockFileLockingController;
         private Mock<IFileDeletionController> mockFileDeletionController;
         private Mock<IHostController> hostController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void Setup()
@@ -105,18 +103,33 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FileLockingController.SetTestableInstance(this.mockFileLockingController.Object);
             FileDeletionController.SetTestableInstance(this.mockFileDeletionController.Object);
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.hostController.Object);
-            serviceCollection.AddTransient<IEventLogger>(container => Mock.Of<IEventLogger>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockData.Object);
+                    services.AddSingleton(this.mockFolder.Object);
+                    services.AddSingleton(this.mockCache.Object);
+                    services.AddSingleton(this.folderManager.Object);
+                    services.AddSingleton(this.folderPermissionController.Object);
+                    services.AddSingleton(this.portalController.Object);
+                    services.AddSingleton(this.hostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.hostController.Object);
+                    services.AddSingleton(this.folderMappingController.Object);
+                    services.AddSingleton(this.fileVersionController.Object);
+                    services.AddSingleton(this.workflowManager.Object);
+                    services.AddSingleton(this.fileEventHandlersContainer.Object);
+                    services.AddSingleton(this.globals.Object);
+                    services.AddSingleton(this.cbo.Object);
+                    services.AddSingleton(this.pathUtils.Object);
+                    services.AddSingleton(this.mockFileLockingController.Object);
+                    services.AddSingleton(this.mockFileDeletionController.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             TestableGlobals.ClearInstance();
             CBO.ClearInstance();
 

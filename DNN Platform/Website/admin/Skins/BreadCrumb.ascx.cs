@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public BreadCrumb()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.CleanerMarkup = false;
         }
 

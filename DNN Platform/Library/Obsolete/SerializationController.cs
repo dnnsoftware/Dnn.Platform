@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Settings
@@ -15,7 +15,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     public partial class SerializationController
     {
         private static ISerializationManager SerializationManager =>
-            Globals.DependencyProvider.GetRequiredService<ISerializationManager>();
+            Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.ISerializationManager' instead")]
         public static partial string SerializeProperty<T>(T myObject, PropertyInfo property) =>

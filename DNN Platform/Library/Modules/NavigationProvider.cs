@@ -3,14 +3,17 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.NavigationProvider
 {
+    using System;
     using System.Collections.Generic;
     using System.Web.UI;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
 
-    public abstract class NavigationProvider : UserControlBase
+    public abstract partial class NavigationProvider : UserControlBase
     {
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
 
@@ -979,9 +982,15 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
-        public static NavigationProvider Instance(string friendlyName)
+        [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
+        public static partial NavigationProvider Instance(string friendlyName)
         {
-            return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
+            return Instance(Globals.DependencyProvider, friendlyName);
+        }
+
+        public static NavigationProvider Instance(IServiceProvider serviceProvider, string friendlyName)
+        {
+            return (NavigationProvider)Reflection.CreateObject(serviceProvider, "navigationControl", friendlyName, string.Empty, string.Empty);
         }
 
         public abstract void Initialize();

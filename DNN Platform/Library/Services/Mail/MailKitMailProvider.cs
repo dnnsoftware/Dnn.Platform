@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        private static (string host, int port, string errorMessage) ParseSmtpServer(ref SmtpInfo smtpInfo)
+        private static (string Host, int Port, string ErrorMessage) ParseSmtpServer(ref SmtpInfo smtpInfo)
         {
             var port = 25;
             if (smtpInfo == null || string.IsNullOrEmpty(smtpInfo.Server))
@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        private (ISmtpOAuthProvider, int) GetOAuthProvider(SmtpClient smtpClient, SmtpInfo smtpInfo)
+        private (ISmtpOAuthProvider AuthProvider, int PortalId) GetOAuthProvider(SmtpClient smtpClient, SmtpInfo smtpInfo)
         {
             var usingOAuth = smtpInfo.Authentication == "3";
             if (usingOAuth)

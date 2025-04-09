@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.FileSystem
         private const int BufferSize = 4096;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IFileContentTypeManager.ContentTypes"/>
         public virtual IDictionary<string, string> ContentTypes
         {
             get { return FileContentTypeManager.Instance.ContentTypes; }
@@ -1749,7 +1749,8 @@ namespace DotNetNuke.Services.FileSystem
                     string.Format(
                         Localization.GetExceptionMessage(
                             "AddFileExtensionNotAllowed",
-                            "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
+                            "The extension '{0}' is not allowed. The file has not been added."),
+                        Path.GetExtension(fileName)));
             }
 
             if (!this.IsValidFilename(fileName))
@@ -1758,7 +1759,8 @@ namespace DotNetNuke.Services.FileSystem
                     string.Format(
                         Localization.GetExceptionMessage(
                             "AddFilenameNotAllowed",
-                            "The file name '{0}' is not allowed. The file has not been added."), fileName));
+                            "The file name '{0}' is not allowed. The file has not been added."),
+                        fileName));
             }
         }
 

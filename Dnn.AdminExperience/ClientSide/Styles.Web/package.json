@@ -1,0 +1,36 @@
+{
+  "name": "styles",
+  "version": "10.0.0",
+  "private": true,
+  "description": "Allows managing DNN css variables for styles",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "es2015": "dist/esm/index.js",
+  "es2017": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/third-party-elements/third-party-elements.esm.js",
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "license": "MIT",
+  "resolutions": {
+    "@timkendrick/monaco-editor": "external"
+  },
+  "scripts": {
+    "build": "stencil build --docs && node clean-and-copy.js",
+    "watch": "stencil build --config stencil.dnn.config.ts --watch",
+    "start": "stencil build --dev --watch --serve",
+    "generate": "stencil generate"
+  },
+  "dependencies": {
+    "@stencil/core": "^4.22.2"
+  },
+  "devDependencies": {
+    "@dnncommunity/dnn-elements": "^0.26.0",
+    "@stencil/sass": "^3.0.12",
+    "@types/node": "^22.9.0"
+  }
+}

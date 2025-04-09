@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dnn.PersonaBar.Extensions</RootNamespace>
     <AssemblyName>Dnn.PersonaBar.Extensions</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -278,6 +278,7 @@
     <Compile Include="Components\SqlConsole\ISqlQueryController.cs" />
     <Compile Include="Components\SqlConsole\SqlConsoleQuery.cs" />
     <Compile Include="Components\SqlConsole\SqlQueryController.cs" />
+    <Compile Include="Components\Styles\Constants.cs" />
     <Compile Include="Components\TaskScheduler\Constants.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Commands\GetTask.cs" />
     <Compile Include="Components\TaskScheduler\Prompt\Commands\ListTasks.cs" />
@@ -356,6 +357,7 @@
     <Compile Include="MenuControllers\SiteSettingsMenuController.cs" />
     <Compile Include="MenuControllers\SitesMenuController.cs" />
     <Compile Include="MenuControllers\SqlConsoleMenuController.cs" />
+    <Compile Include="MenuControllers\StylesMenuController.cs" />
     <Compile Include="MenuControllers\TaskSchedulerMenuController.cs" />
     <Compile Include="MenuControllers\ThemeMenuController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -370,6 +372,8 @@
     <Compile Include="Services\Dto\ConfigFileDto.cs" />
     <Compile Include="Services\Dto\CopyPermissionsRequest.cs" />
     <Compile Include="Services\Dto\CopyThemeRequest.cs" />
+    <Compile Include="Services\Dto\RevokeDeleteApiTokenRequest.cs" />
+    <Compile Include="Services\Dto\CreateApiTokenRequest.cs" />
     <Compile Include="Services\Dto\CreatePortalRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogItemsRequest.cs" />
     <Compile Include="Services\Dto\DeleteLogSettingsRequest.cs" />
@@ -438,6 +442,7 @@
     <Compile Include="Services\Dto\UpdateIpFilterRequest.cs" />
     <Compile Include="Services\Dto\UpdateLogSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateMemberSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpdateApiTokenSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateOtherSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdatePerfSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateRegexSettingsRequest.cs" />
@@ -470,6 +475,7 @@
     <Compile Include="Services\SitesController.cs" />
     <Compile Include="Services\SiteSettingsController.cs" />
     <Compile Include="Services\SqlConsoleController.cs" />
+    <Compile Include="Services\StylesController.cs" />
     <Compile Include="Services\SystemInfoApplicationAdminController.cs" />
     <Compile Include="Services\SystemInfoApplicationHostController.cs" />
     <Compile Include="Services\SystemInfoDatabaseController.cs" />
@@ -479,6 +485,7 @@
     <Compile Include="Services\ThemesController.cs" />
     <Compile Include="Services\UsersController.cs" />
     <Compile Include="Services\VocabulariesController.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin\personaBar\Dnn.AdminLogs\AdminLogs.html" />
@@ -566,6 +573,10 @@
     <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\sort.js" />
     <Content Include="admin\personaBar\Dnn.SqlConsole\scripts\SqlConsole.js" />
     <Content Include="admin\personaBar\Dnn.SqlConsole\SqlConsole.html" />
+    <Content Include="admin\personaBar\Dnn.Styles\.gitignore" />
+    <Content Include="admin\personaBar\Dnn.Styles\css\Styles.css" />
+    <Content Include="admin\personaBar\Dnn.Styles\scripts\Styles.js" />
+    <Content Include="admin\personaBar\Dnn.Styles\Styles.html" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\css\TaskScheduler.css" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\images\active.png" />
     <Content Include="admin\personaBar\Dnn.TaskScheduler\images\btn-edit.png" />
@@ -602,6 +613,10 @@
     <ProjectReference Include="..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DNN Platform\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
+      <Project>{0FCA217A-5F9A-4F5B-A31B-86D64AE65198}</Project>
+      <Name>DotNetNuke.DependencyInjection</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
       <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
@@ -669,6 +684,7 @@
     <Content Include="admin\personaBar\Dnn.Vocabularies\App_LocalResources\Vocabularies.resx" />
     <Content Include="admin\personaBar\Dnn.SiteGroups\App_LocalResources\SiteGroups.resx" />
     <Content Include="admin\personaBar\Dnn.Prompt\App_LocalResources\Prompt.resx" />
+    <Content Include="admin\personaBar\Dnn.Styles\App_LocalResources\Styles.resx" />
     <EmbeddedResource Include="Components\Security\Resources\CheckFileExists.resources" />
     <EmbeddedResource Include="Components\Security\Resources\ExecuteCommand.resources" />
     <EmbeddedResource Include="Components\Security\Resources\GetFolderTree.resources" />
@@ -711,26 +727,29 @@
     <Content Include="SqlDataProvider\09.04.01.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=1.3.3.11, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SharpZipLib.1.3.3\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.4.2.13, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\Packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\Packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.Bson.1.0.3\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -738,19 +757,20 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -792,8 +812,8 @@
     <Folder Include="admin\personaBar\Dnn.SiteGroups\scripts\bundles\" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

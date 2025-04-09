@@ -95,13 +95,13 @@ export default class SiteGroupEditor extends React.Component {
                 <div className="buttons-box">
                     {!this.props.isNew && (
                         <Button
-                            type="secondary"
+                            type="danger"
                             onClick={() => this.props.onDeleteGroup(this.props.group)}
                         >
                             {Resx.get("Delete.Button")}
                         </Button>
                     )}
-                    <Button type="secondary" onClick={() => this.props.onCancel()}>
+                    <Button type="neutral" onClick={() => this.props.onCancel()}>
                         {Resx.get("Cancel.Button")}
                     </Button>
                     <Button type="primary" onClick={() => this.props.onSave()}>

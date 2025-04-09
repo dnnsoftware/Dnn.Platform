@@ -16,15 +16,6 @@ namespace DotNetNuke.Services.Search
     /// </summary>
     public class SearchContentModuleInfo
     {
-#pragma warning disable 0618
-
-        // ReSharper disable InconsistentNaming
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-
-        protected ISearchable MModControllerType;
-#pragma warning restore 0618
-
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ModuleSearchBase SearchBaseControllerType;
@@ -32,22 +23,6 @@ namespace DotNetNuke.Services.Search
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected ModuleInfo MModInfo;
-
-        // ReSharper restore InconsistentNaming
-#pragma warning disable 0618
-        public ISearchable ModControllerType
-        {
-            get
-            {
-                return this.MModControllerType;
-            }
-
-            set
-            {
-                this.MModControllerType = value;
-            }
-        }
-#pragma warning restore 0618
 
         public ModuleSearchBase ModSearchBaseControllerType
         {

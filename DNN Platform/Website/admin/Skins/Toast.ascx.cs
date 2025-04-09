@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public Toast()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         protected string ServiceModuleName { get; private set; }

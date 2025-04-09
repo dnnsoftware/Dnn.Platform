@@ -1,6 +1,6 @@
 {
   "name": "dnn-platform",
-  "version": "9.11.2",
+  "version": "10.0.0",
   "private": true,
   "workspaces": [
     "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
@@ -24,7 +24,10 @@
     "Dnn.AdminExperience/ClientSide/Users.Web",
     "Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables",
     "Dnn.AdminExperience/ClientSide/Vocabularies.Web",
-    "DNN Platform/Modules/ResourceManager/ResourceManager.Web"
+    "Dnn.AdminExperience/ClientSide/Styles.Web",
+    "DNN Platform/Modules/ResourceManager/ResourceManager.Web",
+    "DNN Platform/Skins/Aperture",
+    "DNN Platform/Dnn.ClientSide"
   ],
   "devDependencies": {
     "lerna": "^8.1.9"

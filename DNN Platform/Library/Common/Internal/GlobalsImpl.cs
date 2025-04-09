@@ -21,7 +21,7 @@ namespace DotNetNuke.Common.Internal
         /// <summary>Initializes a new instance of the <see cref="GlobalsImpl"/> class.</summary>
         public GlobalsImpl()
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <inheritdoc/>

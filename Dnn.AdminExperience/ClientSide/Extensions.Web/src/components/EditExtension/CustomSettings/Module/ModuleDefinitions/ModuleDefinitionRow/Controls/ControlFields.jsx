@@ -143,7 +143,7 @@ class ControlFields extends Component {
                     </div>
                 </GridSystem>
                 <GridCell columnSize={100} className="modal-footer">
-                    <Button type="secondary" onClick={props.onCancel.bind(this)}>{Localization.get("AddModuleControl_Cancel.Button")}</Button>
+                    <Button type="neutral" onClick={props.onCancel.bind(this)}>{Localization.get("AddModuleControl_Cancel.Button")}</Button>
                     <Button type="primary" onClick={props.onSave.bind(this)}>{Localization.get("AddModuleControl_Update.Button")}</Button>
                 </GridCell>
             </GridCell>

@@ -1,20 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
     using DotNetNuke.UI.Skins;
 
@@ -45,23 +47,22 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         private const string GlobalTabContainer = "[g]TabContainer";
 
         private Mock<IHostController> mockHostController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void SetUp()
         {
             MockComponentProvider.ResetContainer();
 
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationInfo.Setup(info => info.ApplicationMapPath).Returns("path/to/application");
-
             this.mockHostController = new Mock<IHostController>();
             this.mockHostController.As<IHostSettingsService>();
 
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                });
         }
 
         [TearDown]
@@ -69,8 +70,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             PortalController.ClearInstance();
             TabController.ClearInstance();
-            Globals.DependencyProvider = null;
-
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -87,6 +87,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var hostSettings = PortalSettingsControllerTestFactory.GetHostSettings();
 
+            var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
+            ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
+
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController
                 .Setup(c => c.GetPortalSettings(It.IsAny<int>()))
@@ -94,15 +97,15 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             PortalController.SetTestableInstance(mockPortalController.Object);
 
             this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
-                            .Returns((string s) => hostSettings[s]);
+                .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
             this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
-                            .Returns((string s1, string s2) => hostSettings[s1]);
+                .Returns((string s1, string s2) => hostSettings.GetValueOrDefault<string>(s1));
             this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
-                            .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
+                .Returns((string s, bool b) => hostSettings.GetValueOrDefault<bool>(s));
             this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
-                            .Returns((string s, int i) => int.Parse(hostSettings[s]));
+                .Returns((string s, int i) => hostSettings.GetValueOrDefault<int>(s));
             this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>()))
-                            .Returns((string s) => int.Parse(hostSettings[s]));
+                            .Returns((string s) => hostSettings.GetValueOrDefault<int>(s));
 
             if (isHostDefault)
             {
@@ -139,6 +142,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var hostSettings = PortalSettingsControllerTestFactory.GetHostSettings();
 
+            var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
+            ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
+
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController
                 .Setup(c => c.GetPortalSettings(It.IsAny<int>()))
@@ -146,13 +152,13 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             PortalController.SetTestableInstance(mockPortalController.Object);
 
             this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
-                            .Returns((string s) => hostSettings[s]);
+                .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
             this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
-                            .Returns((string s1, string s2) => hostSettings[s1]);
+                .Returns((string s1, string s2) => hostSettings.GetValueOrDefault<string>(s1));
             this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
-                            .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
+                .Returns((string s, bool b) => hostSettings.GetValueOrDefault<bool>(s));
             this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
-                            .Returns((string s, int i) => int.Parse(hostSettings[s]));
+                .Returns((string s, int i) => hostSettings.GetValueOrDefault<int>(s));
 
             // Act
             controller.LoadPortalSettings(settings);
@@ -179,6 +185,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var hostSettings = PortalSettingsControllerTestFactory.GetHostSettings();
 
+            var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
+            ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
+
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController
                 .Setup(c => c.GetPortalSettings(It.IsAny<int>()))
@@ -186,13 +195,13 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             PortalController.SetTestableInstance(mockPortalController.Object);
 
             this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
-                            .Returns((string s) => hostSettings[s]);
+                            .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
             this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
-                            .Returns((string s1, string s2) => hostSettings[s1]);
+                            .Returns((string s1, string s2) => hostSettings.GetValueOrDefault<string>(s1));
             this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
-                            .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
+                            .Returns((string s, bool b) => hostSettings.GetValueOrDefault<bool>(s));
             this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
-                            .Returns((string s, int i) => int.Parse(hostSettings[s]));
+                            .Returns((string s, int i) => hostSettings.GetValueOrDefault<int>(s));
 
             // Act
             controller.LoadPortalSettings(settings);

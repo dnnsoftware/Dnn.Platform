@@ -1,0 +1,2 @@
+﻿' remove old SqlDataProvider
+Providers\DataProviders\SqlDataProvider\Upgrade.SqlDataProvider

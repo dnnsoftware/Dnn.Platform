@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
         public EditExtension()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string Mode

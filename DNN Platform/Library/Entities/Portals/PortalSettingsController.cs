@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;

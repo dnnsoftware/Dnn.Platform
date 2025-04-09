@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
     using System;
@@ -9,9 +8,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.Data;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Services.FileSystem;
@@ -19,6 +15,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Core.Providers.Builders;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +41,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IPathUtils> pathUtils;
         private Mock<IUserSecurityController> mockUserSecurityController;
         private Mock<IFileDeletionController> mockFileDeletionController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void Setup()
@@ -73,13 +71,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this.folderInfo = new Mock<IFolderInfo>();
 
-            var serviceCollection = new ServiceCollection();
-            var mockStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.None);
-
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockStatusInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockFolder.Object);
+                    services.AddSingleton(this.mockData.Object);
+                    services.AddSingleton(this.folderMappingController.Object);
+                    services.AddSingleton(this.cbo.Object);
+                    services.AddSingleton(this.pathUtils.Object);
+                    services.AddSingleton(this.mockUserSecurityController.Object);
+                    services.AddSingleton(this.mockFileDeletionController.Object);
+                });
         }
 
         [TearDown]
@@ -91,7 +93,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CBO.ClearInstance();
             FileDeletionController.ClearInstance();
             MockComponentProvider.ResetContainer();
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -2089,19 +2091,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    _mockFolderManager.Verify(mfm => mfm.DeleteFolder(It.IsAny<int>(), It.IsAny<string>()), Times.Never());
         //    _directory.Verify(d => d.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
         // }
-        [Test]
-        public void MoveFolder_Throws_On_Null_Folder()
-        {
-            Assert.Throws<ArgumentNullException>(() => this.folderManager.MoveFolder(null, It.IsAny<string>()));
-        }
 
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        public void MoveFolder_Throws_On_Null_Or_Emtpy_NewFolderPath(string newFolderPath)
-        {
-            Assert.Throws<ArgumentException>(() => this.folderManager.MoveFolder(this.folderInfo.Object, newFolderPath));
-        }
 
         [Test]
 

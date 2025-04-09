@@ -5,11 +5,17 @@ namespace DotNetNuke.Web
 {
     using System.Web.Http.Filters;
 
+    using DotNetNuke.Common.Internal;
     using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Web.Api.Auth.ApiTokens;
+    using DotNetNuke.Web.Api.Auth.ApiTokens.Repositories;
     using DotNetNuke.Web.Api.Internal;
     using DotNetNuke.Web.Extensions;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
+
+    using ServicesRoutingManager = DotNetNuke.Web.Api.Internal.ServicesRoutingManager;
 
     /// <summary>Configures services for The DotNetNuke.Web project.</summary>
     public class Startup : IDnnStartup
@@ -18,7 +24,11 @@ namespace DotNetNuke.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IFilterProvider, DnnActionFilterProvider>();
+            services.TryAddEnumerable(new ServiceDescriptor(typeof(IRoutingManager), typeof(ServicesRoutingManager), ServiceLifetime.Singleton));
             services.AddWebApi();
+
+            services.AddTransient<IApiTokenController, ApiTokenController>();
+            services.AddTransient<IApiTokenRepository, ApiTokenRepository>();
         }
     }
 }

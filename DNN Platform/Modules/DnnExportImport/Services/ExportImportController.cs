@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.ExportImport.Services
 {
     using System.Linq;
@@ -12,6 +11,7 @@ namespace Dnn.ExportImport.Services
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Controllers;
     using Dnn.ExportImport.Components.Dto;
+
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
@@ -21,6 +21,17 @@ namespace Dnn.ExportImport.Services
     [RequireHost]
     public class ExportImportController : DnnApiController
     {
+        private readonly ExportController exportController;
+        private readonly ImportController importController;
+        private readonly BaseController baseController;
+
+        public ExportImportController(ExportController exportController, ImportController importController, BaseController baseController)
+        {
+            this.exportController = exportController;
+            this.importController = importController;
+            this.baseController = baseController;
+        }
+
         /// <summary>
         /// Exports the specified site.
         /// </summary>
@@ -30,8 +41,7 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Export(ExportDto exportDto)
         {
-            var controller = new ExportController();
-            var jobId = controller.QueueOperation(this.PortalSettings.UserId, exportDto);
+            var jobId = this.exportController.QueueOperation(this.PortalSettings.UserId, exportDto);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new { jobId });
         }
@@ -45,10 +55,9 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Import(ImportDto importDto)
         {
-            var controller = new ImportController();
-            if (controller.VerifyImportPackage(importDto.PackageId, null, out var message))
+            if (this.importController.VerifyImportPackage(importDto.PackageId, null, out var message))
             {
-                var jobId = controller.QueueOperation(this.PortalSettings.UserId, importDto);
+                var jobId = this.importController.QueueOperation(this.PortalSettings.UserId, importDto);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { jobId });
             }
 
@@ -63,9 +72,8 @@ namespace Dnn.ExportImport.Services
         [HttpGet]
         public HttpResponseMessage VerifyImportPackage(string packageId)
         {
-            var controller = new ImportController();
             var summary = new ImportExportSummary();
-            var isValid = controller.VerifyImportPackage(packageId, summary, out var message);
+            var isValid = this.importController.VerifyImportPackage(packageId, summary, out var message);
             summary.ConvertToLocal(this.UserInfo);
             return isValid
                 ? this.Request.CreateResponse(HttpStatusCode.OK, summary)
@@ -81,8 +89,7 @@ namespace Dnn.ExportImport.Services
         [HttpGet]
         public HttpResponseMessage GetImportPackages(string keyword = "", string order = "newest", int pageIndex = 0, int pageSize = 10)
         {
-            var controller = new ImportController();
-            var packages = controller.GetImportPackages(out var total, keyword, order, pageIndex, pageSize).ToList();
+            var packages = this.importController.GetImportPackages(out var total, keyword, order, pageIndex, pageSize).ToList();
             packages.ForEach(package => package.ConvertToLocal(this.UserInfo));
             return this.Request.CreateResponse(HttpStatusCode.OK, new { packages, total });
         }
@@ -97,8 +104,7 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage CancelProcess([FromUri] int jobId)
         {
-            var controller = new BaseController();
-            var cancelStatus = controller.CancelJob(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, jobId);
+            var cancelStatus = this.baseController.CancelJob(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, jobId);
             return this.Request.CreateResponse(
                 cancelStatus ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new { success = cancelStatus });
         }
@@ -113,8 +119,7 @@ namespace Dnn.ExportImport.Services
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RemoveJob([FromUri] int jobId)
         {
-            var controller = new BaseController();
-            var cancelStatus = controller.RemoveJob(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, jobId);
+            var cancelStatus = this.baseController.RemoveJob(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, jobId);
             return this.Request.CreateResponse(
                 cancelStatus ? HttpStatusCode.OK : HttpStatusCode.BadRequest, new { success = cancelStatus });
         }
@@ -141,8 +146,7 @@ namespace Dnn.ExportImport.Services
                     Localization.GetString("InvalidPortal", Constants.SharedResources));
             }
 
-            var controller = new BaseController();
-            var lastTime = controller.GetLastJobTime(portal, jobType);
+            var lastTime = this.baseController.GetLastJobTime(portal, jobType);
             return this.Request.CreateResponse(
                 HttpStatusCode.OK,
                 new { lastTime = Util.GetDateTimeString(lastTime) });
@@ -166,8 +170,7 @@ namespace Dnn.ExportImport.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
 
-            var controller = new BaseController();
-            var jobs = controller.GetAllJobs(portal, this.PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
+            var jobs = this.baseController.GetAllJobs(portal, this.PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
             jobs?.ConvertToLocal(this.UserInfo);
             return this.Request.CreateResponse(HttpStatusCode.OK, jobs);
         }
@@ -180,8 +183,7 @@ namespace Dnn.ExportImport.Services
         [HttpGet]
         public HttpResponseMessage JobDetails(int jobId)
         {
-            var controller = new BaseController();
-            var job = controller.GetJobDetails(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, jobId);
+            var job = this.baseController.GetJobDetails(this.UserInfo.IsSuperUser ? -1 : this.PortalSettings.PortalId, jobId);
             job?.ConvertToLocal(this.UserInfo);
             return job != null
                 ? this.Request.CreateResponse(HttpStatusCode.OK, job)

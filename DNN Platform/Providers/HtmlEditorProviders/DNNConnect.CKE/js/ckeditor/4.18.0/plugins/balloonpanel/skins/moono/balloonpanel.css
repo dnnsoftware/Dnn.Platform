@@ -52,7 +52,7 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 	background-image: -webkit-linear-gradient(top, #f5f5f5, #cfd1cf);
 	background-image: -o-linear-gradient(top, #f5f5f5, #cfd1cf);
 	background-image: -ms-linear-gradient(top, #f5f5f5, #cfd1cf);
-	background-image: linear-gradient(top, #f5f5f5, #cfd1cf);
+	background-image: linear-gradient(to bottom, #f5f5f5, #cfd1cf);
 	filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#f5f5f5', endColorstr='#cfd1cf');
 }
 

@@ -15,14 +15,19 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Components.Exceptions;
     using Dnn.PersonaBar.Pages.Services.Dto;
+
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -33,6 +38,8 @@ namespace Dnn.PersonaBar.Pages.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using PermissionsNotMetException = DotNetNuke.Entities.Tabs.PermissionsNotMetException;
 
     public class PagesControllerImpl : IPagesController
@@ -40,6 +47,7 @@ namespace Dnn.PersonaBar.Pages.Components
         public const string PageTagsVocabulary = "PageTags";
 
         private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
+        private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly ITabController tabController;
         private readonly IModuleController moduleController;
         private readonly IPageUrlsController pageUrlsController;
@@ -51,12 +59,13 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IContentVerifier contentVerifier;
         private readonly IPortalController portalController;
 
-        public PagesControllerImpl()
+        public PagesControllerImpl(IBusinessControllerProvider businessControllerProvider, ITemplateController templateController)
             : this(
+                  businessControllerProvider,
                   TabController.Instance,
                   ModuleController.Instance,
                   PageUrlsController.Instance,
-                  TemplateController.Instance,
+                  templateController,
                   DefaultPortalThemeController.Instance,
                   CloneModuleExecutionContext.Instance,
                   new UrlRewriterUtilsWrapper(),
@@ -67,6 +76,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         public PagesControllerImpl(
+            IBusinessControllerProvider businessControllerProvider,
             ITabController tabController,
             IModuleController moduleController,
             IPageUrlsController pageUrlsController,
@@ -78,6 +88,7 @@ namespace Dnn.PersonaBar.Pages.Components
             IContentVerifier contentVerifier,
             IPortalController portalController)
         {
+            this.businessControllerProvider = businessControllerProvider;
             this.tabController = tabController;
             this.moduleController = moduleController;
             this.pageUrlsController = pageUrlsController;
@@ -525,9 +536,14 @@ namespace Dnn.PersonaBar.Pages.Components
             this.SavePagePermissions(tab, pageSettings.Permissions);
 
             var tabId = this.tabController.AddTab(tab);
-            tab = this.tabController.GetTab(tabId, portalId);
 
             this.CreateOrUpdateContentItem(tab);
+
+            this.tabController.UpdateTab(tab);
+
+            tab = this.tabController.GetTab(tabId, portalId);
+
+            this.UpdateTabWorkflowFromPageSettings(tab, pageSettings);
 
             if (pageSettings.TemplateTabId > 0)
             {
@@ -760,6 +776,18 @@ namespace Dnn.PersonaBar.Pages.Components
                 };
             }
 
+            page.EnabledVersioning = TabVersionSettings.Instance.IsVersioningEnabled(portalSettings.PortalId, pageId);
+            page.WorkflowEnabled = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalSettings.PortalId, pageId);
+            page.WorkflowId = WorkflowHelper.GetTabWorkflowId(tab);
+            page.WorkflowName = WorkflowHelper.GetTabWorkflowName(tab);
+            page.StateId = tab.StateID;
+            page.StateName = tab.StateID != Null.NullInteger ? WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).StateName : null;
+            page.PublishStatus = tab.HasBeenPublished && page.IsWorkflowCompleted ? "Published" : "Draft";
+            page.HasAVisibleVersion = tab.HasAVisibleVersion;
+            page.HasBeenPublished = tab.HasBeenPublished;
+            page.IsWorkflowCompleted = WorkflowHelper.IsWorkflowCompleted(tab);
+            page.IsWorkflowOnDraft = WorkflowEngine.Instance.IsWorkflowOnDraft(tab);
+
             return page;
         }
 
@@ -813,6 +841,9 @@ namespace Dnn.PersonaBar.Pages.Components
         public int UpdateTab(TabInfo tab, PageSettings pageSettings)
         {
             this.UpdateTabInfoFromPageSettings(tab, pageSettings);
+
+            this.UpdateTabWorkflowFromPageSettings(tab, pageSettings);
+
             this.SavePagePermissions(tab, pageSettings.Permissions);
 
             this.tabController.UpdateTab(tab);
@@ -915,6 +946,12 @@ namespace Dnn.PersonaBar.Pages.Components
                 pageSettings.IsSecure = true;
             }
 
+            var tabVersionSettings = TabVersionSettings.Instance;
+            var tabWorkflowSettings = TabWorkflowSettings.Instance;
+            pageSettings.EnabledVersioning = tabVersionSettings.IsVersioningEnabled(portalSettings.PortalId);
+            pageSettings.WorkflowEnabled = tabWorkflowSettings.IsWorkflowEnabled(portalSettings.PortalId);
+            pageSettings.WorkflowId = tabWorkflowSettings.GetDefaultTabWorkflowId(portalSettings.PortalId);
+
             return pageSettings;
         }
 
@@ -941,7 +978,14 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
 
                     permissions.RolePermissions =
-                        permissions.RolePermissions.OrderByDescending(p => p.Locked)
+                        permissions.RolePermissions
+                            .Select(
+                                p =>
+                                {
+                                    p.RoleName = DotNetNuke.Services.Localization.Localization.LocalizeRole(p.RoleName);
+                                    return p;
+                                })
+                            .OrderByDescending(p => p.Locked)
                             .ThenByDescending(p => p.IsDefault)
                             .ThenBy(p => p.RoleName)
                             .ToList();
@@ -1235,6 +1279,24 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
+        protected void UpdateTabWorkflowFromPageSettings(TabInfo tab, PageSettings pageSettings)
+        {
+            var tabVersionSettings = TabVersionSettings.Instance;
+            var tabWorkflowSettings = TabWorkflowSettings.Instance;
+
+            if (pageSettings.EnabledVersioning.HasValue && tabVersionSettings.IsVersioningEnabled(tab.PortalID))
+            {
+                tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, pageSettings.EnabledVersioning.Value);
+            }
+
+            if (pageSettings.WorkflowEnabled.HasValue && tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID))
+            {
+                tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, pageSettings.WorkflowEnabled.Value);
+            }
+
+            ChangeContentWorkflow(tab, pageSettings);
+        }
+
         protected IOrderedEnumerable<KeyValuePair<int, string>> GetLocales(int portalId)
         {
             var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
@@ -1299,6 +1361,28 @@ namespace Dnn.PersonaBar.Pages.Components
         private static bool HasTags(string tags, IEnumerable<Term> terms)
         {
             return tags.Split(',').All(tag => terms.Any(t => string.Compare(t.Name, tag, StringComparison.CurrentCultureIgnoreCase) == 0));
+        }
+
+        private static void ChangeContentWorkflow(TabInfo tab, PageSettings pageSettings)
+        {
+            var currentState = WorkflowStateRepository.Instance.GetWorkflowStateByID(tab.StateID);
+            if (pageSettings.WorkflowId == currentState?.WorkflowID)
+            {
+                return;
+            }
+
+            var newWorkflow = WorkflowManager.Instance.GetWorkflow(pageSettings.WorkflowId);
+
+            // Can't find workflow. This is not expected.
+            if (newWorkflow == null)
+            {
+                return;
+            }
+
+            // Change to new workflow
+            tab.StateID = WorkflowEngine.Instance.IsWorkflowCompleted(tab.ContentItemId)
+                ? newWorkflow.LastState.StateID // Workflow is completed, just change to last state ("Published") of new workflow
+                : newWorkflow.FirstState.StateID; // Workflow bot completed, just change to first state ("Draft") of new workflow
         }
 
         private bool IsChild(int portalId, int tabId, int parentId)
@@ -1490,39 +1574,40 @@ namespace Dnn.PersonaBar.Pages.Components
                     {
                         newModule.ModulePermissions.Add(
                             new ModulePermissionInfo
-                        {
-                            ModuleID = newModule.ModuleID,
-                            PermissionID = permission.PermissionID,
-                            RoleID = permission.RoleID,
-                            UserID = permission.UserID,
-                            PermissionKey = permission.PermissionKey,
-                            AllowAccess = permission.AllowAccess,
-                        }, true);
+                            {
+                                ModuleID = newModule.ModuleID,
+                                PermissionID = permission.PermissionID,
+                                RoleID = permission.RoleID,
+                                UserID = permission.UserID,
+                                PermissionKey = permission.PermissionKey,
+                                AllowAccess = permission.AllowAccess,
+                            },
+                            true);
                     }
 
                     ModulePermissionController.SaveModulePermissions(newModule);
 
                     if (copyType == ModuleCopyType.Copy)
                     {
-                        if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
+                        var controller = this.businessControllerProvider.GetInstance<IPortable>(newModule);
+                        if (controller is not null)
                         {
-                            var objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                            var o = objObject as IPortable;
-                            if (o != null)
+                            try
                             {
-                                try
+                                this.cloneModuleExecutionContext.SetCloneModuleContext(true);
+                                var content = controller.ExportModule(module.Id);
+                                if (!string.IsNullOrEmpty(content))
                                 {
-                                    this.cloneModuleExecutionContext.SetCloneModuleContext(true);
-                                    var content = Convert.ToString(o.ExportModule(module.Id));
-                                    if (!string.IsNullOrEmpty(content))
-                                    {
-                                        o.ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, UserController.Instance.GetCurrentUserInfo().UserID);
-                                    }
+                                    controller.ImportModule(
+                                        newModule.ModuleID,
+                                        content,
+                                        newModule.DesktopModule.Version,
+                                        UserController.Instance.GetCurrentUserInfo().UserID);
                                 }
-                                finally
-                                {
-                                    this.cloneModuleExecutionContext.SetCloneModuleContext(false);
-                                }
+                            }
+                            finally
+                            {
+                                this.cloneModuleExecutionContext.SetCloneModuleContext(false);
                             }
                         }
                     }

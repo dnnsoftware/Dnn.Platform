@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         public Login()
         {
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.LegacyMode = true;
         }
 

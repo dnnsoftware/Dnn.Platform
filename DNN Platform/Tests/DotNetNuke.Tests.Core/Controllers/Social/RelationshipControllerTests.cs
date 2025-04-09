@@ -1,17 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Controllers.Social
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
@@ -20,8 +17,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Entities.Users.Social.Data;
     using DotNetNuke.Services.Cache;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -35,26 +32,19 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
     public class RelationshipControllerTests
     {
         private Mock<CachingProvider> mockCachingProvider;
-        private Mock<IPortalController> _portalController;
-        private Mock<IPortalGroupController> _portalGroupController;
+        private Mock<IPortalController> portalController;
+        private Mock<IPortalGroupController> portalGroupController;
 
         private DataTable dtRelationshipTypes;
         private DataTable dtRelationships;
         private DataTable dtUserRelationships;
         private DataTable dtUserRelationshipPreferences;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
 
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
             ComponentFactory.Container = new SimpleContainer();
             var mockDataProvider = MockComponentProvider.CreateDataProvider();
             mockDataProvider.Setup(dp => dp.GetProviderPath()).Returns(string.Empty);
@@ -62,14 +52,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 
-            this._portalController = new Mock<IPortalController>();
-            PortalController.SetTestableInstance(this._portalController.Object);
+            this.portalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(this.portalController.Object);
 
-            this._portalGroupController = new Mock<IPortalGroupController>();
-            PortalGroupController.RegisterInstance(this._portalGroupController.Object);
+            this.portalGroupController = new Mock<IPortalGroupController>();
+            PortalGroupController.RegisterInstance(this.portalGroupController.Object);
 
             var mockHostController = new Mock<IHostController>();
             mockHostController.Setup(c => c.GetString("PerformanceSetting")).Returns("0");
+            mockHostController.As<IHostSettingsService>();
             HostController.RegisterInstance(mockHostController.Object);
 
             var mockUserController = new Mock<IUserController>();
@@ -79,12 +70,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.CreateLocalizationProvider();
 
             this.SetupDataTables();
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(mockDataProvider.Object);
+                    services.AddSingleton(this.mockCachingProvider.Object);
+                    services.AddSingleton(this.portalController.Object);
+                    services.AddSingleton(this.portalGroupController.Object);
+                    services.AddSingleton(mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)mockHostController.Object);
+                    services.AddSingleton(mockUserController.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
             UserController.ClearInstance();
@@ -487,7 +490,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             // Act
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Zero);
@@ -517,10 +520,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
             List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);
-            this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
+            this.portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             // Act
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Zero);
@@ -541,7 +544,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Null, Null.NullInteger);
-            this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Null)).Returns(mockPortalInfo);
+            this.portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Null)).Returns(mockPortalInfo);
 
             // Act
             var relationships = relationshipController.GetRelationshipsByPortalId(Constants.PORTAL_Null);

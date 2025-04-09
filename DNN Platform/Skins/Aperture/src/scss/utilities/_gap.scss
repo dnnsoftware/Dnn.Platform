@@ -1,0 +1,43 @@
+@use "../variables/breakpoints";
+
+// Define a map for padding sizes
+$gap-sizes: (
+    0: 0,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 1rem,
+    4: 2.5rem,
+    5: 5rem
+);
+
+// Gap Mixin
+@mixin gap($type, $size, $important: false) {
+    @if $type == 'gap' {
+        gap: $size if($important, !important, null);
+    } @else if $type == 'row-gap' {
+        row-gap: $size if($important, !important, null);
+    } @else if $type == 'column-gap' {
+        column-gap: $size if($important, !important, null);
+    }    
+}
+
+// Responsive Gap Mixin
+@mixin responsive-gap($class-suffix, $type) {
+    @each $size, $value in $gap-sizes {
+        .aperture-#{$class-suffix}-#{$size} {
+            @include gap($type, $value);
+        }
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
+            @media (min-width: $min-width) {
+                .aperture-#{$class-suffix}-#{$breakpoint}-#{$size} {
+                    @include gap($type, $value, true);
+                }
+            }
+        }
+    }
+}
+
+// Generate gap classes
+@include responsive-gap('gap', 'gap');
+@include responsive-gap('row-gap', 'row-gap');
+@include responsive-gap('column-gap', 'column-gap');

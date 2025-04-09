@@ -5,10 +5,13 @@ namespace DotNetNuke.Services.Search.Controllers
 {
     using System;
     using System.Collections;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -22,6 +25,8 @@ namespace DotNetNuke.Services.Search.Controllers
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Search.Entities;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>Search Result Controller for Module Crawler.</summary>
@@ -34,8 +39,21 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
-        private static Hashtable moduleSearchControllers = new Hashtable();
-        private static object threadLock = new object();
+        private readonly ConcurrentDictionary<string, IModuleSearchResultController> moduleSearchControllers = new ConcurrentDictionary<string, IModuleSearchResultController>();
+        private readonly IBusinessControllerProvider businessControllerProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleResultController"/> class.</summary>
+        public ModuleResultController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleResultController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        public ModuleResultController(IBusinessControllerProvider businessControllerProvider)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+        }
 
         /// <inheritdoc/>
         public override bool HasViewPermission(SearchResult searchResult)
@@ -165,24 +183,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private IModuleSearchResultController GetModuleSearchController(ModuleInfo module)
         {
-            if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
-            {
-                return null;
-            }
-
-            if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
-            {
-                lock (threadLock)
-                {
-                    if (!moduleSearchControllers.ContainsKey(module.DesktopModule.BusinessControllerClass))
-                    {
-                        var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass) as IModuleSearchResultController;
-                        moduleSearchControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
-                    }
-                }
-            }
-
-            return moduleSearchControllers[module.DesktopModule.BusinessControllerClass] as IModuleSearchResultController;
+            return this.businessControllerProvider.GetInstance<IModuleSearchResultController>(module);
         }
 
         private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)

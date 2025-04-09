@@ -1,4 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Inherits="DotNetNuke.UI.UserControls.UrlControl" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<dnn:DnnCssInclude runat="server" FilePath="~/controls/dnnUrlControl.css" />
+
 <div class="urlControl">
     <asp:Panel ID="TypeRow" runat="server" CssClass="urlControlLinkType dnnClear">
         <asp:Label ID="lblURLType" runat="server" EnableViewState="False" resourcekey="Type" CssClass="dnnFormLabel" />

@@ -13,7 +13,7 @@ namespace DNNConnect.CKEditorProvider.Constants
         /// <summary>The standard browser.</summary>
         StandardBrowser = 1,
 
-        /// <summary>ckfinder browser</summary>
+        /// <summary>ckfinder browser.</summary>
         CKFinder = 2,
     }
 }

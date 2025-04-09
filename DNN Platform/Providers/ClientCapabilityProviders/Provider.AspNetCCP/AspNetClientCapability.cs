@@ -12,7 +12,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     using System.Web.Configuration;
 
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
 
     /// <summary>AspNet Browser Implementation of <see cref="DotNetNuke.Services.ClientCapability.IClientCapability"/>.</summary>
     public class AspNetClientCapability : Services.ClientCapability.ClientCapability
@@ -59,16 +58,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.ScreenResolutionHeightInPixels = browserCaps.ScreenPixelsHeight;
                 this.IsTouchScreen = false;
                 this.BrowserName = browserCaps.Browser;
-                if (browserCaps.Capabilities != null)
-                {
-                    this.Capabilities = browserCaps.Capabilities.Cast<DictionaryEntry>()
-                        .ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value));
-                }
-                else
-                {
-                    this.Capabilities = new Dictionary<string, string>();
-                }
-
+                this.properties = browserCaps.Capabilities?.Cast<DictionaryEntry>().ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value)) ?? new Dictionary<string, string>(0);
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
 
@@ -83,7 +73,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 
                 try
                 {
-                    DetectOperatingSystem(lowerAgent, this.Capabilities);
+                    DetectOperatingSystem(lowerAgent, this.properties);
                 }
                 catch (Exception ex)
                 {
@@ -123,7 +113,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.IsTablet = GetBoolValue(this.properties, "IsTablet");
                 this.IsTouchScreen = GetBoolValue(this.properties, "HasTouchScreen");
                 this.BrowserName = GetStringValue(this.properties, "BrowserName");
-                this.Capabilities = GetCapabilities(this.properties);
 
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
@@ -141,25 +130,13 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             get
             {
-                if (this.properties != null && this.properties.ContainsKey(name))
+                if (this.properties?.TryGetValue(name, out var propertyValue) == true)
                 {
-                    return this.properties[name];
+                    return propertyValue;
                 }
 
-                return (this.Capabilities != null && this.Capabilities.ContainsKey(name)) ? this.Capabilities[name] : string.Empty;
+                return string.Empty;
             }
-        }
-
-        /// <summary>
-        /// Returns a dictionary of capability names and values as strings based on the object
-        /// keys and values held in the browser capabilities provided. The value string may
-        /// contains pipe (|) separated lists of values.
-        /// </summary>
-        /// <param name="properties">A collection of device related capabilities.</param>
-        /// <returns>Device related capabilities with property names and values converted to strings.</returns>
-        private static IDictionary<string, string> GetCapabilities(IDictionary<string, string> properties)
-        {
-            return properties.Keys.ToDictionary(key => key, key => string.Join(Constants.ValueSeperator, properties[key].ToArray()));
         }
 
         /// <summary>
@@ -171,9 +148,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <returns>The boolean value of the property, or false if the property is not found or it's value is not an boolean.</returns>
         private static bool GetBoolValue(IDictionary<string, string> properties, string property)
         {
-            bool value;
-            if (properties.ContainsKey(property) &&
-                bool.TryParse(properties[property], out value))
+            if (properties.TryGetValue(property, out var stringValue) &&
+                bool.TryParse(stringValue, out var value))
             {
                 return value;
             }
@@ -190,9 +166,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <returns>The integer value of the property, or 0 if the property is not found or it's value is not an integer.</returns>
         private static int GetIntValue(IDictionary<string, string> properties, string property)
         {
-            int value;
-            if (properties.ContainsKey(property) &&
-                int.TryParse(properties[property], out value))
+            if (properties.TryGetValue(property, out var stringValue) &&
+                int.TryParse(stringValue, out var value))
             {
                 return value;
             }
@@ -209,7 +184,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <returns>The string value of the property, or null if the property is not found.</returns>
         private static string GetStringValue(IDictionary<string, string> properties, string property)
         {
-            return properties.ContainsKey(property) ? properties[property] : null;
+            return properties.TryGetValue(property, out var propertyValue) ? propertyValue : null;
         }
 
         private static bool GetIfMobile(string userAgent)

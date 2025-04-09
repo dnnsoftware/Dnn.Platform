@@ -145,18 +145,15 @@ namespace DotNetNuke.Web.Common.Internal
             Globals.DependencyProvider = dependencyProvider;
             dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
             ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
+            HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
 
-            ComponentFactory.Container = new SimpleContainer();
+            ComponentFactory.Container = new ContainerWithServiceProviderFallback(new SimpleContainer(), Globals.DependencyProvider);
 
             ComponentFactory.InstallComponents(new ProviderInstaller("databaseConnection", typeof(DatabaseConnectionProvider), typeof(SqlDatabaseConnectionProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("logging", typeof(LoggingProvider), typeof(DBLoggingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("scheduling", typeof(SchedulingProvider), typeof(DNNScheduler)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("searchIndex", typeof(IndexingProvider), typeof(ModuleIndexer)));
-#pragma warning disable 0618
-            ComponentFactory.InstallComponents(new ProviderInstaller("searchDataStore", typeof(SearchDataStoreProvider), typeof(SearchDataStore)));
-#pragma warning restore 0618
             ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("roles", typeof(RoleProvider), typeof(DNNRoleProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("profiles", typeof(ProfileProvider), typeof(DNNProfileProvider)));

@@ -141,7 +141,7 @@ class ChangePassword extends Component {
                         value={state.confirmPassword}/>
                 </GridCell>
                 <GridSystem>
-                    <Button className="right do-not-close" id="cancelbtn"  type="secondary" onClick={this.cancel.bind(this) }>{Localization.get("btnCancel") }</Button>
+                    <Button className="right do-not-close" id="cancelbtn"  type="neutral" onClick={this.cancel.bind(this) }>{Localization.get("btnCancel") }</Button>
                     <Button id="confirmbtn do-not-close" type="primary" onClick={this.save.bind(this) }>{Localization.get("btnApply") }</Button>
                 </GridSystem>
             </GridCell>

@@ -21,7 +21,7 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>Provides utilities for dealing with DNN's URLs. Consider using <see cref="System.Uri"/> if applicable.</summary>
     public static class UrlUtils
     {
-        private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <summary>Combines two URLs, trimming any slashes between them.</summary>
         /// <param name="baseUrl">The base URL.</param>
@@ -202,32 +202,45 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
         {
+            return IsSecureConnectionOrSslOffload(new HttpRequestWrapper(request));
+        }
+
+        /// <summary>
+        /// check if connection is HTTPS
+        /// or is HTTP but with ssloffload enabled on a secure page.
+        /// </summary>
+        /// <param name="request">current request.</param>
+        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
+        public static bool IsSecureConnectionOrSslOffload(HttpRequestBase request)
+        {
             return request.IsSecureConnection || IsSslOffloadEnabled(request);
         }
 
         public static bool IsSslOffloadEnabled(HttpRequest request)
         {
-            var ssloffloadheader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
+            return IsSslOffloadEnabled(new HttpRequestWrapper(request));
+        }
 
-            // if the ssloffloadheader variable has been set check to see if a request header with that type exists
-            if (!string.IsNullOrEmpty(ssloffloadheader))
+        public static bool IsSslOffloadEnabled(HttpRequestBase request)
+        {
+            var sslOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
+
+            // if the sslOffloadHeader variable has been set check to see if a request header with that type exists
+            if (string.IsNullOrEmpty(sslOffloadHeader))
             {
-                var ssloffloadValue = string.Empty;
-                if (ssloffloadheader.Contains(":"))
-                {
-                    var settingParts = ssloffloadheader.Split(':');
-                    ssloffloadheader = settingParts[0];
-                    ssloffloadValue = settingParts[1];
-                }
-
-                string ssloffload = request.Headers[ssloffloadheader];
-                if (!string.IsNullOrEmpty(ssloffload) && (string.IsNullOrWhiteSpace(ssloffloadValue) || ssloffloadValue == ssloffload))
-                {
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            var sslOffloadValue = string.Empty;
+            if (sslOffloadHeader.Contains(":"))
+            {
+                var settingParts = sslOffloadHeader.Split(':');
+                sslOffloadHeader = settingParts[0];
+                sslOffloadValue = settingParts[1];
+            }
+
+            var sslOffload = request.Headers[sslOffloadHeader];
+            return !string.IsNullOrEmpty(sslOffload) && (string.IsNullOrWhiteSpace(sslOffloadValue) || sslOffloadValue == sslOffload);
         }
 
         public static void OpenNewWindow(Page page, Type type, string url)

@@ -6,6 +6,10 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
@@ -14,11 +18,37 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The primary event message processor.</summary>
     public class EventMessageProcessor : EventMessageProcessorBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventMessageProcessor));
+        private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IEventLogger eventLogger;
 
-        public static void CreateImportModuleMessage(ModuleInfo objModule, string content, string version, int userID)
+        /// <summary>Initializes a new instance of the <see cref="EventMessageProcessor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public EventMessageProcessor()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EventMessageProcessor"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public EventMessageProcessor(IBusinessControllerProvider businessControllerProvider, IEventLogger eventLogger)
+        {
+            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+        }
+
+        /// <summary>Creates and send an <c>"ImportModule"</c> <see cref="EventMessage"/> for the module.</summary>
+        /// <param name="objModule">The module info.</param>
+        /// <param name="content">The content to import.</param>
+        /// <param name="version">The module version.</param>
+        /// <param name="userId">The user ID.</param>
+        public static void CreateImportModuleMessage(ModuleInfo objModule, string content, string version, int userId)
         {
             var appStartMessage = new EventMessage
             {
@@ -35,7 +65,7 @@ namespace DotNetNuke.Entities.Modules
             appStartMessage.Attributes.Add("ModuleId", objModule.ModuleID.ToString());
             appStartMessage.Attributes.Add("Content", content);
             appStartMessage.Attributes.Add("Version", version);
-            appStartMessage.Attributes.Add("UserID", userID.ToString());
+            appStartMessage.Attributes.Add("UserID", userId.ToString());
 
             // send it to occur on next App_Start Event
             EventQueueController.SendMessage(appStartMessage, "Application_Start_FirstRequest");
@@ -52,10 +82,10 @@ namespace DotNetNuke.Entities.Modules
                         UpdateSupportedFeatures(message);
                         break;
                     case "UpgradeModule":
-                        UpgradeModule(message);
+                        this.UpgradeModule(message);
                         break;
                     case "ImportModule":
-                        ImportModule(message);
+                        this.ImportModule(message);
                         break;
                     default:
                         // other events can be added here
@@ -72,24 +102,36 @@ namespace DotNetNuke.Entities.Modules
             return true;
         }
 
-        private static void ImportModule(EventMessage message)
+        private static void UpdateSupportedFeatures(EventMessage message)
+        {
+            var businessControllerClass = message.Attributes["BusinessControllerClass"];
+            var controllerType = Reflection.CreateType(businessControllerClass);
+            UpdateSupportedFeatures(controllerType, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
+        }
+
+        private static void UpdateSupportedFeatures(Type controllerType, int desktopModuleId)
         {
             try
             {
-                string businessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(businessControllerClass, string.Empty);
-                if (controller is IPortable)
+                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+                if (desktopModule == null)
                 {
-                    int moduleId = Convert.ToInt32(message.Attributes["ModuleId"]);
-                    string content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
-                    string version = message.Attributes["Version"];
-                    int userID = Convert.ToInt32(message.Attributes["UserId"]);
+                    return;
+                }
 
-                    // call the IPortable interface for the module/version
-                    ((IPortable)controller).ImportModule(moduleId, content, version, userID);
+                // Initialise the SupportedFeatures
+                desktopModule.SupportedFeatures = 0;
 
-                    // Synchronize Module Cache
-                    ModuleController.SynchronizeModule(moduleId);
+                // Test the interfaces
+                desktopModule.IsPortable = typeof(IPortable).IsAssignableFrom(controllerType);
+                desktopModule.IsSearchable = typeof(ModuleSearchBase).IsAssignableFrom(controllerType);
+                desktopModule.IsUpgradeable = typeof(IUpgradeable).IsAssignableFrom(controllerType);
+                DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
+
+                foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
+                {
+                    DataCache.RemoveCache(string.Format(DataCache.DesktopModuleCacheKey, portal.PortalId));
+                    DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portal.PortalId));
                 }
             }
             catch (Exception exc)
@@ -98,26 +140,51 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        private static void UpgradeModule(EventMessage message)
+        private void ImportModule(EventMessage message)
         {
             try
             {
-                int desktopModuleId = Convert.ToInt32(message.Attributes["DesktopModuleId"]);
-                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+                var controller = this.businessControllerProvider.GetInstance<IPortable>(message.Attributes["BusinessControllerClass"]);
+                if (controller is null)
+                {
+                    return;
+                }
 
-                string businessControllerClass = message.Attributes["BusinessControllerClass"];
-                object controller = Reflection.CreateObject(businessControllerClass, string.Empty);
-                if (controller is IUpgradeable)
+                var moduleId = Convert.ToInt32(message.Attributes["ModuleId"]);
+                var content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
+                var version = message.Attributes["Version"];
+                var userId = Convert.ToInt32(message.Attributes["UserId"]);
+
+                // call the IPortable interface for the module/version
+                controller.ImportModule(moduleId, content, version, userId);
+
+                // Synchronize Module Cache
+                ModuleController.SynchronizeModule(moduleId);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+        }
+
+        private void UpgradeModule(EventMessage message)
+        {
+            try
+            {
+                var businessControllerClass = message.Attributes["BusinessControllerClass"];
+                var businessControllerType = Reflection.CreateType(businessControllerClass);
+                var controller = this.businessControllerProvider.GetInstance<IUpgradeable>(businessControllerClass);
+                if (controller is not null)
                 {
                     // get the list of applicable versions
-                    string[] upgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
-                    foreach (string version in upgradeVersions)
+                    var upgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
+                    foreach (var version in upgradeVersions)
                     {
                         // call the IUpgradeable interface for the module/version
-                        string results = ((IUpgradeable)controller).UpgradeModule(version);
+                        var results = controller.UpgradeModule(version);
 
                         // log the upgrade results
-                        var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString() };
+                        var log = new LogInfo { LogTypeKey = EventLogType.MODULE_UPDATED.ToString(), };
                         log.AddProperty("Module Upgraded", businessControllerClass);
                         log.AddProperty("Version", version);
                         if (!string.IsNullOrEmpty(results))
@@ -125,49 +192,12 @@ namespace DotNetNuke.Entities.Modules
                             log.AddProperty("Results", results);
                         }
 
-                        LogController.Instance.AddLog(log);
+                        this.eventLogger.AddLog(log);
                     }
                 }
 
-                UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-        }
-
-        private static void UpdateSupportedFeatures(EventMessage message)
-        {
-            string businessControllerClass = message.Attributes["BusinessControllerClass"];
-            object controller = Reflection.CreateObject(businessControllerClass, string.Empty);
-            UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
-        }
-
-        private static void UpdateSupportedFeatures(object objController, int desktopModuleId)
-        {
-            try
-            {
-                DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
-                if (desktopModule != null)
-                {
-                    // Initialise the SupportedFeatures
-                    desktopModule.SupportedFeatures = 0;
-
-                    // Test the interfaces
-                    desktopModule.IsPortable = objController is IPortable;
-#pragma warning disable 0618
-                    desktopModule.IsSearchable = (objController is ModuleSearchBase) || (objController is ISearchable);
-#pragma warning restore 0618
-                    desktopModule.IsUpgradeable = objController is IUpgradeable;
-                    DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
-
-                    foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-                    {
-                        DataCache.RemoveCache(string.Format(DataCache.DesktopModuleCacheKey, portal.PortalID));
-                        DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portal.PortalID));
-                    }
-                }
+                var desktopModuleId = Convert.ToInt32(message.Attributes["DesktopModuleId"]);
+                UpdateSupportedFeatures(businessControllerType, desktopModuleId);
             }
             catch (Exception exc)
             {

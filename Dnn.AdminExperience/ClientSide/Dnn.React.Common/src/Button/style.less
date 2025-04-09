@@ -1,28 +1,25 @@
 @import "../../styles/index";
 button.dnn-ui-common-button {
-    border: 1px solid @curiousBlue;
+    border: 1px solid var(--dnn-color-primary, @curiousBlue);
     height: 34px;
     padding: 0 22px;
     font-size: 10pt;
-    color: @curiousBlue;
-    background: @white;
-    border-radius: 3px;
+    color: var(--dnn-color-primary, @curiousBlue);
+    background: var(--dnn-color-primary-contrast, @white);
+    border-radius: var(--dnn-controls-radius, 3px);
     cursor: pointer;
     font-family: inherit;
     &:hover {
-        color: @cerulean;
-        border-color: @cerulean;
-    }
-    &:focus{
-        outline: none;
+        color: var(--dnn-color-primary-light, @cerulean);
+        border-color: var(--dnn-color-primary-light, @cerulean);
     }
     &:active {
-        color: @matisse;
-        border-color: @matisse;
+        color: var(--dnn-color-primary-dark, @matisse);
+        border-color: var(--dnn-color-primary-dark, @matisse);
     }
     &:disabled {
-        color: @alto;
-        border-color: @alto;
+        color: var(--dnn-color-neutral, @alto);
+        border-color: var(--dnn-color-neutral, @alto);
         cursor: not-allowed;
     }
 
@@ -31,19 +28,48 @@ button.dnn-ui-common-button {
     }
 
     &[role=primary] {
-        background: @curiousBlue;
+        background: var(--dnn-color-primary, @curiousBlue);
         border: none;
         color: @white;
 
         &:hover {
-            background: @cerulean;
+            background: var(--dnn-color-primary-light, @cerulean);
         }
         &:active {
-            background: @matisse;
+            background: var(--dnn-color-primary-dark, @matisse);
         }
         &:disabled {
-            color: @mountainMist;
-            background: @mercury;
+            color: var(--dnn-color-neutral-dark, @mountainMist);
+            background: var(--dnn-color-neutral, @mercury);
+            cursor: not-allowed;
+        }
+    }
+    &[role=danger] {
+        color: var(--dnn-color-danger, @alizarinCrimson);
+        border: 1px solid var(--dnn-color-danger, @alizarinCrimson);
+        background-color: var(--dnn-color-background, @white);
+
+        &:hover, &:active {
+            background-color: var(--dnn-color-danger, @alizarinCrimson);
+            color: var(--dnn-color-background, @white);
+        }
+        &:disabled {
+            color: var(--dnn-color-neutral-dark, @mountainMist);
+            background: var(--dnn-color-neutral, @mercury);
+            cursor: not-allowed;
+        }
+    }
+    &[role=neutral]{
+        color: var(--dnn-color-foreground-light, @thunder);
+        border: 1px solid var(--dnn-color-foreground-light, @gondola);
+        background-color: var(--dnn-color-background, @white);
+        &:hover, &:active{
+            background-color: var(--dnn-color-background, @mercury);
+            color: var(--dnn-color-foreground, @gondola);
+        }
+        &:disabled{
+            color: var(--dnn-color-neutral-contrast, @mountainMist);
+            background: var(--dnn-color-neutral, @mercury);
             cursor: not-allowed;
         }
     }

@@ -275,7 +275,7 @@ class LogSettingEditor extends Component {
             <div className="log-setting-editor">
                 <Grid numberOfColumns={2}>{children}</Grid>
                 <div className="buttons-box">
-                    {this.props.logTypeSettingId !== "" && <Button type="secondary" onClick={this.deleteLogSetting.bind(this) }>{Localization.get("ConfigBtnDelete") }</Button>}
+                    {this.props.logTypeSettingId !== "" && <Button type="danger" onClick={this.deleteLogSetting.bind(this) }>{Localization.get("ConfigBtnDelete") }</Button>}
                     <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{Localization.get("ConfigBtnCancel") }</Button>
                     <Button type="primary" onClick={this.addUpdateLogSetting.bind(this) }>{Localization.get("ConfigBtnSave") }</Button>
                 </div>

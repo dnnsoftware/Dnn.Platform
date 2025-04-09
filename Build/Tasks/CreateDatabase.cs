@@ -11,6 +11,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Xml;
     using Cake.Frosting;
 
+    using Microsoft.Data.SqlClient;
+
     /// <summary>A cake task to crete a localdb database named <c>Dnn_Platform</c>.</summary>
     public sealed class CreateDatabase : FrostingTask<Context>
     {
@@ -147,12 +149,12 @@ namespace DotNetNuke.Build.Tasks
         {
             try
             {
-                using (var connection = new System.Data.SqlClient.SqlConnection(this.connectionString))
+                using (var connection = new SqlConnection(this.connectionString))
                 {
                     connection.Open();
 
                     var cmdText = scriptStatement.Replace("{databaseOwner}", "dbo.").Replace("{objectQualifier}", "dnn_");
-                    var command = new System.Data.SqlClient.SqlCommand(cmdText, connection);
+                    var command = new SqlCommand(cmdText, connection);
                     command.ExecuteNonQuery();
 
                     connection.Close();

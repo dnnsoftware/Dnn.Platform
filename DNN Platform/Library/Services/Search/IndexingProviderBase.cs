@@ -26,18 +26,6 @@ namespace DotNetNuke.Services.Search
         /// <returns>The number of documents indexed.</returns>
         public abstract int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer);
 
-        [DnnDeprecated(7, 4, 2, "Use 'IndexSearchDocuments' instead for lower memory footprint during search", RemovalVersion = 10)]
-        public virtual partial IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
-        {
-            return Enumerable.Empty<SearchDocument>();
-        }
-
-        [DnnDeprecated(7, 1, 0, "Use 'IndexSearchDocuments' instead", RemovalVersion = 10)]
-        public virtual partial SearchItemInfoCollection GetSearchIndexItems(int portalId)
-        {
-            return new SearchItemInfoCollection();
-        }
-
         /// <summary>Retrieves the date/time of the last item to be indexed.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="scheduleId">The schedule ID.</param>

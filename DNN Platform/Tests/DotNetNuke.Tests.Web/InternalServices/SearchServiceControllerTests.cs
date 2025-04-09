@@ -1,21 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Web.InternalServices
 {
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading;
     using System.Web.Http;
     using System.Web.Http.Hosting;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
+    using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -27,8 +27,10 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.InternalServices;
@@ -93,20 +95,17 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private SearchServiceController searchServiceController;
         private IInternalSearchController internalSearchController;
         private LuceneControllerImpl luceneController;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
 
         public void SetUp()
         {
             // Arrange
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(CultureEnUs);
+
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockLocaleController = MockComponentProvider.CreateLocaleController();
@@ -116,6 +115,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.mockModuleController = new Mock<IModuleController>();
             this.mockTabController = new Mock<ITabController>();
             this.mockHostController = new Mock<IHostController>();
+            this.mockHostController.As<IHostSettingsService>();
 
             this.SetupDataProvider();
             this.SetupHostController();
@@ -125,11 +125,10 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.DeleteIndexFolder();
 
             TabController.SetTestableInstance(this.mockTabController.Object);
-            this.internalSearchController = InternalSearchController.Instance;
 
             this.mockCBO = new Mock<ICBO>();
-            var tabKey = string.Format("{0}-{1}-{2}", TabSearchTypeId, 0, CultureEnUs);
-            var userKey = string.Format("{0}-{1}-{2}", UserSearchTypeId, 0, CultureEnUs);
+            var tabKey = $"{TabSearchTypeId}-{0}-{CultureEnUs}";
+            var userKey = $"{UserSearchTypeId}-{0}-{CultureEnUs}";
             this.mockCBO.Setup(c => c.GetCachedObject<IDictionary<string, string>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
                     .Returns(new Dictionary<string, string>() { { tabKey, TabSearchTypeName }, { userKey, UserSearchTypeName } });
             CBO.SetTestableInstance(this.mockCBO.Object);
@@ -142,15 +141,32 @@ namespace DotNetNuke.Tests.Web.InternalServices
             provider.Setup(x => x.TryFindModuleInfo(request, out expectedModule)).Returns(true);
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
-            this.searchServiceController = new SearchServiceController(HtmlModDefId) { Request = request };
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockDataProvider.Object);
+                    services.AddSingleton(this.mockLocaleController.Object);
+                    services.AddSingleton(this.mockCachingProvider.Object);
+                    services.AddSingleton(this.mockDataService.Object);
+                    services.AddSingleton(this.mockUserController.Object);
+                    services.AddSingleton(this.mockModuleController.Object);
+                    services.AddSingleton(this.mockTabController.Object);
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockCBO.Object);
+                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                });
 
+            this.searchServiceController = new SearchServiceController(new SearchControllerImpl(this.serviceProvider), HtmlModDefId) { Request = request };
+
+            this.internalSearchController = InternalSearchController.Instance;
             this.CreateNewLuceneControllerInstance();
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             this.luceneController.Dispose();
             this.searchServiceController?.Dispose();
             this.DeleteIndexFolder();
@@ -367,7 +383,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private void SetupUserController()
         {
             this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
-            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile { } });
+            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile(), });
             UserController.SetTestableInstance(this.mockUserController.Object);
         }
 
@@ -545,8 +561,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("LastModifiedByUserID", typeof(int));
             table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
 
-            table.Rows.Add(56, 5, 0, "Home", null, 0, "//Home", "C3174A2E-374D-4779-BE5F-BCDFF410E097", "A111A742-C18F-495D-8A23-BD0ECC70BBFE", null, "3A34424A-3CCA-4934-AE15-B9A80EB6D259", 1, null, null, 0, null, null, null, 0, "[G]Skins/Xcillion/Inner.ascx", "[G]Containers/Xcillion/NoTitle.ascx", null, null, null, "false", null, null, 0, 0, 0.5, 86, "Home", 1, -1, null, 0, null, null, -1, DateTime.Now, -1, DateTime.Now);
-            table.Rows.Add(57, 13, 0, "About Us", null, 0, "//AboutUs", "26A4236F-3AAA-4E15-8908-45D35675C677", "8426D3BC-E930-49CA-BDEB-4D41F194B6AC", null, "1461572D-97E8-41F8-BB1A-916DCA48890A", 1, null, null, 0, null, null, null, 0, "[G]Skins/Xcillion/Inner.ascx", "[G]Containers/Xcillion/NoTitle.ascx", null, null, null, "true", null, null, 0, 0, 0.5, 97, "About Us", 1, -1, null, 0, null, null, -1, DateTime.Now, -1, DateTime.Now);
+            table.Rows.Add(56, 5, 0, "Home", null, 0, "//Home", "C3174A2E-374D-4779-BE5F-BCDFF410E097", "A111A742-C18F-495D-8A23-BD0ECC70BBFE", null, "3A34424A-3CCA-4934-AE15-B9A80EB6D259", 1, null, null, 0, null, null, null, 0, "[G]Skins/Aperture/default.ascx", "[G]Containers/Aperture/none.ascx", null, null, null, "false", null, null, 0, 0, 0.5, 86, "Home", 1, -1, null, 0, null, null, -1, DateTime.Now, -1, DateTime.Now);
+            table.Rows.Add(57, 13, 0, "About Us", null, 0, "//AboutUs", "26A4236F-3AAA-4E15-8908-45D35675C677", "8426D3BC-E930-49CA-BDEB-4D41F194B6AC", null, "1461572D-97E8-41F8-BB1A-916DCA48890A", 1, null, null, 0, null, null, null, 0, "[G]Skins/Aperture/default.ascx", "[G]Containers/Aperture/title.ascx", null, null, null, "true", null, null, 0, 0, 0.5, 97, "About Us", 1, -1, null, 0, null, null, -1, DateTime.Now, -1, DateTime.Now);
 
             return table.CreateDataReader();
         }
@@ -581,10 +597,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("DisplayTitle", typeof(byte));
             table.Columns.Add("DisplayPrint", typeof(byte));
             table.Columns.Add("DisplaySyndicate", typeof(byte));
-            table.Columns.Add("IsWebSlice", typeof(byte));
-            table.Columns.Add("WebSliceTitle", typeof(string));
-            table.Columns.Add("WebSliceExpiryDate", typeof(DateTime));
-            table.Columns.Add("WebSliceTTL", typeof(int));
             table.Columns.Add("InheritViewPermissions", typeof(int));
             table.Columns.Add("IsShareable", typeof(int));
             table.Columns.Add("IsShareableViewOnly", typeof(int));
@@ -613,7 +625,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             table.Rows.Add(0, 0, 56, 57, 368, 116, 1, "contentpane", "Text/HTML", 1200,
                            "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Aperture/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 92,
                            "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
@@ -623,7 +635,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             table.Rows.Add(0, 0, 56, 56, 367, 116, 1, "contentpane", "Header Images", 1200,
                            "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Aperture/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 91,
                            "Header Images", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
@@ -633,7 +645,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             table.Rows.Add(0, 0, 56, 59, 370, 116, 1, "contentpane", "Customer Support", 1200,
                            "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Apterure/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 94,
                            "Customer Support", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
@@ -643,7 +655,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             table.Rows.Add(0, 0, 57, 67, 378, 116, 1, "contentpane", "About Us", 1200,
                            "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Xcillion/NoTitle.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
+                           "[G]Containers/Aperture/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
                            74, 1200, 238,
                            "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 103,
                            "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
@@ -699,7 +711,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             DataTable table = new DataTable("Portal");
 
-            var cols = new string[]
+            var cols = new[]
                            {
                                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate",
                                "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
@@ -739,16 +751,12 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 LocalizedName = UserSearchTypeName,
                 ModuleDefinitionId = 0,
             };
-            var results = this.searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
-            return results;
+            return this.searchServiceController.GetGroupedBasicViews(query, userSearchContentSource, PortalId0);
         }
 
         private IEnumerable<GroupedDetailView> GetGroupedDetailViewResults(SearchQuery searchQuery)
         {
-            bool more = false;
-            int totalHits = 0;
-            var results = this.searchServiceController.GetGroupedDetailViews(searchQuery, UserSearchTypeId, out totalHits, out more);
-            return results;
+            return this.searchServiceController.GetGroupedDetailViews(searchQuery, UserSearchTypeId, out _, out _);
         }
     }
 }

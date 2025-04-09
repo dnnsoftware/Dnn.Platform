@@ -50,3 +50,7 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.RazorHost")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Website")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.ConfigConsole.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.Pages.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.Security.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("Dnn.PersonaBar.Users.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("DNN.Integration.Test.Framework")]

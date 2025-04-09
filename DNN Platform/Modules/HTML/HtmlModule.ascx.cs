@@ -4,11 +4,13 @@
 namespace DotNetNuke.Modules.Html
 {
     using System;
+    using System.Linq;
     using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
@@ -26,6 +28,7 @@ namespace DotNetNuke.Modules.Html
     public partial class HtmlModule : HtmlModuleBase, IActionable
     {
         private readonly INavigationManager navigationManager;
+        private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private bool editorEnabled;
         private int workflowID;
 
@@ -53,70 +56,6 @@ namespace DotNetNuke.Modules.Html
                     SecurityAccessLevel.Edit,
                     true,
                     false);
-
-                // get the content
-                var objHTML = new HtmlTextController(this.navigationManager);
-                var objWorkflow = new WorkflowStateController();
-                this.workflowID = objHTML.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
-
-                HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.workflowID);
-                if (objContent != null)
-                {
-                    // if content is in the first state
-                    if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.workflowID))
-                    {
-                        // if not direct publish workflow
-                        if (objWorkflow.GetWorkflowStates(this.workflowID).Count > 1)
-                        {
-                            // add publish action
-                            actions.Add(
-                                this.GetNextActionID(),
-                                Localization.GetString("PublishContent.Action", this.LocalResourceFile),
-                                ModuleActionType.AddContent,
-                                "publish",
-                                "grant.gif",
-                                string.Empty,
-                                true,
-                                SecurityAccessLevel.Edit,
-                                true,
-                                false);
-                        }
-                    }
-                    else
-                    {
-                        // if the content is not in the last state of the workflow then review is required
-                        if (objContent.StateID != objWorkflow.GetLastWorkflowStateID(this.workflowID))
-                        {
-                            // if the user has permissions to review the content
-                            if (WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(objContent.StateID), "REVIEW"))
-                            {
-                                // add approve and reject actions
-                                actions.Add(
-                                    this.GetNextActionID(),
-                                    Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
-                                    ModuleActionType.AddContent,
-                                    string.Empty,
-                                    "grant.gif",
-                                    this.EditUrl("action", "approve", "Review"),
-                                    false,
-                                    SecurityAccessLevel.Edit,
-                                    true,
-                                    false);
-                                actions.Add(
-                                    this.GetNextActionID(),
-                                    Localization.GetString("RejectContent.Action", this.LocalResourceFile),
-                                    ModuleActionType.AddContent,
-                                    string.Empty,
-                                    "deny.gif",
-                                    this.EditUrl("action", "reject", "Review"),
-                                    false,
-                                    SecurityAccessLevel.Edit,
-                                    true,
-                                    false);
-                            }
-                        }
-                    }
-                }
 
                 // add mywork to action menu
                 actions.Add(
@@ -263,7 +202,6 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 {
                     // get content
                     var objHTML = new HtmlTextController(this.navigationManager);
-                    var objWorkflow = new WorkflowStateController();
                     HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.workflowID);
                     if (objContent == null)
                     {
@@ -275,7 +213,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     objContent.ModuleID = this.ModuleId;
                     objContent.Content = this.Server.HtmlEncode(e.Text);
                     objContent.WorkflowID = this.workflowID;
-                    objContent.StateID = objWorkflow.GetFirstWorkflowStateID(this.workflowID);
+                    objContent.StateID = this.workflowManager.GetWorkflow(this.workflowID).FirstState.StateID;
 
                     // save the content
                     objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));
@@ -304,12 +242,11 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                         // get content
                         var objHTML = new HtmlTextController(this.navigationManager);
                         HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.workflowID);
-
-                        var objWorkflow = new WorkflowStateController();
-                        if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.workflowID))
+                        var workflow = this.workflowManager.GetWorkflow(this.workflowID);
+                        if (objContent.StateID == workflow.FirstState.StateID)
                         {
                             // publish content
-                            objContent.StateID = objWorkflow.GetNextWorkflowStateID(objContent.WorkflowID, objContent.StateID);
+                            objContent.StateID = workflow.LastState.StateID;
 
                             // save the content
                             objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));

@@ -12,16 +12,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Application;
+    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -45,7 +49,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int PortalId0 = 0;
         private const int PortalId12 = 12;
         private const int IdeasModuleDefId = 201;
-        private const int BlogsoduleDefId = 202;
+        private const int BlogsModuleDefId = 202;
         private const int AnswersModuleDefId = 203;
         private const int HtmlModuleDefId = 20;
         private const int HtmlModuleId = 25;
@@ -121,6 +125,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private Mock<ILocaleController> mockLocaleController;
         private Mock<ISearchHelper> mockSearchHelper;
         private Mock<IUserController> mockUserController;
+        private FakeServiceProvider serviceProvider;
 
         private SearchControllerImpl searchController;
         private IInternalSearchController internalSearchController;
@@ -137,33 +142,39 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [SetUp]
-
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
+            this.mockUserController = new Mock<IUserController>();
+            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
+            UserController.SetTestableInstance(this.mockUserController.Object);
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockLocaleController = MockComponentProvider.CreateLocaleController();
             this.mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
-
-            this.mockUserController = new Mock<IUserController>();
-            this.mockHostController = new Mock<IHostController>();
             this.mockSearchHelper = new Mock<ISearchHelper>();
-
-            this.SetupDataProvider();
-            this.SetupHostController();
             this.SetupSearchHelper();
+            this.SetupDataProvider();
             this.SetupLocaleController();
+            this.mockHostController = new Mock<IHostController>();
+            this.SetupHostController();
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
 
-            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
-            UserController.SetTestableInstance(this.mockUserController.Object);
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService>(container => (IHostSettingsService)this.mockHostController.Object);
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockHostController.Object);
+                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockCachingProvider.Object);
+                    services.AddSingleton(this.mockDataProvider.Object);
+                    services.AddSingleton(this.mockLocaleController.Object);
+                    services.AddSingleton(this.mockSearchHelper.Object);
+                    services.AddSingleton(this.mockUserController.Object);
+                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                    services.AddTransient<FakeResultController>();
+                    services.AddTransient<NoPermissionFakeResultController>();
+                });
 
             this.CreateNewLuceneControllerInstance();
         }
@@ -171,15 +182,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
-            this.luceneController.Dispose();
             this.DeleteIndexFolder();
             InternalSearchController.ClearInstance();
             UserController.ClearInstance();
             SearchHelper.ClearInstance();
             LuceneController.ClearInstance();
+            this.luceneController.Dispose();
             this.luceneController = null;
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -2343,7 +2353,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
 
             // Act
             this.internalSearchController.AddSearchDocument(doc1);
@@ -2373,7 +2383,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
 
             // Act
             this.internalSearchController.AddSearchDocument(doc1);
@@ -2404,7 +2414,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
 
             // Act
             this.internalSearchController.AddSearchDocument(doc1);
@@ -2436,7 +2446,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = IdeasModuleDefId, ModuleId = IdeasModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = keyword, SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act
@@ -2471,7 +2481,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc1 = new SearchDocument { UniqueKey = "key01", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId };
             var doc2 = new SearchDocument { UniqueKey = "key02", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId };
             var doc3 = new SearchDocument { UniqueKey = "key03", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = AnswersModuleDefId, ModuleId = AnswersModuleId };
-            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsoduleDefId, ModuleId = BlogsModuleId };
+            var doc4 = new SearchDocument { UniqueKey = "key04", Title = keyword, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = BlogsModuleDefId, ModuleId = BlogsModuleId };
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
 
             // Act

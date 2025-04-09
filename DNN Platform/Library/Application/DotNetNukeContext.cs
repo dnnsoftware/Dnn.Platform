@@ -39,7 +39,7 @@ namespace DotNetNuke.Application
         /// </remarks>
         [Obsolete("Deprecated in DotNetNuke 9.7.1. This constructor has been replaced by parameterized public constructor which is designed to be used with Dependency Injection. Resolve the new interface 'DotNetNuke.Abstractions.IDnnContext' instead. Scheduled removal in v11.0.0.")]
         protected DotNetNukeContext()
-            : this(Globals.DependencyProvider.GetRequiredService<IApplicationInfo>())
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>())
         {
         }
 
@@ -61,7 +61,7 @@ namespace DotNetNuke.Application
             {
                 if (current == null)
                 {
-                    current = Globals.DependencyProvider.GetRequiredService<IDnnContext>();
+                    current = Globals.GetCurrentServiceProvider().GetRequiredService<IDnnContext>();
                 }
 
                 return current is DotNetNukeContext context ? context : default(DotNetNukeContext);

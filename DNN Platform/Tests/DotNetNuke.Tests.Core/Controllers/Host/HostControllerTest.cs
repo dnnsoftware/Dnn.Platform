@@ -17,6 +17,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -28,46 +29,46 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
     [TestFixture]
     public class HostControllerTest
     {
-        private DataTable _hostSettingsTable;
-        private Mock<CachingProvider> _mockCache;
-        private Mock<DataProvider> _mockData;
+        private DataTable hostSettingsTable;
+        private Mock<CachingProvider> mockCache;
+        private Mock<DataProvider> mockData;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
 
         public void SetUp()
         {
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-
-            this._mockCache = MockComponentProvider.CreateDataCacheProvider();
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
 
-            this._hostSettingsTable = new DataTable("HostSettings");
+            this.hostSettingsTable = new DataTable("HostSettings");
 
-            var nameCol = this._hostSettingsTable.Columns.Add("SettingName");
-            this._hostSettingsTable.Columns.Add("SettingValue");
-            this._hostSettingsTable.Columns.Add("SettingIsSecure");
-            this._hostSettingsTable.PrimaryKey = new[] { nameCol };
+            var nameCol = this.hostSettingsTable.Columns.Add("SettingName");
+            this.hostSettingsTable.Columns.Add("SettingValue");
+            this.hostSettingsTable.Columns.Add("SettingIsSecure");
+            this.hostSettingsTable.PrimaryKey = new[] { nameCol };
 
-            this._hostSettingsTable.Rows.Add("String_1_S", "String_1_S", true);
-            this._hostSettingsTable.Rows.Add("String_2_S", "String_1_S", true);
-            this._hostSettingsTable.Rows.Add("String_3_U", "Value_3_U", false);
-            this._hostSettingsTable.Rows.Add("String_4_U", "Value_4_U", false);
-            this._hostSettingsTable.Rows.Add("Int_5_U", "5", false);
-            this._hostSettingsTable.Rows.Add("Int_6_S", "6", true);
-            this._hostSettingsTable.Rows.Add("Double_7_S", "7", true);
-            this._hostSettingsTable.Rows.Add("Double_8_U", "8", false);
-            this._hostSettingsTable.Rows.Add("Bool_9_U", false, false);
-            this._hostSettingsTable.Rows.Add("Bool_10_S", false, true);
+            this.hostSettingsTable.Rows.Add("String_1_S", "String_1_S", true);
+            this.hostSettingsTable.Rows.Add("String_2_S", "String_1_S", true);
+            this.hostSettingsTable.Rows.Add("String_3_U", "Value_3_U", false);
+            this.hostSettingsTable.Rows.Add("String_4_U", "Value_4_U", false);
+            this.hostSettingsTable.Rows.Add("Int_5_U", "5", false);
+            this.hostSettingsTable.Rows.Add("Int_6_S", "6", true);
+            this.hostSettingsTable.Rows.Add("Double_7_S", "7", true);
+            this.hostSettingsTable.Rows.Add("Double_8_U", "8", false);
+            this.hostSettingsTable.Rows.Add("Bool_9_U", false, false);
+            this.hostSettingsTable.Rows.Add("Bool_10_S", false, true);
 
-            this._mockData = MockComponentProvider.CreateDataProvider();
-            this._mockData.Setup(c => c.GetHostSettings()).Returns(this._hostSettingsTable.CreateDataReader());
-            this._mockData.Setup(c => c.GetProviderPath()).Returns(string.Empty);
+            this.mockData = MockComponentProvider.CreateDataProvider();
+            this.mockData.Setup(c => c.GetHostSettings()).Returns(this.hostSettingsTable.CreateDataReader());
+            this.mockData.Setup(c => c.GetProviderPath()).Returns(string.Empty);
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.mockCache.Object);
+                    services.AddSingleton(this.mockData.Object);
+                });
 
             DataCache.ClearCache();
         }
@@ -75,9 +76,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             MockComponentProvider.ResetContainer();
-            this._hostSettingsTable?.Dispose();
+            this.hostSettingsTable?.Dispose();
         }
 
         [Test]
@@ -87,7 +88,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             var expectedDic = new Dictionary<string, ConfigurationSetting>();
 
-            foreach (DataRow row in this._hostSettingsTable.Rows)
+            foreach (DataRow row in this.hostSettingsTable.Rows)
             {
                 var conf = new ConfigurationSetting();
                 conf.Key = row["SettingName"].ToString();
@@ -119,7 +120,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         {
             // Arrange
             // Convert table to Dictionary<string,string>
-            var expectedDic = this._hostSettingsTable.Rows.Cast<DataRow>().ToDictionary(row => row["SettingName"].ToString(), row => row["SettingValue"].ToString());
+            var expectedDic = this.hostSettingsTable.Rows.Cast<DataRow>().ToDictionary(row => row["SettingName"].ToString(), row => row["SettingValue"].ToString());
 
             // Act
             var settingsDic = HostController.Instance.GetSettingsDictionary();
@@ -135,14 +136,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
+            this.mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
             // Act
             HostController.Instance.Update(key, value);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
 
         [Test]
@@ -152,14 +153,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
+            this.mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
             // Act
             HostController.Instance.Update(key, value);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
 
         [Test]
@@ -169,14 +170,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
+            this.mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
             // Act
             HostController.Instance.Update(key, value, true);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
 
         [Test]
@@ -186,16 +187,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
+            this.mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
             // Act
             HostController.Instance.Update(key, value, false);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
 
             // Clear was not called a second time
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }
 
         [Test]
@@ -212,8 +213,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             HostController.Instance.Update(settings);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting("String_1_S", "MyValue", false, It.IsAny<int>()), Times.Exactly(1));
-            this._mockCache.Verify(c => c.Clear("Host", string.Empty), Times.Exactly(1));
+            this.mockData.Verify(c => c.UpdateHostSetting("String_1_S", "MyValue", false, It.IsAny<int>()), Times.Exactly(1));
+            this.mockCache.Verify(c => c.Clear("Host", string.Empty), Times.Exactly(1));
         }
 
         [Test]
@@ -223,14 +224,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
+            this.mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
             // Act
             HostController.Instance.Update(key, value);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
 
         [Test]
@@ -240,14 +241,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
+            this.mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
             // Act
             HostController.Instance.Update(key, value, true);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
 
         [Test]
@@ -257,14 +258,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
+            this.mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
             // Act
             HostController.Instance.Update(key, value);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
 
         [Test]
@@ -274,14 +275,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
-            this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
+            this.mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
             // Act
             HostController.Instance.Update(key, value, false);
 
             // Assert
-            this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
-            this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
+            this.mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
+            this.mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }
 
         [Test]
@@ -443,7 +444,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
         private string GetValue(string key)
         {
-            return this._hostSettingsTable.Rows.Find(key)["SettingValue"].ToString();
+            return this.hostSettingsTable.Rows.Find(key)["SettingValue"].ToString();
         }
     }
 }

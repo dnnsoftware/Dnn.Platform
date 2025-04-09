@@ -1,0 +1,59 @@
+/* Input Customised Spinner */
+.dnnSpinner {
+    display: inline-block;
+    position: relative;
+    width: 150px;
+    padding: 6px 6px;
+    overflow: visible;
+    border: 1px solid #c9c9c9;
+    background: #fff;
+    background: linear-gradient(to bottom, #fff 0%,#f0f2f1 100%); /* W3C */
+    border-radius: 3px;
+    color: #333;
+    text-decoration: none;
+    box-shadow: 0px 1px 0px 0px #bbb;
+}
+
+.dnnSpinnerDisplay {
+    margin: 0 25px 0 8px;
+    background: transparent;
+    color: #999;
+}
+
+.dnnFormItem {
+    .dnnSpinnerDisplay > input[type="text"],
+    .dnnSpinnerDisplay > input[type="text"]:focus {
+        border: none;
+        margin: 0;
+        box-shadow: none;
+        padding: 0;
+        background: transparent;
+    }
+}
+
+.dnnSpinnerCtrl {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25px;
+    background-color: transparent;
+    border-left: 1px solid #c9c9c9;
+}
+
+.dnnSpinnerCtrl > a.dnnSpinnerTopButton {
+    display: block;
+    width: 25px;
+    height: 16px;
+    background: transparent url(../../../../../images/dnnSpinnerUpArrow.png) no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+.dnnSpinnerCtrl > a.dnnSpinnerBotButton {
+    display: block;
+    width: 25px;
+    height: 16px;
+    background: transparent url(../../../../../images/dnnSpinnerDownArrow.png) no-repeat;
+    background-position: center;
+    cursor: pointer;
+}

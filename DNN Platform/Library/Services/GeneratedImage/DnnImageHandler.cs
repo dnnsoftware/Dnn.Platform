@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Reflection;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -24,15 +25,18 @@ namespace DotNetNuke.Services.GeneratedImage
     using DotNetNuke.Services.GeneratedImage.StartTransform;
     using DotNetNuke.Services.Localization.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Assembly = System.Reflection.Assembly;
 
+    /// <summary>An <see cref="IHttpHandler"/> for serving images.</summary>
     public class DnnImageHandler : ImageHandler
     {
         /// <summary>
-        /// While list of server folders where the system allow the dnn image handler to
+        /// Allow list of server folders where the system allow the dnn image handler to
         /// read to serve image files from it and its subfolders.
         /// </summary>
-        private static readonly string[] WhiteListFolderPaths =
+        private static readonly string[] AllowListFolderPaths =
         {
             Globals.DesktopModulePath,
             Globals.ImagePath,
@@ -40,11 +44,26 @@ namespace DotNetNuke.Services.GeneratedImage
         };
 
         private static readonly int DefaultDimension = 0;
+
+        private readonly IServiceProvider serviceProvider;
+        private readonly IApplicationStatusInfo appStatus;
         private string defaultImageFile = string.Empty;
 
         /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public DnnImageHandler()
+            : this(Globals.GetCurrentServiceProvider(), null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnImageHandler"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="appStatus">The application status.</param>
+        public DnnImageHandler(IServiceProvider serviceProvider, IApplicationStatusInfo appStatus)
+        {
+            this.serviceProvider = serviceProvider;
+            this.appStatus = appStatus ?? serviceProvider.GetRequiredService<IApplicationStatusInfo>();
+
             // Set default settings here
             this.EnableClientCache = true;
             this.EnableServerCache = true;
@@ -274,10 +293,9 @@ namespace DotNetNuke.Services.GeneratedImage
                     default:
                         string imageTransformClass = ConfigurationManager.AppSettings["DnnImageHandler." + mode];
                         string[] imageTransformClassParts = imageTransformClass.Split(',');
-                        var asm = Assembly.LoadFrom(Globals.ApplicationMapPath + @"\bin\" +
-                                                         imageTransformClassParts[1].Trim() + ".dll");
+                        var asm = Assembly.LoadFrom($@"{this.appStatus.ApplicationMapPath}\bin\{imageTransformClassParts[1].Trim()}.dll");
                         var t = asm.GetType(imageTransformClassParts[0].Trim());
-                        var imageTransform = (ImageTransform)Activator.CreateInstance(t);
+                        var imageTransform = (ImageTransform)ActivatorUtilities.GetServiceOrCreateInstance(this.serviceProvider, t);
 
                         foreach (var key in parameters.AllKeys)
                         {
@@ -468,7 +486,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             // File outside the white list cannot be served
-            return WhiteListFolderPaths.Any(s => normalizeFilePath.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
+            return AllowListFolderPaths.Any(s => normalizeFilePath.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
         }
 
         private static string NormalizeFilePath(string filePath)

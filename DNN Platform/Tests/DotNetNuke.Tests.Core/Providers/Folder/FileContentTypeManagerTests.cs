@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
     using DotNetNuke.Abstractions;
@@ -12,6 +11,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
@@ -20,34 +20,36 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class FileContentTypeManagerTests
     {
+        private FakeServiceProvider serviceProvider;
+
         [SetUp]
 
         public void Setup()
         {
-            var serviceCollection = new ServiceCollection();
-            var mockApplicationStatusInfo = new Mock<IApplicationStatusInfo>();
-            mockApplicationStatusInfo.Setup(info => info.Status).Returns(UpgradeStatus.Install);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => mockApplicationStatusInfo.Object);
-            serviceCollection.AddTransient<IEventLogger>(container => Mock.Of<IEventLogger>());
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+            var mockData = MockComponentProvider.CreateDataProvider();
+            var mockCache = MockComponentProvider.CreateDataCacheProvider();
+            var mockGlobals = new Mock<IGlobals>();
+            var mockCbo = new Mock<ICBO>();
 
-            var _mockData = MockComponentProvider.CreateDataProvider();
-            var _mockCache = MockComponentProvider.CreateDataCacheProvider();
-            var _globals = new Mock<IGlobals>();
-            var _cbo = new Mock<ICBO>();
+            mockData.Setup(m => m.GetProviderPath()).Returns(string.Empty);
 
-            _mockData.Setup(m => m.GetProviderPath()).Returns(string.Empty);
+            TestableGlobals.SetTestableInstance(mockGlobals.Object);
+            CBO.SetTestableInstance(mockCbo.Object);
 
-            TestableGlobals.SetTestableInstance(_globals.Object);
-            CBO.SetTestableInstance(_cbo.Object);
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(mockCache.Object);
+                    services.AddSingleton(mockData.Object);
+                    services.AddSingleton(mockGlobals.Object);
+                    services.AddSingleton(mockCbo.Object);
+                });
         }
 
         [TearDown]
         public void TearDown()
         {
-            Globals.DependencyProvider = null;
+            this.serviceProvider.Dispose();
             TestableGlobals.ClearInstance();
             CBO.ClearInstance();
         }

@@ -217,8 +217,8 @@ namespace Dnn.PersonaBar.Sites.Components
                 request.IncludeProfile,
                 request.IncludeRoles);
 
-            success = exportResult.Item1;
-            return exportResult.Item2;
+            success = exportResult.Success;
+            return exportResult.Message;
         }
 
         public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias, string siteDescription, string siteKeywords, bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email, string password, string confirm, string question = "", string answer = "")
@@ -230,7 +230,7 @@ namespace Dnn.PersonaBar.Sites.Components
             var intPortalId = -1;
 
             // check template validity
-            var schemaFilename = HttpContext.Current.Server.MapPath("~/DesktopModules/Admin/Portals/portal.template.xsd");
+            var schemaFilename = HttpContext.Current.Server.MapPath("~/Components/Portals/portal.template.xsd");
             var xmlFilename = template.TemplateFilePath;
             var xval = new PortalTemplateValidator();
             if (!xval.Validate(xmlFilename, schemaFilename))

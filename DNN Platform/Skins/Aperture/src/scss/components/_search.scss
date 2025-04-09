@@ -1,0 +1,8 @@
+@use "../variables/colors";
+
+ul.searchSkinObjectPreview > li > a.searchSkinObjectPreview_more {
+    color: colors.color('neutral-dark');
+}
+#dnn_dnnSearch_ClassicSearch span {
+    margin-right:.5rem;
+}

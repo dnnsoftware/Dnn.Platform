@@ -8,40 +8,57 @@ namespace DotNetNuke.Services.Connections
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The <see cref="IConnectionsController"/> implementation.</summary>
     public class ConnectionsController : ServiceLocator<IConnectionsController, ConnectionsController>, IConnectionsController
     {
+        private readonly IServiceProvider serviceProvider;
+        private readonly IConnectionsManager connectionsManager;
+
+        /// <summary>Initializes a new instance of the <see cref="ConnectionsController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IConnectionsManager. Scheduled removal in v12.0.0.")]
+        public ConnectionsController()
+            : this(Globals.GetCurrentServiceProvider(), null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ConnectionsController"/> class.</summary>
+        /// <param name="serviceProvider">The DI container.</param>
+        /// <param name="connectionsManager">The connections manager.</param>
+        public ConnectionsController(IServiceProvider serviceProvider, IConnectionsManager connectionsManager)
+        {
+            this.serviceProvider = serviceProvider;
+            this.connectionsManager = connectionsManager ?? serviceProvider.GetRequiredService<IConnectionsManager>();
+        }
+
         /// <inheritdoc/>
         public IList<IConnector> GetConnections(int portalId)
         {
-            var connectors = ConnectionsManager.Instance.GetConnectors().Where(c => c.HasConfig(portalId)).ToList();
-            var allConnectors = new List<IConnector>();
-            foreach (var con in connectors)
-            {
-                allConnectors.AddRange(con.GetConnectors(portalId));
-            }
-
-            return allConnectors;
+            return
+                this.connectionsManager.GetConnectors(this.serviceProvider)
+                    .Where(c => c.HasConfig(portalId))
+                    .SelectMany(con => con.GetConnectors(portalId))
+                    .ToList();
         }
 
         /// <inheritdoc/>
         public IDictionary<string, string> GetConnectionConfigs(int portalId, string name)
         {
-            var connector = ConnectionsManager.Instance.GetConnectors()
-                .FirstOrDefault(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-            if (connector != null)
-            {
-                return connector.GetConfig(portalId);
-            }
-
-            return null;
+            return
+                this.connectionsManager.GetConnectors(this.serviceProvider)
+                    .Where(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+                    .Select(c => c.GetConfig(portalId))
+                    .FirstOrDefault();
         }
 
         /// <inheritdoc/>
         protected override Func<IConnectionsController> GetFactory()
         {
-            return () => new ConnectionsController();
+            return Globals.DependencyProvider.GetRequiredService<IConnectionsController>;
         }
     }
 }
