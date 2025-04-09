@@ -2406,9 +2406,10 @@ namespace DotNetNuke.Entities.Modules
                 dr = DataProvider.GetModuleSetting(moduleId, settingName);
 
                 string existValue = null;
-                if (dr.Read())
+                const int SettingValueColumnIndex = 1;
+                if (dr.Read() && !dr.IsDBNull(SettingValueColumnIndex))
                 {
-                    existValue = dr.GetString(1);
+                    existValue = dr.GetString(SettingValueColumnIndex);
                 }
 
                 dr.Close();

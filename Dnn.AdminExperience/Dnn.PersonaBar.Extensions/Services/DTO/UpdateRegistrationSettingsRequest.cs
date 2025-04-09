@@ -45,5 +45,7 @@ namespace Dnn.PersonaBar.Security.Services.Dto
         public bool UseCaptchaRegister { get; set; }
 
         public bool EnableRegisterNotification { get; set; }
+
+        public bool EnableUnapprovedPasswordReminderNotification { get; set; }
     }
 }

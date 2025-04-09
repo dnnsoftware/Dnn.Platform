@@ -172,10 +172,16 @@
         }
 
         function buildMenuRoot(root, rootText, rootClass, rootIcon) {
-            root.append("<li class=\"" + rootClass + "\"><a href='javascript:void(0)' aria-label=\"" + rootText + "\"><i class='dnni dnni-" + rootIcon + "' /></a><ul></ul>");
-            var parent = root.find("li." + rootClass + " > ul");
+            var $li = $('<li></li>', { class: rootClass, });
+            var $a = $('<a></a>', { href: 'javascript:void(0)', 'aria-label': rootText });
+            var $i = $('<i></i>', { class: 'dnni dnni-' + rootIcon, });
+            $a.append($i);
 
-            return parent;
+            var $ul = $('<ul></ul>');
+            $li.append($a, $ul);
+            root.append($li);
+            
+            return root.find("li." + rootClass + " > ul");
         }
 
         function buildMenu(root, rootText, rootClass, rootIcon, actions, actionCount) {
@@ -187,34 +193,36 @@
                 if (action.Title !== "~") {
                     if (!action.Url) {
                         action.Url = "javascript: __doPostBack('" + actionButton + "', '" + action.ID + "')";
-                    } else {
-                        action.Url = decodeURIComponent(action.Url);
                     }
 
-                    var htmlString = "<li>";
+                    var htmlString = $("<li></li>");
 
                     switch (action.CommandName) {
                         case "DeleteModule.Action":
-                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Delete\">";
+                            htmlString.attr('id', "moduleActions-" + moduleId + "-Delete");
                             break;
                         case "ModuleSettings.Action":
-                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Settings\">";
+                            htmlString.attr('id', "moduleActions-" + moduleId + "-Settings>");
                             break;
                         case "ImportModule.Action":
-                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Import\">";
+                            htmlString.attr('id', "moduleActions-" + moduleId + "-Import");
                             break;
                         case "ExportModule.Action":
-                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Export\">";
+                            htmlString.attr('id', "moduleActions-" + moduleId + "-Export");
                             break;
                         case "ModuleHelp.Action":
-                            htmlString = "<li id=\"moduleActions-" + moduleId + "-Help\">";
+                            htmlString.attr('id', "moduleActions-" + moduleId + "-Help");
                             break;
                     }
 
+                    var $img = $('<img>', { src: action.Icon, alt: action.Title, });
+                    var $span = $('<span></span>', { text: action.Title, });
                     if (isEnabled(action)) {
-                        htmlString += "<a href=\"" + action.Url + "\"" + (action.NewWindow ? " target=\"_blank\"" : "") + "><img src=\"" + action.Icon + "\" alt=\"" + action.Title + "\"><span>" + action.Title + "</span></a>";
+                        var $a = $('<a></a>', { href: action.Url, target: action.NewWindow ? '_blank' : null, });
+                        $a.append($img, $span);
+                        htmlString.append($a);
                     } else {
-                        htmlString += "<img src=\"" + action.Icon + "\" alt=\"" + action.Title + "\"><span>" + action.Title + "</span>";
+                        htmlString.append($img, $span);
                     }
 
                     $parent.append(htmlString);
@@ -371,9 +379,11 @@
         if (count > 0 || supportsMove) {
             var $form = $("form#Form");
             if ($form.find("div#moduleActions-" + moduleId).length === 0) {
-                $form.append("<div id=\"moduleActions-" + moduleId + "\" class=\"actionMenu\"><ul class=\"dnn_mact\"></ul></div>");
-                var menu = $form.find("div:last");
-                var menuRoot = menu.find("ul");
+                var menu = $("<div></div>", { id: "moduleActions-" + moduleId, class: 'actionMenu', });
+                var menuRoot = $('<ul></ul>', { class: 'dnn_mact', });
+                menu.append(menuRoot);
+                $form.append(menu);
+                
                 var menuLabel = moduleTitle;
                 if (customCount > 0) {
                     buildMenu(menuRoot, "Edit", "actionMenuEdit", "pencil",  customActions, customCount);

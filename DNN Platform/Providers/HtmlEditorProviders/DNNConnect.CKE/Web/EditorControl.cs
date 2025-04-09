@@ -179,7 +179,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         switch (codeMirrorInfo.PropertyType.Name)
                                         {
                                             case "String":
-                                                codeMirrorArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, codeMirrorSettingValue);
+                                                codeMirrorArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, HttpUtility.JavaScriptStringEncode(codeMirrorSettingValue));
                                                 break;
                                             case "Boolean":
                                                 codeMirrorArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, codeMirrorSettingValue.ToLower());
@@ -189,8 +189,8 @@ namespace DNNConnect.CKEditorProvider.Web
 
                                     var codemirrorSettings = codeMirrorArray.ToString();
 
-                                    this.settings["codemirror"] = string.Format(
-                                        "{{ {0} }}", codemirrorSettings.Remove(codemirrorSettings.Length - 1, 1));
+                                    this.settings["codemirror"] =
+                                        $"{{ {codemirrorSettings.Remove(codemirrorSettings.Length - 1, 1)} }}";
                                 }
 
                                 break;
@@ -216,7 +216,7 @@ namespace DNNConnect.CKEditorProvider.Web
                                         switch (wordCountInfo.PropertyType.Name)
                                         {
                                             case "String":
-                                                wordcountArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, wordCountSettingValue);
+                                                wordcountArray.AppendFormat("{0}: '{1}',", xmlAttribute.AttributeName, HttpUtility.JavaScriptStringEncode(wordCountSettingValue));
                                                 break;
                                             case "Boolean":
                                                 wordcountArray.AppendFormat("{0}: {1},", xmlAttribute.AttributeName, wordCountSettingValue.ToLower());
@@ -226,8 +226,8 @@ namespace DNNConnect.CKEditorProvider.Web
 
                                     var wordcountSettings = wordcountArray.ToString();
 
-                                    this.settings["wordcount"] = string.Format(
-                                        "{{ {0} }}", wordcountSettings.Remove(wordcountSettings.Length - 1, 1));
+                                    this.settings["wordcount"] =
+                                        $"{{ {wordcountSettings.Remove(wordcountSettings.Length - 1, 1)} }}";
                                 }
 
                                 break;
@@ -312,9 +312,9 @@ namespace DNNConnect.CKEditorProvider.Web
                 {
                     var templateUrl = this.FormatUrl(this.currentEditorSettings.Config.Templates_Files);
 
-                    this.settings["templates_files"] = string.Format(
-                        "[ '{0}' ]",
-                        templateUrl.EndsWith(".xml") ? string.Format("xml:{0}", templateUrl) : templateUrl);
+                    var templateFile = templateUrl.EndsWith(".xml") ? $"xml:{templateUrl}" : templateUrl;
+                    this.settings["templates_files"] =
+                        $"[ '{HttpUtility.JavaScriptStringEncode(templateFile)}' ]";
                 }
 
                 if (!string.IsNullOrEmpty(this.toolBarNameOverride))
@@ -331,8 +331,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
                     var toolbarSetString = ToolbarUtil.ConvertToolbarSetToString(toolbarSet, true);
 
-                    this.settings["toolbar"] = string.Format(
-                        "[{0}]", toolbarSetString);
+                    this.settings["toolbar"] = $"[{toolbarSetString}]";
                 }
 
                 // Easy Image Upload
@@ -1212,10 +1211,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
         private void GenerateEditorLoadScript()
         {
-            var editorVar = string.Format(
-                "editor{0}",
-                this.ClientID.Substring(this.ClientID.LastIndexOf("_", StringComparison.Ordinal) + 1).Replace(
-                    "-", string.Empty));
+            var editorVar = $"editor{this.ClientID.Substring(this.ClientID.LastIndexOf("_", StringComparison.Ordinal) + 1).Replace("-", string.Empty)}";
 
             var editorFixedId = this.ClientID.Replace("-", string.Empty).Replace(".", string.Empty);
 
@@ -1223,8 +1219,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 @" if (CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.{0}) {{ CKEDITOR.instances.{0}.updateElement();  if (typeof Page_IsValid !== 'undefined' && !Page_IsValid) return false; CKEDITOR.instances.{0}.destroy(); }}",
                 editorFixedId);
 
-            this.RegisterOnSubmitStatement(
-                this.GetType(), string.Format("CKEditor_OnAjaxSubmit_{0}", editorFixedId), postBackScript);
+            this.RegisterOnSubmitStatement(this.GetType(), $"CKEditor_OnAjaxSubmit_{editorFixedId}", postBackScript);
 
             var editorScript = new StringBuilder();
 
@@ -1239,7 +1234,7 @@ namespace DNNConnect.CKEditorProvider.Web
 
             editorScript.AppendFormat(
                 "if (document.getElementById('{0}') == null){{return;}}",
-                editorFixedId);
+                HttpUtility.JavaScriptStringEncode(editorFixedId));
 
             // Render EditorConfig
             var editorConfigScript = new StringBuilder();
@@ -1280,7 +1275,7 @@ namespace DNNConnect.CKEditorProvider.Web
                         continue;
                     }
 
-                    editorConfigScript.AppendFormat("{0}:\'{1}\'", key, value);
+                    editorConfigScript.AppendFormat("{0}:'{1}'", key, HttpUtility.JavaScriptStringEncode(value));
 
                     editorConfigScript.Append(currentCount == keysCount ? "};" : ",");
                 }
@@ -1293,15 +1288,15 @@ namespace DNNConnect.CKEditorProvider.Web
             // Check if we can use jQuery or $, and if both fail use ckeditor without the adapter
             editorScript.Append("if (jQuery().ckeditor) {");
 
-            editorScript.AppendFormat("var {0} = jQuery('#{1}').ckeditor(editorConfig{0});", editorVar, editorFixedId);
+            editorScript.AppendFormat("var {0} = jQuery('#{1}').ckeditor(editorConfig{0});", editorVar, HttpUtility.JavaScriptStringEncode(editorFixedId));
 
             editorScript.Append("} else if ($.ckeditor) {");
 
-            editorScript.AppendFormat("var {0} = $('#{1}').ckeditor(editorConfig{0});", editorVar, editorFixedId);
+            editorScript.AppendFormat("var {0} = $('#{1}').ckeditor(editorConfig{0});", editorVar, HttpUtility.JavaScriptStringEncode(editorFixedId));
 
             editorScript.Append("} else {");
 
-            editorScript.AppendFormat("var {0} = CKEDITOR.replace( '{1}', editorConfig{0});", editorVar, editorFixedId);
+            editorScript.AppendFormat("var {0} = CKEDITOR.replace( '{1}', editorConfig{0});", editorVar, HttpUtility.JavaScriptStringEncode(editorFixedId));
 
             editorScript.Append("}");
 
@@ -1316,14 +1311,14 @@ namespace DNNConnect.CKEditorProvider.Web
             editorScript.Append("});");
 
             editorScript.Append("if(CKEDITOR && CKEDITOR.config){");
-            editorScript.Append("  CKEDITOR.config.portalId = " + this.portalSettings.PortalId);
+            editorScript.AppendFormat("  CKEDITOR.config.portalId = {0}", this.portalSettings.PortalId);
             editorScript.Append("};");
 
             // End of LoadScript
             editorScript.Append("}");
 
-            this.RegisterScript(string.Format(@"{0}_CKE_Config", editorFixedId), editorConfigScript.ToString(), true);
-            this.RegisterStartupScript(string.Format(@"{0}_CKE_Startup", editorFixedId), editorScript.ToString(), true);
+            this.RegisterScript($@"{editorFixedId}_CKE_Config", editorConfigScript.ToString(), true);
+            this.RegisterStartupScript($@"{editorFixedId}_CKE_Startup", editorScript.ToString(), true);
         }
     }
 }

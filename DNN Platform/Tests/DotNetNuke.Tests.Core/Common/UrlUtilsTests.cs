@@ -6,16 +6,13 @@ namespace DotNetNuke.Tests.Core.Common;
 
 using System;
 using System.Collections.Generic;
-using System.Web.Caching;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Application;
-using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Abstractions.Settings;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
-using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Tests.Utilities.Fakes;
@@ -149,24 +146,24 @@ public class UrlUtilsTests
     public void ClosePopUpGeneratesAJavaScriptUrlWithValues()
     {
         var result = UrlUtils.ClosePopUp(false, "/hello",  false);
-        Assert.That(result, Is.EqualTo("""javascript:dnnModal.closePopUp(false, "/hello")"""));
+        Assert.That(result, Is.EqualTo("javascript:dnnModal.closePopUp(false, '/hello')"));
 
         result = UrlUtils.ClosePopUp(true, "blah", false);
-        Assert.That(result, Is.EqualTo("""javascript:dnnModal.closePopUp(true, "blah")"""));
+        Assert.That(result, Is.EqualTo("javascript:dnnModal.closePopUp(true, 'blah')"));
     }
 
     [Test]
     public void ClosePopUpGeneratesAScriptWhenOnClickEventIsTrue()
     {
         var result = UrlUtils.ClosePopUp(false, "/somewhere",  true);
-        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, "/somewhere")"""));
+        Assert.That(result, Is.EqualTo("dnnModal.closePopUp(false, '/somewhere')"));
     }
 
     [Test]
     public void ClosePopUpEncodesUrlParameter()
     {
         var result = UrlUtils.ClosePopUp(false, "/somewhere?value=%20hi&two='hey'",  true);
-        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, "/somewhere?value=%20hi\u0026two=\u0027hey\u0027")"""));
+        Assert.That(result, Is.EqualTo("""dnnModal.closePopUp(false, '/somewhere?value=%20hi\u0026two=\u0027hey\u0027')"""));
     }
 
     [Test]
