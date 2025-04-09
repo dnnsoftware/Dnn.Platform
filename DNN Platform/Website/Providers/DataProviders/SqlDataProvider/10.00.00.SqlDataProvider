@@ -45,7 +45,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddTabModule]
     @CreatedByUserID  		int
 
 AS
-    INSERT INTO {databaseOwner}{objectQualifier}TabModules ( 
+    INSERT INTO {databaseOwner}{objectQualifier}TabModules (
         TabId,
         ModuleId,
         ModuleTitle,
@@ -144,12 +144,12 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTabModule]
 
 AS
     UPDATE {databaseOwner}{objectQualifier}TabModules
-        SET    
+        SET
             TabId = @TabId,
             ModuleId = @ModuleId,
 			ModuleTitle = @ModuleTitle,
 			Header = @Header,
-			Footer = @Footer, 
+			Footer = @Footer,
             ModuleOrder = @ModuleOrder,
             PaneName = @PaneName,
             CacheTime = @CacheTime,
@@ -200,7 +200,7 @@ AS
         TM.Alignment,
         TM.Color,
         TM.Border,
-        CASE WHEN TM.IconFile LIKE 'fileid=%' 
+        CASE WHEN TM.IconFile LIKE 'fileid=%'
 			THEN (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
 				  WHERE FileId = CAST(SUBSTRING(TM.IconFile, 8, 10) AS Int))
 			ELSE Coalesce(TM.IconFile,'')
@@ -283,7 +283,7 @@ AS
         TM.Alignment,
         TM.Color,
         TM.Border,
-         Case when tm.IconFile LIKE 'fileid=%' 
+         Case when tm.IconFile LIKE 'fileid=%'
 			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
 			 WHERE fileid = CAST(SUBSTRING(tm.IconFile, 8, 10) AS Int))
 			 else Coalesce(tm.IconFile,'')
@@ -338,7 +338,7 @@ GO
 /* Update TabModules table to Remove Index*/
 /***********************/
 IF EXISTS (SELECT * FROM sys.indexes WHERE name ='IX_{objectQualifier}TabModules_ModuleID')
-BEGIN 
+BEGIN
     DROP INDEX {databaseOwner}[{objectQualifier}TabModules].[IX_{objectQualifier}TabModules_ModuleID]
 END
 GO
@@ -347,10 +347,10 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleID] ON {database
 GO
 
 IF EXISTS (SELECT * FROM sys.indexes WHERE name ='IX_{objectQualifier}TabModules_ModuleOrder')
-BEGIN 
+BEGIN
     DROP INDEX {databaseOwner}[{objectQualifier}TabModules].[IX_{objectQualifier}TabModules_ModuleOrder]
 END
-GO 
+GO
 
 CREATE NONCLUSTERED INDEX [IX_{objectQualifier}TabModules_ModuleOrder] ON {databaseOwner}[{objectQualifier}TabModules] ([TabID], [PaneName], [ModuleOrder]) INCLUDE ([Alignment], [Border], [CacheMethod], [CacheTime], [Color], [ContainerSrc], [CreatedByUserID], [CreatedOnDate], [CultureCode], [DefaultLanguageGuid], [DisplayPrint], [DisplaySyndicate], [DisplayTitle], [Footer], [Header], [IconFile], [IsDeleted], [LastModifiedByUserID], [LastModifiedOnDate], [LocalizedVersionGuid], [ModuleID], [ModuleTitle], [TabModuleID], [UniqueId], [VersionGuid], [Visibility])
 GO
@@ -360,7 +360,7 @@ GO
 /***********************/
 /* Update TabModules table to Remove [IsWebSlice], [WebSliceTitle], [WebSliceExpiryDate], [WebSliceTTL] Columns*/
 /***********************/
-IF OBJECT_ID('{databaseOwner}[DF_{objectQualifier}abModules_IsWebSlice]', 'D') IS NOT NULL 
+IF OBJECT_ID('{databaseOwner}[DF_{objectQualifier}abModules_IsWebSlice]', 'D') IS NOT NULL
     ALTER TABLE {databaseOwner}[{objectQualifier}TabModules]
     DROP CONSTRAINT DF_{objectQualifier}abModules_IsWebSlice
 
@@ -388,10 +388,10 @@ CREATE TABLE {databaseOwner}{objectQualifier}ApiTokens (
 	[CreatedByUserId] [int] NOT NULL,
 	[CreatedOnDate] [datetime] NOT NULL,
 	[LastUsedOnDate] [datetime] NULL,
- CONSTRAINT [PK_{objectQualifier}ApiTokens] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_{objectQualifier}ApiTokens] PRIMARY KEY CLUSTERED
 (
 	[ApiTokenId] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
 GO
@@ -401,11 +401,11 @@ BEGIN
 CREATE TABLE {databaseOwner}{objectQualifier}ApiTokenKeys (
 	[ApiTokenId] [int] NOT NULL,
 	[TokenKey] [nvarchar](200) NOT NULL,
- CONSTRAINT [PK_{objectQualifier}ApiTokenKeys] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_{objectQualifier}ApiTokenKeys] PRIMARY KEY CLUSTERED
 (
 	[ApiTokenId] ASC,
 	[TokenKey] ASC
-) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
 GO

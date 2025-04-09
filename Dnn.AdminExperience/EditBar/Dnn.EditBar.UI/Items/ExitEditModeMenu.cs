@@ -5,23 +5,20 @@
 namespace Dnn.EditBar.UI.Items
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
-    using Dnn.EditBar.UI.Helpers;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Personalization;
 
+    /// <summary>
+    /// Menu item to exit edit mode.
+    /// </summary>
     [Serializable]
     public class ExitEditModeMenu : BaseMenuItem
     {
         /// <inheritdoc/>
-        public override string Name { get; } = "ExitEditMode";
+        public override string Name => "ExitEditMode";
 
         /// <inheritdoc/>
         public override string Text => "ExitEditMode";
@@ -30,16 +27,16 @@ namespace Dnn.EditBar.UI.Items
         public override string CssClass => string.Empty;
 
         /// <inheritdoc/>
-        public override string Template { get; } = string.Empty;
+        public override string Template => string.Empty;
 
         /// <inheritdoc/>
-        public override string Parent { get; } = Constants.RightMenu;
+        public override string Parent => Constants.RightMenu;
 
         /// <inheritdoc/>
-        public override string Loader { get; } = "ExitEditMode";
+        public override string Loader => "ExitEditMode";
 
         /// <inheritdoc/>
-        public override int Order { get; } = 100;
+        public override int Order => 100;
 
         /// <inheritdoc/>
         public override bool Visible()

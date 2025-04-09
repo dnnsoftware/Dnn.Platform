@@ -13,6 +13,166 @@
       <license/>
       <releaseNotes src="releaseNotes.txt"></releaseNotes>
       <components>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <!-- Prevents Roslyn from running to avoid potential compilation errors
+                       when a newer version of Roslyn is installed in the next steps.-->
+                  <node path="/configuration/system.codedom/compilers/compiler[@extension='.cs']" action="remove" />
+                  <node path="/configuration/system.codedom/compilers/compiler[@extension='.vb']" action="remove" />
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes/>
+              </configuration>
+            </uninstall>
+          </config>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly Action="UnRegister">
+              <path>bin</path>
+              <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="Cleanup" version="10.00.00">
+          <files>
+            <file>
+              <path>bin</path>
+              <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csc.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csc.exe.config</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csc.rsp</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csi.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csi.exe.config</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>csi.rsp</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.Build.Tasks.CodeAnalysis.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.CSharp.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.CSharp.Scripting.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.Scripting.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CodeAnalysis.VisualBasic.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.CSharp.Core.targets</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.DiaSymReader.Native.amd64.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.DiaSymReader.Native.x86.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.Managed.Core.targets</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>Microsoft.VisualBasic.Core.targets</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>roslyn.zip.manifest</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Buffers.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Collections.Immutable.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Memory.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Numerics.Vectors.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Reflection.Metadata.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Text.Encoding.CodePages.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>vbc.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>vbc.exe.config</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>vbc.rsp</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>VBCSCompiler.exe</name>
+            </file>
+            <file>
+              <path>bin\roslyn</path>
+              <name>VBCSCompiler.exe.config</name>
+            </file>
+          </files>
+        </component>
         <component type="Assembly">
           <assemblies>
             <assembly>
@@ -25,10 +185,10 @@
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>bin/roslyn</basePath>
-              <resourceFile>
-                <name>roslyn.zip</name>
-              </resourceFile>
-            </resourceFiles>
+            <resourceFile>
+              <name>roslyn.zip</name>
+            </resourceFile>
+          </resourceFiles>
         </component>
         <component type="Config">
           <config>

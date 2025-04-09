@@ -1,3 +1,5 @@
+@use "../variables/breakpoints";
+
 // Define a map for padding sizes
 $padding-sizes: (
     0: 0,
@@ -29,7 +31,7 @@ $padding-sizes: (
         .aperture-#{$class-suffix}-#{$size} {
             @include padding($side, $value);
         }
-        @each $breakpoint, $min-width in $breakpoints {
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
             @media (min-width: $min-width) {
                 .aperture-#{$class-suffix}-#{$breakpoint}-#{$size} {
                     @include padding($side, $value, true);

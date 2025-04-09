@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.Html
             DirectPublish = 1,
             SaveDraft = 2,
             ContentApproval = 3,
+            CustomWorkflow = 4,
         }
 
         protected string CurrentView
@@ -188,6 +189,9 @@ namespace DotNetNuke.Modules.Html
                         case SystemWorkflowManager.ContentAprovalWorkflowKey:
                             this.CurrentWorkflowType = WorkflowType.ContentApproval;
                             break;
+                        default:
+                            this.CurrentWorkflowType = WorkflowType.CustomWorkflow;
+                            break;
                     }
 
                     if (htmlContentItemID != -1)
@@ -253,8 +257,7 @@ namespace DotNetNuke.Modules.Html
                         this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
 
                         break;
-                    case WorkflowType.SaveDraft:
-                    case WorkflowType.ContentApproval:
+                    default:
                         // if it's already published set it back to draft
                         if (htmlContent.StateID == publishedStateID)
                         {
@@ -679,14 +682,6 @@ namespace DotNetNuke.Modules.Html
             }
 
             return htmlContent;
-        }
-
-        /// <summary>Returns whether or not the user has review permissions to this module.</summary>
-        /// <param name="htmlContent">Content of the HTML.</param>
-        /// <returns><see langword="true"/> if the user has review permission for the given <paramref name="htmlContent"/>, otherwise <see langword="false"/>.</returns>
-        private bool UserCanReview(HtmlTextInfo htmlContent)
-        {
-            return (htmlContent != null) && WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(htmlContent.StateID), "REVIEW");
         }
 
         /// <summary>Gets the last published version of this module.</summary>

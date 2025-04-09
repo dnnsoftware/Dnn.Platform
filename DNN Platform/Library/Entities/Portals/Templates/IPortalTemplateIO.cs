@@ -22,6 +22,6 @@ namespace DotNetNuke.Entities.Portals.Internal
 
         TextReader OpenTextReader(string filePath);
 
-        (string, List<string>) GetTemplateLanguages(string templateFilePath);
+        (string DefaultLanguage, List<string> Locales) GetTemplateLanguages(string templateFilePath);
     }
 }

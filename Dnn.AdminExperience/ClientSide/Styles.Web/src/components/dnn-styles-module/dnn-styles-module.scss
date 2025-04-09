@@ -45,3 +45,7 @@ h3 {
   gap: 1rem;
   margin-top: 1rem;
 }
+
+dnn-color-input, dnn-input{
+  --background-color: var(--dnn-color-surface-light, #eee);
+}

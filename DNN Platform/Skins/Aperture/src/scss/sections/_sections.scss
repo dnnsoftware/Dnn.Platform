@@ -1,6 +1,7 @@
+@use "sass:meta";
 .aperture-theme {
-    @import 'header';
-    @import 'footer';
+    @include meta.load-css('header');
+    @include meta.load-css('footer');
 
     .aperture-container {
         display: flex;
@@ -8,5 +9,14 @@
         padding: 0 2rem;
         width: 100%;
         max-width: 1280px;
+    }
+	
+    // Sticky footer
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+    .aperture-main{
+        flex-grow: 1;
     }
 }

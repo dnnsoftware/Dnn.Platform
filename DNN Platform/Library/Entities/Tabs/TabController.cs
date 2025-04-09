@@ -1220,7 +1220,8 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            this.DeleteTab(tabId, portalId);
+            this.HardDeleteTabInternal(tabId, portalId);
+            this.ClearCache(portalId);
         }
 
         /// <summary>Delete a Setting of a tab instance.</summary>
@@ -2901,7 +2902,10 @@ namespace DotNetNuke.Entities.Tabs
                 contentController.DeleteContentItem(tab);
             }
 
-            EventManager.Instance.OnTabDeleted(new TabEventArgs { Tab = tab });
+            if (tab != null)
+            {
+                EventManager.Instance.OnTabDeleted(new TabEventArgs { Tab = tab });
+            }
         }
 
         private bool SoftDeleteChildTabs(int intTabid, PortalSettings portalSettings)

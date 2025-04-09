@@ -134,13 +134,13 @@ export class DnnRmEditFolder {
   private handlePermissionsChanged(newPermissions: IPermissions): void {
     // Get previous role permissions and adjust related permissions
     newPermissions.rolePermissions.forEach(rolePermission => {
-      const previousPermissions = this.lastPermissions?.rolePermissions?.find(p => p.roleId === rolePermission.roleId).permissions ?? [];
+      const previousPermissions = this.lastPermissions?.rolePermissions?.find(p => p.roleId === rolePermission.roleId)?.permissions ?? [];
       this.adjustRelatedPermissions(rolePermission, previousPermissions);
     });
   
     // Get previous user permissions and adjust related permissions
     newPermissions.userPermissions.forEach(userPermission => {
-      const previousPermissions = this.lastPermissions?.userPermissions?.find(p => p.userId === userPermission.userId).permissions ?? [];
+      const previousPermissions = this.lastPermissions?.userPermissions?.find(p => p.userId === userPermission.userId)?.permissions ?? [];
       this.adjustRelatedPermissions(userPermission, previousPermissions);
     });
   

@@ -14,10 +14,12 @@ namespace DotNetNuke.Services.Install
     using System.Web.UI;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Maintenance.Telerik.Removal;
@@ -143,6 +145,20 @@ namespace DotNetNuke.Services.Install
             return Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>();
         }
 
+        private static void SetHostSetting(string key, string value, bool isSecure = false)
+        {
+            var setting = new ConfigurationSetting
+            {
+                IsSecure = isSecure,
+                Key = key,
+                Value = value,
+            };
+
+            Globals.GetCurrentServiceProvider()
+                .GetRequiredService<IHostSettingsService>()
+                .Update(setting);
+        }
+
         private void ExecuteScripts()
         {
             // Start Timer
@@ -246,15 +262,6 @@ namespace DotNetNuke.Services.Install
                         {
                             var locale = LocaleController.Instance.GetLocale("en-US");
                             Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
-                        }
-
-                        var licenseConfig = installConfig.License;
-                        bool isProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
-                                                  File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-                        if (isProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
-                            !string.IsNullOrEmpty(licenseConfig.InvoiceNumber))
-                        {
-                            Upgrade.Upgrade.ActivateLicense();
                         }
 
                         // Adding ClientDependency Resources config to web.config
@@ -411,44 +418,55 @@ namespace DotNetNuke.Services.Install
                     this.Response.Write("<br>");
                     this.Response.Write("<h2>Checking Security Aspects</h2>");
                     var telerikUtils = CreateTelerikUtils();
-                    if (telerikUtils.TelerikIsInstalled())
+                    if (!telerikUtils.TelerikIsInstalled())
                     {
-                        var version = telerikUtils.GetTelerikVersion().ToString();
-                        var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
-                                        .Select(a => Path.GetFileName(a));
-
+                        this.Response.Write(this.LocalizeString("TelerikNotInstalledInfo"));
+                        this.Response.Write("<br>");
+                    }
+                    else
+                    {
+                        var version = telerikUtils.GetTelerikVersion();
                         this.Response.Write("<strong>");
                         this.Response.Write(this.LocalizeString("TelerikInstalledHeading"));
                         this.Response.Write("</strong><br>");
                         this.Response.Write(this.LocalizeString("TelerikInstalledDetected"));
                         this.Response.Write(" ");
-                        this.Response.Write(version);
-                        this.Response.Write("<br>");
-                        this.Response.Write(this.LocalizeString("TelerikInstalledBulletin"));
+                        this.Response.Write(version.ToString());
                         this.Response.Write("<br>");
 
-                        if (!assemblies.Any())
+                        if (!telerikUtils.IsTelerikVersionVulnerable(version))
                         {
-                            this.Response.Write(this.LocalizeString("TelerikInstalledButNotUsedInfoAutoInstall"));
+                            this.Response.Write(this.LocalizeString("TelerikVersionNotKnownToBeVulnerableInfo"));
                             this.Response.Write("<br>");
                         }
                         else
                         {
-                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedInfo"));
-                            this.Response.Write("<br>");
-                            foreach (var a in assemblies)
-                            {
-                                this.Response.Write($"{a}<br/>");
-                            }
+                            SetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey, DotNetNuke.Maintenance.Constants.TelerikUninstallYesValue);
+                            var assemblies = telerikUtils.GetAssembliesThatDependOnTelerik()
+                                .Select(a => Path.GetFileName(a));
 
-                            this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedWarning"));
+                            this.Response.Write(this.LocalizeString("TelerikInstalledBulletin"));
                             this.Response.Write("<br>");
+
+                            if (!assemblies.Any())
+                            {
+                                this.Response.Write(this.LocalizeString("TelerikInstalledButNotUsedInfo"));
+                                this.Response.Write("<br>");
+                            }
+                            else
+                            {
+                                this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedInfo"));
+                                this.Response.Write("<br>");
+                                foreach (var a in assemblies)
+                                {
+                                    this.Response.Write($"{a}<br/>");
+                                }
+
+                                this.Response.Write("<br>");
+                                this.Response.Write(this.LocalizeString("TelerikInstalledAndUsedWarning"));
+                                this.Response.Write("<br>");
+                            }
                         }
-                    }
-                    else
-                    {
-                        this.Response.Write(this.LocalizeString("TelerikNotInstalledInfo"));
-                        this.Response.Write("<br>");
                     }
 
                     this.Response.Write("<br>");

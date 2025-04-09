@@ -208,7 +208,7 @@ namespace DotNetNuke.Common.Utilities
                         .Substring(
                             userId.ToString("00").Length - SubfolderSeedLength,
                             SubfolderSeedLength),
-                _ => string.Empty
+                _ => string.Empty,
             };
         }
 

@@ -7,36 +7,38 @@ ignore:
 branches:
   future:
     regex: ^future?[/-]
-    tag: 'alpha'
+    label: 'alpha'
     increment: Major
     source-branches: []
   development:
     regex: ^development$
-    tag: 'alpha'
+    label: 'alpha'
     increment: Major
     source-branches: []
   develop:
     regex: ^develop$
-    tag: 'alpha'
+    label: 'alpha'
     increment: Patch
-    is-mainline: true
+    is-main-branch: true
     source-branches: []
     tracks-release-branches: false
   release:
     regex: ^release?[/-]
     mode: ContinuousDelivery
-    tag: 'rc'
+    label: 'rc'
     increment: Patch
-    prevent-increment-of-merged-branch-version: true
+    prevent-increment:
+        of-merged-branch: true
     track-merge-target: false
     tracks-release-branches: false
     is-release-branch: true
     source-branches: []
   pull-request:
     regex: (pull|pull\-requests|pr)[/-]
-    tag: 'pr'
-    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+    label: 'pr'
+    label-number-pattern: '[/-](?<number>\d+)[-/]'
     increment: Patch
-    prevent-increment-of-merged-branch-version: false
+    prevent-increment:
+        of-merged-branch: true
     is-release-branch: false
     source-branches: []

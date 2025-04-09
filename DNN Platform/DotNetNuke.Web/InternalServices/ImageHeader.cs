@@ -46,8 +46,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                     catch (ArgumentException e)
                     {
-                        var newMessage = string.Format("{0} file: '{1}' ", ErrorMessage, path);
-                        throw new ArgumentException(newMessage, "path", e);
+                        throw new ArgumentException($"{ErrorMessage} file: '{path}' ", nameof(path), e);
                     }
                 }
             }

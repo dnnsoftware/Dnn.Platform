@@ -28,15 +28,15 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(context.CompilationProvider.Combine(classes.Collect()), Execute);
     }
 
-    private static void Execute(SourceProductionContext context, (Compilation compilation, ImmutableArray<MemberDeclarationSyntax?> members) value)
+    private static void Execute(SourceProductionContext context, (Compilation Compilation, ImmutableArray<MemberDeclarationSyntax?> Members) value)
     {
-        var members = value.members;
+        var members = value.Members;
         if (members.IsDefaultOrEmpty)
         {
             return;
         }
 
-        var compilation = value.compilation;
+        var compilation = value.Compilation;
 
         var dnnDeprecatedType = compilation.GetTypeByMetadataName(DnnDeprecatedTypeName);
         if (dnnDeprecatedType is null)

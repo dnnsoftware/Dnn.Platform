@@ -1,3 +1,5 @@
+@use "../variables/breakpoints";
+
 // Define a map for margin sizes
 $margin-sizes: (
     0: 0,
@@ -30,7 +32,7 @@ $margin-sizes: (
         .aperture-#{$class-suffix}-#{$size} {
             @include margin($side, $value);
         }
-        @each $breakpoint, $min-width in $breakpoints {
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
             @media (min-width: $min-width) {
                 .aperture-#{$class-suffix}-#{$breakpoint}-#{$size} {
                     @include margin($side, $value, true);

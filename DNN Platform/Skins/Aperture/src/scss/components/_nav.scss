@@ -1,3 +1,6 @@
+@use "../utilities/media-queries";
+@use "../variables/colors";
+
 /* Main Navigation */
 header {
 	a[id*="dnnLOGO"] {
@@ -10,7 +13,7 @@ header {
 			width: auto;
 		}
 
-		@include mq-max-width(400) {
+		@include media-queries.mq-max-width(400) {
 			img {
 				height: 50px;
 			}
@@ -29,6 +32,17 @@ header {
 		margin: 0;
 		padding: 0;
 		gap: 2rem;
+		ul {
+			flex-direction: column;
+			gap: 0.5rem;
+			li {
+				a {
+					&:hover {
+						color: colors.color('tertiary-light');
+					}
+				}
+			}
+		}
 	}
 
 	li {
@@ -37,13 +51,13 @@ header {
 
 	a {
 		font-size: 0.89rem;
-		color: color('background-light');
+		color: colors.color('background-light');
 		font-weight: 600;
 		text-decoration: none;
 		text-transform: uppercase;
 
 		&:hover {
-			color: color('background');
+			color: colors.color('background');
 		}
 	}
 
@@ -70,7 +84,7 @@ header {
 		li {
 			&.selected>a {
 				background: transparent;
-				color: color('background');
+				color: colors.color('background');
 			}
 
 			&:not(.selected)>a:hover {
@@ -84,10 +98,11 @@ header {
 			position: absolute;
 			flex-direction: column;
 			top: 100%;
-			min-width: 250px;
+			min-width: max-content;
 			max-width: 100%;
-			background: color('tertiary');
-			box-shadow: 1px 1px 5px 1px rgba(color('foreground', true), 0.2);
+			padding-right: 2rem;
+			background: colors.color('tertiary');
+			box-shadow: 1px 1px 5px 1px rgba(colors.color('foreground', true), 0.2);
 
 			// Below Second Level
 			a {
@@ -135,7 +150,7 @@ $nav-width: 320px;
 
 .hamburger {
 	margin-left: auto;
-	color: color('primary-contrast');
+	color: colors.color('primary-contrast');
 	cursor: pointer;
 }
 
@@ -152,15 +167,15 @@ $nav-width: 320px;
 #menuToggle a
 {
   text-decoration: none;
-  color: color('background-light');
+  color: colors.color('background-light');
   
   transition: color 0.3s ease;
 }
 
 #menuToggle a:hover
 {
-  color: color('tertiary-light');
-  background-color: color('background-dark');
+  color: colors.color('tertiary-light');
+  background-color: colors.color('background-dark');
 }
 
 
@@ -215,7 +230,7 @@ $nav-width: 320px;
 {
   opacity: 1;
   transform: rotate(45deg) translate(-2px, -1px);
-  background: color('primary-contrast');
+  background: colors.color('primary-contrast');
 }
 
 #menuToggle input:checked ~ span:nth-last-child(3)
@@ -250,7 +265,7 @@ $nav-width: 320px;
 		width: $nav-width;
 		max-width: 100%;
 		height: calc(100vh - $nav-height);
-		background-color: color('tertiary-light');
+		background-color: colors.color('tertiary-light');
 		overflow-y: auto;
 		overflow-x: hidden;
 		-webkit-overflow-scrolling: touch;
@@ -274,28 +289,28 @@ $nav-width: 320px;
 		justify-content: space-between;
 
 		&:not(:last-child) {
-			border-bottom: hidden 1px color('foreground-light');
+			border-bottom: hidden 1px colors.color('foreground-light');
 		}
 
 		.nav-link {
-			background-color: color('tertiary-light');
-			color: color('tertiary-contrast');
+			background-color: colors.color('tertiary-light');
+			color: colors.color('tertiary-contrast');
 		}
 
 		&.selected {
-			background-color: color('primary-light');
+			background-color: colors.color('primary-light');
 
 			>.nav-link {
 				background-color: transparent;
-				color: color('background');
+				color: colors.color('background');
 			}
 		}
 
 		.nav-back-link {
 			display: flex;
 			align-items: center;
-			background: color('neutral-dark');
-			color: color('background');
+			background: colors.color('neutral-dark');
+			color: colors.color('background');
 
 			i {
 				font-size: 1.125rem;
@@ -325,7 +340,7 @@ $nav-width: 320px;
 			width: 100%;
 			height: 100%;
 			transform: translateX(100%);
-			background-color: color('tertiary-light');
+			background-color: colors.color('tertiary-light');
 			transition: 0.3s;
 			visibility: hidden;
 		}

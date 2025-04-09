@@ -7,26 +7,26 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "rollup --config rollup.config.prod.ts --configPlugin typescript",
-    "watch": "rollup --config rollup.config.dev.ts --configPlugin typescript -w"
+    "build": "tsx build.ts",
+    "watch": "tsx build.ts --watch"
   },
   "dependencies": {
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^11.1.5",
     "@types/browser-sync": "^2.27.5",
     "@types/node": "^20.10.5",
+    "@types/postcss-import": "^14.0.3",
     "browser-sync": "^2.29.3",
     "chokidar": "^3.6.0",
+    "cssnano": "^7.0.6",
     "glob": "^10.3.10",
-    "rollup": "^4.5.2",
-    "rollup-plugin-cleaner": "^1.0.0",
-    "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-scss": "^4.0.0",
-    "rollup-plugin-sourcemaps": "^0.6.3",
-    "rollup-plugin-terser": "^7.0.2",
+    "postcss": "^8.5.1",
+    "postcss-banner": "^4.0.1",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0",
     "sass": "^1.69.5",
+    "tsx": "^4.19.2",
     "typescript": "^5.3.2",
     "zip-lib": "^0.7.3"
   },

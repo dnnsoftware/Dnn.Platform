@@ -183,7 +183,8 @@ namespace DotNetNuke.Web.InternalServices
                                 state =>
                                     {
                                         returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
-                                    }, null);
+                                    },
+                                null);
                         }
 
                         /* Response Content Type cannot be application/json
@@ -545,9 +546,9 @@ namespace DotNetNuke.Web.InternalServices
                         var filesCount = FileManager.Instance.UnzipFile(file, destinationFolder, invalidFiles);
 
                         var invalidFilesJson = invalidFiles.Count > 0
-                            ? string.Format("\"{0}\"", string.Join("\",\"", invalidFiles))
+                            ? string.Join(",", invalidFiles.Select(invalidFile => HttpUtility.JavaScriptStringEncode(invalidFile, addDoubleQuotes: true)))
                             : string.Empty;
-                        result.Prompt = string.Format("{{\"invalidFiles\":[{0}], \"totalCount\": {1}}}", invalidFilesJson, filesCount);
+                        result.Prompt = $"{{\"invalidFiles\":[{invalidFilesJson}], \"totalCount\": {filesCount}}}";
                     }
 
                     result.FileId = file.FileId;

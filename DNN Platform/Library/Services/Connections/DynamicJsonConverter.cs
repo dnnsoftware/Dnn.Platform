@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Connections
     using System.Dynamic;
     using System.Linq;
     using System.Text;
+    using System.Web;
     using System.Web.Script.Serialization;
 
     public sealed class DynamicJsonConverter : JavaScriptConverter
@@ -122,19 +123,19 @@ namespace DotNetNuke.Services.Connections
                     firstInDictionary = false;
                     var value = pair.Value;
                     var name = pair.Key;
-                    if (value is string)
+                    if (value is string stringValue)
                     {
-                        sb.AppendFormat("{0}:\"{1}\"", name, value);
+                        sb.AppendFormat("{0}:{1}", HttpUtility.JavaScriptStringEncode(name, addDoubleQuotes: true), HttpUtility.JavaScriptStringEncode(stringValue, addDoubleQuotes: true));
                     }
-                    else if (value is IDictionary<string, object>)
+                    else if (value is IDictionary<string, object> dictValue)
                     {
-                        new DynamicJsonObject((IDictionary<string, object>)value).ToString(sb);
+                        new DynamicJsonObject(dictValue).ToString(sb);
                     }
-                    else if (value is ArrayList)
+                    else if (value is ArrayList list)
                     {
                         sb.Append(name + ":[");
                         var firstInArray = true;
-                        foreach (var arrayValue in (ArrayList)value)
+                        foreach (var arrayValue in list)
                         {
                             if (!firstInArray)
                             {
@@ -143,17 +144,17 @@ namespace DotNetNuke.Services.Connections
 
                             firstInArray = false;
 
-                            if (arrayValue is IDictionary<string, object>)
+                            if (arrayValue is IDictionary<string, object> dictArrayValue)
                             {
-                                sb.Append(new DynamicJsonObject((IDictionary<string, object>)arrayValue).ToString());
+                                sb.Append(new DynamicJsonObject(dictArrayValue));
                             }
-                            else if (arrayValue is string)
+                            else if (arrayValue is string stringArrayValue)
                             {
-                                sb.AppendFormat("\"{0}\"", arrayValue);
+                                sb.Append(HttpUtility.JavaScriptStringEncode(stringArrayValue, addDoubleQuotes: true));
                             }
                             else
                             {
-                                sb.AppendFormat("{0}", arrayValue);
+                                sb.Append(arrayValue);
                             }
                         }
 

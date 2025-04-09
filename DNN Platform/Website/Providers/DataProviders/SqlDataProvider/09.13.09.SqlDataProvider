@@ -1,0 +1,30 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/*    Add cascade delete to PortalPermissions table         */
+/************************************************************/
+
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] DROP CONSTRAINT [FK_{objectQualifier}PortalPermission_PermissionId]
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] DROP CONSTRAINT [FK_{objectQualifier}PortalPermission_RoleId]
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] DROP CONSTRAINT [FK_{objectQualifier}PortalPermission_UserId]
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}PortalPermission_PermissionId] FOREIGN KEY([PermissionId])
+REFERENCES {databaseOwner}[{objectQualifier}Permission] ([PermissionId]) ON DELETE CASCADE
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}PortalPermission_RoleId] FOREIGN KEY([RoleId])
+REFERENCES {databaseOwner}[{objectQualifier}Roles] ([RoleId]) ON DELETE CASCADE
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}PortalPermission_UserId] FOREIGN KEY([UserId])
+REFERENCES {databaseOwner}[{objectQualifier}Users] ([UserId]) ON DELETE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] CHECK CONSTRAINT [FK_{objectQualifier}PortalPermission_PermissionId]
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] CHECK CONSTRAINT [FK_{objectQualifier}PortalPermission_RoleId]
+ALTER TABLE {databaseOwner}[{objectQualifier}PortalPermission] CHECK CONSTRAINT [FK_{objectQualifier}PortalPermission_UserId]
+GO

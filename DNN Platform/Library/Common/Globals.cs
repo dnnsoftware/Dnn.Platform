@@ -145,10 +145,12 @@ namespace DotNetNuke.Common
         /// <value>Portals/_default/Skins/.</value>
         public const string glbSkinsPath = "Portals/_default/Skins/";
 
-        /// <summary>Email address regex pattern.</summary>
-        /// <value><![CDATA[^[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])$]]></value>
+        /// <summary>
+        /// Email address regex pattern that covers most scenarios.
+        /// </summary>
+        /// <value>A regex that covers most emails in a performant way.</value>
         public const string glbEmailRegEx =
-            @"^\s*[a-zA-Z0-9_%+#&'*/=^`{|}~-](?:\.?[a-zA-Z0-9_%+#&'*/=^`{|}~-])*@(?:[a-zA-Z0-9_](?:(?:\.?|-*)[a-zA-Z0-9_])*\.[a-zA-Z]{2,9}|\[(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)\.(?:2[0-4]\d|25[0-5]|[01]?\d\d?)])\s*$";
+            @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
 
         /// <summary>User Name regex pattern.</summary>
         /// <value></value>
@@ -233,16 +235,16 @@ namespace DotNetNuke.Common
         /// </remarks>
         public enum PerformanceSettings
         {
-            /// <summary>No Caching</summary>
+            /// <summary>No Caching.</summary>
             NoCaching = 0,
 
-            /// <summary>Caching for a short time</summary>
+            /// <summary>Caching for a short time.</summary>
             LightCaching = 1,
 
-            /// <summary>Caching for moderate time</summary>
+            /// <summary>Caching for moderate time.</summary>
             ModerateCaching = 3,
 
-            /// <summary>Caching for a long time</summary>
+            /// <summary>Caching for a long time.</summary>
             HeavyCaching = 6,
         }
 
@@ -260,7 +262,7 @@ namespace DotNetNuke.Common
         /// </remarks>
         public enum PortalRegistrationType
         {
-            /// <summary>Disabled Registration</summary>
+            /// <summary>Disabled Registration.</summary>
             NoRegistration = 0,
 
             /// <summary>Account need be approved by portal's administrator.</summary>
@@ -288,7 +290,7 @@ namespace DotNetNuke.Common
             /// <summary>The application occur error when running.</summary>
             Error = 3,
 
-            /// <summary>The application status is unknown,</summary>
+            /// <summary>The application status is unknown.</summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
             Unknown = 4,
         }

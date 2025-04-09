@@ -305,6 +305,20 @@ class RegistrationSettingsPanelBody extends Component {
                         <div className="registrationSettings-row_switch">
                             <Label
                                 labelType="inline"
+                                tooltipMessage={resx.get("plEnableUnapprovedPasswordReminderNotification.Help")}
+                                label={resx.get("plEnableUnapprovedPasswordReminderNotification")} />
+                            <Switch
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
+                                value={state.registrationSettings.EnableUnapprovedPasswordReminderNotification}
+                                onChange={this.onSettingChange.bind(this, "EnableUnapprovedPasswordReminderNotification")}
+                                readOnly={!canEdit} />
+                        </div>
+                    </InputGroup>
+                    <InputGroup>
+                        <div className="registrationSettings-row_switch">
+                            <Label
+                                labelType="inline"
                                 tooltipMessage={resx.get("Registration_UseAuthProviders.Help")}
                                 label={resx.get("Registration_UseAuthProviders")} />
                             <Switch

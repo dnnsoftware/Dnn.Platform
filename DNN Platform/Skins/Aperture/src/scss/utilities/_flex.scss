@@ -1,3 +1,5 @@
+@use "../variables/breakpoints";
+
 // Mixin for generating flex-direction classes
 // usage: @include flex-direction('row');
 @mixin flex-direction($direction, $important: false) {
@@ -11,7 +13,7 @@
 // Mixin for generating media queries for flex-direction
 // usage: @include responsive-flex-direction('row');
 @mixin responsive-flex-direction($direction) {
-    @each $breakpoint, $min-width in $breakpoints {
+    @each $breakpoint, $min-width in breakpoints.$breakpoints {
         @media (min-width: $min-width) {
             .aperture-flex-#{$breakpoint}-#{$direction} {
                 @include flex-direction($direction, true);
@@ -30,7 +32,7 @@
 // Mixin for generating other flex properties
 // usage: @include flex-property('flex-wrap', 'flex-wrap', 'wrap');
 @mixin flex-property($property, $class-prefix, $class-suffix, $value) {
-    @each $breakpoint, $min-width in $breakpoints {
+    @each $breakpoint, $min-width in breakpoints.$breakpoints {
         @media (min-width: $min-width) {
             .aperture-#{$class-prefix}-#{$breakpoint}-#{$class-suffix} {
                 #{$property}: #{$value} !important;

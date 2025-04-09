@@ -29,10 +29,10 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
                 return;
             }
 
-            // Check for .Net Framework 4.7.2
-            if (!IsDotNetVersionAtLeast(461808))
+            // Check for .Net Framework 4.8
+            if (!IsDotNetVersionAtLeast(528040))
             {
-                this.Errors.Add(Localization.GetString("DotNetVersion472Required", this.LocalInstallResourceFile));
+                this.Errors.Add(Localization.GetString("DotNetVersion48Required", this.LocalInstallResourceFile));
                 this.Status = StepStatus.Abort;
                 return;
             }

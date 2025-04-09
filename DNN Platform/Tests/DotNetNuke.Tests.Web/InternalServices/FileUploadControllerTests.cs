@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
     using NUnit.Framework;
 
-    /// <summary>Tests FileUploadController methods</summary>
+    /// <summary>Tests FileUploadController methods.</summary>
     [TestFixture]
     public class FileUploadControllerTests
     {

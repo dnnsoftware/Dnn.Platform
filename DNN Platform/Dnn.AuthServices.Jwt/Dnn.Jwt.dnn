@@ -25,59 +25,83 @@
             </assembly>
             <assembly>
               <path>bin</path>
-              <name>System.IdentityModel.Tokens.Jwt.dll</name>
-            </assembly>
-            <assembly>
-              <path>bin</path>
               <name>Microsoft.IdentityModel.Abstractions.dll</name>
+              <version>8.4.0.60207</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>Microsoft.IdentityModel.Tokens.dll</name>
+              <version>8.4.0.60207</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>Microsoft.IdentityModel.JsonWebTokens.dll</name>
+              <version>8.4.0.60207</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>Microsoft.IdentityModel.Logging.dll</name>
+              <version>8.4.0.60207</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Text.Json.dll</name>
+              <version>8.0.1024.46610</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.IO.Pipelines.dll</name>
+              <version>9.0.225.6610</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Text.Encodings.Web.dll</name>
+              <version>9.0.225.6610</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Memory.dll</name>
+              <version>4.600.24.56208</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Buffers.dll</name>
+              <version>4.600.24.56208</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+              <version>6.100.24.56208</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Numerics.Vectors.dll</name>
+              <version>4.600.24.56208</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Threading.Tasks.Extensions.dll</name>
+              <version>4.6.28619.1</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.ValueTuple.dll</name>
+              <version>4.6.26515.6</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
+              <version>8.0.23.53103</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.Memory.dll</name>
+              <version>9.0.225.6610</version>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.TimeProvider.dll</name>
+              <version>8.0.123.58001</version>
             </assembly>
           </assemblies>
         </component>
@@ -122,6 +146,14 @@
               </configuration>
             </uninstall>
           </config>
+        </component>
+        <component type="Cleanup">
+          <files>
+            <file>
+              <path>bin</path>
+              <name>System.IdentityModel.Tokens.Jwt.dll</name>
+            </file>
+          </files>
         </component>
       </components>
     </package>

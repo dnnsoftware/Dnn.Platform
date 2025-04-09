@@ -26,22 +26,17 @@
                         <assembly>
                             <path>bin</path>
                             <name>Google.Apis.Auth.dll</name>
-                            <version>1.58.0</version>
-                        </assembly>
-                        <assembly>
-                            <path>bin</path>
-                            <name>Google.Apis.Auth.PlatformServices.dll</name>
-                            <version>1.58.0</version>
+                            <version>1.69.0</version>
                         </assembly>
                         <assembly>
                             <path>bin</path>
                             <name>Google.Apis.Core.dll</name>
-                            <version>1.58.0</version>
+                            <version>1.69.0</version>
                         </assembly>
                         <assembly>
                             <path>bin</path>
                             <name>Google.Apis.dll</name>
-                            <version>1.58.0</version>
+                            <version>1.69.0</version>
                         </assembly>
                     </assemblies>
                 </component>
@@ -52,6 +47,14 @@
                             <name>Resources.zip</name>
                         </resourceFile>
                     </resourceFiles>
+                </component>
+                <component type="Cleanup">
+                    <files>
+                        <file>
+                            <path>bin</path>
+                            <name>Google.Apis.Auth.PlatformServices.dll</name>
+                        </file>
+                    </files>
                 </component>
             </components>
         </package>

@@ -550,7 +550,7 @@
                     &amp;lt;h5&amp;gt;[Tab.Home.BannerPane.Module.HomeBanner.Content.H5.Text]&amp;lt;/h5&amp;gt;
                     &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.BannerPane.Module.HomeBanner.Content.Lead.Text]&amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-justify-content-center aperture-w-100 aperture-w-lg-25&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.BannerPane.Module.HomeBanner.Content.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/DnnSeal.png&amp;quot; title=&amp;quot;[Tab.Home.BannerPane.Module.HomeBanner.Content.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-justify-content-center aperture-w-100 aperture-w-lg-25&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.BannerPane.Module.HomeBanner.Content.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/DnnSeal.png&amp;quot; title=&amp;quot;[Tab.Home.BannerPane.Module.HomeBanner.Content.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
@@ -614,19 +614,19 @@
                     &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Lead.Text]&amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-justify-content-center aperture-mt-4 aperture-text-foreground&amp;quot;&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-bg-tertiary-contrast aperture-d-flex aperture-flex-column aperture-p-3 aperture-w-100&amp;quot;&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/administrators.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}Images/administrators.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.H4.Text]&amp;lt;/h4&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Div.Text]&amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-mb-3 aperture-mt-auto&amp;quot;&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-primary&amp;quot; href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Administrators.Button.Text]&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-bg-tertiary-contrast aperture-d-flex aperture-flex-column aperture-p-3 aperture-w-100&amp;quot;&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/developers.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}Images/developers.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.H4.Text]&amp;lt;/h4&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Div.Text]&amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-mb-3 aperture-mt-auto&amp;quot;&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-primary&amp;quot; href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Developers.Button.Text]&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-bg-tertiary-contrast aperture-d-flex aperture-flex-column aperture-p-3 aperture-w-100&amp;quot;&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/designers.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}Images/designers.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.H4.Text]&amp;lt;/h4&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Div.Text]&amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-mb-3 aperture-mt-auto&amp;quot;&amp;gt;&amp;lt;a class=&amp;quot;aperture-btn-primary&amp;quot; href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Learn.Designers.Button.Text]&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
@@ -639,7 +639,7 @@
                     &amp;lt;div class=&amp;quot;aperture-container&amp;quot; id=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.DivId.Text]&amp;quot;&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-d-flex aperture-justify-content-center aperture-my-4&amp;quot;&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-justify-content-center aperture-mx-1 aperture-mx-lg-5 aperture-text-center&amp;quot;&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/Images/DnnExtensions.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mx-auto aperture-my-3&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Image.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}Images/DnnExtensions.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Image.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;h2&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.H2.Text]&amp;lt;/h2&amp;gt;
                     &amp;lt;h4&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.H4.Text]&amp;lt;/h4&amp;gt;
                     &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Extend.Lead.Text]&amp;lt;/div&amp;gt;
@@ -655,15 +655,15 @@
                     &amp;lt;h2&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.H2.Text]&amp;lt;/h2&amp;gt;
                     &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.Lead.Text]&amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-align-items-center aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-justify-content-xl-center aperture-mb-4 aperture-mt-5&amp;quot;&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-gap-xl-0 aperture-justify-content-around aperture-w-xl-100&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;https://dnncommunity.slack.com&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.SlackImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/slack-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.SlackImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://discord.com/invite/Y2Q4uy2N?utm_source=Discord%20Widget&amp;utm_medium=Connect&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DiscordImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/discord-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DiscordImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://github.com/dnnsoftware/Dnn.Platform&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.GitHubImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/github-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.GitHubImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-gap-xl-0 aperture-justify-content-around aperture-w-xl-100&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;https://dnncommunity.slack.com&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.SlackImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/slack-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.SlackImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://discord.com/invite/Y2Q4uy2N?utm_source=Discord%20Widget&amp;utm_medium=Connect&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DiscordImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/discord-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DiscordImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://github.com/dnnsoftware/Dnn.Platform&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.GitHubImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/github-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.GitHubImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-align-items-center aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-justify-content-xl-center aperture-mb-4&amp;quot;&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-gap-xl-0 aperture-justify-content-around aperture-w-xl-100&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;https://dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-community-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://dnncommunity.org/forums&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnForumsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-forums-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnForumsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://dnncommunity.org/blogs&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnBlogsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-blogs-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnBlogsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnDocsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-docs-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnDocsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-gap-4 aperture-gap-xl-0 aperture-justify-content-around aperture-w-xl-100&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;https://dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/dnn-community-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://dnncommunity.org/forums&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnForumsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/dnn-forums-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnForumsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://dnncommunity.org/blogs&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnBlogsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/dnn-blogs-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnBlogsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;https://docs.dnncommunity.org&amp;quot; target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnDocsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/dnn-docs-logo-white.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnDocsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityAltImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/dnn-community-alt-logo.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityAltImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mb-5&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.EventsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;/portals/0/images/events.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.EventsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnConnectGroupPhotoImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid aperture-border-radius-4&amp;quot; src=&amp;quot;/portals/0/images/dnn-connect-group-photo.jpg&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnConnectGroupPhotoImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mb-5&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnSummitGroupPhotoImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid aperture-border-radius-4&amp;quot; src=&amp;quot;/portals/0/images/dnn-summit-group-photo.jpg&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnSummitGroupPhotoImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityAltImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/dnn-community-alt-logo.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnCommunityAltImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-5&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.EventsImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid&amp;quot; src=&amp;quot;{{PortalRoot}}images/events.png&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.EventsImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnConnectGroupPhotoImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid aperture-border-radius-4&amp;quot; src=&amp;quot;{{PortalRoot}}images/dnn-connect-group-photo.jpg&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnConnectGroupPhotoImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-5&amp;quot;&amp;gt;&amp;lt;img alt=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnSummitGroupPhotoImage.Alt.Text]&amp;quot; class=&amp;quot;aperture-img-fluid aperture-border-radius-4&amp;quot; src=&amp;quot;{{PortalRoot}}images/dnn-summit-group-photo.jpg&amp;quot; title=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DnnSummitGroupPhotoImage.Title.Text]&amp;quot; /&amp;gt;&amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
                     &amp;lt;/div&amp;gt;
@@ -3366,6 +3366,95 @@
       </panes>
       <tabUrls />
     </tab>
+      <tab>
+          <content>User Accounts</content>
+          <contentKey />
+          <containersrc />
+          <cultureCode />
+          <description>Manage user accounts for the portal.</description>
+          <disabled>false</disabled>
+          <enddate>0001-01-01T00:00:00</enddate>
+          <issecure>false</issecure>
+          <visible>false</visible>
+          <issystem>false</issystem>
+          <keywords />
+          <pageheadtext />
+          <permanentredirect>false</permanentredirect>
+          <refreshinterval>-1</refreshinterval>
+          <sitemappriority>0.5</sitemappriority>
+          <skinsrc />
+          <startdate>0001-01-01T00:00:00</startdate>
+          <name>User Accounts</name>
+          <title>User Accounts</title>
+          <iconfile>~/Icons/Sigma/Users_16X16_Standard.png</iconfile>
+          <iconfilelarge>~/Icons/Sigma/Users_32X32_Standard.png</iconfilelarge>
+          <url type="Normal" />
+          <tabpermissions>
+              <permission>
+                  <permissioncode>SYSTEM_TAB</permissioncode>
+                  <permissionkey>VIEW</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+              </permission>
+              <permission>
+                  <permissioncode>SYSTEM_TAB</permissioncode>
+                  <permissionkey>EDIT</permissionkey>
+                  <allowaccess>true</allowaccess>
+                  <rolename>Administrators</rolename>
+              </permission>
+          </tabpermissions>
+          <tabsettings />
+          <parent>Admin</parent>
+          <panes>
+              <pane>
+                  <name>ContentPane</name>
+                  <modules>
+                      <module>
+                          <contentKey />
+                          <moduleID>439</moduleID>
+                          <alignment />
+                          <alltabs>false</alltabs>
+                          <border />
+                          <cachemethod />
+                          <cachetime>0</cachetime>
+                          <color />
+                          <containersrc />
+                          <displayprint>true</displayprint>
+                          <displaysyndicate>false</displaysyndicate>
+                          <displaytitle>true</displaytitle>
+                          <enddate>0001-01-01T00:00:00</enddate>
+                          <footer />
+                          <header />
+                          <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
+                          <inheritviewpermissions>true</inheritviewpermissions>
+                          <modulepermissions>
+                              <permission>
+                                  <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
+                                  <permissionkey>EDIT</permissionkey>
+                                  <allowaccess>true</allowaccess>
+                                  <rolename>Administrators</rolename>
+                              </permission>
+                          </modulepermissions>
+                          <title>User Accounts</title>
+                          <startdate>0001-01-01T00:00:00</startdate>
+                          <uniqueId>22bb2d49-d123-430f-8883-a9d40c1e03ec</uniqueId>
+                          <visibility>Maximized</visibility>
+                          <cultureCode />
+                          <modulesettings />
+                          <tabmodulesettings>
+                              <tabmodulesetting>
+                                  <settingname>hideadminborder</settingname>
+                                  <settingvalue>True</settingvalue>
+                              </tabmodulesetting>
+                          </tabmodulesettings>
+                          <definition>Security</definition>
+                          <moduledefinition>User Accounts</moduledefinition>
+                      </module>
+                  </modules>
+              </pane>
+          </panes>
+          <tabUrls />
+      </tab>
   </tabs>
   <folders>
     <folder>

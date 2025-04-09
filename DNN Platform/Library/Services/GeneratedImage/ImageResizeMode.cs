@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
         /// <summary>
         /// Resizes the image with the given width or height and maintains the aspect ratio. The image will be centered in a
-        /// square area of the chosen background color
+        /// square area of the chosen background color.
         /// </summary>
         FitSquare = 3,
     }

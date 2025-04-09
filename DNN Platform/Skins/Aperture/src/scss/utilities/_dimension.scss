@@ -1,3 +1,5 @@
+@use "../variables/breakpoints";
+
 // Defaine maps for sizes
 $sizes: (
     0: 0,
@@ -26,7 +28,7 @@ $sizes: (
                 max-height: $value;
             }
         }
-        @each $breakpoint, $min-width in $breakpoints {
+        @each $breakpoint, $min-width in breakpoints.$breakpoints {
             @media (min-width: $min-width) {
                 .aperture-#{$property}-#{$breakpoint}-#{$key} {
                     @if ($property == 'w') {

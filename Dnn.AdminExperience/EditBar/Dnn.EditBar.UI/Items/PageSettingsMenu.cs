@@ -5,43 +5,55 @@
 namespace Dnn.EditBar.UI.Items
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
-    using Dnn.EditBar.UI.Helpers;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Personalization;
 
+    /// <summary>
+    /// Menu item to edit the current page settings.
+    /// </summary>
     [Serializable]
     public class PageSettingsMenu : BaseMenuItem
     {
         /// <inheritdoc/>
-        public override string Name { get; } = "PageSettings";
+        public override string Name => "PageSettings";
 
         /// <inheritdoc/>
-        public override string Text { get; } = "PageSettings";
+        public override string Text => "PageSettings";
 
         /// <inheritdoc/>
-        public override string Parent { get; } = Constants.LeftMenu;
+        public override string Parent => Constants.LeftMenu;
 
         /// <inheritdoc/>
-        public override string Loader { get; } = "PageSettings";
+        public override string Loader => "PageSettings";
 
         /// <inheritdoc/>
-        public override int Order { get; } = 15;
+        public override int Order => 15;
 
         /// <inheritdoc/>
         public override bool Visible()
         {
-            return Personalization.GetUserMode() == PortalSettings.Mode.Edit
-                && Host.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
+            var isInEditMode = Personalization.GetUserMode() == PortalSettings.Mode.Edit;
+            var isCurrentControlPanel = Host.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
+            var canEditPageSettings = this.CanEditPageSettings();
+
+            return isInEditMode && isCurrentControlPanel && canEditPageSettings;
+        }
+
+        private bool CanEditPageSettings()
+        {
+            return
+                TabPermissionController.CanAddPage() ||
+                TabPermissionController.CanAdminPage() ||
+                TabPermissionController.CanCopyPage() ||
+                TabPermissionController.CanDeletePage() ||
+                TabPermissionController.CanExportPage() ||
+                TabPermissionController.CanImportPage() ||
+                TabPermissionController.CanManagePage();
         }
     }
 }

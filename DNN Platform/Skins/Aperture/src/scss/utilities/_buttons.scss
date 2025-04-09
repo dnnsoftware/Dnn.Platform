@@ -1,8 +1,10 @@
+@use "../variables/colors";
+
 // Regular solid buttons
 @mixin button-variant($color, $hover-alpha: 1) {
-  $var-color: color($color);
-  $var-color-rgb: color($color, true);
-  color: color($color + '-contrast');
+  $var-color: colors.color($color);
+  $var-color-rgb: colors.color($color, true);
+  color: colors.color($color + '-contrast');
   background-color: $var-color;
   border-color: $var-color;
   border-radius: var(--dnn-controls-radius, 0);
@@ -10,7 +12,7 @@
   font-weight: bold;
   padding: calc(var(--dnn-controls-padding, .5rem) * 1.25) calc(var(--dnn-controls-padding, .5rem) * 4);
   &:hover, &:focus {
-    color: color($color + '-contrast');
+    color: colors.color($color + '-contrast');
     background-color: rgba($var-color-rgb, $hover-alpha);
     border-color: rgba($var-color-rgb, $hover-alpha);
   }
@@ -18,8 +20,8 @@
 
 // Outline buttons
 @mixin button-outline-variant($color) {
-  $var-color: color($color);
-  $var-color-contrast: color($color + '-contrast');
+  $var-color: colors.color($color);
+  $var-color-contrast: colors.color($color + '-contrast');
   color: $var-color;
   background-color: transparent;
   border-color: $var-color;
@@ -36,8 +38,8 @@
 
 // Reverse outline to solid buttons
 @mixin button-reverse-outline-variant($color) {
-  $var-color: color($color);
-  $var-color-contrast: color($color + '-contrast');
+  $var-color: colors.color($color);
+  $var-color-contrast: colors.color($color + '-contrast');
   color: $var-color-contrast;
   background-color: $var-color;
   background-image: none;
@@ -55,9 +57,9 @@
 
 // Inverse buttons to white background and colored text
 @mixin button-inverse-variant($color, $hover-alpha: 1) {
-  $var-color: color($color);
-  $var-color-contrast: color($color + '-contrast');
-  $var-color-rgb: color($color, true);
+  $var-color: colors.color($color);
+  $var-color-contrast: colors.color($color + '-contrast');
+  $var-color-rgb: colors.color($color, true);
   color: $var-color;
   background-color: $var-color-contrast;
   background-image: none;
@@ -74,17 +76,17 @@
 }
 
 // button iterations for each color
-@each $color, $value in $colors {
-  .aperture-btn-#{$color} {
+@each $color, $value in colors.$colors {
+  .aperture-btn-#{$color}, a.aperture-btn-#{$color} {
     @include button-variant($color,.8);
   }
-  .aperture-btn-outline-#{$color} {
+  .aperture-btn-outline-#{$color}, a.aperture-btn-outline-#{$color} {
     @include button-outline-variant($color);
   }
-  .aperture-btn-reverse-outline-#{$color} {
+  .aperture-btn-reverse-outline-#{$color} a.aperture-btn-reverse-outline-#{$color} {
     @include button-reverse-outline-variant($color);
   }
-  .aperture-btn-inverse-#{$color} {
+  .aperture-btn-inverse-#{$color}, a.aperture-btn-inverse-#{$color} {
     @include button-inverse-variant($color,.9);
   }
 }

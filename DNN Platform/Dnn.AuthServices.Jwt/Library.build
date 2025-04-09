@@ -4,7 +4,7 @@
   </PropertyGroup>
   <Import Project="..\..\DNN_Platform.build" />
   <PropertyGroup>
-    <Extension>resources</Extension>
+    <Extension>zip</Extension>
     <DNNFileName>Dnn.Jwt</DNNFileName>
     <PackageName>DnnJwtAuth</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\AuthenticationServices\JWTAuth</ModuleFolderName>
@@ -16,7 +16,6 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.IdentityModel.Tokens.Jwt.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.IdentityModel.Tokens.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.IdentityModel.JsonWebTokens.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.IdentityModel.Logging.dll" DestinationFolder="$(WebsitePath)/bin" />
@@ -29,5 +28,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Threading.Tasks.Extensions.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.ValueTuple.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Bcl.AsyncInterfaces.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Bcl.Memory.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Bcl.TimeProvider.dll" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
 </Project>

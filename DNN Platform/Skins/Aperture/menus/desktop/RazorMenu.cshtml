@@ -20,7 +20,12 @@
         var attrHref = page.Enabled ? page.Url : "javascript:void(0);";
 
         <li class="@(page.Selected ? "selected" : string.Empty)">
-            <a href="@attrHref" @attrTarget>@page.Text</a>
+            <a href="@attrHref" @attrTarget>
+                @page.Text
+                @if (hasChildren && page.Depth == 0) {
+                    <span>&nbsp;&#x25BC;</span>
+                }
+            </a>
             @if (hasChildren)
             {
                 <ul>

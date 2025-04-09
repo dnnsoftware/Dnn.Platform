@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         private Abstractions.Portals.IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         /// <inheritdoc />
-        public (ApiToken, UserInfo) ValidateToken(HttpRequestMessage request)
+        public (ApiToken Token, UserInfo User) ValidateToken(HttpRequestMessage request)
         {
             if (!ApiTokenAuthMessageHandler.IsEnabled)
             {
@@ -211,7 +211,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             return authorization;
         }
 
-        private (ApiToken, UserInfo) ValidateAuthorizationValue(string authorization)
+        private (ApiToken Token, UserInfo User) ValidateAuthorizationValue(string authorization)
         {
             var tokenAndHostGuid = authorization + Entities.Host.Host.GUID;
             var hashedToken = this.GetHashedStr(tokenAndHostGuid);
