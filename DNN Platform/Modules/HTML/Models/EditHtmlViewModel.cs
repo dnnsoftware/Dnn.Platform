@@ -10,8 +10,6 @@ namespace DotNetNuke.Modules.Html.Models
     using DotNetNuke.Web.Mvc.Page;
     using DotNetNuke.Web.MvcPipeline.Models;
 
-    using static DotNetNuke.Modules.Html.Controllers.DNN_HTMLController;
-
     public class EditHtmlViewModel : ModuleModelBase
     {
         [AllowHtml]
@@ -42,7 +40,7 @@ namespace DotNetNuke.Modules.Html.Models
 
         public bool Publish { get; set; }
 
-        public WorkflowType WorkflowType { get; set; }
+        public WorkflowType CurrentWorkflowType { get; set; }
 
         public int MaxVersions { get; set; }
 
@@ -69,5 +67,9 @@ namespace DotNetNuke.Modules.Html.Models
         public int PortalId { get; set; }
 
         public string PreviewContent { get; set; }
+
+        public int PageSize { get; set; }
+
+        public bool ShowHistoryButton { get; set; }
     }
 }

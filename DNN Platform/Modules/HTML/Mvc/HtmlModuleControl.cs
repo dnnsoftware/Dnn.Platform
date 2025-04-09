@@ -21,8 +21,6 @@ namespace DotNetNuke.Modules.Html
     {
         private readonly INavigationManager navigationManager;
 
-        // private bool editorEnabled;
-        // private int workflowID;
         public HtmlModuleControl()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -43,7 +41,7 @@ namespace DotNetNuke.Modules.Html
                     ModuleActionType.AddContent,
                     string.Empty,
                     string.Empty,
-                    this.EditUrl(/*"mvcpage", "yes"*/),
+                    this.EditUrl("mvcpage", "yes"),
                     false,
                     SecurityAccessLevel.Edit,
                     true,

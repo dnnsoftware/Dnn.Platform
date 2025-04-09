@@ -14,21 +14,21 @@ namespace DotNetNuke.Modules.Html.Controllers
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.ContentSecurityPolicy;
+    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Settings;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Modules.Html;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Modules.Html.Models;
-    using DotNetNuke.Mvc;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-
-    // using DotNetNuke.Web.Mvc;
-    using DotNetNuke.Web.Mvc.Page;
     using DotNetNuke.Website.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Html.Controllers
         // private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly HtmlTextLogController htmlTextLogController = new HtmlTextLogController();
-        private readonly WorkflowStateController workflowStateController = new WorkflowStateController();
+        private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly HtmlModuleSettingsRepository settingsRepository;
 
         public DNN_HTMLController(IContentSecurityPolicy csp, INavigationManager navigationManager)
@@ -48,60 +48,46 @@ namespace DotNetNuke.Modules.Html.Controllers
             this.settingsRepository = new HtmlModuleSettingsRepository();
         }
 
-        public enum WorkflowType
-        {
-#pragma warning disable SA1602 // Enumeration items should be documented
-            DirectPublish = 1,
-#pragma warning restore SA1602 // Enumeration items should be documented
-#pragma warning disable SA1602 // Enumeration items should be documented
-            ContentStaging = 2,
-#pragma warning restore SA1602 // Enumeration items should be documented
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Save(EditHtmlViewModel model)
         {
             try
             {
+                // get content
                 int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
                 var htmlContent = this.GetLatestHTMLContent(workflowID, model.ModuleId);
 
-                htmlContent.Content = model.EditorContent;
+                var aliases = from PortalAliasInfo pa in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalSettings.PortalId)
+                              select pa.HTTPAlias;
 
-                var draftStateID = this.workflowStateController.GetFirstWorkflowStateID(workflowID);
-                var publishedStateID = this.workflowStateController.GetLastWorkflowStateID(workflowID);
+                var content = model.EditorContent;
 
-                switch (model.WorkflowType)
+                if (this.Request.QueryString["nuru"] == null)
+                {
+                    content = HtmlUtils.AbsoluteToRelativeUrls(content, aliases);
+                }
+
+                htmlContent.Content = content;
+                var workflow = this.workflowManager.GetWorkflow(workflowID);
+                var draftStateID = workflow.FirstState.StateID;
+                var publishedStateID = workflow.LastState.StateID;
+
+                switch (model.CurrentWorkflowType)
                 {
                     case WorkflowType.DirectPublish:
-                        this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalSettings.PortalId));
+                        this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(model.PortalId));
+
                         break;
-                    case WorkflowType.ContentStaging:
-                        if (model.Publish)
+                    case WorkflowType.SaveDraft:
+                    case WorkflowType.ContentApproval:
+                        // if it's already published set it back to draft
+                        if (htmlContent.StateID == publishedStateID)
                         {
-                            // if it's already published set it to draft
-                            if (htmlContent.StateID == publishedStateID)
-                            {
-                                htmlContent.StateID = draftStateID;
-                            }
-                            else
-                            {
-                                htmlContent.StateID = publishedStateID;
-
-                                // here it's in published mode
-                            }
-                        }
-                        else
-                        {
-                            // if it's already published set it back to draft
-                            if (htmlContent.StateID != draftStateID)
-                            {
-                                htmlContent.StateID = draftStateID;
-                            }
+                            htmlContent.StateID = draftStateID;
                         }
 
-                        this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalSettings.PortalId));
+                        this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(model.PortalId));
                         break;
                 }
 
@@ -158,13 +144,7 @@ namespace DotNetNuke.Modules.Html.Controllers
             // model.LocalResourceFile = Path.Combine(Path.GetDirectoryName(this.ActiveModule.ModuleControl.ControlSrc), Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(this.ActiveModule.ModuleControl.ControlSrc));
             try
             {
-                int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
-                var htmlContent = this.GetLatestHTMLContent(workflowID, model.ModuleId);
-
-                var moduleSettings = this.settingsRepository.GetSettings(this.ActiveModule);
-                model.PreviewContent = HtmlTextController.FormatHtmlText(model.ModuleId, htmlContent.Content, moduleSettings, this.PortalSettings, null);
-
-                // return this.PartialView(this.ActiveModule, "_History", model);
+                model.PreviewContent = model.EditorContent; // HttpUtility.HtmlDecode(model.HiddenEditorContent);
                 return this.PartialView(this.ActiveModule, "EditHtml", model);
             }
             catch (Exception exc)
@@ -182,36 +162,6 @@ namespace DotNetNuke.Modules.Html.Controllers
             model.RedirectUrl = this.NavigationManager.NavigateURL(model.TabId);
             try
             {
-                int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
-                var htmlContent = this.GetLatestHTMLContent(workflowID, model.ModuleId);
-
-                model.ShowPublishOption = model.WorkflowType != WorkflowType.DirectPublish;
-                model.ShowCurrentVersion = model.WorkflowType != WorkflowType.DirectPublish;
-
-                var workflowStates = this.workflowStateController.GetWorkflowStates(workflowID);
-                var maxVersions = this.htmlTextController.GetMaximumVersionHistory(this.PortalSettings.PortalId);
-
-                var htmlContentItemID = -1;
-
-                if (htmlContent != null)
-                {
-                    htmlContentItemID = htmlContent.ItemID;
-                    var html = System.Web.HttpUtility.HtmlDecode(htmlContent.Content);
-                    model.EditorContent = html;
-                }
-
-                model.MaxVersions = maxVersions;
-
-                model.WorkflowType = workflowStates.Count == 1 ? WorkflowType.DirectPublish : WorkflowType.ContentStaging;
-                if (htmlContentItemID != -1)
-                {
-                    this.PopulateModelWithContent(model, htmlContent);
-                }
-                else
-                {
-                    this.PopulateModelWithInitialContent(model, workflowStates[0] as WorkflowStateInfo);
-                }
-
                 // return this.PartialView(this.ActiveModule, "_Edit", model);
                 return this.PartialView(this.ActiveModule, "EditHtml", model);
             }
@@ -225,10 +175,7 @@ namespace DotNetNuke.Modules.Html.Controllers
 
         public ActionResult HistoryRemove(EditHtmlViewModel model)
         {
-            // int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
-            // var htmlContent = this.GetLatestHTMLContent(workflowID, model.ModuleId);
             this.htmlTextController.DeleteHtmlText(model.ModuleId, model.ItemID);
-
             return this.ShowEdit(model);
         }
 
@@ -239,7 +186,7 @@ namespace DotNetNuke.Modules.Html.Controllers
             htmlContent.ItemID = -1;
             htmlContent.ModuleID = model.ModuleId;
             htmlContent.WorkflowID = workflowID;
-            htmlContent.StateID = this.workflowStateController.GetFirstWorkflowStateID(workflowID);
+            htmlContent.StateID = this.workflowManager.GetWorkflow(workflowID).FirstState.StateID;
             this.htmlTextController.UpdateHtmlText(htmlContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalSettings.PortalId));
             return this.ShowEdit(model);
         }
@@ -306,14 +253,6 @@ namespace DotNetNuke.Modules.Html.Controllers
             }
         }
 
-        private List<WorkflowStateInfo> GetWorkflows()
-        {
-            // Récupérer les workflows disponibles
-            var workflowStateController = new WorkflowStateController();
-            var workflows = workflowStateController.GetWorkflows(this.ActiveModule.PortalID);
-            return workflows.Cast<WorkflowStateInfo>().Where(w => !w.IsDeleted).ToList(); // Filtrer les workflows non supprimés
-        }
-
         private void UpdateWorkflow(string selectedWorkflow, string applyTo, bool replace)
         {
             var htmlTextController = new HtmlTextController(this.NavigationManager);
@@ -360,7 +299,7 @@ namespace DotNetNuke.Modules.Html.Controllers
             {
                 htmlContent = new HtmlTextInfo();
                 htmlContent.ItemID = -1;
-                htmlContent.StateID = this.workflowStateController.GetFirstWorkflowStateID(workflowID);
+                htmlContent.StateID = this.workflowManager.GetWorkflow(workflowID).FirstState.StateID;
                 htmlContent.WorkflowID = workflowID;
                 htmlContent.ModuleID = moduleId;
             }
@@ -377,10 +316,10 @@ namespace DotNetNuke.Modules.Html.Controllers
             // model.Content = this.FormatContent(htmlContent.Content);
         }
 
-        private void PopulateModelWithInitialContent(EditHtmlViewModel model, WorkflowStateInfo firstState)
+        private void PopulateModelWithInitialContent(EditHtmlViewModel model, WorkflowState firstState)
         {
             // model.EditorContent = this.LocalizeString("AddContent");
-            model.CurrentWorkflowInUse = firstState.WorkflowName;
+            model.CurrentWorkflowInUse = firstState.StateName;
             model.ShowCurrentWorkflowState = false;
             model.ShowCurrentVersion = false;
         }
