@@ -6,6 +6,7 @@ namespace DotNetNuke.Build.Tasks;
 
 using System.Linq;
 using System.Xml;
+
 using Cake.Common.Diagnostics;
 using Cake.Common.IO;
 using Cake.Core.IO;
