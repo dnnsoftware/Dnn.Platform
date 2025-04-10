@@ -3427,7 +3427,6 @@
                           <header />
                           <iconfile>~/Icons/Sigma/Users_32X32_Standard.png</iconfile>
                           <inheritviewpermissions>true</inheritviewpermissions>
-                          <iswebslice>false</iswebslice>
                           <modulepermissions>
                               <permission>
                                   <permissioncode>SYSTEM_MODULE_DEFINITION</permissioncode>
@@ -3440,8 +3439,6 @@
                           <startdate>0001-01-01T00:00:00</startdate>
                           <uniqueId>22bb2d49-d123-430f-8883-a9d40c1e03ec</uniqueId>
                           <visibility>Maximized</visibility>
-                          <websliceexpirydate>0001-01-01T00:00:00</websliceexpirydate>
-                          <webslicettl>0</webslicettl>
                           <cultureCode />
                           <modulesettings />
                           <tabmodulesettings>

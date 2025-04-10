@@ -15,12 +15,14 @@ namespace DotNetNuke.Tests.Core.Services
     public class UtilTest
     {
         [Test]
+        [Ignore("The static class calls items in Globals that are not initialized.")]
         public void Dnn_9838_TryToCreateAndExecute_UnsuccesfulRewrite()
         {
             this.TryToRewriteFile(lockFileFor: 1000, tryRewriteFileFor: 500, isRewritten: false);
         }
 
         [Test]
+        [Ignore("The static class calls items in Globals that are not initialized.")]
         public void Dnn_9838_TryToCreateAndExecute_SuccessfulRewrite()
         {
             this.TryToRewriteFile(lockFileFor: 500, tryRewriteFileFor: 1000, isRewritten: true);

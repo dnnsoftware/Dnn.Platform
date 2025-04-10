@@ -32,7 +32,6 @@ namespace Dnn.EditBar.UI.Controllers
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.UI.WebControls;
     using Newtonsoft.Json;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -40,10 +39,13 @@ namespace Dnn.EditBar.UI.Controllers
     /// <summary>Content Editor Manager.</summary>
     public class ContentEditorManager : UserControlBase
     {
+        /// <summary>The folder that containes the control.</summary>
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
+
         private const int CssFileOrder = 40;
         private bool supportAjax = true;
 
+        /// <summary>Gets or sets the skin.</summary>
         public Skin Skin { get; set; }
 
         private string LocalResourcesFile
@@ -64,6 +66,11 @@ namespace Dnn.EditBar.UI.Controllers
             }
         }
 
+        /// <summary>
+        /// Determines whether the specified permission is allowed for the tab.
+        /// </summary>
+        /// <param name="permissionKey">The permission key to check.</param>
+        /// <returns>A value inticating whether the user has the specified permission for the tab.</returns>
         public static bool HasTabPermission(string permissionKey)
         {
             var principal = Thread.CurrentPrincipal;
@@ -73,7 +80,6 @@ namespace Dnn.EditBar.UI.Controllers
             }
 
             var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
-
             bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
             if (isAdminUser)
             {
@@ -83,6 +89,11 @@ namespace Dnn.EditBar.UI.Controllers
             return TabPermissionController.HasTabPermission(permissionKey);
         }
 
+        /// <summary>
+        /// Gets the current instance of the ContentEditorManager."/>.
+        /// </summary>
+        /// <param name="page">The page to check.</param>
+        /// <returns><see cref="ContentEditorManager"/>.</returns>
         internal static ContentEditorManager GetCurrent(Page page)
         {
             if (page.Items.Contains("ContentEditorManager"))
@@ -112,9 +123,9 @@ namespace Dnn.EditBar.UI.Controllers
                 ClientAPI.RegisterClientVariable(this.Page, "dnn_current_userid", this.PortalSettings.UserInfo.UserID.ToString(), true);
             }
 
-            if (Personalization.GetUserMode() != PortalSettings.Mode.Edit
-                    || !this.IsPageEditor()
-                    || EditBarController.Instance.GetMenuItems().Count == 0)
+            var isInViewMode = Personalization.GetUserMode() != PortalSettings.Mode.Edit;
+            var menuItemsCount = EditBarController.Instance.GetMenuItems().Count;
+            if (isInViewMode || menuItemsCount == 0)
             {
                 this.Parent.Controls.Remove(this);
                 return;
@@ -301,11 +312,6 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
-        }
-
-        private bool IsPageEditor()
-        {
-            return HasTabPermission("EDIT");
         }
 
         private IEnumerable<IEnumerable<string>> GetPaneClientIdCollection()
