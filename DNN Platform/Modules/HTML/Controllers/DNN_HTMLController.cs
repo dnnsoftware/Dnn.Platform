@@ -225,22 +225,25 @@ namespace DotNetNuke.Modules.Html.Controllers
             {
                 try
                 {
-                    // Récupérer les paramètres existants
                     var moduleSettings = this.settingsRepository.GetSettings(this.ActiveModule);
-
-                    // Mettre à jour les paramètres dans le repository
+                    var htmlTextController = new HtmlTextController(this.NavigationManager);
                     moduleSettings.ReplaceTokens = model.ReplaceTokens;
                     moduleSettings.UseDecorate = model.UseDecorate;
                     moduleSettings.SearchDescLength = model.SearchDescLength;
 
-                    // Sauvegarder les paramètres mis à jour
-                    this.settingsRepository.SaveSettings(this.ActiveModule, moduleSettings);
+                    var repo = new HtmlModuleSettingsRepository();
+                    repo.SaveSettings(this.ActiveModule, moduleSettings);
 
-                    // Gérer le CacheTime
-                    this.UpdateCacheTime(model.ReplaceTokens);
-
-                    // Mettre à jour les workflows selon la sélection
-                    this.UpdateWorkflow(model.SelectedWorkflow, model.ApplyTo, model.Replace);
+                    // disable module caching if token replace is enabled
+                    if (model.ReplaceTokens)
+                    {
+                        ModuleInfo module = ModuleController.Instance.GetModule(model.ModuleId, model.TabId, false);
+                        if (module.CacheTime > 0)
+                        {
+                            module.CacheTime = 0;
+                            ModuleController.Instance.UpdateModule(module);
+                        }
+                    }
                 }
                 catch (Exception exc)
                 {
@@ -251,45 +254,6 @@ namespace DotNetNuke.Modules.Html.Controllers
 
                 return this.UpdateDefaultSettings(model);
             }
-        }
-
-        private void UpdateWorkflow(string selectedWorkflow, string applyTo, bool replace)
-        {
-            var htmlTextController = new HtmlTextController(this.NavigationManager);
-            var workflow = this.htmlTextController.GetWorkflow(this.ActiveModule.ModuleID, this.ActiveModule.TabID, this.ActiveModule.PortalID);
-
-            // Mettre à jour le workflow selon la sélection
-            switch (applyTo)
-            {
-                case "Module":
-                    htmlTextController.UpdateWorkflow(this.ActiveModule.ModuleID, applyTo, int.Parse(selectedWorkflow), replace);
-                    break;
-                case "Page":
-                    htmlTextController.UpdateWorkflow(this.ActiveModule.TabID, applyTo, int.Parse(selectedWorkflow), replace);
-                    break;
-                case "Site":
-                    htmlTextController.UpdateWorkflow(this.ActiveModule.PortalID, applyTo, int.Parse(selectedWorkflow), replace);
-                    break;
-            }
-        }
-
-        private void UpdateCacheTime(bool replaceTokens)
-        {
-            // Récupérer le module actuel
-            var module = ModuleController.Instance.GetModule(this.ActiveModule.ModuleID, this.ActiveModule.TabID, false);
-            if (replaceTokens)
-            {
-                // Désactiver le cache si ReplaceTokens est activé
-                module.CacheTime = 0;
-            }
-            else
-            {
-                // Réinitialiser le CacheTime à sa valeur par défaut si nécessaire
-                module.CacheTime = 60; // ou toute autre valeur par défaut
-            }
-
-            // Mettre à jour le module avec le nouveau CacheTime
-            ModuleController.Instance.UpdateModule(module);
         }
 
         private HtmlTextInfo GetLatestHTMLContent(int workflowID, int moduleId)
