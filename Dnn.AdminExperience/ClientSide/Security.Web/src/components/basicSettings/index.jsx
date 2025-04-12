@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
-import { InputGroup, Dropdown, Switch, Label, Button } from "@dnnsoftware/dnn-react-common";
+import { InputGroup, Dropdown, Switch, Label, Button, SingleLineInput } from "@dnnsoftware/dnn-react-common";
 import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.module.less";
@@ -129,6 +129,17 @@ class BasicSettingsPanelBody extends Component {
                             value={state.basicLoginSettings.PrimaryAdministratorId}
                             onSelect={this.onSettingChange.bind(this, "PrimaryAdministratorId") }
                             enabled={canEdit} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Label
+                            isHost={true}
+                            tooltipMessage={resx.get("plAdministrator.Help.Help") }
+                            label={resx.get("plAdministrator") }
+                        />
+                        <SingleLineInput
+                            value={state.basicLoginSettings.userRequestIPHeader}
+                            onChange={this.onSettingChange.bind(this, "userRequestIPHeader") }
+                        />
                     </InputGroup>
                     <div style={{paddingBottom: "15px", fontStyle: "italic"}}>{resx.get("RedirectionMovedToSiteSettings")}</div>
                     <InputGroup>
