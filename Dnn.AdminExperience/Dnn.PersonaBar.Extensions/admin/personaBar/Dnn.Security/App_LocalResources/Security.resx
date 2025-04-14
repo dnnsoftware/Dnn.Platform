@@ -1418,6 +1418,7 @@
     <value>User Request IP Header</value>
   </data>
   <data name="plUserRequestIpHeader.Help" xml:space="preserve">
-    <value>When set, this header will be used to find the actual user IP in scenarios where the request is forwared (WAF, ReverseProxy, LoadBalancer, etc.) "X-Forwarded-For" is a commonly used header for this.</value>
+    <value>When set, this header will be used to find the actual user IP in scenarios where the request is forwared (WAF, ReverseProxy, LoadBalancer, etc.) "X-Forwarded-For" is a commonly used header for this. If unset the server variable "REMOTE_ADDR" will be utilized for all user IP address identification.</value>
+
   </data>
 </root>
