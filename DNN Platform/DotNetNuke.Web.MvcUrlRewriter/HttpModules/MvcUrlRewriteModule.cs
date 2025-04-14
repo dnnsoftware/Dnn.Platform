@@ -1,7 +1,7 @@
 ﻿using System.Web;
-using DotNetNuke.Web.MvcPipeline.Entities.Urls;
+using DotNetNuke.Web.MvcUrlRewriter.Entities.Urls;
 
-namespace DotNetNuke.Web.MvcPipeline.HttpModules
+namespace DotNetNuke.Web.MvcUrlRewriter.HttpModules
 {
     public class MvcUrlRewriteModule : IHttpModule
     {

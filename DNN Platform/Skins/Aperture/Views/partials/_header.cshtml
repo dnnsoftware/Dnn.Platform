@@ -1,0 +1,30 @@
+@using DotNetNuke.Web.MvcPipeline.Models
+@using DotNetNuke.Web.MvcPipeline.Skins
+@using DotNetNuke.Web.NewDDRMenu
+
+@model PageModel
+
+<header class="aperture-header">
+  <div class="eyebrow-bar">
+    <div class="aperture-container">
+            @Html.Login()
+            @Html.User()
+        </div>
+    </div>
+    <div class="logo-menu-bar">
+        <div class="aperture-container">
+            @Html.Logo(injectSvg: true)
+            @Html.DDRMenu(clientID: "menu_desktop", 
+                         cssClass: "aperture-d-none aperture-d-md-block", 
+                         menuStyle: "mvcmenus/desktop",
+                         nodeSelector: "*,0,2")
+            @Html.DDRMenu(clientID: "menu_mobile", 
+                         cssClass: "aperture-d-flex aperture-d-md-none", 
+                         menuStyle: "mvcmenus/mobile",
+                         nodeSelector: "*,0,2")
+						 
+						 						 
+						 
+        </div>
+    </div>
+</header> 

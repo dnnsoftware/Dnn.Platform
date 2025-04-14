@@ -186,6 +186,7 @@ function watchFiles(): void {
     "./containers",
     "./menus",
     "./partials",
+    "./Views",
   ],
   {
     ignored: /(^|[\/\\])\../, // Ignore dotfiles
@@ -292,7 +293,9 @@ async function packageFiles(): Promise<void> {
           `${skinDist}/fonts/**/*`,
           `${skinDist}/js/**/*`,
           `${skinDist}/menus/**/*`,
+          `${skinDist}/mvcmenus/**/*`,
           `${skinDist}/patials/**/*`,
+          `${skinDist}/Views/**/*`,
           `${skinDist}/**/*.ascx`,
           `${skinDist}/**/*.xml`,
           `${skinDist}/**/*.png`,

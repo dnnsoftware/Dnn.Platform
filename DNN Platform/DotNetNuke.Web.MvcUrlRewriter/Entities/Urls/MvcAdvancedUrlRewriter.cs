@@ -1,4 +1,4 @@
-﻿namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
+﻿namespace DotNetNuke.Web.MvcUrlRewriter.Entities.Urls
 {
     using System;
     using System.Collections;
