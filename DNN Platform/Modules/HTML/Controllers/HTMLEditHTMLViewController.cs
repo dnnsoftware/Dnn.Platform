@@ -42,26 +42,28 @@ namespace DotNetNuke.Modules.Html.Controllers
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = new HtmlTextController(this.navigationManager);
-            this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-            this.contentSecurityPolicy = Globals.DependencyProvider.GetRequiredService<IContentSecurityPolicy>();
             this.contentSecurityPolicy = csp;
         }
 
-        protected override object ViewModel(ModuleInfo module)
+        public override string ControlPath => "~/DesktopModules/Html/";
+
+        public override string ID => "EditHTML";
+
+        protected override object ViewModel()
         {
             var model = new EditHtmlViewModel();
             try
             {
-                model.LocalResourceFile = Path.Combine(Path.GetDirectoryName(module.ModuleControl.ControlSrc), Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(module.ModuleControl.ControlSrc));
+                model.LocalResourceFile = this.LocalResourceFile;
                 model.ShowEditView = true;
-                model.ModuleId = module.ModuleID;
-                model.TabId = module.TabID;
-                model.PortalId = module.PortalID;
+                model.ModuleId = this.ModuleId;
+                model.TabId = this.TabId;
+                model.PortalId = this.PortalId;
                 model.RedirectUrl = this.navigationManager.NavigateURL();
-                int workflowID = this.htmlTextController.GetWorkflow(module.ModuleID, module.TabID, module.PortalID).Value;
+                int workflowID = this.htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
                 var htmlContentItemID = Null.NullInteger;
-                var htmlContent = this.htmlTextController.GetTopHtmlText(module.ModuleID, false, workflowID);
+                var htmlContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, workflowID);
 
                 if (htmlContent != null)
                 {
@@ -72,7 +74,7 @@ namespace DotNetNuke.Modules.Html.Controllers
 
                 var workflow = this.workflowManager.GetWorkflow(workflowID);
                 var workflowStates = workflow.States.ToList();
-                model.MaxVersions = this.htmlTextController.GetMaximumVersionHistory(module.PortalID);
+                model.MaxVersions = this.htmlTextController.GetMaximumVersionHistory(this.PortalId);
                 var userCanEdit = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 
                 model.PageSize = Math.Min(Math.Max(model.MaxVersions, 5), 10); // min 5, max 10

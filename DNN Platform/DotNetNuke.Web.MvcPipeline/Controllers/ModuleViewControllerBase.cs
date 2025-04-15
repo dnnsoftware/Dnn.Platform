@@ -4,18 +4,27 @@
 
 namespace DotNetNuke.Web.MvcPipeline.Controllers
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Threading;
     using System.Web.Mvc;
-
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
     public abstract class ModuleViewControllerBase : Controller, IMvcController
     {
-        private ModuleInfo activeModule;
         /*
+        private ModuleInfo activeModule;
         private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private readonly Lazy<ServiceScopeContainer> serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
         private string localResourceFile;
@@ -23,60 +32,13 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         private DesktopModuleInfo desktopModule;
         */
 
+        private string localResourceFile;
+        private ModuleInstanceContext moduleContext;
+
         public ModuleViewControllerBase()
         {
         }
 
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
-
-        /// <summary>Gets userInfo for the current user.</summary>
-        public UserInfo UserInfo
-        {
-            get { return this.PortalSettings.UserInfo; }
-        }
-
-        public ModuleInfo ActiveModule
-        {
-            get { return this.activeModule; }
-        }
-
-        [ChildActionOnly]
-        public virtual ActionResult Invoke(ControlViewModel input)
-        {
-            this.activeModule = ModuleController.Instance.GetModule(input.ModuleId, input.TabId, false);
-            if (this.activeModule.ModuleControlId != input.ModuleControlId)
-            {
-                this.activeModule = this.activeModule.Clone();
-                this.activeModule.ContainerPath = input.ContainerPath;
-                this.activeModule.ContainerSrc = input.ContainerSrc;
-                this.activeModule.ModuleControlId = input.ModuleControlId;
-                this.activeModule.PaneName = input.PanaName;
-                this.activeModule.IconFile = input.IconFile;
-            }
-
-            var model = this.ViewModel(this.activeModule);
-            return this.PartialView(this.activeModule, model);
-        }
-
-        protected abstract object ViewModel(ModuleInfo module);
-
-        protected ActionResult PartialView(ModuleInfo module, object model)
-        {
-            return this.View(MvcUtils.GetControlViewName(module), model);
-        }
-
-        protected ActionResult PartialView(ModuleInfo module, string viewName, object model)
-        {
-            return this.View(MvcUtils.GetControlViewName(module, viewName), model);
-        }
-
-        /*
         public bool IsHostMenu
         {
             get
@@ -162,26 +124,6 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             }
         }
 
-        /// <summary>Gets the Path for this control (used primarily for UserControls).</summary>
-        /// <returns>A String.</returns>
-        public string ControlPath
-        {
-            get
-            {
-                return "/" + Path.GetDirectoryName(this.ModuleConfiguration.ModuleControl.ControlSrc);
-            }
-        }
-
-        /// <summary>Gets the Name for this control.</summary>
-        /// <returns>A String.</returns>
-        public string ControlName
-        {
-            get
-            {
-                return this.GetType().Name.Replace("_", ".");
-            }
-        }
-
         /// <summary>Gets the Module Context for this control.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
         public ModuleInstanceContext ModuleContext
@@ -190,42 +132,12 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             {
                 if (this.moduleContext == null)
                 {
-                    this.moduleContext = new ModuleInstanceContext()
-                    {
-                        Configuration = this.ActiveModule,
-                    };
+                    this.moduleContext = new ModuleInstanceContext();
                 }
 
                 return this.moduleContext;
             }
         }
-
-        public DesktopModuleInfo DesktopModule
-        {
-            get
-            {
-                if (this.desktopModule == null)
-                {
-                    this.desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(this.ActiveModule.DesktopModuleID, this.ActiveModule.PortalID);
-                }
-
-                return this.desktopModule;
-            }
-        }
-
-        public ModuleActionCollection Actions
-        {
-            get
-            {
-                return this.ModuleContext.Actions;
-            }
-
-            set
-            {
-                this.ModuleContext.Actions = value;
-            }
-        }
-
         public string HelpURL
         {
             get
@@ -278,14 +190,6 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             }
         }
 
-        public string ID
-        {
-            get
-            {
-                return Path.GetFileName(this.ModuleConfiguration.ModuleControl.ControlSrc);
-            }
-        }
-
         /// <summary>Gets or sets the local resource file for this control.</summary>
         /// <returns>A String.</returns>
         public string LocalResourceFile
@@ -311,14 +215,8 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             }
         }
 
-        /// <summary>
-        /// Gets the Dependency Provider to resolve registered
-        /// services with the container.
-        /// </summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
-        protected IServiceProvider DependencyProvider => this.serviceScopeContainer.Value.ServiceScope.ServiceProvider;
+        public abstract string ControlPath { get;  }
+        public abstract string ID { get; }
 
         public string EditUrl()
         {
@@ -355,16 +253,6 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             return this.ModuleContext.GetNextActionID();
         }
 
-        /// <inheritdoc/>
-        public override void Dispose()
-        {
-            base.Dispose();
-            if (this.serviceScopeContainer.IsValueCreated)
-            {
-                this.serviceScopeContainer.Value.Dispose();
-            }
-        }
-
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
@@ -374,6 +262,38 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         {
             return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
-        */
+
+        [ChildActionOnly]
+        public virtual ActionResult Invoke(ControlViewModel input)
+        {
+            this.moduleContext = new ModuleInstanceContext();
+            var activeModule = ModuleController.Instance.GetModule(input.ModuleId, input.TabId, false);
+            
+            if (activeModule.ModuleControlId != input.ModuleControlId)
+            {
+                activeModule = activeModule.Clone();
+                activeModule.ContainerPath = input.ContainerPath;
+                activeModule.ContainerSrc = input.ContainerSrc;
+                activeModule.ModuleControlId = input.ModuleControlId;
+                activeModule.PaneName = input.PanaName;
+                activeModule.IconFile = input.IconFile;
+            }
+            moduleContext.Configuration = activeModule;
+            var model = this.ViewModel();
+            return this.PartialView(this.ModuleConfiguration, model);
+        }
+
+        protected abstract object ViewModel();
+
+        protected ActionResult PartialView(ModuleInfo module, object model)
+        {
+            return this.View(MvcUtils.GetControlViewName(module), model);
+        }
+
+        protected ActionResult PartialView(ModuleInfo module, string viewName, object model)
+        {
+            return this.View(MvcUtils.GetControlViewName(module, viewName), model);
+        }
+   
     }
 }
