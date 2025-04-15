@@ -27,9 +27,7 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.Mvc;
     using DotNetNuke.Web.MvcPipeline.Controllers;
-    using DotNetNuke.Website.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
     public class HTMLHtmlModuleViewController : ModuleViewControllerBase
@@ -43,11 +41,14 @@ namespace DotNetNuke.Modules.Html.Controllers
             this.htmlTextController = new HtmlTextController(this.navigationManager);
         }
 
-        protected override object ViewModel(ModuleInfo module)
+        public override string ControlPath => "~/DesktopModules/Html/";
+
+        public override string ID => "HtmlModule";
+
+        protected override object ViewModel()
         {
-            int workflowID = this.htmlTextController.GetWorkflow(module.ModuleID, module.TabID, module.PortalID).Value;
-            this.ModuleActionPublish(module, workflowID);
-            HtmlTextInfo content = this.htmlTextController.GetTopHtmlText(module.ModuleID, true, workflowID);
+            int workflowID = this.htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+            HtmlTextInfo content = this.htmlTextController.GetTopHtmlText(this.ModuleId, true, workflowID);
 
             var html = string.Empty;
             if (content != null)
@@ -59,49 +60,6 @@ namespace DotNetNuke.Modules.Html.Controllers
             {
                 Html = html,
             };
-        }
-
-        private void ModuleActionPublish(ModuleInfo module, int workflowID)
-        {
-            try
-            {
-                if (this.Request.QueryString["act"]?.ToString() == "publish" && this.Request.QueryString["mod"]?.ToString() == module.ModuleID.ToString())
-                {
-                    var moduleContext = new ModuleInstanceContext();
-                    moduleContext.Configuration = module;
-
-                    // verify security
-                    if (moduleContext.IsEditable && Personalization.GetUserMode() == DotNetNuke.Entities.Portals.PortalSettings.Mode.Edit)
-                    {
-                        // get content
-                        var objHTML = new HtmlTextController(this.navigationManager);
-                        HtmlTextInfo objContent = objHTML.GetTopHtmlText(module.ModuleID, false, workflowID);
-                        /*
-                        var objWorkflow = new WorkflowStateController();
-                        if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(workflowID))
-                        {
-                            // if not direct publish workflow
-                            if (objWorkflow.GetWorkflowStates(workflowID).Count > 1)
-                            {
-                                // publish content
-                                objContent.StateID = objWorkflow.GetNextWorkflowStateID(objContent.WorkflowID, objContent.StateID);
-
-                                // save the content
-                                objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalSettings.PortalId));
-
-                                // refresh page
-                                // this.Response.Redirect(this.navigationManager.NavigateURL(), true);
-                            }
-                        }
-                        */
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                // Exceptions.ProcessModuleLoadException(this, exc);
-                throw new Exception("HTML Module Publish", exc);
-            }
         }
     }
 }
