@@ -4,7 +4,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using System.Web;
 
-namespace DotNetNuke.Web.MvcPipeline.Entities.Urls
+namespace DotNetNuke.Web.MvcUrlRewriter.Entities.Urls
 {
     internal class MvcUrlRewriterController
     {
