@@ -54,13 +54,19 @@ const transpiledFiles: TranspiledFileConfig[] = [
 ];
 
 const copyFiles: StaticFileConfig[] = [
-  { src: "containers/*", dest: containersDist },
+  { src: "containers/*.ascx", dest: containersDist },
+  { src: "containers/Views/*", dest: containersDist + "/Views" },
   { src: "menus/desktop/*", dest: skinDist + "/menus/desktop" },
   { src: "menus/footer/*", dest: skinDist + "/menus/footer" },
   { src: "menus/mobile/*", dest: skinDist + "/menus/mobile" },
+  { src: "mvcmenus/desktop/*", dest: skinDist + "/mvcmenus/desktop" },
+  { src: "mvcmenus/footer/*", dest: skinDist + "/mvcmenus/footer" },
+  { src: "mvcmenus/mobile/*", dest: skinDist + "/mvcmenus/mobile" },
   { src: "partials/*", dest: skinDist + "/partials" },
   { src: "src/fonts/*", dest: skinDist + "/fonts" },
   { src: "src/images/*", dest: skinDist + "/images" },
+  { src: "Views/*.cshtml", dest: skinDist + "/Views" },
+  { src: "Views/partials/*", dest: skinDist + "/Views/partials" },
   { src: "*.{ascx,png,dnn,xml,txt}", dest: skinDist },
 ];
 
@@ -73,7 +79,7 @@ function normalizePath(filePath: string): string {
 function copyFilesPreservingStructure(copyConfig: StaticFileConfig[]): void {
   copyConfig.forEach(entry => {
     console.log(`Copying files from ${entry.src} to ${entry.dest}...`);
-    
+
     globSync(entry.src).forEach(file => {
         const fileName = path.basename(file);
         const destFile = path.join(entry.dest, fileName);
@@ -140,7 +146,7 @@ async function buildScss(input: string, output: string): Promise<void> {
     console.error(`Error compiling SCSS for ${input}:`, error);
   }
 }
-  
+
 /** Bundle TypeScript/JavaScript with esbuild */
 async function buildJs(input: string, output: string): Promise<void> {
   try {
@@ -284,7 +290,7 @@ async function packageFiles(): Promise<void> {
   ensureEmptyDirectory(artifactsDir);
   const stagingDir = `${artifactsDir}/staging`;
   ensureEmptyDirectory(stagingDir);
-  
+
   // Skin resources
   console.log("Packaging skin resources...");
   var skinResources = await glob(
