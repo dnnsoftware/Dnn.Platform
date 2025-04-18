@@ -37,6 +37,40 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    -- Update existing workflows to set the WorkflowKey based on the WorkflowName
+    -- Direct Publish workflows
+    UPDATE {databaseOwner}{objectQualifier}ContentWorkflows
+    SET WorkflowKey = N'DirectPublish'
+    WHERE WorkflowKey = N'' AND WorkflowName IN (
+        N'Direct Publish',
+        N'direkt veröffentlichen',
+        N'Publicación directa',
+        N'Publier directement',
+        N'Pubblica Direttamente',
+        N'Direct publiceren');
+
+    -- Save Draft workflows
+    UPDATE {databaseOwner}{objectQualifier}ContentWorkflows
+    SET WorkflowKey = N'SaveDraft'
+    WHERE WorkflowKey = N'' AND WorkflowName IN (
+        N'Save Draft',
+        N'Entwurf speichern',
+        N'Guardar borrador',
+        N'Enregister le brouillon',
+        N'Salva Bozza',
+        N'Concept opslaan');
+    
+    -- Content Approval workflows
+    UPDATE {databaseOwner}{objectQualifier}ContentWorkflows
+    SET WorkflowKey = N'ContentApproval'
+    WHERE WorkflowKey = N'' AND WorkflowName IN (
+        N'Content Approval', 
+        N'Inhalte freigeben', 
+        N'Aprobación de contenido', 
+        N'Approbation du contenu', 
+        N'Approvazione Contenuto', 
+        N'Inhoud goedkeuring');
+
     -- Create all workflows for all portals in a set-based operation
     -- Direct Publish workflows
     INSERT INTO {databaseOwner}{objectQualifier}ContentWorkflows
@@ -52,7 +86,7 @@ BEGIN
     WHERE NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflows cw 
         WHERE cw.PortalID = p.PortalID 
-        AND cw.WorkflowName = N'Direct Publish'
+        AND cw.WorkflowKey = N'DirectPublish'
         AND cw.IsDeleted = 0
     );
 
@@ -70,7 +104,7 @@ BEGIN
     WHERE NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflows cw 
         WHERE cw.PortalID = p.PortalID 
-        AND cw.WorkflowName = N'Save Draft'
+        AND cw.WorkflowKey = N'SaveDraft'
         AND cw.IsDeleted = 0
     );
 
@@ -88,7 +122,7 @@ BEGIN
     WHERE NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflows cw 
         WHERE cw.PortalID = p.PortalID 
-        AND cw.WorkflowName = N'Content Approval'
+        AND cw.WorkflowKey = N'ContentApproval'
         AND cw.IsDeleted = 0
     );
 
@@ -103,11 +137,17 @@ BEGIN
         1, 
         0
     FROM {databaseOwner}{objectQualifier}ContentWorkflows cw
-    WHERE cw.WorkflowName = N'Direct Publish'
+    WHERE cw.WorkflowKey = N'DirectPublish'
     AND NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates cws 
         WHERE cws.WorkflowID = cw.WorkflowID 
-        AND cws.StateName = N'Published'
+        AND cws.StateName IN (
+            N'Published',
+            N'veröffentlicht',
+            N'Publicado',
+            N'Publié',
+            N'Pubblicato',
+            N'Publiceren')
     );
 
     -- Create states for Save Draft workflows
@@ -121,11 +161,17 @@ BEGIN
         1, 
         0
     FROM {databaseOwner}{objectQualifier}ContentWorkflows cw
-    WHERE cw.WorkflowName = N'Save Draft'
+    WHERE cw.WorkflowKey = N'SaveDraft'
     AND NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates cws 
         WHERE cws.WorkflowID = cw.WorkflowID 
-        AND cws.StateName = N'Draft'
+        AND cws.StateName IN (
+            N'Draft',
+            N'Borrador',
+            N'Bozza',
+            N'Brouillon',
+            N'Concept',
+            N'Entwurf')
     );
 
     INSERT INTO {databaseOwner}{objectQualifier}ContentWorkflowStates
@@ -138,11 +184,17 @@ BEGIN
         1, 
         0
     FROM {databaseOwner}{objectQualifier}ContentWorkflows cw
-    WHERE cw.WorkflowName = N'Save Draft'
+    WHERE cw.WorkflowKey = N'SaveDraft'
     AND NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates cws 
         WHERE cws.WorkflowID = cw.WorkflowID 
-        AND cws.StateName = N'Published'
+        AND cws.StateName IN (
+            N'Published',
+            N'veröffentlicht',
+            N'Publicado',
+            N'Publié',
+            N'Pubblicato',
+            N'Publiceren')
     );
 
     -- Create states for Content Approval workflows
@@ -156,11 +208,17 @@ BEGIN
         1, 
         0
     FROM {databaseOwner}{objectQualifier}ContentWorkflows cw
-    WHERE cw.WorkflowName = N'Content Approval'
+    WHERE cw.WorkflowKey = N'ContentApproval'
     AND NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates cws 
         WHERE cws.WorkflowID = cw.WorkflowID 
-        AND cws.StateName = N'Draft'
+        AND cws.StateName IN (
+            N'Draft',
+            N'Borrador',
+            N'Bozza',
+            N'Brouillon',
+            N'Concept',
+            N'Entwurf')
     );
 
     INSERT INTO {databaseOwner}{objectQualifier}ContentWorkflowStates
@@ -173,11 +231,17 @@ BEGIN
         1, 
         1
     FROM {databaseOwner}{objectQualifier}ContentWorkflows cw
-    WHERE cw.WorkflowName = N'Content Approval'
+    WHERE cw.WorkflowKey = N'ContentApproval'
     AND NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates cws 
         WHERE cws.WorkflowID = cw.WorkflowID 
-        AND cws.StateName = N'Ready For Review'
+        AND cws.StateName IN (
+            N'Ready For Review',
+            N'bereit zur Überprüfung',
+            N'Klaar voor review',
+            N'Listo para revisión',
+            N'Prêt pour l''examen',
+            N'Pronto Per la Revisione')
     );
 
     INSERT INTO {databaseOwner}{objectQualifier}ContentWorkflowStates
@@ -190,11 +254,17 @@ BEGIN
         1, 
         0
     FROM {databaseOwner}{objectQualifier}ContentWorkflows cw
-    WHERE cw.WorkflowName = N'Content Approval'
+    WHERE cw.WorkflowKey = N'ContentApproval'
     AND NOT EXISTS (
         SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates cws 
         WHERE cws.WorkflowID = cw.WorkflowID 
-        AND cws.StateName = N'Published'
+        AND cws.StateName IN (
+        N'Published',
+        N'veröffentlicht',
+        N'Publicado',
+        N'Publié',
+        N'Pubblicato',
+        N'Publiceren')
     );
 END
 GO
@@ -223,19 +293,37 @@ BEGIN
     -- Create mapping table for old and new workflow states
     DECLARE @StateMapping TABLE (
         OldStateID INT,
-        NewStateID INT
+        NewStateID INT,
+        PortalID INT
     );
 
     -- Map old workflow states to new ones in one operation
-    INSERT INTO @StateMapping (OldStateID, NewStateID)
-    SELECT DISTINCT ws.StateID, cws.StateID
+    INSERT INTO @StateMapping (OldStateID, NewStateID, PortalID)
+    SELECT DISTINCT ws.StateID, cws.StateID, cw.PortalID
     FROM {databaseOwner}{objectQualifier}WorkflowStates ws
     INNER JOIN {databaseOwner}{objectQualifier}Workflow w ON ws.WorkflowID = w.WorkflowID
     INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows cw ON 
         (w.PortalID = cw.PortalID OR (w.PortalID IS NULL AND cw.PortalID IS NOT NULL))
-        AND (w.WorkflowName = cw.WorkflowName OR (w.WorkflowName = 'Content Staging' AND cw.WorkflowName ='Save Draft'))
+        AND ((w.WorkflowName = 'Direct Publish' AND cw.WorkflowKey ='DirectPublish') 
+            OR (w.WorkflowName = 'Content Staging' AND cw.WorkflowKey ='SaveDraft'))
     INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON 
-        cw.WorkflowID = cws.WorkflowID AND ws.StateName = cws.StateName;
+        cw.WorkflowID = cws.WorkflowID
+        AND (ws.StateName = cws.StateName
+            OR (ws.StateName = N'Published' AND cws.StateName IN (
+                N'Published',
+                N'veröffentlicht',
+                N'Publicado',
+                N'Publié',
+                N'Pubblicato',
+                N'Publiceren'))
+            OR (ws.StateName = N'Draft' AND cws.StateName IN (
+                N'Draft',
+                N'Borrador',
+                N'Bozza',
+                N'Brouillon',
+                N'Concept',
+                N'Entwurf'))
+        );
     
     -- Update HtmlText table with new StateIDs
     BEGIN TRY
@@ -245,7 +333,8 @@ BEGIN
         UPDATE {databaseOwner}{objectQualifier}HtmlText
         SET StateID = sm.NewStateID
         FROM {databaseOwner}{objectQualifier}HtmlText ht
-        INNER JOIN @StateMapping sm ON ht.StateID = sm.OldStateID
+        INNER JOIN {databaseOwner}{objectQualifier}Modules m ON ht.ModuleID = m.ModuleID
+        INNER JOIN @StateMapping sm ON ht.StateID = sm.OldStateID AND m.PortalID = sm.PortalID
         WHERE sm.NewStateID IS NOT NULL;
         
         -- For any remaining records, use portal and state name to find a match
@@ -256,9 +345,25 @@ BEGIN
         INNER JOIN {databaseOwner}{objectQualifier}WorkflowStates ws ON ht.StateID = ws.StateID
         INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows cw ON m.PortalID = cw.PortalID
         INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON 
-            cw.WorkflowID = cws.WorkflowID AND ws.StateName = cws.StateName
+            cw.WorkflowID = cws.WorkflowID 
+            AND (ws.StateName = cws.StateName
+                OR (ws.StateName = N'Published' AND cws.StateName IN (
+                    N'Published',
+                    N'veröffentlicht',
+                    N'Publicado',
+                    N'Publié',
+                    N'Pubblicato',
+                    N'Publiceren'))
+                OR (ws.StateName = N'Draft' AND cws.StateName IN (
+                    N'Draft',
+                    N'Borrador',
+                    N'Bozza',
+                    N'Brouillon',
+                    N'Concept',
+                    N'Entwurf'))
+            )
         WHERE NOT EXISTS (
-            SELECT 1 FROM @StateMapping sm WHERE ht.StateID = sm.OldStateID
+            SELECT 1 FROM @StateMapping sm WHERE ht.StateID = sm.OldStateID AND m.PortalID = sm.PortalID
         );
         
         -- As a fallback, set any unmapped states to Published state
@@ -266,17 +371,25 @@ BEGIN
         SET StateID = cws.StateID
         FROM {databaseOwner}{objectQualifier}HtmlText ht
         INNER JOIN {databaseOwner}{objectQualifier}Modules m ON ht.ModuleID = m.ModuleID
-        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows cw ON m.PortalID = cw.PortalID AND cw.WorkflowName = 'Direct Publish'
-        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON cw.WorkflowID = cws.WorkflowID AND cws.StateName = 'Published'
+        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows cw ON m.PortalID = cw.PortalID AND cw.WorkflowKey = 'DirectPublish'
+        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON cw.WorkflowID = cws.WorkflowID AND cws.StateName IN (
+            N'Published',
+            N'veröffentlicht',
+            N'Publicado',
+            N'Publié',
+            N'Pubblicato',
+            N'Publiceren')
         WHERE NOT EXISTS (
-            SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates WHERE StateID = ht.StateID
+            SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates WHERE StateID = ht.StateID /*AND m.PortalID = sm.PortalID*/
         );
         
         -- Update HtmlTextLog table
         UPDATE {databaseOwner}{objectQualifier}HtmlTextLog
         SET StateID = sm.NewStateID
         FROM {databaseOwner}{objectQualifier}HtmlTextLog htl
-        INNER JOIN @StateMapping sm ON htl.StateID = sm.OldStateID;
+        INNER JOIN {databaseOwner}{objectQualifier}HtmlText ht ON htl.ItemID = ht.ItemID
+        INNER JOIN {databaseOwner}{objectQualifier}Modules m ON ht.ModuleID = m.ModuleID
+        INNER JOIN @StateMapping sm ON htl.StateID = sm.OldStateID AND m.PortalID = sm.PortalID;
         
         -- For any remaining HtmlTextLog records, use the item's module info to find proper state
         UPDATE {databaseOwner}{objectQualifier}HtmlTextLog
@@ -287,11 +400,27 @@ BEGIN
         INNER JOIN {databaseOwner}{objectQualifier}WorkflowStates ws ON htl.StateID = ws.StateID
         INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows cw ON m.PortalID = cw.PortalID
         INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON 
-            cw.WorkflowID = cws.WorkflowID AND ws.StateName = cws.StateName
+            cw.WorkflowID = cws.WorkflowID
+            AND (ws.StateName = cws.StateName
+                OR (ws.StateName = N'Published' AND cws.StateName IN (
+                    N'Published',
+                    N'veröffentlicht',
+                    N'Publicado',
+                    N'Publié',
+                    N'Pubblicato',
+                    N'Publiceren'))
+                OR (ws.StateName = N'Draft' AND cws.StateName IN (
+                    N'Draft',
+                    N'Borrador',
+                    N'Bozza',
+                    N'Brouillon',
+                    N'Concept',
+                    N'Entwurf'))
+        )
         WHERE NOT EXISTS (
             SELECT 1 FROM @StateMapping sm WHERE htl.StateID = sm.OldStateID
         );
-        
+  
         COMMIT TRANSACTION;
         PRINT 'HTML module workflow migration completed successfully.';
     END TRY
