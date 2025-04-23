@@ -53,12 +53,14 @@ namespace DotNetNuke.Web.MvcPipeline
 
         public static IHtmlString Control(this HtmlHelper htmlHelper, string controlSrc, ModuleInfo module)
         {
+            string controllerName= string.Empty;
+            string actionName = string.Empty;
             try
             {
-                if (module.ModuleControl.ControlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
+                if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
                 {
                     var controlKey = module.ModuleControl.ControlKey;
-                    var segments = module.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
+                    var segments = controlSrc.Replace(".mvc", string.Empty).Split('/');
 
                     var localResourceFile = string.Format(
                         "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
@@ -95,8 +97,7 @@ namespace DotNetNuke.Web.MvcPipeline
                         routeControllerName = segments[0];
                         routeActionName = segments[1];
                     }
-                    string controllerName;
-                    string actionName;
+                    
                     if (moduleId != module.ModuleID && string.IsNullOrEmpty(controlKey))
                     {
                         // Set default routeData for module that is not the "selected" module
@@ -132,15 +133,17 @@ namespace DotNetNuke.Web.MvcPipeline
                         {
                             // routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
                         }
-
-                        values.Add("ModuleId", module.ModuleID);
-                        values.Add("TabId", module.TabID);
-                        values.Add("ModuleControlId", module.ModuleControlId);
-                        values.Add("PanaName", module.PaneName);
-                        values.Add("ContainerSrc", module.ContainerSrc);
-                        values.Add("ContainerPath", module.ContainerPath);
-                        values.Add("IconFile", module.IconFile);
                     }
+                    values.Add("ModuleId", module.ModuleID);
+                    values.Add("TabId", module.TabID);
+                    values.Add("ModuleControlId", module.ModuleControlId);
+                    values.Add("PanaName", module.PaneName);
+                    values.Add("ContainerSrc", module.ContainerSrc);
+                    values.Add("ContainerPath", module.ContainerPath);
+                    values.Add("IconFile", module.IconFile);
+                    var area = module.DesktopModule.FolderName.Replace("/","");
+                    controllerName = area + controllerName;
+                    //values.Add("area", module.DesktopModule.FolderName);
                     return htmlHelper.Action(
                             actionName,
                             controllerName,
@@ -148,9 +151,11 @@ namespace DotNetNuke.Web.MvcPipeline
                 }
                 else
                 {
+                    controllerName= MvcUtils.GetControlControllerName(controlSrc);
+                    actionName = "Invoke";
                     return htmlHelper.Action(
-                        "Invoke",
-                        MvcUtils.GetControlControllerName(controlSrc),
+                        actionName,
+                        controllerName,
                         new ControlViewModel()
                         {
                             ModuleId = module.ModuleID,
@@ -165,7 +170,7 @@ namespace DotNetNuke.Web.MvcPipeline
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message} - {MvcUtils.GetControlControllerName(controlSrc)} - Invoke", ex);
+                throw new Exception($"{ex.Message} - {controlSrc} - {controllerName} - {actionName}", ex);
             }
         }
 
