@@ -68,7 +68,20 @@ namespace DotNetNuke.Web.MvcPipeline
                         Localization.LocalResourceDirectory,
                         segments[0]);
 
-                    RouteValueDictionary values = new RouteValueDictionary();
+                    RouteValueDictionary values = new RouteValueDictionary
+                    {
+                        { "mvcpage", true },
+                        { "ModuleId", module.ModuleID },
+                        { "TabId", module.TabID },
+                        { "ModuleControlId", module.ModuleControlId },
+                        { "PanaName", module.PaneName },
+                        { "ContainerSrc", module.ContainerSrc },
+                        { "ContainerPath", module.ContainerPath },
+                        { "IconFile", module.IconFile }
+                    };
+                    var area = module.DesktopModule.FolderName.Replace("/", "");
+                    // controllerName = area + controllerName;
+                    //values.Add("area", module.DesktopModule.FolderName);
 
                     var queryString = htmlHelper.ViewContext.HttpContext.Request.QueryString;
 
@@ -125,7 +138,10 @@ namespace DotNetNuke.Web.MvcPipeline
                         {
                             if (!ExcludedQueryStringParams.Split(',').ToList().Contains(param.ToLowerInvariant()))
                             {
-                                values.Add(param, queryString[param]);
+                                if (!values.ContainsKey(param))
+                                {
+                                    values.Add(param, queryString[param]);
+                                }
                             }
                         }
 
@@ -134,16 +150,7 @@ namespace DotNetNuke.Web.MvcPipeline
                             // routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
                         }
                     }
-                    values.Add("ModuleId", module.ModuleID);
-                    values.Add("TabId", module.TabID);
-                    values.Add("ModuleControlId", module.ModuleControlId);
-                    values.Add("PanaName", module.PaneName);
-                    values.Add("ContainerSrc", module.ContainerSrc);
-                    values.Add("ContainerPath", module.ContainerPath);
-                    values.Add("IconFile", module.IconFile);
-                    var area = module.DesktopModule.FolderName.Replace("/","");
-                    controllerName = area + controllerName;
-                    //values.Add("area", module.DesktopModule.FolderName);
+                   
                     return htmlHelper.Action(
                             actionName,
                             controllerName,

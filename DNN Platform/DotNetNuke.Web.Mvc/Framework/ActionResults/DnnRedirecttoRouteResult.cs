@@ -42,7 +42,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
         {
             Requires.NotNull("context", context);
 
-            Guard.Against(context.IsChildAction, "Cannot Redirect In Child Action");
+            if (!context.RouteData.Values.ContainsKey("mvcpage"))
+            {
+                Guard.Against(context.IsChildAction, "Cannot Redirect In Child Action");
+            }
 
             string url;
             if (this.Url != null && context.Controller is IDnnController)
