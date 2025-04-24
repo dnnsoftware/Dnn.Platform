@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
 
     public static class HttpConfigurationExtensions
     {
-        private const string Key = "MvcTabAndModuleInfoProvider";
+        private const string Key = "MvcPipelineTabAndModuleInfoProvider";
 
         public static void AddTabAndModuleInfoProvider(this HttpConfiguration configuration, ITabAndModuleInfoProvider tabAndModuleInfoProvider)
         {

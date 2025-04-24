@@ -78,11 +78,12 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         {
             get
             {
+                /*
                 if (Globals.IsEditMode())
                 {
                     return "dnnSortable";
                 }
-
+                */
                 return string.Empty;
             }
         }
