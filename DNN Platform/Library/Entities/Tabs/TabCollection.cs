@@ -41,8 +41,8 @@ namespace DotNetNuke.Entities.Tabs
         // The special constructor is used to deserialize values.
 
         /// <summary>Initializes a new instance of the <see cref="TabCollection"/> class.</summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
+        /// <param name="info">The serialization info.</param>
+        /// <param name="context">The streaming context.</param>
         public TabCollection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>Initializes a new instance of the <see cref="TabCollection"/> class.</summary>
-        /// <param name="tabs"></param>
+        /// <param name="tabs">The tabs.</param>
         public TabCollection(IEnumerable<TabInfo> tabs)
             : this()
         {

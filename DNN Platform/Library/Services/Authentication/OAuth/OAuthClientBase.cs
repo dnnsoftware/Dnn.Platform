@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private const string OAuthClientIdKey = "client_id";
         private const string OAuthClientSecretKey = "client_secret";
         private const string OAuthRedirectUriKey = "redirect_uri";
-        private const string OAuthGrantTyepKey = "grant_type";
+        private const string OAuthGrantTypeKey = "grant_type";
         private const string OAuthCodeKey = "code";
 
         private const string UnreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
@@ -58,9 +58,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private readonly Random random = new Random();
 
         /// <summary>Initializes a new instance of the <see cref="OAuthClientBase"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="mode"></param>
-        /// <param name="service"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="mode">The auth mode.</param>
+        /// <param name="service">The service name.</param>
         protected OAuthClientBase(int portalId, AuthMode mode, string service)
         {
             // Set default Expiry to 14 days
@@ -302,13 +302,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
         /// <param name="url">The full url that needs to be signed including its non OAuth url parameters.</param>
         /// <param name="token">The token, if available. If not available pass null or an empty string.</param>
         /// <param name="tokenSecret">The token secret, if available. If not available pass null or an empty string.</param>
-        /// <param name="callbackurl"> </param>
+        /// <param name="callbackurl">The callback URL.</param>
         /// <param name="oauthVerifier">This value MUST be included when exchanging Request Tokens for Access Tokens. Otherwise pass a null or an empty string.</param>
         /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST,GET,PUT, etc).</param>
-        /// <param name="timeStamp"> </param>
-        /// <param name="nonce"> </param>
-        /// <param name="normalizedUrl"> </param>
-        /// <param name="requestParameters"> </param>
+        /// <param name="timeStamp">The Unix-formatted timestamp.</param>
+        /// <param name="nonce">The nonce.</param>
+        /// <param name="normalizedUrl">A normalized version of <paramref name="url"/>.</param>
+        /// <param name="requestParameters">The OAuth request parameters.</param>
         /// <returns>A base64 string of the hash value.</returns>
         public string GenerateSignature(Uri url, string token, string tokenSecret, string callbackurl, string oauthVerifier, string httpMethod, string timeStamp, string nonce, out string normalizedUrl, out List<QueryParameter> requestParameters)
         {
@@ -509,7 +509,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             // DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
             parameters.Add(new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(this.APISecret.ToString())));
-            parameters.Add(new QueryParameter(OAuthGrantTyepKey, "authorization_code"));
+            parameters.Add(new QueryParameter(OAuthGrantTypeKey, "authorization_code"));
             parameters.Add(new QueryParameter(OAuthCodeKey, this.VerificationCode));
 
             // DNN-6265 Support for OAuth V2 optional parameter

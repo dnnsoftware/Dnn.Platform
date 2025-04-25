@@ -62,9 +62,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Get the tab path for the supplied Tab.</summary>
-        /// <param name="tab"></param>
-        /// <param name="options"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="options">The friendly URL options.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>The friendly URL path.</returns>
         internal static string GetFriendlyUrlTabPath(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
@@ -88,8 +88,8 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>Finds a culture-specific homepage tab ID for a non-default language.</summary>
         /// <param name="defaultCulture">The default culture of the portal.</param>
-        /// <param name="cultureCode"></param>
-        /// <param name="portalId"></param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <param name="defaultHomeTabId">The default home page tab id.</param>
         /// <returns>The valid home page tab ID for the portal ID and culture.</returns>
         /// <remarks>Note if no specific home page found for the culture, will return defaultHomeTabId back.</remarks>
@@ -135,17 +135,17 @@ namespace DotNetNuke.Entities.Urls
         /// <summary>For the supplied options, return a tab path for the specified tab.</summary>
         /// <param name="tab">TabInfo object of selected tab.</param>
         /// <param name="settings">FriendlyUrlSettings.</param>
-        /// <param name="options"></param>
+        /// <param name="options">The friendly URL options.</param>
         /// <param name="ignoreCustomRedirects">Whether to add in the customised Tab redirects or not.</param>
-        /// <param name="homePageSiteRoot"></param>
-        /// <param name="isHomeTab"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="isDefaultCultureCode"></param>
-        /// <param name="hasPath"></param>
-        /// <param name="dropLangParms"></param>
-        /// <param name="customHttpAlias"></param>
-        /// <param name="isCustomPath"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="homePageSiteRoot">Whether the home page is the site root.</param>
+        /// <param name="isHomeTab">Whether it's the home tab.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="isDefaultCultureCode">Whether it's the default culture code.</param>
+        /// <param name="hasPath">Whether there's a path….</param>
+        /// <param name="dropLangParms">Whether the language parameters were removed.</param>
+        /// <param name="customHttpAlias">The custom HTTP alias that was used, if any.</param>
+        /// <param name="isCustomPath">Whether it's a custom path.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <remarks>751 : include isDefaultCultureCode flag to determine when using the portal default language
         /// 770 : include custom http alias output for when the Url uses a specific alias due to custom Url rules
         ///  : include new out parameter 'isCustomPath' to return whether the Url was generated from Url-Master custom url.

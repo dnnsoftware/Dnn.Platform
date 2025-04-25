@@ -32,15 +32,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public PortalSettings(int portalId)
             : this(Null.NullInteger, portalId)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="portalId"></param>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
         public PortalSettings(int tabId, int portalId)
         {
             this.PortalId = portalId;
@@ -68,15 +68,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="portal"></param>
+        /// <param name="portal">The portal info.</param>
         public PortalSettings(PortalInfo portal)
             : this(Null.NullInteger, portal)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="portal"></param>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portal">The portal info.</param>
         public PortalSettings(int tabId, PortalInfo portal)
         {
             this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;

@@ -18,9 +18,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNRegionEditControl
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
     /// Regions.
@@ -43,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
-        /// <param name="type"></param>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
         public DNNRegionEditControl(string type)
         {
             this.Init += this.DnnRegionControl_Init;

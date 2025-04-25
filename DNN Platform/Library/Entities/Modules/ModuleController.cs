@@ -1091,9 +1091,7 @@ namespace DotNetNuke.Entities.Modules
                 c => CBO.FillObject<ModuleInfo>(DataProvider.GetTabModule(tabModuleID)));
         }
 
-        /// <summary>Get all Module references on a tab.</summary>
-        /// <param name="tabId"></param>
-        /// <returns>Dictionary of ModuleID and ModuleInfo.</returns>
+        /// <inheritdoc />
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
             var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
@@ -2512,7 +2510,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Update content item when the module title changed.</summary>
-        /// <param name="module"></param>
+        /// <param name="module">The module info.</param>
         private void UpdateContentItem(ModuleInfo module)
         {
             IContentController contentController = Util.GetContentController();

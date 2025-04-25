@@ -21,8 +21,8 @@ namespace DotNetNuke.Entities.Portals.Templates
         private string resourceFilePath;
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.</summary>
-        /// <param name="templateFilePath"></param>
-        /// <param name="cultureCode"></param>
+        /// <param name="templateFilePath">The path to the template file.</param>
+        /// <param name="cultureCode">The culture code.</param>
         public PortalTemplateInfo(string templateFilePath, string cultureCode)
         {
             this.TemplateFilePath = templateFilePath;

@@ -12,14 +12,14 @@ namespace DotNetNuke.Services.GeneratedImage
     public class ImageInfo
     {
         /// <summary>Initializes a new instance of the <see cref="ImageInfo"/> class.</summary>
-        /// <param name="statusCode"></param>
+        /// <param name="statusCode">The HTTP status code.</param>
         public ImageInfo(HttpStatusCode statusCode)
         {
             this.HttpStatusCode = statusCode;
         }
 
         /// <summary>Initializes a new instance of the <see cref="ImageInfo"/> class.</summary>
-        /// <param name="image"></param>
+        /// <param name="image">The image.</param>
         public ImageInfo(Image image)
         {
             if (image == null)
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>Initializes a new instance of the <see cref="ImageInfo"/> class.</summary>
-        /// <param name="imageBuffer"></param>
+        /// <param name="imageBuffer">An array of bytes representing the contents of the image.</param>
         public ImageInfo(byte[] imageBuffer)
         {
             if (imageBuffer == null)

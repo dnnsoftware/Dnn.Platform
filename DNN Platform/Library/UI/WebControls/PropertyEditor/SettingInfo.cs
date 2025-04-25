@@ -7,9 +7,6 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Instrumentation;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      SettingInfo
     /// <summary>The SettingInfo class provides a helper class for the Settings Editor.</summary>
     public class SettingInfo
     {
@@ -17,8 +14,8 @@ namespace DotNetNuke.UI.WebControls
         private Type type;
 
         /// <summary>Initializes a new instance of the <see cref="SettingInfo"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
+        /// <param name="name">The setting name.</param>
+        /// <param name="value">The setting value.</param>
         public SettingInfo(object name, object value)
         {
             this.Name = Convert.ToString(name);

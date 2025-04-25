@@ -5,8 +5,6 @@ namespace DotNetNuke.Entities.Modules.Actions
 {
     using DotNetNuke.Security;
 
-    /// Project     : DotNetNuke
-    /// Class       : ModuleAction
     /// <summary>
     /// Each Module Action represents a separate functional action as defined by the
     /// associated module.
@@ -19,107 +17,107 @@ namespace DotNetNuke.Entities.Modules.Actions
     public class ModuleAction
     {
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
         public ModuleAction(int id)
             : this(id, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
         public ModuleAction(int id, string title, string cmdName)
             : this(id, title, cmdName, string.Empty, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
-        /// <param name="cmdArg"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg)
             : this(id, title, cmdName, cmdArg, string.Empty, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
-        /// <param name="cmdArg"></param>
-        /// <param name="icon"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon)
             : this(id, title, cmdName, cmdArg, icon, string.Empty, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
-        /// <param name="cmdArg"></param>
-        /// <param name="icon"></param>
-        /// <param name="url"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
+        /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url)
             : this(id, title, cmdName, cmdArg, icon, url, string.Empty, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
-        /// <param name="cmdArg"></param>
-        /// <param name="icon"></param>
-        /// <param name="url"></param>
-        /// <param name="clientScript"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
+        /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
+        /// <param name="clientScript">JavaScript which will be run in the client's browser when the associated Module menu Action is selected, prior to a postback.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, false, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
-        /// <param name="cmdArg"></param>
-        /// <param name="icon"></param>
-        /// <param name="url"></param>
-        /// <param name="clientScript"></param>
-        /// <param name="useActionEvent"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
+        /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
+        /// <param name="clientScript">JavaScript which will be run in the client's browser when the associated Module menu Action is selected, prior to a postback.</param>
+        /// <param name="useActionEvent">Determines whether client will receive an event notification.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, SecurityAccessLevel.Anonymous, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
-        /// <param name="cmdArg"></param>
-        /// <param name="icon"></param>
-        /// <param name="url"></param>
-        /// <param name="clientScript"></param>
-        /// <param name="useActionEvent"></param>
-        /// <param name="secure"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
+        /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
+        /// <param name="clientScript">JavaScript which will be run in the client's browser when the associated Module menu Action is selected, prior to a postback.</param>
+        /// <param name="useActionEvent">Determines whether client will receive an event notification.</param>
+        /// <param name="secure">The security access level required for access to this action.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, secure, true, false)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleAction"/> class.</summary>
-        /// <param name="id"></param>
-        /// <param name="title"></param>
-        /// <param name="cmdName"></param>
-        /// <param name="cmdArg"></param>
-        /// <param name="icon"></param>
-        /// <param name="url"></param>
-        /// <param name="clientScript"></param>
-        /// <param name="useActionEvent"></param>
-        /// <param name="secure"></param>
-        /// <param name="visible"></param>
+        /// <param name="id">This is the identifier to use for this action.</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
+        /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
+        /// <param name="clientScript">JavaScript which will be run in the client's browser when the associated Module menu Action is selected, prior to a postback.</param>
+        /// <param name="useActionEvent">Determines whether client will receive an event notification.</param>
+        /// <param name="secure">The security access level required for access to this action.</param>
+        /// <param name="visible">Whether this action will be displayed.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible)
             : this(id, title, cmdName, cmdArg, icon, url, clientScript, useActionEvent, secure, visible, false)
         {
@@ -131,20 +129,15 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// </summary>
         /// <param name="id">This is the identifier to use for this action.</param>
         /// <param name="title">This is the title that will be displayed for this action.</param>
-        /// <param name="cmdName">The command name passed to the client when this action is
-        /// clicked.</param>
-        /// <param name="cmdArg">The command argument passed to the client when this action is
-        /// clicked.</param>
+        /// <param name="cmdName">The command name passed to the client when this action is clicked.</param>
+        /// <param name="cmdArg">The command argument passed to the client when this action is clicked.</param>
         /// <param name="icon">The URL of the Icon to place next to this action.</param>
         /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
-        /// <param name="clientScript"></param>
+        /// <param name="clientScript">JavaScript which will be run in the client's browser when the associated Module menu Action is selected, prior to a postback.</param>
         /// <param name="useActionEvent">Determines whether client will receive an event notification.</param>
         /// <param name="secure">The security access level required for access to this action.</param>
         /// <param name="visible">Whether this action will be displayed.</param>
-        /// <param name="newWindow"></param>
-        /// <remarks>The moduleaction constructor is used to set the various properties of
-        /// the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> class at the time the instance is created.
-        /// </remarks>
+        /// <param name="newWindow">Whether to use a new window for the action.</param>
         public ModuleAction(int id, string title, string cmdName, string cmdArg, string icon, string url, string clientScript, bool useActionEvent, SecurityAccessLevel secure, bool visible, bool newWindow)
         {
             this.ID = id;

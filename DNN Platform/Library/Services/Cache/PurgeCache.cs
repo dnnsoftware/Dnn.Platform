@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Cache
     public class PurgeCache : SchedulerClient
     {
         /// <summary>Initializes a new instance of the <see cref="PurgeCache"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public PurgeCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED

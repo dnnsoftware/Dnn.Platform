@@ -200,7 +200,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>RenderEditMode is called by the base control to render the control in Edit Mode.</summary>
-        /// <param name="writer"></param>
+        /// <param name="writer">The HTML text writer to which this control is to be rendered.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);

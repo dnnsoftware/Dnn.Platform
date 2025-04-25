@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly bool useStemmingFilter;
 
         /// <summary>Initializes a new instance of the <see cref="SearchQueryAnalyzer"/> class.</summary>
-        /// <param name="useStemmingFilter"></param>
+        /// <param name="useStemmingFilter">Whether to use the stemming filter.</param>
         public SearchQueryAnalyzer(bool useStemmingFilter)
         {
             this.useStemmingFilter = useStemmingFilter;
@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             var wordLengthMinMax = SearchHelper.Instance.GetSearchMinMaxLength();
 
-            // Note: the order of filtering is important for both operation and performane, so we try to make it work faster
+            // Note: the order of filtering is important for both operation and performance, so we try to make it work faster
             // Also, note that filters are applied from the innermost outwards.
             var filter =
                 new ASCIIFoldingFilter(// accents filter

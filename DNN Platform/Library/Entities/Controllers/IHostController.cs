@@ -77,8 +77,8 @@ namespace DotNetNuke.Entities.Controllers
         string GetString(string key);
 
         /// <summary>Gets the setting value for a specific key.</summary>
-        /// <param name="key">The seeting key string.</param>
-        /// <param name="defaultValue"></param>
+        /// <param name="key">The setting key string.</param>
+        /// <param name="defaultValue">The default value.</param>
         /// <returns>Default value returned if the setting is not found.</returns>
         string GetString(string key, string defaultValue);
 
@@ -90,8 +90,8 @@ namespace DotNetNuke.Entities.Controllers
         /// <param name="config">The configuration setting.</param>
         void Update(ConfigurationSetting config);
 
-        /// <summary>Updates the specified config, ontionally clearing the cache.</summary>
-        /// <param name="config">The configuaration setting.</param>
+        /// <summary>Updates the specified config, optionally clearing the cache.</summary>
+        /// <param name="config">The configuration setting.</param>
         /// <param name="clearCache">If set to <c>true</c>, will clear the cache after updating the setting.</param>
         void Update(ConfigurationSetting config, bool clearCache);
 

@@ -134,12 +134,12 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddAdminPages adds an Admin Page and an associated Module to all configured Portals.</summary>
-        /// <param name="tabName">The Name to give this new Tab.</param>
-        /// <param name="description"></param>
-        /// <param name="tabIconFile">The Icon for this new Tab.</param>
-        /// <param name="tabIconFileLarge"></param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
-        /// <param name="moduleDefId">The Module Definition Id for the module to be added to this tab.</param>
+        /// <param name="moduleDefId">The Module Definition ID for the module to be added to this tab.</param>
         /// <param name="moduleTitle">The Module's title.</param>
         /// <param name="moduleIconFile">The Module's icon.</param>
         /// <param name="inheritPermissions">Modules Inherit the Pages View Permissions.</param>
@@ -162,10 +162,10 @@ namespace DotNetNuke.Services.Upgrade
 
         /// <summary>AddAdminPage adds an Admin Tab Page.</summary>
         /// <param name="portal">The Portal.</param>
-        /// <param name="tabName">The Name to give this new Tab.</param>
-        /// <param name="description"></param>
-        /// <param name="tabIconFile">The Icon for this new Tab.</param>
-        /// <param name="tabIconFileLarge"></param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
         public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
@@ -185,10 +185,10 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddHostPage adds a Host Tab Page.</summary>
-        /// <param name="tabName">The Name to give this new Tab.</param>
-        /// <param name="description"></param>
-        /// <param name="tabIconFile">The Icon for this new Tab.</param>
-        /// <param name="tabIconFileLarge"></param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
         public static TabInfo AddHostPage(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
@@ -919,8 +919,8 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>InstallDatabase runs all the "scripts" identified in the Install Template to install the base version.</summary>
-        /// <param name="version"></param>
-        /// <param name="providerPath"></param>
+        /// <param name="version">The version for which to run installation scripts.</param>
+        /// <param name="providerPath">The data provider path.</param>
         /// <param name="xmlDoc">The Xml Document to load.</param>
         /// <param name="writeFeedback">A flag that determines whether to output feedback to the Response Stream.</param>
         /// <returns>A string which contains the error message - if appropriate.</returns>

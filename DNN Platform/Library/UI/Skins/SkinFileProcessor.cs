@@ -261,14 +261,11 @@ namespace DotNetNuke.UI.Skins
             return contents;
         }
 
-        /// Project  : DotNetNuke
-        /// Class    : SkinFileProcessor.ControlParser
-        ///
         /// <summary>    Parsing functionality for token replacement in new skin files.</summary>
         /// <remarks>
         ///     This class encapsulates the data and methods necessary to appropriately
         ///     handle all the token parsing needs for new skin files (which is appropriate
-        ///     only for HTML files).  The parser accomodates some ill formatting of tokens
+        ///     only for HTML files).  The parser accommodates some ill formatting of tokens
         ///     (ignoring whitespace and casing) and allows for naming of token instances
         ///     if more than one instance of a particular control is desired on a skin.  The
         ///     proper syntax for an instance is: "[TOKEN:INSTANCE]" where the instance can
@@ -1002,15 +999,12 @@ namespace DotNetNuke.UI.Skins
             private string fILEFORMATDETAIL = Util.GetLocalizedString("FileFormat.Detail");
             private string messages = string.Empty;
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="SkinFile"/> class.
-            ///     SkinFile class constructor.
-            /// </summary>
-            /// <param name="skinContents"></param>
-            /// <param name="skinAttributes"></param>
+            /// <summary>Initializes a new instance of the <see cref="SkinFile"/> class.</summary>
+            /// <param name="skinContents">The contents of the skin file.</param>
+            /// <param name="skinAttributes">The attributes to merge into the skin file.</param>
             /// <remarks>
             ///     The constructor primes the utility class with basic file information.
-            ///     It also checks for the existentce of a skinfile level attribute file
+            ///     It also checks for the existence of a skinfile level attribute file
             ///     and read it in, if found.
             /// </remarks>
             public SkinFile(string skinContents, XmlDocument skinAttributes)
@@ -1019,16 +1013,13 @@ namespace DotNetNuke.UI.Skins
                 this.Contents = skinContents;
             }
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="SkinFile"/> class.
-            ///     SkinFile class constructor.
-            /// </summary>
-            /// <param name="skinRoot"></param>
-            /// <param name="fileName"></param>
-            /// <param name="skinAttributes"></param>
+            /// <summary>Initializes a new instance of the <see cref="SkinFile"/> class.</summary>
+            /// <param name="skinRoot">The root path for the skin.</param>
+            /// <param name="fileName">The name of the skin file.</param>
+            /// <param name="skinAttributes">The attributes to merge into the skin file.</param>
             /// <remarks>
             ///     The constructor primes the utility class with basic file information.
-            ///     It also checks for the existentce of a skinfile level attribute file
+            ///     It also checks for the existence of a skinfile level attribute file
             ///     and read it in, if found.
             /// </remarks>
             public SkinFile(string skinRoot, string fileName, XmlDocument skinAttributes)

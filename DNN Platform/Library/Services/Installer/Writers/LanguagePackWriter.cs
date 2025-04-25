@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Installer.Writers
         private LanguagePackInfo languagePack;
 
         /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public LanguagePackWriter(PackageInfo package)
             : base(package)
         {
@@ -50,8 +50,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
-        /// <param name="manifestNav"></param>
-        /// <param name="installer"></param>
+        /// <param name="manifestNav">The XPath navigator for the manifest section.</param>
+        /// <param name="installer">The installer info.</param>
         public LanguagePackWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
             this.language = new Locale();
@@ -83,8 +83,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="LanguagePackWriter"/> class.</summary>
-        /// <param name="language"></param>
-        /// <param name="package"></param>
+        /// <param name="language">The locale.</param>
+        /// <param name="package">The package info.</param>
         public LanguagePackWriter(Locale language, PackageInfo package)
             : base(package)
         {

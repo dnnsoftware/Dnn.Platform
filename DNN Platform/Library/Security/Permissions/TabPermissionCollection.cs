@@ -11,13 +11,7 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : TabPermissionCollection
-    /// <summary>
-    /// TabPermissionCollection provides the a custom collection for TabPermissionInfo
-    /// objects.
-    /// </summary>
+    /// <summary>TabPermissionCollection provides a custom collection for <see cref="TabPermissionInfo"/> objects.</summary>
     [Serializable]
     [XmlRoot("tabpermissions")]
     public class TabPermissionCollection : CollectionBase
@@ -28,22 +22,22 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="TabPermissionCollection"/> class.</summary>
-        /// <param name="tabPermissions"></param>
+        /// <param name="tabPermissions">An <see cref="ArrayList"/> of <see cref="TabPermissionInfo"/> instances.</param>
         public TabPermissionCollection(ArrayList tabPermissions)
         {
             this.AddRange(tabPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="TabPermissionCollection"/> class.</summary>
-        /// <param name="tabPermissions"></param>
+        /// <param name="tabPermissions">A collection of <see cref="TabPermissionInfo"/> instances.</param>
         public TabPermissionCollection(TabPermissionCollection tabPermissions)
         {
             this.AddRange(tabPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="TabPermissionCollection"/> class.</summary>
-        /// <param name="tabPermissions"></param>
-        /// <param name="tabId"></param>
+        /// <param name="tabPermissions">An <see cref="ArrayList"/> of <see cref="TabPermissionInfo"/> instances.</param>
+        /// <param name="tabId">The ID of the tab by which to filter <paramref name="tabPermissions"/>.</param>
         public TabPermissionCollection(ArrayList tabPermissions, int tabId)
         {
             foreach (TabPermissionInfo permission in tabPermissions)

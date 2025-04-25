@@ -15,14 +15,14 @@ namespace DotNetNuke.Entities.Urls
     internal class FriendlyUrlPathController
     {
         /// <summary>This method checks the list of rules for parameter replacement and modifies the parameter path accordingly.</summary>
-        /// <param name="parameterPath"></param>
-        /// <param name="tab"></param>
-        /// <param name="settings"></param>
-        /// <param name="portalId"></param>
-        /// <param name="replacedPath"></param>
-        /// <param name="messages"></param>
-        /// <param name="changeToSiteRoot"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="parameterPath">The path to replace.</param>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="replacedPath">The updated path.</param>
+        /// <param name="messages">A list to which debugging messages will be added.</param>
+        /// <param name="changeToSiteRoot">Whether the path was changed to the site root.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns><see langword="true"/> if a replacement was made, otherwise <see langword="false"/>.</returns>
         internal static bool CheckParameterRegexReplacement(
             string parameterPath,
@@ -232,11 +232,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Splits out the userid value from the supplied Friendly Url Path.</summary>
-        /// <param name="parmName"></param>
-        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile Url (if supplied).</param>
-        /// <param name="rawUserId"></param>
-        /// <param name="remainingPath">The remaining path not associated with the user id.</param>
-        /// <param name="urlPath"></param>
+        /// <param name="urlPath">The URL path.</param>
+        /// <param name="parmName">The parameter name.</param>
+        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile URL (if supplied).</param>
+        /// <param name="rawUserId">The user ID string or <see langword="null"/>.</param>
+        /// <param name="remainingPath">The remaining path not associated with the user ID.</param>
         private static void SplitUserIdFromFriendlyUrlPath(
             string urlPath,
             string parmName,

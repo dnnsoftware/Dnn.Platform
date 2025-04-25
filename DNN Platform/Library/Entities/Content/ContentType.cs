@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContentType"/> class.</summary>
-        /// <param name="contentType"></param>
+        /// <param name="contentType">The name of the content type.</param>
         public ContentType(string contentType)
         {
             this.ContentTypeId = Null.NullInteger;

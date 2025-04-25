@@ -9,18 +9,18 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System.Web;
     using System.Web.Caching;
 
-    /// <summary>FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into memory.</summary>
+    /// <summary>FileResponseFilter implements <see cref="OutputCacheResponseFilter"/> to capture the response into memory.</summary>
     public class MemoryResponseFilter : OutputCacheResponseFilter
     {
         // Private _content As StringBuilder
         private static System.Web.Caching.Cache runtimeCache;
 
         /// <summary>Initializes a new instance of the <see cref="MemoryResponseFilter"/> class.</summary>
-        /// <param name="itemId"></param>
-        /// <param name="maxVaryByCount"></param>
-        /// <param name="filterChain"></param>
-        /// <param name="cacheKey"></param>
-        /// <param name="cacheDuration"></param>
+        /// <param name="itemId">The tab ID.</param>
+        /// <param name="maxVaryByCount">The maximum number of values by which the cached response can vary.</param>
+        /// <param name="filterChain">The stream to write into the cache.</param>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="cacheDuration">The duration for which the response should be cached.</param>
         internal MemoryResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
             : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {

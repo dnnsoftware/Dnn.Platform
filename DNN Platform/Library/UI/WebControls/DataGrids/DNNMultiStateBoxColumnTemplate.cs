@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNMultiStateBoxColumnTemplate"/> class.</summary>
-        /// <param name="itemType"></param>
+        /// <param name="itemType">The list item type.</param>
         public DNNMultiStateBoxColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;

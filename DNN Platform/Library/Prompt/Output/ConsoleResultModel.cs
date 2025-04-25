@@ -16,7 +16,7 @@ namespace DotNetNuke.Prompt
         }
 
         /// <summary>Initializes a new instance of the <see cref="ConsoleResultModel"/> class.</summary>
-        /// <param name="output"></param>
+        /// <param name="output">The output text.</param>
         public ConsoleResultModel(string output)
         {
             this.Output = output;

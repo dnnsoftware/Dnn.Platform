@@ -325,7 +325,7 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>Returns a collection of portal ID's to reindex if it was requested since last indexing.</summary>
-        /// <param name="startDate"></param>
+        /// <param name="startDate">The date of the last index.</param>
         /// <returns>A sequence of portal IDs.</returns>
         public IEnumerable<int> GetPortalsToReindex(DateTime startDate)
         {
@@ -470,9 +470,9 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>Processes and re-phrases the search text by looking into exact-match and wildcard option.</summary>
-        /// <param name="searchPhrase"></param>
-        /// <param name="useWildCard"></param>
-        /// <param name="allowLeadingWildcard"></param>
+        /// <param name="searchPhrase">The original search phrase.</param>
+        /// <param name="useWildCard">Whether to use wildcards.</param>
+        /// <param name="allowLeadingWildcard">Whether to allow a leading wildcard.</param>
         /// <returns>cleaned and pre-processed search phrase.</returns>
         public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {

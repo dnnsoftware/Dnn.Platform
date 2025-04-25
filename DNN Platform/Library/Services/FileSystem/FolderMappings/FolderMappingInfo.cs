@@ -28,9 +28,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderMappingInfo"/> class.</summary>
-        /// <param name="portalID"></param>
-        /// <param name="mappingName"></param>
-        /// <param name="folderProviderType"></param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="mappingName">The mapping name.</param>
+        /// <param name="folderProviderType">The name of the <see cref="Type"/> of the <see cref="FolderProvider"/>.</param>
         public FolderMappingInfo(int portalID, string mappingName, string folderProviderType)
         {
             this.FolderMappingID = Null.NullInteger;

@@ -8,8 +8,8 @@ namespace DotNetNuke.Entities.Tabs
     public class TabException : Exception
     {
         /// <summary>Initializes a new instance of the <see cref="TabException"/> class.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="message"></param>
+        /// <param name="tabId">The ID of the tab.</param>
+        /// <param name="message">The message that describes the error.</param>
         public TabException(int tabId, string message)
             : base(message)
         {

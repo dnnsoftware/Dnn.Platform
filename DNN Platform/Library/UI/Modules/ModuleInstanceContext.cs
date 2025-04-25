@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Modules
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleInstanceContext"/> class.</summary>
-        /// <param name="moduleControl"></param>
+        /// <param name="moduleControl">The module control.</param>
         public ModuleInstanceContext(IModuleControl moduleControl)
         {
             this.moduleControl = moduleControl;

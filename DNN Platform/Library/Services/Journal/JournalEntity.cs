@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>Initializes a new instance of the <see cref="JournalEntity"/> class.</summary>
-        /// <param name="entityXML"></param>
+        /// <param name="entityXML">XML serialized entity.</param>
         public JournalEntity(string entityXML)
         {
             if (!string.IsNullOrEmpty(entityXML))

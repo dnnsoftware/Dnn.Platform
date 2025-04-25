@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Users
     public class PurgeDeletedUsers : SchedulerClient
     {
         /// <summary>Initializes a new instance of the <see cref="PurgeDeletedUsers"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public PurgeDeletedUsers(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
