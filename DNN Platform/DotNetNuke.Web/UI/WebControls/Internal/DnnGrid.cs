@@ -9,9 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
     using DotNetNuke.Framework.JavaScriptLibraries;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnGrid : GridView
     {
         public TableItemStyle ItemStyle => this.RowStyle;
