@@ -585,9 +585,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LoadFolders();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <summary>Adds an empty preview image to the <see cref="pnlRightDiv"/> control.</summary>
         private void GeneratePreviewImage()
         {
             this.imgPreview = new Image();

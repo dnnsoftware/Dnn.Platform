@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Services.Exceptions;
 
-    /// <summary></summary>
+    /// <summary>A skin object to display a message from a module.</summary>
     public class ModuleMessage : SkinObjectBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

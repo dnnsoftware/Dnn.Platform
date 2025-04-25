@@ -628,9 +628,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="module"></param>
         /// <inheritdoc/>
         public void CreateContentItem(ModuleInfo module)
         {
