@@ -25,28 +25,46 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public enum Alignment
         {
+            /// <summary>Left aligned.</summary>
             Left = 0,
+
+            /// <summary>Right aligned.</summary>
             Right = 1,
+
+            /// <summary>Center aligned.</summary>
             Center = 2,
+
+            /// <summary>Justified alignment.</summary>
             Justify = 3,
         }
 
         public enum HoverAction
         {
+            /// <summary>Expand on hover.</summary>
             Expand = 0,
+
+            /// <summary>No action on hover.</summary>
             None = 1,
         }
 
         public enum HoverDisplay
         {
+            /// <summary>Highlight on hover.</summary>
             Highlight = 0,
+
+            /// <summary>Render an outset border on hover.</summary>
             Outset = 1,
+
+            /// <summary>No display changes on hover.</summary>
             None = 2,
         }
 
         public enum Orientation
         {
+            /// <summary>Horizontal orientation.</summary>
             Horizontal = 0,
+
+            /// <summary>Vertical orientation.</summary>
             Vertical = 1,
         }
 

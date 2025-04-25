@@ -24,9 +24,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public enum ModuleMessageType
         {
+            /// <summary>A green success message.</summary>
             GreenSuccess = 0,
+
+            /// <summary>A yellow warning message.</summary>
             YellowWarning = 1,
+
+            /// <summary>A red error message.</summary>
             RedError = 2,
+
+            /// <summary>A blue info message.</summary>
             BlueInfo = 3,
         }
 

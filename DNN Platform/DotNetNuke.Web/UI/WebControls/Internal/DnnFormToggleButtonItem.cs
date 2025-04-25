@@ -23,8 +23,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public enum CheckBoxMode
         {
+            /// <summary>True and False.</summary>
             TrueFalse = 0,
+
+            /// <summary>Y and N.</summary>
             YN = 1,
+
+            /// <summary>Yes and No.</summary>
             YesNo = 2,
         }
 

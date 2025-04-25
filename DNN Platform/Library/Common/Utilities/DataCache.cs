@@ -23,14 +23,16 @@ namespace DotNetNuke.Common.Utilities
     [Obsolete("Deprecated in DotNetNuke 9.13.8. This type has no known use. Scheduled for removal in v11.0.0.")]
     public enum CoreCacheType
     {
+        /// <summary>Host level.</summary>
         Host = 1,
+
+        /// <summary>Portal level.</summary>
         Portal = 2,
+
+        /// <summary>Tab level.</summary>
         Tab = 3,
     }
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Common.Utilities
-    /// Class:      DataCache
     /// <summary>The DataCache class is a facade class for the CachingProvider Instance's.</summary>
     public class DataCache
     {

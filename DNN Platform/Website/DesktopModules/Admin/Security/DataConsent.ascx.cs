@@ -21,9 +21,16 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public enum DataConsentStatus
         {
+            /// <summary>Consented.</summary>
             Consented = 0,
+
+            /// <summary>Cancelled.</summary>
             Cancelled = 1,
+
+            /// <summary>Removed account.</summary>
             RemovedAccount = 2,
+
+            /// <summary>Failed to remove account.</summary>
             FailedToRemoveAccount = 3,
         }
 

@@ -30,14 +30,22 @@ namespace DotNetNuke.Entities.Modules
 
     public enum DisplayMode
     {
+        /// <summary>Display all.</summary>
         All = 0,
+
+        /// <summary>Display the first letter.</summary>
         FirstLetter = 1,
+
+        /// <summary>Display nothing.</summary>
         None = 2,
     }
 
     public enum UsersControl
     {
+        /// <summary>A combo box.</summary>
         Combo = 0,
+
+        /// <summary>A text box.</summary>
         TextBox = 1,
     }
 

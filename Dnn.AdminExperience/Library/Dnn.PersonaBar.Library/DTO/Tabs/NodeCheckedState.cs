@@ -6,8 +6,13 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
 {
     public enum NodeCheckedState
     {
+        /// <summary>A checked node.</summary>
         Checked = 0,
+
+        /// <summary>An unchecked node.</summary>
         UnChecked = 1,
+
+        /// <summary>A partially checked node.</summary>
         Partial = 2,
     }
 }

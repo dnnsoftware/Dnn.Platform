@@ -23,18 +23,34 @@ namespace DotNetNuke.UI
     {
         public enum NavNodeOptions
         {
+            /// <summary>Include the node.</summary>
             IncludeSelf = 1,
+
+            /// <summary>Include the node's parent.</summary>
             IncludeParent = 2,
+
+            /// <summary>Include the node's siblings.</summary>
             IncludeSiblings = 4,
+
+            /// <summary>Mark pending nodes.</summary>
             MarkPendingNodes = 8,
+
+            /// <summary>Include hidden nodes.</summary>
             IncludeHiddenNodes = 16,
         }
 
         public enum ToolTipSource
         {
+            /// <summary>The name of the tab.</summary>
             TabName = 0,
+
+            /// <summary>The title of the tab.</summary>
             Title = 1,
+
+            /// <summary>The description of the tab.</summary>
             Description = 2,
+
+            /// <summary>No tooltip.</summary>
             None = 3,
         }
 

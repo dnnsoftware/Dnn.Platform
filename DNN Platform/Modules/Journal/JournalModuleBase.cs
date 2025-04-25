@@ -24,8 +24,13 @@ namespace DotNetNuke.Modules.Journal
     {
         public enum JournalMode
         {
+            /// <summary>Automatically choose the best view.</summary>
             Auto = 0,
+
+            /// <summary>Display a user's journal.</summary>
             Profile = 1,
+
+            /// <summary>Display a group's journal.</summary>
             Group = 2,
         }
 

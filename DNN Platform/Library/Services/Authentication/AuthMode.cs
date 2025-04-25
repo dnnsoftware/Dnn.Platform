@@ -6,7 +6,10 @@ namespace DotNetNuke.Services.Authentication
 {
     public enum AuthMode
     {
+        /// <summary>Login.</summary>
         Login = 0,
+
+        /// <summary>Register.</summary>
         Register = 1,
     }
 }

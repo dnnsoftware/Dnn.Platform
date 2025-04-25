@@ -97,34 +97,40 @@ namespace DotNetNuke.Security
         [Flags]
         public enum FilterFlag
         {
+            /// <summary>Replaces line breaks with <c>&lt;br&gt;</c> tags.</summary>
             MultiLine = 1,
 
+            /// <summary>Removes text which could be interpreted as HTML markup.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
             NoMarkup = 2,
 
+            /// <summary>Removes text which could be interpreted as JavaScript commands.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
             NoScripting = 4,
 
+            /// <summary>Removes text which could be interpreted as SQL commands.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. Parameterized SQL should be preferred for SQL Injection protection. Scheduled for removal in v11.0.0.")]
             NoSQL = 8,
 
+            /// <summary>Removes angle brackets from the text.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. Individual string replacement should be completed. Scheduled for removal in v11.0.0.")]
             NoAngleBrackets = 16,
+
+            /// <summary>Removes matches with the site's profanity filter.</summary>
             NoProfanity = 32,
 
-            /// <summary>
-            /// Removes all unicode control characters (like \0, \t, \n, \r, etc.) from the string.
-            /// </summary>
-            /// <remarks>
-            /// The control characters \r\n, \r, \n, and \t are replaced with a single space instead of being removed.
-            /// </remarks>
+            /// <summary>Removes all Unicode control characters (like \0, \t, \n, \r, etc.) from the string.</summary>
+            /// <remarks>The control characters \r\n, \r, \n, and \t are replaced with a single space instead of being removed.</remarks>
             NoControlCharacters = 64,
         }
 
         /// <summary>Determines the configuration source for the remove and replace functions.</summary>
         public enum ConfigType
         {
+            /// <summary>Retrieve configuration via <see cref="DotNetNuke.Common.Lists.ListController"/>.</summary>
             ListController = 0,
+
+            /// <summary>Retrieve configuration from an external file.</summary>
             ExternalFile = 1,
         }
 
@@ -134,8 +140,13 @@ namespace DotNetNuke.Security
         /// </summary>
         public enum FilterScope
         {
+            /// <summary>Use the host-level list.</summary>
             SystemList = 0,
+
+            /// <summary>Use a portal-specific list.</summary>
             PortalList = 1,
+
+            /// <summary>Combine both lists.</summary>
             SystemAndPortalList = 2,
         }
 

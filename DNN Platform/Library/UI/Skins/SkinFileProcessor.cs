@@ -17,13 +17,13 @@ namespace DotNetNuke.UI.Skins
 
     public enum SkinParser
     {
+        /// <summary>Localized parser.</summary>
         Localized = 0,
+
+        /// <summary>Portable parser.</summary>
         Portable = 1,
     }
 
-    /// Project  : DotNetNuke
-    /// Class    : SkinFileProcessor
-    ///
     /// <summary>    Handles processing of a list of uploaded skin files into a working skin.</summary>
     public class SkinFileProcessor
     {
