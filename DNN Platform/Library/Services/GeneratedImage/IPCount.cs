@@ -176,6 +176,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>method to get Client ip address.</summary>
+        /// <param name="context">The HTTP context.</param>
         /// <returns>IP Address of visitor.</returns>
         [DnnDeprecated(9, 2, 0, "Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static partial string GetVisitorIPAddress(HttpContextBase context)

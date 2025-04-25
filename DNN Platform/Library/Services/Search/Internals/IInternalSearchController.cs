@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Search.Internals
     public interface IInternalSearchController
     {
         /// <summary>Get a List of Search Content Source that participate in Search.</summary>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>A sequence of <see cref="SearchContentSource"/> instances.</returns>
         IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId);
 
@@ -24,10 +25,12 @@ namespace DotNetNuke.Services.Search.Internals
         /// e.g. Tab, Module, Html/Module all map to Pages.
         /// For SearchTypeId=module, ModuleDefinitionId is also used. Module's display name is used unless an entry is found in
         /// ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].txt is found.</remarks>
+        /// <param name="searchResult">The search result.</param>
         /// <returns>The display name or <see cref="string.Empty"/>.</returns>
         string GetSearchDocumentTypeDisplayName(SearchResult searchResult);
 
         /// <summary>Add a Search Document to Search Index.</summary>
+        /// <param name="searchDocument">The document to add.</param>
         void AddSearchDocument(SearchDocument searchDocument);
 
         /// <summary>Adds the collection of search documents to the search index.</summary>

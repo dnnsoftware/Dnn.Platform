@@ -363,6 +363,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).</summary>
         /// <param name="portalID">The portal ID.</param>
+        /// <param name="cultureCode">The culture code or <see cref="Null.NullString"/>.</param>
         public static void DeletePortalSettings(int portalID, string cultureCode)
         {
             DataProvider.Instance().DeletePortalSettings(portalID, cultureCode);
@@ -1221,10 +1222,7 @@ namespace DotNetNuke.Entities.Portals
             return (((this.GetPortalSpaceUsedBytes(portalId) + fileSizeBytes) / Math.Pow(1024, 2)) <= hostSpace) || hostSpace == 0;
         }
 
-        /// <summary>
-        ///   Remaps the Special Pages such as Home, Profile, Search
-        ///   to their localized versions.
-        /// </summary>
+        /// <inheritdoc />
         public void MapLocalizedSpecialPages(int portalId, string cultureCode)
         {
             DataCache.ClearHostCache(true);
@@ -1418,7 +1416,7 @@ namespace DotNetNuke.Entities.Portals
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, false);
         }
 
-        /// <summary>Adds or Updates or Deletes a portal setting value.</summary>
+        /// <inheritdoc />
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);

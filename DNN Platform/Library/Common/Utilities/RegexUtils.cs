@@ -12,6 +12,9 @@ namespace DotNetNuke.Common.Utilities
     public class RegexUtils
     {
         /// <summary>Creates and caches a Regex object for later use and retrieves it in a later call if it is cached.</summary>
+        /// <param name="pattern">The regex pattern.</param>
+        /// <param name="options">The regex options.</param>
+        /// <param name="timeoutSeconds">The match timeout for the regex, must be between 1 and 10 seconds.</param>
         /// <returns>The <see cref="Regex"/> instance.</returns>
         public static Regex GetCachedRegex(string pattern, RegexOptions options = RegexOptions.None, int timeoutSeconds = 2)
         {

@@ -284,6 +284,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns an ordered dictionary of alias regex patterns.  These patterns are used to identify a portal alias by getting a match.</summary>
+        /// <param name="settings">The friendly URL settings.</param>
         /// <returns>An <see cref="OrderedDictionary"/> where the keys are <see cref="string"/> aliases and the values are <see cref="PortalAliasInfo"/> instances.</returns>
         internal static OrderedDictionary GetPortalAliases(FriendlyUrlSettings settings)
         {

@@ -39,6 +39,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Gets or sets the value associated with the specified key.</summary>
+        /// <param name="key">The HTTP alias.</param>
         public PortalAliasInfo this[string key]
         {
             get
@@ -59,6 +60,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Adds an entry to the collection.</summary>
+        /// <param name="key">The <see cref="string"/> to use as the key of the element to add.</param>
+        /// <param name="value">The <see cref="PortalAliasInfo"/> to use as the value of the element to add.</param>
         [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
         public partial void Add(string key, PortalAliasInfo value)
         {

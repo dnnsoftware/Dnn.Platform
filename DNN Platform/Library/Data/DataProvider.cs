@@ -276,6 +276,9 @@ namespace DotNetNuke.Data
         }
 
         /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <param name="builder">The <see cref="SqlConnectionStringBuilder"/>.</param>
+        /// <param name="owner">The database owner/schema.</param>
+        /// <param name="qualifier">The object qualifier.</param>
         /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>), or <see cref="Null.NullString"/> if <paramref name="builder"/> is <see langword="null"/>.</returns>
         public virtual string TestDatabaseConnection(DbConnectionStringBuilder builder, string owner, string qualifier)
         {

@@ -394,6 +394,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns boolean value is any loaded providers require checking of rewrite / redirect values from the site root (ie, not dnn tab path).</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns><see langword="true"/> if there is a provider that requires checks for a site root rewrite/redirect, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForSiteRootRewrite(int portalId, FriendlyUrlSettings settings, Guid parentTraceId)
         {

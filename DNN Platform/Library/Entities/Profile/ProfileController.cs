@@ -122,14 +122,15 @@ namespace DotNetNuke.Entities.Profile
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
-        /// <summary>Clear profiles of all users by portal Id.</summary>
+        /// <summary>Clear profiles of all users by portal ID.</summary>
+        /// <param name="portalId">The portal ID.</param>
         public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
         {
             DataCache.ClearCache(string.Format(DataCache.UserCacheKey, portalId, string.Empty));
             DataCache.ClearCache(string.Format(DataCache.UserProfileCacheKey, portalId, string.Empty));
         }
 
-        /// <summary>Gets a Property Defintion from the Data Store by id.</summary>
+        /// <summary>Gets a Property Definition from the Data Store by id.</summary>
         /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
         /// <param name="portalId">Portal Id.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>

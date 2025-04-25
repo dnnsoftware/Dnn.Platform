@@ -43,6 +43,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalId">The portal ID.</param>
         /// <param name="result">The URL action.</param>
         /// <param name="cultureCode">The culture code.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         /// <remarks>Detects the current browser type if possible.  If can't be detected 'normal' is used. If a specific browser type is required, use overload with browser type.</remarks>
         /// <returns>The closest <see cref="PortalAliasInfo"/> match.</returns>
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, FriendlyUrlSettings settings)

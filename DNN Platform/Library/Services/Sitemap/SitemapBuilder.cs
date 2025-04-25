@@ -84,7 +84,8 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>  Builds the complete portal sitemap.</summary>
+        /// <summary>Builds the complete portal sitemap.</summary>
+        /// <param name="output">The writer to which the sitemap is to be written.</param>
         public void BuildSiteMap(TextWriter output)
         {
             int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.portalSettings.PortalId, "1"));

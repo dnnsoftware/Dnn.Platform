@@ -578,6 +578,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>Overrides the base OnPreRender method to Bind the Grid to the Permissions.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             this.BindData();
@@ -753,12 +754,16 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>RoleGroupsSelectedIndexChanged runs when the Role Group is changed.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void RoleGroupsSelectedIndexChanged(object sender, EventArgs e)
         {
             this.FillSelectRoleComboBox(int.Parse(this.cboRoleGroups.SelectedValue));
         }
 
         /// <summary>AddUser runs when the Add user linkbutton is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void AddUser(object sender, EventArgs e)
         {
             this.UpdatePermissions();

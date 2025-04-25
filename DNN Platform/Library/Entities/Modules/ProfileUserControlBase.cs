@@ -5,9 +5,6 @@ namespace DotNetNuke.Entities.Modules
 {
     using System;
 
-    /// Project  :  DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class    :  ProfileUserControlBase
     /// <summary>The ProfileUserControlBase class defines a custom base class for the profile Control.</summary>
     public class ProfileUserControlBase : UserModuleBase
     {
@@ -15,7 +12,8 @@ namespace DotNetNuke.Entities.Modules
 
         public event EventHandler ProfileUpdateCompleted;
 
-        /// <summary>Raises the OnProfileUpdateCompleted Event.</summary>
+        /// <summary>Raises the <see cref="ProfileUpdateCompleted"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnProfileUpdateCompleted(EventArgs e)
         {
             if (this.ProfileUpdateCompleted != null)
@@ -24,7 +22,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the ProfileUpdated Event.</summary>
+        /// <summary>Raises the <see cref="ProfileUpdated"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnProfileUpdated(EventArgs e)
         {
             if (this.ProfileUpdated != null)

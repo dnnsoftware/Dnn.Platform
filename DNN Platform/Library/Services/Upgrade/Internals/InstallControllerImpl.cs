@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return connectionConfig;
         }
 
-        /// <summary>SetInstallConfig - Saves configuration in <c>DotNetNuke.Install.Config</c>.</summary>
+        /// <inheritdoc />
         public void SetInstallConfig(InstallConfig installConfig)
         {
             if (installConfig == null)
@@ -537,6 +537,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         }
 
         /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <param name="config">The connection config.</param>
         /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>).</returns>
         public string TestDatabaseConnection(ConnectionConfig config)
         {

@@ -214,6 +214,8 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Gets a Setting for the Module.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingKey">The setting key.</param>
         /// <returns>The setting value or <see langword="null"/>.</returns>
         public static object GetSetting(int portalId, string settingKey)
         {
@@ -239,6 +241,8 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Updates the Settings for the Module.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The settings to update.</param>
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
             string key;

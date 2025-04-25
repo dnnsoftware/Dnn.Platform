@@ -8,13 +8,7 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      TextEditControl
-    /// <summary>
-    /// The TextEditControl control provides a standard UI component for editing
-    /// string/text properties.
-    /// </summary>
+    /// <summary>The TextEditControl control provides a standard UI component for editing string/text properties.</summary>
     [ToolboxData("<{0}:TextEditControl runat=server></{0}:TextEditControl>")]
     public class TextEditControl : EditControl
     {
@@ -67,10 +61,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);

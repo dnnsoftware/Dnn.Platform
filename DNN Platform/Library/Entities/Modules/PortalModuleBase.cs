@@ -21,9 +21,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    /// Project  : DotNetNuke
-    /// Class    : PortalModuleBase
-    ///
     /// <summary>
     /// The PortalModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal.
@@ -442,10 +439,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
-        /// Module Control.
-        /// </summary>
+        /// <summary>Helper method that can be used to add an ActionEventHandler to the Skin for this Module Control.</summary>
+        /// <param name="e">The event arguments.</param>
         protected void AddActionHandler(ActionEventHandler e)
         {
             UI.Skins.Skin parentSkin = UI.Skins.Skin.GetParentSkin(this);

@@ -56,6 +56,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>OnPreRender runs when just before the Render phase of the Page Lifecycle.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

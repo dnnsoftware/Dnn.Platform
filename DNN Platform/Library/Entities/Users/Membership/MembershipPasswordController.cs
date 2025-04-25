@@ -21,6 +21,7 @@ namespace DotNetNuke.Entities.Users.Membership
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
         /// <summary>returns the password history of the supplied user.</summary>
+        /// <param name="userId">The user ID.</param>
         /// <returns>list of PasswordHistory objects.</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId)
         {
