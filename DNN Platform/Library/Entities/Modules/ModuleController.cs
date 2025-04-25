@@ -657,10 +657,10 @@ namespace DotNetNuke.Entities.Modules
         ///     Note - the base module is not removed unless both the flags are set, indicating
         ///     to delete all instances AND to delete the Base Module.
         /// </remarks>
-        /// <param name="moduleId">The Id of the module to copy.</param>
-        /// <param name="tabId">The Id of the current tab.</param>
-        /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted.</param>
+        /// <param name="moduleId">The ID of the module to copy.</param>
+        /// <param name="tabId">The ID of the current tab.</param>
         /// <param name="fromTabs">An ArrayList of TabItem objects.</param>
+        /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted.</param>
         /// <param name="includeCurrent">A flag to indicate whether to delete from the current tab
         ///         as identified ny tabId.</param>
         /// <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself.</param>

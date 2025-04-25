@@ -372,6 +372,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.</summary>
         /// <param name="settingName">the setting to read.</param>
+        /// <param name="portalID">The portal ID.</param>
         /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
         /// <returns>The decrypted setting value.</returns>
         public static string GetEncryptedString(string settingName, int portalID, string passPhrase)

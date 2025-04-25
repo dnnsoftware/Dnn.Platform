@@ -88,8 +88,8 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>Finds a culture-specific homepage tab ID for a non-default language.</summary>
         /// <param name="defaultCulture">The default culture of the portal.</param>
-        /// <param name="cultureCode">The culture code.</param>
         /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <param name="defaultHomeTabId">The default home page tab id.</param>
         /// <returns>The valid home page tab ID for the portal ID and culture.</returns>
         /// <remarks>Note if no specific home page found for the culture, will return defaultHomeTabId back.</remarks>

@@ -331,8 +331,8 @@ namespace DotNetNuke.UI.Modules
         }
 
         /// <summary>GetActionsCount gets the current number of actions.</summary>
-        /// <param name="actions">The actions collection to count.</param>
         /// <param name="count">The current count.</param>
+        /// <param name="actions">The actions collection to count.</param>
         private static int GetActionsCount(int count, ModuleActionCollection actions)
         {
             foreach (ModuleAction action in actions)

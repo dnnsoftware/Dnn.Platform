@@ -308,7 +308,9 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddModuleToPage adds a module to a Page.</summary>
-        /// <param name="moduleDefId">The Module Definition Id for the module to be added to this tab.</param>
+        /// <param name="tabPath">The tab path of the page.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="moduleDefId">The Module Definition ID for the module to be added to this tab.</param>
         /// <param name="moduleTitle">The Module's title.</param>
         /// <param name="moduleIconFile">The Module's icon.</param>
         /// <param name="inheritPermissions">Inherit the Pages View Permissions.</param>

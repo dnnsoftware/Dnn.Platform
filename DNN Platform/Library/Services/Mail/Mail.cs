@@ -227,11 +227,12 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>Send a simple email.</summary>
         /// <param name="mailFrom">Email sender.</param>
-        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="mailTo">Recipients, can be more than one separated by semicolons.</param>
+        /// <param name="bcc">BCC-recipients, can be more than one separated by semicolons.</param>
         /// <param name="subject">Subject of email.</param>
         /// <param name="body">Body of email.</param>
         /// <param name="attachment">A filename to attach to the email (or <see cref="string.Empty"/> for no attachment).</param>
+        /// <param name="bodyType"><c>"HTML"</c> if the body should be represented as HTML rather than text.</param>
         /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>

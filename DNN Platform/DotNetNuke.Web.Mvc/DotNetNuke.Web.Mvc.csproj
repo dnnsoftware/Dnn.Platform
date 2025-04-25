@@ -35,7 +35,7 @@
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1611,SA1612,SA1614,SA1615,SA1618</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1611,SA1614,SA1615,SA1618</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,7 +48,7 @@
     <NoWarn>1591</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1611,SA1612,SA1614,SA1615,SA1618</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1611,SA1614,SA1615,SA1618</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke">
