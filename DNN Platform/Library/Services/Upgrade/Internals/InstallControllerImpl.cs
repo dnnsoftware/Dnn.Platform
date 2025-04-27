@@ -417,31 +417,45 @@ namespace DotNetNuke.Services.Upgrade.Internals
         public bool IsValidSqlServerVersion(string connectionString)
         {
             // todo: check if we can use globals.DatabaseEngineVersion instead
-            bool isValidVersion = false;
-            var sqlConnection = new SqlConnection(connectionString);
-            try
+            var isValidVersion = false;
+            using (var sqlConnection = new SqlConnection(connectionString))
             {
-                sqlConnection.Open();
-
-                string serverVersion = sqlConnection.ServerVersion;
-                if (serverVersion != null)
+                try
                 {
-                    string[] serverVersionDetails = serverVersion.Split(new[] { "." }, StringSplitOptions.None);
+                    sqlConnection.Open();
 
-                    int versionNumber = int.Parse(serverVersionDetails[0]);
+                    var serverVersion = sqlConnection.ServerVersion;
+                    if (serverVersion != null)
+                    {
+                        var serverVersionDetails = serverVersion.Split(new[] { "." }, StringSplitOptions.None);
 
-                    // SQL Server 2017 and up.
-                    isValidVersion = versionNumber >= 14;
+                        var versionNumber = int.Parse(serverVersionDetails[0]);
+
+                        // SQL Server 2017 and up, traditional version numbers are ok
+                        if (versionNumber >= 14)
+                        {
+                            isValidVersion = true;
+                        }
+                        else if (versionNumber == 12)
+                        {
+                            // We need to check to see if this is actually Azure SQL, as it is compatible with DNN as well
+                            using (var testCommand = new SqlCommand("select serverproperty('Edition')", sqlConnection))
+                            {
+                                var result = testCommand.ExecuteScalar();
+                                isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.InvariantCultureIgnoreCase);
+                            }
+                        }
+                    }
                 }
-            }
-            catch (Exception)
-            {
-                // cannot connect with the details
-                isValidVersion = false;
-            }
-            finally
-            {
-                sqlConnection.Close();
+                catch (Exception)
+                {
+                    // cannot connect with the details
+                    isValidVersion = false;
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
             }
 
             return isValidVersion;
