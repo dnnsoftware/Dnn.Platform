@@ -36,6 +36,11 @@ namespace Dnn.Modules.ResourceManager.Components.Common
         public static int GetFolderGroupId(int folderId)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
+            if (folder is null)
+            {
+                return -1;
+            }
+
             var folderPath = folder.DisplayPath;
 
             if (!folderPath.StartsWith(Constants.GroupFolderPathStart))
