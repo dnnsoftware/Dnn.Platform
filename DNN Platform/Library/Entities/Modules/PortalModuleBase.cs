@@ -385,6 +385,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Gets the file name for the module cache.</summary>
+        /// <param name="tabModuleId">The tab-module ID.</param>
+        /// <returns>The absolute file path.</returns>
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheFileName(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheFileName(int tabModuleId)
         {
@@ -394,6 +397,9 @@ namespace DotNetNuke.Entities.Modules
             return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
         }
 
+        /// <summary>Gets the cache key for the module.</summary>
+        /// <param name="tabModuleId">The tab-module ID.</param>
+        /// <returns>The cache key.</returns>
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheKey(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheKey(int tabModuleId)
         {
@@ -403,6 +409,7 @@ namespace DotNetNuke.Entities.Modules
             return strCacheKey;
         }
 
+        /// <inheritdoc cref="ModuleController.SynchronizeModule" />
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.SynchronizeModule(ModuleId)", RemovalVersion = 11)]
         public partial void SynchronizeModule()
         {

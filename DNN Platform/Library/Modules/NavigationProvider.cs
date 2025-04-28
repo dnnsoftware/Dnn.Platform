@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.NavigationProvider
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
 
+    /// <summary>Provides a renderer for navigation.</summary>
     public abstract partial class NavigationProvider : UserControlBase
     {
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
@@ -1000,6 +1001,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             }
         }
 
+        /// <inheritdoc cref="Instance(System.IServiceProvider,string)"/>
         [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
         public static partial NavigationProvider Instance(string friendlyName)
         {

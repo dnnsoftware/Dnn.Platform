@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.UserRequest;
 
+    /// <summary>Manages counting the number of times an IP address has been seen.</summary>
     public partial class IPCount
     {
         private const string TempFileExtension = ".tmp";

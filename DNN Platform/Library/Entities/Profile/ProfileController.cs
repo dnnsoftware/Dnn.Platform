@@ -406,6 +406,7 @@ namespace DotNetNuke.Entities.Profile
             return res;
         }
 
+        /// <inheritdoc cref="GetPropertyDefinition(int,int)"/>
         [DnnDeprecated(7, 0, 0, "Please use GetPropertyDefinition(int definitionId, int portalId) instead", RemovalVersion = 11)]
         public static partial ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {

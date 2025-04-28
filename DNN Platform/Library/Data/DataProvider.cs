@@ -29,6 +29,7 @@ namespace DotNetNuke.Data
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.ApplicationBlocks.Data;
 
+    /// <summary>Base implementation of a provider of core database activities.</summary>
     public abstract partial class DataProvider
     {
         private const int DuplicateKey = 2601;
@@ -2282,24 +2283,34 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("UpdateUserRole", userRoleId, status, isOwner, this.GetNull(effectiveDate), this.GetNull(expiryDate), lastModifiedByUserID);
         }
 
+        /// <summary>Delete outdated users online.</summary>
+        /// <param name="timeWindow">The time window in which to delete.</param>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial void DeleteUsersOnline(int timeWindow)
         {
             this.ExecuteNonQuery("DeleteUsersOnline", timeWindow);
         }
 
+        /// <summary>Get the online user record.</summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A data reader.</returns>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial IDataReader GetOnlineUser(int userId)
         {
             return this.ExecuteReader("GetOnlineUser", userId);
         }
 
+        /// <summary>Get the online user records for a portal.</summary>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>A data reader.</returns>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial IDataReader GetOnlineUsers(int portalId)
         {
             return this.ExecuteReader("GetOnlineUsers", portalId);
         }
 
+        /// <summary>Update the online user records.</summary>
+        /// <param name="userList">The users.</param>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial void UpdateUsersOnline(Hashtable userList)
         {
@@ -3108,6 +3119,7 @@ namespace DotNetNuke.Data
                 lastModifiedByUserID);
         }
 
+        /// <inheritdoc cref="GetPasswordHistory(int,int,int)" />
         [DnnDeprecated(9, 2, 0, "Please use the overload that takes passwordsRetained and daysRetained")]
         public virtual partial IDataReader GetPasswordHistory(int userId)
         {
@@ -3119,6 +3131,7 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPasswordHistory", this.GetNull(userId), passwordsRetained, daysRetained);
         }
 
+        /// <inheritdoc cref="AddPasswordHistory(int,string,string,int,int)" />
         [DnnDeprecated(9, 2, 0, "Please use the overload that takes daysRetained")]
         public virtual partial void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
         {
@@ -4017,6 +4030,7 @@ namespace DotNetNuke.Data
             }
         }
 
+        /// <inheritdoc cref="GetFiles(int,bool,bool)" />
         [DnnDeprecated(9, 3, 0, "Please use GetFiles(int, bool, bool) instead")]
 #pragma warning disable CS1066
         public virtual partial IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)

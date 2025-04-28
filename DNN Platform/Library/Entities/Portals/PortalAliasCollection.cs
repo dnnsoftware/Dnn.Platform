@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Portals
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>A collection of <see cref="PortalAliasInfo"/> instances, indexed by <see cref="PortalAliasInfo.HttpAlias"/>.</summary>
     [Serializable]
     [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
     public partial class PortalAliasCollection : DictionaryBase
@@ -53,6 +54,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc cref="IDictionary.Contains"/>
         [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
         public partial bool Contains(string key)
         {

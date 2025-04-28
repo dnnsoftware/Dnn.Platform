@@ -12,6 +12,7 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
 
+    /// <summary>The default <see cref="IFolderPermissionController"/> implementation.</summary>
     public partial class FolderPermissionController : ServiceLocator<IFolderPermissionController, FolderPermissionController>, IFolderPermissionController
     {
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
