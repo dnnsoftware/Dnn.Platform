@@ -33,6 +33,9 @@ namespace Dnn.PersonaBar.Vocabularies.Services
 
         /// GET: api/Vocabularies/GetVocabularies
         /// <summary>Gets an overall list of vocabularies.</summary>
+        /// <param name="pageIndex">The page index.</param>
+        /// <param name="pageSize">The page size.</param>
+        /// <param name="scopeTypeId">The ID of the scope to filter by, or <see cref="Null.NullInteger"/> to include vocabularies from all scopes.</param>
         /// <returns>List of vocabularies.</returns>
         [HttpGet]
         public HttpResponseMessage GetVocabularies(int pageIndex, int pageSize, int scopeTypeId = -1)

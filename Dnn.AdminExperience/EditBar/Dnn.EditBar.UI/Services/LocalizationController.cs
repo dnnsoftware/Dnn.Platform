@@ -25,6 +25,7 @@ namespace Dnn.EditBar.UI.Services
         private static object threadLocker = new object();
 
         /// <summary>Retrieve a list of CMX related Localization Keys with its values for the current culture.</summary>
+        /// <param name="culture">The culture name.</param>
         /// <returns>A response with a collection of resources.</returns>
         [HttpGet]
         public HttpResponseMessage GetTable(string culture)

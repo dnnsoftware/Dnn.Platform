@@ -24,10 +24,8 @@ namespace DotNetNuke.Web.Api
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StringPassThroughMediaTypeFormatter"/> class.
-        /// Initialize a formatter that can handle the specified media types.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="StringPassThroughMediaTypeFormatter"/> class that can handle the specified media types.</summary>
+        /// <param name="mediaTypes">The supported media types.</param>
         public StringPassThroughMediaTypeFormatter(IEnumerable<string> mediaTypes)
         {
             foreach (var type in mediaTypes)

@@ -17,6 +17,7 @@ namespace DotNetNuke.Entities.Groups
     public class Content
     {
         /// <summary>This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.</summary>
+        /// <param name="contentTypeName">The name of the content type.</param>
         /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
         internal static int GetContentTypeID(string contentTypeName)
         {
@@ -38,6 +39,8 @@ namespace DotNetNuke.Entities.Groups
         }
 
         /// <summary>This should only run after the Post exists in the data store.</summary>
+        /// <param name="objItem">The role info.</param>
+        /// <param name="tabId">The tab ID.</param>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
         internal ContentItem CreateContentItem(RoleInfo objItem, int tabId)
@@ -81,6 +84,8 @@ namespace DotNetNuke.Entities.Groups
         }
 
         /// <summary>This is used to update the content in the ContentItems table. Should be called when a question is updated.</summary>
+        /// <param name="objItem">The role info.</param>
+        /// <param name="tabId">The tab ID.</param>
         internal void UpdateContentItem(RoleInfo objItem, int tabId)
         {
             ContentItem objContent = null; // Util.GetContentController().;

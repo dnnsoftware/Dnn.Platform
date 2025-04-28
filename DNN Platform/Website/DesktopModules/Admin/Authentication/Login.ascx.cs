@@ -328,6 +328,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
 
         /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -364,6 +365,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -454,6 +456,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>cmdAssociate_Click runs when the associate button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -492,6 +496,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>cmdCreateUser runs when the register (as new user) button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -519,6 +525,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>cmdProceed_Click runs when the Proceed Anyway button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -529,6 +537,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>PasswordUpdated runs when the password is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             PasswordUpdateStatus status = e.UpdateStatus;
@@ -551,6 +561,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>DataConsentCompleted runs after the user has gone through the data consent screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
         {
             switch (e.Status)
@@ -569,16 +581,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>ProfileUpdated runs when the profile is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void ProfileUpdated(object sender, EventArgs e)
         {
             // Authorize User
             this.ValidateUser(this.ctlProfile.User, true);
         }
 
-        /// <summary>
-        /// UserAuthenticated runs when the user is authenticated by one of the child
-        /// Authentication controls.
-        /// </summary>
+        /// <summary>UserAuthenticated runs when the user is authenticated by one of the child Authentication controls.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
         {
             this.LoginStatus = e.LoginStatus;
@@ -696,6 +709,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>UserCreateCompleted runs when a new user has been Created.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
             var strMessage = string.Empty;

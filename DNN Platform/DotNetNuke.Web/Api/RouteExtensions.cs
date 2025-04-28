@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Api
         private const string NameKey = "name";
 
         /// <summary>Get the name of the route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>Get the name of the route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Route name.</returns>
         public static string GetName(this IHttpRoute route)
         {
@@ -37,6 +39,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
@@ -44,6 +47,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>Get Namespaces that are searched for controllers for this route.</summary>
+        /// <param name="route">The route.</param>
         /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this IHttpRoute route)
         {

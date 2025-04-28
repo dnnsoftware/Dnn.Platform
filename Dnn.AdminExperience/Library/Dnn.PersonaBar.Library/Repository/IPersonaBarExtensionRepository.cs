@@ -27,6 +27,7 @@ namespace Dnn.PersonaBar.Library.Repository
         IList<PersonaBarExtension> GetExtensions();
 
         /// <summary>get persona bar extensions for menu.</summary>
+        /// <param name="menuId">The ID of the menu.</param>
         /// <returns>A list of <see cref="PersonaBarExtension"/> instances.</returns>
         IList<PersonaBarExtension> GetExtensions(int menuId);
     }

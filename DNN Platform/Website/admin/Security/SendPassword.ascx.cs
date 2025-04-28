@@ -164,6 +164,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -185,9 +186,11 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>cmdSendPassword_Click runs when the Password Reminder button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void OnSendPasswordClick(object sender, EventArgs e)
         {
-            // pretty much always display the same message to avoid hinting on the existance of a user name
+            // pretty much always display the same message to avoid hinting on the existence of a user name
             var input = string.IsNullOrEmpty(this.txtUsername.Text) ? this.txtEmail.Text : this.txtUsername.Text;
             var message = string.Format(Localization.GetString("PasswordSent", this.LocalResourceFile), WebUtility.HtmlEncode(input));
             var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;

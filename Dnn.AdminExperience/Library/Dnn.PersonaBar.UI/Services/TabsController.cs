@@ -83,6 +83,15 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         /// <summary>A web API action to get pages search results.</summary>
+        /// <param name="searchText">The search text.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="roles">A semicolon-delimited list of role names by which to filter the results.</param>
+        /// <param name="disabledNotSelectable">Whether disabled tabs should be selectable.</param>
+        /// <param name="sortOrder">1 for A-Z, 2 for Z-A, any other value to not sort the results.</param>
+        /// <param name="validateTab">The friendly name of a module which must be on the page.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeDeleted">WHether to include deleted pages.</param>
         /// <returns>A response with a <see cref="TabDto"/> <c>Results</c> field.</returns>
         [HttpGet]
         public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
@@ -132,6 +141,17 @@ namespace Dnn.PersonaBar.UI.Services
         }
 
         /// <summary>A web API action to get the descendants of a tab.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="parentId">The parent ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="isMultiLanguage">Whether it's multi-language.</param>
+        /// <param name="roles">A semicolon-delimited list of role names.</param>
+        /// <param name="disabledNotSelectable">Whether disabled pages should be selectable.</param>
+        /// <param name="sortOrder">1 for A-Z, 2 for Z-A, or any other value to not sort the results.</param>
+        /// <param name="validateTab">The friendly name of module that must be on the page.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeDeletedChildren">The value of this parameter affects <see cref="TabInfo.HasChildren"></see> property.</param>
         /// <returns>A response with <see cref="TabDto"/> <c>Results</c> collection.</returns>
         [HttpGet]
         public HttpResponseMessage GetTabsDescendants(int portalId, int parentId, string cultureCode, bool isMultiLanguage = false, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeletedChildren = true)

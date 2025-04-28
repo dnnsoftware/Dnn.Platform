@@ -215,6 +215,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -291,10 +292,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
-        /// Grid.
-        /// </summary>
+        /// <summary>grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source Grid.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming

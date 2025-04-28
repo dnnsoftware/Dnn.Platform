@@ -109,6 +109,7 @@ namespace DesktopModules.Admin.Security
         }
 
         /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -126,6 +127,7 @@ namespace DesktopModules.Admin.Security
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

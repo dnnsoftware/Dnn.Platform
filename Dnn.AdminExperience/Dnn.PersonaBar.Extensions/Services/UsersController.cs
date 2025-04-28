@@ -35,6 +35,7 @@ namespace Dnn.PersonaBar.Users.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
 
         /// <summary>Create a User.</summary>
+        /// <param name="contract">Information about the user to create.</param>
         /// <returns>A response with a (potentially <see langword="null"/>) <see cref="UserBasicDto"/>.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
