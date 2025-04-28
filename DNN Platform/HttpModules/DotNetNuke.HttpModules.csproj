@@ -47,7 +47,7 @@
     <LangVersion>latest</LangVersion>
     <DefineConstants>DEBUG</DefineConstants>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1614</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -61,7 +61,7 @@
     <Optimize>true</Optimize>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,SA1601,SA1614</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,SA1601</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetNuke.Instrumentation">

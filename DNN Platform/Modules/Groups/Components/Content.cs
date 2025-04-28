@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Groups
         }
 
         /// <summary>This removes a content item associated with a question/thread from the data store. Should run every time an entire thread is deleted.</summary>
-        /// <param name="contentItemID"></param>
+        /// <param name="contentItemID">The content item ID.</param>
         internal void DeleteContentItem(int contentItemID)
         {
             if (contentItemID <= Null.NullInteger)

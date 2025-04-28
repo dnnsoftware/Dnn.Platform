@@ -13,6 +13,8 @@ namespace Dnn.PersonaBar.UI.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Library.DTO.Tabs;
+
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
@@ -26,19 +28,19 @@ namespace Dnn.PersonaBar.UI.Services
 
         /// GET: api/Tabs/GetPortalTabs
         /// <summary>Gets list of portal tabs.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="isMultiLanguage"></param>
-        /// <param name="excludeAdminTabs"></param>
-        /// <param name="roles"></param>
-        /// <param name="disabledNotSelectable"></param>
-        /// <param name="sortOrder"></param>
-        /// <param name="selectedTabId">Currently Selected tab id.</param>
-        /// <param name="validateTab"></param>
-        /// <param name="includeHostPages"></param>
-        /// <param name="includeDisabled"></param>
-        /// <param name="includeDeleted"></param>
-        /// <param name="includeDeletedChildren"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="isMultiLanguage">Whether it's multi-language.</param>
+        /// <param name="excludeAdminTabs">Whether to exclude admin tabs.</param>
+        /// <param name="roles">A semicolon-delimited list of role names by which to filter the results.</param>
+        /// <param name="disabledNotSelectable">If disabled pages should not be selectable.</param>
+        /// <param name="sortOrder">1 to sort A-Z, 2 to sort Z-A, any other value to not sort.</param>
+        /// <param name="selectedTabId">Currently Selected tab ID.</param>
+        /// <param name="validateTab">The friendly name of a module to ensure is on the page.</param>
+        /// <param name="includeHostPages">Whether to include host pages.</param>
+        /// <param name="includeDisabled">Whether to include disabled pages.</param>
+        /// <param name="includeDeleted">Whether to include deleted pages.</param>
+        /// <param name="includeDeletedChildren">The value of this parameter affects <see cref="TabInfo.HasChildren"></see> property.</param>
         /// <returns>List of portal tabs.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage = false, bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false, bool includeDeletedChildren = true)
@@ -105,9 +107,9 @@ namespace Dnn.PersonaBar.UI.Services
 
         /// GET: api/Tabs/GetPortalTab
         /// <summary>Gets list of portal tabs.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <param name="cultureCode"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <returns>List of portal tabs.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalTab(int portalId, int tabId, string cultureCode)

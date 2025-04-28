@@ -141,7 +141,7 @@ namespace Dnn.PersonaBar.Users.Services
         }
 
         /// <summary>Get User Detail Info.</summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">The user ID.</param>
         /// <returns>A response with a <see cref="UserDetailDto"/>.</returns>
         [HttpGet]
         public HttpResponseMessage GetUserDetail(int userId)

@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private readonly Term selectedTerm;
 
         /// <summary>Initializes a new instance of the <see cref="TermsEventArgs"/> class.</summary>
-        /// <param name="selectedTerm"></param>
+        /// <param name="selectedTerm">The selected term.</param>
         public TermsEventArgs(Term selectedTerm)
         {
             this.selectedTerm = selectedTerm;

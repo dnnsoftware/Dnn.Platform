@@ -315,7 +315,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// The Page_Load server event handler on this user control is used
         /// to populate the tree with the Pages.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

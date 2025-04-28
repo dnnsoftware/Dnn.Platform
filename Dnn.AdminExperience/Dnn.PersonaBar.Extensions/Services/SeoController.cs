@@ -171,7 +171,7 @@ namespace Dnn.PersonaBar.Seo.Services
 
         /// POST: api/SEO/UpdateRegexSettings
         /// <summary>Updates SEO regex settings.</summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request body.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]

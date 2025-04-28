@@ -194,7 +194,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>Use container to add custom control hierarchy to.</summary>
-        /// <param name="container"></param>
+        /// <param name="container">The container in which to render this control.</param>
         /// <returns>An "input" control that can be used for attaching validators.</returns>
         protected virtual WebControl CreateControlInternal(Control container)
         {

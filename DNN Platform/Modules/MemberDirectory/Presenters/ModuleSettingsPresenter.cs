@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
     public partial class ModuleSettingsPresenter : ModuleSettingsPresenter<ISettingsView<MemberDirectorySettingsModel>, MemberDirectorySettingsModel>
     {
         /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPresenter"/> class.</summary>
-        /// <param name="view"></param>
+        /// <param name="view">The settings view.</param>
         public ModuleSettingsPresenter(ISettingsView<MemberDirectorySettingsModel> view)
             : base(view)
         {

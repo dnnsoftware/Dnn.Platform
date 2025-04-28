@@ -12,8 +12,8 @@ namespace Dnn.PersonaBar.Security.Components
     public class CheckResult
     {
         /// <summary>Initializes a new instance of the <see cref="CheckResult"/> class.</summary>
-        /// <param name="severity"></param>
-        /// <param name="checkname"></param>
+        /// <param name="severity">The result severity.</param>
+        /// <param name="checkname">The check name.</param>
         public CheckResult(SeverityEnum severity, string checkname)
         {
             this.Severity = severity;

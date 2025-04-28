@@ -575,7 +575,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetProfileProperties
         /// <summary>Gets profile properties.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>profile properties.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
@@ -1394,7 +1394,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateListEntry
         /// <summary>Adds/Updates list entry.</summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request body.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]

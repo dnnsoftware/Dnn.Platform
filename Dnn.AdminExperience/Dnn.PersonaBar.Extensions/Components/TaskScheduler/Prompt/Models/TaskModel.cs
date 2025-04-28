@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="TaskModel"/> class.</summary>
-        /// <param name="item"></param>
+        /// <param name="item">The schedule item.</param>
         public TaskModel(ScheduleItem item)
             : base(item)
         {

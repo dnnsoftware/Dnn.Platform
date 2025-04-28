@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
-        /// <param name="navigationManager"></param>
+        /// <param name="navigationManager">A navigation manager.</param>
         public HtmlTextController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;

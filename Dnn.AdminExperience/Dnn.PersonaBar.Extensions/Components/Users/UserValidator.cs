@@ -26,9 +26,9 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         /// <summary>Initializes a new instance of the <see cref="UserValidator"/> class.</summary>
-        /// <param name="portalController"></param>
-        /// <param name="userControllerWrapper"></param>
-        /// <param name="contentVerifier"></param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userControllerWrapper">The user controller.</param>
+        /// <param name="contentVerifier">The content verifier.</param>
         public UserValidator(IPortalController portalController, IUserControllerWrapper userControllerWrapper, IContentVerifier contentVerifier)
         {
             this.portalController = portalController;

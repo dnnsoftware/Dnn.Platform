@@ -314,8 +314,8 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>cmdToggleSuperuser_Click runs when the toggle superuser button is clicked.</summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void CmdToggleSuperuser_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)

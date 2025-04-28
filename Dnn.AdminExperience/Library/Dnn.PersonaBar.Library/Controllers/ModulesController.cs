@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulesController"/> class.</summary>
-        /// <param name="contentVerifier"></param>
+        /// <param name="contentVerifier">The content verifier.</param>
         public ModulesController(IContentVerifier contentVerifier)
         {
             this.contentVerifier = contentVerifier;
