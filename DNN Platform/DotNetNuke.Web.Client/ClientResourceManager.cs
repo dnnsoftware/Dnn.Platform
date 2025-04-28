@@ -440,12 +440,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
         }
 
-        /// <summary>This is a utility method that can be called to update the version of the composite files.</summary>
-        [DnnDeprecated(8, 0, 1, "This method is not required anymore. The CRM version is now managed in host settings and site settings", RemovalVersion = 10)]
-        public static partial void UpdateVersion()
-        {
-        }
-
         /// <summary>Clear the default composite files so that it can be generated next time.</summary>
         public static void ClearCache()
         {
