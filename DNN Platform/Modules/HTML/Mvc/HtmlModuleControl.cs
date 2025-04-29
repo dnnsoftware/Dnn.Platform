@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.Html
                     "MyWork.Action",
                     string.Empty,
                     "view.gif",
-                    this.EditUrl(/*"mvcpage", "yes",*/ "MyWork"),
+                    this.EditUrl("mvcpage", "yes", "MyWork"),
                     false,
                     SecurityAccessLevel.Edit,
                     true,

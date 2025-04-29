@@ -162,7 +162,10 @@
     <Compile Include="Controllers\DNN_HTMLController.cs" />
     <Compile Include="Controllers\HTMLEditHTMLViewController.cs" />
     <Compile Include="Controllers\HTMLHtmlModuleViewController.cs" />
+    <Compile Include="Controllers\HTMLMyWorkViewController.cs" />
     <Compile Include="Models\HtmlModuleSettingsModel.cs" />
+    <Compile Include="Models\HtmlTextUserModel.cs" />
+    <Compile Include="Models\MyWorkModel.cs" />
     <Compile Include="Models\WorkflowType.cs" />
     <Compile Include="EditHtml.ascx.cs">
       <DependentUpon>EditHtml.ascx</DependentUpon>
@@ -249,7 +252,6 @@
     <Content Include="web.config" />
     <Content Include="Views\EditHTML.cshtml" />
     <Content Include="Views\HtmlModule.cshtml" />
-    <Content Include="Views\LoadSettings.cshtml" />
     <Content Include="Views\MyWork.cshtml" />
     <Content Include="Views\web.config" />
     <Content Include="Views\_Edit.cshtml" />
