@@ -8,7 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Services.Localization;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to the DNN Corp website.</summary>
     public partial class DnnLink : SkinObjectBase
     {
         private const string MyFileName = "DnnLink.ascx";

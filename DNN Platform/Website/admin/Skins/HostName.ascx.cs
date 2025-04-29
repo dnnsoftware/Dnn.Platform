@@ -9,7 +9,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Exceptions;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to the host site.</summary>
     public partial class HostName : SkinObjectBase
     {
         public string CssClass { get; set; }

@@ -7,7 +7,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Entities.Users;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays the current date.</summary>
     public partial class CurrentDate : SkinObjectBase
     {
         public string CssClass { get; set; }

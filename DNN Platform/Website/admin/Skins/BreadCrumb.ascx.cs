@@ -13,7 +13,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Tabs;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays the hierarchy of the current page.</summary>
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
