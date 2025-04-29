@@ -45,40 +45,39 @@ using System.Web;
 using log4net.Core;
 using log4net.Util;
 
-namespace log4net.Layout.Pattern
-{
-    /// <summary>
-    /// Abstract class that provides access to the current HttpContext (<see cref="HttpContext.Current" />) that 
-    /// derived classes need.
-    /// </summary>
-    /// <remarks>
-    /// This class handles the case when HttpContext.Current is null by writing
-    /// <see cref="SystemInfo.NotAvailableText" /> to the writer.
-    /// </remarks>
-    /// <author>Ron Grabowski</author>
-    internal abstract class AspNetPatternLayoutConverter : PatternLayoutConverter
-    {
-        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
-        {
-            if (HttpContext.Current == null)
-            {
-                writer.Write(SystemInfo.NotAvailableText);
-            }
-            else
-            {
-                this.Convert(writer, loggingEvent, HttpContext.Current);
-            }
-        }
+namespace log4net.Layout.Pattern;
 
-        /// <summary>
-        /// Derived pattern converters must override this method in order to
-        /// convert conversion specifiers in the correct way.
-        /// </summary>
-        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">The <see cref="LoggingEvent" /> on which the pattern converter should be executed.</param>
-        /// <param name="httpContext">The <see cref="HttpContext" /> under which the ASP.Net request is running.</param>
-        protected abstract void Convert(TextWriter writer, LoggingEvent loggingEvent, HttpContext httpContext);
+/// <summary>
+/// Abstract class that provides access to the current HttpContext (<see cref="HttpContext.Current" />) that 
+/// derived classes need.
+/// </summary>
+/// <remarks>
+/// This class handles the case when HttpContext.Current is null by writing
+/// <see cref="SystemInfo.NotAvailableText" /> to the writer.
+/// </remarks>
+/// <author>Ron Grabowski</author>
+internal abstract class AspNetPatternLayoutConverter : PatternLayoutConverter
+{
+    protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
+    {
+        if (HttpContext.Current == null)
+        {
+            writer.Write(SystemInfo.NotAvailableText);
+        }
+        else
+        {
+            this.Convert(writer, loggingEvent, HttpContext.Current);
+        }
     }
+
+    /// <summary>
+    /// Derived pattern converters must override this method in order to
+    /// convert conversion specifiers in the correct way.
+    /// </summary>
+    /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+    /// <param name="loggingEvent">The <see cref="LoggingEvent" /> on which the pattern converter should be executed.</param>
+    /// <param name="httpContext">The <see cref="HttpContext" /> under which the ASP.Net request is running.</param>
+    protected abstract void Convert(TextWriter writer, LoggingEvent loggingEvent, HttpContext httpContext);
 }
 
 #endif // !NETCF && !SSCLI && !CLIENT_PROFILE

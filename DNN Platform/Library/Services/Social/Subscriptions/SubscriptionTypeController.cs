@@ -2,90 +2,89 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Social.Subscriptions
+namespace DotNetNuke.Services.Social.Subscriptions;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework;
+using DotNetNuke.Services.Social.Subscriptions.Data;
+using DotNetNuke.Services.Social.Subscriptions.Entities;
+
+/// <summary>This controller is responsible to manage the subscription types.</summary>
+public class SubscriptionTypeController : ServiceLocator<ISubscriptionTypeController, SubscriptionTypeController>, ISubscriptionTypeController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private readonly IDataService dataService;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Social.Subscriptions.Data;
-    using DotNetNuke.Services.Social.Subscriptions.Entities;
-
-    /// <summary>This controller is responsible to manage the subscription types.</summary>
-    public class SubscriptionTypeController : ServiceLocator<ISubscriptionTypeController, SubscriptionTypeController>, ISubscriptionTypeController
+    /// <summary>Initializes a new instance of the <see cref="SubscriptionTypeController"/> class.</summary>
+    public SubscriptionTypeController()
     {
-        private readonly IDataService dataService;
+        this.dataService = DataService.Instance;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="SubscriptionTypeController"/> class.</summary>
-        public SubscriptionTypeController()
-        {
-            this.dataService = DataService.Instance;
-        }
+    /// <inheritdoc/>
+    public void AddSubscriptionType(SubscriptionType subscriptionType)
+    {
+        Requires.NotNull("subscriptionType", subscriptionType);
 
-        /// <inheritdoc/>
-        public void AddSubscriptionType(SubscriptionType subscriptionType)
-        {
-            Requires.NotNull("subscriptionType", subscriptionType);
+        subscriptionType.SubscriptionTypeId = this.dataService.AddSubscriptionType(
+            subscriptionType.SubscriptionName,
+            subscriptionType.FriendlyName,
+            subscriptionType.DesktopModuleId);
 
-            subscriptionType.SubscriptionTypeId = this.dataService.AddSubscriptionType(
-                subscriptionType.SubscriptionName,
-                subscriptionType.FriendlyName,
-                subscriptionType.DesktopModuleId);
+        CleanCache();
+    }
 
-            CleanCache();
-        }
+    /// <inheritdoc/>
+    public SubscriptionType GetSubscriptionType(Func<SubscriptionType, bool> predicate)
+    {
+        Requires.NotNull("predicate", predicate);
 
-        /// <inheritdoc/>
-        public SubscriptionType GetSubscriptionType(Func<SubscriptionType, bool> predicate)
-        {
-            Requires.NotNull("predicate", predicate);
+        return this.GetSubscriptionTypes().SingleOrDefault(predicate);
+    }
 
-            return this.GetSubscriptionTypes().SingleOrDefault(predicate);
-        }
+    /// <inheritdoc/>
+    public IEnumerable<SubscriptionType> GetSubscriptionTypes()
+    {
+        var cacheArgs = new CacheItemArgs(
+            DataCache.SubscriptionTypesCacheKey,
+            DataCache.SubscriptionTypesTimeOut,
+            DataCache.SubscriptionTypesCachePriority);
 
-        /// <inheritdoc/>
-        public IEnumerable<SubscriptionType> GetSubscriptionTypes()
-        {
-            var cacheArgs = new CacheItemArgs(
-                DataCache.SubscriptionTypesCacheKey,
-                DataCache.SubscriptionTypesTimeOut,
-                DataCache.SubscriptionTypesCachePriority);
+        return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(
+            cacheArgs,
+            c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
+    }
 
-            return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(
-                cacheArgs,
-                c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
-        }
+    /// <inheritdoc/>
+    public IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate)
+    {
+        Requires.NotNull("predicate", predicate);
 
-        /// <inheritdoc/>
-        public IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate)
-        {
-            Requires.NotNull("predicate", predicate);
+        return this.GetSubscriptionTypes().Where(predicate);
+    }
 
-            return this.GetSubscriptionTypes().Where(predicate);
-        }
+    /// <inheritdoc/>
+    public void DeleteSubscriptionType(SubscriptionType subscriptionType)
+    {
+        Requires.NotNull("subscriptionType", subscriptionType);
+        Requires.NotNegative("subscriptionType.SubscriptionTypeId", subscriptionType.SubscriptionTypeId);
 
-        /// <inheritdoc/>
-        public void DeleteSubscriptionType(SubscriptionType subscriptionType)
-        {
-            Requires.NotNull("subscriptionType", subscriptionType);
-            Requires.NotNegative("subscriptionType.SubscriptionTypeId", subscriptionType.SubscriptionTypeId);
+        this.dataService.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId);
+        CleanCache();
+    }
 
-            this.dataService.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId);
-            CleanCache();
-        }
+    /// <inheritdoc/>
+    protected override Func<ISubscriptionTypeController> GetFactory()
+    {
+        return () => new SubscriptionTypeController();
+    }
 
-        /// <inheritdoc/>
-        protected override Func<ISubscriptionTypeController> GetFactory()
-        {
-            return () => new SubscriptionTypeController();
-        }
-
-        private static void CleanCache()
-        {
-            DataCache.RemoveCache(DataCache.SubscriptionTypesCacheKey);
-        }
+    private static void CleanCache()
+    {
+        DataCache.RemoveCache(DataCache.SubscriptionTypesCacheKey);
     }
 }

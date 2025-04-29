@@ -2,36 +2,35 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.UI.Modules
+namespace DotNetNuke.UI.Modules;
+
+using System.IO;
+using System.Web.UI;
+
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Localization;
+
+public abstract class BaseModuleControlFactory : IModuleControlFactory
 {
-    using System.IO;
-    using System.Web.UI;
+    /// <inheritdoc/>
+    public abstract Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc);
 
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Localization;
+    /// <inheritdoc/>
+    public abstract Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration);
 
-    public abstract class BaseModuleControlFactory : IModuleControlFactory
+    /// <inheritdoc/>
+    public virtual ModuleControlBase CreateModuleControl(ModuleInfo moduleConfiguration)
     {
-        /// <inheritdoc/>
-        public abstract Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc);
+        var moduleControl = new ModuleControlBase();
+        moduleControl.ModuleContext.Configuration = moduleConfiguration;
 
-        /// <inheritdoc/>
-        public abstract Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration);
+        moduleControl.LocalResourceFile = moduleConfiguration.ModuleControl.ControlSrc.Replace(Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc), string.Empty) +
+                                          Localization.LocalResourceDirectory + "/" +
+                                          Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc);
 
-        /// <inheritdoc/>
-        public virtual ModuleControlBase CreateModuleControl(ModuleInfo moduleConfiguration)
-        {
-            var moduleControl = new ModuleControlBase();
-            moduleControl.ModuleContext.Configuration = moduleConfiguration;
-
-            moduleControl.LocalResourceFile = moduleConfiguration.ModuleControl.ControlSrc.Replace(Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc), string.Empty) +
-                                       Localization.LocalResourceDirectory + "/" +
-                                       Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc);
-
-            return moduleControl;
-        }
-
-        /// <inheritdoc/>
-        public abstract Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc);
+        return moduleControl;
     }
+
+    /// <inheritdoc/>
+    public abstract Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc);
 }

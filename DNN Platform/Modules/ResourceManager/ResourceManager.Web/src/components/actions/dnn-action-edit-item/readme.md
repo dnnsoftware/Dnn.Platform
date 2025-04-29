@@ -1,9 +1,6 @@
 # dnn-action-edit-item
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,14 +8,13 @@
 | ------------------- | --------- | ----------- | ------ | ----------- |
 | `item` _(required)_ | --        |             | `Item` | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
- - [dnn-rm-file-context-menu](../../context-menus/dnn-rm-file-context-menu)
- - [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
+- [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
+- [dnn-rm-file-context-menu](../../context-menus/dnn-rm-file-context-menu)
+- [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
 
 ### Depends on
 
@@ -27,6 +23,7 @@
 - [dnn-rm-edit-file](../../dnn-rm-edit-file)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-action-edit-item --> dnn-modal
@@ -56,6 +53,6 @@ graph TD;
   style dnn-action-edit-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

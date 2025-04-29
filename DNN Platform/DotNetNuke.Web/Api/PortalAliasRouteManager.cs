@@ -1,178 +1,177 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.Api
+namespace DotNetNuke.Web.Api;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Web.Http.Routing;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Internal.SourceGenerators;
+
+internal partial class PortalAliasRouteManager : IPortalAliasRouteManager
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Web.Http.Routing;
+    private List<int> prefixCounts;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Internal.SourceGenerators;
-
-    internal partial class PortalAliasRouteManager : IPortalAliasRouteManager
+    // TODO: this method need remove after drop use old api format.
+    [DnnDeprecated(9, 0, 0, "Replaced with GetRouteUrl")]
+    public static partial string GetOldRouteUrl(string moduleFolderName, string url, int count)
     {
-        private List<int> prefixCounts;
+        Requires.NotNegative("count", count);
+        Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-        // TODO: this method need remove after drop use old api format.
-        [DnnDeprecated(9, 0, 0, "Replaced with GetRouteUrl")]
-        public static partial string GetOldRouteUrl(string moduleFolderName, string url, int count)
+        return string.Format("{0}DesktopModules/{1}/API/{2}", new PortalAliasRouteManager().GeneratePrefixString(count), moduleFolderName, url);
+    }
+
+    /// <inheritdoc/>
+    public string GetRouteName(string moduleFolderName, string routeName, int count)
+    {
+        Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
+        Requires.NotNegative("count", count);
+
+        return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
+    }
+
+    /// <inheritdoc/>
+    public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
+    {
+        var alias = portalAlias.HTTPAlias;
+        string appPath = TestableGlobals.Instance.ApplicationPath;
+        if (!string.IsNullOrEmpty(appPath))
         {
-            Requires.NotNegative("count", count);
-            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
-
-            return string.Format("{0}DesktopModules/{1}/API/{2}", new PortalAliasRouteManager().GeneratePrefixString(count), moduleFolderName, url);
-        }
-
-        /// <inheritdoc/>
-        public string GetRouteName(string moduleFolderName, string routeName, int count)
-        {
-            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
-            Requires.NotNegative("count", count);
-
-            return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
-        }
-
-        /// <inheritdoc/>
-        public string GetRouteName(string moduleFolderName, string routeName, PortalAliasInfo portalAlias)
-        {
-            var alias = portalAlias.HTTPAlias;
-            string appPath = TestableGlobals.Instance.ApplicationPath;
-            if (!string.IsNullOrEmpty(appPath))
+            int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
+            if (i > 0)
             {
-                int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
-                if (i > 0)
-                {
-                    alias = alias.Remove(i, appPath.Length);
-                }
+                alias = alias.Remove(i, appPath.Length);
             }
-
-            return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
-        /// <inheritdoc/>
-        public HttpRouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
+        return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
+    }
+
+    /// <inheritdoc/>
+    public HttpRouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
+    {
+        var allRouteValues = new HttpRouteValueDictionary(routeValues);
+
+        var segments = portalAliasInfo.HTTPAlias.Split('/');
+
+        if (segments.Length > 1)
         {
-            var allRouteValues = new HttpRouteValueDictionary(routeValues);
-
-            var segments = portalAliasInfo.HTTPAlias.Split('/');
-
-            if (segments.Length > 1)
+            for (int i = 1; i < segments.Length; i++)
             {
-                for (int i = 1; i < segments.Length; i++)
-                {
-                    var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
-                    var value = segments[i];
-                    allRouteValues.Add(key, value);
-                }
+                var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
+                var value = segments[i];
+                allRouteValues.Add(key, value);
             }
-
-            return allRouteValues;
         }
 
-        /// <inheritdoc/>
-        public string GetRouteUrl(string moduleFolderName, string url, int count)
-        {
-            Requires.NotNegative("count", count);
-            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
+        return allRouteValues;
+    }
 
-            return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
-        }
+    /// <inheritdoc/>
+    public string GetRouteUrl(string moduleFolderName, string url, int count)
+    {
+        Requires.NotNegative("count", count);
+        Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
-        /// <inheritdoc/>
-        public void ClearCachedData()
-        {
-            this.prefixCounts = null;
-        }
+        return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
+    }
 
-        /// <inheritdoc/>
-        public IEnumerable<int> GetRoutePrefixCounts()
+    /// <inheritdoc/>
+    public void ClearCachedData()
+    {
+        this.prefixCounts = null;
+    }
+
+    /// <inheritdoc/>
+    public IEnumerable<int> GetRoutePrefixCounts()
+    {
+        if (this.prefixCounts == null)
         {
-            if (this.prefixCounts == null)
+            // prefixCounts are required for each route that is mapped but they only change
+            // when a new portal is added so cache them until that time
+            var portals = PortalController.Instance.GetPortals();
+
+            var segmentCounts1 = new List<int>();
+
+            foreach (PortalInfo portal in portals)
             {
-                // prefixCounts are required for each route that is mapped but they only change
-                // when a new portal is added so cache them until that time
-                var portals = PortalController.Instance.GetPortals();
+                IEnumerable<string> aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
 
-                var segmentCounts1 = new List<int>();
+                aliases = this.StripApplicationPath(aliases);
 
-                foreach (PortalInfo portal in portals)
+                foreach (string alias in aliases)
                 {
-                    IEnumerable<string> aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Select(x => x.HTTPAlias);
+                    var count = CalcAliasPrefixCount(alias);
 
-                    aliases = this.StripApplicationPath(aliases);
-
-                    foreach (string alias in aliases)
+                    if (!segmentCounts1.Contains(count))
                     {
-                        var count = CalcAliasPrefixCount(alias);
-
-                        if (!segmentCounts1.Contains(count))
-                        {
-                            segmentCounts1.Add(count);
-                        }
+                        segmentCounts1.Add(count);
                     }
                 }
-
-                IEnumerable<int> segmentCounts = segmentCounts1;
-                this.prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
             }
 
-            return this.prefixCounts;
+            IEnumerable<int> segmentCounts = segmentCounts1;
+            this.prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
         }
 
-        private static int CalcAliasPrefixCount(string alias)
+        return this.prefixCounts;
+    }
+
+    private static int CalcAliasPrefixCount(string alias)
+    {
+        return alias.Count(c => c == '/');
+    }
+
+    private static IEnumerable<string> StripApplicationPathIterable(IEnumerable<string> aliases, string appPath)
+    {
+        foreach (string alias in aliases)
         {
-            return alias.Count(c => c == '/');
-        }
+            int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
 
-        private static IEnumerable<string> StripApplicationPathIterable(IEnumerable<string> aliases, string appPath)
+            if (i > 0)
+            {
+                yield return alias.Remove(i, appPath.Length);
+            }
+            else
+            {
+                yield return alias;
+            }
+        }
+    }
+
+    private IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
+    {
+        string appPath = TestableGlobals.Instance.ApplicationPath;
+
+        if (string.IsNullOrEmpty(appPath))
         {
-            foreach (string alias in aliases)
-            {
-                int i = alias.IndexOf(appPath, StringComparison.OrdinalIgnoreCase);
-
-                if (i > 0)
-                {
-                    yield return alias.Remove(i, appPath.Length);
-                }
-                else
-                {
-                    yield return alias;
-                }
-            }
+            return aliases;
         }
 
-        private IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
+        return StripApplicationPathIterable(aliases, appPath);
+    }
+
+    private string GeneratePrefixString(int count)
+    {
+        if (count == 0)
         {
-            string appPath = TestableGlobals.Instance.ApplicationPath;
-
-            if (string.IsNullOrEmpty(appPath))
-            {
-                return aliases;
-            }
-
-            return StripApplicationPathIterable(aliases, appPath);
+            return string.Empty;
         }
 
-        private string GeneratePrefixString(int count)
+        string prefix = string.Empty;
+
+        for (int i = count - 1; i >= 0; i--)
         {
-            if (count == 0)
-            {
-                return string.Empty;
-            }
-
-            string prefix = string.Empty;
-
-            for (int i = count - 1; i >= 0; i--)
-            {
-                prefix = "{prefix" + i + "}/" + prefix;
-            }
-
-            return prefix;
+            prefix = "{prefix" + i + "}/" + prefix;
         }
+
+        return prefix;
     }
 }

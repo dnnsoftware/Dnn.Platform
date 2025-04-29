@@ -2,85 +2,84 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Data
+namespace DotNetNuke.Tests.Data;
+
+using System.Collections.Generic;
+using System.Configuration;
+
+using DotNetNuke.ComponentModel;
+using DotNetNuke.Data;
+using DotNetNuke.Data.PetaPoco;
+using DotNetNuke.Tests.Utilities;
+using NUnit.Framework;
+using PetaPoco;
+
+[TestFixture]
+public class DataContextTests
 {
-    using System.Collections.Generic;
-    using System.Configuration;
-
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Data;
-    using DotNetNuke.Data.PetaPoco;
-    using DotNetNuke.Tests.Utilities;
-    using NUnit.Framework;
-    using PetaPoco;
-
-    [TestFixture]
-    public class DataContextTests
+    // ReSharper disable InconsistentNaming
+    [SetUp]
+    public void SetUp()
     {
-        // ReSharper disable InconsistentNaming
-        [SetUp]
-        public void SetUp()
+        ComponentFactory.Container = new SimpleContainer();
+        ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
+        ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
         {
-            ComponentFactory.Container = new SimpleContainer();
-            ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
-            ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
-            {
-                { "name", "SqlDataProvider" },
-                { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
-                { "connectionStringName", "SiteSqlServer" },
-                { "objectQualifier", string.Empty },
-                { "databaseOwner", "dbo." },
-            });
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-        }
-
-        [Test]
-        public void DataContext_Instance_Method_Returns_PetaPocoDataContext()
-        {
-            // Arrange
-
-            // Act
-            var context = DataContext.Instance();
-
-            // Assert
-            Assert.That(context, Is.InstanceOf<IDataContext>());
-            Assert.That(context, Is.InstanceOf<PetaPocoDataContext>());
-        }
-
-        [Test]
-        public void DataContext_Instance_Method_Returns_Default_PetaPocoDataContext_Instance()
-        {
-            // Arrange
-            var connectionString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
-
-            // Act
-            var context = (PetaPocoDataContext)DataContext.Instance();
-
-            // Assert
-            Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
-            Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
-        }
-
-        [Test]
-        [TestCase("PetaPoco")]
-        [TestCase("Test")]
-        public void DataContext_Instance_Method_Returns_Named_PetaPocoDataContext_Instance(string name)
-        {
-            // Arrange
-            var connectionString = ConfigurationManager.ConnectionStrings[name].ConnectionString;
-
-            // Act
-            var context = (PetaPocoDataContext)DataContext.Instance(name);
-
-            // Assert
-            Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
-            Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
-        }
-
-        // ReSharper restore InconsistentNaming
+            { "name", "SqlDataProvider" },
+            { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
+            { "connectionStringName", "SiteSqlServer" },
+            { "objectQualifier", string.Empty },
+            { "databaseOwner", "dbo." },
+        });
     }
+
+    [TearDown]
+    public void TearDown()
+    {
+    }
+
+    [Test]
+    public void DataContext_Instance_Method_Returns_PetaPocoDataContext()
+    {
+        // Arrange
+
+        // Act
+        var context = DataContext.Instance();
+
+        // Assert
+        Assert.That(context, Is.InstanceOf<IDataContext>());
+        Assert.That(context, Is.InstanceOf<PetaPocoDataContext>());
+    }
+
+    [Test]
+    public void DataContext_Instance_Method_Returns_Default_PetaPocoDataContext_Instance()
+    {
+        // Arrange
+        var connectionString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
+
+        // Act
+        var context = (PetaPocoDataContext)DataContext.Instance();
+
+        // Assert
+        Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
+        Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
+    }
+
+    [Test]
+    [TestCase("PetaPoco")]
+    [TestCase("Test")]
+    public void DataContext_Instance_Method_Returns_Named_PetaPocoDataContext_Instance(string name)
+    {
+        // Arrange
+        var connectionString = ConfigurationManager.ConnectionStrings[name].ConnectionString;
+
+        // Act
+        var context = (PetaPocoDataContext)DataContext.Instance(name);
+
+        // Assert
+        Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
+        Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
+    }
+
+    // ReSharper restore InconsistentNaming
 }

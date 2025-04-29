@@ -2,46 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+
+using DotNetNuke.Entities.Users;
+
+public class CheckRarelyUsedSuperuser : IAuditCheck
 {
-    using System;
+    /// <inheritdoc/>
+    public string Id => "CheckRarelyUsedSuperuser";
 
-    using DotNetNuke.Entities.Users;
+    /// <inheritdoc/>
+    public bool LazyLoad => false;
 
-    public class CheckRarelyUsedSuperuser : IAuditCheck
+    /// <inheritdoc/>
+    public CheckResult Execute()
     {
-        /// <inheritdoc/>
-        public string Id => "CheckRarelyUsedSuperuser";
-
-        /// <inheritdoc/>
-        public bool LazyLoad => false;
-
-        /// <inheritdoc/>
-        public CheckResult Execute()
+        var result = new CheckResult(SeverityEnum.Unverified, this.Id);
+        try
         {
-            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            try
-            {
-                var totalRecords = 0;
+            var totalRecords = 0;
 
-                var superUsers = UserController.GetUsers(-1, 1, int.MaxValue, ref totalRecords, false, true);
-                result.Severity = SeverityEnum.Pass;
-                foreach (UserInfo user in superUsers)
+            var superUsers = UserController.GetUsers(-1, 1, int.MaxValue, ref totalRecords, false, true);
+            result.Severity = SeverityEnum.Pass;
+            foreach (UserInfo user in superUsers)
+            {
+                if (DateTime.Now.AddMonths(-6) > user.Membership.LastLoginDate ||
+                    DateTime.Now.AddMonths(-6) > user.Membership.LastActivityDate)
                 {
-                    if (DateTime.Now.AddMonths(-6) > user.Membership.LastLoginDate ||
-                        DateTime.Now.AddMonths(-6) > user.Membership.LastActivityDate)
-                    {
-                        result.Severity = SeverityEnum.Warning;
-                        result.Notes.Add("Superuser:" + user.Username);
-                    }
+                    result.Severity = SeverityEnum.Warning;
+                    result.Notes.Add("Superuser:" + user.Username);
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            return result;
         }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return result;
     }
 }

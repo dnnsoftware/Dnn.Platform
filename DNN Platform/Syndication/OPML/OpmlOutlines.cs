@@ -1,12 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Syndication
-{
-    using System.Collections.Generic;
+namespace DotNetNuke.Services.Syndication;
 
-    /// <summary>A collection of OPML outlines.</summary>
-    public class OpmlOutlines : List<OpmlOutline>
-    {
-    }
+using System.Collections.Generic;
+
+/// <summary>A collection of OPML outlines.</summary>
+public class OpmlOutlines : List<OpmlOutline>
+{
 }

@@ -1,9 +1,6 @@
 # dnn-rm-queued-file
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -15,18 +12,18 @@
 | `maxUploadFileSize` _(required)_ | `max-upload-file-size` | The maximal allowed file upload size                  | `number`  | `undefined` |
 | `validationCode` _(required)_    | `validation-code`      | The validation code to use for uploads.               | `string`  | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-upload-file](../dnn-rm-upload-file)
+- [dnn-rm-upload-file](../dnn-rm-upload-file)
 
 ### Depends on
 
 - dnn-button
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-queued-file --> dnn-button
@@ -36,6 +33,6 @@ graph TD;
   style dnn-rm-queued-file fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

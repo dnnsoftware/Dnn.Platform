@@ -2,35 +2,34 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Tabs.Internal
+namespace DotNetNuke.Entities.Tabs.Internal;
+
+using System.Collections.Generic;
+using System.ComponentModel;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+/// <summary>
+/// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
+/// There is no guarantee that this interface will not change.
+/// </summary>
+[EditorBrowsable(EditorBrowsableState.Never)]
+[DnnDeprecated(7, 3, 0, "Please use version in DotNetNuke.Entities.Tabs instead", RemovalVersion = 10)]
+public partial interface ITabController
 {
-    using System.Collections.Generic;
-    using System.ComponentModel;
+    void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 
-    using DotNetNuke.Internal.SourceGenerators;
+    /// <summary>Gets the tab.</summary>
+    /// <param name="tabId">The tab id.</param>
+    /// <param name="portalId">The portal id.</param>
+    /// <returns>tab info.</returns>
+    TabInfo GetTab(int tabId, int portalId);
 
-    /// <summary>
-    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
-    /// There is no guarantee that this interface will not change.
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    [DnnDeprecated(7, 3, 0, "Please use version in DotNetNuke.Entities.Tabs instead", RemovalVersion = 10)]
-    public partial interface ITabController
-    {
-        void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
+    Dictionary<string, string> GetCustomAliases(int tabId, int portalId);
 
-        /// <summary>Gets the tab.</summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>tab info.</returns>
-        TabInfo GetTab(int tabId, int portalId);
+    List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
 
-        Dictionary<string, string> GetCustomAliases(int tabId, int portalId);
+    List<TabUrlInfo> GetTabUrls(int tabId, int portalId);
 
-        List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
-
-        List<TabUrlInfo> GetTabUrls(int tabId, int portalId);
-
-        void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
-    }
+    void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 }

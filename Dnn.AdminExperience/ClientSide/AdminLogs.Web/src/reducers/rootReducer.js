@@ -5,10 +5,10 @@ import log from "./logReducer";
 import logSettings from "./logSettingsReducer";
 
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    log,
-    logSettings
+  pagination,
+  visiblePanel,
+  log,
+  logSettings,
 });
 
 export default rootReducer;

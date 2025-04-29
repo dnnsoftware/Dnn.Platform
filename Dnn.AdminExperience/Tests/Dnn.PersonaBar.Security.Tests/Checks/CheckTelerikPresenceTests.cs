@@ -1,122 +1,121 @@
-﻿namespace Dnn.PersonaBar.Security.Tests.Checks
+﻿namespace Dnn.PersonaBar.Security.Tests.Checks;
+
+using System;
+using System.Linq;
+
+using Dnn.PersonaBar.Security.Components;
+using Dnn.PersonaBar.Security.Components.Checks;
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Maintenance.Telerik;
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+public class CheckTelerikPresenceTests
 {
-    using System;
-    using System.Linq;
-
-    using Dnn.PersonaBar.Security.Components;
-    using Dnn.PersonaBar.Security.Components.Checks;
-    using DotNetNuke.Common.Internal;
-    using DotNetNuke.Maintenance.Telerik;
-    using Moq;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class CheckTelerikPresenceTests
+    [Test]
+    public void Execute_WhenError_ReturnsUnverified()
     {
-        [Test]
-        public void Execute_WhenError_ReturnsUnverified()
+        // arrange
+        var telerikUtilsMock = new Mock<ITelerikUtils>();
+
+        telerikUtilsMock
+            .Setup(x => x.TelerikIsInstalled())
+            .Throws<BadImageFormatException>();
+
+        var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+
+        // act
+        var result = sut.Execute();
+
+        Assert.Multiple(() =>
         {
-            // arrange
-            var telerikUtilsMock = new Mock<ITelerikUtils>();
+            // assert
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Unverified));
+            Assert.That(result.Notes.Count(), Is.EqualTo(1));
+            Assert.That(result.Notes.First() == "An internal error occurred. See logs for details.", Is.True);
+        });
+    }
 
-            telerikUtilsMock
-                .Setup(x => x.TelerikIsInstalled())
-                .Throws<BadImageFormatException>();
+    [Test]
+    public void Execute_WhenInstalledAndUsed_ReturnsInstalledAndUsed()
+    {
+        // arrange
+        var telerikUtilsMock = new Mock<ITelerikUtils>();
 
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+        telerikUtilsMock
+            .Setup(x => x.TelerikIsInstalled())
+            .Returns(true);
 
-            // act
-            var result = sut.Execute();
+        telerikUtilsMock
+            .Setup(x => x.GetAssembliesThatDependOnTelerik())
+            .Returns(() => new[] { "bin\\DotNetNuke.Modules.Mod3.dll" });
 
-            Assert.Multiple(() =>
-            {
-                // assert
-                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Unverified));
-                Assert.That(result.Notes.Count(), Is.EqualTo(1));
-                Assert.That(result.Notes.First() == "An internal error occurred. See logs for details.", Is.True);
-            });
-        }
+        telerikUtilsMock
+            .SetupGet(x => x.BinPath)
+            .Returns("bin");
 
-        [Test]
-        public void Execute_WhenInstalledAndUsed_ReturnsInstalledAndUsed()
+        var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+
+        // act
+        var result = sut.Execute();
+
+        Assert.Multiple(() =>
         {
-            // arrange
-            var telerikUtilsMock = new Mock<ITelerikUtils>();
+            // assert
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
+            Assert.That(result.Notes.Count(), Is.EqualTo(1));
+            Assert.That(result.Notes.First().Contains("* DotNetNuke.Modules.Mod3.dll"), Is.True);
+        });
+    }
 
-            telerikUtilsMock
-                .Setup(x => x.TelerikIsInstalled())
-                .Returns(true);
+    [Test]
+    public void Execute_WhenInstalledButNotUsed_ReturnsInstalledButNotUsed()
+    {
+        // arrange
+        var telerikUtilsMock = new Mock<ITelerikUtils>();
 
-            telerikUtilsMock
-                .Setup(x => x.GetAssembliesThatDependOnTelerik())
-                .Returns(() => new[] { "bin\\DotNetNuke.Modules.Mod3.dll" });
+        telerikUtilsMock
+            .Setup(x => x.TelerikIsInstalled())
+            .Returns(true);
 
-            telerikUtilsMock
-                .SetupGet(x => x.BinPath)
-                .Returns("bin");
+        telerikUtilsMock
+            .Setup(x => x.GetAssembliesThatDependOnTelerik())
+            .Returns(() => new string[0]);
 
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+        var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
 
-            // act
-            var result = sut.Execute();
+        // act
+        var result = sut.Execute();
 
-            Assert.Multiple(() =>
-            {
-                // assert
-                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
-                Assert.That(result.Notes.Count(), Is.EqualTo(1));
-                Assert.That(result.Notes.First().Contains("* DotNetNuke.Modules.Mod3.dll"), Is.True);
-            });
-        }
-
-        [Test]
-        public void Execute_WhenInstalledButNotUsed_ReturnsInstalledButNotUsed()
+        Assert.Multiple(() =>
         {
-            // arrange
-            var telerikUtilsMock = new Mock<ITelerikUtils>();
+            // assert
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
+            Assert.That(result.Notes.Count(), Is.EqualTo(1));
+        });
+    }
 
-            telerikUtilsMock
-                .Setup(x => x.TelerikIsInstalled())
-                .Returns(true);
+    [Test]
+    public void Execute_WhenNotInstalled_ReturnsNotInstalled()
+    {
+        // arrange
+        var telerikUtilsMock = new Mock<ITelerikUtils>();
 
-            telerikUtilsMock
-                .Setup(x => x.GetAssembliesThatDependOnTelerik())
-                .Returns(() => new string[0]);
+        telerikUtilsMock
+            .Setup(x => x.TelerikIsInstalled())
+            .Returns(false);
 
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+        var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
 
-            // act
-            var result = sut.Execute();
+        // act
+        var result = sut.Execute();
 
-            Assert.Multiple(() =>
-            {
-                // assert
-                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
-                Assert.That(result.Notes.Count(), Is.EqualTo(1));
-            });
-        }
-
-        [Test]
-        public void Execute_WhenNotInstalled_ReturnsNotInstalled()
+        Assert.Multiple(() =>
         {
-            // arrange
-            var telerikUtilsMock = new Mock<ITelerikUtils>();
-
-            telerikUtilsMock
-                .Setup(x => x.TelerikIsInstalled())
-                .Returns(false);
-
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
-
-            // act
-            var result = sut.Execute();
-
-            Assert.Multiple(() =>
-            {
-                // assert
-                Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
-                Assert.That(result.Notes.Count(), Is.EqualTo(0));
-            });
-        }
+            // assert
+            Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
+            Assert.That(result.Notes.Count(), Is.EqualTo(0));
+        });
     }
 }

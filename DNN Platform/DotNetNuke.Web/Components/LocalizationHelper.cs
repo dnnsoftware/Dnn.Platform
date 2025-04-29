@@ -2,17 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Components
+namespace DotNetNuke.Web.Components;
+
+using DotNetNuke.Services.Localization;
+
+public class LocalizationHelper
 {
-    using DotNetNuke.Services.Localization;
+    private const string ResourceFile = "admin/ControlPanel/App_LocalResources/ControlBar";
 
-    public class LocalizationHelper
+    public static string GetControlBarString(string key)
     {
-        private const string ResourceFile = "admin/ControlPanel/App_LocalResources/ControlBar";
-
-        public static string GetControlBarString(string key)
-        {
-            return Localization.GetString(key, ResourceFile);
-        }
+        return Localization.GetString(key, ResourceFile);
     }
 }

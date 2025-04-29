@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Installer.Blocker
+namespace DotNetNuke.Services.Installer.Blocker;
+
+/// <summary>This interface ...</summary>
+public interface IInstallBlocker
 {
-    /// <summary>This interface ...</summary>
-    public interface IInstallBlocker
-    {
-        void RegisterInstallBegining();
+    void RegisterInstallBegining();
 
-        void RegisterInstallEnd();
+    void RegisterInstallEnd();
 
-        bool IsInstallInProgress();
-    }
+    bool IsInstallInProgress();
 }

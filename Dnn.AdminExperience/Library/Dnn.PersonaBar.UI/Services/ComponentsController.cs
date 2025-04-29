@@ -2,135 +2,134 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.UI.Services
+namespace Dnn.PersonaBar.UI.Services;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+using Dnn.PersonaBar.Library;
+using Dnn.PersonaBar.Library.Attributes;
+using Dnn.PersonaBar.UI.Services.DTO;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Web.Api;
+using DotNetNuke.Web.Api.Internal;
+
+/// <summary>Services used for common components.</summary>
+[MenuPermission(Scope = ServiceScope.Regular)]
+public class ComponentsController : PersonaBarApiController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
 
-    using Dnn.PersonaBar.Library;
-    using Dnn.PersonaBar.Library.Attributes;
-    using Dnn.PersonaBar.UI.Services.DTO;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Api;
-    using DotNetNuke.Web.Api.Internal;
+    public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
-    /// <summary>Services used for common components.</summary>
-    [MenuPermission(Scope = ServiceScope.Regular)]
-    public class ComponentsController : PersonaBarApiController
+    private int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
+
+    [HttpGet]
+
+    public HttpResponseMessage GetRoleGroups(bool reload = false)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
-
-        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
-
-        private int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
-
-        [HttpGet]
-
-        public HttpResponseMessage GetRoleGroups(bool reload = false)
+        try
         {
-            try
+            if (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("VIEW"))
             {
-                if (!this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName) && !PagePermissionsAttributesHelper.HasTabPermission("VIEW"))
-                {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", this.LocalResourcesFile));
-                }
-
-                if (reload)
-                {
-                    DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, this.PortalId));
-                }
-
-                var groups = RoleController.GetRoleGroups(this.PortalId)
-                                .Cast<RoleGroupInfo>()
-                                .Select(RoleGroupDto.FromRoleGroupInfo);
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, groups);
+                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, Localization.GetString("UnauthorizedRequest", this.LocalResourcesFile));
             }
-            catch (Exception ex)
+
+            if (reload)
             {
-                Logger.Error(ex);
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, this.PortalId));
             }
+
+            var groups = RoleController.GetRoleGroups(this.PortalId)
+                .Cast<RoleGroupInfo>()
+                .Select(RoleGroupDto.FromRoleGroupInfo);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, groups);
         }
-
-        [HttpGet]
-
-        public HttpResponseMessage GetSuggestionUsers(string keyword, int count)
+        catch (Exception ex)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(keyword))
-                {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
-                }
-
-                var displayMatch = keyword + "%";
-                var totalRecords = 0;
-                var totalRecords2 = 0;
-                var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count, ref totalRecords, false, false);
-                matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
-                var finalUsers = matchedUsers
-                    .Cast<UserInfo>()
-                    .Where(x => x.Membership.Approved)
-                    .Select(u => new SuggestionDto()
-                    {
-                        Value = u.UserID,
-                        Label = $"{u.DisplayName}",
-                    });
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, finalUsers.ToList().GroupBy(x => x.Value).Select(group => group.First()));
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
-            }
+            Logger.Error(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
         }
+    }
 
-        public HttpResponseMessage GetSuggestionRoles(string keyword, int roleGroupId, int count)
+    [HttpGet]
+
+    public HttpResponseMessage GetSuggestionUsers(string keyword, int count)
+    {
+        try
         {
-            try
+            if (string.IsNullOrEmpty(keyword))
             {
-                if (string.IsNullOrEmpty(keyword))
-                {
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
-                }
+                return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
+            }
 
-                var matchedRoles = RoleController.Instance.GetRoles(this.PortalId)
-                                                    .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
-                                                          && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
-                                                          && r.Status == RoleStatus.Approved).ToList();
-
-                if (roleGroupId <= Null.NullInteger
-                        && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
+            var displayMatch = keyword + "%";
+            var totalRecords = 0;
+            var totalRecords2 = 0;
+            var matchedUsers = UserController.GetUsersByDisplayName(this.PortalId, displayMatch, 0, count, ref totalRecords, false, false);
+            matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
+            var finalUsers = matchedUsers
+                .Cast<UserInfo>()
+                .Where(x => x.Membership.Approved)
+                .Select(u => new SuggestionDto()
                 {
-                    matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
-                }
-
-                var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
-                {
-                    Value = r.RoleID,
-                    Label = r.RoleName,
+                    Value = u.UserID,
+                    Label = $"{u.DisplayName}",
                 });
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-            catch (Exception ex)
+            return this.Request.CreateResponse(HttpStatusCode.OK, finalUsers.ToList().GroupBy(x => x.Value).Select(group => group.First()));
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+        }
+    }
+
+    public HttpResponseMessage GetSuggestionRoles(string keyword, int roleGroupId, int count)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(keyword))
             {
-                Logger.Error(ex);
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new List<SuggestionDto>());
             }
+
+            var matchedRoles = RoleController.Instance.GetRoles(this.PortalId)
+                .Where(r => (roleGroupId == -2 || r.RoleGroupID == roleGroupId)
+                            && r.RoleName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1
+                            && r.Status == RoleStatus.Approved).ToList();
+
+            if (roleGroupId <= Null.NullInteger
+                && Globals.glbRoleUnauthUserName.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                matchedRoles.Add(new RoleInfo { RoleID = this.UnauthUserRoleId, RoleName = Globals.glbRoleUnauthUserName });
+            }
+
+            var data = matchedRoles.OrderBy(r => r.RoleName).Select(r => new SuggestionDto()
+            {
+                Value = r.RoleID,
+                Label = r.RoleName,
+            });
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
         }
     }
 }

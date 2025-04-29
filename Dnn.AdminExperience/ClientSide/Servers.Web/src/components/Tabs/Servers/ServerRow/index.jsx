@@ -63,7 +63,7 @@ export default class ServerRow extends Component {
       Localization.get("Cancel"),
       function () {
         this.props.deleteServer(this.props.server.serverId);
-      }.bind(this)
+      }.bind(this),
     );
   }
 
@@ -74,9 +74,10 @@ export default class ServerRow extends Component {
         <div className={"collapsible-header1 " + !this.props.inEdit}>
           <GridCell columnSize={5}>
             <span
-              dangerouslySetInnerHTML={{ __html: SvgIcons.ListViewIcon }}
               className={server.isActive ? "icon-flat active" : "icon-flat"}
-            ></span>
+            >
+              <SvgIcons.ListViewIcon />
+            </span>
           </GridCell>
           <GridCell columnSize={25}>
             <TextOverflowWrapper text={server.serverName} />

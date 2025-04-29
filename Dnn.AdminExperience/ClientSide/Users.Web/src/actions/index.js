@@ -1,4 +1,2 @@
 import users from "./users";
-export {
-    users
-};
+export { users };

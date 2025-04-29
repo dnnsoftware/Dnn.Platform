@@ -1964,7 +1964,7 @@
                     &lt;div class="pBio"&gt;
                     &lt;h3 data-bind="text: AboutMeText"&gt;&lt;/h3&gt;
                     &lt;span data-bind="text: EmptyAboutMeText, visible: Biography().length==0"&gt;&lt;/span&gt;
-                    &lt;p data-bind="html: Biography"&gt;&lt;/p&gt;
+                    &lt;p data-bind="text: Biography"&gt;&lt;/p&gt;
                     &lt;/div&gt;
                     &lt;div class="pAddress"&gt;
                     &lt;h3 data-bind="text: LocationText"&gt;&lt;/h3&gt;

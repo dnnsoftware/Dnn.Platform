@@ -2,120 +2,119 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core.Services
+namespace DotNetNuke.Tests.Core.Services;
+
+using DotNetNuke.Common.Utilities;
+using NUnit.Framework;
+
+/// <summary>
+/// </summary>
+[TestFixture]
+public class HtmlUtilsTests
 {
-    using DotNetNuke.Common.Utilities;
-    using NUnit.Framework;
+    private const string HtmlStr =
+        "Hello World!<br /><br />This is a sample HTML text for testing!<br /><br /><img alt=\"HappyFaceAlt\" title=\"HappyFaceTitle\" test=\"noShow\" src=\"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" /><br /><br /><img alt=\"\" src=\"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" /><br /><br /><a href=\"https://www.dnnsoftware.com\">DotNetNuke Corp.</a>";
 
-    /// <summary>
-    /// </summary>
-    [TestFixture]
-    public class HtmlUtilsTests
+    private const string Filters = "alt|href|src|title";
+    private string _expected = string.Empty;
+
+    [SetUp]
+    public void SetUp()
     {
-        private const string HtmlStr =
-            "Hello World!<br /><br />This is a sample HTML text for testing!<br /><br /><img alt=\"HappyFaceAlt\" title=\"HappyFaceTitle\" test=\"noShow\" src=\"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" /><br /><br /><img alt=\"\" src=\"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" /><br /><br /><a href=\"https://www.dnnsoftware.com\">DotNetNuke Corp.</a>";
+    }
 
-        private const string Filters = "alt|href|src|title";
-        private string _expected = string.Empty;
+    [Test]
+    [Timeout(2000)]
+    public void DNN_12430_IsHtml_RegExTimeout()
+    {
+        var result =
+            HtmlUtils.IsHtml(
+                @"'New Event: <a href=\""http://localhost/dnn540/Home/tabid/40/ModuleID/389/ItemID/8/mctl/EventDetails/Default.aspx"">Test</a> on Saturday, May 08, 2010 2:00 AM to Saturday, May 08, 2010 2:30 AM  - One time event - has been added");
 
-        [SetUp]
-        public void SetUp()
-        {
-        }
+        Assert.That(result, Is.True);
+    }
 
-        [Test]
-        [Timeout(2000)]
-        public void DNN_12430_IsHtml_RegExTimeout()
-        {
-            var result =
-                HtmlUtils.IsHtml(
-                    @"'New Event: <a href=\""http://localhost/dnn540/Home/tabid/40/ModuleID/389/ItemID/8/mctl/EventDetails/Default.aspx"">Test</a> on Saturday, May 08, 2010 2:00 AM to Saturday, May 08, 2010 2:30 AM  - One time event - has been added");
+    [Test]
+    [Timeout(2000)]
+    public void DNN_12926_IsHtml_Detection()
+    {
+        var result = HtmlUtils.IsHtml("this is a test of dnnmail: <a href='https://www.dnnsoftware.com'>DotNetNuke</a>");
 
-            Assert.That(result, Is.True);
-        }
+        Assert.That(result, Is.True);
+    }
 
-        [Test]
-        [Timeout(2000)]
-        public void DNN_12926_IsHtml_Detection()
-        {
-            var result = HtmlUtils.IsHtml("this is a test of dnnmail: <a href='https://www.dnnsoftware.com'>DotNetNuke</a>");
+    [TearDown]
+    public void TearDown()
+    {
+    }
 
-            Assert.That(result, Is.True);
-        }
+    [Test]
+    public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_With_Attribute_Values()
+    {
+        // Arrange
+        this.SetUp();
+        this._expected =
+            "Hello World This is a sample HTML text for testing DotNetNuke Corp HappyFaceAlt HappyFaceTitle /dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif https://www.dnnsoftware.com ";
 
-        [TearDown]
-        public void TearDown()
-        {
-        }
+        // Act
+        object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, Filters, true);
 
-        [Test]
-        public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_With_Attribute_Values()
-        {
-            // Arrange
-            this.SetUp();
-            this._expected =
-                "Hello World This is a sample HTML text for testing DotNetNuke Corp HappyFaceAlt HappyFaceTitle /dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif https://www.dnnsoftware.com ";
+        // Assert
+        Assert.That(retValue, Is.EqualTo(this._expected));
 
-            // Act
-            object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, Filters, true);
+        // TearDown
+        this.TearDown();
+    }
 
-            // Assert
-            Assert.That(retValue, Is.EqualTo(this._expected));
+    [Test]
+    public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_Without_Attribute_Values()
+    {
+        // Arrange
+        this.SetUp();
+        this._expected = "Hello World This is a sample HTML text for testing DotNetNuke Corp ";
 
-            // TearDown
-            this.TearDown();
-        }
+        // Act
+        object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, " ", true);
 
-        [Test]
-        public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_Without_Attribute_Values()
-        {
-            // Arrange
-            this.SetUp();
-            this._expected = "Hello World This is a sample HTML text for testing DotNetNuke Corp ";
+        // Assert
+        Assert.That(retValue, Is.EqualTo(this._expected));
 
-            // Act
-            object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, " ", true);
+        // TearDown
+        this.TearDown();
+    }
 
-            // Assert
-            Assert.That(retValue, Is.EqualTo(this._expected));
+    [Test]
+    public void HtmlUtils_StripUnspecifiedTags_Should_Return_Attribute_Values()
+    {
+        // Arrange
+        this.SetUp();
+        this._expected =
+            "Hello World!This is a sample HTML text for testing!DotNetNuke Corp. \"HappyFaceAlt\" \"HappyFaceTitle\" \"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" \"\" \"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" \"https://www.dnnsoftware.com\"";
 
-            // TearDown
-            this.TearDown();
-        }
+        // Act
+        object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);
 
-        [Test]
-        public void HtmlUtils_StripUnspecifiedTags_Should_Return_Attribute_Values()
-        {
-            // Arrange
-            this.SetUp();
-            this._expected =
-                "Hello World!This is a sample HTML text for testing!DotNetNuke Corp. \"HappyFaceAlt\" \"HappyFaceTitle\" \"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" \"\" \"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" \"https://www.dnnsoftware.com\"";
+        // Assert
+        Assert.That(retValue, Is.EqualTo(this._expected));
 
-            // Act
-            object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);
+        // TearDown
+        this.TearDown();
+    }
 
-            // Assert
-            Assert.That(retValue, Is.EqualTo(this._expected));
+    [Test]
+    public void HtmlUtils_StripUnspecifiedTags_Should_Not_Return_Attribute_Values()
+    {
+        // Arrange
+        this.SetUp();
+        this._expected = "Hello World!This is a sample HTML text for testing!DotNetNuke Corp.";
 
-            // TearDown
-            this.TearDown();
-        }
+        // Act
+        object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, " ", false);
 
-        [Test]
-        public void HtmlUtils_StripUnspecifiedTags_Should_Not_Return_Attribute_Values()
-        {
-            // Arrange
-            this.SetUp();
-            this._expected = "Hello World!This is a sample HTML text for testing!DotNetNuke Corp.";
+        // Assert
+        Assert.That(retValue, Is.EqualTo(this._expected));
 
-            // Act
-            object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, " ", false);
-
-            // Assert
-            Assert.That(retValue, Is.EqualTo(this._expected));
-
-            // TearDown
-            this.TearDown();
-        }
+        // TearDown
+        this.TearDown();
     }
 }

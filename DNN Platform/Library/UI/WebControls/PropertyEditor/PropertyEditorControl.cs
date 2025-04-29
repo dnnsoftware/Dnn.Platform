@@ -3,800 +3,799 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable once CheckNamespace
-namespace DotNetNuke.UI.WebControls
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Reflection;
-    using System.Web.UI;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
+namespace DotNetNuke.UI.WebControls;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Icons;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Icons;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Utilities;
+
+/// <summary>
+/// The PropertyEditorControl control provides a way to display and edit any
+/// properties of any Info class.
+/// </summary>
+public class PropertyEditorControl : WebControl, INamingContainer
+{
+    private bool itemChanged;
+    private Hashtable sections;
+
+    /// <summary>Initializes a new instance of the <see cref="PropertyEditorControl"/> class.</summary>
+    public PropertyEditorControl()
+    {
+        this.VisibilityStyle = new Style();
+        this.ItemStyle = new Style();
+        this.LabelStyle = new Style();
+        this.HelpStyle = new Style();
+        this.GroupHeaderStyle = new Style();
+        this.ErrorStyle = new Style();
+        this.EditControlStyle = new Style();
+        this.Fields = new ArrayList();
+        this.ShowRequired = true;
+        this.LabelMode = LabelMode.Left;
+        this.HelpDisplayMode = HelpDisplayMode.Always;
+        this.Groups = Null.NullString;
+        this.AutoGenerate = true;
+    }
+
+    public event PropertyChangedEventHandler ItemAdded;
+
+    public event EditorCreatedEventHandler ItemCreated;
+
+    public event PropertyChangedEventHandler ItemDeleted;
+
+    /// <summary>Gets a value indicating whether any of the properties have been changed.</summary>
+    [Browsable(false)]
+    public bool IsDirty
+    {
+        get
+        {
+            return this.Fields.Cast<FieldEditorControl>().Any(editor => editor.Visible && editor.IsDirty);
+        }
+    }
+
+    /// <summary>Gets a value indicating whether all of the properties are Valid.</summary>
+    [Browsable(false)]
+    public bool IsValid
+    {
+        get
+        {
+            return this.Fields.Cast<FieldEditorControl>().All(editor => !editor.Visible || editor.IsValid);
+        }
+    }
+
+    /// <summary>Gets or sets a value indicating whether the editor Autogenerates its editors.</summary>
+    [Category("Behavior")]
+    public bool AutoGenerate { get; set; }
+
+    /// <summary>Gets or sets the DataSource that is bound to this control.</summary>
+    [Browsable(false)]
+    [Category("Data")]
+    public object DataSource { get; set; }
+
+    /// <summary>Gets or sets the Edit Mode of the Editor.</summary>
+    [Category("Appearance")]
+    public PropertyEditorMode EditMode { get; set; }
+
+    public EditorDisplayMode DisplayMode { get; set; }
 
     /// <summary>
-    /// The PropertyEditorControl control provides a way to display and edit any
-    /// properties of any Info class.
+    /// Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side
+    /// validation.
     /// </summary>
-    public class PropertyEditorControl : WebControl, INamingContainer
+    [Category("Behavior")]
+    public bool EnableClientValidation { get; set; }
+
+    /// <summary>Gets or sets the grouping mode.</summary>
+    [Category("Appearance")]
+    public GroupByMode GroupByMode { get; set; }
+
+    /// <summary>Gets or sets the grouping order.</summary>
+    /// <value>A comma-delimited list of categories/groups.</value>
+    [Category("Appearance")]
+    public string Groups { get; set; }
+
+    /// <summary>Gets or sets whether the control displays Help.</summary>
+    public HelpDisplayMode HelpDisplayMode { get; set; }
+
+    public LabelMode LabelMode { get; set; }
+
+    /// <summary>Gets or sets the Local Resource File for the Control.</summary>
+    public string LocalResourceFile { get; set; }
+
+    /// <summary>Gets or sets the Url of the Required Image.</summary>
+    public string RequiredUrl { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the Required icon is used.</summary>
+    public bool ShowRequired { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the Visibility control is used.</summary>
+    [Category("Appearance")]
+    public bool ShowVisibility { get; set; }
+
+    /// <summary>Gets or sets whether to sort properties.</summary>
+    /// <value>The Sort Mode of the editor.</value>
+    /// <remarks>
+    /// By default all properties will be sorted.
+    /// </remarks>
+    [Category("Appearance")]
+    public PropertySortType SortMode { get; set; }
+
+    public UserInfo User { get; set; }
+
+    /// <summary>
+    /// Gets a collection of fields to display if AutoGenerate is false. Or the
+    /// collection of fields generated if AutoGenerate is true.
+    /// </summary>
+    /// <value>A collection of FieldEditorControl objects.</value>
+    [Category("Behavior")]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    public ArrayList Fields { get; private set; }
+
+    /// <summary>Gets the value of the Field Style.</summary>
+    [Browsable(true)]
+    [Category("Styles")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Description("Set the Style for the Edit Control.")]
+    public Style EditControlStyle { get; private set; }
+
+    /// <summary>Gets or sets the width of the Edit Control Column.</summary>
+    [Browsable(true)]
+    [Category("Appearance")]
+    [Description("Set the Width for the Edit Control.")]
+    public Unit EditControlWidth { get; set; }
+
+    /// <summary>Gets the value of the Error Style.</summary>
+    [Browsable(true)]
+    [Category("Styles")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Description("Set the Style for the Error Text.")]
+    public Style ErrorStyle { get; private set; }
+
+    /// <summary>Gets the value of the Group Header Style.</summary>
+    [Browsable(true)]
+    [Category("Styles")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Description("Set the Style for the Group Header Control.")]
+    public Style GroupHeaderStyle { get; private set; }
+
+    /// <summary>Gets or sets a value indicating whether to add a &lt;hr&gt; to the Group Header.</summary>
+    [Browsable(true)]
+    [Category("Appearance")]
+    [Description("Set whether to include a rule <hr> in the Group Header.")]
+    public bool GroupHeaderIncludeRule { get; set; }
+
+    [Browsable(true)]
+    [Category("Styles")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Description("Set the Style for the Help Text.")]
+    public Style HelpStyle { get; private set; }
+
+    /// <summary>Gets the value of the Label Style.</summary>
+    [Browsable(true)]
+    [Category("Styles")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Description("Set the Style for the Label Text")]
+    public Style ItemStyle { get; private set; }
+
+    /// <summary>Gets the value of the Label Style.</summary>
+    [Browsable(true)]
+    [Category("Styles")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Description("Set the Style for the Label Text")]
+    public Style LabelStyle { get; private set; }
+
+    /// <summary>Gets or sets the width of the Label Column.</summary>
+    [Browsable(true)]
+    [Category("Appearance")]
+    [Description("Set the Width for the Label Control.")]
+    public Unit LabelWidth { get; set; }
+
+    /// <summary>Gets the value of the Visibility Style.</summary>
+    [Browsable(true)]
+    [Category("Styles")]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Description("Set the Style for the Visibility Control")]
+    public Style VisibilityStyle { get; private set; }
+
+    /// <inheritdoc/>
+    protected override HtmlTextWriterTag TagKey
     {
-        private bool itemChanged;
-        private Hashtable sections;
-
-        /// <summary>Initializes a new instance of the <see cref="PropertyEditorControl"/> class.</summary>
-        public PropertyEditorControl()
+        get
         {
-            this.VisibilityStyle = new Style();
-            this.ItemStyle = new Style();
-            this.LabelStyle = new Style();
-            this.HelpStyle = new Style();
-            this.GroupHeaderStyle = new Style();
-            this.ErrorStyle = new Style();
-            this.EditControlStyle = new Style();
-            this.Fields = new ArrayList();
-            this.ShowRequired = true;
-            this.LabelMode = LabelMode.Left;
-            this.HelpDisplayMode = HelpDisplayMode.Always;
-            this.Groups = Null.NullString;
-            this.AutoGenerate = true;
+            return HtmlTextWriterTag.Div;
         }
+    }
 
-        public event PropertyChangedEventHandler ItemAdded;
+    /// <summary>Gets the Underlying DataSource.</summary>
+    /// <value>An IEnumerable Boolean.</value>
+    protected virtual IEnumerable UnderlyingDataSource
+    {
+        get { return this.GetProperties(); }
+    }
 
-        public event EditorCreatedEventHandler ItemCreated;
+    /// <summary>Binds the controls to the DataSource.</summary>
+    public override void DataBind()
+    {
+        // Invoke OnDataBinding so DataBinding Event is raised
+        this.OnDataBinding(EventArgs.Empty);
 
-        public event PropertyChangedEventHandler ItemDeleted;
+        // Clear Existing Controls
+        this.Controls.Clear();
 
-        /// <summary>Gets a value indicating whether any of the properties have been changed.</summary>
-        [Browsable(false)]
-        public bool IsDirty
+        // Clear Child View State as controls will be loaded from DataSource
+        this.ClearChildViewState();
+
+        // Start Tracking ViewState
+        this.TrackViewState();
+
+        // Create the Editor
+        this.CreateEditor();
+
+        // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
+        this.ChildControlsCreated = true;
+    }
+
+    /// <summary>
+    /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
+    /// specified adapter.
+    /// </summary>
+    /// <param name="table">The Table Control to add the row to.</param>
+    /// <param name="name">The name of property being added.</param>
+    /// <param name="adapter">An IEditorInfoAdapter.</param>
+    protected void AddEditorRow(Table table, string name, IEditorInfoAdapter adapter)
+    {
+        var row = new TableRow();
+        table.Rows.Add(row);
+
+        var cell = new TableCell();
+        row.Cells.Add(cell);
+
+        // Create a FieldEditor for this Row
+        var editor = new FieldEditorControl
         {
-            get
+            DataSource = this.DataSource,
+            EditorInfoAdapter = adapter,
+            DataField = name,
+            EditorDisplayMode = this.DisplayMode,
+            EnableClientValidation = this.EnableClientValidation,
+            EditMode = this.EditMode,
+            HelpDisplayMode = this.HelpDisplayMode,
+            LabelMode = this.LabelMode,
+            LabelWidth = this.LabelWidth,
+        };
+        this.AddEditorRow(editor, cell);
+
+        this.Fields.Add(editor);
+    }
+
+    protected void AddEditorRow(WebControl container, string name, IEditorInfoAdapter adapter)
+    {
+        var editor = new FieldEditorControl
+        {
+            DataSource = this.DataSource,
+            EditorInfoAdapter = adapter,
+            DataField = name,
+            EditorDisplayMode = this.DisplayMode,
+            EnableClientValidation = this.EnableClientValidation,
+            EditMode = this.EditMode,
+            HelpDisplayMode = this.HelpDisplayMode,
+            LabelMode = this.LabelMode,
+            LabelWidth = this.LabelWidth,
+        };
+        this.AddEditorRow(editor, container);
+
+        this.Fields.Add(editor);
+    }
+
+    /// <summary>AddEditorRow builds a sigle editor row and adds it to the Table.</summary>
+    /// <remarks>This method is protected so that classes that inherit from
+    /// PropertyEditor can modify how the Row is displayed.</remarks>
+    /// <param name="table">The Table Control to add the row to.</param>
+    /// <param name="obj">Row Data Info.</param>
+    protected virtual void AddEditorRow(Table table, object obj)
+    {
+        var objProperty = (PropertyInfo)obj;
+        this.AddEditorRow(table, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
+    }
+
+    protected virtual void AddEditorRow(Panel container, object obj)
+    {
+        var objProperty = (PropertyInfo)obj;
+        this.AddEditorRow(container, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
+    }
+
+    protected virtual void AddEditorRow(object obj)
+    {
+        var objProperty = (PropertyInfo)obj;
+        this.AddEditorRow(this, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
+    }
+
+    protected virtual void AddFields()
+    {
+        foreach (FieldEditorControl editor in this.Fields)
+        {
+            editor.DataSource = this.DataSource;
+            editor.EditorInfoAdapter = new StandardEditorInfoAdapter(this.DataSource, editor.DataField);
+            editor.EditorDisplayMode = this.DisplayMode;
+            editor.EnableClientValidation = this.EnableClientValidation;
+            if (editor.EditMode != PropertyEditorMode.View)
             {
-                return this.Fields.Cast<FieldEditorControl>().Any(editor => editor.Visible && editor.IsDirty);
+                editor.EditMode = this.EditMode;
             }
-        }
 
-        /// <summary>Gets a value indicating whether all of the properties are Valid.</summary>
-        [Browsable(false)]
-        public bool IsValid
-        {
-            get
+            editor.HelpDisplayMode = this.HelpDisplayMode;
+            if (editor.LabelMode == LabelMode.None)
             {
-                return this.Fields.Cast<FieldEditorControl>().All(editor => !editor.Visible || editor.IsValid);
+                editor.LabelMode = this.LabelMode;
             }
-        }
 
-        /// <summary>Gets or sets a value indicating whether the editor Autogenerates its editors.</summary>
-        [Category("Behavior")]
-        public bool AutoGenerate { get; set; }
-
-        /// <summary>Gets or sets the DataSource that is bound to this control.</summary>
-        [Browsable(false)]
-        [Category("Data")]
-        public object DataSource { get; set; }
-
-        /// <summary>Gets or sets the Edit Mode of the Editor.</summary>
-        [Category("Appearance")]
-        public PropertyEditorMode EditMode { get; set; }
-
-        public EditorDisplayMode DisplayMode { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side
-        /// validation.
-        /// </summary>
-        [Category("Behavior")]
-        public bool EnableClientValidation { get; set; }
-
-        /// <summary>Gets or sets the grouping mode.</summary>
-        [Category("Appearance")]
-        public GroupByMode GroupByMode { get; set; }
-
-        /// <summary>Gets or sets the grouping order.</summary>
-        /// <value>A comma-delimited list of categories/groups.</value>
-        [Category("Appearance")]
-        public string Groups { get; set; }
-
-        /// <summary>Gets or sets whether the control displays Help.</summary>
-        public HelpDisplayMode HelpDisplayMode { get; set; }
-
-        public LabelMode LabelMode { get; set; }
-
-        /// <summary>Gets or sets the Local Resource File for the Control.</summary>
-        public string LocalResourceFile { get; set; }
-
-        /// <summary>Gets or sets the Url of the Required Image.</summary>
-        public string RequiredUrl { get; set; }
-
-        /// <summary>Gets or sets a value indicating whether the Required icon is used.</summary>
-        public bool ShowRequired { get; set; }
-
-        /// <summary>Gets or sets a value indicating whether the Visibility control is used.</summary>
-        [Category("Appearance")]
-        public bool ShowVisibility { get; set; }
-
-        /// <summary>Gets or sets whether to sort properties.</summary>
-        /// <value>The Sort Mode of the editor.</value>
-        /// <remarks>
-        /// By default all properties will be sorted.
-        /// </remarks>
-        [Category("Appearance")]
-        public PropertySortType SortMode { get; set; }
-
-        public UserInfo User { get; set; }
-
-        /// <summary>
-        /// Gets a collection of fields to display if AutoGenerate is false. Or the
-        /// collection of fields generated if AutoGenerate is true.
-        /// </summary>
-        /// <value>A collection of FieldEditorControl objects.</value>
-        [Category("Behavior")]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public ArrayList Fields { get; private set; }
-
-        /// <summary>Gets the value of the Field Style.</summary>
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [Description("Set the Style for the Edit Control.")]
-        public Style EditControlStyle { get; private set; }
-
-        /// <summary>Gets or sets the width of the Edit Control Column.</summary>
-        [Browsable(true)]
-        [Category("Appearance")]
-        [Description("Set the Width for the Edit Control.")]
-        public Unit EditControlWidth { get; set; }
-
-        /// <summary>Gets the value of the Error Style.</summary>
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [Description("Set the Style for the Error Text.")]
-        public Style ErrorStyle { get; private set; }
-
-        /// <summary>Gets the value of the Group Header Style.</summary>
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [Description("Set the Style for the Group Header Control.")]
-        public Style GroupHeaderStyle { get; private set; }
-
-        /// <summary>Gets or sets a value indicating whether to add a &lt;hr&gt; to the Group Header.</summary>
-        [Browsable(true)]
-        [Category("Appearance")]
-        [Description("Set whether to include a rule <hr> in the Group Header.")]
-        public bool GroupHeaderIncludeRule { get; set; }
-
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [Description("Set the Style for the Help Text.")]
-        public Style HelpStyle { get; private set; }
-
-        /// <summary>Gets the value of the Label Style.</summary>
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [Description("Set the Style for the Label Text")]
-        public Style ItemStyle { get; private set; }
-
-        /// <summary>Gets the value of the Label Style.</summary>
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [Description("Set the Style for the Label Text")]
-        public Style LabelStyle { get; private set; }
-
-        /// <summary>Gets or sets the width of the Label Column.</summary>
-        [Browsable(true)]
-        [Category("Appearance")]
-        [Description("Set the Width for the Label Control.")]
-        public Unit LabelWidth { get; set; }
-
-        /// <summary>Gets the value of the Visibility Style.</summary>
-        [Browsable(true)]
-        [Category("Styles")]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [Description("Set the Style for the Visibility Control")]
-        public Style VisibilityStyle { get; private set; }
-
-        /// <inheritdoc/>
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
+            if (editor.LabelWidth == Unit.Empty)
             {
-                return HtmlTextWriterTag.Div;
+                editor.LabelWidth = this.LabelWidth;
             }
+
+            this.AddEditorRow(editor, this);
         }
+    }
 
-        /// <summary>Gets the Underlying DataSource.</summary>
-        /// <value>An IEnumerable Boolean.</value>
-        protected virtual IEnumerable UnderlyingDataSource
-        {
-            get { return this.GetProperties(); }
-        }
-
-        /// <summary>Binds the controls to the DataSource.</summary>
-        public override void DataBind()
-        {
-            // Invoke OnDataBinding so DataBinding Event is raised
-            this.OnDataBinding(EventArgs.Empty);
-
-            // Clear Existing Controls
-            this.Controls.Clear();
-
-            // Clear Child View State as controls will be loaded from DataSource
-            this.ClearChildViewState();
-
-            // Start Tracking ViewState
-            this.TrackViewState();
-
-            // Create the Editor
-            this.CreateEditor();
-
-            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
-            this.ChildControlsCreated = true;
-        }
-
-        /// <summary>
-        /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
-        /// specified adapter.
-        /// </summary>
-        /// <param name="table">The Table Control to add the row to.</param>
-        /// <param name="name">The name of property being added.</param>
-        /// <param name="adapter">An IEditorInfoAdapter.</param>
-        protected void AddEditorRow(Table table, string name, IEditorInfoAdapter adapter)
+    /// <summary>AddFields adds the fields that have beend defined in design mode (Autogenerate=false).</summary>
+    /// <param name="tbl">The Table Control to add the row to.</param>
+    protected virtual void AddFields(Table tbl)
+    {
+        foreach (FieldEditorControl editor in this.Fields)
         {
             var row = new TableRow();
-            table.Rows.Add(row);
-
+            tbl.Rows.Add(row);
             var cell = new TableCell();
             row.Cells.Add(cell);
 
-            // Create a FieldEditor for this Row
-            var editor = new FieldEditorControl
+            editor.DataSource = this.DataSource;
+            editor.EditorInfoAdapter = new StandardEditorInfoAdapter(this.DataSource, editor.DataField);
+            editor.EditorDisplayMode = this.DisplayMode;
+            editor.EnableClientValidation = this.EnableClientValidation;
+            if (editor.EditMode != PropertyEditorMode.View)
             {
-                DataSource = this.DataSource,
-                EditorInfoAdapter = adapter,
-                DataField = name,
-                EditorDisplayMode = this.DisplayMode,
-                EnableClientValidation = this.EnableClientValidation,
-                EditMode = this.EditMode,
-                HelpDisplayMode = this.HelpDisplayMode,
-                LabelMode = this.LabelMode,
-                LabelWidth = this.LabelWidth,
-            };
+                editor.EditMode = this.EditMode;
+            }
+
+            editor.HelpDisplayMode = this.HelpDisplayMode;
+            if (editor.LabelMode == LabelMode.None)
+            {
+                editor.LabelMode = this.LabelMode;
+            }
+
+            if (editor.LabelWidth == Unit.Empty)
+            {
+                editor.LabelWidth = this.LabelWidth;
+            }
+
             this.AddEditorRow(editor, cell);
+        }
+    }
 
-            this.Fields.Add(editor);
+    /// <summary>AddHeader builds a group header.</summary>
+    /// <remarks>This method is protected so that classes that inherit from
+    /// PropertyEditor can modify how the Header is displayed.</remarks>
+    /// <param name="tbl">The Table Control that contains the group.</param>
+    /// <param name="header">Table Header.</param>
+    protected virtual void AddHeader(Table tbl, string header)
+    {
+        var panel = new Panel();
+        var icon = new Image { ID = "ico" + header, EnableViewState = false };
+
+        var spacer = new Literal { Text = " ", EnableViewState = false };
+
+        var label = new Label { ID = "lbl" + header };
+        label.Attributes["resourcekey"] = this.ID + "_" + header + ".Header";
+        label.Text = header;
+        label.EnableViewState = false;
+        label.ControlStyle.CopyFrom(this.GroupHeaderStyle);
+
+        panel.Controls.Add(icon);
+        panel.Controls.Add(spacer);
+        panel.Controls.Add(label);
+
+        if (this.GroupHeaderIncludeRule)
+        {
+            panel.Controls.Add(new LiteralControl("<hr noshade=\"noshade\" size=\"1\"/>"));
         }
 
-        protected void AddEditorRow(WebControl container, string name, IEditorInfoAdapter adapter)
+        this.Controls.Add(panel);
+
+        // Get the Hashtable
+        if (this.sections == null)
         {
-            var editor = new FieldEditorControl
+            this.sections = new Hashtable();
+        }
+
+        this.sections[icon] = tbl;
+    }
+
+    /// <summary>CreateEditor creates the control collection.</summary>
+    protected virtual void CreateEditor()
+    {
+        Table table;
+        string[] arrGroups = null;
+
+        this.Controls.Clear();
+        if (!string.IsNullOrEmpty(this.Groups))
+        {
+            arrGroups = this.Groups.Split(',');
+        }
+        else if (this.GroupByMode != GroupByMode.None)
+        {
+            arrGroups = this.GetGroups(this.UnderlyingDataSource);
+        }
+
+        if (!this.AutoGenerate)
+        {
+            // Create a new table
+            if (this.DisplayMode == EditorDisplayMode.Div)
             {
-                DataSource = this.DataSource,
-                EditorInfoAdapter = adapter,
-                DataField = name,
-                EditorDisplayMode = this.DisplayMode,
-                EnableClientValidation = this.EnableClientValidation,
-                EditMode = this.EditMode,
-                HelpDisplayMode = this.HelpDisplayMode,
-                LabelMode = this.LabelMode,
-                LabelWidth = this.LabelWidth,
-            };
-            this.AddEditorRow(editor, container);
-
-            this.Fields.Add(editor);
-        }
-
-        /// <summary>AddEditorRow builds a sigle editor row and adds it to the Table.</summary>
-        /// <remarks>This method is protected so that classes that inherit from
-        /// PropertyEditor can modify how the Row is displayed.</remarks>
-        /// <param name="table">The Table Control to add the row to.</param>
-        /// <param name="obj">Row Data Info.</param>
-        protected virtual void AddEditorRow(Table table, object obj)
-        {
-            var objProperty = (PropertyInfo)obj;
-            this.AddEditorRow(table, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
-        }
-
-        protected virtual void AddEditorRow(Panel container, object obj)
-        {
-            var objProperty = (PropertyInfo)obj;
-            this.AddEditorRow(container, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
-        }
-
-        protected virtual void AddEditorRow(object obj)
-        {
-            var objProperty = (PropertyInfo)obj;
-            this.AddEditorRow(this, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
-        }
-
-        protected virtual void AddFields()
-        {
-            foreach (FieldEditorControl editor in this.Fields)
+                this.AddFields();
+            }
+            else
             {
-                editor.DataSource = this.DataSource;
-                editor.EditorInfoAdapter = new StandardEditorInfoAdapter(this.DataSource, editor.DataField);
-                editor.EditorDisplayMode = this.DisplayMode;
-                editor.EnableClientValidation = this.EnableClientValidation;
-                if (editor.EditMode != PropertyEditorMode.View)
-                {
-                    editor.EditMode = this.EditMode;
-                }
-
-                editor.HelpDisplayMode = this.HelpDisplayMode;
-                if (editor.LabelMode == LabelMode.None)
-                {
-                    editor.LabelMode = this.LabelMode;
-                }
-
-                if (editor.LabelWidth == Unit.Empty)
-                {
-                    editor.LabelWidth = this.LabelWidth;
-                }
-
-                this.AddEditorRow(editor, this);
+                // Add the Table to the Controls Collection
+                table = new Table { ID = "tbl" };
+                this.AddFields(table);
+                this.Controls.Add(table);
             }
         }
-
-        /// <summary>AddFields adds the fields that have beend defined in design mode (Autogenerate=false).</summary>
-        /// <param name="tbl">The Table Control to add the row to.</param>
-        protected virtual void AddFields(Table tbl)
+        else
         {
-            foreach (FieldEditorControl editor in this.Fields)
+            this.Fields.Clear();
+            if (arrGroups != null && arrGroups.Length > 0)
             {
-                var row = new TableRow();
-                tbl.Rows.Add(row);
-                var cell = new TableCell();
-                row.Cells.Add(cell);
-
-                editor.DataSource = this.DataSource;
-                editor.EditorInfoAdapter = new StandardEditorInfoAdapter(this.DataSource, editor.DataField);
-                editor.EditorDisplayMode = this.DisplayMode;
-                editor.EnableClientValidation = this.EnableClientValidation;
-                if (editor.EditMode != PropertyEditorMode.View)
+                foreach (string strGroup in arrGroups)
                 {
-                    editor.EditMode = this.EditMode;
-                }
+                    if (this.GroupByMode == GroupByMode.Section)
+                    {
+                        if (this.DisplayMode == EditorDisplayMode.Div)
+                        {
+                            var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
+                            if (groupData.Count() > 0)
+                            {
+                                // Add header
+                                var header = new HtmlGenericControl("h2");
+                                header.Attributes.Add("class", "dnnFormSectionHead");
+                                header.Attributes.Add("id", strGroup);
+                                this.Controls.Add(header);
 
-                editor.HelpDisplayMode = this.HelpDisplayMode;
-                if (editor.LabelMode == LabelMode.None)
-                {
-                    editor.LabelMode = this.LabelMode;
-                }
+                                var localizedGroupName = Localization.GetString("ProfileProperties_" + strGroup + ".Header", this.LocalResourceFile);
+                                if (string.IsNullOrEmpty(localizedGroupName))
+                                {
+                                    localizedGroupName = strGroup;
+                                }
 
-                if (editor.LabelWidth == Unit.Empty)
-                {
-                    editor.LabelWidth = this.LabelWidth;
-                }
+                                var link = new HyperLink() { Text = localizedGroupName, NavigateUrl = "#" };
+                                header.Controls.Add(link);
 
-                this.AddEditorRow(editor, cell);
-            }
-        }
+                                // fieldset to hold properties in group
+                                var fieldset = new HtmlGenericControl("fieldset");
+                                var container = new Panel();
+                                fieldset.Controls.Add(container);
 
-        /// <summary>AddHeader builds a group header.</summary>
-        /// <remarks>This method is protected so that classes that inherit from
-        /// PropertyEditor can modify how the Header is displayed.</remarks>
-        /// <param name="tbl">The Table Control that contains the group.</param>
-        /// <param name="header">Table Header.</param>
-        protected virtual void AddHeader(Table tbl, string header)
-        {
-            var panel = new Panel();
-            var icon = new Image { ID = "ico" + header, EnableViewState = false };
+                                foreach (object obj in groupData)
+                                {
+                                    this.AddEditorRow(container, obj);
+                                }
 
-            var spacer = new Literal { Text = " ", EnableViewState = false };
+                                this.Controls.Add(fieldset);
+                            }
+                        }
+                        else
+                        {
+                            // Create a new table
+                            table = new Table { ID = "tbl" + strGroup };
+                            foreach (object obj in this.UnderlyingDataSource)
+                            {
+                                if (this.GetCategory(obj) == strGroup.Trim())
+                                {
+                                    // Add the Editor Row to the Table
+                                    if (this.GetRowVisibility(obj))
+                                    {
+                                        if (table.Rows.Count == 0)
+                                        {
+                                            // Add a Header
+                                            this.AddHeader(table, strGroup);
+                                        }
 
-            var label = new Label { ID = "lbl" + header };
-            label.Attributes["resourcekey"] = this.ID + "_" + header + ".Header";
-            label.Text = header;
-            label.EnableViewState = false;
-            label.ControlStyle.CopyFrom(this.GroupHeaderStyle);
+                                        this.AddEditorRow(table, obj);
+                                    }
+                                }
+                            }
 
-            panel.Controls.Add(icon);
-            panel.Controls.Add(spacer);
-            panel.Controls.Add(label);
-
-            if (this.GroupHeaderIncludeRule)
-            {
-                panel.Controls.Add(new LiteralControl("<hr noshade=\"noshade\" size=\"1\"/>"));
-            }
-
-            this.Controls.Add(panel);
-
-            // Get the Hashtable
-            if (this.sections == null)
-            {
-                this.sections = new Hashtable();
-            }
-
-            this.sections[icon] = tbl;
-        }
-
-        /// <summary>CreateEditor creates the control collection.</summary>
-        protected virtual void CreateEditor()
-        {
-            Table table;
-            string[] arrGroups = null;
-
-            this.Controls.Clear();
-            if (!string.IsNullOrEmpty(this.Groups))
-            {
-                arrGroups = this.Groups.Split(',');
-            }
-            else if (this.GroupByMode != GroupByMode.None)
-            {
-                arrGroups = this.GetGroups(this.UnderlyingDataSource);
-            }
-
-            if (!this.AutoGenerate)
-            {
-                // Create a new table
-                if (this.DisplayMode == EditorDisplayMode.Div)
-                {
-                    this.AddFields();
-                }
-                else
-                {
-                    // Add the Table to the Controls Collection
-                    table = new Table { ID = "tbl" };
-                    this.AddFields(table);
-                    this.Controls.Add(table);
+                            // Add the Table to the Controls Collection (if it has any rows)
+                            if (table.Rows.Count > 0)
+                            {
+                                this.Controls.Add(table);
+                            }
+                        }
+                    }
                 }
             }
             else
             {
-                this.Fields.Clear();
-                if (arrGroups != null && arrGroups.Length > 0)
+                // Create a new table
+                if (this.DisplayMode == EditorDisplayMode.Div)
                 {
-                    foreach (string strGroup in arrGroups)
+                    foreach (object obj in this.UnderlyingDataSource)
                     {
-                        if (this.GroupByMode == GroupByMode.Section)
+                        // Add the Editor Row to the Table
+                        if (this.GetRowVisibility(obj))
                         {
-                            if (this.DisplayMode == EditorDisplayMode.Div)
-                            {
-                                var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
-                                if (groupData.Count() > 0)
-                                {
-                                    // Add header
-                                    var header = new HtmlGenericControl("h2");
-                                    header.Attributes.Add("class", "dnnFormSectionHead");
-                                    header.Attributes.Add("id", strGroup);
-                                    this.Controls.Add(header);
-
-                                    var localizedGroupName = Localization.GetString("ProfileProperties_" + strGroup + ".Header", this.LocalResourceFile);
-                                    if (string.IsNullOrEmpty(localizedGroupName))
-                                    {
-                                        localizedGroupName = strGroup;
-                                    }
-
-                                    var link = new HyperLink() { Text = localizedGroupName, NavigateUrl = "#" };
-                                    header.Controls.Add(link);
-
-                                    // fieldset to hold properties in group
-                                    var fieldset = new HtmlGenericControl("fieldset");
-                                    var container = new Panel();
-                                    fieldset.Controls.Add(container);
-
-                                    foreach (object obj in groupData)
-                                    {
-                                        this.AddEditorRow(container, obj);
-                                    }
-
-                                    this.Controls.Add(fieldset);
-                                }
-                            }
-                            else
-                            {
-                                // Create a new table
-                                table = new Table { ID = "tbl" + strGroup };
-                                foreach (object obj in this.UnderlyingDataSource)
-                                {
-                                    if (this.GetCategory(obj) == strGroup.Trim())
-                                    {
-                                        // Add the Editor Row to the Table
-                                        if (this.GetRowVisibility(obj))
-                                        {
-                                            if (table.Rows.Count == 0)
-                                            {
-                                                // Add a Header
-                                                this.AddHeader(table, strGroup);
-                                            }
-
-                                            this.AddEditorRow(table, obj);
-                                        }
-                                    }
-                                }
-
-                                // Add the Table to the Controls Collection (if it has any rows)
-                                if (table.Rows.Count > 0)
-                                {
-                                    this.Controls.Add(table);
-                                }
-                            }
+                            this.AddEditorRow(obj);
                         }
                     }
                 }
                 else
                 {
-                    // Create a new table
-                    if (this.DisplayMode == EditorDisplayMode.Div)
+                    table = new Table { ID = "tbl" };
+                    foreach (object obj in this.UnderlyingDataSource)
                     {
-                        foreach (object obj in this.UnderlyingDataSource)
+                        if (this.GetRowVisibility(obj))
                         {
-                            // Add the Editor Row to the Table
-                            if (this.GetRowVisibility(obj))
-                            {
-                                this.AddEditorRow(obj);
-                            }
+                            this.AddEditorRow(table, obj);
                         }
                     }
-                    else
-                    {
-                        table = new Table { ID = "tbl" };
-                        foreach (object obj in this.UnderlyingDataSource)
-                        {
-                            if (this.GetRowVisibility(obj))
-                            {
-                                this.AddEditorRow(table, obj);
-                            }
-                        }
 
-                        // Add the Table to the Controls Collection
-                        this.Controls.Add(table);
-                    }
+                    // Add the Table to the Controls Collection
+                    this.Controls.Add(table);
                 }
             }
         }
+    }
 
-        /// <summary>GetCategory gets the Category of an object.</summary>
-        /// <returns>The category name, or <see cref="Null.NullString"/>.</returns>
-        protected virtual string GetCategory(object obj)
+    /// <summary>GetCategory gets the Category of an object.</summary>
+    /// <returns>The category name, or <see cref="Null.NullString"/>.</returns>
+    protected virtual string GetCategory(object obj)
+    {
+        var objProperty = (PropertyInfo)obj;
+        var categoryString = Null.NullString;
+
+        // Get Category Field
+        var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
+        if (categoryAttributes.Length > 0)
         {
-            var objProperty = (PropertyInfo)obj;
-            var categoryString = Null.NullString;
+            var category = (CategoryAttribute)categoryAttributes[0];
+            categoryString = category.Category;
+        }
 
-            // Get Category Field
+        return categoryString;
+    }
+
+    /// <summary>GetGroups gets an array of Groups/Categories from the DataSource.</summary>
+    /// <returns>An array of group/category names.</returns>
+    protected virtual string[] GetGroups(IEnumerable arrObjects)
+    {
+        var arrGroups = new ArrayList();
+
+        foreach (PropertyInfo objProperty in arrObjects)
+        {
             var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
             {
                 var category = (CategoryAttribute)categoryAttributes[0];
-                categoryString = category.Category;
-            }
 
-            return categoryString;
-        }
-
-        /// <summary>GetGroups gets an array of Groups/Categories from the DataSource.</summary>
-        /// <returns>An array of group/category names.</returns>
-        protected virtual string[] GetGroups(IEnumerable arrObjects)
-        {
-            var arrGroups = new ArrayList();
-
-            foreach (PropertyInfo objProperty in arrObjects)
-            {
-                var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
-                if (categoryAttributes.Length > 0)
+                if (!arrGroups.Contains(category.Category))
                 {
-                    var category = (CategoryAttribute)categoryAttributes[0];
-
-                    if (!arrGroups.Contains(category.Category))
-                    {
-                        arrGroups.Add(category.Category);
-                    }
+                    arrGroups.Add(category.Category);
                 }
             }
-
-            var strGroups = new string[arrGroups.Count];
-            for (int i = 0; i <= arrGroups.Count - 1; i++)
-            {
-                strGroups[i] = Convert.ToString(arrGroups[i]);
-            }
-
-            return strGroups;
         }
 
-        /// <summary>GetRowVisibility determines the Visibility of a row in the table.</summary>
-        /// <param name="obj">The property.</param>
-        /// <returns><see langword="true"/> if the row is visible, otherwise <see langword="false"/>.</returns>
-        protected virtual bool GetRowVisibility(object obj)
+        var strGroups = new string[arrGroups.Count];
+        for (int i = 0; i <= arrGroups.Count - 1; i++)
         {
-            var objProperty = (PropertyInfo)obj;
+            strGroups[i] = Convert.ToString(arrGroups[i]);
+        }
 
-            bool isVisible = true;
-            object[] browsableAttributes = objProperty.GetCustomAttributes(typeof(BrowsableAttribute), true);
-            if (browsableAttributes.Length > 0)
+        return strGroups;
+    }
+
+    /// <summary>GetRowVisibility determines the Visibility of a row in the table.</summary>
+    /// <param name="obj">The property.</param>
+    /// <returns><see langword="true"/> if the row is visible, otherwise <see langword="false"/>.</returns>
+    protected virtual bool GetRowVisibility(object obj)
+    {
+        var objProperty = (PropertyInfo)obj;
+
+        bool isVisible = true;
+        object[] browsableAttributes = objProperty.GetCustomAttributes(typeof(BrowsableAttribute), true);
+        if (browsableAttributes.Length > 0)
+        {
+            var browsable = (BrowsableAttribute)browsableAttributes[0];
+            if (!browsable.Browsable)
             {
-                var browsable = (BrowsableAttribute)browsableAttributes[0];
-                if (!browsable.Browsable)
+                isVisible = false;
+            }
+        }
+
+        if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
+        {
+            // Check if property is required - as this will need to override visibility
+            object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
+            if (requiredAttributes.Length > 0)
+            {
+                var required = (RequiredAttribute)requiredAttributes[0];
+                if (required.Required)
                 {
-                    isVisible = false;
+                    isVisible = true;
                 }
             }
+        }
 
-            if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
+        return isVisible;
+    }
+
+    /// <summary>Runs when an item is added to a collection type property.</summary>
+    protected virtual void OnItemAdded(PropertyEditorEventArgs e)
+    {
+        if (this.ItemAdded != null)
+        {
+            this.ItemAdded(this, e);
+        }
+    }
+
+    /// <summary>Runs when an Editor is Created.</summary>
+    protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
+    {
+        if (this.ItemCreated != null)
+        {
+            this.ItemCreated(this, e);
+        }
+    }
+
+    /// <summary>Runs when an item is removed from a collection type property.</summary>
+    protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
+    {
+        if (this.ItemDeleted != null)
+        {
+            this.ItemDeleted(this, e);
+        }
+    }
+
+    /// <summary>Runs just before the control is rendered.</summary>
+    protected override void OnPreRender(EventArgs e)
+    {
+        if (this.itemChanged)
+        {
+            // Rebind the control to the DataSource to make sure that the dependent
+            // editors are updated
+            this.DataBind();
+        }
+
+        if (string.IsNullOrEmpty(this.CssClass))
+        {
+            this.CssClass = "dnnForm";
+        }
+
+        // Find the Min/Max buttons
+        if (this.GroupByMode == GroupByMode.Section && (this.sections != null))
+        {
+            foreach (DictionaryEntry key in this.sections)
             {
-                // Check if property is required - as this will need to override visibility
-                object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
-                if (requiredAttributes.Length > 0)
-                {
-                    var required = (RequiredAttribute)requiredAttributes[0];
-                    if (required.Required)
-                    {
-                        isVisible = true;
-                    }
-                }
+                var tbl = (Table)key.Value;
+                var icon = (Image)key.Key;
+                DNNClientAPI.EnableMinMax(icon, tbl, false, IconController.IconURL("Minus", "12X15"), IconController.IconURL("Plus", "12X15"), DNNClientAPI.MinMaxPersistanceType.Page);
+            }
+        }
+
+        base.OnPreRender(e);
+    }
+
+    /// <summary>Runs when an item is added to a collection type property.</summary>
+    protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
+    {
+        this.OnItemAdded(e);
+    }
+
+    /// <summary>Runs when an item is removed from a collection type property.</summary>
+    protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
+    {
+        this.OnItemDeleted(e);
+    }
+
+    /// <summary>Runs when an Editor Is Created.</summary>
+    protected virtual void EditorItemCreated(object sender, PropertyEditorItemEventArgs e)
+    {
+        this.OnItemCreated(e);
+    }
+
+    /// <summary>Runs when an Item in the List Is Changed.</summary>
+    protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
+    {
+        this.itemChanged = true;
+    }
+
+    /// <summary>GetProperties returns an array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see>.</summary>
+    /// <returns>An array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see> objects
+    /// for the current DataSource object.</returns>
+    /// <remarks>
+    /// GetProperties will return an array of public properties for the current DataSource
+    /// object.  The properties will be sorted according to the SortMode property.
+    /// </remarks>
+    private IEnumerable<PropertyInfo> GetProperties()
+    {
+        if (this.DataSource != null)
+        {
+            // TODO:  We need to add code to support using the cache in the future
+            const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+
+            var properties = this.DataSource.GetType().GetProperties(bindings);
+
+            // Apply sort method
+            switch (this.SortMode)
+            {
+                case PropertySortType.Alphabetical:
+                    Array.Sort(properties, new PropertyNameComparer());
+                    break;
+                case PropertySortType.Category:
+                    Array.Sort(properties, new PropertyCategoryComparer());
+                    break;
+                case PropertySortType.SortOrderAttribute:
+                    Array.Sort(properties, new PropertySortOrderComparer());
+                    break;
             }
 
-            return isVisible;
+            return properties;
         }
 
-        /// <summary>Runs when an item is added to a collection type property.</summary>
-        protected virtual void OnItemAdded(PropertyEditorEventArgs e)
+        return null;
+    }
+
+    private void AddEditorRow(FieldEditorControl editor, WebControl container)
+    {
+        editor.ControlStyle.CopyFrom(this.ItemStyle);
+        editor.LabelStyle.CopyFrom(this.LabelStyle);
+        editor.HelpStyle.CopyFrom(this.HelpStyle);
+        editor.ErrorStyle.CopyFrom(this.ErrorStyle);
+        editor.VisibilityStyle.CopyFrom(this.VisibilityStyle);
+        editor.EditControlStyle.CopyFrom(this.EditControlStyle);
+        if (editor.EditControlWidth == Unit.Empty)
         {
-            if (this.ItemAdded != null)
-            {
-                this.ItemAdded(this, e);
-            }
+            editor.EditControlWidth = this.EditControlWidth;
         }
 
-        /// <summary>Runs when an Editor is Created.</summary>
-        protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
-        {
-            if (this.ItemCreated != null)
-            {
-                this.ItemCreated(this, e);
-            }
-        }
+        editor.LocalResourceFile = this.LocalResourceFile;
+        editor.RequiredUrl = this.RequiredUrl;
+        editor.ShowRequired = this.ShowRequired;
+        editor.ShowVisibility = this.ShowVisibility;
+        editor.User = this.User;
+        editor.Width = this.Width;
+        editor.ItemAdded += this.CollectionItemAdded;
+        editor.ItemChanged += this.ListItemChanged;
+        editor.ItemCreated += this.EditorItemCreated;
+        editor.ItemDeleted += this.CollectionItemDeleted;
 
-        /// <summary>Runs when an item is removed from a collection type property.</summary>
-        protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
-        {
-            if (this.ItemDeleted != null)
-            {
-                this.ItemDeleted(this, e);
-            }
-        }
-
-        /// <summary>Runs just before the control is rendered.</summary>
-        protected override void OnPreRender(EventArgs e)
-        {
-            if (this.itemChanged)
-            {
-                // Rebind the control to the DataSource to make sure that the dependent
-                // editors are updated
-                this.DataBind();
-            }
-
-            if (string.IsNullOrEmpty(this.CssClass))
-            {
-                this.CssClass = "dnnForm";
-            }
-
-            // Find the Min/Max buttons
-            if (this.GroupByMode == GroupByMode.Section && (this.sections != null))
-            {
-                foreach (DictionaryEntry key in this.sections)
-                {
-                    var tbl = (Table)key.Value;
-                    var icon = (Image)key.Key;
-                    DNNClientAPI.EnableMinMax(icon, tbl, false, IconController.IconURL("Minus", "12X15"), IconController.IconURL("Plus", "12X15"), DNNClientAPI.MinMaxPersistanceType.Page);
-                }
-            }
-
-            base.OnPreRender(e);
-        }
-
-        /// <summary>Runs when an item is added to a collection type property.</summary>
-        protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
-        {
-            this.OnItemAdded(e);
-        }
-
-        /// <summary>Runs when an item is removed from a collection type property.</summary>
-        protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
-        {
-            this.OnItemDeleted(e);
-        }
-
-        /// <summary>Runs when an Editor Is Created.</summary>
-        protected virtual void EditorItemCreated(object sender, PropertyEditorItemEventArgs e)
-        {
-            this.OnItemCreated(e);
-        }
-
-        /// <summary>Runs when an Item in the List Is Changed.</summary>
-        protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
-        {
-            this.itemChanged = true;
-        }
-
-        /// <summary>GetProperties returns an array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see>.</summary>
-        /// <returns>An array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see> objects
-        /// for the current DataSource object.</returns>
-        /// <remarks>
-        /// GetProperties will return an array of public properties for the current DataSource
-        /// object.  The properties will be sorted according to the SortMode property.
-        /// </remarks>
-        private IEnumerable<PropertyInfo> GetProperties()
-        {
-            if (this.DataSource != null)
-            {
-                // TODO:  We need to add code to support using the cache in the future
-                const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
-
-                var properties = this.DataSource.GetType().GetProperties(bindings);
-
-                // Apply sort method
-                switch (this.SortMode)
-                {
-                    case PropertySortType.Alphabetical:
-                        Array.Sort(properties, new PropertyNameComparer());
-                        break;
-                    case PropertySortType.Category:
-                        Array.Sort(properties, new PropertyCategoryComparer());
-                        break;
-                    case PropertySortType.SortOrderAttribute:
-                        Array.Sort(properties, new PropertySortOrderComparer());
-                        break;
-                }
-
-                return properties;
-            }
-
-            return null;
-        }
-
-        private void AddEditorRow(FieldEditorControl editor, WebControl container)
-        {
-            editor.ControlStyle.CopyFrom(this.ItemStyle);
-            editor.LabelStyle.CopyFrom(this.LabelStyle);
-            editor.HelpStyle.CopyFrom(this.HelpStyle);
-            editor.ErrorStyle.CopyFrom(this.ErrorStyle);
-            editor.VisibilityStyle.CopyFrom(this.VisibilityStyle);
-            editor.EditControlStyle.CopyFrom(this.EditControlStyle);
-            if (editor.EditControlWidth == Unit.Empty)
-            {
-                editor.EditControlWidth = this.EditControlWidth;
-            }
-
-            editor.LocalResourceFile = this.LocalResourceFile;
-            editor.RequiredUrl = this.RequiredUrl;
-            editor.ShowRequired = this.ShowRequired;
-            editor.ShowVisibility = this.ShowVisibility;
-            editor.User = this.User;
-            editor.Width = this.Width;
-            editor.ItemAdded += this.CollectionItemAdded;
-            editor.ItemChanged += this.ListItemChanged;
-            editor.ItemCreated += this.EditorItemCreated;
-            editor.ItemDeleted += this.CollectionItemDeleted;
-
-            editor.DataBind();
-            container.Controls.Add(editor);
-        }
+        editor.DataBind();
+        container.Controls.Add(editor);
     }
 }

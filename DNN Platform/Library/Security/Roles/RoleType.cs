@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Security.Roles
+namespace DotNetNuke.Security.Roles;
+
+public enum RoleType
 {
-    public enum RoleType
-    {
-        Administrator = 0,
-        Subscriber = 1,
-        RegisteredUser = 2,
-        None = 3,
-        UnverifiedUser = 4,
-    }
+    Administrator = 0,
+    Subscriber = 1,
+    RegisteredUser = 2,
+    None = 3,
+    UnverifiedUser = 4,
 }

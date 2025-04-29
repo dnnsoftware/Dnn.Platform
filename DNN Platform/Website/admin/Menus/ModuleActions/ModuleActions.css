@@ -164,7 +164,11 @@ div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.primarybtn {
   text-align: center;
   font-size: 13px;
 }
-div.actionMenu ul.dnn_mact > li.actionQuickSettings div.qsFooter a.secondarybtn {
+div.actionMenu
+  ul.dnn_mact
+  > li.actionQuickSettings
+  div.qsFooter
+  a.secondarybtn {
   background: #e4e4e4;
   color: #333333 !important;
   display: inline-block;

@@ -2,25 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DNN.Integration.Test.Framework.Helpers
+namespace DNN.Integration.Test.Framework.Helpers;
+
+using System.IO;
+using System.Reflection;
+
+public static class FileHelper
 {
-    using System.IO;
-    using System.Reflection;
-
-    public static class FileHelper
+    public static string GetAbsoluteDir(string relativePathIn)
     {
-        public static string GetAbsoluteDir(string relativePathIn)
+        if (!relativePathIn.StartsWith("\\"))
         {
-            if (!relativePathIn.StartsWith("\\"))
-            {
-                relativePathIn = "\\" + relativePathIn;
-            }
-
-            var rootDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            var pathOut = rootDirectory + relativePathIn;
-
-            return pathOut;
+            relativePathIn = "\\" + relativePathIn;
         }
+
+        var rootDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        var pathOut = rootDirectory + relativePathIn;
+
+        return pathOut;
     }
 }

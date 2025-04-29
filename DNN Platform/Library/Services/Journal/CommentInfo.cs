@@ -2,78 +2,77 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Journal
+namespace DotNetNuke.Services.Journal;
+
+using System;
+using System.Xml;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Tokens;
+
+public class CommentInfo : IHydratable, IPropertyAccess
 {
-    using System;
-    using System.Xml;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Tokens;
-
-    public class CommentInfo : IHydratable, IPropertyAccess
+    /// <inheritdoc/>
+    public CacheLevel Cacheability
     {
-        /// <inheritdoc/>
-        public CacheLevel Cacheability
+        get
         {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
+            return CacheLevel.fullyCacheable;
+        }
+    }
+
+    public int CommentId { get; set; }
+
+    public int JournalId { get; set; }
+
+    public string Comment { get; set; }
+
+    public DateTime DateCreated { get; set; }
+
+    public DateTime DateUpdated { get; set; }
+
+    public XmlDocument CommentXML { get; set; }
+
+    public int UserId { get; set; }
+
+    public string DisplayName { get; set; }
+
+    /// <inheritdoc/>
+    public int KeyID
+    {
+        get
+        {
+            return this.CommentId;
         }
 
-        public int CommentId { get; set; }
-
-        public int JournalId { get; set; }
-
-        public string Comment { get; set; }
-
-        public DateTime DateCreated { get; set; }
-
-        public DateTime DateUpdated { get; set; }
-
-        public XmlDocument CommentXML { get; set; }
-
-        public int UserId { get; set; }
-
-        public string DisplayName { get; set; }
-
-        /// <inheritdoc/>
-        public int KeyID
+        set
         {
-            get
-            {
-                return this.CommentId;
-            }
+            this.CommentId = value;
+        }
+    }
 
-            set
-            {
-                this.CommentId = value;
-            }
+    /// <inheritdoc/>
+    public void Fill(System.Data.IDataReader dr)
+    {
+        this.CommentId = Null.SetNullInteger(dr["CommentId"]);
+        this.JournalId = Null.SetNullInteger(dr["JournalId"]);
+        this.Comment = Null.SetNullString(dr["Comment"]);
+        this.DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
+        this.DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
+        if (!string.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"])))
+        {
+            this.CommentXML = new XmlDocument { XmlResolver = null };
+            this.CommentXML.LoadXml(dr["CommentXML"].ToString());
         }
 
-        /// <inheritdoc/>
-        public void Fill(System.Data.IDataReader dr)
-        {
-            this.CommentId = Null.SetNullInteger(dr["CommentId"]);
-            this.JournalId = Null.SetNullInteger(dr["JournalId"]);
-            this.Comment = Null.SetNullString(dr["Comment"]);
-            this.DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
-            this.DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
-            if (!string.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"])))
-            {
-                this.CommentXML = new XmlDocument { XmlResolver = null };
-                this.CommentXML.LoadXml(dr["CommentXML"].ToString());
-            }
+        this.UserId = Null.SetNullInteger(dr["UserId"]);
+        this.DisplayName = Null.SetNullString(dr["DisplayName"]);
+    }
 
-            this.UserId = Null.SetNullInteger(dr["UserId"]);
-            this.DisplayName = Null.SetNullString(dr["DisplayName"]);
-        }
-
-        /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
-        {
-            throw new NotImplementedException();
-        }
+    /// <inheritdoc/>
+    public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+    {
+        throw new NotImplementedException();
     }
 }

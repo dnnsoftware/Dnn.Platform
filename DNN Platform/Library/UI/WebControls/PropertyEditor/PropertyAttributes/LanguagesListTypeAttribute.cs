@@ -1,30 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.WebControls
+namespace DotNetNuke.UI.WebControls;
+
+using System;
+
+using DotNetNuke.Services.Localization;
+
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class LanguagesListTypeAttribute : Attribute
 {
-    using System;
+    private readonly LanguagesListType listType;
 
-    using DotNetNuke.Services.Localization;
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class LanguagesListTypeAttribute : Attribute
+    /// <summary>Initializes a new instance of the <see cref="LanguagesListTypeAttribute"/> class.</summary>
+    /// <param name="type">The type of List.</param>
+    public LanguagesListTypeAttribute(LanguagesListType type)
     {
-        private readonly LanguagesListType listType;
+        this.listType = type;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="LanguagesListTypeAttribute"/> class.</summary>
-        /// <param name="type">The type of List.</param>
-        public LanguagesListTypeAttribute(LanguagesListType type)
+    public LanguagesListType ListType
+    {
+        get
         {
-            this.listType = type;
-        }
-
-        public LanguagesListType ListType
-        {
-            get
-            {
-                return this.listType;
-            }
+            return this.listType;
         }
     }
 }

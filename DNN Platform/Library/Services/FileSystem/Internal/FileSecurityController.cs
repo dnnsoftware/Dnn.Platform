@@ -2,107 +2,106 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem.Internal
+namespace DotNetNuke.Services.FileSystem.Internal;
+
+using System;
+using System.IO;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
+
+/// <summary>Internal class to check file security.</summary>
+public class FileSecurityController : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
 {
-    using System;
-    using System.IO;
+    private const int BufferSize = 4096;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Lists;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Instrumentation;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
 
-    /// <summary>Internal class to check file security.</summary>
-    public class FileSecurityController : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
+    /// <inheritdoc/>
+    public bool Validate(string fileName, Stream fileContent)
     {
-        private const int BufferSize = 4096;
+        Requires.NotNullOrEmpty("fileName", fileName);
+        Requires.NotNull("fileContent", fileContent);
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
+        var extension = Path.GetExtension(fileName);
+        var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
 
-        /// <inheritdoc/>
-        public bool Validate(string fileName, Stream fileContent)
+        // when there is no specific file check for the file type, then treat it as validated.
+        if (checker == null)
         {
-            Requires.NotNullOrEmpty("fileName", fileName);
-            Requires.NotNull("fileContent", fileContent);
+            return true;
+        }
 
-            var extension = Path.GetExtension(fileName);
-            var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
+        // use copy of the stream as we can't make sure how the check process the stream.
+        using (var copyStream = this.CopyStream(fileContent))
+        {
+            return checker.Validate(copyStream);
+        }
+    }
 
-            // when there is no specific file check for the file type, then treat it as validated.
-            if (checker == null)
+    /// <inheritdoc/>
+    public bool ValidateNotExectuable(Stream fileContent)
+    {
+        Requires.NotNull("fileContent", fileContent);
+
+        var firstBytes = new byte[2];
+        int bytesRead = fileContent.Read(firstBytes, 0, 2);
+        fileContent.Position = 0;
+
+        // Windows exectuable files start with 0x4D 0x5A
+        return bytesRead < 2 || firstBytes[0] != 0x4D || firstBytes[1] != 0x5A;
+    }
+
+    /// <inheritdoc/>
+    protected override Func<IFileSecurityController> GetFactory()
+    {
+        return () => new FileSecurityController();
+    }
+
+    private IFileSecurityChecker GetSecurityChecker(string extension)
+    {
+        var listEntry = new ListController().GetListEntryInfo("FileSecurityChecker", extension);
+        if (listEntry != null && !string.IsNullOrEmpty(listEntry.Text))
+        {
+            try
             {
-                return true;
+                var cacheKey = $"FileSecurityChecker_{extension}";
+                return Reflection.CreateObject(listEntry.Text, cacheKey) as IFileSecurityChecker;
             }
-
-            // use copy of the stream as we can't make sure how the check process the stream.
-            using (var copyStream = this.CopyStream(fileContent))
+            catch (Exception ex)
             {
-                return checker.Validate(copyStream);
+                Logger.Error($"Create File Security Checker for '{extension}' failed.", ex);
             }
         }
 
-        /// <inheritdoc/>
-        public bool ValidateNotExectuable(Stream fileContent)
+        return null;
+    }
+
+    private Stream CopyStream(Stream stream)
+    {
+        var folderPath = ((FileManager)FileManager.Instance).GetHostMapPath();
+        string filePath;
+        do
         {
-            Requires.NotNull("fileContent", fileContent);
+            filePath = Path.Combine(folderPath, Path.GetRandomFileName()) + ".resx";
+        }
+        while (File.Exists(filePath));
 
-            var firstBytes = new byte[2];
-            int bytesRead = fileContent.Read(firstBytes, 0, 2);
-            fileContent.Position = 0;
+        var fileStream = ((FileManager)FileManager.Instance).GetAutoDeleteFileStream(filePath);
 
-            // Windows exectuable files start with 0x4D 0x5A
-            return bytesRead < 2 || firstBytes[0] != 0x4D || firstBytes[1] != 0x5A;
+        var array = new byte[BufferSize];
+
+        int bytesRead;
+        while ((bytesRead = stream.Read(array, 0, BufferSize)) > 0)
+        {
+            fileStream.Write(array, 0, bytesRead);
         }
 
-        /// <inheritdoc/>
-        protected override Func<IFileSecurityController> GetFactory()
-        {
-            return () => new FileSecurityController();
-        }
+        stream.Position = 0;
+        fileStream.Position = 0;
 
-        private IFileSecurityChecker GetSecurityChecker(string extension)
-        {
-            var listEntry = new ListController().GetListEntryInfo("FileSecurityChecker", extension);
-            if (listEntry != null && !string.IsNullOrEmpty(listEntry.Text))
-            {
-                try
-                {
-                    var cacheKey = $"FileSecurityChecker_{extension}";
-                    return Reflection.CreateObject(listEntry.Text, cacheKey) as IFileSecurityChecker;
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error($"Create File Security Checker for '{extension}' failed.", ex);
-                }
-            }
-
-            return null;
-        }
-
-        private Stream CopyStream(Stream stream)
-        {
-            var folderPath = ((FileManager)FileManager.Instance).GetHostMapPath();
-            string filePath;
-            do
-            {
-                filePath = Path.Combine(folderPath, Path.GetRandomFileName()) + ".resx";
-            }
-            while (File.Exists(filePath));
-
-            var fileStream = ((FileManager)FileManager.Instance).GetAutoDeleteFileStream(filePath);
-
-            var array = new byte[BufferSize];
-
-            int bytesRead;
-            while ((bytesRead = stream.Read(array, 0, BufferSize)) > 0)
-            {
-                fileStream.Write(array, 0, bytesRead);
-            }
-
-            stream.Position = 0;
-            fileStream.Position = 0;
-
-            return fileStream;
-        }
+        return fileStream;
     }
 }

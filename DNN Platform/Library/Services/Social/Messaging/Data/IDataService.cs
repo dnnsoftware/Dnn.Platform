@@ -1,98 +1,97 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Social.Messaging.Data
+namespace DotNetNuke.Services.Social.Messaging.Data;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+
+using DotNetNuke.Services.Social.Messaging.Internal.Views;
+
+public interface IDataService
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
+    int SaveMessage(Message message, int portalId, int createUpdateUserId);
 
-    using DotNetNuke.Services.Social.Messaging.Internal.Views;
+    IDataReader GetMessage(int messageId);
 
-    public interface IDataService
-    {
-        int SaveMessage(Message message, int portalId, int createUpdateUserId);
+    IDataReader GetMessagesBySender(int messageId, int portalId);
 
-        IDataReader GetMessage(int messageId);
+    IDataReader GetLastSentMessage(int userId, int portalId);
 
-        IDataReader GetMessagesBySender(int messageId, int portalId);
+    void DeleteMessage(int messageId);
 
-        IDataReader GetLastSentMessage(int userId, int portalId);
+    void DeleteUserFromConversation(int conversationId, int userId);
 
-        void DeleteMessage(int messageId);
+    IDataReader GetInBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus, MessageSentStatus sentStatus);
 
-        void DeleteUserFromConversation(int conversationId, int userId);
+    IDataReader GetSentBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
-        IDataReader GetInBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus, MessageSentStatus sentStatus);
+    IDataReader GetArchiveBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
-        IDataReader GetSentBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
+    IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, ref int totalRecords);
 
-        IDataReader GetArchiveBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
+    void UpdateMessageReadStatus(int conversationId, int userId, bool read);
 
-        IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, ref int totalRecords);
+    void UpdateMessageArchivedStatus(int conversationId, int userId, bool archived);
 
-        void UpdateMessageReadStatus(int conversationId, int userId, bool read);
+    int CreateMessageReply(int conversationId, int portalId, string body, int senderUserId, string from, int createUpdateUserId);
 
-        void UpdateMessageArchivedStatus(int conversationId, int userId, bool archived);
+    int CountNewThreads(int userId, int portalId);
 
-        int CreateMessageReply(int conversationId, int portalId, string body, int senderUserId, string from, int createUpdateUserId);
+    int CountTotalConversations(int userId, int portalId);
 
-        int CountNewThreads(int userId, int portalId);
+    int CountMessagesByConversation(int conversationId);
 
-        int CountTotalConversations(int userId, int portalId);
+    int CountArchivedMessagesByConversation(int conversationId);
 
-        int CountMessagesByConversation(int conversationId);
+    int CountSentMessages(int userId, int portalId);
 
-        int CountArchivedMessagesByConversation(int conversationId);
+    int CountArchivedMessages(int userId, int portalId);
 
-        int CountSentMessages(int userId, int portalId);
+    int CountSentConversations(int userId, int portalId);
 
-        int CountArchivedMessages(int userId, int portalId);
+    int CountArchivedConversations(int userId, int portalId);
 
-        int CountSentConversations(int userId, int portalId);
+    int CheckReplyHasRecipients(int conversationId, int userId);
 
-        int CountArchivedConversations(int userId, int portalId);
+    int SaveMessageRecipient(MessageRecipient messageRecipient, int createUpdateUserId);
 
-        int CheckReplyHasRecipients(int conversationId, int userId);
+    void CreateMessageRecipientsForRole(int messageId, string roleIds, int createUpdateUserId);
 
-        int SaveMessageRecipient(MessageRecipient messageRecipient, int createUpdateUserId);
+    IDataReader GetMessageRecipient(int messageRecipientId);
 
-        void CreateMessageRecipientsForRole(int messageId, string roleIds, int createUpdateUserId);
+    IDataReader GetMessageRecipientsByUser(int userId);
 
-        IDataReader GetMessageRecipient(int messageRecipientId);
+    IDataReader GetMessageRecipientsByMessage(int messageId);
 
-        IDataReader GetMessageRecipientsByUser(int userId);
+    IDataReader GetMessageRecipientByMessageAndUser(int messageId, int userId);
 
-        IDataReader GetMessageRecipientsByMessage(int messageId);
+    void DeleteMessageRecipient(int messageRecipientId);
 
-        IDataReader GetMessageRecipientByMessageAndUser(int messageId, int userId);
+    void DeleteMessageRecipientByMessageAndUser(int messageId, int userId);
 
-        void DeleteMessageRecipient(int messageRecipientId);
+    int SaveMessageAttachment(MessageAttachment messageAttachment, int createUpdateUserId);
 
-        void DeleteMessageRecipientByMessageAndUser(int messageId, int userId);
+    IDataReader GetMessageAttachment(int messageAttachmentId);
 
-        int SaveMessageAttachment(MessageAttachment messageAttachment, int createUpdateUserId);
+    IList<MessageFileView> GetMessageAttachmentsByMessage(int messageId);
 
-        IDataReader GetMessageAttachment(int messageAttachmentId);
+    void DeleteMessageAttachment(int messageAttachmentId);
 
-        IList<MessageFileView> GetMessageAttachmentsByMessage(int messageId);
+    void ConvertLegacyMessages(int pageIndex, int pageSize);
 
-        void DeleteMessageAttachment(int messageAttachmentId);
+    IDataReader CountLegacyMessages();
 
-        void ConvertLegacyMessages(int pageIndex, int pageSize);
+    IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
 
-        IDataReader CountLegacyMessages();
+    IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize);
 
-        IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
+    void MarkMessageAsDispatched(int messageId, int recipientId);
 
-        IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize);
+    void MarkMessageAsSent(int messageId, int recipientId);
 
-        void MarkMessageAsDispatched(int messageId, int recipientId);
+    IDataReader GetUserPreference(int portalId, int userId);
 
-        void MarkMessageAsSent(int messageId, int recipientId);
-
-        IDataReader GetUserPreference(int portalId, int userId);
-
-        void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency);
-    }
+    void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency);
 }

@@ -2,42 +2,41 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Assets
+namespace DotNetNuke.Services.Assets;
+
+using System.Collections.Generic;
+
+using DotNetNuke.Services.FileSystem;
+
+public class FolderPathComparer : IComparer<int>
 {
-    using System.Collections.Generic;
+    private readonly Dictionary<int, string> cache;
 
-    using DotNetNuke.Services.FileSystem;
-
-    public class FolderPathComparer : IComparer<int>
+    /// <summary>Initializes a new instance of the <see cref="FolderPathComparer"/> class.</summary>
+    public FolderPathComparer()
     {
-        private readonly Dictionary<int, string> cache;
+        this.cache = new Dictionary<int, string>();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="FolderPathComparer"/> class.</summary>
-        public FolderPathComparer()
+    /// <inheritdoc/>
+    public int Compare(int folderIdA, int folderIdB)
+    {
+        if (folderIdA == folderIdB)
         {
-            this.cache = new Dictionary<int, string>();
+            return 0;
         }
 
-        /// <inheritdoc/>
-        public int Compare(int folderIdA, int folderIdB)
-        {
-            if (folderIdA == folderIdB)
-            {
-                return 0;
-            }
+        return string.Compare(this.GetFolderPath(folderIdA), this.GetFolderPath(folderIdB));
+    }
 
-            return string.Compare(this.GetFolderPath(folderIdA), this.GetFolderPath(folderIdB));
+    private string GetFolderPath(int folderId)
+    {
+        if (!this.cache.ContainsKey(folderId))
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+            this.cache.Add(folderId, folder.FolderPath);
         }
 
-        private string GetFolderPath(int folderId)
-        {
-            if (!this.cache.ContainsKey(folderId))
-            {
-                var folder = FolderManager.Instance.GetFolder(folderId);
-                this.cache.Add(folderId, folder.FolderPath);
-            }
-
-            return this.cache[folderId];
-        }
+        return this.cache[folderId];
     }
 }

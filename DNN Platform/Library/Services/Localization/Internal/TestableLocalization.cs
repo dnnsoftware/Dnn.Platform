@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Localization.Internal
+namespace DotNetNuke.Services.Localization.Internal;
+
+using System;
+
+using DotNetNuke.Framework;
+
+public class TestableLocalization : ServiceLocator<ILocalization, TestableLocalization>
 {
-    using System;
-
-    using DotNetNuke.Framework;
-
-    public class TestableLocalization : ServiceLocator<ILocalization, TestableLocalization>
+    /// <inheritdoc/>
+    protected override Func<ILocalization> GetFactory()
     {
-        /// <inheritdoc/>
-        protected override Func<ILocalization> GetFactory()
-        {
-            return () => new LocalizationImpl();
-        }
+        return () => new LocalizationImpl();
     }
 }

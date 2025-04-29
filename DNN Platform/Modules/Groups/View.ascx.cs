@@ -1,68 +1,67 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Modules.Groups
+namespace DotNetNuke.Modules.Groups;
+
+using System;
+
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Modules.Groups.Components;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
+
+/// <summary>The ViewSocialGroups class displays the content.</summary>
+public partial class View : GroupsModuleBase
 {
-    using System;
+    private readonly INavigationManager navigationManager;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Actions;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Modules.Groups.Components;
-    using DotNetNuke.Security;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
-    using Microsoft.Extensions.DependencyInjection;
-
-    /// <summary>The ViewSocialGroups class displays the content.</summary>
-    public partial class View : GroupsModuleBase
+    /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+    public View()
     {
-        private readonly INavigationManager navigationManager;
+        this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
-        public View()
-        {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
+    /// <inheritdoc/>
+    protected override void OnInit(EventArgs e)
+    {
+        this.InitializeComponent();
+        base.OnInit(e);
+    }
 
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
-        {
-            this.InitializeComponent();
-            base.OnInit(e);
-        }
+    private void InitializeComponent()
+    {
+        this.Load += this.Page_Load;
+    }
 
-        private void InitializeComponent()
+    /// <summary>Page_Load runs when the control is loaded.</summary>
+    private void Page_Load(object sender, EventArgs e)
+    {
+        try
         {
-            this.Load += this.Page_Load;
-        }
-
-        /// <summary>Page_Load runs when the control is loaded.</summary>
-        private void Page_Load(object sender, EventArgs e)
-        {
-            try
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            if (this.GroupId < 0)
             {
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                if (this.GroupId < 0)
+                if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                 {
-                    if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
-                    {
-                        this.Response.Redirect(this.navigationManager.NavigateURL(this.GroupListTabId));
-                    }
+                    this.Response.Redirect(this.navigationManager.NavigateURL(this.GroupListTabId));
                 }
+            }
 
-                GroupsModuleBase ctl = (GroupsModuleBase)this.LoadControl(this.ControlPath);
-                ctl.ModuleConfiguration = this.ModuleConfiguration;
-                this.plhContent.Controls.Clear();
-                this.plhContent.Controls.Add(ctl);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            GroupsModuleBase ctl = (GroupsModuleBase)this.LoadControl(this.ControlPath);
+            ctl.ModuleConfiguration = this.ModuleConfiguration;
+            this.plhContent.Controls.Clear();
+            this.plhContent.Controls.Add(ctl);
+        }
+        catch (Exception exc)
+        {
+            Exceptions.ProcessModuleLoadException(this, exc);
         }
     }
 }

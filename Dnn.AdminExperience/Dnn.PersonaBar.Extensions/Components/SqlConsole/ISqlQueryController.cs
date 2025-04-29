@@ -2,24 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SqlConsole.Components
+namespace Dnn.PersonaBar.SqlConsole.Components;
+
+using System.Collections.Generic;
+
+public interface ISqlQueryController
 {
-    using System.Collections.Generic;
+    void AddQuery(SqlQuery query);
 
-    public interface ISqlQueryController
-    {
-        void AddQuery(SqlQuery query);
+    void DeleteQuery(SqlQuery query);
 
-        void DeleteQuery(SqlQuery query);
+    IEnumerable<SqlQuery> GetQueries();
 
-        IEnumerable<SqlQuery> GetQueries();
+    SqlQuery GetQuery(int id);
 
-        SqlQuery GetQuery(int id);
+    SqlQuery GetQuery(string name);
 
-        SqlQuery GetQuery(string name);
+    void UpdateQuery(SqlQuery query);
 
-        void UpdateQuery(SqlQuery query);
-
-        IList<string> GetConnections();
-    }
+    IList<string> GetConnections();
 }

@@ -2,37 +2,36 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
+namespace Dnn.PersonaBar.Servers.Components.DatabaseServer;
+
+using System;
+using System.Data;
+
+using DotNetNuke.Data;
+using DotNetNuke.Services.Localization;
+
+public class DataService
 {
-    using System;
-    using System.Data;
+    private static readonly DataProvider Provider = DataProvider.Instance();
+    private static string moduleQualifier = "PersonaBar_";
 
-    using DotNetNuke.Data;
-    using DotNetNuke.Services.Localization;
-
-    public class DataService
+    public static IDataReader GetDbInfo()
     {
-        private static readonly DataProvider Provider = DataProvider.Instance();
-        private static string moduleQualifier = "PersonaBar_";
+        return Provider.ExecuteReader(GetFullyQualifiedName("GetDbInfo"));
+    }
 
-        public static IDataReader GetDbInfo()
-        {
-            return Provider.ExecuteReader(GetFullyQualifiedName("GetDbInfo"));
-        }
+    public static IDataReader GetDbFileInfo()
+    {
+        return Provider.ExecuteReader(GetFullyQualifiedName("GetDbFileInfo"));
+    }
 
-        public static IDataReader GetDbFileInfo()
-        {
-            return Provider.ExecuteReader(GetFullyQualifiedName("GetDbFileInfo"));
-        }
+    public static IDataReader GetDbBackups()
+    {
+        return Provider.ExecuteReader(GetFullyQualifiedName("GetDbBackups"));
+    }
 
-        public static IDataReader GetDbBackups()
-        {
-            return Provider.ExecuteReader(GetFullyQualifiedName("GetDbBackups"));
-        }
-
-        private static string GetFullyQualifiedName(string name)
-        {
-            return string.Concat(moduleQualifier, name);
-        }
+    private static string GetFullyQualifiedName(string name)
+    {
+        return string.Concat(moduleQualifier, name);
     }
 }

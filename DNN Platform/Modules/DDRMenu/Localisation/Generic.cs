@@ -2,85 +2,84 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.DDRMenu.Localisation
+namespace DotNetNuke.Web.DDRMenu.Localisation;
+
+using System.Reflection;
+
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework;
+using DotNetNuke.UI.WebControls;
+
+/// <summary>Implements generic localization support.</summary>
+public class Generic : ILocalisation
 {
-    using System.Reflection;
+    private bool haveChecked;
+    private object locApi;
+    private MethodInfo locTab;
+    private MethodInfo locNodes;
 
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework;
-    using DotNetNuke.UI.WebControls;
-
-    /// <summary>Implements generic localization support.</summary>
-    public class Generic : ILocalisation
+    /// <inheritdoc/>
+    public bool HaveApi()
     {
-        private bool haveChecked;
-        private object locApi;
-        private MethodInfo locTab;
-        private MethodInfo locNodes;
-
-        /// <inheritdoc/>
-        public bool HaveApi()
+        if (!this.haveChecked)
         {
-            if (!this.haveChecked)
+            var modules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            foreach (var moduleKeyPair in modules)
             {
-                var modules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-                foreach (var moduleKeyPair in modules)
+                if (!string.IsNullOrEmpty(moduleKeyPair.Value.BusinessControllerClass))
                 {
-                    if (!string.IsNullOrEmpty(moduleKeyPair.Value.BusinessControllerClass))
+                    try
                     {
-                        try
+                        this.locApi = Reflection.CreateObject(moduleKeyPair.Value.BusinessControllerClass, moduleKeyPair.Value.BusinessControllerClass);
+                        this.locTab = this.locApi.GetType().GetMethod("LocaliseTab", new[] { typeof(TabInfo), typeof(int) });
+                        if (this.locTab != null)
                         {
-                            this.locApi = Reflection.CreateObject(moduleKeyPair.Value.BusinessControllerClass, moduleKeyPair.Value.BusinessControllerClass);
-                            this.locTab = this.locApi.GetType().GetMethod("LocaliseTab", new[] { typeof(TabInfo), typeof(int) });
-                            if (this.locTab != null)
+                            if (this.locTab.IsStatic)
                             {
-                                if (this.locTab.IsStatic)
-                                {
-                                    this.locApi = null;
-                                }
-
-                                break;
+                                this.locApi = null;
                             }
 
-                            this.locNodes = this.locApi.GetType().GetMethod("LocaliseNodes", new[] { typeof(DNNNodeCollection) });
-                            if (this.locNodes != null)
-                            {
-                                if (this.locNodes.IsStatic)
-                                {
-                                    this.locApi = null;
-                                }
-
-                                break;
-                            }
+                            break;
                         }
 
-                        // ReSharper disable EmptyGeneralCatchClause
-                        catch
+                        this.locNodes = this.locApi.GetType().GetMethod("LocaliseNodes", new[] { typeof(DNNNodeCollection) });
+                        if (this.locNodes != null)
                         {
-                        }
+                            if (this.locNodes.IsStatic)
+                            {
+                                this.locApi = null;
+                            }
 
-                        // ReSharper restore EmptyGeneralCatchClause
+                            break;
+                        }
                     }
-                }
 
-                this.haveChecked = true;
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch
+                    {
+                    }
+
+                    // ReSharper restore EmptyGeneralCatchClause
+                }
             }
 
-            return (this.locTab != null) || (this.locNodes != null);
+            this.haveChecked = true;
         }
 
-        /// <inheritdoc/>
-        public TabInfo LocaliseTab(TabInfo tab, int portalId)
-        {
-            return (this.locTab == null) ? null : (TabInfo)this.locTab.Invoke(this.locApi, new object[] { tab, portalId });
-        }
+        return (this.locTab != null) || (this.locNodes != null);
+    }
 
-        /// <inheritdoc/>
-        public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
-        {
-            return (this.locNodes == null) ? null : (DNNNodeCollection)this.locNodes.Invoke(this.locApi, new object[] { nodes });
-        }
+    /// <inheritdoc/>
+    public TabInfo LocaliseTab(TabInfo tab, int portalId)
+    {
+        return (this.locTab == null) ? null : (TabInfo)this.locTab.Invoke(this.locApi, new object[] { tab, portalId });
+    }
+
+    /// <inheritdoc/>
+    public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
+    {
+        return (this.locNodes == null) ? null : (DNNNodeCollection)this.locNodes.Invoke(this.locApi, new object[] { nodes });
     }
 }

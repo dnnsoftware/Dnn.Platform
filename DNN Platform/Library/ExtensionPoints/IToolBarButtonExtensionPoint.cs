@@ -2,26 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+using DotNetNuke.UI.Modules;
+
+public interface IToolBarButtonExtensionPoint : IExtensionPoint
 {
-    using DotNetNuke.UI.Modules;
+    string ButtonId { get; }
 
-    public interface IToolBarButtonExtensionPoint : IExtensionPoint
-    {
-        string ButtonId { get; }
+    string CssClass { get; }
 
-        string CssClass { get; }
+    string Action { get; }
 
-        string Action { get; }
+    string AltText { get; }
 
-        string AltText { get; }
+    bool ShowText { get; }
 
-        bool ShowText { get; }
+    bool ShowIcon { get; }
 
-        bool ShowIcon { get; }
+    bool Enabled { get; }
 
-        bool Enabled { get; }
-
-        ModuleInstanceContext ModuleContext { get; set; }
-    }
+    ModuleInstanceContext ModuleContext { get; set; }
 }

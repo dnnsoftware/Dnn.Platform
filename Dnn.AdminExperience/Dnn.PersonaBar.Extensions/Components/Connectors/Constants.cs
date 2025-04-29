@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Connectors.Components
+namespace Dnn.PersonaBar.Connectors.Components;
+
+public static class Constants
 {
-    public static class Constants
-    {
-        public const string LocalResourcesFile =
-       "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.PersonaBar.Connectors/App_LocalResources/Connectors.resx";
-    }
+    public const string LocalResourcesFile =
+        "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.PersonaBar.Connectors/App_LocalResources/Connectors.resx";
 }

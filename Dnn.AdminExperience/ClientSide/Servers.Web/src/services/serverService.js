@@ -1,15 +1,15 @@
 import serviceFramework from "./serviceFramework";
 
 const restartApplication = function () {
-    return serviceFramework.post("Server", "RestartApplication");
+  return serviceFramework.post("Server", "RestartApplication");
 };
 const clearCache = function () {
-    return serviceFramework.post("Server", "ClearCache");
+  return serviceFramework.post("Server", "ClearCache");
 };
 
 const serverService = {
-    restartApplication,
-    clearCache    
+  restartApplication,
+  clearCache,
 };
 
-export default serverService; 
+export default serverService;

@@ -2,40 +2,39 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.ConfigSection
+namespace DotNetNuke.Web.ConfigSection;
+
+using System.Configuration;
+
+public class MessageHandlersCollection : ConfigurationElementCollection
 {
-    using System.Configuration;
-
-    public class MessageHandlersCollection : ConfigurationElementCollection
+    public MessageHandlerEntry this[int index]
     {
-        public MessageHandlerEntry this[int index]
+        get
         {
-            get
+            return this.BaseGet(index) as MessageHandlerEntry;
+        }
+
+        set
+        {
+            if (this.BaseGet(index) != null)
             {
-                return this.BaseGet(index) as MessageHandlerEntry;
+                this.BaseRemoveAt(index);
             }
 
-            set
-            {
-                if (this.BaseGet(index) != null)
-                {
-                    this.BaseRemoveAt(index);
-                }
-
-                this.BaseAdd(index, value);
-            }
+            this.BaseAdd(index, value);
         }
+    }
 
-        /// <inheritdoc/>
-        protected override ConfigurationElement CreateNewElement()
-        {
-            return new MessageHandlerEntry();
-        }
+    /// <inheritdoc/>
+    protected override ConfigurationElement CreateNewElement()
+    {
+        return new MessageHandlerEntry();
+    }
 
-        /// <inheritdoc/>
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            return (element as MessageHandlerEntry ?? new MessageHandlerEntry()).Name;
-        }
+    /// <inheritdoc/>
+    protected override object GetElementKey(ConfigurationElement element)
+    {
+        return (element as MessageHandlerEntry ?? new MessageHandlerEntry()).Name;
     }
 }

@@ -22,249 +22,247 @@ using System;
 using System.Collections;
 using System.Runtime.Serialization;
 
-namespace log4net.Util
-{
-    /// <summary>String keyed object map.</summary>
-    /// <remarks>
-    /// <para>
-    /// While this collection is serializable only member 
-    /// objects that are serializable will
-    /// be serialized along with this collection.
-    /// </para>
-    /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+namespace log4net.Util;
+
+/// <summary>String keyed object map.</summary>
+/// <remarks>
+/// <para>
+/// While this collection is serializable only member 
+/// objects that are serializable will
+/// be serialized along with this collection.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+/// <author>Gert Driesen</author>
 #if NETCF 
     public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, IDictionary
 #else
-    [Serializable]
-    public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, ISerializable, IDictionary
+[Serializable]
+public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, ISerializable, IDictionary
 #endif
+{
+    /// <summary>Constructor</summary>
+    /// <remarks>
+    /// <para>
+    /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class.
+    /// </para>
+    /// </remarks>
+    public PropertiesDictionary()
     {
-        /// <summary>Constructor</summary>
-        /// <remarks>
-        /// <para>
-        /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class.
-        /// </para>
-        /// </remarks>
-        public PropertiesDictionary()
-        {
-        }
+    }
 
-        /// <summary>Constructor</summary>
-        /// <param name="propertiesDictionary">properties to copy</param>
-        /// <remarks>
-        /// <para>
-        /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class.
-        /// </para>
-        /// </remarks>
-        public PropertiesDictionary(ReadOnlyPropertiesDictionary propertiesDictionary) : base(propertiesDictionary)
-        {
-        }
+    /// <summary>Constructor</summary>
+    /// <param name="propertiesDictionary">properties to copy</param>
+    /// <remarks>
+    /// <para>
+    /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class.
+    /// </para>
+    /// </remarks>
+    public PropertiesDictionary(ReadOnlyPropertiesDictionary propertiesDictionary) : base(propertiesDictionary)
+    {
+    }
 
 #if !NETCF
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class 
-        /// with serialized data.
-        /// </summary>
-        /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>
-        /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
-        /// <remarks>
-        /// <para>
-        /// Because this class is sealed the serialization constructor is private.
-        /// </para>
-        /// </remarks>
-        private PropertiesDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class 
+    /// with serialized data.
+    /// </summary>
+    /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>
+    /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
+    /// <remarks>
+    /// <para>
+    /// Because this class is sealed the serialization constructor is private.
+    /// </para>
+    /// </remarks>
+    private PropertiesDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+    }
 #endif
 
-        /// <summary>Gets or sets the value of the  property with the specified key.</summary>
-        /// <value>
-        /// The value of the property with the specified key.
-        /// </value>
-        /// <param name="key">The key of the property to get or set.</param>
-        /// <remarks>
-        /// <para>
-        /// The property value will only be serialized if it is serializable.
-        /// If it cannot be serialized it will be silently ignored if
-        /// a serialization operation is performed.
-        /// </para>
-        /// </remarks>
-        public override object this[string key]
+    /// <summary>Gets or sets the value of the  property with the specified key.</summary>
+    /// <value>
+    /// The value of the property with the specified key.
+    /// </value>
+    /// <param name="key">The key of the property to get or set.</param>
+    /// <remarks>
+    /// <para>
+    /// The property value will only be serialized if it is serializable.
+    /// If it cannot be serialized it will be silently ignored if
+    /// a serialization operation is performed.
+    /// </para>
+    /// </remarks>
+    public override object this[string key]
+    {
+        get { return this.InnerHashtable[key]; }
+        set { this.InnerHashtable[key] = value; }
+    }
+
+    /// <summary>Remove the entry with the specified key from this dictionary</summary>
+    /// <param name="key">the key for the entry to remove</param>
+    /// <remarks>
+    /// <para>
+    /// Remove the entry with the specified key from this dictionary
+    /// </para>
+    /// </remarks>
+    public void Remove(string key)
+    {
+        this.InnerHashtable.Remove(key);
+    }
+
+    /// <summary>See <see cref="IDictionary.GetEnumerator"/></summary>
+    /// <returns>an enumerator</returns>
+    /// <remarks>
+    /// <para>
+    /// Returns a <see cref="IDictionaryEnumerator"/> over the contest of this collection.
+    /// </para>
+    /// </remarks>
+    IDictionaryEnumerator IDictionary.GetEnumerator()
+    {
+        return this.InnerHashtable.GetEnumerator();
+    }
+
+    /// <summary>See <see cref="IDictionary.Remove"/></summary>
+    /// <param name="key">the key to remove</param>
+    /// <remarks>
+    /// <para>
+    /// Remove the entry with the specified key from this dictionary
+    /// </para>
+    /// </remarks>
+    void IDictionary.Remove(object key)
+    {
+        this.InnerHashtable.Remove(key);
+    }
+
+    /// <summary>See <see cref="IDictionary.Contains"/></summary>
+    /// <param name="key">the key to lookup in the collection</param>
+    /// <returns><c>true</c> if the collection contains the specified key</returns>
+    /// <remarks>
+    /// <para>
+    /// Test if this collection contains a specified key.
+    /// </para>
+    /// </remarks>
+    bool IDictionary.Contains(object key)
+    {
+        return this.InnerHashtable.Contains(key);
+    }
+
+    /// <summary>Remove all properties from the properties collection</summary>
+    /// <remarks>
+    /// <para>
+    /// Remove all properties from the properties collection
+    /// </para>
+    /// </remarks>
+    public override void Clear()
+    {
+        this.InnerHashtable.Clear();
+    }
+
+    /// <summary>See <see cref="IDictionary.Add"/></summary>
+    /// <param name="key">the key</param>
+    /// <param name="value">the value to store for the key</param>
+    /// <remarks>
+    /// <para>
+    /// Store a value for the specified <see cref="String"/> <paramref name="key"/>.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ArgumentException">Thrown if the <paramref name="key"/> is not a string</exception>
+    void IDictionary.Add(object key, object value)
+    {
+        if (!(key is string))
         {
-            get { return this.InnerHashtable[key]; }
-            set { this.InnerHashtable[key] = value; }
+            throw new ArgumentException("key must be a string", "key");
         }
 
-        /// <summary>Remove the entry with the specified key from this dictionary</summary>
-        /// <param name="key">the key for the entry to remove</param>
-        /// <remarks>
-        /// <para>
-        /// Remove the entry with the specified key from this dictionary
-        /// </para>
-        /// </remarks>
-        public void Remove(string key)
-        {
-            this.InnerHashtable.Remove(key);
-        }
+        this.InnerHashtable.Add(key, value);
+    }
 
-        /// <summary>See <see cref="IDictionary.GetEnumerator"/></summary>
-        /// <returns>an enumerator</returns>
-        /// <remarks>
-        /// <para>
-        /// Returns a <see cref="IDictionaryEnumerator"/> over the contest of this collection.
-        /// </para>
-        /// </remarks>
-        IDictionaryEnumerator IDictionary.GetEnumerator()
-        {
-            return this.InnerHashtable.GetEnumerator();
-        }
+    /// <summary>See <see cref="IDictionary.IsReadOnly"/></summary>
+    /// <value>
+    /// <c>false</c>
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// This collection is modifiable. This property always
+    /// returns <c>false</c>.
+    /// </para>
+    /// </remarks>
+    bool IDictionary.IsReadOnly
+    {
+        get { return false; }
+    }
 
-        /// <summary>See <see cref="IDictionary.Remove"/></summary>
-        /// <param name="key">the key to remove</param>
-        /// <remarks>
-        /// <para>
-        /// Remove the entry with the specified key from this dictionary
-        /// </para>
-        /// </remarks>
-        void IDictionary.Remove(object key)
+    /// <summary>See <see cref="IDictionary.this"/></summary>
+    /// <value>
+    /// The value for the key specified.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Get or set a value for the specified <see cref="String"/> <paramref name="key"/>.
+    /// </para>
+    /// </remarks>
+    /// <exception cref="ArgumentException">Thrown if the <paramref name="key"/> is not a string</exception>
+    object IDictionary.this[object key]
+    {
+        get
         {
-            this.InnerHashtable.Remove(key);
+            if (!(key is string))
+            {
+                throw new ArgumentException("key must be a string", "key");
+            }
+            return this.InnerHashtable[key];
         }
-
-        /// <summary>See <see cref="IDictionary.Contains"/></summary>
-        /// <param name="key">the key to lookup in the collection</param>
-        /// <returns><c>true</c> if the collection contains the specified key</returns>
-        /// <remarks>
-        /// <para>
-        /// Test if this collection contains a specified key.
-        /// </para>
-        /// </remarks>
-        bool IDictionary.Contains(object key)
-        {
-            return this.InnerHashtable.Contains(key);
-        }
-
-        /// <summary>Remove all properties from the properties collection</summary>
-        /// <remarks>
-        /// <para>
-        /// Remove all properties from the properties collection
-        /// </para>
-        /// </remarks>
-        public override void Clear()
-        {
-            this.InnerHashtable.Clear();
-        }
-
-        /// <summary>See <see cref="IDictionary.Add"/></summary>
-        /// <param name="key">the key</param>
-        /// <param name="value">the value to store for the key</param>
-        /// <remarks>
-        /// <para>
-        /// Store a value for the specified <see cref="String"/> <paramref name="key"/>.
-        /// </para>
-        /// </remarks>
-        /// <exception cref="ArgumentException">Thrown if the <paramref name="key"/> is not a string</exception>
-        void IDictionary.Add(object key, object value)
+        set
         {
             if (!(key is string))
             {
                 throw new ArgumentException("key must be a string", "key");
             }
 
-            this.InnerHashtable.Add(key, value);
-        }
-
-        /// <summary>See <see cref="IDictionary.IsReadOnly"/></summary>
-        /// <value>
-        /// <c>false</c>
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// This collection is modifiable. This property always
-        /// returns <c>false</c>.
-        /// </para>
-        /// </remarks>
-        bool IDictionary.IsReadOnly
-        {
-            get { return false; }
-        }
-
-        /// <summary>See <see cref="IDictionary.this"/></summary>
-        /// <value>
-        /// The value for the key specified.
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Get or set a value for the specified <see cref="String"/> <paramref name="key"/>.
-        /// </para>
-        /// </remarks>
-        /// <exception cref="ArgumentException">Thrown if the <paramref name="key"/> is not a string</exception>
-        object IDictionary.this[object key]
-        {
-            get
-            {
-                if (!(key is string))
-                {
-                    throw new ArgumentException("key must be a string", "key");
-                }
-                return this.InnerHashtable[key];
-            }
-            set
-            {
-                if (!(key is string))
-                {
-                    throw new ArgumentException("key must be a string", "key");
-                }
-
-                this.InnerHashtable[key] = value;
-            }
-        }
-
-        /// <summary>See <see cref="IDictionary.Values"/></summary>
-        ICollection IDictionary.Values
-        {
-            get { return this.InnerHashtable.Values; }
-        }
-
-        /// <summary>See <see cref="IDictionary.Keys"/></summary>
-        ICollection IDictionary.Keys
-        {
-            get { return this.InnerHashtable.Keys; }
-        }
-
-        /// <summary>See <see cref="IDictionary.IsFixedSize"/></summary>
-        bool IDictionary.IsFixedSize
-        {
-            get { return false; }
-        }
-
-        /// <summary>See <see cref="ICollection.CopyTo"/></summary>
-        /// <param name="array"></param>
-        /// <param name="index"></param>
-        void ICollection.CopyTo(Array array, int index)
-        {
-            this.InnerHashtable.CopyTo(array, index);
-        }
-
-        /// <summary>See <see cref="ICollection.IsSynchronized"/></summary>
-        bool ICollection.IsSynchronized
-        {
-            get { return this.InnerHashtable.IsSynchronized; }
-        }
-
-        /// <summary>See <see cref="ICollection.SyncRoot"/></summary>
-        object ICollection.SyncRoot
-        {
-            get { return this.InnerHashtable.SyncRoot; }
-        }
-
-        /// <summary>See <see cref="IEnumerable.GetEnumerator"/></summary>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)this.InnerHashtable).GetEnumerator();
+            this.InnerHashtable[key] = value;
         }
     }
-}
 
+    /// <summary>See <see cref="IDictionary.Values"/></summary>
+    ICollection IDictionary.Values
+    {
+        get { return this.InnerHashtable.Values; }
+    }
+
+    /// <summary>See <see cref="IDictionary.Keys"/></summary>
+    ICollection IDictionary.Keys
+    {
+        get { return this.InnerHashtable.Keys; }
+    }
+
+    /// <summary>See <see cref="IDictionary.IsFixedSize"/></summary>
+    bool IDictionary.IsFixedSize
+    {
+        get { return false; }
+    }
+
+    /// <summary>See <see cref="ICollection.CopyTo"/></summary>
+    /// <param name="array"></param>
+    /// <param name="index"></param>
+    void ICollection.CopyTo(Array array, int index)
+    {
+        this.InnerHashtable.CopyTo(array, index);
+    }
+
+    /// <summary>See <see cref="ICollection.IsSynchronized"/></summary>
+    bool ICollection.IsSynchronized
+    {
+        get { return this.InnerHashtable.IsSynchronized; }
+    }
+
+    /// <summary>See <see cref="ICollection.SyncRoot"/></summary>
+    object ICollection.SyncRoot
+    {
+        get { return this.InnerHashtable.SyncRoot; }
+    }
+
+    /// <summary>See <see cref="IEnumerable.GetEnumerator"/></summary>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return ((IEnumerable)this.InnerHashtable).GetEnumerator();
+    }
+}

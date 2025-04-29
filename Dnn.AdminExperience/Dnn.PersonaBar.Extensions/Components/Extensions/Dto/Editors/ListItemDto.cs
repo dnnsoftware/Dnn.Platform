@@ -2,17 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
+namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+
+using Newtonsoft.Json;
+
+[JsonObject]
+public class ListItemDto
 {
-    using Newtonsoft.Json;
+    [JsonProperty("id")]
+    public int Id { get; set; }
 
-    [JsonObject]
-    public class ListItemDto
-    {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
-    }
+    [JsonProperty("name")]
+    public string Name { get; set; }
 }

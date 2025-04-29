@@ -1,135 +1,134 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Analytics
+namespace DotNetNuke.Services.Analytics;
+
+using System;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Analytics.Config;
+
+public class GoogleAnalyticsEngine : AnalyticsEngineBase
 {
-    using System;
-
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Analytics.Config;
-
-    public class GoogleAnalyticsEngine : AnalyticsEngineBase
+    /// <inheritdoc/>
+    public override string EngineName
     {
-        /// <inheritdoc/>
-        public override string EngineName
+        get
         {
-            get
+            return "GoogleAnalytics";
+        }
+    }
+
+    /// <inheritdoc/>
+    public override string RenderScript(string scriptTemplate)
+    {
+        AnalyticsConfiguration config = this.GetConfig();
+
+        if (config == null)
+        {
+            return string.Empty;
+        }
+
+        var trackingId = string.Empty;
+        var urlParameter = string.Empty;
+        var trackForAdmin = true;
+
+        foreach (AnalyticsSetting setting in config.Settings)
+        {
+            switch (setting.SettingName.ToLowerInvariant())
             {
-                return "GoogleAnalytics";
+                case "trackingid":
+                    trackingId = setting.SettingValue;
+                    break;
+                case "urlparameter":
+                    urlParameter = setting.SettingValue;
+                    break;
+                case "trackforadmin":
+                    if (!bool.TryParse(setting.SettingValue, out trackForAdmin))
+                    {
+                        trackForAdmin = true;
+                    }
+
+                    break;
             }
         }
 
-        /// <inheritdoc/>
-        public override string RenderScript(string scriptTemplate)
+        if (string.IsNullOrEmpty(trackingId))
         {
-            AnalyticsConfiguration config = this.GetConfig();
+            return string.Empty;
+        }
 
-            if (config == null)
-            {
-                return string.Empty;
-            }
+        // check whether setting to not track traffic if current user is host user or website administrator.
+        if (!trackForAdmin &&
+            (UserController.Instance.GetCurrentUserInfo().IsSuperUser
+             ||
+             (PortalSettings.Current != null &&
+              UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.Current.AdministratorRoleName))))
+        {
+            return string.Empty;
+        }
 
-            var trackingId = string.Empty;
-            var urlParameter = string.Empty;
-            var trackForAdmin = true;
+        scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
+        if (!string.IsNullOrEmpty(urlParameter))
+        {
+            scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", urlParameter);
+        }
+        else
+        {
+            scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", string.Empty);
+        }
+
+        scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", this.RenderCustomScript(config));
+
+        return scriptTemplate;
+    }
+
+    /// <inheritdoc/>
+    public override string RenderCustomScript(AnalyticsConfiguration config)
+    {
+        try
+        {
+            var anonymize = false;
+            var trackingUserId = false;
 
             foreach (AnalyticsSetting setting in config.Settings)
             {
                 switch (setting.SettingName.ToLowerInvariant())
                 {
-                    case "trackingid":
-                        trackingId = setting.SettingValue;
-                        break;
-                    case "urlparameter":
-                        urlParameter = setting.SettingValue;
-                        break;
-                    case "trackforadmin":
-                        if (!bool.TryParse(setting.SettingValue, out trackForAdmin))
+                    case "anonymizeip":
                         {
-                            trackForAdmin = true;
+                            bool.TryParse(setting.SettingValue, out anonymize);
+                            break;
                         }
 
-                        break;
+                    case "trackinguser":
+                        {
+                            bool.TryParse(setting.SettingValue, out trackingUserId);
+                            break;
+                        }
                 }
             }
 
-            if (string.IsNullOrEmpty(trackingId))
+            var customScripts = new System.Text.StringBuilder();
+
+            if (anonymize || PortalSettings.Current.DataConsentActive)
             {
-                return string.Empty;
+                customScripts.Append("ga('set', 'anonymizeIp', true);");
             }
 
-            // check whether setting to not track traffic if current user is host user or website administrator.
-            if (!trackForAdmin &&
-                (UserController.Instance.GetCurrentUserInfo().IsSuperUser
-                 ||
-                 (PortalSettings.Current != null &&
-                  UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.Current.AdministratorRoleName))))
+            if (trackingUserId)
             {
-                return string.Empty;
+                customScripts.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
-            scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
-            if (!string.IsNullOrEmpty(urlParameter))
-            {
-                scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", urlParameter);
-            }
-            else
-            {
-                scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", string.Empty);
-            }
-
-            scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", this.RenderCustomScript(config));
-
-            return scriptTemplate;
+            return customScripts.ToString();
         }
-
-        /// <inheritdoc/>
-        public override string RenderCustomScript(AnalyticsConfiguration config)
+        catch (Exception ex)
         {
-            try
-            {
-                var anonymize = false;
-                var trackingUserId = false;
+            Exceptions.Exceptions.LogException(ex);
 
-                foreach (AnalyticsSetting setting in config.Settings)
-                {
-                    switch (setting.SettingName.ToLowerInvariant())
-                    {
-                        case "anonymizeip":
-                            {
-                                bool.TryParse(setting.SettingValue, out anonymize);
-                                break;
-                            }
-
-                        case "trackinguser":
-                            {
-                                bool.TryParse(setting.SettingValue, out trackingUserId);
-                                break;
-                            }
-                    }
-                }
-
-                var customScripts = new System.Text.StringBuilder();
-
-                if (anonymize || PortalSettings.Current.DataConsentActive)
-                {
-                    customScripts.Append("ga('set', 'anonymizeIp', true);");
-                }
-
-                if (trackingUserId)
-                {
-                    customScripts.AppendFormat("ga('set', 'userId', {0});", UserController.Instance.GetCurrentUserInfo().UserID);
-                }
-
-                return customScripts.ToString();
-            }
-            catch (Exception ex)
-            {
-                Exceptions.Exceptions.LogException(ex);
-
-                return string.Empty;
-            }
+            return string.Empty;
         }
     }
 }

@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Authentication
-{
-    using DotNetNuke.Authentication.Twitter.Components;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Services.Authentication.OAuth;
-    using NUnit.Framework;
+namespace DotNetNuke.Tests.Authentication;
 
-    [TestFixture]
-    public class TwitterUserDataTests
-    {
-        private const string SampleUserJson = @"{
+using DotNetNuke.Authentication.Twitter.Components;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Authentication.OAuth;
+using NUnit.Framework;
+
+[TestFixture]
+public class TwitterUserDataTests
+{
+    private const string SampleUserJson = @"{
       ""name"": ""Matt Harris"",
       ""profile_sidebar_border_color"": ""C0DEED"",
       ""profile_background_tile"": false,
@@ -71,44 +71,43 @@ namespace DotNetNuke.Tests.Authentication
       ""following"": false
     }";
 
-        [Test]
-        public void TwitterUserData_Populates_Inherited_DisplayName_Property_When_Deserialized()
-        {
-            // Act
-            UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
+    [Test]
+    public void TwitterUserData_Populates_Inherited_DisplayName_Property_When_Deserialized()
+    {
+        // Act
+        UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
-            // Assert
-            Assert.That(sampleUser.DisplayName, Is.EqualTo("themattharris"));
-        }
+        // Assert
+        Assert.That(sampleUser.DisplayName, Is.EqualTo("themattharris"));
+    }
 
-        [Test]
-        public void TwitterUserData_Populates_Inherited_Locale_Property_When_Deserialized()
-        {
-            // Act
-            UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
+    [Test]
+    public void TwitterUserData_Populates_Inherited_Locale_Property_When_Deserialized()
+    {
+        // Act
+        UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
-            // Assert
-            Assert.That(sampleUser.Locale, Is.EqualTo("en"));
-        }
+        // Assert
+        Assert.That(sampleUser.Locale, Is.EqualTo("en"));
+    }
 
-        [Test]
-        public void TwitterUserData_Populates_Inherited_ProfileImage_Property_When_Deserialized()
-        {
-            // Act
-            UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
+    [Test]
+    public void TwitterUserData_Populates_Inherited_ProfileImage_Property_When_Deserialized()
+    {
+        // Act
+        UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
-            // Assert
-            Assert.That(sampleUser.ProfileImage, Is.EqualTo("http://a1.twimg.com/profile_images/554181350/matt_normal.jpg"));
-        }
+        // Assert
+        Assert.That(sampleUser.ProfileImage, Is.EqualTo("http://a1.twimg.com/profile_images/554181350/matt_normal.jpg"));
+    }
 
-        [Test]
-        public void TwitterUserData_Populates_Inherited_Website_Property_When_Deserialized()
-        {
-            // Act
-            UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
+    [Test]
+    public void TwitterUserData_Populates_Inherited_Website_Property_When_Deserialized()
+    {
+        // Act
+        UserData sampleUser = Json.Deserialize<TwitterUserData>(SampleUserJson);
 
-            // Assert
-            Assert.That(sampleUser.Website, Is.EqualTo("http://themattharris.com"));
-        }
+        // Assert
+        Assert.That(sampleUser.Website, Is.EqualTo("http://themattharris.com"));
     }
 }

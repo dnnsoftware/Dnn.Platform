@@ -2,23 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Analytics
-{
-    public class GenericAnalyticsEngine : AnalyticsEngineBase
-    {
-        /// <inheritdoc/>
-        public override string EngineName
-        {
-            get
-            {
-                return "GenericAnalytics";
-            }
-        }
+namespace DotNetNuke.Services.Analytics;
 
-        /// <inheritdoc/>
-        public override string RenderScript(string scriptTemplate)
+public class GenericAnalyticsEngine : AnalyticsEngineBase
+{
+    /// <inheritdoc/>
+    public override string EngineName
+    {
+        get
         {
-            return this.ReplaceTokens(scriptTemplate);
+            return "GenericAnalytics";
         }
+    }
+
+    /// <inheritdoc/>
+    public override string RenderScript(string scriptTemplate)
+    {
+        return this.ReplaceTokens(scriptTemplate);
     }
 }

@@ -2,72 +2,71 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem;
+
+using System;
+
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Permissions;
+
+public interface IFolderInfo
 {
-    using System;
+    string FolderName { get; }
 
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Permissions;
+    FolderPermissionCollection FolderPermissions { get; }
 
-    public interface IFolderInfo
-    {
-        string FolderName { get; }
+    string PhysicalPath { get; }
 
-        FolderPermissionCollection FolderPermissions { get; }
+    bool IsStorageSecure { get; }
 
-        string PhysicalPath { get; }
+    /// <summary>Gets a value indicating whether the folder has any child subfolder.</summary>
+    bool HasChildren { get; }
 
-        bool IsStorageSecure { get; }
+    int CreatedByUserID { get; }
 
-        /// <summary>Gets a value indicating whether the folder has any child subfolder.</summary>
-        bool HasChildren { get; }
+    DateTime CreatedOnDate { get; }
 
-        int CreatedByUserID { get; }
+    int LastModifiedByUserID { get; }
 
-        DateTime CreatedOnDate { get; }
+    DateTime LastModifiedOnDate { get; }
 
-        int LastModifiedByUserID { get; }
+    string DisplayName { get; set; }
 
-        DateTime LastModifiedOnDate { get; }
+    string DisplayPath { get; set; }
 
-        string DisplayName { get; set; }
+    int FolderID { get; set; }
 
-        string DisplayPath { get; set; }
+    string FolderPath { get; set; }
 
-        int FolderID { get; set; }
+    bool IsCached { get; set; }
 
-        string FolderPath { get; set; }
+    bool IsProtected { get; set; }
 
-        bool IsCached { get; set; }
+    DateTime LastUpdated { get; set; }
 
-        bool IsProtected { get; set; }
+    int PortalID { get; set; }
 
-        DateTime LastUpdated { get; set; }
+    int StorageLocation { get; set; }
 
-        int PortalID { get; set; }
+    Guid UniqueId { get; set; }
 
-        int StorageLocation { get; set; }
+    Guid VersionGuid { get; set; }
 
-        Guid UniqueId { get; set; }
+    int FolderMappingID { get; set; }
 
-        Guid VersionGuid { get; set; }
+    /// <summary>Gets or sets a value indicating whether file versions are active for the folder.</summary>
+    bool IsVersioned { get; set; }
 
-        int FolderMappingID { get; set; }
+    /// <summary>Gets or sets a reference to the active Workflow for the folder.</summary>
+    int WorkflowID { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether file versions are active for the folder.</summary>
-        bool IsVersioned { get; set; }
+    /// <summary>Gets or sets a reference to the parent folder.</summary>
+    int ParentID { get; set; }
 
-        /// <summary>Gets or sets a reference to the active Workflow for the folder.</summary>
-        int WorkflowID { get; set; }
+    /// <summary>Gets or sets the path this folder is mapped on its provider file system.</summary>
+    string MappedPath { get; set; }
 
-        /// <summary>Gets or sets a reference to the parent folder.</summary>
-        int ParentID { get; set; }
+    UserInfo CreatedByUser(int portalId);
 
-        /// <summary>Gets or sets the path this folder is mapped on its provider file system.</summary>
-        string MappedPath { get; set; }
-
-        UserInfo CreatedByUser(int portalId);
-
-        UserInfo LastModifiedByUser(int portalId);
-    }
+    UserInfo LastModifiedByUser(int portalId);
 }

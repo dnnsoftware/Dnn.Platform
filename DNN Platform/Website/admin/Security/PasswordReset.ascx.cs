@@ -99,10 +99,10 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.lblInfo.Text = Localization.GetString("ForcedResetInfo", this.LocalResourceFile);
             }
 
-            this.txtUsername.Attributes.Add("data-default", useEmailAsUserName ? this.LocalizeString("Email") : this.LocalizeString("Username"));
-            this.txtPassword.Attributes.Add("data-default", this.LocalizeString("Password"));
-            this.txtConfirmPassword.Attributes.Add("data-default", this.LocalizeString("Confirm"));
-            this.txtAnswer.Attributes.Add("data-default", this.LocalizeString("Answer"));
+            this.txtUsername.Attributes.Add("data-default", useEmailAsUserName ? this.LocalizeText("Email") : this.LocalizeText("Username"));
+            this.txtPassword.Attributes.Add("data-default", this.LocalizeText("Password"));
+            this.txtConfirmPassword.Attributes.Add("data-default", this.LocalizeText("Confirm"));
+            this.txtAnswer.Attributes.Add("data-default", this.LocalizeText("Answer"));
 
             if (!this.Page.IsPostBack)
             {

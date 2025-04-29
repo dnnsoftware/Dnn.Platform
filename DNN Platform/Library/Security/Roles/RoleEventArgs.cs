@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Security.Roles
+namespace DotNetNuke.Security.Roles;
+
+using System;
+
+using DotNetNuke.Entities.Users;
+
+public class RoleEventArgs : EventArgs
 {
-    using System;
+    public RoleInfo Role { get; set; }
 
-    using DotNetNuke.Entities.Users;
-
-    public class RoleEventArgs : EventArgs
-    {
-        public RoleInfo Role { get; set; }
-
-        public UserInfo User { get; set; }
-    }
+    public UserInfo User { get; set; }
 }

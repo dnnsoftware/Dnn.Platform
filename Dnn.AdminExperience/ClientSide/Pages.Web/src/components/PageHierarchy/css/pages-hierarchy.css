@@ -1,589 +1,1153 @@
 ﻿/* Page Hierarchy Style */
-.pagePanel .pagehierarchy-container .pages-list ul li.item-can-be-parent-list div.page-item,
-.pagePanel .pagehierarchy-container .pages-list ul li.selected.item-can-be-parent-list div.page-item,
-.pagePanel .pagehierarchy-container .pages-list ul li.item-can-be-parent-list div.page-item {
-    font-weight: bold;
-    color: #fff;
-    background-color: #2fa6eb !important;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.item-can-be-parent-list
+  div.page-item,
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.selected.item-can-be-parent-list
+  div.page-item,
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.item-can-be-parent-list
+  div.page-item {
+  font-weight: bold;
+  color: #fff;
+  background-color: #2fa6eb !important;
 }
 
 .pagePanel .breadcrumbs-container {
-    min-height: 110px;
+  min-height: 110px;
 }
 
 .pagePanel .pagehierarchy-container {
-    overflow: hidden;
-    outline: none;
-    padding: 0;
-    margin: 10px 30px 0 30px;
-    width: calc(100% - 60px) !important;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
+  overflow: hidden;
+  outline: none;
+  padding: 0;
+  margin: 10px 30px 0 30px;
+  width: calc(100% - 60px) !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
-.pagePanel .pagehierarchy-container .pages-list-scroller > .jspContainer div.shadow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 10px;
-    height: 100%;
-    background-image: -webkit-gradient(linear,left top,right top,color-stop(0, rgba(201, 201, 201, 0.7)),color-stop(10px, rgba(201, 201, 201, 0)));
-    background-image: -o-linear-gradient(left, rgba(201, 201, 201, 0.7) 0, rgba(201, 201, 201, 0) 10px);
-    background-image: -moz-linear-gradient(left, rgba(201, 201, 201, 0.7) 0, rgba(201, 201, 201, 0) 10px);
-    background-image: -webkit-linear-gradient(left, rgba(201, 201, 201, 0.7) 0, rgba(201, 201, 201, 0) 10px);
-    background-image: -ms-linear-gradient(left, rgba(201, 201, 201, 0.7) 0, rgba(201, 201, 201, 0) 10px);
-    background-image: linear-gradient(to right, rgba(201, 201, 201, 0.7) 0, rgba(201, 201, 201, 0) 10px);
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-scroller
+  > .jspContainer
+  div.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 100%;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    color-stop(0, rgba(201, 201, 201, 0.7)),
+    color-stop(10px, rgba(201, 201, 201, 0))
+  );
+  background-image: -o-linear-gradient(
+    left,
+    rgba(201, 201, 201, 0.7) 0,
+    rgba(201, 201, 201, 0) 10px
+  );
+  background-image: -moz-linear-gradient(
+    left,
+    rgba(201, 201, 201, 0.7) 0,
+    rgba(201, 201, 201, 0) 10px
+  );
+  background-image: -webkit-linear-gradient(
+    left,
+    rgba(201, 201, 201, 0.7) 0,
+    rgba(201, 201, 201, 0) 10px
+  );
+  background-image: -ms-linear-gradient(
+    left,
+    rgba(201, 201, 201, 0.7) 0,
+    rgba(201, 201, 201, 0) 10px
+  );
+  background-image: linear-gradient(
+    to right,
+    rgba(201, 201, 201, 0.7) 0,
+    rgba(201, 201, 201, 0) 10px
+  );
 }
-.pagePanel .pagehierarchy-container .pages-list-scroller > .jspContainer .jspHorizontalBar{
-    height: 20px;
-    bottom: 30px;
-    background: none !important;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-scroller
+  > .jspContainer
+  .jspHorizontalBar {
+  height: 20px;
+  bottom: 30px;
+  background: none !important;
 }
-.pagePanel .pagehierarchy-container .pages-list-scroller > .jspContainer .jspHorizontalBar .jspTrack {
-    margin: 4px 0;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-scroller
+  > .jspContainer
+  .jspHorizontalBar
+  .jspTrack {
+  margin: 4px 0;
 }
 
 .pagePanel .pagehierarchy-container .pages-list-container {
-    width: 20000px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  width: 20000px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .pagePanel .pagehierarchy-container .pages-list-scroller {
-    overflow: hidden;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    clear: both;
-    outline: none;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  clear: both;
+  outline: none;
 }
 .pagePanel .pagehierarchy-container .pages-list-container .pages-list {
-    border: 1px solid #d8d8d8;
-    width: 400px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    float: left;
-    outline: none;
-    background: #fff;
+  border: 1px solid #d8d8d8;
+  width: 400px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+  float: left;
+  outline: none;
+  background: #fff;
 }
 .pagePanel .pagehierarchy-container .pages-list.sub {
-    opacity: 0;
-    transition: opacity 100ms linear;
-    border-left: none;
+  opacity: 0;
+  transition: opacity 100ms linear;
+  border-left: none;
 }
 .pagePanel .pagehierarchy-container .pages-list.sub.expand {
-    opacity: 1;
+  opacity: 1;
 }
 .pagePanel .pagehierarchy-container .pages-list ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    height: 100%;
-    overflow: hidden;
-    min-height: 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  height: 100%;
+  overflow: hidden;
+  min-height: 30px;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li {
-    border-bottom: 1px solid #a8a8a8;
+  border-bottom: 1px solid #a8a8a8;
 }
 
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item, li.page-drag-helper div.page-item {
-    background-color: #fff;
-    clear: both;
-    padding: 8px 8px 16px 8px;
-    transition: background 100ms linear;
-    position: relative;
+.pagePanel .pagehierarchy-container .pages-list ul li div.page-item,
+li.page-drag-helper div.page-item {
+  background-color: #fff;
+  clear: both;
+  padding: 8px 8px 16px 8px;
+  transition: background 100ms linear;
+  position: relative;
 }
-.pagePanel .pagehierarchy-container .pages-list-scroller .pages-list.jspScrollable .jspPane {
-    padding-right: 21px !important;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-scroller
+  .pages-list.jspScrollable
+  .jspPane {
+  padding-right: 21px !important;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.thumbnail, li.page-drag-helper div.page-item span.thumbnail {
-    width: 70px;
-    height: 80px;
-    display: block;
-    float: left;
-    position: relative;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.thumbnail,
+li.page-drag-helper div.page-item span.thumbnail {
+  width: 70px;
+  height: 80px;
+  display: block;
+  float: left;
+  position: relative;
 }
 .lazy-loading {
-    content: ".";
-    display: inline-block;
-    position: relative;
-    width: 35px;
-    height: 35px;
-    transform: translate(50%, 0%); 
-    background: url('../images/loading.gif') no-repeat;
+  content: ".";
+  display: inline-block;
+  position: relative;
+  width: 35px;
+  height: 35px;
+  transform: translate(50%, 0%);
+  background: url("../images/loading.gif") no-repeat;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.thumbnail.loading:before, li.page-drag-helper div.page-item span.thumbnail.loading:before {
-    content: ".";
-    text-indent: -200px;
-    width: 32px;
-    height: 32px;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: url('../images/loading.gif') no-repeat;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.thumbnail.loading:before,
+li.page-drag-helper div.page-item span.thumbnail.loading:before {
+  content: ".";
+  text-indent: -200px;
+  width: 32px;
+  height: 32px;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: url("../images/loading.gif") no-repeat;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.thumbnail img, li.page-drag-helper div.page-item span.thumbnail img {
-    width: 68px;
-    height: 70px;
-    vertical-align: top;
-    border: 1px solid #707070;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.thumbnail
+  img,
+li.page-drag-helper div.page-item span.thumbnail img {
+  width: 68px;
+  height: 70px;
+  vertical-align: top;
+  border: 1px solid #707070;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.thumbnail.has-children:after, li.page-drag-helper div.page-item span.thumbnail.has-children:after {
-    display: block;
-    width: 100%;
-    height: 8px;
-    background: url('../images/icon-pages-has-child.png') no-repeat center top;
-    content: ".";
-    text-indent: 1000px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.thumbnail.has-children:after,
+li.page-drag-helper div.page-item span.thumbnail.has-children:after {
+  display: block;
+  width: 100%;
+  height: 8px;
+  background: url("../images/icon-pages-has-child.png") no-repeat center top;
+  content: ".";
+  text-indent: 1000px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary, li.page-drag-helper div.page-item span.summary {
-    display: block;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary,
+li.page-drag-helper div.page-item span.summary {
+  display: block;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary > span, li.page-drag-helper div.page-item span.summary > span {
-    min-height: 18px;
-    line-height: 18px;
-    vertical-align: middle;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary
+  > span,
+li.page-drag-helper div.page-item span.summary > span {
+  min-height: 18px;
+  line-height: 18px;
+  vertical-align: middle;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span > label, li.page-drag-helper div.page-item span.summary span > label {
-    margin-right: 4px;
-    display: inline-block;
-    vertical-align: top;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary
+  span
+  > label,
+li.page-drag-helper div.page-item span.summary span > label {
+  margin-right: 4px;
+  display: inline-block;
+  vertical-align: top;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.subtitle, li.page-drag-helper div.page-item span.summary span.subtitle {
-    display: block;
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    word-wrap: normal;
-    max-width: 280px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary
+  span.subtitle,
+li.page-drag-helper div.page-item span.summary span.subtitle {
+  display: block;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  max-width: 280px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status {
-    display: inline-block;
-    visibility: hidden;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary
+  span.status {
+  display: inline-block;
+  visibility: hidden;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item:hover span.summary span.status.visible {
-    visibility: visible;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item:hover
+  span.summary
+  span.status.visible {
+  visibility: visible;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.summary span.status > label {
-    width: 18px;
-    height: 15px;
-    background-position: 0px 0px;
-    overflow: hidden;
-    text-indent: -100px;
-    background: url('../images/icon-pages-status.png') no-repeat;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary
+  span.status
+  > label {
+  width: 18px;
+  height: 15px;
+  background-position: 0px 0px;
+  overflow: hidden;
+  text-indent: -100px;
+  background: url("../images/icon-pages-status.png") no-repeat;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.summary span.status > label {
-    background-position: 0px -14px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.selected
+  div.page-item
+  span.summary
+  span.status
+  > label {
+  background-position: 0px -14px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions {
-    display: block;
-    height: 16px;
-    line-height: 16px;
-    margin-top: 2px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions {
+  display: block;
+  height: 16px;
+  line-height: 16px;
+  margin-top: 2px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.child-count {
-    display: inline-block;
-    height: 16px;    
-    padding-left: 0;
-    font-weight: bold;
-    font-size: 10px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.child-count {
+  display: inline-block;
+  height: 16px;
+  padding-left: 0;
+  font-weight: bold;
+  font-size: 10px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons {
-    display: none;
-    float: right;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons {
+  display: none;
+  float: right;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span {
-    display: block;
-    float: left;
-    width: 13px;
-    height: 12px;
-    margin-right: 12px;
-    background: url('../images/icon-pages-actionmenus.png') no-repeat;
-    cursor: pointer;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span {
+  display: block;
+  float: left;
+  width: 13px;
+  height: 12px;
+  margin-right: 12px;
+  background: url("../images/icon-pages-actionmenus.png") no-repeat;
+  cursor: pointer;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span:last-child {
-    margin-right: 10px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span:last-child {
+  margin-right: 10px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span.view-page {
-    background-position: 0 0;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span.view-page {
+  background-position: 0 0;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span.edit-page {
-    background-position: -26px 0;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span.edit-page {
+  background-position: -26px 0;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span.settings {
-    background-position: -52px 0;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span.settings {
+  background-position: -52px 0;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span.delete-page {
-    background-position: -78px 0;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span.delete-page {
+  background-position: -78px 0;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span.move-page span {
-    display: block;
-    height: 100%;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span.move-page
+  span {
+  display: block;
+  height: 100%;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.drag-area {
-    position: absolute;
-    background: url('../images/icon-pages-drag-handler.png') no-repeat;
-    display: block;
-    width: 12px;
-    height: 26px;
-    right: 0;
-    top: 16px;
-    cursor: move;
-    text-indent: -2000px;
-    display: none;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.drag-area {
+  position: absolute;
+  background: url("../images/icon-pages-drag-handler.png") no-repeat;
+  display: block;
+  width: 12px;
+  height: 26px;
+  right: 0;
+  top: 16px;
+  cursor: move;
+  text-indent: -2000px;
+  display: none;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.page-notvisible div.page-item {
-    background-color: #f4f4f4;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.page-notvisible
+  div.page-item {
+  background-color: #f4f4f4;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li div.page-item:hover {
-    background-color: #d9ecfa;
+  background-color: #d9ecfa;
 }
-.pagePanel .pagehierarchy-container .pages-list ul div.page-item:hover span.actions span.buttons {
-    display: inline-block;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  div.page-item:hover
+  span.actions
+  span.buttons {
+  display: inline-block;
 }
-.pagePanel .pagehierarchy-container .pages-list ul div.page-item:hover span.drag-area {
-    display: inline-block;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  div.page-item:hover
+  span.drag-area {
+  display: inline-block;
 }
 .pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item {
-    background-color: #0887c5;
-    color: #fff;
+  background-color: #0887c5;
+  color: #fff;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.child-count {
-    background-position: 0 -16px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.selected
+  div.page-item
+  span.child-count {
+  background-position: 0 -16px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.actions span.buttons span.view-page {
-    background-position: 0 -12px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.selected
+  div.page-item
+  span.actions
+  span.buttons
+  span.view-page {
+  background-position: 0 -12px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.actions span.buttons span.edit-page {
-    background-position: -26px -12px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.selected
+  div.page-item
+  span.actions
+  span.buttons
+  span.edit-page {
+  background-position: -26px -12px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.actions span.buttons span.settings {
-    background-position: -52px -12px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.selected
+  div.page-item
+  span.actions
+  span.buttons
+  span.settings {
+  background-position: -52px -12px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li.selected div.page-item span.actions span.buttons span.delete-page {
-    background-position: -78px -12px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li.selected
+  div.page-item
+  span.actions
+  span.buttons
+  span.delete-page {
+  background-position: -78px -12px;
 }
-.pagePanel .pagehierarchy-container .pages-list ul li div.page-item span.actions span.buttons span.action-disabled {
-    cursor: not-allowed !important;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions
+  span.buttons
+  span.action-disabled {
+  cursor: not-allowed !important;
 }
 .pagePanel .pagehierarchy-container .pages-list .jspContainer {
-
 }
 .pagePanel .pagehierarchy-container .pages-list .jspContainer .jspPane {
-    width: 100% !important;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-
+  width: 100% !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .pagePanel .pagehierarchy-container .pages-list .jspVerticalBar {
-    background-color: #f2f2f2 !important;
-    border-left: 1px solid #d4d4d4;
-    width: 20px;
+  background-color: #f2f2f2 !important;
+  border-left: 1px solid #d4d4d4;
+  width: 20px;
 }
 .pagePanel .pagehierarchy-container .pages-list .jspVerticalBar .jspTrack {
-    width: 7px !important;
-    margin-left: 6px !important;
+  width: 7px !important;
+  margin-left: 6px !important;
 }
-.pagePanel .pagehierarchy-container .pages-list .jspVerticalBar .jspTrack .jspDrag {
-    filter: alpha(opacity=50) !important;
-    opacity: 0.5 !important;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list
+  .jspVerticalBar
+  .jspTrack
+  .jspDrag {
+  filter: alpha(opacity=50) !important;
+  opacity: 0.5 !important;
 }
 .pagePanel .pagehierarchy-container .pages-drag-container {
-    position: absolute;
-    left: 380px;
-    top: 300px;
-    width: 375px;
-    padding: 3px;
+  position: absolute;
+  left: 380px;
+  top: 300px;
+  width: 375px;
+  padding: 3px;
 }
 .pagePanel .pagehierarchy-container .pages-drag-container .pages-list ul {
-    min-height: 0;
+  min-height: 0;
 }
-.pagePanel .pagehierarchy-container .pages-drag-container .pages-list ul li div.drag-item, li.page-drag-helper div.drag-item {
-    border: 1px solid #b4b4b4;
-    background-color: #f9f9f9;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    -webkit-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180,1);
-    -moz-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180,1);
-    box-shadow: 0px 0px 3px 1px rgba(180, 180, 180,1);
+.pagePanel
+  .pagehierarchy-container
+  .pages-drag-container
+  .pages-list
+  ul
+  li
+  div.drag-item,
+li.page-drag-helper div.drag-item {
+  border: 1px solid #b4b4b4;
+  background-color: #f9f9f9;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180, 1);
+  -moz-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180, 1);
+  box-shadow: 0px 0px 3px 1px rgba(180, 180, 180, 1);
 }
-.pagePanel .pagehierarchy-container .pages-drag-container .pages-list ul li div.drag-item span.summary span.subtitle, li.page-drag-helper div.drag-item span.summary span.subtitle {
-    margin-bottom: 2px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-drag-container
+  .pages-list
+  ul
+  li
+  div.drag-item
+  span.summary
+  span.subtitle,
+li.page-drag-helper div.drag-item span.summary span.subtitle {
+  margin-bottom: 2px;
 }
-.pagePanel .pagehierarchy-container .pages-drag-container .pages-list ul li div.drag-item span.summary span.drag-area, li.page-drag-helper div.drag-item span.summary span.drag-area {
-    display: block;
-    position: static;
-    height: 40px;
-    line-height: 40px;
-    text-align: left;
-    padding-left: 15px;
-    background: none;
-    background-color: #2fa6eb;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    color: #fff;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: move;
-    width: auto;
-    text-indent: 0;
+.pagePanel
+  .pagehierarchy-container
+  .pages-drag-container
+  .pages-list
+  ul
+  li
+  div.drag-item
+  span.summary
+  span.drag-area,
+li.page-drag-helper div.drag-item span.summary span.drag-area {
+  display: block;
+  position: static;
+  height: 40px;
+  line-height: 40px;
+  text-align: left;
+  padding-left: 15px;
+  background: none;
+  background-color: #2fa6eb;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: move;
+  width: auto;
+  text-indent: 0;
 }
-.pagePanel .pagehierarchy-container .pages-list-scroller .pages-list ul li.page-drag-target, div.page-drag-helper  {
-    height: 96px !important;
-    line-height: 96px;
-    text-align: left;
-    background: #d9ecfa;
-    color: #000;
-    display: block;
-    padding-left: 15px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-scroller
+  .pages-list
+  ul
+  li.page-drag-target,
+div.page-drag-helper {
+  height: 96px !important;
+  line-height: 96px;
+  text-align: left;
+  background: #d9ecfa;
+  color: #000;
+  display: block;
+  padding-left: 15px;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li.page-drag-target, div.page-drag-helper  {
-    height: 40px !important;
-    line-height: 40px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li.page-drag-target,
+div.page-drag-helper {
+  height: 40px !important;
+  line-height: 40px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
-.pagePanel .pagehierarchy-container .pages-list-scroller .pages-list ul li.page-drag-target {
-    opacity: 0.8;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-scroller
+  .pages-list
+  ul
+  li.page-drag-target {
+  opacity: 0.8;
 }
 .pagePanel .thumbnails-loader-wrapper {
-    width: 0px;
-    height: 0px;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 div.page-drag-helper {
-    width: 200px !important;
-    -webkit-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180,1);
-    -moz-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180,1);
-    box-shadow: 2px 2px 3px 1px rgba(180, 180, 180,1);
+  width: 200px !important;
+  -webkit-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180, 1);
+  -moz-box-shadow: 0px 0px 3px 1px rgba(180, 180, 180, 1);
+  box-shadow: 2px 2px 3px 1px rgba(180, 180, 180, 1);
 }
 div.page-drag-helper span.icon {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-    background: url('../images/icon-pages-drag.png') no-repeat;    
-    margin-right: 4px;
-    margin-bottom: 30px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  background: url("../images/icon-pages-drag.png") no-repeat;
+  margin-right: 4px;
+  margin-bottom: 30px;
 }
 
 div.page-drag-helper span.drag-page-name {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    word-wrap: normal;
-    max-width: 150px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  max-width: 150px;
 }
 
 div.page-drag-helper.page-drag-multiple span.icon {
-    background-position: 0 -20px;
+  background-position: 0 -20px;
 }
 @-webkit-keyframes driftDrag {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 @-moz-keyframes driftDrag {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 @-o-keyframes driftDrag {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 @keyframes driftDrag {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 .pagePanel .pagehierarchy-container .pages-drag-container {
-    -webkit-animation: driftDrag 4s linear infinite;
-    -moz-animation:    driftDrag 4s linear infinite;
-    -o-animation:      driftDrag 4s linear infinite;
-    animation:         driftDrag 4s linear infinite;
+  -webkit-animation: driftDrag 4s linear infinite;
+  -moz-animation: driftDrag 4s linear infinite;
+  -o-animation: driftDrag 4s linear infinite;
+  animation: driftDrag 4s linear infinite;
 }
 .pagePanel .pagehierarchy-container .pages-drag-container:hover {
-    -webkit-animation: none !important;
-    -moz-animation:    none !important;
-    -o-animation:      none !important;
-    animation:         none !important;
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  animation: none !important;
 }
 
 .pagePanel .pagehierarchy-container .pages-list-container .pages-list.animate {
-    transition: width 100ms linear;
+  transition: width 100ms linear;
 }
 
 .pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list {
-    width: 262px;
-	padding: 6px 0;
+  width: 262px;
+  padding: 6px 0;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list.jspScrollable .jspPane {
-    padding-right: 26px !important;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list.jspScrollable
+  .jspPane {
+  padding-right: 26px !important;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul {
-	margin: 0 6px;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul {
+  margin: 0 6px;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li {
-    margin-top: 4px;
-    border: none;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li {
+  margin-top: 4px;
+  border: none;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li:first-child {
-    margin-top: 0;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li:first-child {
+  margin-top: 0;
 }
 
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item {
-    height: 40px;
-    line-height: 40px;
-    background-color: #eaeaea;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    padding: 0;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li
+  div.page-item {
+  height: 40px;
+  line-height: 40px;
+  background-color: #eaeaea;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 0;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item:hover {
-    background-color: #EAF1F9;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li
+  div.page-item:hover {
+  background-color: #eaf1f9;
 }
 
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li.selected div.page-item {
-    background-color: #2fa6eb;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li.selected
+  div.page-item {
+  background-color: #2fa6eb;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.actions {
-    position: absolute;
-    right: 16px;
-    top: 13px;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.actions {
+  position: absolute;
+  right: 16px;
+  top: 13px;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.summary {
-    display: inline-block;
-    margin-left: 10px;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary {
+  display: inline-block;
+  margin-left: 10px;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list-scroller .pages-list ul li div.page-item span.summary span.subtitle {
-    display: inline-block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    word-wrap: normal;
-    max-width: 85px;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list-scroller
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.summary
+  span.subtitle {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+  max-width: 85px;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list ul li div.page-item span.drag-area {
-    display: none;
-    top: 7px;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list
+  ul
+  li
+  div.page-item
+  span.drag-area {
+  display: none;
+  top: 7px;
 }
-.pagePanel .pagehierarchy-container.drag-view .pages-list ul li div.page-item:hover span.drag-area {
-    display: block;
+.pagePanel
+  .pagehierarchy-container.drag-view
+  .pages-list
+  ul
+  li
+  div.page-item:hover
+  span.drag-area {
+  display: block;
 }
 
 .pagePanel > div.clear {
-    padding: 0;
+  padding: 0;
 }
 /* Page Hierarchy Style END*/
 
 /* Page Templates Style */
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list {
-    width: 740px;
-    padding: 30px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list {
+  width: 740px;
+  padding: 30px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li {
-    width: 228px;
-    margin: 20px 0 0 20px;
-    float: left;
-    border: none;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li {
+  width: 228px;
+  margin: 20px 0 0 20px;
+  float: left;
+  border: none;
 }
 
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li:nth-child(3n+1) {
-    margin-left: 0px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li:nth-child(3n + 1) {
+  margin-left: 0px;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li:nth-child(1),
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li:nth-child(2),
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li:nth-child(3) {
-    margin-top: 0px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li:nth-child(1),
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li:nth-child(2),
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li:nth-child(3) {
+  margin-top: 0px;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li div.page-item {
-    padding: 15px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    border: 1px solid #eee;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li
+  div.page-item {
+  padding: 15px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #eee;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li div.page-item span {
-    display: none;
-    float: none;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li
+  div.page-item
+  span {
+  display: none;
+  float: none;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li div.page-item span.thumbnail {
-    display: block;
-    width: 100%;
-    height: 128px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li
+  div.page-item
+  span.thumbnail {
+  display: block;
+  width: 100%;
+  height: 128px;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li div.page-item span.thumbnail img {
-    width: 100%;
-    height: 100%;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li
+  div.page-item
+  span.thumbnail
+  img {
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li div.page-item span.summary {
-    display: block;
-    margin-left: 0;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li
+  div.page-item
+  span.summary {
+  display: block;
+  margin-left: 0;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li div.page-item span.summary span.subtitle {
-    text-align: center;
-    height: 35px;
-    padding-top: 10px;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li
+  div.page-item
+  span.summary
+  span.subtitle {
+  text-align: center;
+  height: 35px;
+  padding-top: 10px;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list ul li div.page-item span.summary span.actions {
-    display: block;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  ul
+  li
+  div.page-item
+  span.summary
+  span.actions {
+  display: block;
 }
-.pagePanel .pagehierarchy-container .pages-list-container .pages-list.templates-list .jspVerticalBar {
-    background: none !important;
-    border: none;
+.pagePanel
+  .pagehierarchy-container
+  .pages-list-container
+  .pages-list.templates-list
+  .jspVerticalBar {
+  background: none !important;
+  border: none;
 }
 /* Page Templates Style END */
 
 .page-item {
-    cursor: pointer;
+  cursor: pointer;
 }

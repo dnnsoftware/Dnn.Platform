@@ -2,76 +2,75 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteGroups.Services
+namespace Dnn.PersonaBar.SiteGroups.Services;
+
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+using Dnn.PersonaBar.Library;
+using Dnn.PersonaBar.Library.Attributes;
+using Dnn.PersonaBar.SiteGroups.Models;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Web.Api;
+
+[MenuPermission(Scope = ServiceScope.Host)]
+public class SiteGroupsController : PersonaBarApiController
 {
-    using System;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteGroupsController));
 
-    using Dnn.PersonaBar.Library;
-    using Dnn.PersonaBar.Library.Attributes;
-    using Dnn.PersonaBar.SiteGroups.Models;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Web.Api;
-
-    [MenuPermission(Scope = ServiceScope.Host)]
-    public class SiteGroupsController : PersonaBarApiController
+    private IManagePortalGroups GroupManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteGroupsController));
-
-        private IManagePortalGroups GroupManager
+        get
         {
-            get
-            {
-                return SiteGroups.Instance;
-            }
+            return SiteGroups.Instance;
         }
+    }
 
-        [HttpGet]
-        public HttpResponseMessage GetSiteGroups()
+    [HttpGet]
+    public HttpResponseMessage GetSiteGroups()
+    {
+        var groups = this.GroupManager.SiteGroups();
+        return this.Request.CreateResponse(HttpStatusCode.OK, groups);
+    }
+
+    [HttpGet]
+    public HttpResponseMessage GetAvailablePortals()
+    {
+        var portals = this.GroupManager.AvailablePortals();
+        return this.Request.CreateResponse(HttpStatusCode.OK, portals);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public HttpResponseMessage Save(PortalGroupInfo portalGroup)
+    {
+        try
         {
-            var groups = this.GroupManager.SiteGroups();
-            return this.Request.CreateResponse(HttpStatusCode.OK, groups);
+            var id = this.GroupManager.Save(portalGroup);
+            return this.Request.CreateResponse(HttpStatusCode.OK, id);
         }
-
-        [HttpGet]
-        public HttpResponseMessage GetAvailablePortals()
+        catch (Exception ex)
         {
-            var portals = this.GroupManager.AvailablePortals();
-            return this.Request.CreateResponse(HttpStatusCode.OK, portals);
+            Logger.Error(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
         }
+    }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage Save(PortalGroupInfo portalGroup)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public HttpResponseMessage Delete(int groupId)
+    {
+        try
         {
-            try
-            {
-                var id = this.GroupManager.Save(portalGroup);
-                return this.Request.CreateResponse(HttpStatusCode.OK, id);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            this.GroupManager.Delete(groupId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, groupId);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage Delete(int groupId)
+        catch (Exception ex)
         {
-            try
-            {
-                this.GroupManager.Delete(groupId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, groupId);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
-            }
+            Logger.Error(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 }

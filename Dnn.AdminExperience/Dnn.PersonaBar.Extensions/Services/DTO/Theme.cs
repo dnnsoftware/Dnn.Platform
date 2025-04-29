@@ -2,17 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Services.Dto
+namespace Dnn.PersonaBar.Pages.Services.Dto;
+
+using System.Runtime.Serialization;
+
+[DataContract]
+public class Theme
 {
-    using System.Runtime.Serialization;
+    [DataMember(Name = "skinSrc")]
+    public string SkinSrc { get; set; }
 
-    [DataContract]
-    public class Theme
-    {
-        [DataMember(Name = "skinSrc")]
-        public string SkinSrc { get; set; }
-
-        [DataMember(Name = "containerSrc")]
-        public string ContainerSrc { get; set; }
-    }
+    [DataMember(Name = "containerSrc")]
+    public string ContainerSrc { get; set; }
 }

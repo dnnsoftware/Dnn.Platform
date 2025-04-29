@@ -2,59 +2,58 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DNN.Integration.Test.Framework
+namespace DNN.Integration.Test.Framework;
+
+using System;
+using System.Globalization;
+using System.Net;
+using System.Threading;
+
+using DNN.Integration.Test.Framework.Helpers;
+using NUnit.Framework;
+
+public abstract class IntegrationTestBase
 {
-    using System;
-    using System.Globalization;
-    using System.Net;
-    using System.Threading;
-
-    using DNN.Integration.Test.Framework.Helpers;
-    using NUnit.Framework;
-
-    public abstract class IntegrationTestBase
+    // public static string DatabaseName { get; }
+    static IntegrationTestBase()
     {
-        // public static string DatabaseName { get; }
-        static IntegrationTestBase()
+        ServicePointManager.Expect100Continue = false;
+
+        // setup of the whole system: take a snapshot and keep using it for all tests
+        Thread.CurrentThread.CurrentCulture =
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+        ConnectionString = AppConfigHelper.ConnectionString;
+
+        // DatabaseName = GetDbNameFromConnectionString(ConnectionString);
+
+        // SchedulerController.DisableAllSchedulers(false);
+        // SchedulerController.DisableAppStartDelay(false);
+    }
+
+    public static string ConnectionString { get; }
+
+    public static void LogText(string text)
+    {
+        // Don't write anything to console when we run in TeamCity
+        if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
         {
-            ServicePointManager.Expect100Continue = false;
-
-            // setup of the whole system: take a snapshot and keep using it for all tests
-            Thread.CurrentThread.CurrentCulture =
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-            ConnectionString = AppConfigHelper.ConnectionString;
-
-            // DatabaseName = GetDbNameFromConnectionString(ConnectionString);
-
-            // SchedulerController.DisableAllSchedulers(false);
-            // SchedulerController.DisableAppStartDelay(false);
+            Console.WriteLine(text);
         }
+    }
 
-        public static string ConnectionString { get; }
+    [OneTimeSetUp]
+    public virtual void TestFixtureSetUp()
+    {
+    }
 
-        public static void LogText(string text)
-        {
-            // Don't write anything to console when we run in TeamCity
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
-            {
-                Console.WriteLine(text);
-            }
-        }
+    [OneTimeTearDown]
+    public virtual void TestFixtureTearDown()
+    {
+    }
 
-        [OneTimeSetUp]
-        public virtual void TestFixtureSetUp()
-        {
-        }
-
-        [OneTimeTearDown]
-        public virtual void TestFixtureTearDown()
-        {
-        }
-
-        private static string GetDbNameFromConnectionString(string connectionString)
-        {
-            var builder = new System.Data.Common.DbConnectionStringBuilder { ConnectionString = connectionString };
-            return builder["Database"] as string;
-        }
+    private static string GetDbNameFromConnectionString(string connectionString)
+    {
+        var builder = new System.Data.Common.DbConnectionStringBuilder { ConnectionString = connectionString };
+        return builder["Database"] as string;
     }
 }

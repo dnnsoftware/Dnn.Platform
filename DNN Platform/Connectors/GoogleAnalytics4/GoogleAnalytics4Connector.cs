@@ -2,249 +2,248 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DNN.Connectors.GoogleAnalytics4
+namespace DNN.Connectors.GoogleAnalytics4;
+
+using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Xml;
+
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Analytics.Config;
+using DotNetNuke.Services.Connections;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+
+/// <summary>Connector to provide configuration for Google Tag Manager support.</summary>
+public class GoogleAnalytics4Connector : IConnector
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Web;
-    using System.Xml;
+    private const string DefaultDisplayName = "Google Analytics 4";
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Services.Analytics.Config;
-    using DotNetNuke.Services.Connections;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
+    private string displayName;
 
-    /// <summary>Connector to provide configuration for Google Tag Manager support.</summary>
-    public class GoogleAnalytics4Connector : IConnector
+    /// <inheritdoc/>
+    public string Name
     {
-        private const string DefaultDisplayName = "Google Analytics 4";
+        get { return "Core Google Analytics 4 Connector"; }
+    }
 
-        private string displayName;
+    /// <inheritdoc/>
+    public string IconUrl
+    {
+        get { return "~/DesktopModules/Connectors/GoogleAnalytics4/Images/GoogleAnalytics4_32X32_Standard.png"; }
+    }
 
-        /// <inheritdoc/>
-        public string Name
+    /// <inheritdoc/>
+    public string PluginFolder
+    {
+        get { return "~/DesktopModules/Connectors/GoogleAnalytics4/"; }
+    }
+
+    /// <inheritdoc/>
+    public bool IsEngageConnector
+    {
+        get
         {
-            get { return "Core Google Analytics 4 Connector"; }
+            return false;
         }
+    }
 
-        /// <inheritdoc/>
-        public string IconUrl
-        {
-            get { return "~/DesktopModules/Connectors/GoogleAnalytics4/Images/GoogleAnalytics4_32X32_Standard.png"; }
-        }
+    /// <inheritdoc/>
+    public ConnectorCategories Type => ConnectorCategories.Analytics;
 
-        /// <inheritdoc/>
-        public string PluginFolder
-        {
-            get { return "~/DesktopModules/Connectors/GoogleAnalytics4/"; }
-        }
+    /// <inheritdoc/>
+    // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
+    public bool SupportsMultiple => false;
 
-        /// <inheritdoc/>
-        public bool IsEngageConnector
+    /// <inheritdoc/>
+    public string DisplayName
+    {
+        get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
+        set => this.displayName = value;
+    }
+
+    /// <inheritdoc/>
+    public string Id { get; set; }
+
+    /// <inheritdoc/>
+    public IEnumerable<IConnector> GetConnectors(int portalId)
+    {
+        return new List<IConnector> { this };
+    }
+
+    /// <inheritdoc/>
+    public void DeleteConnector(int portalId)
+    {
+    }
+
+    /// <inheritdoc/>
+    public bool HasConfig(int portalId)
+    {
+        IDictionary<string, string> config = this.GetConfig(portalId);
+
+        return config.ContainsKey("Ga4ID") && !string.IsNullOrEmpty(config["Ga4ID"]);
+    }
+
+    /// <inheritdoc/>
+    public IDictionary<string, string> GetConfig(int portalId)
+    {
+        var ga4Config = AnalyticsConfiguration.GetConfig("GoogleAnalytics4");
+        var portalSettings = new PortalSettings(portalId);
+
+        // Important, knockout handles empty strings as false and any other string as true
+        // so we need to pass empty strings when we mean false, however it passes us back the string "false"
+        // when saving the settings in the SaveConfig method, so we need to handle that case too
+        var ga4Id = string.Empty;
+        var trackForAdmin = string.Empty;
+
+        if (ga4Config != null)
         {
-            get
+            foreach (AnalyticsSetting setting in ga4Config.Settings)
             {
-                return false;
+                switch (setting.SettingName.ToLower())
+                {
+                    case "ga4id":
+                        ga4Id = setting.SettingValue;
+                        break;
+                    case "trackforadmin":
+                        trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
+                        break;
+                }
             }
         }
 
-        /// <inheritdoc/>
-        public ConnectorCategories Type => ConnectorCategories.Analytics;
+        var configItems = new Dictionary<string, string>
+        {
+            { "Ga4ID", ga4Id },
+            { "TrackAdministrators", trackForAdmin },
+            { "isDeactivating", this.HandleCustomBoolean("false") },
+        };
 
-        /// <inheritdoc/>
+        return configItems;
+    }
+
+    /// <inheritdoc/>
+    public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
+    {
+        // Delete / Deactivation functionality added into SaveConfig because
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-        public bool SupportsMultiple => false;
+        customErrorMessage = string.Empty;
+        bool isValid;
 
-        /// <inheritdoc/>
-        public string DisplayName
+        try
         {
-            get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
-            set => this.displayName = value;
-        }
+            var isDeactivating = false;
 
-        /// <inheritdoc/>
-        public string Id { get; set; }
+            bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
 
-        /// <inheritdoc/>
-        public IEnumerable<IConnector> GetConnectors(int portalId)
-        {
-            return new List<IConnector> { this };
-        }
+            string ga4ID;
+            string trackForAdmin;
 
-        /// <inheritdoc/>
-        public void DeleteConnector(int portalId)
-        {
-        }
+            isValid = true;
 
-        /// <inheritdoc/>
-        public bool HasConfig(int portalId)
-        {
-            IDictionary<string, string> config = this.GetConfig(portalId);
-
-            return config.ContainsKey("Ga4ID") && !string.IsNullOrEmpty(config["Ga4ID"]);
-        }
-
-        /// <inheritdoc/>
-        public IDictionary<string, string> GetConfig(int portalId)
-        {
-            var ga4Config = AnalyticsConfiguration.GetConfig("GoogleAnalytics4");
-            var portalSettings = new PortalSettings(portalId);
-
-            // Important, knockout handles empty strings as false and any other string as true
-            // so we need to pass empty strings when we mean false, however it passes us back the string "false"
-            // when saving the settings in the SaveConfig method, so we need to handle that case too
-            var ga4Id = string.Empty;
-            var trackForAdmin = string.Empty;
-
-            if (ga4Config != null)
+            if (isDeactivating)
             {
-                foreach (AnalyticsSetting setting in ga4Config.Settings)
+                ga4ID = null;
+                trackForAdmin = null;
+            }
+            else
+            {
+                ga4ID = values["Ga4ID"] != null ? values["Ga4ID"].ToUpperInvariant().Trim() : string.Empty;
+                trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
+
+                if (string.IsNullOrEmpty(ga4ID))
                 {
-                    switch (setting.SettingName.ToLower())
-                    {
-                        case "ga4id":
-                            ga4Id = setting.SettingValue;
-                            break;
-                        case "trackforadmin":
-                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
-                            break;
-                    }
+                    isValid = false;
+                    customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
                 }
             }
 
-            var configItems = new Dictionary<string, string>
+            if (isValid)
             {
-                { "Ga4ID", ga4Id },
-                { "TrackAdministrators", trackForAdmin },
-                { "isDeactivating", this.HandleCustomBoolean("false") },
-            };
+                var config = new AnalyticsConfiguration
+                {
+                    Settings = new AnalyticsSettingCollection(),
+                };
 
-            return configItems;
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "Ga4Id",
+                    SettingValue = ga4ID,
+                });
+
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "TrackForAdmin",
+                    SettingValue = trackForAdmin,
+                });
+
+                AnalyticsConfiguration.SaveConfig("GoogleAnalytics4", config);
+
+                if (!isDeactivating)
+                {
+                    this.EnsureScriptInConfig();
+                }
+            }
+
+            return isValid;
         }
-
-        /// <inheritdoc/>
-        public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
+        catch (Exception ex)
         {
-            // Delete / Deactivation functionality added into SaveConfig because
-            // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-            customErrorMessage = string.Empty;
-            bool isValid;
-
-            try
-            {
-                var isDeactivating = false;
-
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
-
-                string ga4ID;
-                string trackForAdmin;
-
-                isValid = true;
-
-                if (isDeactivating)
-                {
-                    ga4ID = null;
-                    trackForAdmin = null;
-                }
-                else
-                {
-                    ga4ID = values["Ga4ID"] != null ? values["Ga4ID"].ToUpperInvariant().Trim() : string.Empty;
-                    trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
-
-                    if (string.IsNullOrEmpty(ga4ID))
-                    {
-                        isValid = false;
-                        customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
-                    }
-                }
-
-                if (isValid)
-                {
-                    var config = new AnalyticsConfiguration
-                    {
-                        Settings = new AnalyticsSettingCollection(),
-                    };
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "Ga4Id",
-                        SettingValue = ga4ID,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin,
-                    });
-
-                    AnalyticsConfiguration.SaveConfig("GoogleAnalytics4", config);
-
-                    if (!isDeactivating)
-                    {
-                        this.EnsureScriptInConfig();
-                    }
-                }
-
-                return isValid;
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return false;
-            }
+            Exceptions.LogException(ex);
+            return false;
         }
+    }
 
-        /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
-        private void EnsureScriptInConfig()
+    /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
+    private void EnsureScriptInConfig()
+    {
+        var applicationMappath = HttpContext.Current.Server.MapPath("\\");
+        var file = applicationMappath + "\\SiteAnalytics.config";
+        var xdoc = new XmlDocument();
+        xdoc.Load(file);
+        var found = false;
+        foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
         {
-            var applicationMappath = HttpContext.Current.Server.MapPath("\\");
-            var file = applicationMappath + "\\SiteAnalytics.config";
-            var xdoc = new XmlDocument();
-            xdoc.Load(file);
-            var found = false;
-            foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
+            if (engineTypeNode.InnerText.Contains("DotNetNuke.Services.Analytics.GoogleAnalytics4Engine"))
             {
-                if (engineTypeNode.InnerText.Contains("DotNetNuke.Services.Analytics.GoogleAnalytics4Engine"))
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                var fileGa4 = applicationMappath + "\\DesktopModules\\Connectors\\GoogleAnalytics4\\GoogleAnalytics4.config";
-                var xdocGa4 = new XmlDocument();
-                xdocGa4.Load(fileGa4);
-
-                var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
-                foreach (XmlNode engineNode in xdocGa4.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))
-                {
-                    var engineFrag = xdoc.CreateDocumentFragment();
-                    engineFrag.InnerXml = engineNode.OuterXml;
-                    enginesElement.AppendChild(engineFrag);
-                }
-
-                xdoc.Save(file);
+                found = true;
+                break;
             }
         }
 
-        /// <summary>
-        /// Handles custom conversion from "true" => "true"
-        /// Anything else to "" to support the strange knockout handling of string as booleans.
-        /// </summary>
-        /// <param name="value">The string representing a boolean.</param>
-        /// <returns>The string representing a boolean after the correction.</returns>
-        private string HandleCustomBoolean(string value)
+        if (!found)
         {
-            if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+            var fileGa4 = applicationMappath + "\\DesktopModules\\Connectors\\GoogleAnalytics4\\GoogleAnalytics4.config";
+            var xdocGa4 = new XmlDocument();
+            xdocGa4.Load(fileGa4);
+
+            var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
+            foreach (XmlNode engineNode in xdocGa4.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))
             {
-                return "true";
+                var engineFrag = xdoc.CreateDocumentFragment();
+                engineFrag.InnerXml = engineNode.OuterXml;
+                enginesElement.AppendChild(engineFrag);
             }
 
-            return string.Empty;
+            xdoc.Save(file);
         }
+    }
+
+    /// <summary>
+    /// Handles custom conversion from "true" => "true"
+    /// Anything else to "" to support the strange knockout handling of string as booleans.
+    /// </summary>
+    /// <param name="value">The string representing a boolean.</param>
+    /// <returns>The string representing a boolean after the correction.</returns>
+    private string HandleCustomBoolean(string value)
+    {
+        if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+        {
+            return "true";
+        }
+
+        return string.Empty;
     }
 }

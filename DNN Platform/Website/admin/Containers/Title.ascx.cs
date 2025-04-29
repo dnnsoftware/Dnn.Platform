@@ -4,14 +4,15 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Net;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Skins;
@@ -22,6 +23,7 @@ namespace DotNetNuke.UI.Containers
     {
         private const string MyFileName = "Title.ascx";
 
+        /// <summary>Gets or sets the CSS class applied to the element containing the title.</summary>
         public string CssClass { get; set; }
 
         /// <inheritdoc/>
@@ -54,7 +56,15 @@ namespace DotNetNuke.UI.Containers
                 moduleTitle = " ";
             }
 
-            this.titleLabel.Text = moduleTitle;
+            if (Host.AllowRichTextModuleTitle)
+            {
+                this.titleLabel.Text = moduleTitle;
+            }
+            else
+            {
+                this.titleLabel.Text = WebUtility.HtmlEncode(moduleTitle);
+            }
+
             this.titleLabel.EditEnabled = false;
             this.titleToolbar.Visible = false;
 
@@ -82,9 +92,16 @@ namespace DotNetNuke.UI.Containers
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(this.ModuleControl.ModuleContext.ModuleId, this.ModuleControl.ModuleContext.TabId, false);
 
-                var ps = PortalSecurity.Instance;
-                var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);
-                moduleInfo.ModuleTitle = mt;
+                if (Host.AllowRichTextModuleTitle)
+                {
+                    var ps = PortalSecurity.Instance;
+                    var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);
+                    moduleInfo.ModuleTitle = mt;
+                }
+                else
+                {
+                    moduleInfo.ModuleTitle = WebUtility.HtmlDecode(e.Text);
+                }
 
                 ModuleController.Instance.UpdateModule(moduleInfo);
             }

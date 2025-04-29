@@ -12,8 +12,8 @@ application.init();
 
 const appContainer = document.getElementById("adminlogs-container");
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

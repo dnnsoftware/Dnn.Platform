@@ -1,77 +1,76 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Users
+namespace DotNetNuke.Services.Users;
+
+using System;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Scheduling;
+
+public class PurgeDeletedUsers : SchedulerClient
 {
-    using System;
-
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Scheduling;
-
-    public class PurgeDeletedUsers : SchedulerClient
+    /// <summary>Initializes a new instance of the <see cref="PurgeDeletedUsers"/> class.</summary>
+    /// <param name="objScheduleHistoryItem"></param>
+    public PurgeDeletedUsers(ScheduleHistoryItem objScheduleHistoryItem)
     {
-        /// <summary>Initializes a new instance of the <see cref="PurgeDeletedUsers"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
-        public PurgeDeletedUsers(ScheduleHistoryItem objScheduleHistoryItem)
-        {
-            this.ScheduleHistoryItem = objScheduleHistoryItem;
-        }
+        this.ScheduleHistoryItem = objScheduleHistoryItem;
+    }
 
-        /// <inheritdoc/>
-        public override void DoWork()
+    /// <inheritdoc/>
+    public override void DoWork()
+    {
+        try
         {
-            try
+            foreach (PortalInfo portal in new PortalController().GetPortals())
             {
-                foreach (PortalInfo portal in new PortalController().GetPortals())
+                var settings = new PortalSettings(portal.PortalID);
+                if (settings.DataConsentActive)
                 {
-                    var settings = new PortalSettings(portal.PortalID);
-                    if (settings.DataConsentActive)
+                    if (settings.DataConsentUserDeleteAction == PortalSettings.UserDeleteAction.DelayedHardDelete)
                     {
-                        if (settings.DataConsentUserDeleteAction == PortalSettings.UserDeleteAction.DelayedHardDelete)
+                        var thresholdDate = DateTime.Now;
+                        switch (settings.DataConsentDelayMeasurement)
                         {
-                            var thresholdDate = DateTime.Now;
-                            switch (settings.DataConsentDelayMeasurement)
-                            {
-                                case "h":
-                                    thresholdDate = DateTime.Now.AddHours(-1 * settings.DataConsentDelay);
-                                    break;
-                                case "d":
-                                    thresholdDate = DateTime.Now.AddDays(-1 * settings.DataConsentDelay);
-                                    break;
-                                case "w":
-                                    thresholdDate = DateTime.Now.AddDays(-7 * settings.DataConsentDelay);
-                                    break;
-                            }
+                            case "h":
+                                thresholdDate = DateTime.Now.AddHours(-1 * settings.DataConsentDelay);
+                                break;
+                            case "d":
+                                thresholdDate = DateTime.Now.AddDays(-1 * settings.DataConsentDelay);
+                                break;
+                            case "w":
+                                thresholdDate = DateTime.Now.AddDays(-7 * settings.DataConsentDelay);
+                                break;
+                        }
 
-                            var deletedUsers = UserController.GetDeletedUsers(portal.PortalID);
-                            foreach (UserInfo user in deletedUsers)
+                        var deletedUsers = UserController.GetDeletedUsers(portal.PortalID);
+                        foreach (UserInfo user in deletedUsers)
+                        {
+                            if (user.LastModifiedOnDate < thresholdDate && user.RequestsRemoval)
                             {
-                                if (user.LastModifiedOnDate < thresholdDate && user.RequestsRemoval)
-                                {
-                                    UserController.RemoveUser(user);
-                                    this.ScheduleHistoryItem.AddLogNote(string.Format("Removed user {0}{1}", user.Username, Environment.NewLine));
-                                }
+                                UserController.RemoveUser(user);
+                                this.ScheduleHistoryItem.AddLogNote(string.Format("Removed user {0}{1}", user.Username, Environment.NewLine));
                             }
                         }
                     }
                 }
-
-                this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
-                this.ScheduleHistoryItem.AddLogNote("Purging deleted users task completed");
             }
-            catch (Exception exc)
-            {
-                this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging deleted users task failed: {0}.", exc.ToString()));
+            this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
+            this.ScheduleHistoryItem.AddLogNote("Purging deleted users task completed");
+        }
+        catch (Exception exc)
+        {
+            this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                // notification that we have errored
-                this.Errored(ref exc); // REQUIRED
+            this.ScheduleHistoryItem.AddLogNote(string.Format("Purging deleted users task failed: {0}.", exc.ToString()));
 
-                // log the exception
-                Exceptions.Exceptions.LogException(exc); // OPTIONAL
-            }
+            // notification that we have errored
+            this.Errored(ref exc); // REQUIRED
+
+            // log the exception
+            Exceptions.Exceptions.LogException(exc); // OPTIONAL
         }
     }
 }

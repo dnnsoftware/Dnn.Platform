@@ -1,15 +1,27 @@
 ﻿<div>
+  <div>
+    <label
+      for="txtGa4ID"
+      data-bind="html: configurations[0].localizedName"
+    ></label>
+    <input
+      id="txtGa4ID"
+      data-bind="value: configurations[0].value"
+      type="text"
+    />
+  </div>
 
-    <div>
-        <label for="txtGa4ID" data-bind="html: configurations[0].localizedName"></label>
-        <input id="txtGa4ID" data-bind="value: configurations[0].value" type="text" />
-    </div>
+  <div>
+    <label
+      for="chkTrackAdmins"
+      data-bind="html: configurations[1].localizedName"
+    ></label>
+    <input
+      id="chkTrackAdmins"
+      type="checkbox"
+      data-bind="checked: configurations[1].value, checkedValue: 'true'"
+    />
+  </div>
 
-    <div>
-        <label for="chkTrackAdmins" data-bind="html: configurations[1].localizedName"></label>
-        <input id="chkTrackAdmins" type="checkbox" data-bind="checked: configurations[1].value, checkedValue: 'true'" />
-    </div>
-
-    <div class="clear"></div>
-
+  <div class="clear"></div>
 </div>

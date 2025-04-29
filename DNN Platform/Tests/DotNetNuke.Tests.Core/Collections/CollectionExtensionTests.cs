@@ -2,495 +2,494 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core.Collections
+namespace DotNetNuke.Tests.Core.Collections;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Globalization;
+using System.Web.UI;
+using System.Xml;
+using System.Xml.Linq;
+
+using DotNetNuke.Collections;
+using NUnit.Framework;
+
+[TestFixture]
+public class CollectionExtensionTests
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Globalization;
-    using System.Web.UI;
-    using System.Xml;
-    using System.Xml.Linq;
-
-    using DotNetNuke.Collections;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class CollectionExtensionTests
+    [Test]
+    public void get_null_string_from_hashtable_for_missing_value()
     {
-        [Test]
-        public void get_null_string_from_hashtable_for_missing_value()
-        {
-            var table = new Hashtable { { "app id", "abc123" } };
+        var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.GetValueOrDefault<string>("cat id");
+        var value = table.GetValueOrDefault<string>("cat id");
 
-            Assert.That(value, Is.Null);
-        }
+        Assert.That(value, Is.Null);
+    }
 
-        [Test]
-        public void can_get_string_from_hashtable()
-        {
-            var table = new Hashtable { { "app id", "abc123" } };
+    [Test]
+    public void can_get_string_from_hashtable()
+    {
+        var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.GetValueOrDefault<string>("app id");
+        var value = table.GetValueOrDefault<string>("app id");
 
-            Assert.That(value, Is.EqualTo("abc123"));
-        }
+        Assert.That(value, Is.EqualTo("abc123"));
+    }
 
-        [Test]
-        public void get_string_from_hashtable_when_default_is_provided()
-        {
-            var table = new Hashtable { { "app id", "abc123" } };
+    [Test]
+    public void get_string_from_hashtable_when_default_is_provided()
+    {
+        var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.GetValueOrDefault("app id", "abracadabra");
+        var value = table.GetValueOrDefault("app id", "abracadabra");
 
-            Assert.That(value, Is.EqualTo("abc123"));
-        }
+        Assert.That(value, Is.EqualTo("abc123"));
+    }
 
-        [Test]
-        public void can_get_default_string_from_hashtable()
-        {
-            var table = new Hashtable { { "app id", "abc123" } };
+    [Test]
+    public void can_get_default_string_from_hashtable()
+    {
+        var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.GetValueOrDefault("cat id", "Frank");
+        var value = table.GetValueOrDefault("cat id", "Frank");
 
-            Assert.That(value, Is.EqualTo("Frank"));
-        }
+        Assert.That(value, Is.EqualTo("Frank"));
+    }
 
-        [Test]
-        public void can_get_bool_from_hashtable()
-        {
-            var table = new Hashtable { { "app id", "true" } };
+    [Test]
+    public void can_get_bool_from_hashtable()
+    {
+        var table = new Hashtable { { "app id", "true" } };
 
-            var value = table.GetValueOrDefault<bool>("app id");
+        var value = table.GetValueOrDefault<bool>("app id");
 
-            Assert.That(value, Is.True);
-        }
+        Assert.That(value, Is.True);
+    }
 
-        [Test]
-        public void get_bool_from_hashtable_when_default_is_provided()
-        {
-            var table = new Hashtable { { "app id", "true" } };
+    [Test]
+    public void get_bool_from_hashtable_when_default_is_provided()
+    {
+        var table = new Hashtable { { "app id", "true" } };
 
-            var value = table.GetValueOrDefault("app id", false);
+        var value = table.GetValueOrDefault("app id", false);
 
-            Assert.That(value, Is.True);
-        }
+        Assert.That(value, Is.True);
+    }
 
-        [Test]
-        public void can_get_default_bool_from_hashtable()
-        {
-            var value = true;
-            var table = new Hashtable { { "app id", "abc123" } };
+    [Test]
+    public void can_get_default_bool_from_hashtable()
+    {
+        var value = true;
+        var table = new Hashtable { { "app id", "abc123" } };
 
-            value = table.GetValueOrDefault("Allow Windows Live Writer", value);
+        value = table.GetValueOrDefault("Allow Windows Live Writer", value);
 
-            Assert.That(value, Is.True);
-        }
+        Assert.That(value, Is.True);
+    }
 
-        [Test]
-        public void get_false_from_hashtable_for_missing_value()
-        {
-            var table = new Hashtable { { "app id", "abc123" } };
+    [Test]
+    public void get_false_from_hashtable_for_missing_value()
+    {
+        var table = new Hashtable { { "app id", "abc123" } };
 
-            var value = table.GetValueOrDefault<bool>("Allow Windows Live Writer");
+        var value = table.GetValueOrDefault<bool>("Allow Windows Live Writer");
 
-            Assert.That(value, Is.False);
-        }
+        Assert.That(value, Is.False);
+    }
 
-        [Test]
-        public void get_bool_with_custom_converter_from_hashtable()
-        {
-            var table = new Hashtable { { "allow", "on" } };
+    [Test]
+    public void get_bool_with_custom_converter_from_hashtable()
+    {
+        var table = new Hashtable { { "allow", "on" } };
 
-            var value = table.GetValueOrDefault(
-                "allow",
-                v =>
+        var value = table.GetValueOrDefault(
+            "allow",
+            v =>
+            {
+                bool allowed;
+                if (!bool.TryParse(v, out allowed))
                 {
-                    bool allowed;
-                    if (!bool.TryParse(v, out allowed))
-                    {
-                        allowed = v.Equals("on", StringComparison.Ordinal);
-                    }
+                    allowed = v.Equals("on", StringComparison.Ordinal);
+                }
 
-                    return allowed;
-                });
+                return allowed;
+            });
 
-            Assert.That(value, Is.True);
-        }
+        Assert.That(value, Is.True);
+    }
 
-        [Test]
-        public void get_int()
-        {
-            var collection = new Dictionary<string, string> { { "appId", "123" } };
+    [Test]
+    public void get_int()
+    {
+        var collection = new Dictionary<string, string> { { "appId", "123" } };
 
-            var value = collection.GetValueOrDefault<int>("appId");
+        var value = collection.GetValueOrDefault<int>("appId");
 
-            Assert.That(value, Is.EqualTo(123));
-        }
+        Assert.That(value, Is.EqualTo(123));
+    }
 
-        [Test]
-        public void get_decimal()
-        {
-            var collection = new Dictionary<string, string> { { "appId", "1.23" } };
+    [Test]
+    public void get_decimal()
+    {
+        var collection = new Dictionary<string, string> { { "appId", "1.23" } };
 
-            var value = collection.GetValueOrDefault<decimal>("appId");
+        var value = collection.GetValueOrDefault<decimal>("appId");
 
-            Assert.That(value, Is.EqualTo(1.23m));
-        }
+        Assert.That(value, Is.EqualTo(1.23m));
+    }
 
-        [Test]
-        [SetCulture("nl-NL")]
-        public void get_decimal_from_other_culture()
-        {
-            var collection = new Dictionary<string, string> { { "appId", "1.23" } };
+    [Test]
+    [SetCulture("nl-NL")]
+    public void get_decimal_from_other_culture()
+    {
+        var collection = new Dictionary<string, string> { { "appId", "1.23" } };
 
-            var value = collection.GetValueOrDefault<decimal>("appId");
+        var value = collection.GetValueOrDefault<decimal>("appId");
 
-            Assert.That(value, Is.EqualTo(1.23m));
-        }
+        Assert.That(value, Is.EqualTo(1.23m));
+    }
 
-        [Test]
-        public void get_datetime()
-        {
-            var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
+    [Test]
+    public void get_datetime()
+    {
+        var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
 
-            var value = collection.GetValueOrDefault<DateTime>("startDate");
+        var value = collection.GetValueOrDefault<DateTime>("startDate");
 
-            Assert.That(value, Is.EqualTo(new DateTime(2012, 5, 4)));
-        }
+        Assert.That(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+    }
 
-        [Test]
-        public void get_null_string_without_default()
-        {
-            var collection = new Dictionary<string, string> { { "app id", null } };
+    [Test]
+    public void get_null_string_without_default()
+    {
+        var collection = new Dictionary<string, string> { { "app id", null } };
 
-            var value = collection.GetValue<string>("app id");
+        var value = collection.GetValue<string>("app id");
 
-            Assert.That(value, Is.Null);
-        }
+        Assert.That(value, Is.Null);
+    }
 
-        [Test]
-        public void get_null_string_with_default()
-        {
-            var collection = new Dictionary<string, string> { { "app id", null } };
+    [Test]
+    public void get_null_string_with_default()
+    {
+        var collection = new Dictionary<string, string> { { "app id", null } };
 
-            var value = collection.GetValueOrDefault("app id", "a default value");
+        var value = collection.GetValueOrDefault("app id", "a default value");
 
-            Assert.That(value, Is.Null);
-        }
+        Assert.That(value, Is.Null);
+    }
 
-        [Test]
-        public void get_nullable_datetime()
-        {
-            var collection = new Dictionary<string, DateTime?> { { "startDate", null } };
+    [Test]
+    public void get_nullable_datetime()
+    {
+        var collection = new Dictionary<string, DateTime?> { { "startDate", null } };
 
-            var value = collection.GetValue<DateTime?>("startDate");
+        var value = collection.GetValue<DateTime?>("startDate");
 
-            Assert.That(value, Is.Null);
-        }
+        Assert.That(value, Is.Null);
+    }
 
-        [Test]
-        [SetCulture("nl-NL")]
-        public void get_datetime_from_other_culture()
-        {
-            var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
+    [Test]
+    [SetCulture("nl-NL")]
+    public void get_datetime_from_other_culture()
+    {
+        var collection = new Dictionary<string, string> { { "startDate", "05/04/2012 00:00:00" } };
 
-            var value = collection.GetValueOrDefault<DateTime>("startDate");
+        var value = collection.GetValueOrDefault<DateTime>("startDate");
 
-            Assert.That(value, Is.EqualTo(new DateTime(2012, 5, 4)));
-        }
+        Assert.That(value, Is.EqualTo(new DateTime(2012, 5, 4)));
+    }
 
-        [Test]
-        public void get_from_statebag()
-        {
-            var collection = new StateBag { { "appId", "123" } };
+    [Test]
+    public void get_from_statebag()
+    {
+        var collection = new StateBag { { "appId", "123" } };
 
-            var value = collection.GetValueOrDefault<string>("appId");
+        var value = collection.GetValueOrDefault<string>("appId");
 
-            Assert.That(value, Is.EqualTo("123"));
-        }
+        Assert.That(value, Is.EqualTo("123"));
+    }
 
-        [Test]
-        public void get_from_xnode()
-        {
-            var node = new XElement(
-                "parent",
-                new XElement("id", 14));
+    [Test]
+    public void get_from_xnode()
+    {
+        var node = new XElement(
+            "parent",
+            new XElement("id", 14));
 
-            var value = node.GetValueOrDefault<int>("id");
+        var value = node.GetValueOrDefault<int>("id");
 
-            Assert.That(value, Is.EqualTo(14));
-        }
+        Assert.That(value, Is.EqualTo(14));
+    }
 
-        [Test]
-        public void get_from_xmlnode()
-        {
-            var doc = new XmlDocument { XmlResolver = null };
-            doc.LoadXml(@"
+    [Test]
+    public void get_from_xmlnode()
+    {
+        var doc = new XmlDocument { XmlResolver = null };
+        doc.LoadXml(@"
 <parent>
     <id>13</id>
 </parent>");
 
-            var value = doc.DocumentElement.GetValueOrDefault<int>("id");
+        var value = doc.DocumentElement.GetValueOrDefault<int>("id");
 
-            Assert.That(value, Is.EqualTo(13));
-        }
+        Assert.That(value, Is.EqualTo(13));
+    }
 
-        [Test]
-        public void can_get_timespan_with_custom_converter()
-        {
-            var collection = new Hashtable { { "length", "1:10:10" } };
+    [Test]
+    public void can_get_timespan_with_custom_converter()
+    {
+        var collection = new Hashtable { { "length", "1:10:10" } };
 
-            var value = collection.GetValueOrDefault("length", TimeSpan.Parse);
+        var value = collection.GetValueOrDefault("length", TimeSpan.Parse);
 
-            Assert.That(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
-        }
+        Assert.That(value, Is.EqualTo(TimeSpan.FromSeconds(4210)));
+    }
 
-        [Test]
-        public void can_get_empty_boolean_from_form()
-        {
-            var collection = new NameValueCollection { { "text", "blah" } };
+    [Test]
+    public void can_get_empty_boolean_from_form()
+    {
+        var collection = new NameValueCollection { { "text", "blah" } };
 
-            var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+        var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
-            Assert.That(value, Is.False);
-        }
+        Assert.That(value, Is.False);
+    }
 
-        [Test]
-        public void can_get_boolean_from_form()
-        {
-            var collection = new NameValueCollection { { "radio", "on" } };
+    [Test]
+    public void can_get_boolean_from_form()
+    {
+        var collection = new NameValueCollection { { "radio", "on" } };
 
-            var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
+        var value = collection.GetValueOrDefault("radio", CollectionExtensions.GetFlexibleBooleanParsingFunction());
 
-            Assert.That(value, Is.True);
-        }
+        Assert.That(value, Is.True);
+    }
 
-        [Test]
-        public void flexible_boolean_parsing_is_case_insensitive()
-        {
-            var collection = new NameValueCollection { { "question", "YES" } };
+    [Test]
+    public void flexible_boolean_parsing_is_case_insensitive()
+    {
+        var collection = new NameValueCollection { { "question", "YES" } };
 
-            var value = collection.GetValueOrDefault("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
+        var value = collection.GetValueOrDefault("question", CollectionExtensions.GetFlexibleBooleanParsingFunction("yes"));
 
-            Assert.That(value, Is.True);
-        }
+        Assert.That(value, Is.True);
+    }
 
-        [Test]
-        public void can_convert_namevaluecollection_to_lookup()
-        {
-            var collection = new NameValueCollection { { "question", "YES" } };
+    [Test]
+    public void can_convert_namevaluecollection_to_lookup()
+    {
+        var collection = new NameValueCollection { { "question", "YES" } };
 
-            var lookup = collection.ToLookup();
+        var lookup = collection.ToLookup();
 
-            Assert.That(lookup["question"], Is.EquivalentTo(new[] { "YES" }));
-        }
+        Assert.That(lookup["question"], Is.EquivalentTo(new[] { "YES" }));
+    }
 
-        [Test]
-        public void can_convert_namevaluecollection_with_multiple_values_to_lookup()
-        {
-            var collection = new NameValueCollection { { "question", "A" }, { "question", "B" }, { "question", "C" }, };
+    [Test]
+    public void can_convert_namevaluecollection_with_multiple_values_to_lookup()
+    {
+        var collection = new NameValueCollection { { "question", "A" }, { "question", "B" }, { "question", "C" }, };
 
-            var lookup = collection.ToLookup();
+        var lookup = collection.ToLookup();
 
-            Assert.That(lookup["question"], Is.EquivalentTo(new[] { "A", "B", "C", }));
-        }
+        Assert.That(lookup["question"], Is.EquivalentTo(new[] { "A", "B", "C", }));
+    }
 
-        [Test]
-        public void can_get_null_value_rather_than_default()
-        {
-            var dictionary = new Hashtable { { "question", null } };
+    [Test]
+    public void can_get_null_value_rather_than_default()
+    {
+        var dictionary = new Hashtable { { "question", null } };
 
-            var value = dictionary.GetValueOrDefault("question", "yes");
+        var value = dictionary.GetValueOrDefault("question", "yes");
 
-            Assert.That(value, Is.Null);
-        }
+        Assert.That(value, Is.Null);
+    }
 
-        [Test]
-        public void can_get_empty_string_rather_than_default()
-        {
-            var dictionary = new Hashtable { { "question", string.Empty } };
+    [Test]
+    public void can_get_empty_string_rather_than_default()
+    {
+        var dictionary = new Hashtable { { "question", string.Empty } };
 
-            var value = dictionary.GetValueOrDefault("question", "yes");
+        var value = dictionary.GetValueOrDefault("question", "yes");
 
-            Assert.That(value, Is.Empty);
-        }
+        Assert.That(value, Is.Empty);
+    }
 
-        [Test]
-        public void can_get_value_without_default()
-        {
-            var dictionary = new Hashtable { { "question", "what is it" } };
+    [Test]
+    public void can_get_value_without_default()
+    {
+        var dictionary = new Hashtable { { "question", "what is it" } };
 
-            var value = dictionary.GetValue<string>("question");
+        var value = dictionary.GetValue<string>("question");
 
-            Assert.That(value, Is.EqualTo("what is it"));
-        }
+        Assert.That(value, Is.EqualTo("what is it"));
+    }
 
-        [Test]
-        public void can_get_value_without_default_with_custom_converter()
-        {
-            var dictionary = new Hashtable { { "question", "what is it" } };
+    [Test]
+    public void can_get_value_without_default_with_custom_converter()
+    {
+        var dictionary = new Hashtable { { "question", "what is it" } };
 
-            var value = dictionary.GetValue("question", (object v) => v is string ? 10 : 20);
+        var value = dictionary.GetValue("question", (object v) => v is string ? 10 : 20);
 
-            Assert.That(value, Is.EqualTo(10));
-        }
+        Assert.That(value, Is.EqualTo(10));
+    }
 
-        [Test]
-        public void can_get_value_without_default_from_namevaluecollection()
-        {
-            var collection = new NameValueCollection { { "question", "what is it" } };
+    [Test]
+    public void can_get_value_without_default_from_namevaluecollection()
+    {
+        var collection = new NameValueCollection { { "question", "what is it" } };
 
-            var value = collection.GetValue<string>("question");
+        var value = collection.GetValue<string>("question");
 
-            Assert.That(value, Is.EqualTo("what is it"));
-        }
+        Assert.That(value, Is.EqualTo("what is it"));
+    }
 
-        [Test]
-        public void can_get_value_containing_comma_from_namevaluecollection()
-        {
-            var collection = new NameValueCollection { { "question", "what, is it?" } };
+    [Test]
+    public void can_get_value_containing_comma_from_namevaluecollection()
+    {
+        var collection = new NameValueCollection { { "question", "what, is it?" } };
 
-            var value = collection.GetValue<string>("question");
+        var value = collection.GetValue<string>("question");
 
-            Assert.That(value, Is.EqualTo("what, is it?"));
-        }
+        Assert.That(value, Is.EqualTo("what, is it?"));
+    }
 
-        [Test]
-        public void can_get_multiple_values_from_namevaluecollection()
-        {
-            var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" }, };
+    [Test]
+    public void can_get_multiple_values_from_namevaluecollection()
+    {
+        var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" }, };
 
-            var value = collection.GetValues<string>("state");
+        var value = collection.GetValues<string>("state");
 
-            Assert.That(value, Is.EquivalentTo(new[] { "CA", "BC", }));
-        }
+        Assert.That(value, Is.EquivalentTo(new[] { "CA", "BC", }));
+    }
 
-        [Test]
-        public void can_get_sequence_with_single_value_from_namevaluecollection()
-        {
-            var collection = new NameValueCollection { { "state", "CA" } };
+    [Test]
+    public void can_get_sequence_with_single_value_from_namevaluecollection()
+    {
+        var collection = new NameValueCollection { { "state", "CA" } };
 
-            var value = collection.GetValues<string>("state");
+        var value = collection.GetValues<string>("state");
 
-            Assert.That(value, Is.EquivalentTo(new[] { "CA" }));
-        }
+        Assert.That(value, Is.EquivalentTo(new[] { "CA" }));
+    }
 
-        [Test]
-        public void can_get_sequence_with_no_value_from_namevaluecollection()
-        {
-            var collection = new NameValueCollection { { "state", "CA" } };
+    [Test]
+    public void can_get_sequence_with_no_value_from_namevaluecollection()
+    {
+        var collection = new NameValueCollection { { "state", "CA" } };
 
-            var value = collection.GetValues<string>("cat");
+        var value = collection.GetValues<string>("cat");
 
-            Assert.That(value, Is.Empty);
-        }
+        Assert.That(value, Is.Empty);
+    }
 
-        [Test]
-        public void can_get_multiple_values_from_namevaluecollection_with_custom_converter()
-        {
-            var collection = new NameValueCollection { { "state", "12" }, { "state", "1" } };
+    [Test]
+    public void can_get_multiple_values_from_namevaluecollection_with_custom_converter()
+    {
+        var collection = new NameValueCollection { { "state", "12" }, { "state", "1" } };
 
-            var value = collection.GetValues("state", v => int.Parse(v, CultureInfo.InvariantCulture) + 10);
+        var value = collection.GetValues("state", v => int.Parse(v, CultureInfo.InvariantCulture) + 10);
 
-            Assert.That(value, Is.EquivalentTo(new[] { 22, 11 }));
-        }
+        Assert.That(value, Is.EquivalentTo(new[] { 22, 11 }));
+    }
 
-        [Test]
-        public void can_get_value_without_default_from_statebag()
-        {
-            var dictionary = new StateBag { { "question", "what is it" } };
+    [Test]
+    public void can_get_value_without_default_from_statebag()
+    {
+        var dictionary = new StateBag { { "question", "what is it" } };
 
-            var value = dictionary.GetValue<string>("question");
+        var value = dictionary.GetValue<string>("question");
 
-            Assert.That(value, Is.EqualTo("what is it"));
-        }
+        Assert.That(value, Is.EqualTo("what is it"));
+    }
 
-        [Test]
-        public void can_get_value_without_default_from_xnode()
-        {
-            var node = new XElement(
-                "parent",
-                new XElement("id", 21));
+    [Test]
+    public void can_get_value_without_default_from_xnode()
+    {
+        var node = new XElement(
+            "parent",
+            new XElement("id", 21));
 
-            var value = node.GetValue<int>("id");
+        var value = node.GetValue<int>("id");
 
-            Assert.That(value, Is.EqualTo(21));
-        }
+        Assert.That(value, Is.EqualTo(21));
+    }
 
-        [Test]
-        public void can_get_value_without_default_from_xmlnode()
-        {
-            var doc = new XmlDocument { XmlResolver = null };
-            doc.LoadXml(@"
+    [Test]
+    public void can_get_value_without_default_from_xmlnode()
+    {
+        var doc = new XmlDocument { XmlResolver = null };
+        doc.LoadXml(@"
 <parent>
     <id>123</id>
 </parent>");
 
-            var value = doc.DocumentElement.GetValue<int>("id");
+        var value = doc.DocumentElement.GetValue<int>("id");
 
-            Assert.That(value, Is.EqualTo(123));
-        }
+        Assert.That(value, Is.EqualTo(123));
+    }
 
-        [Test]
-        public void getvalue_throws_argumentexception_when_value_is_not_present()
-        {
-            var dictionary = new Hashtable { { "question", "what is it" } };
+    [Test]
+    public void getvalue_throws_argumentexception_when_value_is_not_present()
+    {
+        var dictionary = new Hashtable { { "question", "what is it" } };
 
-            Assert.That(() => dictionary.GetValue<string>("answer"), Throws.ArgumentException.With.Property("ParamName").EqualTo("key"));
-        }
+        Assert.That(() => dictionary.GetValue<string>("answer"), Throws.ArgumentException.With.Property("ParamName").EqualTo("key"));
+    }
 
-        [Test]
-        public void throws_invalidoperationexception_when_lookup_has_multiple_values()
-        {
-            var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
+    [Test]
+    public void throws_invalidoperationexception_when_lookup_has_multiple_values()
+    {
+        var collection = new NameValueCollection { { "state", "CA" }, { "state", "BC" } };
 
-            Assert.That(() => collection.GetValueOrDefault<string>("state"), Throws.InvalidOperationException);
-        }
+        Assert.That(() => collection.GetValueOrDefault<string>("state"), Throws.InvalidOperationException);
+    }
 
-        [Test]
-        public void throws_argumentnullexception_when_dictionary_is_null()
-        {
-            IDictionary dictionary = null;
+    [Test]
+    public void throws_argumentnullexception_when_dictionary_is_null()
+    {
+        IDictionary dictionary = null;
 
-            Assert.That(() => dictionary.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
-        }
+        Assert.That(() => dictionary.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("dictionary"));
+    }
 
-        [Test]
-        public void throws_argumentnullexception_when_xelement_is_null()
-        {
-            XElement node = null;
+    [Test]
+    public void throws_argumentnullexception_when_xelement_is_null()
+    {
+        XElement node = null;
 
-            Assert.That(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
-        }
+        Assert.That(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+    }
 
-        [Test]
-        public void throws_argumentnullexception_when_xmlnode_is_null()
-        {
-            XmlNode node = null;
+    [Test]
+    public void throws_argumentnullexception_when_xmlnode_is_null()
+    {
+        XmlNode node = null;
 
-            Assert.That(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
-        }
+        Assert.That(() => node.GetValueOrDefault<int>("value ID"), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("node"));
+    }
 
-        [Test]
-        public void does_not_throw_invalidcastexception_when_value_is_null_for_reference_type()
-        {
-            var dictionary = new Dictionary<string, string> { { "length", null } };
+    [Test]
+    public void does_not_throw_invalidcastexception_when_value_is_null_for_reference_type()
+    {
+        var dictionary = new Dictionary<string, string> { { "length", null } };
 
-            var value = dictionary.GetValueOrDefault<ApplicationException>("length");
+        var value = dictionary.GetValueOrDefault<ApplicationException>("length");
 
-            Assert.That(value, Is.Null);
-        }
+        Assert.That(value, Is.Null);
+    }
 
-        [Test]
-        public void tolookup_throws_argumentnullexception_when_namevaluecollection_is_null()
-        {
-            NameValueCollection col = null;
+    [Test]
+    public void tolookup_throws_argumentnullexception_when_namevaluecollection_is_null()
+    {
+        NameValueCollection col = null;
 
-            Assert.That(() => col.ToLookup(), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("collection"));
-        }
+        Assert.That(() => col.ToLookup(), Throws.TypeOf<ArgumentNullException>().With.Property("ParamName").EqualTo("collection"));
     }
 }

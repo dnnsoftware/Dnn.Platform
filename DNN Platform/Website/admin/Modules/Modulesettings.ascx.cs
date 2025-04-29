@@ -448,6 +448,23 @@ namespace DotNetNuke.Modules.Admin.Modules
                     }
 
                     this.Module.IsDeleted = false;
+
+                    // If JavaScript is not allowed in module header but changes contain JavaScript, avoid saving the changes
+                    if (!this.PortalSettings.AllowJsInModuleHeaders && HtmlUtils.ContainsJavaScript(this.txtHeader.Text))
+                    {
+                        string message = Localization.GetString("JavaScriptInHeader", this.LocalResourceFile);
+                        Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                        return;
+                    }
+
+                    // If JavaScript is not allowed in module footer but changes contain JavaScript, avoid saving the changes
+                    if (!this.PortalSettings.AllowJsInModuleFooters && HtmlUtils.ContainsJavaScript(this.txtFooter.Text))
+                    {
+                        string message = Localization.GetString("JavaScriptInFooter", this.LocalResourceFile);
+                        Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.RedError);
+                        return;
+                    }
+
                     this.Module.Header = this.txtHeader.Text;
                     this.Module.Footer = this.txtFooter.Text;
 
@@ -651,7 +668,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.cboAlign.Items.FindByValue(this.Module.Alignment).Selected = true;
                 this.txtColor.Text = this.Module.Color;
                 this.txtBorder.Text = this.Module.Border;
-
                 this.txtHeader.Text = this.Module.Header;
                 this.txtFooter.Text = this.Module.Footer;
 

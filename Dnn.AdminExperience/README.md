@@ -1,28 +1,25 @@
-[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.AdminExperience%20%5BCI%5D)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=38) 
+[![Build status](https://dev.azure.com/dotnet/DNN/_apis/build/status/Dnn.AdminExperience%20%5BCI%5D)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=38)
 
 # Dnn.AdminExperience
 
-The Persona Bar Library, Extensions and EditBar for Dnn (DotNetNuke) is the core of the admin experience in Dnn. 
-
+The Persona Bar Library, Extensions and EditBar for Dnn (DotNetNuke) is the core of the admin experience in Dnn.
 
 ## Quick Links
 
-* [Contribute](CONTRIBUTING.md)
-* [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
-* [Versioning Policy](.github/VERSIONING_POLICY.md)
+- [Contribute](CONTRIBUTING.md)
+- [Pull Request Procedures](.github/PULL_REQUEST_PROCESS.md)
+- [Versioning Policy](.github/VERSIONING_POLICY.md)
 
-* [DNN Digest](http://www.dnnsoftware.com/community/participate/subscribe-to-dnn-digest)
-* [Questions & Answers](http://answers.dnnsoftware.com/)
-* [Showcase](http://www.dnnsoftware.com/community/participate/community-showcase)
-* [Discussion Forums](http://forums.dnnsoftware.com/)
-* [Video Library](http://www.dnnsoftware.com/videos)
-* [News](http://www.dnnsoftware.com/About/In-The-News/Press-Releases)
-* [Community Blogs](http://www.dnnsoftware.com/community-blog)
-* [DNN on Facebook](http://www.facebook.com/DNNsoftware)
-* [DNN on Twitter](http://www.Twitter.com/DNN)
-* [DNN Store](http://store.dnnsoftware.com/)
-
-
+- [DNN Digest](http://www.dnnsoftware.com/community/participate/subscribe-to-dnn-digest)
+- [Questions & Answers](http://answers.dnnsoftware.com/)
+- [Showcase](http://www.dnnsoftware.com/community/participate/community-showcase)
+- [Discussion Forums](http://forums.dnnsoftware.com/)
+- [Video Library](http://www.dnnsoftware.com/videos)
+- [News](http://www.dnnsoftware.com/About/In-The-News/Press-Releases)
+- [Community Blogs](http://www.dnnsoftware.com/community-blog)
+- [DNN on Facebook](http://www.facebook.com/DNNsoftware)
+- [DNN on Twitter](http://www.Twitter.com/DNN)
+- [DNN Store](http://store.dnnsoftware.com/)
 
 ## How to Contribute
 

@@ -17,9 +17,7 @@
  *   {NAME} = sanitized version of the DesktopModule Name 
  *   Used on <div> tag surrounding Module Content, inside container
  *----------------------------------------------+--------+--------+
- */  
-
-
+ */
 
 /* PAGE BACKGROUND */
 /* background color for the header at the top of the page  */
@@ -27,8 +25,7 @@
 }
 
 /* background color for the content part of the pages */
-Body
-{
+Body {
 }
 
 .ControlPanel {
@@ -38,13 +35,13 @@ Body
 .TabBg {
 }
 
-.LeftPane  { 
+.LeftPane {
 }
 
-.ContentPane  { 
+.ContentPane {
 }
 
-.RightPane  { 
+.RightPane {
 }
 
 /* text style for the selected tab */
@@ -55,39 +52,39 @@ Body
 A.SelectedTab:link {
 }
 
-A.SelectedTab:visited  {
+A.SelectedTab:visited {
 }
 
-A.SelectedTab:hover    {
+A.SelectedTab:hover {
 }
 
-A.SelectedTab:active   {
+A.SelectedTab:active {
 }
 
 /* text style for the unselected tabs */
 .OtherTabs {
 }
-    
+
 /* hyperlink style for the unselected tabs */
 A.OtherTabs:link {
 }
 
-A.OtherTabs:visited  {
+A.OtherTabs:visited {
 }
 
-A.OtherTabs:hover    {
+A.OtherTabs:hover {
 }
 
-A.OtherTabs:active   {
+A.OtherTabs:active {
 }
 
 /* GENERAL */
 /* style for module titles */
-.Head   {
+.Head {
 }
 
 /* style of item titles on edit and admin pages */
-.SubHead    {
+.SubHead {
 }
 
 /* module title style used instead of Head for compact rendering by QuickLinks and Signin modules */
@@ -95,121 +92,119 @@ A.OtherTabs:active   {
 }
 
 /* text style used for most text rendered by modules */
-.Normal
-{
+.Normal {
 }
 
 /* text style used for textboxes in the admin and edit pages, for Nav compatibility */
-.NormalTextBox
-{
+.NormalTextBox {
 }
 
-.NormalRed
-{
+.NormalRed {
 }
 
-.NormalBold
-{
+.NormalBold {
 }
 
 /* text style for buttons and link buttons used in the portal admin pages */
-.CommandButton     {
+.CommandButton {
 }
-    
+
 /* hyperlink style for buttons and link buttons used in the portal admin pages */
 A.CommandButton:link {
 }
 
-A.CommandButton:visited  {
+A.CommandButton:visited {
 }
 
-A.CommandButton:hover    {
+A.CommandButton:hover {
 }
-    
-A.CommandButton:active   {
+
+A.CommandButton:active {
 }
 
 /* button style for standard HTML buttons */
-.StandardButton     {
+.StandardButton {
 }
 
 /* GENERIC */
-H1  {
+H1 {
 }
 
-H2  {
+H2 {
 }
 
-H3  {
+H3 {
 }
 
-H4  {
+H4 {
 }
 
-H5, DT  {
+H5,
+DT {
 }
 
-H6  {
+H6 {
 }
 
-TFOOT, THEAD    {
+TFOOT,
+THEAD {
 }
 
-TH  {
+TH {
 }
 
-A:link  {
+A:link {
 }
 
-A:visited   {
+A:visited {
 }
 
 A:hover {
 }
 
-A:active    {
+A:active {
 }
 
-SMALL   {
+SMALL {
 }
 
 BIG {
 }
 
-BLOCKQUOTE, PRE {
+BLOCKQUOTE,
+PRE {
 }
 
-
-UL LI   {
+UL LI {
 }
 
-UL LI LI    {
+UL LI LI {
 }
 
 UL LI LI LI {
 }
 
-OL LI   {
+OL LI {
 }
 
-OL OL LI    {
+OL OL LI {
 }
 
 OL OL OL LI {
 }
-OL UL LI   {
+OL UL LI {
 }
 
 HR {
 }
 
 /* MODULE-SPECIFIC */
-/* text style for reading messages in Discussion */    
-.Message    {
-}   
+/* text style for reading messages in Discussion */
+.Message {
+}
 
 /* style of item titles by Announcements and events */
-.ItemTitle    {
+.ItemTitle {
 }
 
 /* Menu-Styles */
@@ -271,23 +266,23 @@ HR {
 }
 
 /* Login Styles */
-.LoginPanel{
+.LoginPanel {
 }
 
-.LoginTabGroup{
+.LoginTabGroup {
 }
 
 .LoginTab {
 }
 
-.LoginTabSelected{
+.LoginTabSelected {
 }
 
-.LoginTabHover{
+.LoginTabHover {
 }
 
-.LoginContainerGroup{
+.LoginContainerGroup {
 }
 
-.LoginContainer{
+.LoginContainer {
 }

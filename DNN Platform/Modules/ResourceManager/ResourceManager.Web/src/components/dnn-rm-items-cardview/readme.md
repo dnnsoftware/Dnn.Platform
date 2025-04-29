@@ -1,16 +1,12 @@
 # dnn-rm-items-cardview
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
 | Property                    | Attribute | Description                | Type                       | Default     |
 | --------------------------- | --------- | -------------------------- | -------------------------- | ----------- |
 | `currentItems` _(required)_ | --        | The list of current items. | `GetFolderContentResponse` | `undefined` |
-
 
 ## Events
 
@@ -19,12 +15,11 @@
 | `dnnRmFileDoubleClicked`   | Fires when a file is double-clicked and emits the file ID into the event.detail     | `CustomEvent<string>` |
 | `dnnRmFolderDoubleClicked` | Fires when a folder is double-clicked and emits the folder ID into the event.detail | `CustomEvent<number>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-files-pane](../dnn-rm-files-pane)
+- [dnn-rm-files-pane](../dnn-rm-files-pane)
 
 ### Depends on
 
@@ -33,6 +28,7 @@
 - [dnn-rm-file-context-menu](../context-menus/dnn-rm-file-context-menu)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-items-cardview --> dnn-collapsible
@@ -101,6 +97,6 @@ graph TD;
   style dnn-rm-items-cardview fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

@@ -25,84 +25,83 @@ using System.IO;
 using System.Collections;
 using System.Configuration;
 
-namespace log4net.Util.PatternStringConverters
+namespace log4net.Util.PatternStringConverters;
+
+/// <summary>
+/// AppSetting pattern converter
+/// </summary>
+/// <remarks>
+/// <para>
+/// This pattern converter reads appSettings from the application configuration file.
+/// </para>
+/// <para>
+/// If the <see cref="PatternConverter.Option"/> is specified then that will be used to
+/// lookup a single appSettings value. If no <see cref="PatternConverter.Option"/> is specified
+/// then all appSettings will be dumped as a list of key value pairs.
+/// </para>
+/// <para>
+/// A typical use is to specify a base directory for log files, e.g.
+/// <example>
+/// <![CDATA[
+/// <log4net>
+///    <appender name="MyAppender" type="log4net.Appender.RollingFileAppender">
+///      <file type="log4net.Util.PatternString" value="appsetting{LogDirectory}MyApp.log"/>
+///       ...
+///   </appender>
+/// </log4net>
+/// ]]>
+/// </example>
+/// </para>
+/// </remarks>
+internal sealed class AppSettingPatternConverter : PatternConverter
 {
+    private static IDictionary AppSettingsDictionary
+    {
+        get
+        {
+            if (_appSettingsHashTable == null)
+            {
+                Hashtable h = new Hashtable();
+                foreach(string key in ConfigurationManager.AppSettings)
+                {
+                    h.Add(key, ConfigurationManager.AppSettings[key]);
+                }
+                _appSettingsHashTable = h;
+            }
+            return _appSettingsHashTable;
+        }
+
+    }
+    private static Hashtable _appSettingsHashTable;
+
     /// <summary>
-    /// AppSetting pattern converter
+    /// Write the property value to the output
     /// </summary>
+    /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+    /// <param name="state">null, state is not set</param>
     /// <remarks>
     /// <para>
-    /// This pattern converter reads appSettings from the application configuration file.
+    /// Writes out the value of a named property. The property name
+    /// should be set in the <see cref="log4net.Util.PatternConverter.Option"/>
+    /// property.
     /// </para>
     /// <para>
-    /// If the <see cref="PatternConverter.Option"/> is specified then that will be used to
-    /// lookup a single appSettings value. If no <see cref="PatternConverter.Option"/> is specified
-    /// then all appSettings will be dumped as a list of key value pairs.
-    /// </para>
-    /// <para>
-    /// A typical use is to specify a base directory for log files, e.g.
-    /// <example>
-    /// <![CDATA[
-    /// <log4net>
-    ///    <appender name="MyAppender" type="log4net.Appender.RollingFileAppender">
-    ///      <file type="log4net.Util.PatternString" value="appsetting{LogDirectory}MyApp.log"/>
-    ///       ...
-    ///   </appender>
-    /// </log4net>
-    /// ]]>
-    /// </example>
+    /// If the <see cref="log4net.Util.PatternConverter.Option"/> is set to <c>null</c>
+    /// then all the properties are written as key value pairs.
     /// </para>
     /// </remarks>
-    internal sealed class AppSettingPatternConverter : PatternConverter
+    protected override void Convert(TextWriter writer, object state)
     {
-        private static IDictionary AppSettingsDictionary
-        {
-            get
-            {
-                if (_appSettingsHashTable == null)
-                {
-                    Hashtable h = new Hashtable();
-                    foreach(string key in ConfigurationManager.AppSettings)
-                    {
-                        h.Add(key, ConfigurationManager.AppSettings[key]);
-                    }
-                    _appSettingsHashTable = h;
-                }
-                return _appSettingsHashTable;
-            }
 
+        if (this.Option != null)
+        {
+            // Write the value for the specified key
+            WriteObject(writer, null, ConfigurationManager.AppSettings[this.Option]);
         }
-        private static Hashtable _appSettingsHashTable;
-
-        /// <summary>
-        /// Write the property value to the output
-        /// </summary>
-        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="state">null, state is not set</param>
-        /// <remarks>
-        /// <para>
-        /// Writes out the value of a named property. The property name
-        /// should be set in the <see cref="log4net.Util.PatternConverter.Option"/>
-        /// property.
-        /// </para>
-        /// <para>
-        /// If the <see cref="log4net.Util.PatternConverter.Option"/> is set to <c>null</c>
-        /// then all the properties are written as key value pairs.
-        /// </para>
-        /// </remarks>
-        protected override void Convert(TextWriter writer, object state)
+        else
         {
-
-            if (this.Option != null)
-            {
-                // Write the value for the specified key
-                WriteObject(writer, null, ConfigurationManager.AppSettings[this.Option]);
-            }
-            else
-            {
-                // Write all the key value pairs
-                WriteDictionary(writer, null, AppSettingsDictionary);
-            }
+            // Write all the key value pairs
+            WriteDictionary(writer, null, AppSettingsDictionary);
         }
     }
 }

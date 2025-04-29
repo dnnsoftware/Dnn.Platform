@@ -1,148 +1,147 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.UI.WebControls.Internal
+namespace DotNetNuke.Web.UI.WebControls.Internal;
+
+using System;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Common;
+using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Web.UI.WebControls.Extensions;
+
+/// <remarks>
+/// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
+/// </remarks>
+public class DnnCheckBoxList : CheckBoxList
 {
-    using System;
-    using System.Web.UI.WebControls;
+    private string initValue;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.UI.WebControls.Extensions;
-
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
-    public class DnnCheckBoxList : CheckBoxList
+    /// <inheritdoc/>
+    public override string SelectedValue
     {
-        private string initValue;
-
-        /// <inheritdoc/>
-        public override string SelectedValue
+        get
         {
-            get
-            {
-                return base.SelectedValue;
-            }
-
-            set
-            {
-                if (this.RequiresDataBinding)
-                {
-                    this.initValue = value;
-                }
-                else
-                {
-                    base.SelectedValue = value;
-                }
-            }
+            return base.SelectedValue;
         }
 
-        /// <inheritdoc/>
-        public override void DataBind()
+        set
         {
-            if (!string.IsNullOrEmpty(this.initValue))
+            if (this.RequiresDataBinding)
             {
-                this.DataBind(this.initValue);
+                this.initValue = value;
             }
             else
             {
-                base.DataBind();
+                base.SelectedValue = value;
             }
         }
+    }
 
-        public void AddItem(string text, string value)
+    /// <inheritdoc/>
+    public override void DataBind()
+    {
+        if (!string.IsNullOrEmpty(this.initValue))
         {
-            this.Items.Add(new ListItem(text, value));
+            this.DataBind(this.initValue);
         }
-
-        public void InsertItem(int index, string text, string value)
-        {
-            this.Items.Insert(index, new ListItem(text, value));
-        }
-
-        public void DataBind(string initialValue)
-        {
-            this.DataBind(initialValue, false);
-        }
-
-        public void DataBind(string initial, bool findByText)
+        else
         {
             base.DataBind();
-
-            this.Select(initial, findByText);
         }
+    }
 
-        public void Select(string initial, bool findByText)
+    public void AddItem(string text, string value)
+    {
+        this.Items.Add(new ListItem(text, value));
+    }
+
+    public void InsertItem(int index, string text, string value)
+    {
+        this.Items.Insert(index, new ListItem(text, value));
+    }
+
+    public void DataBind(string initialValue)
+    {
+        this.DataBind(initialValue, false);
+    }
+
+    public void DataBind(string initial, bool findByText)
+    {
+        base.DataBind();
+
+        this.Select(initial, findByText);
+    }
+
+    public void Select(string initial, bool findByText)
+    {
+        if (findByText)
         {
-            if (findByText)
+            if (this.FindItemByText(initial, true) != null)
             {
-                if (this.FindItemByText(initial, true) != null)
-                {
-                    this.FindItemByText(initial, true).Selected = true;
-                }
+                this.FindItemByText(initial, true).Selected = true;
             }
-            else
+        }
+        else
+        {
+            if (this.FindItemByValue(initial, true) != null)
             {
-                if (this.FindItemByValue(initial, true) != null)
-                {
-                    this.FindItemByValue(initial, true).Selected = true;
-                }
+                this.FindItemByValue(initial, true).Selected = true;
             }
         }
+    }
 
-        public ListItem FindItemByText(string text, bool ignoreCase = false)
+    public ListItem FindItemByText(string text, bool ignoreCase = false)
+    {
+        return ignoreCase ? this.Items.FindByText(text) : this.Items.FindByTextWithIgnoreCase(text);
+    }
+
+    public ListItem FindItemByValue(string value, bool ignoreCase = false)
+    {
+        return ignoreCase ? this.Items.FindByValue(value) : this.Items.FindByValueWithIgnoreCase(value);
+    }
+
+    public int FindItemIndexByValue(string value)
+    {
+        return this.Items.IndexOf(this.FindItemByValue(value));
+    }
+
+    /// <inheritdoc/>
+    protected override void OnInit(EventArgs e)
+    {
+        this.RepeatColumns = 1;
+        base.OnInit(e);
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPreRender(EventArgs e)
+    {
+        Utilities.ApplySkin(this);
+        this.RegisterRequestResources();
+
+        base.OnPreRender(e);
+    }
+
+    private void RegisterRequestResources()
+    {
+        JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
+        if (Globals.Status == Globals.UpgradeStatus.None)
         {
-            return ignoreCase ? this.Items.FindByText(text) : this.Items.FindByTextWithIgnoreCase(text);
-        }
-
-        public ListItem FindItemByValue(string value, bool ignoreCase = false)
-        {
-            return ignoreCase ? this.Items.FindByValue(value) : this.Items.FindByValueWithIgnoreCase(value);
-        }
-
-        public int FindItemIndexByValue(string value)
-        {
-            return this.Items.IndexOf(this.FindItemByValue(value));
-        }
-
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
-        {
-            this.RepeatColumns = 1;
-            base.OnInit(e);
-        }
-
-        /// <inheritdoc/>
-        protected override void OnPreRender(EventArgs e)
-        {
-            Utilities.ApplySkin(this);
-            this.RegisterRequestResources();
-
-            base.OnPreRender(e);
-        }
-
-        private void RegisterRequestResources()
-        {
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-            if (Globals.Status == Globals.UpgradeStatus.None)
+            var package = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == "Selectize");
+            if (package != null)
             {
-                var package = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == "Selectize");
-                if (package != null)
-                {
-                    JavaScript.RequestRegistration("Selectize");
+                JavaScript.RequestRegistration("Selectize");
 
-                    var libraryPath =
-                        $"~/Resources/Libraries/{package.LibraryName}/{Globals.FormatVersion(package.Version, "00", 3, "_")}/";
-                    ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.css");
-                    ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.default.css");
+                var libraryPath =
+                    $"~/Resources/Libraries/{package.LibraryName}/{Globals.FormatVersion(package.Version, "00", 3, "_")}/";
+                ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, $"{libraryPath}selectize.default.css");
 
-                    var initScripts = $"$('#{this.ClientID}').selectize({{}});";
+                var initScripts = $"$('#{this.ClientID}').selectize({{}});";
 
-                    this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), $"{this.ClientID}Sctipts", initScripts, true);
-                }
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), $"{this.ClientID}Sctipts", initScripts, true);
             }
         }
     }

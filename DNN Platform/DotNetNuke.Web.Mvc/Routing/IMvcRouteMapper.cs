@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Routing
+namespace DotNetNuke.Web.Mvc.Routing;
+
+public interface IMvcRouteMapper
 {
-    public interface IMvcRouteMapper
-    {
-        void RegisterRoutes(IMapRoute mapRouteManager);
-    }
+    void RegisterRoutes(IMapRoute mapRouteManager);
 }

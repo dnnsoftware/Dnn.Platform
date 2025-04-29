@@ -3,47 +3,48 @@
   align-items: center;
   box-shadow: 0px 4px 8px -4px black;
 }
-button{
-  padding:0;
-  margin:0;
+button {
+  padding: 0;
+  margin: 0;
   background-color: transparent;
   display: flex;
   align-items: center;
-  border:0;
-  padding:0;
-  margin:0;
+  border: 0;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
-  svg{
+  svg {
     fill: var(--dnn-color-primary);
   }
 }
-.right-controls{
+.right-controls {
   display: flex;
   margin: 0 1em;
   gap: 1em;
-  .sort,.sync{
+  .sort,
+  .sync {
     position: relative;
-    dnn-collapsible{
+    dnn-collapsible {
       position: absolute;
       top: 100%;
       right: 0;
-      background-color: white;;
-      &[expanded]{
+      background-color: white;
+      &[expanded] {
         border: 1px solid lightgray;
         box-shadow: 2px 2px 4px -2px;
       }
-      .dropdown{
+      .dropdown {
         display: flex;
         flex-direction: column;
-        background-color: white;;
-        button{
-          background-color:transparent;
+        background-color: white;
+        button {
+          background-color: transparent;
           border: none;
           padding: 0.5em 1em;
           margin: 0;
           border-bottom: 1px solid lightgray;
           white-space: nowrap;
-          svg{
+          svg {
             height: 1em;
             width: 1em;
             margin-right: 0.5em;
@@ -53,10 +54,10 @@ button{
     }
   }
 }
-dnn-vertical-overflow-menu{
+dnn-vertical-overflow-menu {
   flex-grow: 1;
-  margin-left:24px;
+  margin-left: 24px;
 }
-dnn-collapsible{
+dnn-collapsible {
   z-index: 1;
 }

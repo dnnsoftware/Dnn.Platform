@@ -1,40 +1,39 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Analytics.Config
+namespace DotNetNuke.Services.Analytics.Config;
+
+using System;
+
+[Serializable]
+public class AnalyticsSetting
 {
-    using System;
+    private string settingName;
+    private string settingValue;
 
-    [Serializable]
-    public class AnalyticsSetting
+    public string SettingName
     {
-        private string settingName;
-        private string settingValue;
-
-        public string SettingName
+        get
         {
-            get
-            {
-                return this.settingName;
-            }
-
-            set
-            {
-                this.settingName = value;
-            }
+            return this.settingName;
         }
 
-        public string SettingValue
+        set
         {
-            get
-            {
-                return this.settingValue;
-            }
+            this.settingName = value;
+        }
+    }
 
-            set
-            {
-                this.settingValue = value;
-            }
+    public string SettingValue
+    {
+        get
+        {
+            return this.settingValue;
+        }
+
+        set
+        {
+            this.settingValue = value;
         }
     }
 }

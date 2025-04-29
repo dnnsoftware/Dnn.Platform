@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+public interface IContextMenuItemExtensionPoint : IExtensionPoint
 {
-    public interface IContextMenuItemExtensionPoint : IExtensionPoint
-    {
-        string CtxMenuItemId { get; }
+    string CtxMenuItemId { get; }
 
-        string CssClass { get; }
+    string CssClass { get; }
 
-        string Action { get; }
+    string Action { get; }
 
-        string AltText { get; }
+    string AltText { get; }
 
-        bool ShowText { get; }
+    bool ShowText { get; }
 
-        bool ShowIcon { get; }
-    }
+    bool ShowIcon { get; }
 }

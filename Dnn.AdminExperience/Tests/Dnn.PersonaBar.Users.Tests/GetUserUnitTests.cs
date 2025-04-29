@@ -2,134 +2,133 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Users.Tests
+namespace Dnn.PersonaBar.Users.Tests;
+
+using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Users.Components;
+using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+using DotNetNuke.Entities.Users;
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+
+public class GetUserUnitTests : CommandTests<GetUser>
 {
-    using Dnn.PersonaBar.Library.Prompt.Models;
-    using Dnn.PersonaBar.Users.Components;
-    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-    using DotNetNuke.Entities.Users;
-    using Moq;
-    using NUnit.Framework;
+    private int _userId;
+    private UserInfo _userInfo;
 
-    [TestFixture]
+    private Mock<IUserValidator> _userValidatorMock;
+    private Mock<IUserControllerWrapper> _userControllerWrapperMock;
 
-    public class GetUserUnitTests : CommandTests<GetUser>
+    protected override string CommandName
     {
-        private int _userId;
-        private UserInfo _userInfo;
+        get { return "Get-User"; }
+    }
 
-        private Mock<IUserValidator> _userValidatorMock;
-        private Mock<IUserControllerWrapper> _userControllerWrapperMock;
+    [Test]
 
-        protected override string CommandName
-        {
-            get { return "Get-User"; }
-        }
+    public void Run_GetUserByEmailWithValidCommand_ShouldSuccessResponse()
+    {
+        // Arrange
+        var recCount = 0;
 
-        [Test]
+        this._userControllerWrapperMock
+            .Setup(c => c.GetUsersByEmail(
+                this.testPortalId,
+                It.IsAny<string>(),
+                It.IsAny<int>(),
+                It.IsAny<int>(),
+                ref recCount,
+                It.IsAny<bool>(),
+                It.IsAny<bool>()))
+            .Returns(this._userId);
 
-        public void Run_GetUserByEmailWithValidCommand_ShouldSuccessResponse()
-        {
-            // Arrange
-            var recCount = 0;
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+            .Returns(this.errorResultModel);
 
-            this._userControllerWrapperMock
-                .Setup(c => c.GetUsersByEmail(
-                    this.testPortalId,
-                    It.IsAny<string>(),
-                    It.IsAny<int>(),
-                    It.IsAny<int>(),
-                    ref recCount,
-                    It.IsAny<bool>(),
-                    It.IsAny<bool>()))
-                .Returns(this._userId);
+        // Act
+        var result = this.RunCommand("--email", "user1@g.com");
 
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
-                .Returns(this.errorResultModel);
+        // Assert
+        Assert.That(result.IsError, Is.False);
+    }
 
-            // Act
-            var result = this.RunCommand("--email", "user1@g.com");
+    [TestCase]
 
-            // Assert
-            Assert.That(result.IsError, Is.False);
-        }
+    public void Run_GetUserByUserNameWithValidCommand_ShouldSuccessResponse()
+    {
+        // Arrange
+        var recCount = 0;
 
-        [TestCase]
+        this._userControllerWrapperMock
+            .Setup(c => c.GetUsersByUserName(
+                this.testPortalId,
+                It.IsAny<string>(),
+                It.IsAny<int>(),
+                It.IsAny<int>(),
+                ref recCount,
+                It.IsAny<bool>(),
+                It.IsAny<bool>()))
+            .Returns(this._userId);
 
-        public void Run_GetUserByUserNameWithValidCommand_ShouldSuccessResponse()
-        {
-            // Arrange
-            var recCount = 0;
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+            .Returns(this.errorResultModel);
 
-            this._userControllerWrapperMock
-                .Setup(c => c.GetUsersByUserName(
-                    this.testPortalId,
-                    It.IsAny<string>(),
-                    It.IsAny<int>(),
-                    It.IsAny<int>(),
-                    ref recCount,
-                    It.IsAny<bool>(),
-                    It.IsAny<bool>()))
-                .Returns(this._userId);
+        // Act
+        var result = this.RunCommand("--username", "user1");
 
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
-                .Returns(this.errorResultModel);
+        // Assert
+        Assert.That(result.IsError, Is.False);
+    }
 
-            // Act
-            var result = this.RunCommand("--username", "user1");
+    [Test]
 
-            // Assert
-            Assert.That(result.IsError, Is.False);
-        }
+    public void Run_GetUserWithValidCommand_ShouldSuccessResponse()
+    {
+        // Arrange
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+            .Returns(this.errorResultModel);
 
-        [Test]
+        // Act
+        var result = this.RunCommand(this._userId.ToString());
 
-        public void Run_GetUserWithValidCommand_ShouldSuccessResponse()
-        {
-            // Arrange
-            this._userValidatorMock
-             .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
-             .Returns(this.errorResultModel);
+        // Assert
+        Assert.That(result.IsError, Is.False);
+    }
 
-            // Act
-            var result = this.RunCommand(this._userId.ToString());
+    [Test]
 
-            // Assert
-            Assert.That(result.IsError, Is.False);
-        }
+    public void Run_GetUserWithValidCommand_ShouldErrorResponse()
+    {
+        // Arrange
+        this.errorResultModel = new ConsoleErrorResultModel();
 
-        [Test]
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
+            .Returns(this.errorResultModel);
 
-        public void Run_GetUserWithValidCommand_ShouldErrorResponse()
-        {
-            // Arrange
-            this.errorResultModel = new ConsoleErrorResultModel();
+        // Act
+        var result = this.RunCommand(this._userId.ToString());
 
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
-                .Returns(this.errorResultModel);
+        // Assert
+        Assert.That(result.IsError, Is.True);
+    }
 
-            // Act
-            var result = this.RunCommand(this._userId.ToString());
+    protected override void ChildSetup()
+    {
+        this._userId = 3;
+        this._userInfo = this.GetUser(this._userId, false);
 
-            // Assert
-            Assert.That(result.IsError, Is.True);
-        }
+        this._userValidatorMock = new Mock<IUserValidator>();
+        this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+    }
 
-        protected override void ChildSetup()
-        {
-            this._userId = 3;
-            this._userInfo = this.GetUser(this._userId, false);
-
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
-        }
-
-        protected override GetUser CreateCommand()
-        {
-            return new GetUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
-        }
+    protected override GetUser CreateCommand()
+    {
+        return new GetUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
     }
 }

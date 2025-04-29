@@ -1,50 +1,49 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.ComponentModel
+namespace DotNetNuke.ComponentModel;
+
+using System;
+
+using DotNetNuke.Framework;
+
+internal class SingletonComponentBuilder : IComponentBuilder
 {
-    using System;
+    private readonly string name;
+    private readonly Type type;
+    private object instance;
 
-    using DotNetNuke.Framework;
-
-    internal class SingletonComponentBuilder : IComponentBuilder
+    /// <summary>Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.</summary>
+    /// <param name="name">The name of the component.</param>
+    /// <param name="type">The type of the component.</param>
+    public SingletonComponentBuilder(string name, Type type)
     {
-        private readonly string name;
-        private readonly Type type;
-        private object instance;
+        this.name = name;
+        this.type = type;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.</summary>
-        /// <param name="name">The name of the component.</param>
-        /// <param name="type">The type of the component.</param>
-        public SingletonComponentBuilder(string name, Type type)
+    /// <inheritdoc/>
+    public string Name
+    {
+        get
         {
-            this.name = name;
-            this.type = type;
+            return this.name;
+        }
+    }
+
+    /// <inheritdoc/>
+    public object BuildComponent()
+    {
+        if (this.instance == null)
+        {
+            this.CreateInstance();
         }
 
-        /// <inheritdoc/>
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
-        }
+        return this.instance;
+    }
 
-        /// <inheritdoc/>
-        public object BuildComponent()
-        {
-            if (this.instance == null)
-            {
-                this.CreateInstance();
-            }
-
-            return this.instance;
-        }
-
-        private void CreateInstance()
-        {
-            this.instance = Reflection.CreateObject(this.type);
-        }
+    private void CreateInstance()
+    {
+        this.instance = Reflection.CreateObject(this.type);
     }
 }

@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+public interface IMenuButtonItemExtensionPoint : IExtensionPoint
 {
-    public interface IMenuButtonItemExtensionPoint : IExtensionPoint
-    {
-        string ItemId { get; }
+    string ItemId { get; }
 
-        string Attributes { get; }
+    string Attributes { get; }
 
-        string Type { get; }
+    string Type { get; }
 
-        string CssClass { get; }
+    string CssClass { get; }
 
-        string Action { get; }
-    }
+    string Action { get; }
 }

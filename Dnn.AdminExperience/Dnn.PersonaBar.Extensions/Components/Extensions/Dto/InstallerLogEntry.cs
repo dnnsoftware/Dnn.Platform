@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Extensions.Components.Dto
+namespace Dnn.PersonaBar.Extensions.Components.Dto;
+
+using DotNetNuke.Services.Installer.Log;
+using Newtonsoft.Json;
+
+[JsonObject]
+public class InstallerLogEntry
 {
-    using DotNetNuke.Services.Installer.Log;
-    using Newtonsoft.Json;
+    public string Type { get; set; }
 
-    [JsonObject]
-    public class InstallerLogEntry
-    {
-        public string Type { get; set; }
-
-        public string Description { get; set; }
-    }
+    public string Description { get; set; }
 }

@@ -2,43 +2,42 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Library.Model
+namespace Dnn.PersonaBar.Library.Model;
+
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+[DataContract]
+[Serializable]
+public class PersonaBarMenu
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
+    private IList<MenuItem> allItems;
 
-    [DataContract]
-    [Serializable]
-    public class PersonaBarMenu
+    [IgnoreDataMember]
+    public IList<MenuItem> AllItems
     {
-        private IList<MenuItem> allItems;
-
-        [IgnoreDataMember]
-        public IList<MenuItem> AllItems
+        get
         {
-            get
+            if (this.allItems == null)
             {
-                if (this.allItems == null)
-                {
-                    this.allItems = new List<MenuItem>();
-                    this.FillAllItems(this.allItems, this.MenuItems);
-                }
-
-                return this.allItems;
+                this.allItems = new List<MenuItem>();
+                this.FillAllItems(this.allItems, this.MenuItems);
             }
+
+            return this.allItems;
         }
+    }
 
-        [DataMember]
-        public IList<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
+    [DataMember]
+    public IList<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
 
-        private void FillAllItems(IList<MenuItem> allItems, IList<MenuItem> menuItems)
+    private void FillAllItems(IList<MenuItem> allItems, IList<MenuItem> menuItems)
+    {
+        foreach (var menu in menuItems)
         {
-            foreach (var menu in menuItems)
-            {
-                allItems.Add(menu);
-                this.FillAllItems(allItems, menu.Children);
-            }
+            allItems.Add(menu);
+            this.FillAllItems(allItems, menu.Children);
         }
     }
 }

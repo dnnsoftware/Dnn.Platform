@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.ExportImport.Components.Interfaces
+namespace Dnn.ExportImport.Components.Interfaces;
+
+using System.Collections.Generic;
+
+using Dnn.ExportImport.Components.Entities;
+
+public interface ISettingsController
 {
-    using System.Collections.Generic;
+    IEnumerable<ExportImportSetting> GetAllSettings();
 
-    using Dnn.ExportImport.Components.Entities;
+    ExportImportSetting GetSetting(string settingName);
 
-    public interface ISettingsController
-    {
-        IEnumerable<ExportImportSetting> GetAllSettings();
-
-        ExportImportSetting GetSetting(string settingName);
-
-        void AddSetting(ExportImportSetting exportImportSetting);
-    }
+    void AddSetting(ExportImportSetting exportImportSetting);
 }

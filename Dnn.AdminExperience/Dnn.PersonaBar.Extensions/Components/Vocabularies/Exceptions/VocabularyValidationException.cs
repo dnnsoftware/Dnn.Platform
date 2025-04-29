@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Vocabularies.Exceptions
-{
-    using Dnn.PersonaBar.Vocabularies.Components;
+namespace Dnn.PersonaBar.Vocabularies.Exceptions;
 
-    public class VocabularyValidationException : VocabulariesException
+using Dnn.PersonaBar.Vocabularies.Components;
+
+public class VocabularyValidationException : VocabulariesException
+{
+    /// <summary>Initializes a new instance of the <see cref="VocabularyValidationException"/> class.</summary>
+    public VocabularyValidationException()
+        : base(Constants.VocabularyValidationError)
     {
-        /// <summary>Initializes a new instance of the <see cref="VocabularyValidationException"/> class.</summary>
-        public VocabularyValidationException()
-            : base(Constants.VocabularyValidationError)
-        {
-        }
     }
 }

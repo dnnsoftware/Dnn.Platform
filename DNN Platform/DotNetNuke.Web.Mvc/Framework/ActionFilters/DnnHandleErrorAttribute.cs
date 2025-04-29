@@ -2,32 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
+namespace DotNetNuke.Web.Mvc.Framework.ActionFilters;
+
+using System;
+using System.Web.Mvc;
+
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
+
+public class DnnHandleErrorAttribute : HandleErrorAttribute
 {
-    using System;
-    using System.Web.Mvc;
-
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Web.Mvc.Framework.Controllers;
-
-    public class DnnHandleErrorAttribute : HandleErrorAttribute
+    /// <inheritdoc/>
+    public override void OnException(ExceptionContext filterContext)
     {
-        /// <inheritdoc/>
-        public override void OnException(ExceptionContext filterContext)
+        var controller = filterContext.Controller as IDnnController;
+
+        if (controller == null)
         {
-            var controller = filterContext.Controller as IDnnController;
-
-            if (controller == null)
-            {
-                throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
-            }
-
-            this.LogException(filterContext.Exception);
+            throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
         }
 
-        protected virtual void LogException(Exception exception)
-        {
-            Exceptions.LogException(exception);
-        }
+        this.LogException(filterContext.Exception);
+    }
+
+    protected virtual void LogException(Exception exception)
+    {
+        Exceptions.LogException(exception);
     }
 }

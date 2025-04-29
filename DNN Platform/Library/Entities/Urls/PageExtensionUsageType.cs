@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Urls
+namespace DotNetNuke.Entities.Urls;
+
+public enum PageExtensionUsageType
 {
-    public enum PageExtensionUsageType
-    {
-        AlwaysUse = 0,
-        PageOnly = 1,
-        Never = 2,
-    }
+    AlwaysUse = 0,
+    PageOnly = 1,
+    Never = 2,
 }

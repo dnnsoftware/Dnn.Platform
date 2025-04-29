@@ -1,28 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Tokens
+namespace DotNetNuke.Services.Tokens;
+
+using System.Globalization;
+
+using DotNetNuke.Entities.Users;
+
+/// <summary>Returns an Empty String for all Properties.</summary>
+public class EmptyPropertyAccess : IPropertyAccess
 {
-    using System.Globalization;
-
-    using DotNetNuke.Entities.Users;
-
-    /// <summary>Returns an Empty String for all Properties.</summary>
-    public class EmptyPropertyAccess : IPropertyAccess
+    /// <inheritdoc/>
+    public CacheLevel Cacheability
     {
-        /// <inheritdoc/>
-        public CacheLevel Cacheability
+        get
         {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
+            return CacheLevel.notCacheable;
         }
+    }
 
-        /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
-        {
-            return string.Empty;
-        }
+    /// <inheritdoc/>
+    public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+    {
+        return string.Empty;
     }
 }

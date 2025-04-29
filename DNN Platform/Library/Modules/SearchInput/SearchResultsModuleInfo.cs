@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.SearchInput
-{
-    public class SearchResultsModuleInfo
-    {
-        public int TabID { get; set; }
+namespace DotNetNuke.Modules.SearchInput;
 
-        public string SearchTabName { get; set; }
-    }
+public class SearchResultsModuleInfo
+{
+    public int TabID { get; set; }
+
+    public string SearchTabName { get; set; }
 }

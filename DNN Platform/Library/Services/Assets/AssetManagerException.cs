@@ -2,17 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Assets
-{
-    using System;
+namespace DotNetNuke.Services.Assets;
 
-    public class AssetManagerException : Exception
+using System;
+
+public class AssetManagerException : Exception
+{
+    /// <summary>Initializes a new instance of the <see cref="AssetManagerException"/> class.</summary>
+    /// <param name="message"></param>
+    public AssetManagerException(string message)
+        : base(message)
     {
-        /// <summary>Initializes a new instance of the <see cref="AssetManagerException"/> class.</summary>
-        /// <param name="message"></param>
-        public AssetManagerException(string message)
-            : base(message)
-        {
-        }
     }
 }

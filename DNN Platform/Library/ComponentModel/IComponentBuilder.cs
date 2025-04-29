@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ComponentModel
-{
-    public interface IComponentBuilder
-    {
-        string Name { get; }
+namespace DotNetNuke.ComponentModel;
 
-        object BuildComponent();
-    }
+public interface IComponentBuilder
+{
+    string Name { get; }
+
+    object BuildComponent();
 }

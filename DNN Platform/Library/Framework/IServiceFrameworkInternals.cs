@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Framework
+namespace DotNetNuke.Framework;
+
+using System.Web.UI;
+
+internal interface IServiceFrameworkInternals
 {
-    using System.Web.UI;
+    bool IsAjaxAntiForgerySupportRequired { get; }
 
-    internal interface IServiceFrameworkInternals
-    {
-        bool IsAjaxAntiForgerySupportRequired { get; }
+    bool IsAjaxScriptSupportRequired { get; }
 
-        bool IsAjaxScriptSupportRequired { get; }
+    void RegisterAjaxAntiForgery(Page page);
 
-        void RegisterAjaxAntiForgery(Page page);
-
-        void RegisterAjaxScript(Page page);
-    }
+    void RegisterAjaxScript(Page page);
 }

@@ -1,98 +1,97 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.Modules
+namespace DotNetNuke.UI.Modules;
+
+using System;
+using System.Globalization;
+using System.Threading;
+
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using Microsoft.Extensions.DependencyInjection;
+
+public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
 {
-    using System;
-    using System.Globalization;
-    using System.Threading;
-
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Internal;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using Microsoft.Extensions.DependencyInjection;
-
-    public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
+    /// <summary>Initializes a new instance of the <see cref="ProfileModuleUserControlBase"/> class.</summary>
+    public ProfileModuleUserControlBase()
     {
-        /// <summary>Initializes a new instance of the <see cref="ProfileModuleUserControlBase"/> class.</summary>
-        public ProfileModuleUserControlBase()
-        {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
+        this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+    }
 
-        /// <inheritdoc/>
-        public abstract bool DisplayModule { get; }
+    /// <inheritdoc/>
+    public abstract bool DisplayModule { get; }
 
-        /// <inheritdoc/>
-        public int ProfileUserId
+    /// <inheritdoc/>
+    public int ProfileUserId
+    {
+        get
         {
-            get
+            if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
             {
-                if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
-                {
-                    return int.Parse(this.Request.Params["UserId"]);
-                }
+                return int.Parse(this.Request.Params["UserId"]);
+            }
 
-                return UserController.Instance.GetCurrentUserInfo().UserID;
+            return UserController.Instance.GetCurrentUserInfo().UserID;
+        }
+    }
+
+    protected INavigationManager NavigationManager { get; }
+
+    protected bool IsUser
+    {
+        get { return this.ProfileUserId == this.ModuleContext.PortalSettings.UserId; }
+    }
+
+    protected UserInfo ProfileUser
+    {
+        get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnInit(EventArgs e)
+    {
+        if (string.IsNullOrEmpty(this.Request.Params["UserId"]) &&
+            (this.ModuleContext.PortalSettings.ActiveTab.TabID == this.ModuleContext.PortalSettings.UserTabId
+             || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
+        {
+            try
+            {
+                // Clicked on breadcrumb - don't know which user
+                var url = this.Request.IsAuthenticated
+                    ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                    : this.GetRedirectUrl();
+                this.Response.Redirect(url, true);
+            }
+            catch (ThreadAbortException)
+            {
+                Thread.ResetAbort();
             }
         }
 
-        protected INavigationManager NavigationManager { get; }
+        base.OnInit(e);
+    }
 
-        protected bool IsUser
+    private string GetRedirectUrl()
+    {
+        // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
+        var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
+        string redirectUrl;
+
+        if (homeTabId > Null.NullInteger)
         {
-            get { return this.ProfileUserId == this.ModuleContext.PortalSettings.UserId; }
+            redirectUrl = TestableGlobals.Instance.NavigateURL(homeTabId);
+        }
+        else
+        {
+            redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
+                          "/" + Globals.glbDefaultPage;
         }
 
-        protected UserInfo ProfileUser
-        {
-            get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
-        }
-
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
-        {
-            if (string.IsNullOrEmpty(this.Request.Params["UserId"]) &&
-                            (this.ModuleContext.PortalSettings.ActiveTab.TabID == this.ModuleContext.PortalSettings.UserTabId
-                                || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
-            {
-                try
-                {
-                    // Clicked on breadcrumb - don't know which user
-                    this.Response.Redirect(
-                        this.Request.IsAuthenticated
-                                          ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
-                                          : this.GetRedirectUrl(), true);
-                }
-                catch (ThreadAbortException)
-                {
-                    Thread.ResetAbort();
-                }
-            }
-
-            base.OnInit(e);
-        }
-
-        private string GetRedirectUrl()
-        {
-            // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
-            var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
-            string redirectUrl;
-
-            if (homeTabId > Null.NullInteger)
-            {
-                redirectUrl = TestableGlobals.Instance.NavigateURL(homeTabId);
-            }
-            else
-            {
-                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
-                              "/" + Globals.glbDefaultPage;
-            }
-
-            return redirectUrl;
-        }
+        return redirectUrl;
     }
 }

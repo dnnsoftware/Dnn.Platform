@@ -2,60 +2,59 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvp
+namespace DotNetNuke.Web.Mvp;
+
+using System;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+[DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+public abstract partial class SettingsView<TModel> : SettingsViewBase, ISettingsView<TModel>
+    where TModel : SettingsModel, new()
 {
-    using System;
+    private TModel model;
 
-    using DotNetNuke.Internal.SourceGenerators;
-
-    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
-    public abstract partial class SettingsView<TModel> : SettingsViewBase, ISettingsView<TModel>
-        where TModel : SettingsModel, new()
+    /// <inheritdoc/>
+    public TModel Model
     {
-        private TModel model;
-
-        /// <inheritdoc/>
-        public TModel Model
+        get
         {
-            get
+            if (this.model == null)
             {
-                if (this.model == null)
-                {
-                    throw new InvalidOperationException(
-                        "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
-                }
-
-                return this.model;
+                throw new InvalidOperationException(
+                    "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
             }
 
-            set
-            {
-                this.model = value;
-            }
+            return this.model;
         }
 
-        protected string GetModuleSetting(string key, string defaultValue)
+        set
         {
-            var value = defaultValue;
+            this.model = value;
+        }
+    }
 
-            if (this.Model.ModuleSettings.ContainsKey(key))
-            {
-                value = this.Model.ModuleSettings[key];
-            }
+    protected string GetModuleSetting(string key, string defaultValue)
+    {
+        var value = defaultValue;
 
-            return value;
+        if (this.Model.ModuleSettings.ContainsKey(key))
+        {
+            value = this.Model.ModuleSettings[key];
         }
 
-        protected string GetTabModuleSetting(string key, string defaultValue)
+        return value;
+    }
+
+    protected string GetTabModuleSetting(string key, string defaultValue)
+    {
+        var value = defaultValue;
+
+        if (this.Model.TabModuleSettings.ContainsKey(key))
         {
-            var value = defaultValue;
-
-            if (this.Model.TabModuleSettings.ContainsKey(key))
-            {
-                value = this.Model.TabModuleSettings[key];
-            }
-
-            return value;
+            value = this.Model.TabModuleSettings[key];
         }
+
+        return value;
     }
 }

@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.InternalServices
-{
-    using DotNetNuke.Web.Api;
+namespace DotNetNuke.Web.InternalServices;
 
-    public class ServiceRouteMapper : IServiceRouteMapper
+using DotNetNuke.Web.Api;
+
+public class ServiceRouteMapper : IServiceRouteMapper
+{
+    /// <inheritdoc/>
+    public void RegisterRoutes(IMapRoute mapRouteManager)
     {
-        /// <inheritdoc/>
-        public void RegisterRoutes(IMapRoute mapRouteManager)
-        {
-            mapRouteManager.MapHttpRoute(
-                "InternalServices",
-                "default",
-                "{controller}/{action}",
-                new[] { "DotNetNuke.Web.InternalServices" });
-        }
+        mapRouteManager.MapHttpRoute(
+            "InternalServices",
+            "default",
+            "{controller}/{action}",
+            new[] { "DotNetNuke.Web.InternalServices" });
     }
 }

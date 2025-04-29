@@ -14,13 +14,15 @@ import utils from "../../utils";
 
 class SmtpServer extends Component {
   componentDidMount() {
-
     const loadSettings = () => {
       const { props } = this;
 
       const selectedSmtpSettings = this.getSelectedSmtpSettings();
-      
-      this.onChangeAuthProvider({value: selectedSmtpSettings.authProvider}, true);
+
+      this.onChangeAuthProvider(
+        { value: selectedSmtpSettings.authProvider },
+        true,
+      );
     };
 
     this.props.onRetrieveSmtpServerInfo(loadSettings.bind(this));
@@ -45,7 +47,10 @@ class SmtpServer extends Component {
     }
 
     const selectedSmtpSettings = this.getSelectedSmtpSettings();
-    if(newProps.providerChanged && selectedSmtpSettings.smtpAuthentication === "3"){
+    if (
+      newProps.providerChanged &&
+      selectedSmtpSettings.smtpAuthentication === "3"
+    ) {
       this.props.onRetrieveAuthProviders();
     }
   }
@@ -55,9 +60,12 @@ class SmtpServer extends Component {
       const { props } = this;
 
       const selectedSmtpSettings = this.getSelectedSmtpSettings();
-      this.onChangeAuthProvider({value: selectedSmtpSettings.authProvider}, true);
+      this.onChangeAuthProvider(
+        { value: selectedSmtpSettings.authProvider },
+        true,
+      );
     };
-    
+
     this.props.onChangeSmtpServerMode(mode, loadSettings.bind(this));
   }
 
@@ -73,48 +81,59 @@ class SmtpServer extends Component {
     this.props.onChangeSmtpConfigurationValue(key, event.target.value);
   }
 
-  onChangeAuthProvider(provider, passCheck){
+  onChangeAuthProvider(provider, passCheck) {
     const { props } = this;
 
-    const authProvider = this.getSelectedAuthProviders().filter(function(item){
-      return item.name === provider.value;
-    }).pop();
+    const authProvider = this.getSelectedAuthProviders()
+      .filter(function (item) {
+        return item.name === provider.value;
+      })
+      .pop();
 
-    this.props.onChangeSmtpConfigurationValue("authProvider", provider.value, passCheck);
+    this.props.onChangeSmtpConfigurationValue(
+      "authProvider",
+      provider.value,
+      passCheck,
+    );
 
     //initialize settings
     let settings = [];
-    if(typeof authProvider !== "undefined"){
-      for(let i = 0; i < authProvider.settings.length; i++){
+    if (typeof authProvider !== "undefined") {
+      for (let i = 0; i < authProvider.settings.length; i++) {
         const setting = authProvider.settings[i];
         settings.push({
-          name: setting.name, 
-          value: setting.value, 
+          name: setting.name,
+          value: setting.value,
           label: setting.label,
           help: setting.help,
           isSecure: setting.isSecure,
-          isRequired: setting.isRequired
+          isRequired: setting.isRequired,
         });
       }
     }
-    this.props.onChangeSmtpConfigurationValue("authProviderSettings", settings, passCheck);
+    this.props.onChangeSmtpConfigurationValue(
+      "authProviderSettings",
+      settings,
+      passCheck,
+    );
   }
 
-  onChangeAuthSetting(name, event){
+  onChangeAuthSetting(name, event) {
     const { props } = this;
 
     const selectedSmtpSettings = this.getSelectedSmtpSettings();
     const settings = selectedSmtpSettings.authProviderSettings;
 
     let newSettings = [];
-    for(let i = 0; i < settings.length; i++){
+    for (let i = 0; i < settings.length; i++) {
       newSettings.push({
         name: settings[i].name,
-        value: settings[i].name === name ? event.target.value : settings[i].value,
+        value:
+          settings[i].name === name ? event.target.value : settings[i].value,
         label: settings[i].label,
         help: settings[i].help,
         isSecure: settings[i].isSecure,
-        isRequired: settings[i].isRequired
+        isRequired: settings[i].isRequired,
       });
     }
 
@@ -144,47 +163,52 @@ class SmtpServer extends Component {
       smtpHostEmail: smtpSettings.smtpHostEmail,
       enableSmtpSsl: smtpSettings.enableSmtpSsl,
       authProvider: smtpSettings.authProvider,
-      AuthProviderSettings: this.toDictionary(smtpSettings.authProviderSettings),
+      AuthProviderSettings: this.toDictionary(
+        smtpSettings.authProviderSettings,
+      ),
       messageSchedulerBatchSize:
         props.smtpServerInfo.host.messageSchedulerBatchSize,
     };
     props.onUpdateSmtpServerSettings(updateRequest, this.onSettingsUpdated);
   }
 
-  onSettingsUpdated(result){
+  onSettingsUpdated(result) {}
 
-  }
-
-  toDictionary(settings){
+  toDictionary(settings) {
     let dict = {};
     settings = settings || [];
-    for(let i = 0; i < settings.length; i++){
+    for (let i = 0; i < settings.length; i++) {
       dict[settings[i].name] = settings[i].value;
     }
 
     return dict;
   }
 
-  getSelectedSmtpSettings(){
+  getSelectedSmtpSettings() {
     const { props } = this;
 
-      const areGlobalSettings = props.smtpServerInfo.smtpServerMode === "h";
-      const selectedSmtpSettings =
-        (areGlobalSettings
-          ? props.smtpServerInfo.host
-          : props.smtpServerInfo.site) || {};
-      return selectedSmtpSettings;
+    const areGlobalSettings = props.smtpServerInfo.smtpServerMode === "h";
+    const selectedSmtpSettings =
+      (areGlobalSettings
+        ? props.smtpServerInfo.host
+        : props.smtpServerInfo.site) || {};
+    return selectedSmtpSettings;
   }
 
-  getSelectedAuthProviders(){
+  getSelectedAuthProviders() {
     const { props } = this;
 
-    if(typeof props.smtpServerInfo === "undefined" || typeof props.authProviders === "undefined"){
+    if (
+      typeof props.smtpServerInfo === "undefined" ||
+      typeof props.authProviders === "undefined"
+    ) {
       return [];
     }
 
     const isGlobal = props.smtpServerInfo.smtpServerMode === "h";
-    return (isGlobal ? props.authProviders.host : props.authProviders.site) || [];
+    return (
+      (isGlobal ? props.authProviders.host : props.authProviders.site) || []
+    );
   }
 
   areThereValidationError() {
@@ -213,11 +237,17 @@ class SmtpServer extends Component {
     if (props.smtpServerInfo.smtpServerMode === "p") {
       smtpSettings = props.smtpServerInfo.site;
     }
-    const authProvider = this.getSelectedAuthProviders().filter(function(item){
-      return item.name === smtpSettings.authProvider;
-    }).pop() || {};
+    const authProvider =
+      this.getSelectedAuthProviders()
+        .filter(function (item) {
+          return item.name === smtpSettings.authProvider;
+        })
+        .pop() || {};
 
-    if(smtpSettings.smtpAuthentication === "3" && (props.isDirty || !authProvider.isAuthorized)){
+    if (
+      smtpSettings.smtpAuthentication === "3" &&
+      (props.isDirty || !authProvider.isAuthorized)
+    ) {
       utils.notifyError(localization.get("OAuthConfigurationNotSaved"));
       return;
     }
@@ -229,38 +259,54 @@ class SmtpServer extends Component {
       smtpUsername: smtpSettings.smtpUserName,
       smtpPassword: smtpSettings.smtpPassword,
       enableSmtpSsl: smtpSettings.enableSmtpSsl,
-      authProvider: smtpSettings.authProvider
+      authProvider: smtpSettings.authProvider,
     };
     props.onSendTestEmail(sendEmailRequest);
   }
 
-  onCompleteAuthorize(){
+  onCompleteAuthorize() {
     const { props } = this;
 
     const selectedSmtpSettings = this.getSelectedSmtpSettings();
-    const authProvider = this.getSelectedAuthProviders().filter(function(item){
-      return item.name === selectedSmtpSettings.authProvider;
-    }).pop();
+    const authProvider = this.getSelectedAuthProviders()
+      .filter(function (item) {
+        return item.name === selectedSmtpSettings.authProvider;
+      })
+      .pop();
 
-    if(authProvider){
-      const myWindow = this.popupWindow('about:blank', 'OAuth', 1090, 600);
+    if (authProvider) {
+      const myWindow = this.popupWindow("about:blank", "OAuth", 1090, 600);
       myWindow.location = authProvider.authorizeUrl;
 
-      const intervalHandler = window.setInterval((() => {
-        if(myWindow.window === null || myWindow.closed === true){
-          this.props.onRetrieveAuthProviders();
-          window.clearInterval(intervalHandler);
-        }
-      }).bind(this), 1000);
+      const intervalHandler = window.setInterval(
+        (() => {
+          if (myWindow.window === null || myWindow.closed === true) {
+            this.props.onRetrieveAuthProviders();
+            window.clearInterval(intervalHandler);
+          }
+        }).bind(this),
+        1000,
+      );
     }
-    
+
     return false;
   }
 
-  popupWindow (url, title, w, h) {
-    const left = (screen.width / 2) - (w / 2);
-    const top = (screen.height / 2) - (h / 2);
-    return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+  popupWindow(url, title, w, h) {
+    const left = screen.width / 2 - w / 2;
+    const top = screen.height / 2 - h / 2;
+    return window.open(
+      url,
+      title,
+      "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" +
+        w +
+        ", height=" +
+        h +
+        ", top=" +
+        top +
+        ", left=" +
+        left,
+    );
   }
 
   getSmtpServerOptions() {
@@ -292,10 +338,10 @@ class SmtpServer extends Component {
       {
         label: localization.get("SMTPNTLM"),
         value: "2",
-      }
+      },
     ];
 
-    if(hasAuthProviders){
+    if (hasAuthProviders) {
       options.push({
         label: localization.get("SMTPOAUTH"),
         value: "3",
@@ -305,70 +351,88 @@ class SmtpServer extends Component {
     return options;
   }
 
-  renderAuthSettings(){
+  renderAuthSettings() {
     const { props } = this;
 
-    const authProvidersOptions = this.getSelectedAuthProviders().map(function(item){
-      return {label: item.localizedName, value: item.name};
-    });
+    const authProvidersOptions = this.getSelectedAuthProviders().map(
+      function (item) {
+        return { label: item.localizedName, value: item.name };
+      },
+    );
 
     const areGlobalSettings = props.smtpServerInfo.smtpServerMode === "h";
     const selectedSmtpSettings = this.getSelectedSmtpSettings();
-    const authProvider = this.getSelectedAuthProviders().filter(function(item){
-      return item.name === selectedSmtpSettings.authProvider;
-    }).pop();
+    const authProvider = this.getSelectedAuthProviders()
+      .filter(function (item) {
+        return item.name === selectedSmtpSettings.authProvider;
+      })
+      .pop();
 
     let settingFields = null;
-    if(typeof authProvider !== "undefined"){
+    if (typeof authProvider !== "undefined") {
       const settings = selectedSmtpSettings.authProviderSettings || [];
 
-      settingFields = settings.map(function(setting){
-        return <EditBlock
-                key={setting.name}
-                label={setting.label}
-                tooltip={setting.help}
-                value={setting.value}
-                isGlobal={areGlobalSettings}
-                onChange={this.onChangeAuthSetting.bind(this, setting.name)}
-                type={setting.isSecure ? "password" : "text"}
-              />;
-      }.bind(this));
+      settingFields = settings.map(
+        function (setting) {
+          return (
+            <EditBlock
+              key={setting.name}
+              label={setting.label}
+              tooltip={setting.help}
+              value={setting.value}
+              isGlobal={areGlobalSettings}
+              onChange={this.onChangeAuthSetting.bind(this, setting.name)}
+              type={setting.isSecure ? "password" : "text"}
+            />
+          );
+        }.bind(this),
+      );
     }
 
-    const settingCompleted = (selectedSmtpSettings.authProviderSettings || []).filter(i => i.isRequired && (i.value || "") === "").length === 0;
-    return <div>
-            <div style={{paddingBottom: "22px", float: "left", width: "100%"}}>
-              <DropdownBlock
-                tooltip={localization.get("SmtpTab_OAuthProviders.Help")}
-                label={localization.get("SmtpTab_OAuthProviders")}
-                options={authProvidersOptions}
-                value={selectedSmtpSettings.authProvider}
-                onSelect={this.onChangeAuthProvider.bind(this)} />
+    const settingCompleted =
+      (selectedSmtpSettings.authProviderSettings || []).filter(
+        (i) => i.isRequired && (i.value || "") === "",
+      ).length === 0;
+    return (
+      <div>
+        <div style={{ paddingBottom: "22px", float: "left", width: "100%" }}>
+          <DropdownBlock
+            tooltip={localization.get("SmtpTab_OAuthProviders.Help")}
+            label={localization.get("SmtpTab_OAuthProviders")}
+            options={authProvidersOptions}
+            value={selectedSmtpSettings.authProvider}
+            onSelect={this.onChangeAuthProvider.bind(this)}
+          />
+        </div>
+        {settingFields}
+        {authProvider &&
+          !authProvider.isAuthorized &&
+          authProvider.authorizeUrl &&
+          settingCompleted &&
+          !props.isDirty && (
+            <div className="warningBox authorize-box">
+              <div className="warningText">
+                {localization.get("CompleteAuthorize")}
+              </div>
+              <div className="warningButton">
+                <Button
+                  type="secondary"
+                  onClick={this.onCompleteAuthorize.bind(this)}
+                >
+                  {localization.get("Authorize")}
+                </Button>
+              </div>
             </div>
-            {settingFields}
-            {authProvider && !authProvider.isAuthorized && authProvider.authorizeUrl && settingCompleted && !props.isDirty && 
-              <div className="warningBox authorize-box">
-                <div className="warningText">
-                    {localization.get("CompleteAuthorize")}
-                </div>
-                <div className="warningButton">
-                    <Button
-                        type="secondary"
-                        onClick={this.onCompleteAuthorize.bind(this)}
-                    >
-                        {localization.get("Authorize")}
-                    </Button>
-                </div>
-              </div>
-            }
-            {authProvider && authProvider.isAuthorized && !props.isDirty && 
-              <div className="warningBox authorize-box success">
-                <div className="warningText">
-                    {localization.get("AuthorizeCompleted")}
-                </div>
-              </div>
-            }
-          </div>;
+          )}
+        {authProvider && authProvider.isAuthorized && !props.isDirty && (
+          <div className="warningBox authorize-box success">
+            <div className="warningText">
+              {localization.get("AuthorizeCompleted")}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
 
   render() {
@@ -424,7 +488,7 @@ class SmtpServer extends Component {
                     isGlobal={areGlobalSettings}
                     onChange={this.onChangeField.bind(
                       this,
-                      "smtpConnectionLimit"
+                      "smtpConnectionLimit",
                     )}
                     error={props.errors["smtpConnectionLimit"]}
                   />
@@ -447,7 +511,7 @@ class SmtpServer extends Component {
                   isGlobal={areGlobalSettings}
                   onChange={this.onChangeField.bind(
                     this,
-                    "messageSchedulerBatchSize"
+                    "messageSchedulerBatchSize",
                   )}
                   error={props.errors["messageSchedulerBatchSize"]}
                 />
@@ -493,7 +557,10 @@ class SmtpServer extends Component {
               </div>
             )}
             {smtpSettingsVisible && !oauthEnabled && (
-              <div className="tooltipAdjustment border-bottom" style={{paddingBottom: "22px"}}>
+              <div
+                className="tooltipAdjustment border-bottom"
+                style={{ paddingBottom: "22px" }}
+              >
                 <SwitchBlock
                   label={localization.get("plSMTPEnableSSL")}
                   onText={localization.get("SwitchOn")}
@@ -506,7 +573,10 @@ class SmtpServer extends Component {
               </div>
             )}
             {oauthEnabled && (
-              <div className="tooltipAdjustment border-bottom" style={{paddingBottom: "22px"}}>
+              <div
+                className="tooltipAdjustment border-bottom"
+                style={{ paddingBottom: "22px" }}
+              >
                 {this.renderAuthSettings()}
               </div>
             )}
@@ -527,7 +597,11 @@ class SmtpServer extends Component {
           <Button type="secondary" onClick={this.onTestSmtpSettings.bind(this)}>
             {localization.get("EmailTest")}
           </Button>
-          <Button type="primary" onClick={this.onSave.bind(this)} disabled={!props.isDirty}>
+          <Button
+            type="primary"
+            onClick={this.onSave.bind(this)}
+            disabled={!props.isDirty}
+          >
             {localization.get("SaveButtonText")}
           </Button>
         </div>
@@ -550,7 +624,7 @@ SmtpServer.propTypes = {
   infoMessage: PropTypes.string,
   onSendTestEmail: PropTypes.func.isRequired,
   errors: PropTypes.array,
-  isDirty: PropTypes.bool
+  isDirty: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
@@ -562,7 +636,7 @@ function mapStateToProps(state) {
     success: state.smtpServer.success,
     providerChanged: state.smtpServer.providerChanged,
     errors: state.smtpServer.errors,
-    isDirty: state.smtpServer.isDirty
+    isDirty: state.smtpServer.isDirty,
   };
 }
 
@@ -581,7 +655,7 @@ function mapDispatchToProps(dispatch) {
           SmtpServerTabActions.updateSmtpServerSettings,
         onSendTestEmail: SmtpServerTabActions.sendTestEmail,
       },
-      dispatch
+      dispatch,
     ),
   };
 }

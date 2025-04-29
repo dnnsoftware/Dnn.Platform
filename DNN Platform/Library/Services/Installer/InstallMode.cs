@@ -1,15 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Installer
-{
-    using System.ComponentModel;
+namespace DotNetNuke.Services.Installer;
 
-    [TypeConverter(typeof(EnumConverter))]
-    public enum InstallMode
-    {
-        Install = 0,
-        ManifestOnly = 1,
-        UnInstall = 2,
-    }
+using System.ComponentModel;
+
+[TypeConverter(typeof(EnumConverter))]
+public enum InstallMode
+{
+    Install = 0,
+    ManifestOnly = 1,
+    UnInstall = 2,
 }

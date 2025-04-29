@@ -2,136 +2,135 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Content.Workflow.Repositories
+namespace DotNetNuke.Entities.Content.Workflow.Repositories;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DotNetNuke.Entities.Content.Workflow.Entities;
+using DotNetNuke.Entities.Content.Workflow.Exceptions;
+using DotNetNuke.Framework;
+
+internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Content.Workflow.Exceptions;
-    using DotNetNuke.Framework;
-
-    internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
+    /// <inheritdoc/>
+    public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
     {
-        /// <inheritdoc/>
-        public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
+        using (var context = DataContext.Instance())
         {
-            using (var context = DataContext.Instance())
-            {
-                var rep = context.GetRepository<WorkflowState>();
-                return rep.Find("WHERE WorkflowID = @0 ORDER BY [Order] ASC", workflowId);
-            }
+            var rep = context.GetRepository<WorkflowState>();
+            return rep.Find("WHERE WorkflowID = @0 ORDER BY [Order] ASC", workflowId);
         }
+    }
 
-        /// <inheritdoc/>
-        public WorkflowState GetWorkflowStateByID(int stateId)
-        {
-            return CBO.GetCachedObject<WorkflowState>(
-                new CacheItemArgs(
+    /// <inheritdoc/>
+    public WorkflowState GetWorkflowStateByID(int stateId)
+    {
+        return CBO.GetCachedObject<WorkflowState>(
+            new CacheItemArgs(
                 GetWorkflowStateKey(stateId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
-                _ =>
-                {
-                    using (var context = DataContext.Instance())
-                    {
-                        var rep = context.GetRepository<WorkflowState>();
-                        return rep.GetById(stateId);
-                    }
-                });
-        }
-
-        /// <inheritdoc/>
-        public void AddWorkflowState(WorkflowState state)
-        {
-            Requires.NotNull("state", state);
-            Requires.PropertyNotNullOrEmpty("state", "StateName", state.StateName);
-
-            using (var context = DataContext.Instance())
+            _ =>
             {
-                var rep = context.GetRepository<WorkflowState>();
-                if (DoesExistWorkflowState(state, rep))
+                using (var context = DataContext.Instance())
                 {
-                    throw new WorkflowStateNameAlreadyExistsException();
+                    var rep = context.GetRepository<WorkflowState>();
+                    return rep.GetById(stateId);
                 }
+            });
+    }
 
-                rep.Insert(state);
-            }
+    /// <inheritdoc/>
+    public void AddWorkflowState(WorkflowState state)
+    {
+        Requires.NotNull("state", state);
+        Requires.PropertyNotNullOrEmpty("state", "StateName", state.StateName);
 
-            this.CacheWorkflowState(state);
-        }
-
-        /// <inheritdoc/>
-        public void UpdateWorkflowState(WorkflowState state)
+        using (var context = DataContext.Instance())
         {
-            Requires.NotNull("state", state);
-            Requires.PropertyNotNegative("state", "StateID", state.StateID);
-            Requires.PropertyNotNullOrEmpty("state", "StateName", state.StateName);
-
-            using (var context = DataContext.Instance())
+            var rep = context.GetRepository<WorkflowState>();
+            if (DoesExistWorkflowState(state, rep))
             {
-                var rep = context.GetRepository<WorkflowState>();
-                if (DoesExistWorkflowState(state, rep))
-                {
-                    throw new WorkflowStateNameAlreadyExistsException();
-                }
-
-                rep.Update(state);
+                throw new WorkflowStateNameAlreadyExistsException();
             }
 
-            DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
-            DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
-            this.CacheWorkflowState(state);
+            rep.Insert(state);
         }
 
-        /// <inheritdoc/>
-        public void DeleteWorkflowState(WorkflowState state)
-        {
-            Requires.NotNull("state", state);
-            Requires.PropertyNotNegative("state", "StateID", state.StateID);
+        this.CacheWorkflowState(state);
+    }
 
-            using (var context = DataContext.Instance())
+    /// <inheritdoc/>
+    public void UpdateWorkflowState(WorkflowState state)
+    {
+        Requires.NotNull("state", state);
+        Requires.PropertyNotNegative("state", "StateID", state.StateID);
+        Requires.PropertyNotNullOrEmpty("state", "StateName", state.StateName);
+
+        using (var context = DataContext.Instance())
+        {
+            var rep = context.GetRepository<WorkflowState>();
+            if (DoesExistWorkflowState(state, rep))
             {
-                var rep = context.GetRepository<WorkflowState>();
-                rep.Delete(state);
+                throw new WorkflowStateNameAlreadyExistsException();
             }
 
-            DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
-            DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
+            rep.Update(state);
         }
 
-        /// <inheritdoc/>
-        protected override Func<IWorkflowStateRepository> GetFactory()
+        DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
+        DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
+        this.CacheWorkflowState(state);
+    }
+
+    /// <inheritdoc/>
+    public void DeleteWorkflowState(WorkflowState state)
+    {
+        Requires.NotNull("state", state);
+        Requires.PropertyNotNegative("state", "StateID", state.StateID);
+
+        using (var context = DataContext.Instance())
         {
-            return () => new WorkflowStateRepository();
+            var rep = context.GetRepository<WorkflowState>();
+            rep.Delete(state);
         }
 
-        private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
-        {
-            return rep.Find(
-                           "WHERE StateName = @0 AND WorkflowID = @1 AND StateId != @2",
-                           state.StateName,
-                           state.WorkflowID,
-                           state.StateID)
-                       .SingleOrDefault() != null;
-        }
+        DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
+        DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
+    }
 
-        private static string GetWorkflowStateKey(int stateId)
-        {
-            return string.Format(DataCache.ContentWorkflowStateCacheKey, stateId);
-        }
+    /// <inheritdoc/>
+    protected override Func<IWorkflowStateRepository> GetFactory()
+    {
+        return () => new WorkflowStateRepository();
+    }
 
-        private void CacheWorkflowState(WorkflowState state)
+    private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
+    {
+        return rep.Find(
+                "WHERE StateName = @0 AND WorkflowID = @1 AND StateId != @2",
+                state.StateName,
+                state.WorkflowID,
+                state.StateID)
+            .SingleOrDefault() != null;
+    }
+
+    private static string GetWorkflowStateKey(int stateId)
+    {
+        return string.Format(DataCache.ContentWorkflowStateCacheKey, stateId);
+    }
+
+    private void CacheWorkflowState(WorkflowState state)
+    {
+        if (state.StateID > 0)
         {
-            if (state.StateID > 0)
-            {
-                CBO.GetCachedObject<WorkflowState>(
-                    new CacheItemArgs(
-                GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
-                    _ => state);
-            }
+            CBO.GetCachedObject<WorkflowState>(
+                new CacheItemArgs(
+                    GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
+                _ => state);
         }
     }
 }

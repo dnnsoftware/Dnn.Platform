@@ -2,33 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Api.Internal
+namespace DotNetNuke.Web.Api.Internal;
+
+using DotNetNuke.Common;
+
+public sealed class DnnPagePermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
 {
-    using DotNetNuke.Common;
+    private string permissionKey = "EDIT";
 
-    public sealed class DnnPagePermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
+    public string PermissionKey
     {
-        private string permissionKey = "EDIT";
-
-        public string PermissionKey
+        get
         {
-            get
-            {
-                return this.permissionKey;
-            }
-
-            set
-            {
-                this.permissionKey = value;
-            }
+            return this.permissionKey;
         }
 
-        /// <inheritdoc/>
-        public override bool IsAuthorized(AuthFilterContext context)
+        set
         {
-            Requires.NotNull("context", context);
-
-            return PagePermissionsAttributesHelper.HasTabPermission(this.PermissionKey);
+            this.permissionKey = value;
         }
+    }
+
+    /// <inheritdoc/>
+    public override bool IsAuthorized(AuthFilterContext context)
+    {
+        Requires.NotNull("context", context);
+
+        return PagePermissionsAttributesHelper.HasTabPermission(this.PermissionKey);
     }
 }

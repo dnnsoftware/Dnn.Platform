@@ -1,10 +1,10 @@
 <!doctype html>
 
 <title>CodeMirror: Smarty mixed mode</title>
-<meta charset="utf-8"/>
-<link rel=stylesheet href="../../doc/docs.css">
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../doc/docs.css" />
 
-<link rel="stylesheet" href="../../lib/codemirror.css">
+<link rel="stylesheet" href="../../lib/codemirror.css" />
 <script src="../../lib/codemirror.js"></script>
 <script src="../../mode/xml/xml.js"></script>
 <script src="../../mode/javascript/javascript.js"></script>
@@ -12,23 +12,27 @@
 <script src="../../mode/htmlmixed/htmlmixed.js"></script>
 <script src="../../mode/smarty/smarty.js"></script>
 <script src="../../mode/smartymixed/smartymixed.js"></script>
-<div id=nav>
-  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+<div id="nav">
+  <a href="http://codemirror.net"
+    ><h1>CodeMirror</h1>
+    <img id="logo" src="../../doc/logo.png"
+  /></a>
 
   <ul>
-    <li><a href="../../index.html">Home</a>
-    <li><a href="../../doc/manual.html">Manual</a>
-    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../../doc/manual.html">Manual</a></li>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a></li>
   </ul>
   <ul>
-    <li><a href="../index.html">Language modes</a>
-    <li><a class=active href="#">Smarty mixed</a>
+    <li><a href="../index.html">Language modes</a></li>
+    <li><a class="active" href="#">Smarty mixed</a></li>
   </ul>
 </div>
 
 <article>
-<h2>Smarty mixed mode</h2>
-<form><textarea id="code" name="code">
+  <h2>Smarty mixed mode</h2>
+  <form>
+    <textarea id="code" name="code">
 {**
 * @brief Smarty mixed mode
 * @author Ruslan Osmanov
@@ -91,24 +95,31 @@
   </body>
   <!-- R.O. -->
 </html>
-</textarea></form>
+</textarea
+    >
+  </form>
 
-    <script type="text/javascript">
-      var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode           : "smartymixed",
-        tabSize        : 2,
-        indentUnit     : 2,
-        indentWithTabs : false,
-        lineNumbers    : true,
-        smartyVersion  : 3,
-        matchBrackets  : true,
-      });
-    </script>
+  <script type="text/javascript">
+    var myCodeMirror = CodeMirror.fromTextArea(
+      document.getElementById("code"),
+      {
+        mode: "smartymixed",
+        tabSize: 2,
+        indentUnit: 2,
+        indentWithTabs: false,
+        lineNumbers: true,
+        smartyVersion: 3,
+        matchBrackets: true,
+      },
+    );
+  </script>
 
-    <p>The Smarty mixed mode depends on the Smarty and HTML mixed modes. HTML
-    mixed mode itself depends on XML, JavaScript, and CSS modes.</p>
+  <p>
+    The Smarty mixed mode depends on the Smarty and HTML mixed modes. HTML mixed
+    mode itself depends on XML, JavaScript, and CSS modes.
+  </p>
 
-    <p>It takes the same options, as Smarty and HTML mixed modes.</p>
+  <p>It takes the same options, as Smarty and HTML mixed modes.</p>
 
-    <p><strong>MIME types defined:</strong> <code>text/x-smarty</code>.</p>
-  </article>
+  <p><strong>MIME types defined:</strong> <code>text/x-smarty</code>.</p>
+</article>

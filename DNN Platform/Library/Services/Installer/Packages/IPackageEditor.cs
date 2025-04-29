@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Installer.Packages
+namespace DotNetNuke.Services.Installer.Packages;
+
+public interface IPackageEditor
 {
-    public interface IPackageEditor
-    {
-        int PackageID { get; set; }
+    int PackageID { get; set; }
 
-        bool IsWizard { get; set; }
+    bool IsWizard { get; set; }
 
-        void Initialize();
+    void Initialize();
 
-        void UpdatePackage();
-    }
+    void UpdatePackage();
 }

@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Modules
+namespace DotNetNuke.Entities.Modules;
+
+/// Project  : DotNetNuke
+/// Namespace: DotNetNuke.Entities.Modules
+/// Class    : VisibilityState
+/// <summary>The VisibilityState enum provides an enumeration of the Visibility options.</summary>
+public enum VisibilityState
 {
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules
-    /// Class    : VisibilityState
-    /// <summary>The VisibilityState enum provides an enumeration of the Visibility options.</summary>
-    public enum VisibilityState
-    {
-        Maximized = 0,
-        Minimized = 1,
-        None = 2,
-    }
+    Maximized = 0,
+    Minimized = 1,
+    None = 2,
 }

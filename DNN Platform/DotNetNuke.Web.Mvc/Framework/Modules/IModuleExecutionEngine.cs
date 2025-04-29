@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Framework.Modules
+namespace DotNetNuke.Web.Mvc.Framework.Modules;
+
+using System.IO;
+
+public interface IModuleExecutionEngine
 {
-    using System.IO;
+    ModuleRequestResult ExecuteModule(ModuleRequestContext moduleRequestContext);
 
-    public interface IModuleExecutionEngine
-    {
-        ModuleRequestResult ExecuteModule(ModuleRequestContext moduleRequestContext);
-
-        void ExecuteModuleResult(ModuleRequestResult moduleResult, TextWriter writer);
-    }
+    void ExecuteModuleResult(ModuleRequestResult moduleResult, TextWriter writer);
 }

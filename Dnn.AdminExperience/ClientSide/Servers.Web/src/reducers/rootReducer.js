@@ -11,16 +11,16 @@ import performanceTab from "./performanceTabReducer";
 import serversTab from "./serversTabReducer";
 
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    webTab,
-    server,
-    applicationTab,
-    databaseTab,
-    smtpServer,
-    logsTab,
-    performanceTab,
-    serversTab
+  pagination,
+  visiblePanel,
+  webTab,
+  server,
+  applicationTab,
+  databaseTab,
+  smtpServer,
+  logsTab,
+  performanceTab,
+  serversTab,
 });
 
 export default rootReducer;

@@ -13,10 +13,14 @@ class MyCollapsible extends Component {
     this.state = { opened: true };
   }
 
-  render (){
+  render() {
     return (
       <div>
-        <Collapsible isOpened={this.state.opened} autoScroll={true} scrollDelay={10}>
+        <Collapsible
+          isOpened={this.state.opened}
+          autoScroll={true}
+          scrollDelay={10}
+        >
           <div>
             <p className="add-term-title">Add Term</p>
             <InputGroup>
@@ -40,13 +44,11 @@ class MyCollapsible extends Component {
             </InputGroup>
           </div>
         </Collapsible>
-        <Button onClick={() => this.setState({opened: true})}>Open</Button>
-        <Button onClick={() => this.setState({opened: false})}>Close</Button>
+        <Button onClick={() => this.setState({ opened: true })}>Open</Button>
+        <Button onClick={() => this.setState({ opened: false })}>Close</Button>
       </div>
     );
   }
 }
 
-storiesOf("Collapsible", module).add("with text", () => (
-  <MyCollapsible />
-));
+storiesOf("Collapsible", module).add("with text", () => <MyCollapsible />);

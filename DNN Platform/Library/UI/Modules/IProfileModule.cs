@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.UI.Modules
-{
-    public interface IProfileModule
-    {
-        bool DisplayModule { get; }
+namespace DotNetNuke.UI.Modules;
 
-        int ProfileUserId { get; }
-    }
+public interface IProfileModule
+{
+    bool DisplayModule { get; }
+
+    int ProfileUserId { get; }
 }

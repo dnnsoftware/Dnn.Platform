@@ -2,58 +2,57 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+using System.ComponentModel;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+
+using DotNetNuke.ExtensionPoints.Filters;
+
+[DefaultProperty("Text")]
+[ToolboxData("<{0}:ToolBarButtonExtensionControl runat=server></{0}:ToolBarButtonExtensionControl>")]
+public class ToolBarButtonExtensionControl : DefaultExtensionControl
 {
-    using System.ComponentModel;
-    using System.Text;
-    using System.Web;
-    using System.Web.UI;
+    private IExtensionControlRenderer btnRenderer;
 
-    using DotNetNuke.ExtensionPoints.Filters;
+    [Bindable(true)]
+    [DefaultValue(false)]
+    public bool IsHost { get; set; }
 
-    [DefaultProperty("Text")]
-    [ToolboxData("<{0}:ToolBarButtonExtensionControl runat=server></{0}:ToolBarButtonExtensionControl>")]
-    public class ToolBarButtonExtensionControl : DefaultExtensionControl
+    /// <inheritdoc/>
+    protected override void RenderContents(HtmlTextWriter output)
     {
-        private IExtensionControlRenderer btnRenderer;
+        var extensionPointManager = new ExtensionPointManager();
 
-        [Bindable(true)]
-        [DefaultValue(false)]
-        public bool IsHost { get; set; }
+        var str = new StringBuilder();
 
-        /// <inheritdoc/>
-        protected override void RenderContents(HtmlTextWriter output)
+        var filter = new CompositeFilter()
+            .And(new FilterByHostMenu(this.IsHost))
+            .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
+
+        foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(this.Module, this.Group, filter))
         {
-            var extensionPointManager = new ExtensionPointManager();
-
-            var str = new StringBuilder();
-
-            var filter = new CompositeFilter()
-                .And(new FilterByHostMenu(this.IsHost))
-                .And(new FilterByUnauthenticated(HttpContext.Current.Request.IsAuthenticated));
-
-            foreach (var extension in extensionPointManager.GetToolBarButtonExtensionPoints(this.Module, this.Group, filter))
+            if (extension is IToolBarMenuButtonExtensionPoint)
             {
-                if (extension is IToolBarMenuButtonExtensionPoint)
-                {
-                    this.btnRenderer = new ToolBarMenuButtonRenderer();
-                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
-                }
-                else
-                {
-                    extension.ModuleContext = this.ModuleContext;
-                    this.btnRenderer = new ToolBarButtonRenderer();
-                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
-                }
+                this.btnRenderer = new ToolBarMenuButtonRenderer();
+                str.AppendFormat(this.btnRenderer.GetOutput(extension));
             }
-
-            output.Write(str.ToString());
+            else
+            {
+                extension.ModuleContext = this.ModuleContext;
+                this.btnRenderer = new ToolBarButtonRenderer();
+                str.AppendFormat(this.btnRenderer.GetOutput(extension));
+            }
         }
 
-        /// <inheritdoc/>
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.RenderContents(writer);
-        }
+        output.Write(str.ToString());
+    }
+
+    /// <inheritdoc/>
+    protected override void Render(HtmlTextWriter writer)
+    {
+        this.RenderContents(writer);
     }
 }

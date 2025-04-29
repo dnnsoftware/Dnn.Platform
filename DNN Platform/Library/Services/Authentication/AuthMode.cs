@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Authentication
+namespace DotNetNuke.Services.Authentication;
+
+public enum AuthMode
 {
-    public enum AuthMode
-    {
-        Login = 0,
-        Register = 1,
-    }
+    Login = 0,
+    Register = 1,
 }

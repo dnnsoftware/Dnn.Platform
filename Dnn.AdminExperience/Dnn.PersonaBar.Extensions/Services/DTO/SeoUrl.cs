@@ -2,23 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Services.Dto
+namespace Dnn.PersonaBar.Pages.Services.Dto;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Web;
+
+using DotNetNuke.Entities.Urls;
+
+[DataContract]
+public class SeoUrl
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.Serialization;
-    using System.Web;
+    [DataMember(Name = "tabId")]
+    public int TabId { get; set; }
 
-    using DotNetNuke.Entities.Urls;
-
-    [DataContract]
-    public class SeoUrl
-    {
-        [DataMember(Name = "tabId")]
-        public int TabId { get; set; }
-
-        [DataMember(Name = "saveUrl")]
-        public SaveUrlDto SaveUrl { get; set; }
-    }
+    [DataMember(Name = "saveUrl")]
+    public SaveUrlDto SaveUrl { get; set; }
 }

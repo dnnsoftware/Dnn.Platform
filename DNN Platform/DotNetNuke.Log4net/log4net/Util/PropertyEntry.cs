@@ -18,54 +18,53 @@
 // limitations under the License.
 // 
 
-namespace log4net.Util
+namespace log4net.Util;
+
+/// <summary>A class to hold the key and data for a property set in the config file</summary>
+/// <remarks>
+/// <para>
+/// A class to hold the key and data for a property set in the config file
+/// </para>
+/// </remarks>
+public class PropertyEntry
 {
-    /// <summary>A class to hold the key and data for a property set in the config file</summary>
+    private string m_key = null;
+    private object m_value = null;
+
+    /// <summary>Property Key</summary>
+    /// <value>
+    /// Property Key
+    /// </value>
     /// <remarks>
     /// <para>
-    /// A class to hold the key and data for a property set in the config file
+    /// Property Key.
     /// </para>
     /// </remarks>
-    public class PropertyEntry
+    public string Key
     {
-        private string m_key = null;
-        private object m_value = null;
+        get { return this.m_key; }
+        set { this.m_key = value; }
+    }
 
-        /// <summary>Property Key</summary>
-        /// <value>
-        /// Property Key
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Property Key.
-        /// </para>
-        /// </remarks>
-        public string Key
-        {
-            get { return this.m_key; }
-            set { this.m_key = value; }
-        }
+    /// <summary>Property Value</summary>
+    /// <value>
+    /// Property Value
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Property Value.
+    /// </para>
+    /// </remarks>
+    public object Value
+    {
+        get { return this.m_value; }
+        set { this.m_value = value; }
+    }
 
-        /// <summary>Property Value</summary>
-        /// <value>
-        /// Property Value
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Property Value.
-        /// </para>
-        /// </remarks>
-        public object Value
-        {
-            get { return this.m_value; }
-            set { this.m_value = value; }
-        }
-
-        /// <summary>Override <c>Object.ToString</c> to return sensible debug info</summary>
-        /// <returns>string info about this object</returns>
-        public override string ToString()
-        {
-            return "PropertyEntry(Key=" + this.m_key + ", Value=" + this.m_value + ")";
-        }
+    /// <summary>Override <c>Object.ToString</c> to return sensible debug info</summary>
+    /// <returns>string info about this object</returns>
+    public override string ToString()
+    {
+        return "PropertyEntry(Key=" + this.m_key + ", Value=" + this.m_value + ")";
     }
 }

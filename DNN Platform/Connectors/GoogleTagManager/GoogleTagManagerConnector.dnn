@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DNN.Connectors.GoogleTagManager" type="Connector" isSystem="false" version="09.13.09">
+        <package name="DNN.Connectors.GoogleTagManager" type="Connector" isSystem="false" version="09.13.10">
             <friendlyName>Google Tag Manager Connector</friendlyName>
             <description>Configure your site's Google Tag Manager settings.</description>
             <iconFile>~/DesktopModules/Connectors/GoogleTagManager/Images/GoogleTagManager_32X32_Standard.png</iconFile>

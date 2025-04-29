@@ -1,23 +1,23 @@
 next-version: 9.6.0
-commit-date-format: 'yyyyMMdd'
-assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}'
+commit-date-format: "yyyyMMdd"
+assembly-file-versioning-format: "{Major}.{Minor}.{Patch}.{CommitsSinceVersionSource}"
 mode: ContinuousDeployment
 ignore:
   commits-before: 2023-01-01T00:00:00
 branches:
   future:
     regex: ^future?[/-]
-    tag: 'alpha'
+    tag: "alpha"
     increment: Major
     source-branches: []
   development:
     regex: ^development$
-    tag: 'alpha'
+    tag: "alpha"
     increment: Major
     source-branches: []
   develop:
     regex: ^develop$
-    tag: 'alpha'
+    tag: "alpha"
     increment: Patch
     is-mainline: true
     source-branches: []
@@ -25,7 +25,7 @@ branches:
   release:
     regex: ^release?[/-]
     mode: ContinuousDelivery
-    tag: 'rc'
+    tag: "rc"
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
@@ -34,7 +34,7 @@ branches:
     source-branches: []
   pull-request:
     regex: (pull|pull\-requests|pr)[/-]
-    tag: 'pr'
+    tag: "pr"
     tag-number-pattern: '[/-](?<number>\d+)[-/]'
     increment: Patch
     prevent-increment-of-merged-branch-version: false

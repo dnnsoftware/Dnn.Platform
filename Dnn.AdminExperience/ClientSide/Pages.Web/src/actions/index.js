@@ -17,5 +17,5 @@ export {
     templateActions,
     visiblePanelActions,
     visiblePageSettingsActions,
-    languagesActions
+    languagesActions,
 };

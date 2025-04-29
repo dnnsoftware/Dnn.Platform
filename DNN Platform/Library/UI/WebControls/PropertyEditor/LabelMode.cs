@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.UI.WebControls
+namespace DotNetNuke.UI.WebControls;
+
+/// <summary>Enumeration that determines the label mode.</summary>
+/// <remarks>
+/// LabelMode is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>
+/// to determine how the label is displayed.
+/// </remarks>
+public enum LabelMode
 {
-    /// <summary>Enumeration that determines the label mode.</summary>
-    /// <remarks>
-    /// LabelMode is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>
-    /// to determine how the label is displayed.
-    /// </remarks>
-    public enum LabelMode
-    {
-        None = 0,
-        Left = 1,
-        Right = 2,
-        Top = 3,
-        Bottom = 4,
-    }
+    None = 0,
+    Left = 1,
+    Right = 2,
+    Top = 3,
+    Bottom = 4,
 }

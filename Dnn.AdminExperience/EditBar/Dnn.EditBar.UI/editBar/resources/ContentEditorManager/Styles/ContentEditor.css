@@ -1,554 +1,623 @@
 ﻿.dnnModuleManager {
-    position: relative;
-    border: 1px dashed #d7d7d7;
-    padding: 10px !important;
-    min-height: 115px !important;
+  position: relative;
+  border: 1px dashed #d7d7d7;
+  padding: 10px !important;
+  min-height: 115px !important;
 }
 .dnnModuleManager.dnnSortable {
-    min-height: 135px !important;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  min-height: 135px !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .dnnModuleManager .LabelEditTextClass {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .dnnModuleManager .addModuleHandler {
-    position: absolute;
-    display: none;
-    left: 0;
-    top: 0;
-    width: 34px;
-    height: 43px;
+  position: absolute;
+  display: none;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 43px;
 }
 .dnnModuleManager .addModuleHandler span {
-    display: inline-block;
-    width: 34px;
-    height: 43px;
-    background: url('../Images/Icon-AddModule-D.png') no-repeat center 4px;
+  display: inline-block;
+  width: 34px;
+  height: 43px;
+  background: url("../Images/Icon-AddModule-D.png") no-repeat center 4px;
 }
-.dnnModuleManager .addModuleHandler:hover, .dnnModuleManager .addModuleHandler.active {
-    background: url('../Images/Icon-AddModule-D-Back.png') no-repeat;
+.dnnModuleManager .addModuleHandler:hover,
+.dnnModuleManager .addModuleHandler.active {
+  background: url("../Images/Icon-AddModule-D-Back.png") no-repeat;
 }
 .dnnModuleManager .addModuleHandler.active {
-    z-index: 1115;
+  z-index: 1115;
 }
 .dnnModuleManager .addModuleHandler.active span {
-    /*display: inline-block;*/
+  /*display: inline-block;*/
 }
 .dnnModuleManager:before {
-    content: attr(data-name);
-    display: inline-block;
-    box-sizing: border-box;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    height: 16px;
-    line-height: 12px;
-    color: #333;
-    font-size: 9px;
-    background-color: #fff;
-    padding: 2px 4px;
-    text-transform: uppercase;
-    font-weight: bold;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    transition-duration: 200ms;
-    opacity: 0;
+  content: attr(data-name);
+  display: inline-block;
+  box-sizing: border-box;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 16px;
+  line-height: 12px;
+  color: #333;
+  font-size: 9px;
+  background-color: #fff;
+  padding: 2px 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition-duration: 200ms;
+  opacity: 0;
 }
 .dnnModuleManager.active-pane:before {
-    opacity: 1;
+  opacity: 1;
 }
 .dnnModuleDialog {
-    width: 646px;
-    overflow-x: hidden;
-    position: absolute;
-    font-family: RobotoSlab, arial;
-    z-index: 1115 !important;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+  width: 646px;
+  overflow-x: hidden;
+  position: absolute;
+  font-family: RobotoSlab, arial;
+  z-index: 1115 !important;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 .dnnModuleDialog * {
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    font-size: 12px;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  font-size: 12px;
 }
 .dnnModuleDialog .dnnPageContainer {
-    width: 6000px;
-    height: 409px;
-    position: relative;
+  width: 6000px;
+  height: 409px;
+  position: relative;
 }
 
 .dnnModuleDialog .dnnPageContainer .dnnPage {
-    width: 646px;
-    float: left;
+  width: 646px;
+  float: left;
 }
 
 .dnnModuleDialog .dnnDialogTitle {
-    height: 70px;
-    line-height: 70px;
-    background-color: #3d3c3c;
-    -moz-border-top-left-radius: 5px;
-    -webkit-border-top-left-radius:5px;
-    border-top-left-radius: 5px;
+  height: 70px;
+  line-height: 70px;
+  background-color: #3d3c3c;
+  -moz-border-top-left-radius: 5px;
+  -webkit-border-top-left-radius: 5px;
+  border-top-left-radius: 5px;
 
-    -moz-border-top-right-radius: 5px;
-    -webkit-border-top-right-radius:5px;
-    border-top-right-radius: 5px;
+  -moz-border-top-right-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
 
-    border-bottom: 1px solid #476d79;
-    position: relative;
-    font-family: 'RobotoSlab', 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  border-bottom: 1px solid #476d79;
+  position: relative;
+  font-family:
+    "RobotoSlab", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
 }
 .dnnModuleDialog .dnnDialogTitle span.title {
-    margin-left: 32px;
-    color: rgb(202, 210, 213);
-    line-height: 70px;
-    font-size: large;
+  margin-left: 32px;
+  color: rgb(202, 210, 213);
+  line-height: 70px;
+  font-size: large;
 }
 .dnnModuleDialog .dnnDialogTitle span.btn-close {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background: url(../Images/Icon-Close-Dialog.png) no-repeat;
-    float: right;
-    margin: 26px 30px 0 0;
-    cursor: pointer;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: url(../Images/Icon-Close-Dialog.png) no-repeat;
+  float: right;
+  margin: 26px 30px 0 0;
+  cursor: pointer;
 }
 
 .dnnModuleDialog .dnnDialogBody {
-    height: 410px;
-    background-color: #fff;
+  height: 410px;
+  background-color: #fff;
 
-    -moz-border-bottom-left-radius: 5px;
-    -webkit-border-bottom-left-radius:5px;
-    border-bottom-left-radius: 5px;
+  -moz-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 
-    -moz-border-bottom-right-radius: 5px;
-    -webkit-border-bottom-right-radius:5px;
-    border-bottom-right-radius: 5px;
+  -moz-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .dnnModuleDialog .dnnDialogBody .listContainer {
-    width: 600px;
-    outline: none;
+  width: 600px;
+  outline: none;
 }
 .dnnModuleDialog .dnnDialogBody .listContainer ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 .dnnModuleDialog .dnnModuleList {
-    padding-top: 20px;
+  padding-top: 20px;
 }
 .dnnModuleDialog .dnnModuleList h2 {
-    padding: 0;
-    margin: 0;
-    margin: 0 0 20px 30px;
-    font-size: 12px;
-    font-weight: bolder;
-    text-transform: uppercase;
-    color: #000;
-    font-family: RobotoSlab, arial;
-    height: 26px;
-    line-height: 26px;
-    clear: both;
+  padding: 0;
+  margin: 0;
+  margin: 0 0 20px 30px;
+  font-size: 12px;
+  font-weight: bolder;
+  text-transform: uppercase;
+  color: #000;
+  font-family: RobotoSlab, arial;
+  height: 26px;
+  line-height: 26px;
+  clear: both;
 }
 .dnnModuleDialog .dnnModuleList .listContainer {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li {
-    float: left;
-    width: 130px;
-    margin: 0 0 17px 17px;
-    height: 130px;
-    background-color: #f5f6f8;
-    cursor: pointer;
-    font-size: 12px;
-    list-style: none;
-    position: relative;
-    border: 1px solid #f1f2f3;
+  float: left;
+  width: 130px;
+  margin: 0 0 17px 17px;
+  height: 130px;
+  background-color: #f5f6f8;
+  cursor: pointer;
+  font-size: 12px;
+  list-style: none;
+  position: relative;
+  border: 1px solid #f1f2f3;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li:before {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: url('../Images/icon-add-module.png') rgba(6,167,227,0.9) no-repeat center center;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    content: ".";
-    transition: opacity 0.2s linear;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../Images/icon-add-module.png") rgba(6, 167, 227, 0.9)
+    no-repeat center center;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  content: ".";
+  transition: opacity 0.2s linear;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li span {
-    display: block;
-    vertical-align: top;
-    white-space: nowrap;
+  display: block;
+  vertical-align: top;
+  white-space: nowrap;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li span.icon {
-    margin: 25px auto 0 auto;
-    width: 32px;
-    height: 32px;
+  margin: 25px auto 0 auto;
+  width: 32px;
+  height: 32px;
 
-    background-position: center center !important;
+  background-position: center center !important;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li span.icon img {
-    vertical-align: top;
-    width: 32px;
-    height: 32px;
+  vertical-align: top;
+  width: 32px;
+  height: 32px;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li span.title {
-    color: #3d3d3d;
-    line-height: 20px;
-    text-align: center;
-    width: 100%;
-    margin-top: 15px;
+  color: #3d3d3d;
+  line-height: 20px;
+  text-align: center;
+  width: 100%;
+  margin-top: 15px;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li span.actions {
-    width: 16px !important;
-    height: 16px !important;
-    vertical-align: top !important;
-    margin: 0px 0px;
-    background: none !important;
-    position: absolute;
-    top: 0;
-    left: 0;
+  width: 16px !important;
+  height: 16px !important;
+  vertical-align: top !important;
+  margin: 0px 0px;
+  background: none !important;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
-.dnnModuleDialog .dnnModuleList .listContainer.listRecommended ul li span.actions {
-    display: none;
+.dnnModuleDialog
+  .dnnModuleList
+  .listContainer.listRecommended
+  ul
+  li
+  span.actions {
+  display: none;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li span.actions .button {
-    display: none;
-    position: relative;
+  display: none;
+  position: relative;
 }
-.dnnModuleDialog .dnnModuleList .listContainer ul li:hover span.actions .button {
-    display: inline-block;
+.dnnModuleDialog
+  .dnnModuleList
+  .listContainer
+  ul
+  li:hover
+  span.actions
+  .button {
+  display: inline-block;
 }
 
 .dnnModuleDialog .dnnModuleList .listContainer ul li:hover {
-    border-color: #fff;
+  border-color: #fff;
 }
 .dnnModuleDialog .dnnModuleList .listContainer ul li:hover:before {
-    filter: alpha(opacity=100);
-    opacity: 1;
+  filter: alpha(opacity=100);
+  opacity: 1;
 }
 
 .dnnModuleDialog .dnnProgressBar {
-	position: absolute;
-	top: 68px;
-	width: 100%;
-	height: 5px;
-	overflow: hidden;
-	background-color: #e2e2e2;
-	display: none;
+  position: absolute;
+  top: 68px;
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+  background-color: #e2e2e2;
+  display: none;
 }
 .dnnModuleDialog .dnnProgressBar span {
-	display: block;
-	background-color: #00a4e5;
-	width: 0;
-	height: 100%;
-	overflow: hidden;
+  display: block;
+  background-color: #00a4e5;
+  width: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-.dnnModuleDialog .dnnModuleList .listContainer ul li span.actions .button.bookmarkModule {
-    background: url('../Images/icon-module-bookmark.png') no-repeat center center;
-    width: 11px;
-    height: 18px;
-    left: 11px;
-    top: 11px;
+.dnnModuleDialog
+  .dnnModuleList
+  .listContainer
+  ul
+  li
+  span.actions
+  .button.bookmarkModule {
+  background: url("../Images/icon-module-bookmark.png") no-repeat center center;
+  width: 11px;
+  height: 18px;
+  left: 11px;
+  top: 11px;
 }
 
-.dnnModuleDialog .dnnModuleList .listContainer ul li span.actions .button.bookmarkedModule {
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 16px 16px 0 0;
-    border-color: #2FA6EB transparent transparent transparent;
-    display: inline-block;
+.dnnModuleDialog
+  .dnnModuleList
+  .listContainer
+  ul
+  li
+  span.actions
+  .button.bookmarkedModule {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 16px 16px 0 0;
+  border-color: #2fa6eb transparent transparent transparent;
+  display: inline-block;
 }
-.dnnModuleDialog .dnnModuleList .listContainer ul li:hover span.actions .button.bookmarkedModule {
-    border-color: #fff transparent transparent transparent;
-    left: 1px;
-    top: 1px;
+.dnnModuleDialog
+  .dnnModuleList
+  .listContainer
+  ul
+  li:hover
+  span.actions
+  .button.bookmarkedModule {
+  border-color: #fff transparent transparent transparent;
+  left: 1px;
+  top: 1px;
 }
-.dnnModuleDialog .dnnModuleList .listContainer ul li span.actions .button.topModule {
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 16px 16px 0 0;
-    border-color: #ccc transparent transparent transparent;
-    display: inline-block;
+.dnnModuleDialog
+  .dnnModuleList
+  .listContainer
+  ul
+  li
+  span.actions
+  .button.topModule {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 16px 16px 0 0;
+  border-color: #ccc transparent transparent transparent;
+  display: inline-block;
 }
 /* Custom module icon */
 
-
 /* scroll bar style*/
 .dnnModuleDialog .dnnModuleList .jspVerticalBar {
-    background: none;
-    right: 7px;
+  background: none;
+  right: 7px;
 }
 .dnnModuleDialog .dnnModuleList .jspVerticalBar .jspTrack {
-    width: 5px;
+  width: 5px;
 }
 .dnnModuleDialog .dnnModuleList .jspVerticalBar .jspTrack .jspDrag {
-    background-color: #323334;
+  background-color: #323334;
 }
 
 .dnnDialogMask {
-    background-color: #000;
-    filter: alpha(opacity=70);
-    opacity: 0.7;
-    position: absolute;
-    z-index: 1110 !important;
+  background-color: #000;
+  filter: alpha(opacity=70);
+  opacity: 0.7;
+  position: absolute;
+  z-index: 1110 !important;
 }
 /**Add Module Search**/
 .dnnModuleDialog .dnnDialogTitle .search-container {
-    position: absolute;
-    right: 68px;
-    display: inline-block;
-    width: 250px;
-    height: 100%;    
+  position: absolute;
+  right: 68px;
+  display: inline-block;
+  width: 250px;
+  height: 100%;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container .search-input-container {
-    height: 100%;
-    width: 90%;
-    margin: 0 auto;
+  height: 100%;
+  width: 90%;
+  margin: 0 auto;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container input.search-input {
-    background: none;
-    border: none;
-    -webkit-box-shadow: none;
-    -ms-box-shadow: none;
-    box-shadow: none;
-    outline: none;
-    height: 100%;
-    line-height: 100%;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  background: none;
+  border: none;
+  -webkit-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+  height: 100%;
+  line-height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 
-    color: #fff;
+  color: #fff;
 }
-.dnnModuleDialog .dnnDialogTitle .search-container input.search-input::-webkit-input-placeholder {
-    color:    #c8c8c8;
+.dnnModuleDialog
+  .dnnDialogTitle
+  .search-container
+  input.search-input::-webkit-input-placeholder {
+  color: #c8c8c8;
 }
-.dnnModuleDialog .dnnDialogTitle .search-container input.search-input:-moz-placeholder {
-   color:    #c8c8c8;
-   opacity:  1;
+.dnnModuleDialog
+  .dnnDialogTitle
+  .search-container
+  input.search-input:-moz-placeholder {
+  color: #c8c8c8;
+  opacity: 1;
 }
-.dnnModuleDialog .dnnDialogTitle .search-container input.search-input::-moz-placeholder {
-   color:    #c8c8c8;
-   opacity:  1;
+.dnnModuleDialog
+  .dnnDialogTitle
+  .search-container
+  input.search-input::-moz-placeholder {
+  color: #c8c8c8;
+  opacity: 1;
 }
-.dnnModuleDialog .dnnDialogTitle .search-container input.search-input:-ms-input-placeholder {
-   color:    #c8c8c8;
+.dnnModuleDialog
+  .dnnDialogTitle
+  .search-container
+  input.search-input:-ms-input-placeholder {
+  color: #c8c8c8;
 }
-.dnnModuleDialog .dnnDialogTitle .search-container input.search-input::-ms-clear {
-    display: none;
+.dnnModuleDialog
+  .dnnDialogTitle
+  .search-container
+  input.search-input::-ms-clear {
+  display: none;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container .clear-button,
 .dnnModuleDialog .dnnDialogTitle .search-container .search-button {
-    display: block;
-    position: absolute;
-    width: 22px;
-    height: 18px;
-    margin-left: 100px;
-    background-repeat: no-repeat;
-    background-position: center center;
-    cursor: pointer;
+  display: block;
+  position: absolute;
+  width: 22px;
+  height: 18px;
+  margin-left: 100px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  cursor: pointer;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container .search-button,
 .dnnModuleDialog .dnnDialogTitle .search-container .clear-button {
-    right: 20px;
-    top: 50%;
-    transform: translate(0, -50%);
-    background-color: transparent;
+  right: 20px;
+  top: 50%;
+  transform: translate(0, -50%);
+  background-color: transparent;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container .search-button:hover,
-.dnnModuleDialog .dnnDialogTitle .search-container .clear-button:hover{
-    background-position-y: -18px;
+.dnnModuleDialog .dnnDialogTitle .search-container .clear-button:hover {
+  background-position-y: -18px;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container .search-button {
-    background: url("../Images/icon-module-search.png") no-repeat 0 0;
+  background: url("../Images/icon-module-search.png") no-repeat 0 0;
 }
 .dnnModuleDialog .dnnDialogTitle .search-container .clear-button {
-    background: url("../Images/icon-module-clearsearch.png") no-repeat 0 0;
-    display: none;
+  background: url("../Images/icon-module-clearsearch.png") no-repeat 0 0;
+  display: none;
 }
 .dnnModuleDialog .dnnModuleHeader {
-    margin: 0 31px 17px 27px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #c8c8c8;
+  margin: 0 31px 17px 27px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #c8c8c8;
 }
 .dnnModuleDialog .dnnModuleHeader .clear {
-    clear: both;
+  clear: both;
 }
 .dnnModuleDialog .dnnModuleHeader > ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 .dnnModuleDialog .dnnModuleHeader > ul > li {
-    width: 40%;
-    float: left;
-    list-style: none;
-    border-right: 1px solid #c8c8c8;
-    padding-left: 18px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  width: 40%;
+  float: left;
+  list-style: none;
+  border-right: 1px solid #c8c8c8;
+  padding-left: 18px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .dnnModuleDialog .dnnModuleHeader > ul > li .dropdown {
-        min-width: 182px;
+  min-width: 182px;
 }
 .dnnModuleDialog .dnnModuleHeader > ul > li:first-of-type {
-    padding: 0;
+  padding: 0;
 }
 .dnnModuleDialog .dnnModuleHeader > ul > li:first-of-type .dropdown {
-    min-width: 200px;
+  min-width: 200px;
 }
 .dnnModuleDialog .dnnModuleHeader > ul > li:last-of-type {
-    width: 20%;
-    border: none;
+  width: 20%;
+  border: none;
 }
 .dnnModuleDialog .dnnModuleHeader > ul > li > label {
-    display: inline-block;
-    line-height: 32px;
-    vertical-align: top;
+  display: inline-block;
+  line-height: 32px;
+  vertical-align: top;
 }
 .dnnModuleDialog .dnnModuleHeader .dnnCheckbox {
-    margin-top: 7px;
+  margin-top: 7px;
 }
 .dnnModuleDialog .dnnModuleHeader li.sites {
-    display: flex;
-    align-items: baseline;
+  display: flex;
+  align-items: baseline;
 }
 .dnnModuleDialog .dnnModuleHeader li.sites select {
-    border: none;
-    margin: 0 7px;
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    line-height: 18px;
+  border: none;
+  margin: 0 7px;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  line-height: 18px;
 }
 .dnnModuleDialog .dnnModuleHeader li.sites select option {
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-    font-weight: 700;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-weight: 700;
 }
-.dnnModuleDialog  .dnnDropDownList.page {
-    display: inline-block;
-    width: auto;
-    min-width: 172px;
-    vertical-align: top;
-    margin-left: 10px;
+.dnnModuleDialog .dnnDropDownList.page {
+  display: inline-block;
+  width: auto;
+  min-width: 172px;
+  vertical-align: top;
+  margin-left: 10px;
 }
-.dnnModuleDialog  .dnnDropDownList.page * {
-    box-sizing: border-box;
+.dnnModuleDialog .dnnDropDownList.page * {
+  box-sizing: border-box;
 }
-.dnnModuleDialog  .dnnDropDownList.page .selected-item { 
-	border: none;
-    box-shadow: none;
-    background: none;
+.dnnModuleDialog .dnnDropDownList.page .selected-item {
+  border: none;
+  box-shadow: none;
+  background: none;
 }
-.dnnModuleDialog  .dnnDropDownList.page .selected-item a {
-    font-weight: bold;
-    padding: 7px 0;
-    border-left: none;
-    background: none;
-    position: relative;
-    color: #4B4E4F;
+.dnnModuleDialog .dnnDropDownList.page .selected-item a {
+  font-weight: bold;
+  padding: 7px 0;
+  border-left: none;
+  background: none;
+  position: relative;
+  color: #4b4e4f;
 }
-.dnnModuleDialog  .dnnDropDownList.page .selected-item a:after {
-    content: "";
-    display: block;
-    width: 0; 
-    height: 0;
-    position: absolute;
-    right: 0;
-    top: 14px;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 4px solid #4B4E4F;
+.dnnModuleDialog .dnnDropDownList.page .selected-item a:after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 0;
+  top: 14px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 4px solid #4b4e4f;
 }
-.dnnModuleDialog  .dnnDropDownList.page .selected-item a.opened {
-    color: #1E88C3;
-    background: none;
+.dnnModuleDialog .dnnDropDownList.page .selected-item a.opened {
+  color: #1e88c3;
+  background: none;
 }
-.dnnModuleDialog  .dnnDropDownList.page .selected-item a.opened:after {
-    border-top-color: #1E88C3;
+.dnnModuleDialog .dnnDropDownList.page .selected-item a.opened:after {
+  border-top-color: #1e88c3;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container {
-    width: 267px;
-    background: #fff;
-    border: 1px solid #C8C8C8;
-    border-radius: 3px;
-    box-shadow: 0 0 20px 0 rgba(0,0,0,.2);
-    top: 42px;
-    height: 330px;
+.dnnModuleDialog .dnnDropDownList.page .dt-container {
+  width: 267px;
+  background: #fff;
+  border: 1px solid #c8c8c8;
+  border-radius: 3px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  top: 42px;
+  height: 330px;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-header {
-    margin: 20px 20px 13px 20px;
-    background: none;
-    border: none;
-    box-shadow: none;
-    padding: 0;
+.dnnModuleDialog .dnnDropDownList.page .dt-container .dt-header {
+  margin: 20px 20px 13px 20px;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-header .sort-button {
-    display: none;
+.dnnModuleDialog .dnnDropDownList.page .dt-container .dt-header .sort-button {
+  display: none;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-header .search-container {
-    margin: 0;
+.dnnModuleDialog
+  .dnnDropDownList.page
+  .dt-container
+  .dt-header
+  .search-container {
+  margin: 0;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-header .search-container .search-input-container {
-    border: 1px solid #C8C8C8;
-    border-radius: 0;
-    height: 20px;
-    padding: 0 6px;
-    min-height: 32px;
+.dnnModuleDialog
+  .dnnDropDownList.page
+  .dt-container
+  .dt-header
+  .search-container
+  .search-input-container {
+  border: 1px solid #c8c8c8;
+  border-radius: 0;
+  height: 20px;
+  padding: 0 6px;
+  min-height: 32px;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-header .search-container .search-input-container input {
-    min-height: 30px;
+.dnnModuleDialog
+  .dnnDropDownList.page
+  .dt-container
+  .dt-header
+  .search-container
+  .search-input-container
+  input {
+  min-height: 30px;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-content {
-    margin: 65px 20px 0 20px;
-    border: 1px solid #C8C8C8;
-    height: 224px;
-    width: auto;
+.dnnModuleDialog .dnnDropDownList.page .dt-container .dt-content {
+  margin: 65px 20px 0 20px;
+  border: 1px solid #c8c8c8;
+  height: 224px;
+  width: auto;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container ul.tv-nodes a.text {
-    color: #6F7273;
+.dnnModuleDialog .dnnDropDownList.page .dt-container ul.tv-nodes a.text {
+  color: #6f7273;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container ul.tv-nodes a.text:hover {
-    text-decoration: none;
-    background-color: transparent;
-    color: #1E88C3;
-    border: 1px solid transparent;
+.dnnModuleDialog .dnnDropDownList.page .dt-container ul.tv-nodes a.text:hover {
+  text-decoration: none;
+  background-color: transparent;
+  color: #1e88c3;
+  border: 1px solid transparent;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-footer {
-    background: none;
-    margin: 0 20px 20px 20px;
-    border: none;
+.dnnModuleDialog .dnnDropDownList.page .dt-container .dt-footer {
+  background: none;
+  margin: 0 20px 20px 20px;
+  border: none;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-footer .result {
-    margin: 10px 0 0 0;
+.dnnModuleDialog .dnnDropDownList.page .dt-container .dt-footer .result {
+  margin: 10px 0 0 0;
 }
-.dnnModuleDialog  .dnnDropDownList.page .dt-container .dt-footer .resizer {
-    display: none;
+.dnnModuleDialog .dnnDropDownList.page .dt-container .dt-footer .resizer {
+  display: none;
 }
 /*Drop Down Style Start*/
-.dnnModuleDialog .dropdown, .dnnModuleDialog .dropdown * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+.dnnModuleDialog .dropdown,
+.dnnModuleDialog .dropdown * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .dnnModuleDialog .dropdown,
@@ -558,399 +627,484 @@
 .dnnModuleDialog .dropdown .carat,
 .dnnModuleDialog .dropdown .carat:after,
 .dnnModuleDialog .dropdown .selected::after,
-.dnnModuleDialog .dropdown:after{
-	-webkit-transition: all 150ms ease-in-out;
-	-moz-transition: all 150ms ease-in-out;
-	-ms-transition: all 150ms ease-in-out;
-	transition: all 150ms ease-in-out;
+.dnnModuleDialog .dropdown:after {
+  -webkit-transition: all 150ms ease-in-out;
+  -moz-transition: all 150ms ease-in-out;
+  -ms-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
 }
 .dnnModuleDialog .dropdown .selected::after,
-.dnnModuleDialog .dropdown.scrollable div::after{
-	-webkit-pointer-events: none;
-	-moz-pointer-events: none;
-	-ms-pointer-events: none;
-	pointer-events: none;
+.dnnModuleDialog .dropdown.scrollable div::after {
+  -webkit-pointer-events: none;
+  -moz-pointer-events: none;
+  -ms-pointer-events: none;
+  pointer-events: none;
 }
-.dnnModuleDialog .dropdown{
-	position: relative;
-    display: inline-block;
-	cursor: pointer;
-	font-weight: bold;
-	background: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-    vertical-align: top;
+.dnnModuleDialog .dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  background: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  vertical-align: top;
 }
-.dnnModuleDialog .dropdown.open{
-	z-index: 2;
+.dnnModuleDialog .dropdown.open {
+  z-index: 2;
 }
-.dnnModuleDialog .dropdown:after{
-	content: '';
-	position: absolute;
-	right: 3px;
-	bottom: 3px;
-	top: 2px;
-	width: 30px;
-	background: transparent;
+.dnnModuleDialog .dropdown:after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  top: 2px;
+  width: 30px;
+  background: transparent;
 }
-.dnnModuleDialog .dropdown.focus:after{
+.dnnModuleDialog .dropdown.focus:after {
+}
+.dnnModuleDialog .dropdown .carat {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 14px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 4px solid #4b4e4f;
+  z-index: 2;
 
+  -webkit-transform-origin: 50% 20%;
+  -moz-transform-origin: 50% 20%;
+  -ms-transform-origin: 50% 20%;
+  transform-origin: 50% 20%;
 }
-.dnnModuleDialog .dropdown .carat{
-	content: '';
-	position: absolute;
-	right: 10px;
-	top: 14px;
-	border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 4px solid #4B4E4F;
-	z-index: 2;
-	
-	-webkit-transform-origin: 50% 20%;
-	-moz-transform-origin: 50% 20%;
-	-ms-transform-origin: 50% 20%;
-	transform-origin: 50% 20%;
-	
-}
-.dnnModuleDialog
-.dnnModuleDialog .dropdown.focus .carat{
+.dnnModuleDialog .dnnModuleDialog .dropdown.focus .carat {
 }
 .dnnModuleDialog .dropdown.open .selected {
-    color: #1E88C3;
+  color: #1e88c3;
 }
-.dnnModuleDialog .dropdown.open .carat{
-    border-top-color: #1E88C3;
+.dnnModuleDialog .dropdown.open .carat {
+  border-top-color: #1e88c3;
 }
-.dnnModuleDialog .dropdown .old{
-	position: absolute;
-	left: 0;
-	top: 0;
-	height: 0;
-	width: 0;
-	overflow: hidden;
+.dnnModuleDialog .dropdown .old {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 0;
+  width: 0;
+  overflow: hidden;
 }
-.dnnModuleDialog .dropdown select{
-	position: absolute;
-	left: 0px;
-	top: 0px;
+.dnnModuleDialog .dropdown select {
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
-.dnnModuleDialog .dropdown.touch .old{
-	width: 100%;
-	height: 100%;
+.dnnModuleDialog .dropdown.touch .old {
+  width: 100%;
+  height: 100%;
 }
-.dnnModuleDialog .dropdown.touch select{
-	width: 100%;
-	height: 100%;
-	opacity: 0;
+.dnnModuleDialog .dropdown.touch select {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
 }
 .dnnModuleDialog .dropdown .selected,
-.dnnModuleDialog .dropdown li{
-	display: block;
-	overflow: hidden;
-	white-space: nowrap;
-	color: #6F7273;
-    font-weight: normal;
-    margin: 0;
-    list-style: none;
-	padding: 8px 12px;
-    height: 32px;
+.dnnModuleDialog .dropdown li {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #6f7273;
+  font-weight: normal;
+  margin: 0;
+  list-style: none;
+  padding: 8px 12px;
+  height: 32px;
 }
-.dnnModuleDialog .dropdown div{
-	position: absolute;
-	height: 0;
-	left: 0;
-	right: 0;
-	margin-top: -1px;
-	overflow: hidden;
-	opacity: 0;
+.dnnModuleDialog .dropdown div {
+  position: absolute;
+  height: 0;
+  left: 0;
+  right: 0;
+  margin-top: -1px;
+  overflow: hidden;
+  opacity: 0;
 
-    background: #fff;
-    border: 1px solid #C8C8C8;
-    border-radius: 3px;
-    box-shadow: 0 0 20px 0 rgba(0,0,0,.2);
-    top: 42px;
+  background: #fff;
+  border: 1px solid #c8c8c8;
+  border-radius: 3px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+  top: 42px;
 }
-.dnnModuleDialog .dropdown.open div{
-	opacity: 1;
-	z-index: 2;
+.dnnModuleDialog .dropdown.open div {
+  opacity: 1;
+  z-index: 2;
 }
-.dnnModuleDialog .dropdown.scrollable div::after{
-	content: '';
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 50px;
-	
-	box-shadow: inset 0 -50px 30px -35px #f8f8f8;
+.dnnModuleDialog .dropdown.scrollable div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+
+  box-shadow: inset 0 -50px 30px -35px #f8f8f8;
 }
-.dnnModuleDialog .dropdown.scrollable:hover div::after{
-	box-shadow: inset 0 -50px 30px -35px #f4f4f4;
+.dnnModuleDialog .dropdown.scrollable:hover div::after {
+  box-shadow: inset 0 -50px 30px -35px #f4f4f4;
 }
-.dnnModuleDialog .dropdown.scrollable.bottom div::after{
-	opacity: 0;
+.dnnModuleDialog .dropdown.scrollable.bottom div::after {
+  opacity: 0;
 }
-.dnnModuleDialog .dropdown ul{
-	position: absolute;
-	left: 0;
-	top: 0;
-	height: 100%;
-	width: 100%;
-    margin: 0;
-    padding: 0;
-	list-style: none;
-	overflow: hidden;
+.dnnModuleDialog .dropdown ul {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
 }
-.dnnModuleDialog .dropdown.scrollable.open ul{
-	overflow-y: auto;
+.dnnModuleDialog .dropdown.scrollable.open ul {
+  overflow-y: auto;
 }
-.dnnModuleDialog .dropdown li.focus{
-	background: #EFF0F0;
-	position: relative;
-	z-index: 3;
-	color: #1E88C3;
+.dnnModuleDialog .dropdown li.focus {
+  background: #eff0f0;
+  position: relative;
+  z-index: 3;
+  color: #1e88c3;
 }
 /*Drop Down Style End*/
 div.dnnModuleDialog_ModuleListMessage {
-    width: 100%;
-    overflow: hidden;
-    margin: 10px auto 10px auto;
-    height: 170px;
-    text-align: center;
+  width: 100%;
+  overflow: hidden;
+  margin: 10px auto 10px auto;
+  height: 170px;
+  text-align: center;
 }
 div.dnnModuleDialog_ModuleListMessage > span {
-        width: 100%;
-        text-align: center;
-        font-style: italic;
-        font-size: 14px;
-        color: #aaa;
-        margin-top: 105px;
-        letter-spacing: 0.015em;
-        text-shadow: none;
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 105px;
+  letter-spacing: 0.015em;
+  text-shadow: none;
 }
 div.DnnModule.highlight {
-    background-color: rgba(255, 250, 205, 255);
+  background-color: rgba(255, 250, 205, 255);
 }
 div.DnnModule.highlight.animate {
-    background-color: rgba(255, 250, 205, 0);
-    -webkit-transition: background 0.5s ease-out;
-    -moz-transition: background 0.5s ease-out;
-    -o-transition: background 0.5s ease-out;
-    transition: background 0.5s ease-out;
+  background-color: rgba(255, 250, 205, 0);
+  -webkit-transition: background 0.5s ease-out;
+  -moz-transition: background 0.5s ease-out;
+  -o-transition: background 0.5s ease-out;
+  transition: background 0.5s ease-out;
 }
-.dnnModuleManager .DnnModule.floating, .dnnModuleSorting .DnnModule.floating {
-    position: fixed;
-    z-index: 1000 !important;
-    filter: alpha(opacity=100);
-    opacity: 1;
-    -webkit-box-sizing: content-box !important;
-    -moz-box-sizing: content-box !important;
-    box-sizing: content-box !important;
-    float: left;
-    width: 130px !important;
-    height: 130px !important;
-    background-color: #f3f7f8;
-    list-style: none;
-    border: 1px solid #fff;
+.dnnModuleManager .DnnModule.floating,
+.dnnModuleSorting .DnnModule.floating {
+  position: fixed;
+  z-index: 1000 !important;
+  filter: alpha(opacity=100);
+  opacity: 1;
+  -webkit-box-sizing: content-box !important;
+  -moz-box-sizing: content-box !important;
+  box-sizing: content-box !important;
+  float: left;
+  width: 130px !important;
+  height: 130px !important;
+  background-color: #f3f7f8;
+  list-style: none;
+  border: 1px solid #fff;
 
-    -webkit-box-shadow: 0px 0px 26px 2px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 26px 2px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 26px 2px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 0px 26px 2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 26px 2px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 26px 2px rgba(0, 0, 0, 0.75);
 
-    -webkit-animation: driftModule 4s linear infinite;
-    -moz-animation:    driftModule 4s linear infinite;
-    -ms-animation:     driftModule 4s linear infinite;
-    -o-animation:      driftModule 4s linear infinite;
-    animation:         driftModule 4s linear infinite;
+  -webkit-animation: driftModule 4s linear infinite;
+  -moz-animation: driftModule 4s linear infinite;
+  -ms-animation: driftModule 4s linear infinite;
+  -o-animation: driftModule 4s linear infinite;
+  animation: driftModule 4s linear infinite;
 }
-.dnnModuleManager .DnnModule.floating *, .dnnModuleSorting .DnnModule.floating * {
-    -webkit-box-sizing: content-box !important;
-    -moz-box-sizing: content-box !important;
-    box-sizing: content-box !important;
+.dnnModuleManager .DnnModule.floating *,
+.dnnModuleSorting .DnnModule.floating * {
+  -webkit-box-sizing: content-box !important;
+  -moz-box-sizing: content-box !important;
+  box-sizing: content-box !important;
 }
 
 @-webkit-keyframes driftModule {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 @-moz-keyframes driftModule {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 @-o-keyframes driftModule {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 @keyframes driftModule {
-    0% { transform: translate(0, 0); }
-    12.5% { transform: translate(5px, 5px); }
-    25% { transform: translate(10px, 0px); }
-    37.5% { transform: translate(5px, -5px); }
-    50% { transform: translate(0px, 0px); }
-    62.5% { transform: translate(-5px, 5px); }
-    75% { transform: translate(-10px, 0px); }
-    87.5% { transform: translate(-5px, -5px); }
-    100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  12.5% {
+    transform: translate(5px, 5px);
+  }
+  25% {
+    transform: translate(10px, 0px);
+  }
+  37.5% {
+    transform: translate(5px, -5px);
+  }
+  50% {
+    transform: translate(0px, 0px);
+  }
+  62.5% {
+    transform: translate(-5px, 5px);
+  }
+  75% {
+    transform: translate(-10px, 0px);
+  }
+  87.5% {
+    transform: translate(-5px, -5px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
-.dnnModuleManager .DnnModule.forDrag, .dnnModuleSorting .DnnModule.forDrag {
-    position: absolute;
-    -webkit-animation: none !important;
-    -moz-animation:    none !important;
-    -o-animation:      none !important;
-    -ms-animation:         none !important;
-    animation:         none !important;
+.dnnModuleManager .DnnModule.forDrag,
+.dnnModuleSorting .DnnModule.forDrag {
+  position: absolute;
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
 
-    border: 2px solid #06a7e3;
+  border: 2px solid #06a7e3;
 }
-.dnnModuleManager .DnnModule.forDrag:before, 
-.dnnModuleManager .DnnModule.forDrag:after, 
-.dnnModuleSorting .DnnModule.forDrag:before, 
+.dnnModuleManager .DnnModule.forDrag:before,
+.dnnModuleManager .DnnModule.forDrag:after,
+.dnnModuleSorting .DnnModule.forDrag:before,
 .dnnModuleSorting .DnnModule.forDrag:after {
-    display: none;
+  display: none;
 }
 .dnnModuleManager .dnnDropTarget {
-    background: #d8eaf6 url('../Images/icon-module-hover.png') no-repeat center center;
-    -ms-opacity: 1;
-    opacity: 1;
-    text-indent: -10000px;
-    position: relative;
-    z-index: 1;
+  background: #d8eaf6 url("../Images/icon-module-hover.png") no-repeat center
+    center;
+  -ms-opacity: 1;
+  opacity: 1;
+  text-indent: -10000px;
+  position: relative;
+  z-index: 1;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint + a + *, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint + a + * {
-    display: none;
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint + a + *,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint + a + * {
+  display: none;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint {
-    height: 100% !important;
-    outline: none;
-	-webkit-box-sizing: border-box !important;
-    -moz-box-sizing: border-box !important;
-    box-sizing: border-box !important;
-    cursor: default;
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint {
+  height: 100% !important;
+  outline: none;
+  -webkit-box-sizing: border-box !important;
+  -moz-box-sizing: border-box !important;
+  box-sizing: border-box !important;
+  cursor: default;
 }
 
 div.dnnDragHint.dnnDragDisabled {
-    cursor: default;
+  cursor: default;
 }
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div {
-    height: 100%;
-    display: block;
-}
-
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span {
-    display: block;
-    vertical-align: top;
-    white-space: nowrap;
-}
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.icon {
-    margin: 25px auto 0 auto;
-    width: 32px;
-    height: 32px;
-    background-position: center center !important;
-}
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon img, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.icon img {
-    vertical-align: top;
-    width: 32px;
-    height: 32px;
-}
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.title, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.title {
-    color: #3d3d3d;
-    line-height: 20px;
-    text-align: center;
-    width: 100%;
-    margin-top: 15px;
-}
-.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div a.cancel-module, .dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div a.cancel-module {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background: #06a7e3 url(../Images/icon-module-cancel.png) no-repeat center center;
-    cursor: pointer;
-    position: absolute;
-    right: -9px;
-    top: -9px;
-    -ms-border-radius: 18px;
-    border-radius: 18px;
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div {
+  height: 100%;
+  display: block;
 }
 
-.dnnModuleManager .DnnModule div.dnnDragHint > div, .dnnModuleSorting .DnnModule div.dnnDragHint > div {
-    display: none;
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span {
+  display: block;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.icon {
+  margin: 25px auto 0 auto;
+  width: 32px;
+  height: 32px;
+  background-position: center center !important;
+}
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.icon img,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.icon img {
+  vertical-align: top;
+  width: 32px;
+  height: 32px;
+}
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div span.title,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div span.title {
+  color: #3d3d3d;
+  line-height: 20px;
+  text-align: center;
+  width: 100%;
+  margin-top: 15px;
+}
+.dnnModuleManager .DnnModule.floating > div.dnnDragHint > div a.cancel-module,
+.dnnModuleSorting .DnnModule.floating > div.dnnDragHint > div a.cancel-module {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: #06a7e3 url(../Images/icon-module-cancel.png) no-repeat center
+    center;
+  cursor: pointer;
+  position: absolute;
+  right: -9px;
+  top: -9px;
+  -ms-border-radius: 18px;
+  border-radius: 18px;
+}
+
+.dnnModuleManager .DnnModule div.dnnDragHint > div,
+.dnnModuleSorting .DnnModule div.dnnDragHint > div {
+  display: none;
 }
 .actionMenu .dnn_mact {
-    margin-left: -15px !important;
+  margin-left: -15px !important;
 }
 .actionMenu .dnn_mact > li {
-    margin-right: 5px !important;
+  margin-right: 5px !important;
 }
 .actionMenu.floating {
-    display: none;
+  display: none;
 }
 div.module-motion {
-    border: 1px dashed #7f7f7f;
-    position: absolute;
-    z-index: 1110;
+  border: 1px dashed #7f7f7f;
+  position: absolute;
+  z-index: 1110;
 }
-.EditBarEmptyPane { display: block !important;}
+.EditBarEmptyPane {
+  display: block !important;
+}
 .module-drag-tip {
-    position: fixed;
-    background-color: #000;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    height: 92px;
-    padding: 18px;
-    color: #fff;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    z-index: 1;
-    width: 200px;
+  position: fixed;
+  background-color: #000;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  height: 92px;
+  padding: 18px;
+  color: #fff;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  z-index: 1;
+  width: 200px;
 }
 .module-drag-tip p {
-    margin: 0;
-    line-height: 20px;
-    font-size: 12px;
+  margin: 0;
+  line-height: 20px;
+  font-size: 12px;
 }
 .module-drag-tip:after {
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 12px 10px 0 10px;
-    border-color: #000000 transparent transparent transparent;
-    content: ".";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-10px, 12px);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 10px 0 10px;
+  border-color: #000000 transparent transparent transparent;
+  content: ".";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-10px, 12px);
 }
 
 .dnnDialogBody.dnnModuleList li.dnnModuleItem span.longTitle {
-    line-height: 16px !important;
-    white-space: normal;
-    height: 48px;
-    display: inline-block;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  line-height: 16px !important;
+  white-space: normal;
+  height: 48px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

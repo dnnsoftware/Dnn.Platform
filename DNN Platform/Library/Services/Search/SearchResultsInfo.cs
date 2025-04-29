@@ -1,229 +1,228 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Search
+namespace DotNetNuke.Services.Search;
+
+using System;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+/// Namespace:  DotNetNuke.Services.Search
+/// Project:    DotNetNuke
+/// Class:      SearchResultsInfo
+/// <summary>The SearchResultsInfo represents a Search Result Item.</summary>
+[DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
+[Serializable]
+public partial class SearchResultsInfo
 {
-    using System;
+    private string author;
+    private string authorName;
+    private bool delete;
+    private string description;
+    private string guid;
+    private int image;
+    private int moduleId;
+    private int occurrences;
+    private int portalId;
+    private DateTime pubDate;
+    private int relevance;
+    private int searchItemID;
+    private string searchKey;
+    private int tabId;
+    private string title;
 
-    using DotNetNuke.Internal.SourceGenerators;
-
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke
-    /// Class:      SearchResultsInfo
-    /// <summary>The SearchResultsInfo represents a Search Result Item.</summary>
-    [DnnDeprecated(7, 1, 0, "No longer used in the Search infrastructure", RemovalVersion = 10)]
-    [Serializable]
-    public partial class SearchResultsInfo
+    public int SearchItemID
     {
-        private string author;
-        private string authorName;
-        private bool delete;
-        private string description;
-        private string guid;
-        private int image;
-        private int moduleId;
-        private int occurrences;
-        private int portalId;
-        private DateTime pubDate;
-        private int relevance;
-        private int searchItemID;
-        private string searchKey;
-        private int tabId;
-        private string title;
-
-        public int SearchItemID
+        get
         {
-            get
-            {
-                return this.searchItemID;
-            }
-
-            set
-            {
-                this.searchItemID = value;
-            }
+            return this.searchItemID;
         }
 
-        public string Title
+        set
         {
-            get
-            {
-                return this.title;
-            }
+            this.searchItemID = value;
+        }
+    }
 
-            set
-            {
-                this.title = value;
-            }
+    public string Title
+    {
+        get
+        {
+            return this.title;
         }
 
-        public string Description
+        set
         {
-            get
-            {
-                return this.description;
-            }
+            this.title = value;
+        }
+    }
 
-            set
-            {
-                this.description = value;
-            }
+    public string Description
+    {
+        get
+        {
+            return this.description;
         }
 
-        public string Author
+        set
         {
-            get
-            {
-                return this.author;
-            }
+            this.description = value;
+        }
+    }
 
-            set
-            {
-                this.author = value;
-            }
+    public string Author
+    {
+        get
+        {
+            return this.author;
         }
 
-        public DateTime PubDate
+        set
         {
-            get
-            {
-                return this.pubDate;
-            }
+            this.author = value;
+        }
+    }
 
-            set
-            {
-                this.pubDate = value;
-            }
+    public DateTime PubDate
+    {
+        get
+        {
+            return this.pubDate;
         }
 
-        public string Guid
+        set
         {
-            get
-            {
-                return this.guid;
-            }
+            this.pubDate = value;
+        }
+    }
 
-            set
-            {
-                this.guid = value;
-            }
+    public string Guid
+    {
+        get
+        {
+            return this.guid;
         }
 
-        public int Image
+        set
         {
-            get
-            {
-                return this.image;
-            }
+            this.guid = value;
+        }
+    }
 
-            set
-            {
-                this.image = value;
-            }
+    public int Image
+    {
+        get
+        {
+            return this.image;
         }
 
-        public int TabId
+        set
         {
-            get
-            {
-                return this.tabId;
-            }
+            this.image = value;
+        }
+    }
 
-            set
-            {
-                this.tabId = value;
-            }
+    public int TabId
+    {
+        get
+        {
+            return this.tabId;
         }
 
-        public string SearchKey
+        set
         {
-            get
-            {
-                return this.searchKey;
-            }
+            this.tabId = value;
+        }
+    }
 
-            set
-            {
-                this.searchKey = value;
-            }
+    public string SearchKey
+    {
+        get
+        {
+            return this.searchKey;
         }
 
-        public int Occurrences
+        set
         {
-            get
-            {
-                return this.occurrences;
-            }
+            this.searchKey = value;
+        }
+    }
 
-            set
-            {
-                this.occurrences = value;
-            }
+    public int Occurrences
+    {
+        get
+        {
+            return this.occurrences;
         }
 
-        public int Relevance
+        set
         {
-            get
-            {
-                return this.relevance;
-            }
+            this.occurrences = value;
+        }
+    }
 
-            set
-            {
-                this.relevance = value;
-            }
+    public int Relevance
+    {
+        get
+        {
+            return this.relevance;
         }
 
-        public int ModuleId
+        set
         {
-            get
-            {
-                return this.moduleId;
-            }
+            this.relevance = value;
+        }
+    }
 
-            set
-            {
-                this.moduleId = value;
-            }
+    public int ModuleId
+    {
+        get
+        {
+            return this.moduleId;
         }
 
-        public bool Delete
+        set
         {
-            get
-            {
-                return this.delete;
-            }
+            this.moduleId = value;
+        }
+    }
 
-            set
-            {
-                this.delete = value;
-            }
+    public bool Delete
+    {
+        get
+        {
+            return this.delete;
         }
 
-        public string AuthorName
+        set
         {
-            get
-            {
-                return this.authorName;
-            }
+            this.delete = value;
+        }
+    }
 
-            set
-            {
-                this.authorName = value;
-            }
+    public string AuthorName
+    {
+        get
+        {
+            return this.authorName;
         }
 
-        public int PortalId
+        set
         {
-            get
-            {
-                return this.portalId;
-            }
+            this.authorName = value;
+        }
+    }
 
-            set
-            {
-                this.portalId = value;
-            }
+    public int PortalId
+    {
+        get
+        {
+            return this.portalId;
+        }
+
+        set
+        {
+            this.portalId = value;
         }
     }
 }

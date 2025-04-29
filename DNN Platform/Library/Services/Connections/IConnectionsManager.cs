@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Connections
+namespace DotNetNuke.Services.Connections;
+
+using System.Collections.Generic;
+
+public interface IConnectionsManager
 {
-    using System.Collections.Generic;
+    void RegisterConnections();
 
-    public interface IConnectionsManager
-    {
-        void RegisterConnections();
-
-        IList<IConnector> GetConnectors();
-    }
+    IList<IConnector> GetConnectors();
 }

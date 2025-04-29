@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Installer
+namespace DotNetNuke.Services.Installer;
+
+public enum NodeInsertType
 {
-    public enum NodeInsertType
-    {
-        Before = 0,
-        After = 1,
-    }
+    Before = 0,
+    After = 1,
 }

@@ -13,8 +13,8 @@ const appContainer = document.getElementById("extensions-container");
 application.init();
 
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

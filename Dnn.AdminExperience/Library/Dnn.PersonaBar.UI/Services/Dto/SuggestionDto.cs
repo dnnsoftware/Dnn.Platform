@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.UI.Services.DTO
+namespace Dnn.PersonaBar.UI.Services.DTO;
+
+using System;
+using System.Runtime.Serialization;
+
+[DataContract]
+[Serializable]
+public class SuggestionDto
 {
-    using System;
-    using System.Runtime.Serialization;
+    [DataMember(Name = "value")]
+    public int Value { get; set; }
 
-    [DataContract]
-    [Serializable]
-    public class SuggestionDto
-    {
-        [DataMember(Name = "value")]
-        public int Value { get; set; }
-
-        [DataMember(Name = "label")]
-        public string Label { get; set; }
-    }
+    [DataMember(Name = "label")]
+    public string Label { get; set; }
 }

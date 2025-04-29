@@ -2,117 +2,116 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Tabs.TabVersions
+namespace DotNetNuke.Entities.Tabs.TabVersions;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
+
+public class TabVersionController : ServiceLocator<ITabVersionController, TabVersionController>, ITabVersionController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private static readonly DataProvider Provider = DataProvider.Instance();
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Localization;
-
-    public class TabVersionController : ServiceLocator<ITabVersionController, TabVersionController>, ITabVersionController
+    /// <inheritdoc/>
+    public TabVersion GetTabVersion(int tabVersionId, int tabId, bool ignoreCache = false)
     {
-        private static readonly DataProvider Provider = DataProvider.Instance();
+        return this.GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
+    }
 
-        /// <inheritdoc/>
-        public TabVersion GetTabVersion(int tabVersionId, int tabId, bool ignoreCache = false)
+    /// <inheritdoc/>
+    public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
+    {
+        // if we are not using the cache, then remove from cache and re-add loaded items when needed later
+        var tabCacheKey = GetTabVersionsCacheKey(tabId);
+        if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
         {
-            return this.GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
+            DataCache.RemoveCache(tabCacheKey);
         }
 
-        /// <inheritdoc/>
-        public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
-        {
-            // if we are not using the cache, then remove from cache and re-add loaded items when needed later
-            var tabCacheKey = GetTabVersionsCacheKey(tabId);
-            if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
-            {
-                DataCache.RemoveCache(tabCacheKey);
-            }
-
-            var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(
-                new CacheItemArgs(
+        var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(
+            new CacheItemArgs(
                 tabCacheKey,
                 DataCache.TabVersionsCacheTimeOut,
                 DataCache.TabVersionsCachePriority),
-                c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)),
-                false);
+            c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)),
+            false);
 
-            return tabVersions;
-        }
+        return tabVersions;
+    }
 
-        /// <inheritdoc/>
-        public void SaveTabVersion(TabVersion tabVersion)
+    /// <inheritdoc/>
+    public void SaveTabVersion(TabVersion tabVersion)
+    {
+        this.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, tabVersion.LastModifiedByUserID);
+    }
+
+    /// <inheritdoc/>
+    public void SaveTabVersion(TabVersion tabVersion, int createdByUserID)
+    {
+        this.SaveTabVersion(tabVersion, createdByUserID, createdByUserID);
+    }
+
+    /// <inheritdoc/>
+    public void SaveTabVersion(TabVersion tabVersion, int createdByUserID, int modifiedByUserID)
+    {
+        tabVersion.TabVersionId = Provider.SaveTabVersion(tabVersion.TabVersionId, tabVersion.TabId, tabVersion.TimeStamp, tabVersion.Version, tabVersion.IsPublished, createdByUserID, modifiedByUserID);
+        this.ClearCache(tabVersion.TabId);
+    }
+
+    /// <inheritdoc/>
+    public TabVersion CreateTabVersion(int tabId, int createdByUserID, bool isPublished = false)
+    {
+        var lastTabVersion = this.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
+        var newVersion = 1;
+
+        if (lastTabVersion != null)
         {
-            this.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, tabVersion.LastModifiedByUserID);
-        }
-
-        /// <inheritdoc/>
-        public void SaveTabVersion(TabVersion tabVersion, int createdByUserID)
-        {
-            this.SaveTabVersion(tabVersion, createdByUserID, createdByUserID);
-        }
-
-        /// <inheritdoc/>
-        public void SaveTabVersion(TabVersion tabVersion, int createdByUserID, int modifiedByUserID)
-        {
-            tabVersion.TabVersionId = Provider.SaveTabVersion(tabVersion.TabVersionId, tabVersion.TabId, tabVersion.TimeStamp, tabVersion.Version, tabVersion.IsPublished, createdByUserID, modifiedByUserID);
-            this.ClearCache(tabVersion.TabId);
-        }
-
-        /// <inheritdoc/>
-        public TabVersion CreateTabVersion(int tabId, int createdByUserID, bool isPublished = false)
-        {
-            var lastTabVersion = this.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
-            var newVersion = 1;
-
-            if (lastTabVersion != null)
+            if (!lastTabVersion.IsPublished && !isPublished)
             {
-                if (!lastTabVersion.IsPublished && !isPublished)
-                {
-                    throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
-                }
-
-                newVersion = lastTabVersion.Version + 1;
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
             }
 
-            var tabVersionId = Provider.SaveTabVersion(0, tabId, DateTime.UtcNow, newVersion, isPublished, createdByUserID, createdByUserID);
-            this.ClearCache(tabId);
-
-            return this.GetTabVersion(tabVersionId, tabId);
+            newVersion = lastTabVersion.Version + 1;
         }
 
-        /// <inheritdoc/>
-        public void DeleteTabVersion(int tabId, int tabVersionId)
-        {
-            Provider.DeleteTabVersion(tabVersionId);
-            this.ClearCache(tabId);
-        }
+        var tabVersionId = Provider.SaveTabVersion(0, tabId, DateTime.UtcNow, newVersion, isPublished, createdByUserID, createdByUserID);
+        this.ClearCache(tabId);
 
-        /// <inheritdoc/>
-        public void DeleteTabVersionDetailByModule(int moduleId)
-        {
-            Provider.DeleteTabVersionDetailByModule(moduleId);
-        }
+        return this.GetTabVersion(tabVersionId, tabId);
+    }
 
-        /// <inheritdoc/>
-        protected override Func<ITabVersionController> GetFactory()
-        {
-            return () => new TabVersionController();
-        }
+    /// <inheritdoc/>
+    public void DeleteTabVersion(int tabId, int tabVersionId)
+    {
+        Provider.DeleteTabVersion(tabVersionId);
+        this.ClearCache(tabId);
+    }
 
-        private static string GetTabVersionsCacheKey(int tabId)
-        {
-            return string.Format(DataCache.TabVersionsCacheKey, tabId);
-        }
+    /// <inheritdoc/>
+    public void DeleteTabVersionDetailByModule(int moduleId)
+    {
+        Provider.DeleteTabVersionDetailByModule(moduleId);
+    }
 
-        private void ClearCache(int tabId)
-        {
-            DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
-        }
+    /// <inheritdoc/>
+    protected override Func<ITabVersionController> GetFactory()
+    {
+        return () => new TabVersionController();
+    }
+
+    private static string GetTabVersionsCacheKey(int tabId)
+    {
+        return string.Format(DataCache.TabVersionsCacheKey, tabId);
+    }
+
+    private void ClearCache(int tabId)
+    {
+        DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
     }
 }

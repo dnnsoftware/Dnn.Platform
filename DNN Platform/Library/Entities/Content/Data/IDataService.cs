@@ -1,102 +1,101 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Content.Data
+namespace DotNetNuke.Entities.Content.Data;
+
+using System.Collections.Generic;
+using System.Data;
+
+using DotNetNuke.Entities.Content.Taxonomy;
+
+/// <summary>Interface of DataService.</summary>
+/// <seealso cref="DataService"/>
+public interface IDataService
 {
-    using System.Collections.Generic;
-    using System.Data;
+    // Content Item Methods
+    int AddContentItem(ContentItem contentItem, int createdByUserId);
 
-    using DotNetNuke.Entities.Content.Taxonomy;
+    void DeleteContentItem(int contentItemId);
 
-    /// <summary>Interface of DataService.</summary>
-    /// <seealso cref="DataService"/>
-    public interface IDataService
-    {
-        // Content Item Methods
-        int AddContentItem(ContentItem contentItem, int createdByUserId);
+    IDataReader GetContentItem(int contentItemId);
 
-        void DeleteContentItem(int contentItemId);
+    IDataReader GetContentItems(int contentTypeId, int tabId, int moduleId);
 
-        IDataReader GetContentItem(int contentItemId);
+    IDataReader GetContentItemsByTerm(string term);
 
-        IDataReader GetContentItems(int contentTypeId, int tabId, int moduleId);
+    IDataReader GetContentItemsByContentType(int contentTypeId);
 
-        IDataReader GetContentItemsByTerm(string term);
+    IDataReader GetContentItemsByModuleId(int moduleId);
 
-        IDataReader GetContentItemsByContentType(int contentTypeId);
+    IDataReader GetContentItemsByTabId(int tabId);
 
-        IDataReader GetContentItemsByModuleId(int moduleId);
+    IDataReader GetContentItemsByVocabularyId(int vocabularyId);
 
-        IDataReader GetContentItemsByTabId(int tabId);
+    IDataReader GetUnIndexedContentItems();
 
-        IDataReader GetContentItemsByVocabularyId(int vocabularyId);
+    void UpdateContentItem(ContentItem contentItem, int lastModifiedByUserId);
 
-        IDataReader GetUnIndexedContentItems();
+    // Content MetaData Methods
+    void AddMetaData(ContentItem contentItem, string name, string value);
 
-        void UpdateContentItem(ContentItem contentItem, int lastModifiedByUserId);
+    void DeleteMetaData(ContentItem contentItem, string name, string value);
 
-        // Content MetaData Methods
-        void AddMetaData(ContentItem contentItem, string name, string value);
+    IDataReader GetMetaData(int contentItemId);
 
-        void DeleteMetaData(ContentItem contentItem, string name, string value);
+    void SynchronizeMetaData(
+        ContentItem contentItem,
+        IEnumerable<KeyValuePair<string, string>> added,
+        IEnumerable<KeyValuePair<string, string>> deleted);
 
-        IDataReader GetMetaData(int contentItemId);
+    // ContentType Methods
+    int AddContentType(ContentType contentType);
 
-        void SynchronizeMetaData(
-            ContentItem contentItem,
-            IEnumerable<KeyValuePair<string, string>> added,
-            IEnumerable<KeyValuePair<string, string>> deleted);
+    void DeleteContentType(ContentType contentType);
 
-        // ContentType Methods
-        int AddContentType(ContentType contentType);
+    IDataReader GetContentTypes();
 
-        void DeleteContentType(ContentType contentType);
+    void UpdateContentType(ContentType contentType);
 
-        IDataReader GetContentTypes();
+    // ScopeType Methods
+    int AddScopeType(ScopeType scopeType);
 
-        void UpdateContentType(ContentType contentType);
+    void DeleteScopeType(ScopeType scopeType);
 
-        // ScopeType Methods
-        int AddScopeType(ScopeType scopeType);
+    IDataReader GetScopeTypes();
 
-        void DeleteScopeType(ScopeType scopeType);
+    void UpdateScopeType(ScopeType scopeType);
 
-        IDataReader GetScopeTypes();
+    // Term Methods
+    int AddHeirarchicalTerm(Term term, int createdByUserId);
 
-        void UpdateScopeType(ScopeType scopeType);
+    int AddSimpleTerm(Term term, int createdByUserId);
 
-        // Term Methods
-        int AddHeirarchicalTerm(Term term, int createdByUserId);
+    void AddTermToContent(Term term, ContentItem contentItem);
 
-        int AddSimpleTerm(Term term, int createdByUserId);
+    void DeleteSimpleTerm(Term term);
 
-        void AddTermToContent(Term term, ContentItem contentItem);
+    void DeleteHeirarchicalTerm(Term term);
 
-        void DeleteSimpleTerm(Term term);
+    IDataReader GetTerm(int termId);
 
-        void DeleteHeirarchicalTerm(Term term);
+    IDataReader GetTermUsage(int termId);
 
-        IDataReader GetTerm(int termId);
+    IDataReader GetTermsByContent(int contentItemId);
 
-        IDataReader GetTermUsage(int termId);
+    IDataReader GetTermsByVocabulary(int vocabularyId);
 
-        IDataReader GetTermsByContent(int contentItemId);
+    void RemoveTermsFromContent(ContentItem contentItem);
 
-        IDataReader GetTermsByVocabulary(int vocabularyId);
+    void UpdateHeirarchicalTerm(Term term, int lastModifiedByUserId);
 
-        void RemoveTermsFromContent(ContentItem contentItem);
+    void UpdateSimpleTerm(Term term, int lastModifiedByUserId);
 
-        void UpdateHeirarchicalTerm(Term term, int lastModifiedByUserId);
+    // Vocabulary Methods
+    int AddVocabulary(Vocabulary vocabulary, int createdByUserId);
 
-        void UpdateSimpleTerm(Term term, int lastModifiedByUserId);
+    void DeleteVocabulary(Vocabulary vocabulary);
 
-        // Vocabulary Methods
-        int AddVocabulary(Vocabulary vocabulary, int createdByUserId);
+    IDataReader GetVocabularies();
 
-        void DeleteVocabulary(Vocabulary vocabulary);
-
-        IDataReader GetVocabularies();
-
-        void UpdateVocabulary(Vocabulary vocabulary, int lastModifiedByUserId);
-    }
+    void UpdateVocabulary(Vocabulary vocabulary, int lastModifiedByUserId);
 }

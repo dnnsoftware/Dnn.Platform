@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Library.Dto
-{
-    public class Localization
-    {
-        public string ResxDataCacheKey { get; set; }
+namespace Dnn.PersonaBar.Library.Dto;
 
-        public string ResxModifiedDateCacheKey { get; set; }
-    }
+public class Localization
+{
+    public string ResxDataCacheKey { get; set; }
+
+    public string ResxModifiedDateCacheKey { get; set; }
 }

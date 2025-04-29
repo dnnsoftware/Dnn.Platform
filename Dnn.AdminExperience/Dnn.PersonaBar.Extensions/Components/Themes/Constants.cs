@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Themes.Components
+namespace Dnn.PersonaBar.Themes.Components;
+
+public class Constants
 {
-    public class Constants
-    {
-        public const string MenuName = "Dnn.Themes";
-        public const string Edit = "EDIT";
-    }
+    public const string MenuName = "Dnn.Themes";
+    public const string Edit = "EDIT";
 }

@@ -1,63 +1,62 @@
 /* START EVOQ COLOR PALETTE */
 
-@blackPearl: #0B1C24;
-@firefly: #0E2936;
-@astronautBlue: #1E485E;
-@matisse: #226F9B;
-@curiousBlue: #1E88C3;
+@blackPearl: #0b1c24;
+@firefly: #0e2936;
+@astronautBlue: #1e485e;
+@matisse: #226f9b;
+@curiousBlue: #1e88c3;
 @curiousBlueSolid: rgba(30, 136, 195, 0.6);
 @curiousBlueWithOpacity: rgba(30, 136, 195, 0.6);
-@cerulean: #21A3DA;
-@seagull: #79BFDB;
-@nonPhotoBlue: #9FDBF0;
-@solitude: #EAF1FA;
+@cerulean: #21a3da;
+@seagull: #79bfdb;
+@nonPhotoBlue: #9fdbf0;
+@solitude: #eaf1fa;
 
 @gondola: #261516;
-@bulgarianRose: #46292B;
+@bulgarianRose: #46292b;
 
-@astral: #3C7A9A;
-@regentGray: #8191A4;
+@astral: #3c7a9a;
+@regentGray: #8191a4;
 
-@thunder: #4B4E4F;
-@rollingStone: #6F7273;
+@thunder: #4b4e4f;
+@rollingStone: #6f7273;
 @mountainMist: #959695;
-@alto: #C8C8C8;
-@mercury: #E5E7E6;
-@gallery: #EFF0F0;
-@alabaster: #FBFCFC;
-@white: #FFFFFF;
+@alto: #c8c8c8;
+@mercury: #e5e7e6;
+@gallery: #eff0f0;
+@alabaster: #fbfcfc;
+@white: #ffffff;
 
 /* END EVOQ COLOR PALETTE */
 
-
 /* START ATTENTION COLORS */
 
-@alizarinCrimson: #EA2134;
-@cranberry: #D9577A;
+@alizarinCrimson: #ea2134;
+@cranberry: #d9577a;
 
 @amazon: #368254;
-@mantis: #78C16B;
+@mantis: #78c16b;
 
 /* END ATTENTION COLORS */
 
 /* SVG HOVER STATES */
 
 svg {
-    fill: @alto;
-    &:hover {
-        fill: @rollingStone;
-    }
-    &:active {
-        fill: @curiousBlue;
-    }
+  fill: @alto;
+  &:hover {
+    fill: @rollingStone;
+  }
+  &:active {
+    fill: @curiousBlue;
+  }
 }
 
 /* END SVG HOVER STATES */
 
 .prefixes(@property, @value) {
-    -webkit-@{property}: @value;
-     -khtml-@{property}: @value;
-       -moz-@{property}: @value;
-        -ms-@{property}: @value;
-            @{property}: @value;
+  -webkit-@{property}: @value;
+  -khtml-@{property}: @value;
+  -moz-@{property}: @value;
+  -ms-@{property}: @value;
+  @{property}: @value;
 }

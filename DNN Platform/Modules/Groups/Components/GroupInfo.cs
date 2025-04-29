@@ -1,172 +1,171 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Groups
+namespace DotNetNuke.Entities.Groups;
+
+using System;
+using System.Collections;
+using System.Xml;
+using System.Xml.Serialization;
+
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Security.Roles.Internal;
+using DotNetNuke.Services.Tokens;
+
+public class GroupInfo : RoleInfo, IPropertyAccess
 {
-    using System;
-    using System.Collections;
-    using System.Xml;
-    using System.Xml.Serialization;
+    // private RoleInfo roleInfo;
 
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Security.Roles.Internal;
-    using DotNetNuke.Services.Tokens;
-
-    public class GroupInfo : RoleInfo, IPropertyAccess
+    /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
+    public GroupInfo()
     {
-        // private RoleInfo roleInfo;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
-        public GroupInfo()
+    /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
+    /// <param name="roleInfo"></param>
+    public GroupInfo(RoleInfo roleInfo)
+    {
+        this.RoleID = roleInfo.RoleID;
+        this.RoleName = roleInfo.RoleName;
+        this.Description = roleInfo.Description;
+        this.PortalID = roleInfo.PortalID;
+        this.SecurityMode = roleInfo.SecurityMode;
+        this.ServiceFee = roleInfo.ServiceFee;
+        this.RSVPCode = roleInfo.RSVPCode;
+    }
+
+    // public RoleInfo Role {
+    //    get {
+    //        return roleInfo;
+    //    }
+    //    set {
+    //        roleInfo = value;
+    //    }
+    // }
+    // public int GroupId {
+    //    get {
+    //        return RoleID;
+    //    }
+    // }
+
+    // public int ModuleId { get; set; }
+    public string Street
+    {
+        get
         {
+            return this.GetString("Street", string.Empty);
         }
 
-        /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
-        /// <param name="roleInfo"></param>
-        public GroupInfo(RoleInfo roleInfo)
+        set
         {
-            this.RoleID = roleInfo.RoleID;
-            this.RoleName = roleInfo.RoleName;
-            this.Description = roleInfo.Description;
-            this.PortalID = roleInfo.PortalID;
-            this.SecurityMode = roleInfo.SecurityMode;
-            this.ServiceFee = roleInfo.ServiceFee;
-            this.RSVPCode = roleInfo.RSVPCode;
+            this.SetString("Street", value);
+        }
+    }
+
+    public string City
+    {
+        get
+        {
+            return this.GetString("City", string.Empty);
         }
 
-        // public RoleInfo Role {
-        //    get {
-        //        return roleInfo;
-        //    }
-        //    set {
-        //        roleInfo = value;
-        //    }
-        // }
-        // public int GroupId {
-        //    get {
-        //        return RoleID;
-        //    }
-        // }
-
-        // public int ModuleId { get; set; }
-        public string Street
+        set
         {
-            get
-            {
-                return this.GetString("Street", string.Empty);
-            }
+            this.SetString("City", value);
+        }
+    }
 
-            set
-            {
-                this.SetString("Street", value);
-            }
+    public string Region
+    {
+        get
+        {
+            return this.GetString("Region", string.Empty);
         }
 
-        public string City
+        set
         {
-            get
-            {
-                return this.GetString("City", string.Empty);
-            }
+            this.SetString("Region", value);
+        }
+    }
 
-            set
-            {
-                this.SetString("City", value);
-            }
+    public string Country
+    {
+        get
+        {
+            return this.GetString("Country", string.Empty);
         }
 
-        public string Region
+        set
         {
-            get
-            {
-                return this.GetString("Region", string.Empty);
-            }
+            this.SetString("Country", value);
+        }
+    }
 
-            set
-            {
-                this.SetString("Region", value);
-            }
+    public string PostalCode
+    {
+        get
+        {
+            return this.GetString("PostalCode", string.Empty);
         }
 
-        public string Country
+        set
         {
-            get
-            {
-                return this.GetString("Country", string.Empty);
-            }
+            this.SetString("PostalCode", value);
+        }
+    }
 
-            set
-            {
-                this.SetString("Country", value);
-            }
+    public string Website
+    {
+        get
+        {
+            return this.GetString("Website", string.Empty);
         }
 
-        public string PostalCode
+        set
         {
-            get
-            {
-                return this.GetString("PostalCode", string.Empty);
-            }
+            this.SetString("Website", value);
+        }
+    }
 
-            set
-            {
-                this.SetString("PostalCode", value);
-            }
+    public bool Featured
+    {
+        get
+        {
+            return Convert.ToBoolean(this.GetString("Featured", "false"));
         }
 
-        public string Website
+        set
         {
-            get
-            {
-                return this.GetString("Website", string.Empty);
-            }
+            this.SetString("Featured", value.ToString());
+        }
+    }
 
-            set
-            {
-                this.SetString("Website", value);
-            }
+    private string GetString(string keyName, string defaultValue)
+    {
+        if (this.Settings == null)
+        {
+            return defaultValue;
         }
 
-        public bool Featured
+        if (this.Settings.ContainsKey(keyName))
         {
-            get
-            {
-                return Convert.ToBoolean(this.GetString("Featured", "false"));
-            }
-
-            set
-            {
-                this.SetString("Featured", value.ToString());
-            }
+            return this.Settings[keyName];
         }
-
-        private string GetString(string keyName, string defaultValue)
+        else
         {
-            if (this.Settings == null)
-            {
-                return defaultValue;
-            }
-
-            if (this.Settings.ContainsKey(keyName))
-            {
-                return this.Settings[keyName];
-            }
-            else
-            {
-                return defaultValue;
-            }
+            return defaultValue;
         }
+    }
 
-        private void SetString(string keyName, string value)
+    private void SetString(string keyName, string value)
+    {
+        if (this.Settings.ContainsKey(keyName))
         {
-            if (this.Settings.ContainsKey(keyName))
-            {
-                this.Settings[keyName] = value;
-            }
-            else
-            {
-                this.Settings.Add(keyName, value);
-            }
+            this.Settings[keyName] = value;
+        }
+        else
+        {
+            this.Settings.Add(keyName, value);
         }
     }
 }

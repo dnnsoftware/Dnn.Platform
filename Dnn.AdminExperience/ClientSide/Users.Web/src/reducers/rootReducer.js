@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import {users} from "dnn-users-common-reducers";
+import { users } from "dnn-users-common-reducers";
 
 const rootReducer = combineReducers({
-    users: users()
+  users: users(),
 });
 
 export default rootReducer;

@@ -24,94 +24,93 @@ using log4net;
 using log4net.Core;
 using log4net.Util;
 
-namespace log4net.Filter
+namespace log4net.Filter;
+
+/// <summary>This is a very simple filter based on <see cref="Level"/> matching.</summary>
+/// <remarks>
+/// <para>
+/// The filter admits two options <see cref="LevelToMatch"/> and
+/// <see cref="AcceptOnMatch"/>. If there is an exact match between the value
+/// of the <see cref="LevelToMatch"/> option and the <see cref="Level"/> of the 
+/// <see cref="LoggingEvent"/>, then the <see cref="Decide"/> method returns <see cref="FilterDecision.Accept"/> in 
+/// case the <see cref="AcceptOnMatch"/> option value is set
+/// to <c>true</c>, if it is <c>false</c> then 
+/// <see cref="FilterDecision.Deny"/> is returned. If the <see cref="Level"/> does not match then
+/// the result will be <see cref="FilterDecision.Neutral"/>.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+/// <author>Gert Driesen</author>
+public class LevelMatchFilter : FilterSkeleton
 {
-    /// <summary>This is a very simple filter based on <see cref="Level"/> matching.</summary>
+    /// <summary>flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match</summary>
+    private bool m_acceptOnMatch = true;
+
+    /// <summary>the <see cref="Level"/> to match against</summary>
+    private Level m_levelToMatch;
+
+    /// <summary>Default constructor</summary>
+    public LevelMatchFilter()
+    {
+    }
+
+    /// <summary><see cref="FilterDecision.Accept"/> when matching <see cref="LevelToMatch"/></summary>
     /// <remarks>
     /// <para>
-    /// The filter admits two options <see cref="LevelToMatch"/> and
-    /// <see cref="AcceptOnMatch"/>. If there is an exact match between the value
-    /// of the <see cref="LevelToMatch"/> option and the <see cref="Level"/> of the 
-    /// <see cref="LoggingEvent"/>, then the <see cref="Decide"/> method returns <see cref="FilterDecision.Accept"/> in 
-    /// case the <see cref="AcceptOnMatch"/> option value is set
-    /// to <c>true</c>, if it is <c>false</c> then 
-    /// <see cref="FilterDecision.Deny"/> is returned. If the <see cref="Level"/> does not match then
+    /// The <see cref="AcceptOnMatch"/> property is a flag that determines
+    /// the behavior when a matching <see cref="Level"/> is found. If the
+    /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the 
+    /// logging event, otherwise it will <see cref="FilterDecision.Deny"/> the event.
+    /// </para>
+    /// <para>
+    /// The default is <c>true</c> i.e. to <see cref="FilterDecision.Accept"/> the event.
+    /// </para>
+    /// </remarks>
+    public bool AcceptOnMatch
+    {
+        get { return this.m_acceptOnMatch; }
+        set { this.m_acceptOnMatch = value; }
+    }
+
+    /// <summary>The <see cref="Level"/> that the filter will match</summary>
+    /// <remarks>
+    /// <para>
+    /// The level that this filter will attempt to match against the 
+    /// <see cref="LoggingEvent"/> level. If a match is found then
+    /// the result depends on the value of <see cref="AcceptOnMatch"/>.
+    /// </para>
+    /// </remarks>
+    public Level LevelToMatch
+    {
+        get { return this.m_levelToMatch; }
+        set { this.m_levelToMatch = value; }
+    }
+
+    /// <summary>Tests if the <see cref="Level"/> of the logging event matches that of the filter</summary>
+    /// <param name="loggingEvent">the event to filter</param>
+    /// <returns>see remarks</returns>
+    /// <remarks>
+    /// <para>
+    /// If the <see cref="Level"/> of the event matches the level of the
+    /// filter then the result of the function depends on the
+    /// value of <see cref="AcceptOnMatch"/>. If it is true then
+    /// the function will return <see cref="FilterDecision.Accept"/>, it it is false then it
+    /// will return <see cref="FilterDecision.Deny"/>. If the <see cref="Level"/> does not match then
     /// the result will be <see cref="FilterDecision.Neutral"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    public class LevelMatchFilter : FilterSkeleton
+    public override FilterDecision Decide(LoggingEvent loggingEvent) 
     {
-        /// <summary>flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match</summary>
-        private bool m_acceptOnMatch = true;
-
-        /// <summary>the <see cref="Level"/> to match against</summary>
-        private Level m_levelToMatch;
-
-        /// <summary>Default constructor</summary>
-        public LevelMatchFilter()
+        if (loggingEvent == null)
         {
+            throw new ArgumentNullException("loggingEvent");
         }
 
-        /// <summary><see cref="FilterDecision.Accept"/> when matching <see cref="LevelToMatch"/></summary>
-        /// <remarks>
-        /// <para>
-        /// The <see cref="AcceptOnMatch"/> property is a flag that determines
-        /// the behavior when a matching <see cref="Level"/> is found. If the
-        /// flag is set to true then the filter will <see cref="FilterDecision.Accept"/> the 
-        /// logging event, otherwise it will <see cref="FilterDecision.Deny"/> the event.
-        /// </para>
-        /// <para>
-        /// The default is <c>true</c> i.e. to <see cref="FilterDecision.Accept"/> the event.
-        /// </para>
-        /// </remarks>
-        public bool AcceptOnMatch
+        if (this.m_levelToMatch != null && this.m_levelToMatch == loggingEvent.Level) 
         {
-            get { return this.m_acceptOnMatch; }
-            set { this.m_acceptOnMatch = value; }
+            // Found match
+            return this.m_acceptOnMatch ? FilterDecision.Accept : FilterDecision.Deny;
         }
-
-        /// <summary>The <see cref="Level"/> that the filter will match</summary>
-        /// <remarks>
-        /// <para>
-        /// The level that this filter will attempt to match against the 
-        /// <see cref="LoggingEvent"/> level. If a match is found then
-        /// the result depends on the value of <see cref="AcceptOnMatch"/>.
-        /// </para>
-        /// </remarks>
-        public Level LevelToMatch
-        {
-            get { return this.m_levelToMatch; }
-            set { this.m_levelToMatch = value; }
-        }
-
-        /// <summary>Tests if the <see cref="Level"/> of the logging event matches that of the filter</summary>
-        /// <param name="loggingEvent">the event to filter</param>
-        /// <returns>see remarks</returns>
-        /// <remarks>
-        /// <para>
-        /// If the <see cref="Level"/> of the event matches the level of the
-        /// filter then the result of the function depends on the
-        /// value of <see cref="AcceptOnMatch"/>. If it is true then
-        /// the function will return <see cref="FilterDecision.Accept"/>, it it is false then it
-        /// will return <see cref="FilterDecision.Deny"/>. If the <see cref="Level"/> does not match then
-        /// the result will be <see cref="FilterDecision.Neutral"/>.
-        /// </para>
-        /// </remarks>
-        public override FilterDecision Decide(LoggingEvent loggingEvent) 
-        {
-            if (loggingEvent == null)
-            {
-                throw new ArgumentNullException("loggingEvent");
-            }
-
-            if (this.m_levelToMatch != null && this.m_levelToMatch == loggingEvent.Level) 
-            {
-                // Found match
-                return this.m_acceptOnMatch ? FilterDecision.Accept : FilterDecision.Deny;
-            }
-            return FilterDecision.Neutral;
-        }
+        return FilterDecision.Neutral;
     }
 }

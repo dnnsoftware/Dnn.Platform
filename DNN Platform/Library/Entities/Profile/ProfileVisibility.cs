@@ -2,100 +2,99 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Profile
+namespace DotNetNuke.Entities.Profile;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Users.Social;
+using DotNetNuke.Security.Roles;
+
+[Serializable]
+public class ProfileVisibility
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Text;
-
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Entities.Users.Social;
-    using DotNetNuke.Security.Roles;
-
-    [Serializable]
-    public class ProfileVisibility
+    /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
+    public ProfileVisibility()
     {
-        /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
-        public ProfileVisibility()
-        {
-            this.RoleVisibilities = new List<RoleInfo>();
-            this.RelationshipVisibilities = new List<Relationship>();
-        }
+        this.RoleVisibilities = new List<RoleInfo>();
+        this.RelationshipVisibilities = new List<Relationship>();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="extendedVisibility"></param>
-        public ProfileVisibility(int portalId, string extendedVisibility)
-            : this()
+    /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
+    /// <param name="portalId"></param>
+    /// <param name="extendedVisibility"></param>
+    public ProfileVisibility(int portalId, string extendedVisibility)
+        : this()
+    {
+        if (!string.IsNullOrEmpty(extendedVisibility))
         {
-            if (!string.IsNullOrEmpty(extendedVisibility))
+            var relationshipController = new RelationshipController();
+
+            var lists = extendedVisibility.Split(';');
+
+            if (!string.IsNullOrEmpty(lists[0].Substring(2).TrimEnd(',')))
             {
-                var relationshipController = new RelationshipController();
-
-                var lists = extendedVisibility.Split(';');
-
-                if (!string.IsNullOrEmpty(lists[0].Substring(2).TrimEnd(',')))
+                var roles = lists[0].Substring(2).TrimEnd(',').Split(',');
+                foreach (var role in roles)
                 {
-                    var roles = lists[0].Substring(2).TrimEnd(',').Split(',');
-                    foreach (var role in roles)
-                    {
-                        int roleId = int.Parse(role);
-                        RoleInfo userRole = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
-                        this.RoleVisibilities.Add(userRole);
-                    }
+                    int roleId = int.Parse(role);
+                    RoleInfo userRole = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
+                    this.RoleVisibilities.Add(userRole);
                 }
+            }
 
-                if (!string.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
+            if (!string.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
+            {
+                var relationships = lists[1].Substring(2).TrimEnd(',').Split(',');
+                foreach (var relationship in relationships)
                 {
-                    var relationships = lists[1].Substring(2).TrimEnd(',').Split(',');
-                    foreach (var relationship in relationships)
-                    {
-                        Relationship userRelationship = RelationshipController.Instance.GetRelationship(int.Parse(relationship));
-                        this.RelationshipVisibilities.Add(userRelationship);
-                    }
+                    Relationship userRelationship = RelationshipController.Instance.GetRelationship(int.Parse(relationship));
+                    this.RelationshipVisibilities.Add(userRelationship);
                 }
             }
         }
+    }
 
-        public UserVisibilityMode VisibilityMode { get; set; }
+    public UserVisibilityMode VisibilityMode { get; set; }
 
-        public IList<RoleInfo> RoleVisibilities { get; set; }
+    public IList<RoleInfo> RoleVisibilities { get; set; }
 
-        public IList<Relationship> RelationshipVisibilities { get; set; }
+    public IList<Relationship> RelationshipVisibilities { get; set; }
 
-        public ProfileVisibility Clone()
+    public ProfileVisibility Clone()
+    {
+        var pv = new ProfileVisibility()
         {
-            var pv = new ProfileVisibility()
-            {
-                VisibilityMode = this.VisibilityMode,
-                RoleVisibilities = new List<RoleInfo>(this.RoleVisibilities),
-                RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities),
-            };
-            return pv;
-        }
+            VisibilityMode = this.VisibilityMode,
+            RoleVisibilities = new List<RoleInfo>(this.RoleVisibilities),
+            RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities),
+        };
+        return pv;
+    }
 
-        public string ExtendedVisibilityString()
+    public string ExtendedVisibilityString()
+    {
+        if (this.VisibilityMode == UserVisibilityMode.FriendsAndGroups)
         {
-            if (this.VisibilityMode == UserVisibilityMode.FriendsAndGroups)
+            var sb = new StringBuilder();
+            sb.Append("G:");
+            foreach (var role in this.RoleVisibilities)
             {
-                var sb = new StringBuilder();
-                sb.Append("G:");
-                foreach (var role in this.RoleVisibilities)
-                {
-                    sb.Append(role.RoleID.ToString(CultureInfo.InvariantCulture) + ",");
-                }
-
-                sb.Append(";R:");
-                foreach (var relationship in this.RelationshipVisibilities)
-                {
-                    sb.Append(relationship.RelationshipId.ToString(CultureInfo.InvariantCulture) + ",");
-                }
-
-                return sb.ToString();
+                sb.Append(role.RoleID.ToString(CultureInfo.InvariantCulture) + ",");
             }
 
-            return string.Empty;
+            sb.Append(";R:");
+            foreach (var relationship in this.RelationshipVisibilities)
+            {
+                sb.Append(relationship.RelationshipId.ToString(CultureInfo.InvariantCulture) + ",");
+            }
+
+            return sb.ToString();
         }
+
+        return string.Empty;
     }
 }

@@ -7,11 +7,11 @@ import databaseTab from "./databaseTab";
 import logsTab from "./logsTab";
 
 export {
-    pagination,
-    visiblePanel,
-    webTab,
-    server,
-    applicationTab,
-    databaseTab,
-    logsTab
+  pagination,
+  visiblePanel,
+  webTab,
+  server,
+  applicationTab,
+  databaseTab,
+  logsTab,
 };

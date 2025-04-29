@@ -2,31 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints.Filters
+namespace DotNetNuke.ExtensionPoints.Filters;
+
+using System.Collections.Generic;
+using System.Linq;
+
+public class CompositeFilter : IExtensionPointFilter
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    private readonly IList<IExtensionPointFilter> filters;
 
-    public class CompositeFilter : IExtensionPointFilter
+    /// <summary>Initializes a new instance of the <see cref="CompositeFilter"/> class.</summary>
+    public CompositeFilter()
     {
-        private readonly IList<IExtensionPointFilter> filters;
+        this.filters = new List<IExtensionPointFilter>();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="CompositeFilter"/> class.</summary>
-        public CompositeFilter()
-        {
-            this.filters = new List<IExtensionPointFilter>();
-        }
+    public CompositeFilter And(IExtensionPointFilter filter)
+    {
+        this.filters.Add(filter);
+        return this;
+    }
 
-        public CompositeFilter And(IExtensionPointFilter filter)
-        {
-            this.filters.Add(filter);
-            return this;
-        }
-
-        /// <inheritdoc/>
-        public bool Condition(IExtensionPointData m)
-        {
-            return this.filters.All(f => f.Condition(m));
-        }
+    /// <inheritdoc/>
+    public bool Condition(IExtensionPointData m)
+    {
+        return this.filters.All(f => f.Condition(m));
     }
 }

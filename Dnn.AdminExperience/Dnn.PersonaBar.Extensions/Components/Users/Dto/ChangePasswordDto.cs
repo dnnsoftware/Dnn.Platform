@@ -2,21 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Users.Components.Dto
+namespace Dnn.PersonaBar.Users.Components.Dto;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Web;
+
+[DataContract]
+public class ChangePasswordDto
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.Serialization;
-    using System.Web;
+    [DataMember(Name = "userId")]
+    public int UserId { get; set; }
 
-    [DataContract]
-    public class ChangePasswordDto
-    {
-        [DataMember(Name = "userId")]
-        public int UserId { get; set; }
-
-        [DataMember(Name = "password")]
-        public string Password { get; set; }
-    }
+    [DataMember(Name = "password")]
+    public string Password { get; set; }
 }

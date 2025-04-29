@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Urls
+namespace DotNetNuke.Entities.Urls;
+
+internal static class UrlEnums
 {
-    internal static class UrlEnums
+    internal enum TabKeyPreference
     {
-        internal enum TabKeyPreference
-        {
-            TabOK = 0,
-            TabRedirected = 1,
-            TabDeleted = 2,
-        }
+        TabOK = 0,
+        TabRedirected = 1,
+        TabDeleted = 2,
     }
 }

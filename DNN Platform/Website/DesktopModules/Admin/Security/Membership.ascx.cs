@@ -190,14 +190,14 @@ namespace DotNetNuke.Modules.Admin.Users
 
             this.lastLockoutDate.Value = this.UserMembership.LastLockoutDate.Year > 2000
                                         ? (object)this.UserMembership.LastLockoutDate
-                                        : this.LocalizeString("Never");
+                                        : this.LocalizeText("Never");
 
             // ReSharper disable SpecifyACultureInStringConversionExplicitly
             this.isOnLine.Value = this.LocalizeString(this.UserMembership.IsOnLine.ToString());
-            this.lockedOut.Value = this.LocalizeString(this.UserMembership.LockedOut.ToString());
-            this.approved.Value = this.LocalizeString(this.UserMembership.Approved.ToString());
-            this.updatePassword.Value = this.LocalizeString(this.UserMembership.UpdatePassword.ToString());
-            this.isDeleted.Value = this.LocalizeString(this.UserMembership.IsDeleted.ToString());
+            this.lockedOut.Value = this.LocalizeText(this.UserMembership.LockedOut.ToString());
+            this.approved.Value = this.LocalizeText(this.UserMembership.Approved.ToString());
+            this.updatePassword.Value = this.LocalizeText(this.UserMembership.UpdatePassword.ToString());
+            this.isDeleted.Value = this.LocalizeText(this.UserMembership.IsDeleted.ToString());
 
             // show the user folder path without default parent folder, and only visible to admin.
             this.userFolder.Visible = this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);

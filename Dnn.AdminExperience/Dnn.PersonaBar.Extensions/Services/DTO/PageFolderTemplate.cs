@@ -2,21 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Services.Dto
+namespace Dnn.PersonaBar.Pages.Services.Dto;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Web;
+
+[DataContract]
+public class PageFolderTemplate
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Runtime.Serialization;
-    using System.Web;
+    [DataMember(Name = "key")]
+    public int Key { get; set; }
 
-    [DataContract]
-    public class PageFolderTemplate
-    {
-        [DataMember(Name = "key")]
-        public int Key { get; set; }
-
-        [DataMember(Name = "value")]
-        public string Value { get; set; }
-    }
+    [DataMember(Name = "value")]
+    public string Value { get; set; }
 }

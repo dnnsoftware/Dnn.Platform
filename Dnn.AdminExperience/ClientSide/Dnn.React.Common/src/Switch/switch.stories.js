@@ -4,12 +4,12 @@ import { action } from "@storybook/addon-actions";
 import Switch from "./index";
 
 class ControlledSwitch extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = { value: props.value ? props.value : false}
+    this.state = { value: props.value ? props.value : false };
   }
 
-  render(){
+  render() {
     return (
       <Switch
         labelHidden={false}
@@ -18,7 +18,7 @@ class ControlledSwitch extends Component {
         label="Controlled Switch"
         onChange={(value) => this.setState({ value: value })}
         labelPlacement="left"
-        value={this.state.value}    
+        value={this.state.value}
       />
     );
   }

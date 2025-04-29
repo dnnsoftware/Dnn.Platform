@@ -1,69 +1,68 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Search.Controllers
+namespace DotNetNuke.Services.Search.Controllers;
+
+using System;
+using System.Linq;
+
+using DotNetNuke.Common.Internal;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Search.Entities;
+
+using Localization = DotNetNuke.Services.Localization.Localization;
+
+/// <summary>Search Result Controller for Tab Indexer.</summary>
+[Serializable]
+public class TabResultController : BaseResultController
 {
-    using System;
-    using System.Linq;
+    private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
-    using DotNetNuke.Common.Internal;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Search.Entities;
+    /// <inheritdoc/>
+    public override string LocalizedSearchTypeName => Localization.GetString("Crawler_tab", LocalizedResxFile);
 
-    using Localization = DotNetNuke.Services.Localization.Localization;
-
-    /// <summary>Search Result Controller for Tab Indexer.</summary>
-    [Serializable]
-    public class TabResultController : BaseResultController
+    /// <inheritdoc/>
+    public override bool HasViewPermission(SearchResult searchResult)
     {
-        private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
+        var viewable = true;
 
-        /// <inheritdoc/>
-        public override string LocalizedSearchTypeName => Localization.GetString("Crawler_tab", LocalizedResxFile);
-
-        /// <inheritdoc/>
-        public override bool HasViewPermission(SearchResult searchResult)
+        if (searchResult.TabId > 0)
         {
-            var viewable = true;
-
-            if (searchResult.TabId > 0)
-            {
-                var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
-                viewable = tab != null && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab);
-            }
-
-            return viewable;
-        }
-
-        /// <inheritdoc/>
-        public override string GetDocUrl(SearchResult searchResult)
-        {
-            var url = Localization.GetString("SEARCH_NoLink");
-
             var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
-            if (TabPermissionController.CanViewPage(tab))
-            {
-                if (searchResult.PortalId != PortalSettings.Current.PortalId)
-                {
-                    var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(searchResult.PortalId)
-                                    .OrderByDescending(a => a.IsPrimary)
-                                    .FirstOrDefault();
+            viewable = tab != null && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab);
+        }
 
-                    if (alias != null)
-                    {
-                        var portalSettings = new PortalSettings(searchResult.PortalId, alias);
-                        url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, portalSettings, string.Empty, searchResult.QueryString);
-                    }
-                }
-                else
+        return viewable;
+    }
+
+    /// <inheritdoc/>
+    public override string GetDocUrl(SearchResult searchResult)
+    {
+        var url = Localization.GetString("SEARCH_NoLink");
+
+        var tab = TabController.Instance.GetTab(searchResult.TabId, searchResult.PortalId, false);
+        if (TabPermissionController.CanViewPage(tab))
+        {
+            if (searchResult.PortalId != PortalSettings.Current.PortalId)
+            {
+                var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(searchResult.PortalId)
+                    .OrderByDescending(a => a.IsPrimary)
+                    .FirstOrDefault();
+
+                if (alias != null)
                 {
-                    url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+                    var portalSettings = new PortalSettings(searchResult.PortalId, alias);
+                    url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, portalSettings, string.Empty, searchResult.QueryString);
                 }
             }
-
-            return url;
+            else
+            {
+                url = TestableGlobals.Instance.NavigateURL(searchResult.TabId, string.Empty, searchResult.QueryString);
+            }
         }
+
+        return url;
     }
 }

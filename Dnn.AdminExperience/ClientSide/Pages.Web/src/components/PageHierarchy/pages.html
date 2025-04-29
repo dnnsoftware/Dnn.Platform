@@ -1,55 +1,95 @@
-﻿
-<div class="pagesPanelContainer pagePanel" id="pages-bodyPanel">
-    <div class="pagehierarchy-container" data-bind="css: {'drag-view': inDrag()}">
-        <div class="pages-list-scroller">
-            <div class="pages-list-container" data-bind="template:{name: 'pages-list-template', foreach: pagesList }"></div>
-        </div>
-        <div class="pages-drag-container" data-bind="visible: inDrag && dragPage().id > 0">
-            <div class="pages-list">
-                <ul data-bind="template:{name: $root.dragItemTemplate, data: dragPage }"></ul>
-            </div>
-        </div>
+﻿<div class="pagesPanelContainer pagePanel" id="pages-bodyPanel">
+  <div class="pagehierarchy-container" data-bind="css: {'drag-view': inDrag()}">
+    <div class="pages-list-scroller">
+      <div
+        class="pages-list-container"
+        data-bind="template:{name: 'pages-list-template', foreach: pagesList }"
+      ></div>
     </div>
-    <div class="scroll-fix"></div> <!-- Safari OSX can't scroll if remove this div or if have 'clear' class (clear: both; css rule) -->
+    <div
+      class="pages-drag-container"
+      data-bind="visible: inDrag && dragPage().id > 0"
+    >
+      <div class="pages-list">
+        <ul
+          data-bind="template:{name: $root.dragItemTemplate, data: dragPage }"
+        ></ul>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-fix"></div>
+  <!-- Safari OSX can't scroll if remove this div or if have 'clear' class (clear: both; css rule) -->
 </div>
 
-
 <script type="text/html" id="pages-list-template">
-    <div class="pages-list" data-bind="css: { 'animate': $root.inDrag(), 'templates-list': false }, attr: {'data-page-level': level, 'data-parent-id': parentId}">
-        <ul data-bind="template:{name: $root.itemTemplate, foreach: pages }"></ul>
-    </div>
+  <div
+    class="pages-list"
+    data-bind="css: { 'animate': $root.inDrag(), 'templates-list': false }, attr: {'data-page-level': level, 'data-parent-id': parentId}"
+  >
+    <ul data-bind="template:{name: $root.itemTemplate, foreach: pages }"></ul>
+  </div>
 </script>
 
 <script type="text/html" id="pages-list-item-template">
-    <li data-bind="click: $root.pageItemClick, attr: {'data-page-id': id }, css: {'selected': $root.selectedPage().id == $data.id, 'page-notvisible': (status == 'Hidden' || status == 'Disabled')}">
-        <div class="page-item">
-            <span class="summary">
-                <span class="child-count" data-bind="html: childCount, style: {visibility: childCount > 0 ? 'visible' : 'hidden'}"></span>
-                <span class="subtitle field-name" data-bind="html: name, attr: {title: name}"></span>
-                <span class="status" data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }, attr: { title: (status == 'Hidden' ? $root.resx.Hidden : status) }"><label>Status</label></span>
+  <li
+    data-bind="click: $root.pageItemClick, attr: {'data-page-id': id }, css: {'selected': $root.selectedPage().id == $data.id, 'page-notvisible': (status == 'Hidden' || status == 'Disabled')}"
+  >
+    <div class="page-item">
+      <span class="summary">
+        <span
+          class="child-count"
+          data-bind="html: childCount, style: {visibility: childCount > 0 ? 'visible' : 'hidden'}"
+        ></span>
+        <span
+          class="subtitle field-name"
+          data-bind="html: name, attr: {title: name}"
+        ></span>
+        <span
+          class="status"
+          data-bind="css: { 'visible': (status == 'Hidden' || status == 'Disabled') }, attr: { title: (status == 'Hidden' ? $root.resx.Hidden : status) }"
+          ><label>Status</label></span
+        >
 
-                <span class="actions">
-                    <span class="buttons">
-                        <span class="view-page" data-bind="click: $root.viewPageClick, clickBubble: false, attr: { title: $root.resx.View }"></span>
-                        <span class="edit-page" data-bind="visible: pageType === 'normal', click: $root.editPageClick, clickBubble: false, attr: { title: $root.resx.Edit }"></span>
-                        <span class="settings" data-bind="click: $root.settingsPageClick, clickBubble: false, attr: { title: $root.resx.Settings }"></span>
-                        <span class="delete-page" data-bind="click: (isspecial ? null : $root.deletePageClick), clickBubble: false, attr: { title: $root.resx.Delete }, css: { 'action-disabled': isspecial }"></span>
-                    </span>
-                </span>
-            </span>
+        <span class="actions">
+          <span class="buttons">
+            <span
+              class="view-page"
+              data-bind="click: $root.viewPageClick, clickBubble: false, attr: { title: $root.resx.View }"
+            ></span>
+            <span
+              class="edit-page"
+              data-bind="visible: pageType === 'normal', click: $root.editPageClick, clickBubble: false, attr: { title: $root.resx.Edit }"
+            ></span>
+            <span
+              class="settings"
+              data-bind="click: $root.settingsPageClick, clickBubble: false, attr: { title: $root.resx.Settings }"
+            ></span>
+            <span
+              class="delete-page"
+              data-bind="click: (isspecial ? null : $root.deletePageClick), clickBubble: false, attr: { title: $root.resx.Delete }, css: { 'action-disabled': isspecial }"
+            ></span>
+          </span>
+        </span>
+      </span>
 
-            <span class="drag-area" data-bind="click: function () { return false; }, clickBubble: false, visible: $root.searchKeyword() == ''"></span>
-        </div>
-    </li>
+      <span
+        class="drag-area"
+        data-bind="click: function () { return false; }, clickBubble: false, visible: $root.searchKeyword() == ''"
+      ></span>
+    </div>
+  </li>
 </script>
 
 <script type="text/html" id="pages-drag-item-template">
-    <li data-bind="attr: {'data-page-id': id}">
-        <div class="page-item drag-item">
-            <span class="summary">
-                <span class="subtitle field-name" data-bind="html: name"></span>
-                <span class="drag-area" data-bind="html: $root.resx.DragPageTooltip"></span>
-            </span>
-        </div>
-    </li>
+  <li data-bind="attr: {'data-page-id': id}">
+    <div class="page-item drag-item">
+      <span class="summary">
+        <span class="subtitle field-name" data-bind="html: name"></span>
+        <span
+          class="drag-area"
+          data-bind="html: $root.resx.DragPageTooltip"
+        ></span>
+      </span>
+    </div>
+  </li>
 </script>

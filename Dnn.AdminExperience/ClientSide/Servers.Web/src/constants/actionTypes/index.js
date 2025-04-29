@@ -10,14 +10,14 @@ import performanceTab from "./performanceTab";
 import serversTab from "./serversTab";
 
 export {
-    pagination,
-    visiblePanel,
-    webTab,
-    server,
-    applicationTab,
-    databaseTab,
-    smtpServerTab,
-    logsTab,
-    performanceTab,
-    serversTab
+  pagination,
+  visiblePanel,
+  webTab,
+  server,
+  applicationTab,
+  databaseTab,
+  smtpServerTab,
+  logsTab,
+  performanceTab,
+  serversTab,
 };

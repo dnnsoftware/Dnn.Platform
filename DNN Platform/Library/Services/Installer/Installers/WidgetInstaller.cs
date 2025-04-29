@@ -1,54 +1,53 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Installer.Installers
+namespace DotNetNuke.Services.Installer.Installers;
+
+using System.IO;
+
+using DotNetNuke.Common;
+
+/// <summary>The WidgetInstaller installs Widget Components to a DotNetNuke site.</summary>
+public class WidgetInstaller : FileInstaller
 {
-    using System.IO;
-
-    using DotNetNuke.Common;
-
-    /// <summary>The WidgetInstaller installs Widget Components to a DotNetNuke site.</summary>
-    public class WidgetInstaller : FileInstaller
+    /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
+    /// <value>A String.</value>
+    public override string AllowableFiles
     {
-        /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
-        /// <value>A String.</value>
-        public override string AllowableFiles
+        get
         {
-            get
-            {
-                return "js";
-            }
+            return "js";
         }
+    }
 
-        /// <summary>Gets the name of the Collection Node ("widgetFiles").</summary>
-        /// <value>A String.</value>
-        protected override string CollectionNodeName
+    /// <summary>Gets the name of the Collection Node ("widgetFiles").</summary>
+    /// <value>A String.</value>
+    protected override string CollectionNodeName
+    {
+        get
         {
-            get
-            {
-                return "widgetFiles";
-            }
+            return "widgetFiles";
         }
+    }
 
-        /// <summary>Gets the name of the Item Node ("widgetFiles").</summary>
-        /// <value>A String.</value>
-        protected override string ItemNodeName
+    /// <summary>Gets the name of the Item Node ("widgetFiles").</summary>
+    /// <value>A String.</value>
+    protected override string ItemNodeName
+    {
+        get
         {
-            get
-            {
-                return "widgetFile";
-            }
+            return "widgetFile";
         }
+    }
 
-        /// <summary>Gets the PhysicalBasePath for the widget files.</summary>
-        /// <value>A String.</value>
-        protected override string PhysicalBasePath
+    /// <summary>Gets the PhysicalBasePath for the widget files.</summary>
+    /// <value>A String.</value>
+    protected override string PhysicalBasePath
+    {
+        get
         {
-            get
-            {
-                string widgetPath = Path.Combine("Resources\\Widgets\\User", this.BasePath);
-                return Path.Combine(Globals.ApplicationMapPath, widgetPath);
-            }
+            string widgetPath = Path.Combine("Resources\\Widgets\\User", this.BasePath);
+            return Path.Combine(Globals.ApplicationMapPath, widgetPath);
         }
     }
 }

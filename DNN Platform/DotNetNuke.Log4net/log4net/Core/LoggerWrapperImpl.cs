@@ -18,50 +18,49 @@
 // limitations under the License.
 // 
 
-namespace log4net.Core
+namespace log4net.Core;
+
+/// <summary>Implementation of the <see cref="ILoggerWrapper"/> interface.</summary>
+/// <remarks>
+/// <para>
+/// This class should be used as the base for all wrapper implementations.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+/// <author>Gert Driesen</author>
+public abstract class LoggerWrapperImpl : ILoggerWrapper
 {
-    /// <summary>Implementation of the <see cref="ILoggerWrapper"/> interface.</summary>
+    /// <summary>Constructs a new wrapper for the specified logger.</summary>
+    /// <param name="logger">The logger to wrap.</param>
     /// <remarks>
     /// <para>
-    /// This class should be used as the base for all wrapper implementations.
+    /// Constructs a new wrapper for the specified logger.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    public abstract class LoggerWrapperImpl : ILoggerWrapper
+    protected LoggerWrapperImpl(ILogger logger) 
     {
-        /// <summary>Constructs a new wrapper for the specified logger.</summary>
-        /// <param name="logger">The logger to wrap.</param>
-        /// <remarks>
-        /// <para>
-        /// Constructs a new wrapper for the specified logger.
-        /// </para>
-        /// </remarks>
-        protected LoggerWrapperImpl(ILogger logger) 
-        {
-            this.m_logger = logger;
-        }
-
-        /// <summary>Gets the implementation behind this wrapper object.</summary>
-        /// <value>
-        /// The <see cref="ILogger"/> object that this object is implementing.
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// The <c>Logger</c> object may not be the same object as this object 
-        /// because of logger decorators.
-        /// </para>
-        /// <para>
-        /// This gets the actual underlying objects that is used to process
-        /// the log events.
-        /// </para>
-        /// </remarks>
-        public virtual ILogger Logger
-        {
-            get { return this.m_logger; }
-        }
-
-        /// <summary>The logger that this object is wrapping</summary>
-        private readonly ILogger m_logger;
+        this.m_logger = logger;
     }
+
+    /// <summary>Gets the implementation behind this wrapper object.</summary>
+    /// <value>
+    /// The <see cref="ILogger"/> object that this object is implementing.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// The <c>Logger</c> object may not be the same object as this object 
+    /// because of logger decorators.
+    /// </para>
+    /// <para>
+    /// This gets the actual underlying objects that is used to process
+    /// the log events.
+    /// </para>
+    /// </remarks>
+    public virtual ILogger Logger
+    {
+        get { return this.m_logger; }
+    }
+
+    /// <summary>The logger that this object is wrapping</summary>
+    private readonly ILogger m_logger;
 }

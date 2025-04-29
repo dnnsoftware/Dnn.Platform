@@ -8,14 +8,15 @@ import DevTools from "../containers/DevTools";
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 export default function configureStore(initialState) {
-    const store = createStore(
-        rootReducer,
-        initialState,
-        compose(
-            IS_PRODUCTION ?
-                applyMiddleware(thunkMiddleware) :
-                applyMiddleware(thunkMiddleware, reduxImmutableStateInvariant()), DevTools.instrument()
-        )
-    );
-    return store;
+  const store = createStore(
+    rootReducer,
+    initialState,
+    compose(
+      IS_PRODUCTION
+        ? applyMiddleware(thunkMiddleware)
+        : applyMiddleware(thunkMiddleware, reduxImmutableStateInvariant()),
+      DevTools.instrument(),
+    ),
+  );
+  return store;
 }

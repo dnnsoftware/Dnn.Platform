@@ -1,18 +1,17 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import App from "../components/App";
 
 class Root extends Component {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    render() {
-        return (
-            <div className="siteImportExport-app personaBar-mainContainer">
-                <App />
-      
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="siteImportExport-app personaBar-mainContainer">
+        <App />
+      </div>
+    );
+  }
 }
-export default (Root);
+export default Root;

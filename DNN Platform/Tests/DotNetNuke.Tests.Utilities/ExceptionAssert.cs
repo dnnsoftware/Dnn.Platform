@@ -2,96 +2,95 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Utilities
+namespace DotNetNuke.Tests.Utilities;
+
+using System;
+using System.Reflection;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+using NUnit.Framework;
+
+[DnnDeprecated(7, 0, 0, "Use Assert.Exception or ExpectedExceptionAttribute", RemovalVersion = 11)]
+public static partial class ExceptionAssert
 {
-    using System;
-    using System.Reflection;
+    // public static void Throws<TException>(Action act) where TException : Exception
+    // {
+    //    Throws<TException>(act, ex => true);
+    // }
 
-    using DotNetNuke.Internal.SourceGenerators;
-
-    using NUnit.Framework;
-
-    [DnnDeprecated(7, 0, 0, "Use Assert.Exception or ExpectedExceptionAttribute", RemovalVersion = 11)]
-    public static partial class ExceptionAssert
+    // public static void Throws<TException>(string message, Action act) where TException : Exception
+    // {
+    //    Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal));
+    // }
+    public static void Throws<TException>(string message, Action act, Predicate<TException> checker)
+        where TException : Exception
     {
-        // public static void Throws<TException>(Action act) where TException : Exception
-        // {
-        //    Throws<TException>(act, ex => true);
-        // }
+        Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal) && checker(ex));
+    }
 
-        // public static void Throws<TException>(string message, Action act) where TException : Exception
-        // {
-        //    Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal));
-        // }
-        public static void Throws<TException>(string message, Action act, Predicate<TException> checker)
-            where TException : Exception
+    public static void Throws<TException>(Action act, Predicate<TException> checker)
+        where TException : Exception
+    {
+        bool matched = false;
+        bool thrown = false;
+        try
         {
-            Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal) && checker(ex));
+            act();
         }
-
-        public static void Throws<TException>(Action act, Predicate<TException> checker)
-            where TException : Exception
+        catch (Exception ex)
         {
-            bool matched = false;
-            bool thrown = false;
-            try
+            TException tex = ex as TException;
+            if (tex == null)
             {
-                act();
-            }
-            catch (Exception ex)
-            {
-                TException tex = ex as TException;
-                if (tex == null)
+                if (typeof(TException) == typeof(TargetInvocationException))
                 {
-                    if (typeof(TException) == typeof(TargetInvocationException))
-                    {
-                        // The only place we do special processing is TargetInvocationException, but if that's
-                        // what the user expected, we don't do anything
-                        throw;
-                    }
-
-                    TargetInvocationException tiex = tex as TargetInvocationException;
-                    if (tiex == null)
-                    {
-                        throw;
-                    }
-
-                    tex = tiex.InnerException as TException;
-                    if (tex == null)
-                    {
-                        throw;
-                    }
+                    // The only place we do special processing is TargetInvocationException, but if that's
+                    // what the user expected, we don't do anything
+                    throw;
                 }
 
-                thrown = true;
-                matched = checker(tex);
-                if (!matched)
+                TargetInvocationException tiex = tex as TargetInvocationException;
+                if (tiex == null)
+                {
+                    throw;
+                }
+
+                tex = tiex.InnerException as TException;
+                if (tex == null)
                 {
                     throw;
                 }
             }
 
-            if (!thrown)
+            thrown = true;
+            matched = checker(tex);
+            if (!matched)
             {
-                throw new AssertionException(string.Format("Expected exception of type '{0}' was not thrown", typeof(TException).FullName));
-            }
-            else if (!matched)
-            {
-                throw new AssertionException(string.Format("Expected exception of type '{0}' was thrown but did not match the configured criteria", typeof(TException).FullName));
+                throw;
             }
         }
 
-        public static void ThrowsArgNull(string paramName, Action act)
+        if (!thrown)
         {
-            Throws<ArgumentNullException>(act, ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
+            throw new AssertionException(string.Format("Expected exception of type '{0}' was not thrown", typeof(TException).FullName));
         }
+        else if (!matched)
+        {
+            throw new AssertionException(string.Format("Expected exception of type '{0}' was thrown but did not match the configured criteria", typeof(TException).FullName));
+        }
+    }
 
-        public static void ThrowsArgNullOrEmpty(string paramName, Action act)
-        {
-            Throws<ArgumentException>(
-                string.Format("Argument cannot be null or an empty string{1}Parameter name: {0}", paramName, Environment.NewLine),
-                act,
-                ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
-        }
+    public static void ThrowsArgNull(string paramName, Action act)
+    {
+        Throws<ArgumentNullException>(act, ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
+    }
+
+    public static void ThrowsArgNullOrEmpty(string paramName, Action act)
+    {
+        Throws<ArgumentException>(
+            string.Format("Argument cannot be null or an empty string{1}Parameter name: {0}", paramName, Environment.NewLine),
+            act,
+            ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
     }
 }

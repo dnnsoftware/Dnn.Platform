@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core.Collections
-{
-    using DotNetNuke.Collections.Internal;
-    using NUnit.Framework;
+namespace DotNetNuke.Tests.Core.Collections;
 
-    [TestFixture]
-    public class ExclusiveLockSharedListTests : SharedListTests
+using DotNetNuke.Collections.Internal;
+using NUnit.Framework;
+
+[TestFixture]
+public class ExclusiveLockSharedListTests : SharedListTests
+{
+    internal override LockingStrategy LockingStrategy
     {
-        internal override LockingStrategy LockingStrategy
+        get
         {
-            get
-            {
-                return LockingStrategy.Exclusive;
-            }
+            return LockingStrategy.Exclusive;
         }
     }
 }

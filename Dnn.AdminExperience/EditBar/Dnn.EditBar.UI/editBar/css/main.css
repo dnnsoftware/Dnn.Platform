@@ -1,188 +1,188 @@
 ﻿@font-face {
-    font-family: 'RobotoSlab';
-    src: url('RobotoSlab-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "RobotoSlab";
+  src: url("RobotoSlab-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 body {
-    margin: 0;
-    padding: 0;
-    font-size: 12px;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
 }
 #editBarContainer {
-    display: block !important;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+  display: block !important;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 #editBarContainer * {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #editBarContainer h2 {
-    font-size: 28px;
+  font-size: 28px;
 }
 
 .editbar {
-    visibility: visible;
-    height: 80px;
-    display: block;
-    background-color: var(--dnn-color-editbar-background);
-    color: white;
-    min-height: 20px;
-    padding: 26px 26px 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+  visibility: visible;
+  height: 80px;
+  display: block;
+  background-color: var(--dnn-color-editbar-background);
+  color: white;
+  min-height: 20px;
+  padding: 26px 26px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .editbar > div {
-    margin-left: 10px;
-    float: left;
+  margin-left: 10px;
+  float: left;
 }
 
 .editbar ul.menuEditBar {
-    position: relative;
-    margin: 0;
-    padding: 0;
+  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
-
 .editbar ul.menuEditBar li {
-    list-style-type: none;
-    list-style: none;
-    float: left;
-    position: relative;
-    padding: 0;
+  list-style-type: none;
+  list-style: none;
+  float: left;
+  position: relative;
+  padding: 0;
 }
 
 .editbar ul.menuEditBar li .submenuEditBar {
-    position: absolute;
-    display: none;
-    background-color: #0F0F0F;
-    padding: 20px;
-    border-radius: 3px;
-    bottom: 78px;
-    min-width: 95px;
-    white-space: nowrap;
-    box-sizing: content-box;
-    transform: translateX(-50%);
-    left: 50%;
-    text-align: center;
-    margin-left: 0;
+  position: absolute;
+  display: none;
+  background-color: #0f0f0f;
+  padding: 20px;
+  border-radius: 3px;
+  bottom: 78px;
+  min-width: 95px;
+  white-space: nowrap;
+  box-sizing: content-box;
+  transform: translateX(-50%);
+  left: 50%;
+  text-align: center;
+  margin-left: 0;
 }
 
 .editbar ul.menuEditBar li:hover .submenuEditBar {
-    display: block;
+  display: block;
 }
 
 .editbar .submenuEditBar:after {
-    content: '';
-    display: block;
-    width: 0;
-    height: 0;
-    border: 16px solid;
-    border-color: #0F0F0F transparent transparent transparent;
-    position: absolute;
-    transform: translateX(-50%);
-    left: 50%;
-    bottom: -26px;
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: 16px solid;
+  border-color: #0f0f0f transparent transparent transparent;
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+  bottom: -26px;
 }
 
 .editbar .submenuBottom {
-    position: absolute;
-    background-color: transparent;
-    width: 100%;
-    height: 100px;
-    bottom: -82px;
+  position: absolute;
+  background-color: transparent;
+  width: 100%;
+  height: 100px;
+  bottom: -82px;
 }
 .editbar .left-section {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .editbar .left-section ul li {
-        margin-left: 7px;
+  margin-left: 7px;
 }
 .editbar .left-section ul li button {
-    display: block;
-    text-indent: -2000px;
-    background-position: 0 0;
-    border: 0 none;
-    height: 33px;
-    width: 47px;
-    color: #727272;
-    cursor: pointer;
-    outline: none;
+  display: block;
+  text-indent: -2000px;
+  background-position: 0 0;
+  border: 0 none;
+  height: 33px;
+  width: 47px;
+  color: #727272;
+  cursor: pointer;
+  outline: none;
 }
 .editbar .right-section {
-    float: right;
-    padding-right: 20px;
+  float: right;
+  padding-right: 20px;
 }
 
 .editbar .right-section ul li {
-    border: 0 none;
-    float: left;
-    margin-left: 12px;
+  border: 0 none;
+  float: left;
+  margin-left: 12px;
 }
 .editbar .right-section ul li button {
-    display: block;
-    height: 35px;
-    width: 98px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    background-color: transparent;
-    border-color: #fff;
-    border-style: solid;
-    border-width: 1px;
-    cursor: pointer;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
+  display: block;
+  height: 35px;
+  width: 98px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-color: transparent;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
 }
 
 .editbar .right-section ul li.gray-button button {
-    background-color: #515151;
-    border-color: #515151;
-    color: #000;
+  background-color: #515151;
+  border-color: #515151;
+  color: #000;
 }
 .editbar .right-section ul li.main-button button {
-    background-color: #0087C6;
-    border-color: #0087C6;
+  background-color: #0087c6;
+  border-color: #0087c6;
 }
 
 .editbar .right-section ul li:disabled,
 .editbar .left-button:disabled {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 /*Notification dialog*/
 .noTittle .ui-dialog-titlebar,
 .noTittle .ui-dialog-titlebar-close {
-    display: none;
+  display: none;
 }
 
 .dnnDialogBlue.ui-dialog-content.ui-widget-content {
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    position: absolute;
-    padding: 15px;
-    background-color: #002e47;
-    opacity: 0.9;
-    z-index: 99999;
-    border-radius: 3px;
-    color: #fff;
-    display: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  position: absolute;
+  padding: 15px;
+  background-color: #002e47;
+  opacity: 0.9;
+  z-index: 99999;
+  border-radius: 3px;
+  color: #fff;
+  display: none;
 }
 
 #editBarOptionsExtensionPoint {
-    margin-left: 7px;
+  margin-left: 7px;
 }
 
 /* IE10+ specific editbar styles go here */
-@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
-    .editbar {
-        background-color: #0b1c24;
-    }
+@media screen and (-ms-high-contrast: active),
+  screen and (-ms-high-contrast: none) {
+  .editbar {
+    background-color: #0b1c24;
+  }
 }

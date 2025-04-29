@@ -1,6 +1,6 @@
 import UrlParse from "url-parse";
 import * as dayjs from "dayjs";
-const localizedFormat = require('dayjs/plugin/localizedFormat');
+import localizedFormat from "dayjs/plugin/localizedFormat";
 let utilities = null;
 let config = null;
 let moduleName = null;
@@ -11,16 +11,24 @@ let settings = null;
 
 function init(options) {
     if (!options) {
-        throw new Error("This method needs to have an options object as an input parameter");
+        throw new Error(
+            "This method needs to have an options object as an input parameter",
+        );
     }
     if (!options.utilities) {
-        throw new Error("This method needs to have an options.utilities object as an input parameter");
+        throw new Error(
+            "This method needs to have an options.utilities object as an input parameter",
+        );
     }
     if (!options.config) {
-        throw new Error("This method needs to have an options.config object as an input parameter");
+        throw new Error(
+            "This method needs to have an options.config object as an input parameter",
+        );
     }
     if (!options.moduleName) {
-        throw new Error("This method needs to have an options.moduleName string as an input parameter");
+        throw new Error(
+            "This method needs to have an options.moduleName string as an input parameter",
+        );
     }
     utilities = options.utilities;
     config = options.config;
@@ -75,9 +83,21 @@ function notifyError(message, options) {
     return utilities.notifyError(message, options);
 }
 
-function confirm(message, confirmText, cancelText, confirmHandler, cancelHandler) {
+function confirm(
+    message,
+    confirmText,
+    cancelText,
+    confirmHandler,
+    cancelHandler,
+) {
     checkInit();
-    return utilities.confirm(message, confirmText, cancelText, confirmHandler, cancelHandler);
+    return utilities.confirm(
+        message,
+        confirmText,
+        cancelText,
+        confirmHandler,
+        cancelHandler,
+    );
 }
 
 function getServiceFramework() {
@@ -180,7 +200,7 @@ function getProductSKU() {
 }
 function isPlatform() {
     checkInit();
-    return settings.productSKU.toLowerCase() === 'dnn';
+    return settings.productSKU.toLowerCase() === "dnn";
 }
 function getIsAdminHostSystemPage() {
     checkInit();
@@ -197,8 +217,11 @@ function formatDate(dateValue, longformat) {
     }
 
     dayjs.extend(localizedFormat);
-    require('dayjs/locale/' + utilities.getCulture().substring(0,2));
-    return dayjs(dateValue).locale(utilities.getCulture().substring(0,2)).format(longformat === true ? "LLL" : "L");
+    // eslint-disable-next-line no-undef
+    require("dayjs/locale/" + utilities.getCulture().substring(0, 2));
+    return dayjs(dateValue)
+        .locale(utilities.getCulture().substring(0, 2))
+        .format(longformat === true ? "LLL" : "L");
 }
 function getUserMode() {
     return config.userMode;
@@ -207,9 +230,9 @@ const url = {
     appendQueryString: function (url, params) {
         let urlParse = new UrlParse(url, true);
         let newParams = Object.assign({}, urlParse.query, params);
-        urlParse.set('query', newParams);
+        urlParse.set("query", newParams);
         return urlParse.href;
-    }
+    },
 };
 const utils = {
     init,
@@ -245,7 +268,7 @@ const utils = {
     getIsAdminHostSystemPage,
     formatDate,
     getUserMode,
-    url
+    url,
 };
 
 export default utils;

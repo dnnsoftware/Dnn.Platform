@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteSettings.Services.Dto
+namespace Dnn.PersonaBar.SiteSettings.Services.Dto;
+
+public class ResetTermsAgreementRequest
 {
-    public class ResetTermsAgreementRequest
-    {
-        public int? PortalId { get; set; }
-    }
+    public int? PortalId { get; set; }
 }

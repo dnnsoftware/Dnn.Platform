@@ -1,7 +1,6 @@
 import Api from "./api";
 import utils from "../utils";
 const PageService = function () {
-
     function getOverridablePagesApi() {
         return new Api(window.dnn.pages.apiController);
     }
@@ -12,13 +11,14 @@ const PageService = function () {
 
     const getPage = function (pageId) {
         const api = getOverridablePagesApi();
-        return api.get("GetPageDetails", { pageId })
-            .then(response => toFrontEndPage(response));
+        return api
+            .get("GetPageDetails", { pageId })
+            .then((response) => toFrontEndPage(response));
     };
 
     const savePage = function (page) {
-        const api = getOverridablePagesApi();            
-        let request = { ...page,  url: "" };
+        const api = getOverridablePagesApi();
+        let request = { ...page, url: "" };
         return api.post("SavePageDetails", toBackEndPage(request));
     };
 
@@ -53,8 +53,9 @@ const PageService = function () {
         if (parentPage && typeof parentPage !== "function" && parentPage.id) {
             pageId = parentPage.id;
         }
-        return api.get("GetDefaultSettings", { pageId: pageId })
-            .then(settings => {
+        return api
+            .get("GetDefaultSettings", { pageId: pageId })
+            .then((settings) => {
                 const page = toFrontEndPage(settings);
                 page.tabId = 0;
                 page.name = "";
@@ -87,9 +88,18 @@ const PageService = function () {
                 page.permanentRedirect = false;
                 page.linkNewWindow = false;
                 page.templateTabId = null;
-                page.hasParent = parentPage && typeof parentPage !== "function" && parentPage.id || page.hasParent;
-                page.hierarchy = parentPage && typeof parentPage !== "function" && parentPage.id && parentPage.name || page.hierarchy;
-                page.parentId = parentPage && typeof parentPage !== "function" && parentPage.id || page.parentId;
+                page.hasParent =
+          (parentPage && typeof parentPage !== "function" && parentPage.id) ||
+          page.hasParent;
+                page.hierarchy =
+          (parentPage &&
+            typeof parentPage !== "function" &&
+            parentPage.id &&
+            parentPage.name) ||
+          page.hierarchy;
+                page.parentId =
+          (parentPage && typeof parentPage !== "function" && parentPage.id) ||
+          page.parentId;
                 page.iconFile = null;
                 page.iconFileLarge = null;
                 page.sitemapPriority = 0.5;
@@ -105,24 +115,32 @@ const PageService = function () {
     const copyAppearanceToDescendantPages = function (pageId, theme) {
         const api = getPagesApi();
         return api.post("CopyThemeToDescendantPages", {
-            pageId, theme
+            pageId,
+            theme,
         });
     };
 
     const copyPermissionsToDescendantPages = function (pageId) {
         const api = getPagesApi();
         return api.post("CopyPermissionsToDescendantPages", {
-            pageId
+            pageId,
         });
     };
 
     const toFrontEndPage = function (pageResult) {
         return {
             ...pageResult.page,
-            schedulingEnabled: pageResult.page.startDate !== null || pageResult.page.endDate !== null,
+            schedulingEnabled:
+        pageResult.page.startDate !== null || pageResult.page.endDate !== null,
             // the API returns strings, but we need dates
-            startDate: pageResult.page.startDate === null ? null : new Date(pageResult.page.startDate),
-            endDate: pageResult.page.endDate === null ? null : new Date(pageResult.page.endDate),
+            startDate:
+        pageResult.page.startDate === null
+            ? null
+            : new Date(pageResult.page.startDate),
+            endDate:
+        pageResult.page.endDate === null
+            ? null
+            : new Date(pageResult.page.endDate),
             validationCode: pageResult.ValidationCode,
         };
     };
@@ -132,32 +150,36 @@ const PageService = function () {
             ...page,
             startDate: page.schedulingEnabled ? page.startDate : null,
             endDate: page.schedulingEnabled ? page.endDate : null,
-            schedulingEnabled: undefined
+            schedulingEnabled: undefined,
         };
     };
 
     const openPageInEditMode = function (id, url, callback) {
         const api = getPagesApi();
-        return api.post("EditModeForPage?id=" + id, {})
-            .then(() => {
-                if (url) {
-                    utils.getUtilities().closePersonaBar(function () {
-                        window.top.location.href = url;
-                    });
-                } else if ( typeof callback === "function") {
-                    callback();
-                }
-            });
+        return api.post("EditModeForPage?id=" + id, {}).then(() => {
+            if (url) {
+                utils.getUtilities().closePersonaBar(function () {
+                    window.top.location.href = url;
+                });
+            } else if (typeof callback === "function") {
+                callback();
+            }
+        });
     };
 
     const getCachedPageCount = function (cacheProvider, pageId) {
         const api = getPagesApi();
-        return api.get("GetCachedItemCount", { cacheProvider: cacheProvider, pageId: pageId });
+        return api.get("GetCachedItemCount", {
+            cacheProvider: cacheProvider,
+            pageId: pageId,
+        });
     };
 
     const clearCache = function (cacheProvider, pageId) {
         const api = getPagesApi();
-        return api.post("ClearCache?cacheProvider=" + cacheProvider + "&pageId=" + pageId);
+        return api.post(
+            "ClearCache?cacheProvider=" + cacheProvider + "&pageId=" + pageId,
+        );
     };
 
     const getPageList = () => {
@@ -186,7 +208,7 @@ const PageService = function () {
 
     const getPageHierarchy = (id) => {
         const api = getPagesApi();
-        return api.get("GetPageHierarchy", {pageId: id});
+        return api.get("GetPageHierarchy", { pageId: id });
     };
 
     return {
@@ -209,10 +231,9 @@ const PageService = function () {
         clearCache,
         movePage,
         getWorkflowsList,
-        getPageHierarchy
+        getPageHierarchy,
     };
 };
-
 
 const pageService = PageService();
 export default pageService;

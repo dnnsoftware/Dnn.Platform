@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Common
-{
-    using DotNetNuke.Entities.Modules;
+namespace DotNetNuke.Web.Mvc.Common;
 
-    public interface IDesktopModuleController
-    {
-        DesktopModuleInfo GetDesktopModule(int desktopModuleId, int portalId);
-    }
+using DotNetNuke.Entities.Modules;
+
+public interface IDesktopModuleController
+{
+    DesktopModuleInfo GetDesktopModule(int desktopModuleId, int portalId);
 }

@@ -34,25 +34,48 @@
  *  button if you want to use ko validation for this. Ex: On your return viewModel => _viewModel.enableAcceptForDialog = _viewModel.stateName.isValid;
  */
 
-define(['jquery', 'knockout', 'jquery-ui.min', 'css!cssPath/personaBarDialog.css'], function ($, ko) {
-    var PersonaBarDialogClass;
+define([
+  "jquery",
+  "knockout",
+  "jquery-ui.min",
+  "css!cssPath/personaBarDialog.css",
+], function ($, ko) {
+  var PersonaBarDialogClass;
 
-    PersonaBarDialogClass = (function IIFE() {
-        'use strict';
+  PersonaBarDialogClass = (function IIFE() {
+    "use strict";
 
-        var _options, _html, _viewModel, _htmlForPannels, _personaBarDialogMask, _personaBarDialog, _height, _docHeight, _bottomPercent, _originalHeight, _top, _win;
+    var _options,
+      _html,
+      _viewModel,
+      _htmlForPannels,
+      _personaBarDialogMask,
+      _personaBarDialog,
+      _height,
+      _docHeight,
+      _bottomPercent,
+      _originalHeight,
+      _top,
+      _win;
 
-        var addDialog, applyBindings, closeDialog, acceptDialog, initDialog, showDialog, updateHeight;
+    var addDialog,
+      applyBindings,
+      closeDialog,
+      acceptDialog,
+      initDialog,
+      showDialog,
+      updateHeight;
 
-        /* Class Properties */
-        PersonaBarDialog.class = 'PersonaBarDialog';
-        PersonaBarDialog.type  = 'Class';
-        PersonaBarDialog.active = false; // TODO: Improve dialog with stacked dialogs
+    /* Class Properties */
+    PersonaBarDialog.class = "PersonaBarDialog";
+    PersonaBarDialog.type = "Class";
+    PersonaBarDialog.active = false; // TODO: Improve dialog with stacked dialogs
 
-        /* Private Properties */
-        // Dialog template. htmlForPannels param will be bind inside dialogHTML,
-        // for have information in gray blocks, ad to each block "panel" class
-        _html = '<div class="personaBarDialogMask" style="display:none;"></div>\
+    /* Private Properties */
+    // Dialog template. htmlForPannels param will be bind inside dialogHTML,
+    // for have information in gray blocks, ad to each block "panel" class
+    _html =
+      '<div class="personaBarDialogMask" style="display:none;"></div>\
                 <div class="personaBarDialog" style="display:none;">\
                     <div class="container">\
                         <div class="title dialogTitle">\
@@ -69,231 +92,289 @@ define(['jquery', 'knockout', 'jquery-ui.min', 'css!cssPath/personaBarDialog.css
                       <span class="btn btn-cancel" data-bind="visible: showCancelBtn, text: cancelBtnLbl, click: closeDialog"></span>\
                     </div>\
                 </div>';
-        _options = null;
-        _viewModel = null;
-        _personaBarDialog = null;
-        _personaBarDialogMask = null;
+    _options = null;
+    _viewModel = null;
+    _personaBarDialog = null;
+    _personaBarDialogMask = null;
 
-        /* Costructor */
-        function PersonaBarDialog(options, htmlForPannels, koObserveCallback, afterBindCallback) {
-            //console.log('~PersonaBarDialog');
-            if (PersonaBarDialog.active) {
-                console.log('PersonaBarDialog already opened'); // TODO throw ex or change for stack support
-                return;
-            }
+    /* Costructor */
+    function PersonaBarDialog(
+      options,
+      htmlForPannels,
+      koObserveCallback,
+      afterBindCallback,
+    ) {
+      //console.log('~PersonaBarDialog');
+      if (PersonaBarDialog.active) {
+        console.log("PersonaBarDialog already opened"); // TODO throw ex or change for stack support
+        return;
+      }
 
-            PersonaBarDialog.active = true;
+      PersonaBarDialog.active = true;
 
-            // Defaults (must compare falsy values)
-            if (!options) {
-                options = {
-                    inObject: $(document.body),
-                    animation: true,
-                    width: 650,
-                    title: 'Notice',
-                    innerTitle: '',
-                    showAcceptBtn: true,
-                    acceptBtnLbl: 'Accept',
-                    showCancelBtn: true,
-                    cancelBtnLbl: 'Cancel',
-                    onAcceptCallback: null,
-                    beforeCloseCallback: null,
-                    onCloseCallback: null,
-                    closeOnAccept: true
-                };
-            }
+      // Defaults (must compare falsy values)
+      if (!options) {
+        options = {
+          inObject: $(document.body),
+          animation: true,
+          width: 650,
+          title: "Notice",
+          innerTitle: "",
+          showAcceptBtn: true,
+          acceptBtnLbl: "Accept",
+          showCancelBtn: true,
+          cancelBtnLbl: "Cancel",
+          onAcceptCallback: null,
+          beforeCloseCallback: null,
+          onCloseCallback: null,
+          closeOnAccept: true,
+        };
+      }
 
-            _options = options;
+      _options = options;
 
-            if (!options.width) {_options.width = 650;}
-            if (!options.title) {_options.title = 'Notice';}
-            if (!options.inObject) {_options.inObject = $(document.body);}
-            if (!options.innerTitle) {_options.innerTitle = '';}
-            if (!options.acceptBtnLbl) {_options.acceptBtnLbl = 'Accept';}
-            if (options.showAcceptBtn !== false) {_options.showAcceptBtn = true;}
-            if (!options.cancelBtnLbl) {_options.cancelBtnLbl = 'Cancel';}
-            if (options.showCancelBtn !== false) {_options.showCancelBtn = true;}
-            if (options.animation !== false) {_options.animation = true;}
-            if (options.closeOnAccept !== false) {_options.closeOnAccept = true;}
+      if (!options.width) {
+        _options.width = 650;
+      }
+      if (!options.title) {
+        _options.title = "Notice";
+      }
+      if (!options.inObject) {
+        _options.inObject = $(document.body);
+      }
+      if (!options.innerTitle) {
+        _options.innerTitle = "";
+      }
+      if (!options.acceptBtnLbl) {
+        _options.acceptBtnLbl = "Accept";
+      }
+      if (options.showAcceptBtn !== false) {
+        _options.showAcceptBtn = true;
+      }
+      if (!options.cancelBtnLbl) {
+        _options.cancelBtnLbl = "Cancel";
+      }
+      if (options.showCancelBtn !== false) {
+        _options.showCancelBtn = true;
+      }
+      if (options.animation !== false) {
+        _options.animation = true;
+      }
+      if (options.closeOnAccept !== false) {
+        _options.closeOnAccept = true;
+      }
 
-            _viewModel = {};
+      _viewModel = {};
 
-            if (!htmlForPannels) htmlForPannels = '';
+      if (!htmlForPannels) htmlForPannels = "";
 
-            // Add to DOM
-            addDialog();
+      // Add to DOM
+      addDialog();
 
-            // Add to queue
-            setTimeout(function () {
-                initDialog();
-                var personaBarDialog = $('.personaBarDialog');
+      // Add to queue
+      setTimeout(function () {
+        initDialog();
+        var personaBarDialog = $(".personaBarDialog");
 
-                personaBarDialog.width(_options.width);
-                if (htmlForPannels) personaBarDialog.find('.panels').prepend(htmlForPannels);
+        personaBarDialog.width(_options.width);
+        if (htmlForPannels)
+          personaBarDialog.find(".panels").prepend(htmlForPannels);
 
-                // Add to queue
-                setTimeout(function () {
-                    if (typeof koObserveCallback === 'function') applyBindings(koObserveCallback());
-                    else applyBindings(undefined);
+        // Add to queue
+        setTimeout(function () {
+          if (typeof koObserveCallback === "function")
+            applyBindings(koObserveCallback());
+          else applyBindings(undefined);
 
-                    setTimeout(function () {
-                        if (typeof afterBindCallback === 'function') afterBindCallback();
-                    }, 0);
+          setTimeout(function () {
+            if (typeof afterBindCallback === "function") afterBindCallback();
+          }, 0);
 
-                    showDialog();
-                }, 0);
-            }, 0);
+          showDialog();
+        }, 0);
+      }, 0);
+    }
+
+    /* Private Methods */
+    applyBindings = function (viewModel) {
+      setTimeout(function () {
+        _viewModel = {
+          dialogHTML: "",
+          title: ko.observable(_options.title),
+          innerTitle: ko.observable(_options.innerTitle),
+          acceptBtnLbl: ko.observable(_options.acceptBtnLbl),
+          showAcceptBtn: ko.observable(_options.showAcceptBtn),
+          cancelBtnLbl: ko.observable(_options.cancelBtnLbl),
+          showCancelBtn: ko.observable(_options.showCancelBtn),
+          acceptDialog: acceptDialog,
+          closeDialog: closeDialog,
+          enableAccept: ko.observable(true),
+        };
+
+        if (typeof viewModel === "object") {
+          _viewModel.dialogHTML = viewModel;
+          if (viewModel.enableAcceptForDialog) {
+            _viewModel.enableAccept = viewModel.enableAcceptForDialog;
+          }
         }
 
-        /* Private Methods */
-        applyBindings = function (viewModel) {
-            setTimeout(function () {
-                _viewModel = {
-                    dialogHTML: '',
-                    title:         ko.observable(_options.title),
-                    innerTitle:    ko.observable(_options.innerTitle),
-                    acceptBtnLbl:  ko.observable(_options.acceptBtnLbl),
-                    showAcceptBtn: ko.observable(_options.showAcceptBtn),
-                    cancelBtnLbl:  ko.observable(_options.cancelBtnLbl),
-                    showCancelBtn: ko.observable(_options.showCancelBtn),
-                    acceptDialog:  acceptDialog,
-                    closeDialog:   closeDialog,
-                    enableAccept:  ko.observable(true)
-                };
+        ko.applyBindings(_viewModel, _personaBarDialog[0]);
+      }, 0);
+    };
 
-                if (typeof viewModel === 'object') {
-                    _viewModel.dialogHTML = viewModel;
-                    if (viewModel.enableAcceptForDialog) {
-                        _viewModel.enableAccept = viewModel.enableAcceptForDialog;
-                    }
-                }
+    addDialog = function () {
+      return $("body").prepend(_html);
+    };
 
-                ko.applyBindings(_viewModel, _personaBarDialog[0]);
-            }, 0);
-        };
+    closeDialog = function () {
+      var node;
 
-        addDialog = function () {
-            return $('body').prepend(_html);
-        };
+      // Remove events
+      if (_win) _win.off(".personaBarDialog");
+      if (_personaBarDialog) _personaBarDialog.off("DOMMouseScroll mousewheel");
 
-        closeDialog = function () {
-            var node;
+      node = $(".personaBarDialog");
+      if (typeof _options.beforeCloseCallback === "function")
+        _options.beforeCloseCallback();
 
-            // Remove events
-            if (_win) _win.off('.personaBarDialog');
-            if (_personaBarDialog) _personaBarDialog.off('DOMMouseScroll mousewheel');
+      if (node.length > 0) {
+        ko.cleanNode($(".personaBarDialog")[0]);
+      }
+      _options.inObject.height(_originalHeight);
+      _personaBarDialog.remove();
+      _personaBarDialogMask.remove();
+      if (typeof _options.onCloseCallback === "function")
+        _options.onCloseCallback();
 
-            node = $('.personaBarDialog');
-            if (typeof _options.beforeCloseCallback === 'function') _options.beforeCloseCallback();
+      PersonaBarDialog.active = false;
+    };
 
-            if (node.length > 0) {
-                ko.cleanNode($('.personaBarDialog')[0]);
-            }
-            _options.inObject.height(_originalHeight);
-            _personaBarDialog.remove();
-            _personaBarDialogMask.remove();
-            if (typeof _options.onCloseCallback === 'function') _options.onCloseCallback();
+    acceptDialog = function () {
+      if (
+        typeof _viewModel.enableAccept === "boolean" &&
+        !_viewModel.enableAccept
+      )
+        return;
+      if (
+        typeof _viewModel.enableAccept === "function" &&
+        !_viewModel.enableAccept()
+      )
+        return;
+      if (typeof _options.onAcceptCallback === "function")
+        _options.onAcceptCallback();
+      if (_options.closeOnAccept === true) closeDialog();
+    };
 
-            PersonaBarDialog.active = false;
-        };
+    initDialog = function () {
+      var doc,
+        bottom,
+        left,
+        top,
+        scrollDown,
+        currentWinPos,
+        lastWinPos,
+        topPercent,
+        percent;
 
-        acceptDialog = function () {
-            if (typeof _viewModel.enableAccept === 'boolean' && !_viewModel.enableAccept) return;
-            if (typeof _viewModel.enableAccept === 'function' && !_viewModel.enableAccept()) return;
-            if (typeof _options.onAcceptCallback === 'function') _options.onAcceptCallback();
-            if (_options.closeOnAccept === true) closeDialog();
-        };
+      _win = $(window);
+      doc = $(document);
 
-        initDialog = function () {
-            var doc, bottom, left, top, scrollDown, currentWinPos, lastWinPos, topPercent, percent;
+      _personaBarDialogMask = $(".personaBarDialogMask");
+      _personaBarDialog = $(".personaBarDialog");
 
-            _win = $(window);
-            doc = $(document);
+      _personaBarDialog.draggable({
+        handle: ".dialogTitle",
+        cursor: "move",
+      });
 
-            _personaBarDialogMask = $('.personaBarDialogMask');
-            _personaBarDialog = $('.personaBarDialog');
+      left = "-" + Math.round(_options.width / 2) + "px";
+      top = 100 + doc.scrollTop() + "px";
+      bottom = "40px";
 
-            _personaBarDialog.draggable({
-                handle: '.dialogTitle',
-                cursor: 'move'
-            });
+      _personaBarDialog.css({
+        top: top,
+        "margin-left": left,
+        "margin-bottom": bottom,
+      });
 
-            left = '-' + Math.round(_options.width / 2) + 'px';
-            top = 100 + doc.scrollTop() + 'px';
-            bottom = '40px';
+      _personaBarDialogMask.css({
+        height: doc.height() + _personaBarDialog.height(),
+      });
 
-            _personaBarDialog.css({
-                top: top,
-                'margin-left': left,
-                'margin-bottom': bottom,
-            });
+      setTimeout(function () {
+        _top = doc.scrollTop();
+        _personaBarDialogMask.css({
+          "min-height":
+            doc.scrollTop() + _personaBarDialog.height() + 100 + "px",
+        });
+      }, 0);
 
-            _personaBarDialogMask.css({
-                height: doc.height() + _personaBarDialog.height()
-            });
+      // Prevent scroll to top window
+      _win
+        .off("scroll.personaBarDialog")
+        .on("scroll.personaBarDialog", function () {
+          if (doc.scrollTop() < _top) doc.scrollTop(_top);
+        });
 
-            setTimeout(function () {
-                _top = doc.scrollTop();
-                _personaBarDialogMask.css({
-                    'min-height': doc.scrollTop() + _personaBarDialog.height() + 100 + 'px'
-                });
-            }, 0);
+      // Close on esc keydown
+      _win
+        .off("keydown.personaBarDialog")
+        .on("keydown.personaBarDialog", function (evt) {
+          if (evt.keyCode === 27) closeDialog();
+        });
 
-            // Prevent scroll to top window
-            _win.off('scroll.personaBarDialog').on('scroll.personaBarDialog', function () {
-                if (doc.scrollTop() < _top) doc.scrollTop(_top);
-            });
+      // Prevent doble scroll from inner dialog and outer window
+      _personaBarDialog
+        .off("DOMMouseScroll mousewheel")
+        .on("DOMMouseScroll mousewheel", function (evt) {
+          var self, scrollTop, scrollHeight, height, delta, up, prevent;
+          self = $(this);
 
-            // Close on esc keydown
-            _win.off('keydown.personaBarDialog').on('keydown.personaBarDialog', function(evt) {
-                if (evt.keyCode === 27) closeDialog();
-            });
+          scrollTop = this.scrollTop;
+          scrollHeight = this.scrollHeight;
+          height = self.height();
+          delta = evt.originalEvent.wheelDelta;
+          up = delta > 0;
 
-            // Prevent doble scroll from inner dialog and outer window
-            _personaBarDialog.off('DOMMouseScroll mousewheel').on('DOMMouseScroll mousewheel', function(evt) {
-                var self, scrollTop, scrollHeight, height, delta, up, prevent;
-                self = $(this);
+          prevent = function () {
+            evt.stopPropagation();
+            evt.preventDefault();
+            evt.returnValue = false;
+            return false;
+          };
 
-                scrollTop    = this.scrollTop;
-                scrollHeight = this.scrollHeight;
-                height       = self.height();
-                delta        = evt.originalEvent.wheelDelta;
-                up = delta > 0;
+          if (!up && -delta > scrollHeight - height - scrollTop) {
+            self.scrollTop(scrollHeight);
+            return prevent();
+          } else if (up && delta > scrollTop) {
+            self.scrollTop(0);
+            return prevent();
+          }
+        });
+    };
 
-                prevent = function() {
-                    evt.stopPropagation();
-                    evt.preventDefault();
-                    evt.returnValue = false;
-                    return false;
-                };
+    showDialog = function () {
+      _personaBarDialogMask.show();
+      if (_options.animation) {
+        _personaBarDialog.fadeIn(100);
+      } else {
+        _personaBarDialog.show();
+      }
+    };
 
-                if (!up && -delta > scrollHeight - height - scrollTop) {
-                   self.scrollTop(scrollHeight);
-                    return prevent();
-                } else if (up && delta > scrollTop) {
-                    self.scrollTop(0);
-                    return prevent();
-                }
-            });
-        };
+    updateHeight = function () {
+      _personaBarDialogMask.css({
+        "min-height":
+          $(document).scrollTop() + _personaBarDialog.height() + 400 + "px",
+      });
+    };
 
-        showDialog = function () {
-            _personaBarDialogMask.show();
-            if (_options.animation) {_personaBarDialog.fadeIn(100);} else {_personaBarDialog.show();}
-        };
+    /* Public Methods */
+    PersonaBarDialog.prototype.updateHeight = updateHeight;
+    PersonaBarDialog.prototype.close = closeDialog;
 
-        updateHeight = function () {
-            _personaBarDialogMask.css({
-                'min-height': $(document).scrollTop() + _personaBarDialog.height() + 400 + 'px'
-            });
-        };
+    return PersonaBarDialog;
+  })();
 
-        /* Public Methods */
-        PersonaBarDialog.prototype.updateHeight = updateHeight;
-        PersonaBarDialog.prototype.close = closeDialog;
-
-        return PersonaBarDialog;
-    })();
-
-    return PersonaBarDialogClass;
+  return PersonaBarDialogClass;
 });

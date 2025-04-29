@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Modules.Communications
+namespace DotNetNuke.Entities.Modules.Communications;
+
+public interface IModuleListener
 {
-    public interface IModuleListener
-    {
-        void OnModuleCommunication(object s, ModuleCommunicationEventArgs e);
-    }
+    void OnModuleCommunication(object s, ModuleCommunicationEventArgs e);
 }

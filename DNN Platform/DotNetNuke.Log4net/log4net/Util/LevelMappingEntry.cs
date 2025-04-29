@@ -23,55 +23,54 @@ using System.Collections;
 
 using log4net.Core;
 
-namespace log4net.Util
+namespace log4net.Util;
+
+/// <summary>An entry in the <see cref="LevelMapping"/></summary>
+/// <remarks>
+/// <para>
+/// This is an abstract base class for types that are stored in the
+/// <see cref="LevelMapping"/> object.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+public abstract class LevelMappingEntry : IOptionHandler
 {
-    /// <summary>An entry in the <see cref="LevelMapping"/></summary>
+    /// <summary>Default protected constructor</summary>
     /// <remarks>
     /// <para>
-    /// This is an abstract base class for types that are stored in the
-    /// <see cref="LevelMapping"/> object.
+    /// Default protected constructor
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    public abstract class LevelMappingEntry : IOptionHandler
+    protected LevelMappingEntry() 
     {
-        /// <summary>Default protected constructor</summary>
-        /// <remarks>
-        /// <para>
-        /// Default protected constructor
-        /// </para>
-        /// </remarks>
-        protected LevelMappingEntry() 
-        {
-        }
-
-        /// <summary>The level that is the key for this mapping </summary>
-        /// <value>
-        /// The <see cref="Level"/> that is the key for this mapping 
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Get or set the <see cref="Level"/> that is the key for this
-        /// mapping subclass.
-        /// </para>
-        /// </remarks>
-        public Level Level
-        {
-            get { return this.m_level; }
-            set { this.m_level = value; }
-        }
-
-        /// <summary>Initialize any options defined on this entry</summary>
-        /// <remarks>
-        /// <para>
-        /// Should be overridden by any classes that need to initialise based on their options
-        /// </para>
-        /// </remarks>
-        public virtual void ActivateOptions()
-        {
-            // default implementation is to do nothing
-        }
-
-        private Level m_level;
     }
+
+    /// <summary>The level that is the key for this mapping </summary>
+    /// <value>
+    /// The <see cref="Level"/> that is the key for this mapping 
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Get or set the <see cref="Level"/> that is the key for this
+    /// mapping subclass.
+    /// </para>
+    /// </remarks>
+    public Level Level
+    {
+        get { return this.m_level; }
+        set { this.m_level = value; }
+    }
+
+    /// <summary>Initialize any options defined on this entry</summary>
+    /// <remarks>
+    /// <para>
+    /// Should be overridden by any classes that need to initialise based on their options
+    /// </para>
+    /// </remarks>
+    public virtual void ActivateOptions()
+    {
+        // default implementation is to do nothing
+    }
+
+    private Level m_level;
 }

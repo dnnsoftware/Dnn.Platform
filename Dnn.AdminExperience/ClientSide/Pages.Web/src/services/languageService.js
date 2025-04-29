@@ -20,22 +20,41 @@ class LanguageService {
 
     getLanguages(tabId, callback) {
         const sf = this.getServiceFramework("Pages");
-        sf.get("GetTabLocalization?" + serializeQueryStringParameters({ pageId: tabId }), {}, callback);
+        sf.get(
+            "GetTabLocalization?" + serializeQueryStringParameters({ pageId: tabId }),
+            {},
+            callback,
+        );
     }
 
     makePageTranslatable(tabId, callback) {
         const sf = this.getServiceFramework("Pages");
-        sf.post("MakePageTranslatable?" + serializeQueryStringParameters({ pageId: tabId }), {}, callback);
+        sf.post(
+            "MakePageTranslatable?" +
+        serializeQueryStringParameters({ pageId: tabId }),
+            {},
+            callback,
+        );
     }
 
     makePageNeutral(tabId, callback, failureCallback) {
         const sf = this.getServiceFramework("Pages");
-        sf.post("MakePageNeutral?" + serializeQueryStringParameters({ pageId: tabId }), {}, callback, failureCallback);
+        sf.post(
+            "MakePageNeutral?" + serializeQueryStringParameters({ pageId: tabId }),
+            {},
+            callback,
+            failureCallback,
+        );
     }
 
     addMissingLanguages(tabId, callback) {
         const sf = this.getServiceFramework("Pages");
-        sf.post("AddMissingLanguages?" + serializeQueryStringParameters({ pageId: tabId }), {}, callback);
+        sf.post(
+            "AddMissingLanguages?" +
+        serializeQueryStringParameters({ pageId: tabId }),
+            {},
+            callback,
+        );
     }
 
     notifyTranslators(params, callback) {
@@ -47,20 +66,30 @@ class LanguageService {
         const sf = this.getServiceFramework("Pages");
         sf.post("UpdateTabLocalization", params, callback, failureCallback);
     }
-    
+
     restoreModule(params, callback, failureCallback) {
         const sf = this.getServiceFramework("Pages");
-        sf.post("RestoreModule?" + serializeQueryStringParameters(params), {}, callback, failureCallback);
+        sf.post(
+            "RestoreModule?" + serializeQueryStringParameters(params),
+            {},
+            callback,
+            failureCallback,
+        );
     }
 
-    getContentLocalizationEnabled( callback) {
+    getContentLocalizationEnabled(callback) {
         const sf = this.getServiceFramework("Pages");
         sf.get("GetContentLocalizationEnabled", {}, callback);
     }
 
     deleteModule(params, callback, failureCallback) {
         const sf = this.getServiceFramework("Pages");
-        sf.post("DeleteModule?" + serializeQueryStringParameters(params), {}, callback, failureCallback);
+        sf.post(
+            "DeleteModule?" + serializeQueryStringParameters(params),
+            {},
+            callback,
+            failureCallback,
+        );
     }
 }
 

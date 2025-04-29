@@ -1,31 +1,33 @@
 @import "~@dnnsoftware/dnn-react-common/styles/index";
 .extension-install-logs {
-    >h6 {
-        margin-bottom: 10px;
-        text-transform: uppercase;
-        display: inline-block;
+  > h6 {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+  > p {
+    margin-bottom: 25px;
+  }
+  .install-error-tooltip {
+    display: inline-block;
+    margin-left: 10px;
+    position: relative;
+    top: 5px;
+  }
+  .package-installation-report {
+    padding: 25px;
+    p {
+      word-wrap: break-word;
     }
-    > p {
-        margin-bottom: 25px;
+    p.failure,
+    p.error {
+      color: @alizarinCrimson;
+      font-weight: bold;
     }
-    .install-error-tooltip{
-        display: inline-block;
-        margin-left: 10px;
-        position: relative;
-        top: 5px;
+    p.startjob,
+    p.endjob {
+      color: #000;
+      font-weight: bold;
     }
-    .package-installation-report {
-        padding: 25px;
-        p {
-            word-wrap: break-word;
-        }
-        p.failure, p.error {
-            color: @alizarinCrimson;
-            font-weight: bold;
-        }
-        p.startjob, p.endjob {
-            color: #000;
-            font-weight: bold;
-        }
-    }
+  }
 }

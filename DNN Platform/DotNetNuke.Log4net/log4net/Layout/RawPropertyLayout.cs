@@ -24,52 +24,51 @@ using System.Text;
 using log4net.Core;
 using log4net.Util;
 
-namespace log4net.Layout
+namespace log4net.Layout;
+
+/// <summary>Extract the value of a property from the <see cref="LoggingEvent"/></summary>
+/// <remarks>
+/// <para>
+/// Extract the value of a property from the <see cref="LoggingEvent"/>
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+public class RawPropertyLayout : IRawLayout
 {
-    /// <summary>Extract the value of a property from the <see cref="LoggingEvent"/></summary>
+    /// <summary>Constructs a RawPropertyLayout</summary>
+    public RawPropertyLayout()
+    {
+    }
+
+    private string m_key;
+
+    /// <summary>The name of the value to lookup in the LoggingEvent Properties collection.</summary>
+    /// <value>
+    /// Value to lookup in the LoggingEvent Properties collection
+    /// </value>
     /// <remarks>
     /// <para>
-    /// Extract the value of a property from the <see cref="LoggingEvent"/>
+    /// String name of the property to lookup in the <see cref="LoggingEvent"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    public class RawPropertyLayout : IRawLayout
+    public string Key
     {
-        /// <summary>Constructs a RawPropertyLayout</summary>
-        public RawPropertyLayout()
-        {
-        }
+        get { return this.m_key; }
+        set { this.m_key = value; }
+    }
 
-        private string m_key;
-
-        /// <summary>The name of the value to lookup in the LoggingEvent Properties collection.</summary>
-        /// <value>
-        /// Value to lookup in the LoggingEvent Properties collection
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// String name of the property to lookup in the <see cref="LoggingEvent"/>.
-        /// </para>
-        /// </remarks>
-        public string Key
-        {
-            get { return this.m_key; }
-            set { this.m_key = value; }
-        }
-
-        /// <summary>Lookup the property for <see cref="Key"/></summary>
-        /// <param name="loggingEvent">The event to format</param>
-        /// <returns>returns property value</returns>
-        /// <remarks>
-        /// <para>
-        /// Looks up and returns the object value of the property
-        /// named <see cref="Key"/>. If there is no property defined
-        /// with than name then <c>null</c> will be returned.
-        /// </para>
-        /// </remarks>
-        public virtual object Format(LoggingEvent loggingEvent)
-        {
-            return loggingEvent.LookupProperty(this.m_key);
-        }
+    /// <summary>Lookup the property for <see cref="Key"/></summary>
+    /// <param name="loggingEvent">The event to format</param>
+    /// <returns>returns property value</returns>
+    /// <remarks>
+    /// <para>
+    /// Looks up and returns the object value of the property
+    /// named <see cref="Key"/>. If there is no property defined
+    /// with than name then <c>null</c> will be returned.
+    /// </para>
+    /// </remarks>
+    public virtual object Format(LoggingEvent loggingEvent)
+    {
+        return loggingEvent.LookupProperty(this.m_key);
     }
 }

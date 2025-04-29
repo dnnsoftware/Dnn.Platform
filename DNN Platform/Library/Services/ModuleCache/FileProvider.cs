@@ -1,285 +1,156 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.ModuleCache
+namespace DotNetNuke.Services.ModuleCache;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
+
+using DotNetNuke.Collections.Internal;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+
+public class FileProvider : ModuleCachingProvider
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Security.Cryptography;
-    using System.Text;
+    private const string DataFileExtension = ".data.resources";
+    private const string AttribFileExtension = ".attrib.resources";
+    private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
-    using DotNetNuke.Collections.Internal;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-
-    public class FileProvider : ModuleCachingProvider
+    /// <inheritdoc/>
+    public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
     {
-        private const string DataFileExtension = ".data.resources";
-        private const string AttribFileExtension = ".attrib.resources";
-        private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
-
-        /// <inheritdoc/>
-        public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
+        var cacheKey = new StringBuilder();
+        if (varyBy != null)
         {
-            var cacheKey = new StringBuilder();
-            if (varyBy != null)
+            SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
+            while (varyByParms.MoveNext())
             {
-                SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
-                while (varyByParms.MoveNext())
-                {
-                    string key = varyByParms.Current.Key.ToLowerInvariant();
-                    cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
-                }
-            }
-
-            return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
-        }
-
-        /// <inheritdoc/>
-        public override int GetItemCount(int tabModuleId)
-        {
-            return GetCachedItemCount(tabModuleId);
-        }
-
-        /// <inheritdoc/>
-        public override byte[] GetModule(int tabModuleId, string cacheKey)
-        {
-            string cachedModule = GetCachedOutputFileName(tabModuleId, cacheKey);
-            if (!File.Exists(cachedModule))
-            {
-                return null;
-            }
-
-            var fInfo = new FileInfo(cachedModule);
-            long numBytes = fInfo.Length;
-            using (var fStream = new FileStream(cachedModule, FileMode.Open, FileAccess.Read))
-            using (var br = new BinaryReader(fStream))
-            {
-                return br.ReadBytes(Convert.ToInt32(numBytes));
+                string key = varyByParms.Current.Key.ToLowerInvariant();
+                cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
             }
         }
 
-        /// <inheritdoc/>
-        public override void PurgeCache(int portalId)
+        return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
+    }
+
+    /// <inheritdoc/>
+    public override int GetItemCount(int tabModuleId)
+    {
+        return GetCachedItemCount(tabModuleId);
+    }
+
+    /// <inheritdoc/>
+    public override byte[] GetModule(int tabModuleId, string cacheKey)
+    {
+        string cachedModule = GetCachedOutputFileName(tabModuleId, cacheKey);
+        if (!File.Exists(cachedModule))
         {
-            this.PurgeCache(GetCacheFolder(portalId));
+            return null;
         }
 
-        /// <inheritdoc/>
-        public override void PurgeExpiredItems(int portalId)
+        var fInfo = new FileInfo(cachedModule);
+        long numBytes = fInfo.Length;
+        using (var fStream = new FileStream(cachedModule, FileMode.Open, FileAccess.Read))
+        using (var br = new BinaryReader(fStream))
         {
-            try
-            {
-                var filesNotDeleted = new StringBuilder();
-                int i = 0;
-                string cacheFolder = GetCacheFolder(portalId);
-                if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
-                {
-                    foreach (string file in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
-                    {
-                        if (this.IsFileExpired(file))
-                        {
-                            string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
-                            if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
-                            {
-                                filesNotDeleted.Append(string.Format("{0};", fileToDelete));
-                            }
-                            else
-                            {
-                                i += 1;
-                            }
-                        }
-                    }
-                }
-
-                if (filesNotDeleted.Length > 0)
-                {
-                    throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.Exceptions.LogException(ex);
-            }
+            return br.ReadBytes(Convert.ToInt32(numBytes));
         }
+    }
 
-        /// <inheritdoc/>
-        public override void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] output)
-        {
-            try
-            {
-                string cachedOutputFile = GetCachedOutputFileName(tabModuleId, cacheKey);
+    /// <inheritdoc/>
+    public override void PurgeCache(int portalId)
+    {
+        this.PurgeCache(GetCacheFolder(portalId));
+    }
 
-                if (File.Exists(cachedOutputFile))
-                {
-                    FileSystemUtils.DeleteFileWithWait(cachedOutputFile, 100, 200);
-                }
-
-                string attribFile = GetAttribFileName(tabModuleId, cacheKey);
-
-                File.WriteAllBytes(cachedOutputFile, output);
-                File.WriteAllLines(attribFile, new[] { DateTime.UtcNow.Add(duration).ToString(CultureInfo.InvariantCulture) });
-            }
-            catch (Exception ex)
-            {
-                Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void Remove(int tabModuleId)
-        {
-            try
-            {
-                ModuleInfo tabModule = ModuleController.Instance.GetTabModule(tabModuleId);
-
-                int portalId = tabModule.PortalID;
-                if (portalId == Null.NullInteger)
-                {
-                    portalId = PortalSettings.Current.PortalId;
-                }
-
-                string cacheFolder = GetCacheFolder(portalId);
-                var filesNotDeleted = new StringBuilder();
-                int i = 0;
-                foreach (string file in Directory.GetFiles(cacheFolder, tabModuleId + "_*.*"))
-                {
-                    if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
-                    {
-                        filesNotDeleted.Append(file + ";");
-                    }
-                    else
-                    {
-                        i += 1;
-                    }
-                }
-
-                if (filesNotDeleted.Length > 0)
-                {
-                    throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        private static string GetAttribFileName(int tabModuleId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
-        }
-
-        private static int GetCachedItemCount(int tabModuleId)
-        {
-            return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
-        }
-
-        private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
-        }
-
-        private static string GetCacheFolder(int portalId)
-        {
-            string cacheFolder;
-
-            using (var readerLock = CacheFolderPath.GetReadLock())
-            {
-                if (CacheFolderPath.TryGetValue(portalId, out cacheFolder))
-                {
-                    return cacheFolder;
-                }
-            }
-
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-
-            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
-
-            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
-            {
-                cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Modules\\");
-                if (!Directory.Exists(cacheFolder))
-                {
-                    Directory.CreateDirectory(cacheFolder);
-                }
-            }
-
-            using (var writerLock = CacheFolderPath.GetWriteLock())
-            {
-                if (!CacheFolderPath.ContainsKey(portalId))
-                {
-                    CacheFolderPath.Add(portalId, cacheFolder);
-                }
-            }
-
-            return cacheFolder;
-        }
-
-        private static string GetCacheFolder()
-        {
-            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
-            return GetCacheFolder(portalId);
-        }
-
-        private static bool IsPathInApplication(string cacheFolder)
-        {
-            return cacheFolder.Contains(Globals.ApplicationMapPath);
-        }
-
-        private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
-        {
-            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            using (var sha256 = new SHA256CryptoServiceProvider())
-            {
-                hash = sha256.ComputeHash(hash);
-                return tabModuleId + "_" + this.ByteArrayToString(hash);
-            }
-        }
-
-        private bool IsFileExpired(string file)
-        {
-            StreamReader oRead = null;
-            try
-            {
-                oRead = File.OpenText(file);
-                DateTime expires = DateTime.Parse(oRead.ReadLine(), CultureInfo.InvariantCulture);
-                if (expires < DateTime.UtcNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                // if check expire time failed, then force to expire the cache.
-                return true;
-            }
-            finally
-            {
-                if (oRead != null)
-                {
-                    oRead.Close();
-                }
-            }
-        }
-
-        private void PurgeCache(string folder)
+    /// <inheritdoc/>
+    public override void PurgeExpiredItems(int portalId)
+    {
+        try
         {
             var filesNotDeleted = new StringBuilder();
             int i = 0;
-            foreach (string file in Directory.GetFiles(folder, "*.resources"))
+            string cacheFolder = GetCacheFolder(portalId);
+            if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
+            {
+                foreach (string file in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
+                {
+                    if (this.IsFileExpired(file))
+                    {
+                        string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
+                        if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
+                        {
+                            filesNotDeleted.Append(string.Format("{0};", fileToDelete));
+                        }
+                        else
+                        {
+                            i += 1;
+                        }
+                    }
+                }
+            }
+
+            if (filesNotDeleted.Length > 0)
+            {
+                throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+            }
+        }
+        catch (Exception ex)
+        {
+            Exceptions.Exceptions.LogException(ex);
+        }
+    }
+
+    /// <inheritdoc/>
+    public override void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] output)
+    {
+        try
+        {
+            string cachedOutputFile = GetCachedOutputFileName(tabModuleId, cacheKey);
+
+            if (File.Exists(cachedOutputFile))
+            {
+                FileSystemUtils.DeleteFileWithWait(cachedOutputFile, 100, 200);
+            }
+
+            string attribFile = GetAttribFileName(tabModuleId, cacheKey);
+
+            File.WriteAllBytes(cachedOutputFile, output);
+            File.WriteAllLines(attribFile, new[] { DateTime.UtcNow.Add(duration).ToString(CultureInfo.InvariantCulture) });
+        }
+        catch (Exception ex)
+        {
+            Exceptions.Exceptions.LogException(ex);
+        }
+    }
+
+    /// <inheritdoc/>
+    public override void Remove(int tabModuleId)
+    {
+        try
+        {
+            ModuleInfo tabModule = ModuleController.Instance.GetTabModule(tabModuleId);
+
+            int portalId = tabModule.PortalID;
+            if (portalId == Null.NullInteger)
+            {
+                portalId = PortalSettings.Current.PortalId;
+            }
+
+            string cacheFolder = GetCacheFolder(portalId);
+            var filesNotDeleted = new StringBuilder();
+            int i = 0;
+            foreach (string file in Directory.GetFiles(cacheFolder, tabModuleId + "_*.*"))
             {
                 if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                 {
-                    filesNotDeleted.Append(string.Format("{0};", file));
+                    filesNotDeleted.Append(file + ";");
                 }
                 else
                 {
@@ -289,8 +160,136 @@ namespace DotNetNuke.Services.ModuleCache
 
             if (filesNotDeleted.Length > 0)
             {
-                throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
             }
+        }
+        catch (Exception ex)
+        {
+            Exceptions.Exceptions.LogException(ex);
+        }
+    }
+
+    private static string GetAttribFileName(int tabModuleId, string cacheKey)
+    {
+        return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
+    }
+
+    private static int GetCachedItemCount(int tabModuleId)
+    {
+        return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
+    }
+
+    private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
+    {
+        return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
+    }
+
+    private static string GetCacheFolder(int portalId)
+    {
+        string cacheFolder;
+
+        using (var readerLock = CacheFolderPath.GetReadLock())
+        {
+            if (CacheFolderPath.TryGetValue(portalId, out cacheFolder))
+            {
+                return cacheFolder;
+            }
+        }
+
+        var portalInfo = PortalController.Instance.GetPortal(portalId);
+
+        string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
+
+        if (!string.IsNullOrEmpty(homeDirectoryMapPath))
+        {
+            cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Modules\\");
+            if (!Directory.Exists(cacheFolder))
+            {
+                Directory.CreateDirectory(cacheFolder);
+            }
+        }
+
+        using (var writerLock = CacheFolderPath.GetWriteLock())
+        {
+            if (!CacheFolderPath.ContainsKey(portalId))
+            {
+                CacheFolderPath.Add(portalId, cacheFolder);
+            }
+        }
+
+        return cacheFolder;
+    }
+
+    private static string GetCacheFolder()
+    {
+        int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+        return GetCacheFolder(portalId);
+    }
+
+    private static bool IsPathInApplication(string cacheFolder)
+    {
+        return cacheFolder.Contains(Globals.ApplicationMapPath);
+    }
+
+    private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
+    {
+        byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
+        using (var sha256 = new SHA256CryptoServiceProvider())
+        {
+            hash = sha256.ComputeHash(hash);
+            return tabModuleId + "_" + this.ByteArrayToString(hash);
+        }
+    }
+
+    private bool IsFileExpired(string file)
+    {
+        StreamReader oRead = null;
+        try
+        {
+            oRead = File.OpenText(file);
+            DateTime expires = DateTime.Parse(oRead.ReadLine(), CultureInfo.InvariantCulture);
+            if (expires < DateTime.UtcNow)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch
+        {
+            // if check expire time failed, then force to expire the cache.
+            return true;
+        }
+        finally
+        {
+            if (oRead != null)
+            {
+                oRead.Close();
+            }
+        }
+    }
+
+    private void PurgeCache(string folder)
+    {
+        var filesNotDeleted = new StringBuilder();
+        int i = 0;
+        foreach (string file in Directory.GetFiles(folder, "*.resources"))
+        {
+            if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
+            {
+                filesNotDeleted.Append(string.Format("{0};", file));
+            }
+            else
+            {
+                i += 1;
+            }
+        }
+
+        if (filesNotDeleted.Length > 0)
+        {
+            throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
         }
     }
 }

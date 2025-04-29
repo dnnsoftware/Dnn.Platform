@@ -1,52 +1,51 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.HttpModules
+namespace DotNetNuke.HttpModules;
+
+using System.Web;
+
+using DotNetNuke.Entities.Urls;
+using DotNetNuke.Framework.Providers;
+using DotNetNuke.HttpModules.UrlRewrite;
+
+public class UrlRewriteModule : IHttpModule
 {
-    using System.Web;
+    private string providerToUse;
+    private UrlRewriterBase urlRewriter;
 
-    using DotNetNuke.Entities.Urls;
-    using DotNetNuke.Framework.Providers;
-    using DotNetNuke.HttpModules.UrlRewrite;
-
-    public class UrlRewriteModule : IHttpModule
+    public string ModuleName
     {
-        private string providerToUse;
-        private UrlRewriterBase urlRewriter;
+        get { return "UrlRewriteModule"; }
+    }
 
-        public string ModuleName
+    /// <inheritdoc/>
+    public void Init(HttpApplication application)
+    {
+        this.providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
+
+        // bind events depending on currently configured friendly url provider
+        // note that the current configured friendly url provider determines what type
+        // of url rewriting is required.
+        switch (this.providerToUse)
         {
-            get { return "UrlRewriteModule"; }
+            case "advanced":
+                var advancedRewriter = new AdvancedUrlRewriter();
+                this.urlRewriter = advancedRewriter;
+
+                // bind the rewrite event to the begin request event
+                application.BeginRequest += this.urlRewriter.RewriteUrl;
+                break;
+            default:
+                var basicRewriter = new BasicUrlRewriter();
+                this.urlRewriter = basicRewriter;
+                application.BeginRequest += this.urlRewriter.RewriteUrl;
+                break;
         }
+    }
 
-        /// <inheritdoc/>
-        public void Init(HttpApplication application)
-        {
-            this.providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
-
-            // bind events depending on currently configured friendly url provider
-            // note that the current configured friendly url provider determines what type
-            // of url rewriting is required.
-            switch (this.providerToUse)
-            {
-                case "advanced":
-                    var advancedRewriter = new AdvancedUrlRewriter();
-                    this.urlRewriter = advancedRewriter;
-
-                    // bind the rewrite event to the begin request event
-                    application.BeginRequest += this.urlRewriter.RewriteUrl;
-                    break;
-                default:
-                    var basicRewriter = new BasicUrlRewriter();
-                    this.urlRewriter = basicRewriter;
-                    application.BeginRequest += this.urlRewriter.RewriteUrl;
-                    break;
-            }
-        }
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-        }
+    /// <inheritdoc/>
+    public void Dispose()
+    {
     }
 }

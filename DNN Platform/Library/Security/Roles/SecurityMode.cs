@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Security.Roles
+namespace DotNetNuke.Security.Roles;
+
+public enum SecurityMode
 {
-    public enum SecurityMode
-    {
-        SecurityRole = 0,
-        SocialGroup = 1,
-        Both = 2,
-    }
+    SecurityRole = 0,
+    SocialGroup = 1,
+    Both = 2,
 }

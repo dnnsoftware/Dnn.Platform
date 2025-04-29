@@ -3,42 +3,40 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable CheckNamespace
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow;
 
 // ReSharper enable CheckNamespace
+using DotNetNuke.Internal.SourceGenerators;
+
+/// <summary>This entity represents a Workflow State.</summary>
+[DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+public partial class ContentWorkflowState
 {
-    using DotNetNuke.Internal.SourceGenerators;
+    /// <summary>Gets or sets state Id.</summary>
+    public int StateID { get; set; }
 
-    /// <summary>This entity represents a Workflow State.</summary>
-    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-    public partial class ContentWorkflowState
-    {
-        /// <summary>Gets or sets state Id.</summary>
-        public int StateID { get; set; }
+    /// <summary>Gets or sets workflow associated to the state.</summary>
+    public int WorkflowID { get; set; }
 
-        /// <summary>Gets or sets workflow associated to the state.</summary>
-        public int WorkflowID { get; set; }
+    /// <summary>Gets or sets state name.</summary>
+    public string StateName { get; set; }
 
-        /// <summary>Gets or sets state name.</summary>
-        public string StateName { get; set; }
+    /// <summary>Gets or sets state Order.</summary>
+    public int Order { get; set; }
 
-        /// <summary>Gets or sets state Order.</summary>
-        public int Order { get; set; }
+    public bool IsActive { get; set; }
 
-        public bool IsActive { get; set; }
+    public bool SendEmail { get; set; }
 
-        public bool SendEmail { get; set; }
+    public bool SendMessage { get; set; }
 
-        public bool SendMessage { get; set; }
+    public bool IsDisposalState { get; set; }
 
-        public bool IsDisposalState { get; set; }
+    public string OnCompleteMessageSubject { get; set; }
 
-        public string OnCompleteMessageSubject { get; set; }
+    public string OnCompleteMessageBody { get; set; }
 
-        public string OnCompleteMessageBody { get; set; }
+    public string OnDiscardMessageSubject { get; set; }
 
-        public string OnDiscardMessageSubject { get; set; }
-
-        public string OnDiscardMessageBody { get; set; }
-    }
+    public string OnDiscardMessageBody { get; set; }
 }

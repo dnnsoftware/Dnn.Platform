@@ -4,9 +4,9 @@ import visiblePanel from "./visiblePanelReducer";
 import security from "./securityReducer";
 
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    security
+  pagination,
+  visiblePanel,
+  security,
 });
 
 export default rootReducer;

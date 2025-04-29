@@ -2,30 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Web.Mvc
+namespace DotNetNuke.Tests.Web.Mvc;
+
+using System.Collections.Generic;
+using System.Web.Routing;
+
+using NUnit.Framework;
+
+public static class DictionaryAssert
 {
-    using System.Collections.Generic;
-    using System.Web.Routing;
-
-    using NUnit.Framework;
-
-    public static class DictionaryAssert
+    public static void ContainsEntries(object expected, IDictionary<string, object> actual)
     {
-        public static void ContainsEntries(object expected, IDictionary<string, object> actual)
-        {
-            ContainsEntries(new RouteValueDictionary(expected), actual);
-        }
+        ContainsEntries(new RouteValueDictionary(expected), actual);
+    }
 
-        public static void ContainsEntries(IDictionary<string, object> expected, IDictionary<string, object> actual)
+    public static void ContainsEntries(IDictionary<string, object> expected, IDictionary<string, object> actual)
+    {
+        foreach (KeyValuePair<string, object> pair in expected)
         {
-            foreach (KeyValuePair<string, object> pair in expected)
+            Assert.Multiple(() =>
             {
-                Assert.Multiple(() =>
-                {
-                    Assert.That(actual.ContainsKey(pair.Key), Is.True);
-                    Assert.That(actual[pair.Key], Is.EqualTo(pair.Value));
-                });
-            }
+                Assert.That(actual.ContainsKey(pair.Key), Is.True);
+                Assert.That(actual[pair.Key], Is.EqualTo(pair.Value));
+            });
         }
     }
 }

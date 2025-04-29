@@ -2,24 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Framework.Modules
+namespace DotNetNuke.Web.Mvc.Framework.Modules;
+
+using System.Web;
+using System.Web.Routing;
+using System.Web.UI;
+
+using DotNetNuke.UI.Modules;
+
+public class ModuleRequestContext
 {
-    using System.Web;
-    using System.Web.Routing;
-    using System.Web.UI;
+    public Page DnnPage { get; set; }
 
-    using DotNetNuke.UI.Modules;
+    public HttpContextBase HttpContext { get; set; }
 
-    public class ModuleRequestContext
-    {
-        public Page DnnPage { get; set; }
+    public ModuleInstanceContext ModuleContext { get; set; }
 
-        public HttpContextBase HttpContext { get; set; }
+    public ModuleApplication ModuleApplication { get; set; }
 
-        public ModuleInstanceContext ModuleContext { get; set; }
-
-        public ModuleApplication ModuleApplication { get; set; }
-
-        public RouteData RouteData { get; set; }
-    }
+    public RouteData RouteData { get; set; }
 }

@@ -1,40 +1,39 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.Validators
+namespace DotNetNuke.Web.Validators;
+
+using System.Collections.Generic;
+using System.Linq;
+
+public class Validator
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    private readonly IList<ObjectValidator> validators;
 
-    public class Validator
+    /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>
+    public Validator()
     {
-        private readonly IList<ObjectValidator> validators;
+        this.validators = new List<ObjectValidator>();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>
-        public Validator()
-        {
-            this.validators = new List<ObjectValidator>();
-        }
+    /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>
+    /// <param name="validator">The validator.</param>
+    public Validator(ObjectValidator validator)
+        : this()
+    {
+        this.validators.Add(validator);
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>
-        /// <param name="validator">The validator.</param>
-        public Validator(ObjectValidator validator)
-            : this()
+    public IList<ObjectValidator> Validators
+    {
+        get
         {
-            this.validators.Add(validator);
+            return this.validators;
         }
+    }
 
-        public IList<ObjectValidator> Validators
-        {
-            get
-            {
-                return this.validators;
-            }
-        }
-
-        public ValidationResult ValidateObject(object target)
-        {
-            return this.validators.Aggregate(ValidationResult.Successful, (result, validator) => result.CombineWith(validator.ValidateObject(target) ?? ValidationResult.Successful));
-        }
+    public ValidationResult ValidateObject(object target)
+    {
+        return this.validators.Aggregate(ValidationResult.Successful, (result, validator) => result.CombineWith(validator.ValidateObject(target) ?? ValidationResult.Successful));
     }
 }

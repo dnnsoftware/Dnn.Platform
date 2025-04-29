@@ -2,54 +2,53 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.UI.Services.DTO
+namespace Dnn.PersonaBar.UI.Services.DTO;
+
+using System;
+using System.Runtime.Serialization;
+
+using DotNetNuke.Security.Roles;
+
+[DataContract]
+[Serializable]
+public class RoleGroupDto
 {
-    using System;
-    using System.Runtime.Serialization;
-
-    using DotNetNuke.Security.Roles;
-
-    [DataContract]
-    [Serializable]
-    public class RoleGroupDto
+    /// <summary>Initializes a new instance of the <see cref="RoleGroupDto"/> class.</summary>
+    public RoleGroupDto()
     {
-        /// <summary>Initializes a new instance of the <see cref="RoleGroupDto"/> class.</summary>
-        public RoleGroupDto()
+        this.Id = -2;
+    }
+
+    [DataMember(Name = "id")]
+    public int Id { get; set; }
+
+    [DataMember(Name = "name")]
+    public string Name { get; set; }
+
+    [DataMember(Name = "rolesCount")]
+    public int RolesCount { get; set; }
+
+    [DataMember(Name = "description")]
+    public string Description { get; set; }
+
+    public static RoleGroupDto FromRoleGroupInfo(RoleGroupInfo roleGroup)
+    {
+        return new RoleGroupDto()
         {
-            this.Id = -2;
-        }
+            Id = roleGroup.RoleGroupID,
+            Name = roleGroup.RoleGroupName,
+            Description = roleGroup.Description,
+            RolesCount = roleGroup.Roles?.Count ?? 0,
+        };
+    }
 
-        [DataMember(Name = "id")]
-        public int Id { get; set; }
-
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
-
-        [DataMember(Name = "rolesCount")]
-        public int RolesCount { get; set; }
-
-        [DataMember(Name = "description")]
-        public string Description { get; set; }
-
-        public static RoleGroupDto FromRoleGroupInfo(RoleGroupInfo roleGroup)
+    public RoleGroupInfo ToRoleGroupInfo()
+    {
+        return new RoleGroupInfo()
         {
-            return new RoleGroupDto()
-            {
-                Id = roleGroup.RoleGroupID,
-                Name = roleGroup.RoleGroupName,
-                Description = roleGroup.Description,
-                RolesCount = roleGroup.Roles?.Count ?? 0,
-            };
-        }
-
-        public RoleGroupInfo ToRoleGroupInfo()
-        {
-            return new RoleGroupInfo()
-            {
-                RoleGroupID = this.Id,
-                RoleGroupName = this.Name,
-                Description = this.Description ?? string.Empty,
-            };
-        }
+            RoleGroupID = this.Id,
+            RoleGroupName = this.Name,
+            Description = this.Description ?? string.Empty,
+        };
     }
 }

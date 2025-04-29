@@ -1,23 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.Mvp
+namespace DotNetNuke.Web.Mvp;
+
+using System;
+
+using DotNetNuke.Internal.SourceGenerators;
+using DotNetNuke.UI.Skins.Controls;
+using WebFormsMvp;
+
+[DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
+public partial interface IModuleViewBase : IView
 {
-    using System;
+    event EventHandler Initialize;
 
-    using DotNetNuke.Internal.SourceGenerators;
-    using DotNetNuke.UI.Skins.Controls;
-    using WebFormsMvp;
+    bool AutoDataBind { get; set; }
 
-    [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
-    public partial interface IModuleViewBase : IView
-    {
-        event EventHandler Initialize;
+    void ProcessModuleLoadException(Exception ex);
 
-        bool AutoDataBind { get; set; }
-
-        void ProcessModuleLoadException(Exception ex);
-
-        void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType);
-    }
+    void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType);
 }

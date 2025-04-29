@@ -2,127 +2,126 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.EditBar.UI.Controllers
+namespace Dnn.EditBar.UI.Controllers;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Web.Caching;
+using System.Xml;
+using System.Xml.XPath;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework;
+using DotNetNuke.Services.Cache;
+
+internal class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading;
-    using System.Web.Caching;
-    using System.Xml;
-    using System.Xml.XPath;
+    public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
+    public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Cache;
-
-    internal class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
+    /// <inheritdoc/>
+    public string CultureName
     {
-        public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
-        public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
+        get { return Thread.CurrentThread.CurrentUICulture.Name; }
+    }
 
-        /// <inheritdoc/>
-        public string CultureName
+    /// <inheritdoc/>
+    public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
+    {
+        Requires.NotNullOrEmpty("resourceFile", resourceFile);
+        Requires.NotNullOrEmpty("culture", culture);
+
+        var dictionary = new Dictionary<string, string>();
+        foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
         {
-            get { return Thread.CurrentThread.CurrentUICulture.Name; }
+            dictionary[kvp.Key] = kvp.Value;
         }
 
-        /// <inheritdoc/>
-        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
-        {
-            Requires.NotNullOrEmpty("resourceFile", resourceFile);
-            Requires.NotNullOrEmpty("culture", culture);
+        return dictionary;
+    }
 
-            var dictionary = new Dictionary<string, string>();
-            foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+    /// <inheritdoc/>
+    protected override Func<ILocalizationController> GetFactory()
+    {
+        return () => new LocalizationController();
+    }
+
+    private static string GetNameAttribute(XmlNode node)
+    {
+        if (node.Attributes != null)
+        {
+            var attribute = node.Attributes.GetNamedItem("name");
+            if (attribute != null)
             {
-                dictionary[kvp.Key] = kvp.Value;
+                return attribute.Value;
             }
-
-            return dictionary;
         }
 
-        /// <inheritdoc/>
-        protected override Func<ILocalizationController> GetFactory()
-        {
-            return () => new LocalizationController();
-        }
+        return null;
+    }
 
-        private static string GetNameAttribute(XmlNode node)
+    private static string GetNameAttribute(XPathNavigator navigator)
+    {
+        return navigator.GetAttribute("name", string.Empty);
+    }
+
+    private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
+    {
+        var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
+        if (header != null)
         {
-            if (node.Attributes != null)
+            if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
             {
-                var attribute = node.Attributes.GetNamedItem("name");
-                if (attribute != null)
+                throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
+            }
+        }
+        else
+        {
+            throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
+        }
+    }
+
+    private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
+    {
+        using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
+        {
+            var document = new XmlDocument();
+            document.Load(stream);
+
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
+
+            AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
+
+            // ReSharper disable once AssignNullToNotNullAttribute
+            foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+            {
+                if (navigator.NodeType == XPathNodeType.Comment)
                 {
-                    return attribute.Value;
+                    continue;
                 }
-            }
 
-            return null;
-        }
+                var name = GetNameAttribute(navigator);
 
-        private static string GetNameAttribute(XPathNavigator navigator)
-        {
-            return navigator.GetAttribute("name", string.Empty);
-        }
-
-        private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
-        {
-            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
-            if (header != null)
-            {
-                if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                const string textPostFix = ".Text";
+                if (name.EndsWith(textPostFix))
                 {
-                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
+                    name = name.Substring(0, name.Length - textPostFix.Length);
                 }
-            }
-            else
-            {
-                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
-            }
-        }
 
-        private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
-        {
-            using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
-            {
-                var document = new XmlDocument();
-                document.Load(stream);
-
-                // ReSharper disable once AssignNullToNotNullAttribute
-                var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
-
-                AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
-
-                // ReSharper disable once AssignNullToNotNullAttribute
-                foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+                if (string.IsNullOrEmpty(name))
                 {
-                    if (navigator.NodeType == XPathNodeType.Comment)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var name = GetNameAttribute(navigator);
-
-                    const string textPostFix = ".Text";
-                    if (name.EndsWith(textPostFix))
-                    {
-                        name = name.Substring(0, name.Length - textPostFix.Length);
-                    }
-
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
-
-                    var valueNode = navigator.SelectSingleNode("value");
-                    if (valueNode != null)
-                    {
-                        yield return new KeyValuePair<string, string>(name, valueNode.Value);
-                    }
+                var valueNode = navigator.SelectSingleNode("value");
+                if (valueNode != null)
+                {
+                    yield return new KeyValuePair<string, string>(name, valueNode.Value);
                 }
             }
         }

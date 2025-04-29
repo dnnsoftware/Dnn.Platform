@@ -9,34 +9,34 @@ If you are new to Dnn Development, you can start by watching this video playlist
 
 [How to make a pull requests playlist](https://www.youtube.com/playlist?list=PLIx1M8IdVvqZ0bnODGqJyxvONNPj5BzMP)
 
-* Make sure you have a [GitHub account](https://github.com/signup/free)
-* [Submit a ticket](https://github.com/dnnsoftware/Dnn.AdminExperience/issues/new) for your issue, assuming one does not already exist. If you have the rights, you should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. If you do not have that ability please add a comment noting that a pull request will be submitted for the issue, and the engineering team will handle the assignment. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
-  * Clearly describe the issue including steps to reproduce when it is a bug.
-  * Make sure you fill in the earliest version that you know has the issue.
-  * We have included an issue template which helps make sure all of the relevant information is included with the issue report.
+- Make sure you have a [GitHub account](https://github.com/signup/free)
+- [Submit a ticket](https://github.com/dnnsoftware/Dnn.AdminExperience/issues/new) for your issue, assuming one does not already exist. If you have the rights, you should assign yourself to the issue and click 'start progress' to indicate that the issue is underway. If you do not have that ability please add a comment noting that a pull request will be submitted for the issue, and the engineering team will handle the assignment. After review, if the pull request is accepted, we will mark the issue as resolved and assign it to a release so it can be QA'ed.
+  - Clearly describe the issue including steps to reproduce when it is a bug.
+  - Make sure you fill in the earliest version that you know has the issue.
+  - We have included an issue template which helps make sure all of the relevant information is included with the issue report.
 
 ## Fork the repository on GitHub
 
 If this is your first time working with Dnn:AdminExperience. You will need to fork the repository to get your system configured for local development.
 
-* Click fork on the main Dnn:AdminExperience project
-* Clone your fork locally with `git clone https://github.com/[username]/Dnn.AdminExperience.git` replacing [username] with your account information.
-* Add the upstream connection so you can rebase and update your fork with `git remote add upstream https://github.com/dnnsoftware/Dnn.AdminExperience.git`
-  * To update your fork to the latest, you can then run `git fetch upstream` followed by `git push`
+- Click fork on the main Dnn:AdminExperience project
+- Clone your fork locally with `git clone https://github.com/[username]/Dnn.AdminExperience.git` replacing [username] with your account information.
+- Add the upstream connection so you can rebase and update your fork with `git remote add upstream https://github.com/dnnsoftware/Dnn.AdminExperience.git`
+  - To update your fork to the latest, you can then run `git fetch upstream` followed by `git push`
 
 ## Making Changes
 
-* Create a topic branch from where you want to base your work.
-  * This is usually the 'development' branch.
-  * Release branches should only be targeted in special cases and with approval from the approver group.
-  * To quickly create a topic branch based on development; `git checkout -b my_contribution development`
-* Make commits of logical units.
-* Check for unnecessary whitespace with `git diff --check` before committing.
-* When ready to publish your changes, you can with `git push -u origin my_contribution`
-* Make sure your pull request description tags the GitHub issue ID, so it is clear what issue you have fixed.
-* Make sure your commit messages are in the proper format.
+- Create a topic branch from where you want to base your work.
+  - This is usually the 'development' branch.
+  - Release branches should only be targeted in special cases and with approval from the approver group.
+  - To quickly create a topic branch based on development; `git checkout -b my_contribution development`
+- Make commits of logical units.
+- Check for unnecessary whitespace with `git diff --check` before committing.
+- When ready to publish your changes, you can with `git push -u origin my_contribution`
+- Make sure your pull request description tags the GitHub issue ID, so it is clear what issue you have fixed.
+- Make sure your commit messages are in the proper format.
 
-````
+```
     Short (72 chars or less) summary.
 
     More detailed explanatory text. Wrap it to 72 characters. The blank line separating the summary from the body is critical (unless you omit
@@ -49,13 +49,13 @@ If this is your first time working with Dnn:AdminExperience. You will need to fo
     - Bullet points are okay, too.
     - Typically a hyphen or asterisk is used for the bullet, followed by a
       single space. Use a hanging indent.
-  
-    Fix bug #123 #345
-````
-* For bonus points run and add unit tests
-	* Make sure you have added the necessary tests for your changes.
-	* Run _all_ the tests to assure nothing else was accidentally broken.
 
+    Fix bug #123 #345
+```
+
+- For bonus points run and add unit tests
+  - Make sure you have added the necessary tests for your changes.
+  - Run _all_ the tests to assure nothing else was accidentally broken.
 
 ## Making Trivial Changes
 
@@ -64,18 +64,19 @@ If this is your first time working with Dnn:AdminExperience. You will need to fo
 For changes of a trivial nature to comments and documentation, it is not
 always necessary to create a new ticket in the issue tracker. In this case, it is
 appropriate to start the first line of a commit with '(doc)' instead of
-a ticket number. 
+a ticket number.
 
-````
-    Short (72 chars or less) summary starting with (doc). 
-    
+```
+    Short (72 chars or less) summary starting with (doc).
+
     The first line is a real-life imperative statement with '(doc)' in place of what would have been the ticket number in a non-documentation related commit. The body describes the nature of the new documentation or comments added.
-````
+```
 
 ## Submitting Changes
+
 Once your change is completed you will want to follow the [Pull Request Process](https://github.com/dnnsoftware/Dnn.Platform/blob/development/.github/PULL_REQUEST_PROCESS.md) to submit your changes for review & inclusion in the next release.
 
 # Additional Resources
 
-* [General GitHub documentation](http://help.github.com/)
-* [GitHub pull request documentation](http://help.github.com/send-pull-requests/)
+- [General GitHub documentation](http://help.github.com/)
+- [GitHub pull request documentation](http://help.github.com/send-pull-requests/)

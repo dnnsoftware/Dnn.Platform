@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ComponentModel.DataAnnotations
+namespace DotNetNuke.ComponentModel.DataAnnotations;
+
+using System;
+
+public class ScopeAttribute : Attribute
 {
-    using System;
-
-    public class ScopeAttribute : Attribute
+    /// <summary>Initializes a new instance of the <see cref="ScopeAttribute"/> class.</summary>
+    /// <param name="scope"></param>
+    public ScopeAttribute(string scope)
     {
-        /// <summary>Initializes a new instance of the <see cref="ScopeAttribute"/> class.</summary>
-        /// <param name="scope"></param>
-        public ScopeAttribute(string scope)
-        {
-            this.Scope = scope;
-        }
-
-        /// <summary>Gets or sets the property to use to scope the cache.  The default is an empty string.</summary>
-        public string Scope { get; set; }
+        this.Scope = scope;
     }
+
+    /// <summary>Gets or sets the property to use to scope the cache.  The default is an empty string.</summary>
+    public string Scope { get; set; }
 }

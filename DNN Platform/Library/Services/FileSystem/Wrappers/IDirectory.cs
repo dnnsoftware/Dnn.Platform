@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem.Internal
+namespace DotNetNuke.Services.FileSystem.Internal;
+
+public interface IDirectory
 {
-    public interface IDirectory
-    {
-        void Delete(string path, bool recursive);
+    void Delete(string path, bool recursive);
 
-        bool Exists(string path);
+    bool Exists(string path);
 
-        string[] GetDirectories(string path);
+    string[] GetDirectories(string path);
 
-        string[] GetFiles(string path);
+    string[] GetFiles(string path);
 
-        void Move(string sourceDirName, string destDirName);
+    void Move(string sourceDirName, string destDirName);
 
-        void CreateDirectory(string path);
-    }
+    void CreateDirectory(string path);
 }

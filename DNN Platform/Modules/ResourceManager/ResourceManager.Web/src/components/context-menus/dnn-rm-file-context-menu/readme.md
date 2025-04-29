@@ -1,9 +1,6 @@
 # dnn-rm-file-context-menu
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,13 +8,12 @@
 | ------------------- | --------- | ---------------------------------- | ------ | ----------- |
 | `item` _(required)_ | --        | The item that triggered this menu. | `Item` | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-items-cardview](../../dnn-rm-items-cardview)
- - [dnn-rm-items-listview](../../dnn-rm-items-listview)
+- [dnn-rm-items-cardview](../../dnn-rm-items-cardview)
+- [dnn-rm-items-listview](../../dnn-rm-items-listview)
 
 ### Depends on
 
@@ -29,6 +25,7 @@
 - [dnn-action-copy-url](../../actions/dnn-action-copy-url)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-file-context-menu --> dnn-action-edit-item
@@ -95,6 +92,6 @@ graph TD;
   style dnn-rm-file-context-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

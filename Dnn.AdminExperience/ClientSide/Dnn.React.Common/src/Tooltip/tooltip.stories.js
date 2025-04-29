@@ -3,30 +3,33 @@ import { storiesOf } from "@storybook/react";
 import Tooltip from "./index";
 
 storiesOf("Tooltip", module).add("error with only required props", () => (
-  <div style={{marginTop:100, marginLeft:100, width: 20}}>
-    <Tooltip
-      type="error"
-      messages={["Tooltip message"]}
-      tooltipPlace="top"
-    />
+  <div style={{ marginTop: 100, marginLeft: 100, width: 20 }}>
+    <Tooltip type="error" messages={["Tooltip message"]} tooltipPlace="top" />
   </div>
 ));
 
 storiesOf("Tooltip", module).add("warning list on bottom", () => (
-  <div style={{marginTop:100, marginLeft:100, width:20}}>
+  <div style={{ marginTop: 100, marginLeft: 100, width: 20 }}>
     <Tooltip
       type="warning"
-      messages={["This tooltip message is longer", "and is an array", "with 3 strings","it shows as a list of items"]}
+      messages={[
+        "This tooltip message is longer",
+        "and is an array",
+        "with 3 strings",
+        "it shows as a list of items",
+      ]}
       tooltipPlace="bottom"
     />
   </div>
 ));
 
 storiesOf("Tooltip", module).add("info with long message and maxWidth", () => (
-  <div style={{marginTop:250, marginLeft:100, width:20}}>
+  <div style={{ marginTop: 250, marginLeft: 100, width: 20 }}>
     <Tooltip
       type="info"
-      messages={["This is a longer message but it should be limited to 70px wide"]}
+      messages={[
+        "This is a longer message but it should be limited to 70px wide",
+      ]}
       rendered={true}
       tooltipPlace="top"
       maxWidth={70}
@@ -34,38 +37,43 @@ storiesOf("Tooltip", module).add("info with long message and maxWidth", () => (
   </div>
 ));
 
-storiesOf("Tooltip", module).add("global setting and positioned on the bottom", () => (
-  <div style={{marginTop:100, marginLeft:100, width:20}}>
-    <Tooltip
-      type="global"
-      messages={["This tooltip should show on the bottom"]}
-      rendered={true}
-      tooltipPlace="bottom"
-      delayHide={3000}
-    />
-  </div>
-));
+storiesOf("Tooltip", module).add(
+  "global setting and positioned on the bottom",
+  () => (
+    <div style={{ marginTop: 100, marginLeft: 100, width: 20 }}>
+      <Tooltip
+        type="global"
+        messages={["This tooltip should show on the bottom"]}
+        rendered={true}
+        tooltipPlace="bottom"
+        delayHide={3000}
+      />
+    </div>
+  ),
+);
 
 storiesOf("Tooltip", module).add("not rendered", () => (
   <DynamicRenderedTooltip />
 ));
 
 class DynamicRenderedTooltip extends Component {
-  constructor(){
+  constructor() {
     super();
-    this.state = {rendered: false};
+    this.state = { rendered: false };
   }
 
-  handleToggleRender(){
-    this.setState({rendered: !this.state.rendered});
+  handleToggleRender() {
+    this.setState({ rendered: !this.state.rendered });
   }
 
-  render(){
-    return(
-      <div style={{marginTop:100, marginLeft:100,}}>
+  render() {
+    return (
+      <div style={{ marginTop: 100, marginLeft: 100 }}>
         <p>This tooltip should not be rendered until you click the button</p>
-        <button onClick={this.handleToggleRender.bind(this)}>Toggle render of the tootip</button>
-        <div style={{width:20}}>
+        <button onClick={this.handleToggleRender.bind(this)}>
+          Toggle render of the tootip
+        </button>
+        <div style={{ width: 20 }}>
           <Tooltip
             type="global"
             messages={["This tooltip renders dynamically"]}
@@ -77,7 +85,6 @@ class DynamicRenderedTooltip extends Component {
     );
   }
 }
-
 
 //    ---------- TOOLTIP AVAILABLE PROPS ---------------
 //

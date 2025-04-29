@@ -1,29 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.WebControls
+namespace DotNetNuke.UI.WebControls;
+
+using System;
+
+using DotNetNuke.Common.Utilities;
+
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class MaxLengthAttribute : Attribute
 {
-    using System;
+    private readonly int length = Null.NullInteger;
 
-    using DotNetNuke.Common.Utilities;
-
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class MaxLengthAttribute : Attribute
+    /// <summary>Initializes a new instance of the <see cref="MaxLengthAttribute"/> class.</summary>
+    public MaxLengthAttribute(int length)
     {
-        private readonly int length = Null.NullInteger;
+        this.length = length;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="MaxLengthAttribute"/> class.</summary>
-        public MaxLengthAttribute(int length)
+    public int Length
+    {
+        get
         {
-            this.length = length;
-        }
-
-        public int Length
-        {
-            get
-            {
-                return this.length;
-            }
+            return this.length;
         }
     }
 }

@@ -10,877 +10,1432 @@ import { FolderTreeItem } from "./services/InternalServicesClient";
 export { GetFolderContentResponse, Item } from "./services/ItemsClient";
 export { FolderTreeItem } from "./services/InternalServicesClient";
 export namespace Components {
-    interface DnnActionCopyUrl {
-        "items": Item[];
-    }
-    interface DnnActionCreateFolder {
-        "parentFolderId": number;
-    }
-    interface DnnActionDeleteItems {
-        "items": Item[];
-    }
-    interface DnnActionDownloadItem {
-        "item": Item;
-    }
-    interface DnnActionEditItem {
-        "item": Item;
-    }
-    interface DnnActionMoveItems {
-        "items": Item[];
-    }
-    interface DnnActionOpenFile {
-        "item": Item;
-    }
-    interface DnnActionUnlinkItems {
-        "items": Item[];
-    }
-    interface DnnActionUploadFile {
-        "parentFolderId": number;
-    }
-    interface DnnResourceManager {
-        /**
-          * The ID of the module.
-         */
-        "moduleId": number;
-    }
-    interface DnnRmActionsBar {
-    }
-    interface DnnRmCreateFolder {
-    }
-    interface DnnRmDeleteItems {
-        /**
-          * The list of items to delete.
-         */
-        "items": Item[];
-    }
-    interface DnnRmEditFile {
-        /**
-          * The ID of the folder to edit.
-         */
-        "fileId": number;
-    }
-    interface DnnRmEditFolder {
-        /**
-          * The ID of the folder to edit.
-         */
-        "folderId": number;
-    }
-    interface DnnRmFileContextMenu {
-        /**
-          * The item that triggered this menu.
-         */
-        "item": Item;
-    }
-    interface DnnRmFilesPane {
-        /**
-          * Defines how much more pixels to load under the fold.
-         */
-        "preloadOffset": number;
-    }
-    interface DnnRmFolderContextMenu {
-        /**
-          * The item that triggered this menu.
-         */
-        "item": Item;
-    }
-    interface DnnRmFolderList {
-    }
-    interface DnnRmFolderListItem {
-        /**
-          * If true, this node will be expanded on load.
-         */
-        "expanded": boolean;
-        /**
-          * The basic information about the folder
-         */
-        "folder": FolderTreeItem;
-        /**
-          * The ID of the parent folder.
-         */
-        "parentFolderId": number;
-        /**
-          * Indicates if this item is the currently selected one.
-         */
-        "selectedFolder": FolderTreeItem;
-    }
-    interface DnnRmFolderMappings {
-    }
-    interface DnnRmItemsCardview {
-        /**
-          * The list of current items.
-         */
-        "currentItems": GetFolderContentResponse;
-    }
-    interface DnnRmItemsListview {
-        /**
-          * The list of current items.
-         */
-        "currentItems": GetFolderContentResponse;
-    }
-    interface DnnRmLeftPane {
-    }
-    interface DnnRmMoveItems {
-        /**
-          * The list of items to delete.
-         */
-        "items": Item[];
-    }
-    interface DnnRmProgressBar {
-        /**
-          * Defines the max progress value.
-         */
-        "max": number;
-        /**
-          * Defines the current progress value.
-         */
-        "value": number;
-    }
-    interface DnnRmQueuedFile {
-        /**
-          * Whether to extract uploaded zip files.
-         */
-        "extract": boolean;
-        /**
-          * The file to upload.
-         */
-        "file": File;
-        /**
-          * Optionally limit the file types that can be uploaded.
-         */
-        "filter": string;
-        /**
-          * The maximal allowed file upload size
-         */
-        "maxUploadFileSize": number;
-        /**
-          * The validation code to use for uploads.
-         */
-        "validationCode": string;
-    }
-    interface DnnRmRightPane {
-    }
-    interface DnnRmStatusBar {
-    }
-    interface DnnRmTopBar {
-    }
-    interface DnnRmUnlinkItems {
-        /**
-          * The list of items to delete.
-         */
-        "items": Item[];
-    }
-    interface DnnRmUploadFile {
-    }
+  interface DnnActionCopyUrl {
+    items: Item[];
+  }
+  interface DnnActionCreateFolder {
+    parentFolderId: number;
+  }
+  interface DnnActionDeleteItems {
+    items: Item[];
+  }
+  interface DnnActionDownloadItem {
+    item: Item;
+  }
+  interface DnnActionEditItem {
+    item: Item;
+  }
+  interface DnnActionMoveItems {
+    items: Item[];
+  }
+  interface DnnActionOpenFile {
+    item: Item;
+  }
+  interface DnnActionUnlinkItems {
+    items: Item[];
+  }
+  interface DnnActionUploadFile {
+    parentFolderId: number;
+  }
+  interface DnnResourceManager {
+    /**
+     * The ID of the module.
+     */
+    moduleId: number;
+  }
+  interface DnnRmActionsBar {}
+  interface DnnRmCreateFolder {}
+  interface DnnRmDeleteItems {
+    /**
+     * The list of items to delete.
+     */
+    items: Item[];
+  }
+  interface DnnRmEditFile {
+    /**
+     * The ID of the folder to edit.
+     */
+    fileId: number;
+  }
+  interface DnnRmEditFolder {
+    /**
+     * The ID of the folder to edit.
+     */
+    folderId: number;
+  }
+  interface DnnRmFileContextMenu {
+    /**
+     * The item that triggered this menu.
+     */
+    item: Item;
+  }
+  interface DnnRmFilesPane {
+    /**
+     * Defines how much more pixels to load under the fold.
+     */
+    preloadOffset: number;
+  }
+  interface DnnRmFolderContextMenu {
+    /**
+     * The item that triggered this menu.
+     */
+    item: Item;
+  }
+  interface DnnRmFolderList {}
+  interface DnnRmFolderListItem {
+    /**
+     * If true, this node will be expanded on load.
+     */
+    expanded: boolean;
+    /**
+     * The basic information about the folder
+     */
+    folder: FolderTreeItem;
+    /**
+     * The ID of the parent folder.
+     */
+    parentFolderId: number;
+    /**
+     * Indicates if this item is the currently selected one.
+     */
+    selectedFolder: FolderTreeItem;
+  }
+  interface DnnRmFolderMappings {}
+  interface DnnRmItemsCardview {
+    /**
+     * The list of current items.
+     */
+    currentItems: GetFolderContentResponse;
+  }
+  interface DnnRmItemsListview {
+    /**
+     * The list of current items.
+     */
+    currentItems: GetFolderContentResponse;
+  }
+  interface DnnRmLeftPane {}
+  interface DnnRmMoveItems {
+    /**
+     * The list of items to delete.
+     */
+    items: Item[];
+  }
+  interface DnnRmProgressBar {
+    /**
+     * Defines the max progress value.
+     */
+    max: number;
+    /**
+     * Defines the current progress value.
+     */
+    value: number;
+  }
+  interface DnnRmQueuedFile {
+    /**
+     * Whether to extract uploaded zip files.
+     */
+    extract: boolean;
+    /**
+     * The file to upload.
+     */
+    file: File;
+    /**
+     * Optionally limit the file types that can be uploaded.
+     */
+    filter: string;
+    /**
+     * The maximal allowed file upload size
+     */
+    maxUploadFileSize: number;
+    /**
+     * The validation code to use for uploads.
+     */
+    validationCode: string;
+  }
+  interface DnnRmRightPane {}
+  interface DnnRmStatusBar {}
+  interface DnnRmTopBar {}
+  interface DnnRmUnlinkItems {
+    /**
+     * The list of items to delete.
+     */
+    items: Item[];
+  }
+  interface DnnRmUploadFile {}
 }
 export interface DnnActionUploadFileCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnActionUploadFileElement;
+  detail: T;
+  target: HTMLDnnActionUploadFileElement;
 }
 export interface DnnRmCreateFolderCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmCreateFolderElement;
+  detail: T;
+  target: HTMLDnnRmCreateFolderElement;
 }
 export interface DnnRmDeleteItemsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmDeleteItemsElement;
+  detail: T;
+  target: HTMLDnnRmDeleteItemsElement;
 }
 export interface DnnRmEditFileCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmEditFileElement;
+  detail: T;
+  target: HTMLDnnRmEditFileElement;
 }
 export interface DnnRmEditFolderCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmEditFolderElement;
+  detail: T;
+  target: HTMLDnnRmEditFolderElement;
 }
 export interface DnnRmFolderListCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmFolderListElement;
+  detail: T;
+  target: HTMLDnnRmFolderListElement;
 }
 export interface DnnRmFolderListItemCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmFolderListItemElement;
+  detail: T;
+  target: HTMLDnnRmFolderListItemElement;
 }
 export interface DnnRmItemsCardviewCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmItemsCardviewElement;
+  detail: T;
+  target: HTMLDnnRmItemsCardviewElement;
 }
 export interface DnnRmItemsListviewCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmItemsListviewElement;
+  detail: T;
+  target: HTMLDnnRmItemsListviewElement;
 }
 export interface DnnRmMoveItemsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmMoveItemsElement;
+  detail: T;
+  target: HTMLDnnRmMoveItemsElement;
 }
 export interface DnnRmUnlinkItemsCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmUnlinkItemsElement;
+  detail: T;
+  target: HTMLDnnRmUnlinkItemsElement;
 }
 export interface DnnRmUploadFileCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLDnnRmUploadFileElement;
+  detail: T;
+  target: HTMLDnnRmUploadFileElement;
 }
 declare global {
-    interface HTMLDnnActionCopyUrlElement extends Components.DnnActionCopyUrl, HTMLStencilElement {
-    }
-    var HTMLDnnActionCopyUrlElement: {
-        prototype: HTMLDnnActionCopyUrlElement;
-        new (): HTMLDnnActionCopyUrlElement;
-    };
-    interface HTMLDnnActionCreateFolderElement extends Components.DnnActionCreateFolder, HTMLStencilElement {
-    }
-    var HTMLDnnActionCreateFolderElement: {
-        prototype: HTMLDnnActionCreateFolderElement;
-        new (): HTMLDnnActionCreateFolderElement;
-    };
-    interface HTMLDnnActionDeleteItemsElement extends Components.DnnActionDeleteItems, HTMLStencilElement {
-    }
-    var HTMLDnnActionDeleteItemsElement: {
-        prototype: HTMLDnnActionDeleteItemsElement;
-        new (): HTMLDnnActionDeleteItemsElement;
-    };
-    interface HTMLDnnActionDownloadItemElement extends Components.DnnActionDownloadItem, HTMLStencilElement {
-    }
-    var HTMLDnnActionDownloadItemElement: {
-        prototype: HTMLDnnActionDownloadItemElement;
-        new (): HTMLDnnActionDownloadItemElement;
-    };
-    interface HTMLDnnActionEditItemElement extends Components.DnnActionEditItem, HTMLStencilElement {
-    }
-    var HTMLDnnActionEditItemElement: {
-        prototype: HTMLDnnActionEditItemElement;
-        new (): HTMLDnnActionEditItemElement;
-    };
-    interface HTMLDnnActionMoveItemsElement extends Components.DnnActionMoveItems, HTMLStencilElement {
-    }
-    var HTMLDnnActionMoveItemsElement: {
-        prototype: HTMLDnnActionMoveItemsElement;
-        new (): HTMLDnnActionMoveItemsElement;
-    };
-    interface HTMLDnnActionOpenFileElement extends Components.DnnActionOpenFile, HTMLStencilElement {
-    }
-    var HTMLDnnActionOpenFileElement: {
-        prototype: HTMLDnnActionOpenFileElement;
-        new (): HTMLDnnActionOpenFileElement;
-    };
-    interface HTMLDnnActionUnlinkItemsElement extends Components.DnnActionUnlinkItems, HTMLStencilElement {
-    }
-    var HTMLDnnActionUnlinkItemsElement: {
-        prototype: HTMLDnnActionUnlinkItemsElement;
-        new (): HTMLDnnActionUnlinkItemsElement;
-    };
-    interface HTMLDnnActionUploadFileElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnActionUploadFileElement extends Components.DnnActionUploadFile, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnActionUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnActionUploadFileElement, ev: DnnActionUploadFileCustomEvent<HTMLDnnActionUploadFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnActionUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnActionUploadFileElement, ev: DnnActionUploadFileCustomEvent<HTMLDnnActionUploadFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnActionUploadFileElement: {
-        prototype: HTMLDnnActionUploadFileElement;
-        new (): HTMLDnnActionUploadFileElement;
-    };
-    interface HTMLDnnResourceManagerElement extends Components.DnnResourceManager, HTMLStencilElement {
-    }
-    var HTMLDnnResourceManagerElement: {
-        prototype: HTMLDnnResourceManagerElement;
-        new (): HTMLDnnResourceManagerElement;
-    };
-    interface HTMLDnnRmActionsBarElement extends Components.DnnRmActionsBar, HTMLStencilElement {
-    }
-    var HTMLDnnRmActionsBarElement: {
-        prototype: HTMLDnnRmActionsBarElement;
-        new (): HTMLDnnRmActionsBarElement;
-    };
-    interface HTMLDnnRmCreateFolderElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnRmCreateFolderElement extends Components.DnnRmCreateFolder, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmCreateFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmCreateFolderElement, ev: DnnRmCreateFolderCustomEvent<HTMLDnnRmCreateFolderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmCreateFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmCreateFolderElement, ev: DnnRmCreateFolderCustomEvent<HTMLDnnRmCreateFolderElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmCreateFolderElement: {
-        prototype: HTMLDnnRmCreateFolderElement;
-        new (): HTMLDnnRmCreateFolderElement;
-    };
-    interface HTMLDnnRmDeleteItemsElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnRmDeleteItemsElement extends Components.DnnRmDeleteItems, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmDeleteItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmDeleteItemsElement, ev: DnnRmDeleteItemsCustomEvent<HTMLDnnRmDeleteItemsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmDeleteItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmDeleteItemsElement, ev: DnnRmDeleteItemsCustomEvent<HTMLDnnRmDeleteItemsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmDeleteItemsElement: {
-        prototype: HTMLDnnRmDeleteItemsElement;
-        new (): HTMLDnnRmDeleteItemsElement;
-    };
-    interface HTMLDnnRmEditFileElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnRmEditFileElement extends Components.DnnRmEditFile, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmEditFileElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFileElement, ev: DnnRmEditFileCustomEvent<HTMLDnnRmEditFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmEditFileElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFileElement, ev: DnnRmEditFileCustomEvent<HTMLDnnRmEditFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmEditFileElement: {
-        prototype: HTMLDnnRmEditFileElement;
-        new (): HTMLDnnRmEditFileElement;
-    };
-    interface HTMLDnnRmEditFolderElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnRmEditFolderElement extends Components.DnnRmEditFolder, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmEditFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFolderElement, ev: DnnRmEditFolderCustomEvent<HTMLDnnRmEditFolderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmEditFolderElementEventMap>(type: K, listener: (this: HTMLDnnRmEditFolderElement, ev: DnnRmEditFolderCustomEvent<HTMLDnnRmEditFolderElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmEditFolderElement: {
-        prototype: HTMLDnnRmEditFolderElement;
-        new (): HTMLDnnRmEditFolderElement;
-    };
-    interface HTMLDnnRmFileContextMenuElement extends Components.DnnRmFileContextMenu, HTMLStencilElement {
-    }
-    var HTMLDnnRmFileContextMenuElement: {
-        prototype: HTMLDnnRmFileContextMenuElement;
-        new (): HTMLDnnRmFileContextMenuElement;
-    };
-    interface HTMLDnnRmFilesPaneElement extends Components.DnnRmFilesPane, HTMLStencilElement {
-    }
-    var HTMLDnnRmFilesPaneElement: {
-        prototype: HTMLDnnRmFilesPaneElement;
-        new (): HTMLDnnRmFilesPaneElement;
-    };
-    interface HTMLDnnRmFolderContextMenuElement extends Components.DnnRmFolderContextMenu, HTMLStencilElement {
-    }
-    var HTMLDnnRmFolderContextMenuElement: {
-        prototype: HTMLDnnRmFolderContextMenuElement;
-        new (): HTMLDnnRmFolderContextMenuElement;
-    };
-    interface HTMLDnnRmFolderListElementEventMap {
-        "dnnRmFolderListFolderPicked": FolderTreeItem;
-        "dnnRmcontextMenuOpened": number;
-    }
-    interface HTMLDnnRmFolderListElement extends Components.DnnRmFolderList, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmFolderListElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListElement, ev: DnnRmFolderListCustomEvent<HTMLDnnRmFolderListElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmFolderListElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListElement, ev: DnnRmFolderListCustomEvent<HTMLDnnRmFolderListElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmFolderListElement: {
-        prototype: HTMLDnnRmFolderListElement;
-        new (): HTMLDnnRmFolderListElement;
-    };
-    interface HTMLDnnRmFolderListItemElementEventMap {
-        "dnnRmcontextMenuOpened": number;
-        "dnnRmFolderListItemClicked": FolderTreeItem;
-    }
-    interface HTMLDnnRmFolderListItemElement extends Components.DnnRmFolderListItem, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmFolderListItemElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListItemElement, ev: DnnRmFolderListItemCustomEvent<HTMLDnnRmFolderListItemElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmFolderListItemElementEventMap>(type: K, listener: (this: HTMLDnnRmFolderListItemElement, ev: DnnRmFolderListItemCustomEvent<HTMLDnnRmFolderListItemElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmFolderListItemElement: {
-        prototype: HTMLDnnRmFolderListItemElement;
-        new (): HTMLDnnRmFolderListItemElement;
-    };
-    interface HTMLDnnRmFolderMappingsElement extends Components.DnnRmFolderMappings, HTMLStencilElement {
-    }
-    var HTMLDnnRmFolderMappingsElement: {
-        prototype: HTMLDnnRmFolderMappingsElement;
-        new (): HTMLDnnRmFolderMappingsElement;
-    };
-    interface HTMLDnnRmItemsCardviewElementEventMap {
-        "dnnRmFolderDoubleClicked": number;
-        "dnnRmFileDoubleClicked": string;
-    }
-    interface HTMLDnnRmItemsCardviewElement extends Components.DnnRmItemsCardview, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmItemsCardviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsCardviewElement, ev: DnnRmItemsCardviewCustomEvent<HTMLDnnRmItemsCardviewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmItemsCardviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsCardviewElement, ev: DnnRmItemsCardviewCustomEvent<HTMLDnnRmItemsCardviewElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmItemsCardviewElement: {
-        prototype: HTMLDnnRmItemsCardviewElement;
-        new (): HTMLDnnRmItemsCardviewElement;
-    };
-    interface HTMLDnnRmItemsListviewElementEventMap {
-        "dnnRmFolderDoubleClicked": number;
-        "dnnRmFileDoubleClicked": string;
-    }
-    interface HTMLDnnRmItemsListviewElement extends Components.DnnRmItemsListview, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmItemsListviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsListviewElement, ev: DnnRmItemsListviewCustomEvent<HTMLDnnRmItemsListviewElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmItemsListviewElementEventMap>(type: K, listener: (this: HTMLDnnRmItemsListviewElement, ev: DnnRmItemsListviewCustomEvent<HTMLDnnRmItemsListviewElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmItemsListviewElement: {
-        prototype: HTMLDnnRmItemsListviewElement;
-        new (): HTMLDnnRmItemsListviewElement;
-    };
-    interface HTMLDnnRmLeftPaneElement extends Components.DnnRmLeftPane, HTMLStencilElement {
-    }
-    var HTMLDnnRmLeftPaneElement: {
-        prototype: HTMLDnnRmLeftPaneElement;
-        new (): HTMLDnnRmLeftPaneElement;
-    };
-    interface HTMLDnnRmMoveItemsElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnRmMoveItemsElement extends Components.DnnRmMoveItems, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmMoveItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmMoveItemsElement, ev: DnnRmMoveItemsCustomEvent<HTMLDnnRmMoveItemsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmMoveItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmMoveItemsElement, ev: DnnRmMoveItemsCustomEvent<HTMLDnnRmMoveItemsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmMoveItemsElement: {
-        prototype: HTMLDnnRmMoveItemsElement;
-        new (): HTMLDnnRmMoveItemsElement;
-    };
-    interface HTMLDnnRmProgressBarElement extends Components.DnnRmProgressBar, HTMLStencilElement {
-    }
-    var HTMLDnnRmProgressBarElement: {
-        prototype: HTMLDnnRmProgressBarElement;
-        new (): HTMLDnnRmProgressBarElement;
-    };
-    interface HTMLDnnRmQueuedFileElement extends Components.DnnRmQueuedFile, HTMLStencilElement {
-    }
-    var HTMLDnnRmQueuedFileElement: {
-        prototype: HTMLDnnRmQueuedFileElement;
-        new (): HTMLDnnRmQueuedFileElement;
-    };
-    interface HTMLDnnRmRightPaneElement extends Components.DnnRmRightPane, HTMLStencilElement {
-    }
-    var HTMLDnnRmRightPaneElement: {
-        prototype: HTMLDnnRmRightPaneElement;
-        new (): HTMLDnnRmRightPaneElement;
-    };
-    interface HTMLDnnRmStatusBarElement extends Components.DnnRmStatusBar, HTMLStencilElement {
-    }
-    var HTMLDnnRmStatusBarElement: {
-        prototype: HTMLDnnRmStatusBarElement;
-        new (): HTMLDnnRmStatusBarElement;
-    };
-    interface HTMLDnnRmTopBarElement extends Components.DnnRmTopBar, HTMLStencilElement {
-    }
-    var HTMLDnnRmTopBarElement: {
-        prototype: HTMLDnnRmTopBarElement;
-        new (): HTMLDnnRmTopBarElement;
-    };
-    interface HTMLDnnRmUnlinkItemsElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnRmUnlinkItemsElement extends Components.DnnRmUnlinkItems, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmUnlinkItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmUnlinkItemsElement, ev: DnnRmUnlinkItemsCustomEvent<HTMLDnnRmUnlinkItemsElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmUnlinkItemsElementEventMap>(type: K, listener: (this: HTMLDnnRmUnlinkItemsElement, ev: DnnRmUnlinkItemsCustomEvent<HTMLDnnRmUnlinkItemsElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmUnlinkItemsElement: {
-        prototype: HTMLDnnRmUnlinkItemsElement;
-        new (): HTMLDnnRmUnlinkItemsElement;
-    };
-    interface HTMLDnnRmUploadFileElementEventMap {
-        "dnnRmFoldersChanged": void;
-    }
-    interface HTMLDnnRmUploadFileElement extends Components.DnnRmUploadFile, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLDnnRmUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnRmUploadFileElement, ev: DnnRmUploadFileCustomEvent<HTMLDnnRmUploadFileElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLDnnRmUploadFileElementEventMap>(type: K, listener: (this: HTMLDnnRmUploadFileElement, ev: DnnRmUploadFileCustomEvent<HTMLDnnRmUploadFileElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-    }
-    var HTMLDnnRmUploadFileElement: {
-        prototype: HTMLDnnRmUploadFileElement;
-        new (): HTMLDnnRmUploadFileElement;
-    };
-    interface HTMLElementTagNameMap {
-        "dnn-action-copy-url": HTMLDnnActionCopyUrlElement;
-        "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
-        "dnn-action-delete-items": HTMLDnnActionDeleteItemsElement;
-        "dnn-action-download-item": HTMLDnnActionDownloadItemElement;
-        "dnn-action-edit-item": HTMLDnnActionEditItemElement;
-        "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
-        "dnn-action-open-file": HTMLDnnActionOpenFileElement;
-        "dnn-action-unlink-items": HTMLDnnActionUnlinkItemsElement;
-        "dnn-action-upload-file": HTMLDnnActionUploadFileElement;
-        "dnn-resource-manager": HTMLDnnResourceManagerElement;
-        "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
-        "dnn-rm-create-folder": HTMLDnnRmCreateFolderElement;
-        "dnn-rm-delete-items": HTMLDnnRmDeleteItemsElement;
-        "dnn-rm-edit-file": HTMLDnnRmEditFileElement;
-        "dnn-rm-edit-folder": HTMLDnnRmEditFolderElement;
-        "dnn-rm-file-context-menu": HTMLDnnRmFileContextMenuElement;
-        "dnn-rm-files-pane": HTMLDnnRmFilesPaneElement;
-        "dnn-rm-folder-context-menu": HTMLDnnRmFolderContextMenuElement;
-        "dnn-rm-folder-list": HTMLDnnRmFolderListElement;
-        "dnn-rm-folder-list-item": HTMLDnnRmFolderListItemElement;
-        "dnn-rm-folder-mappings": HTMLDnnRmFolderMappingsElement;
-        "dnn-rm-items-cardview": HTMLDnnRmItemsCardviewElement;
-        "dnn-rm-items-listview": HTMLDnnRmItemsListviewElement;
-        "dnn-rm-left-pane": HTMLDnnRmLeftPaneElement;
-        "dnn-rm-move-items": HTMLDnnRmMoveItemsElement;
-        "dnn-rm-progress-bar": HTMLDnnRmProgressBarElement;
-        "dnn-rm-queued-file": HTMLDnnRmQueuedFileElement;
-        "dnn-rm-right-pane": HTMLDnnRmRightPaneElement;
-        "dnn-rm-status-bar": HTMLDnnRmStatusBarElement;
-        "dnn-rm-top-bar": HTMLDnnRmTopBarElement;
-        "dnn-rm-unlink-items": HTMLDnnRmUnlinkItemsElement;
-        "dnn-rm-upload-file": HTMLDnnRmUploadFileElement;
-    }
+  interface HTMLDnnActionCopyUrlElement
+    extends Components.DnnActionCopyUrl,
+      HTMLStencilElement {}
+  var HTMLDnnActionCopyUrlElement: {
+    prototype: HTMLDnnActionCopyUrlElement;
+    new (): HTMLDnnActionCopyUrlElement;
+  };
+  interface HTMLDnnActionCreateFolderElement
+    extends Components.DnnActionCreateFolder,
+      HTMLStencilElement {}
+  var HTMLDnnActionCreateFolderElement: {
+    prototype: HTMLDnnActionCreateFolderElement;
+    new (): HTMLDnnActionCreateFolderElement;
+  };
+  interface HTMLDnnActionDeleteItemsElement
+    extends Components.DnnActionDeleteItems,
+      HTMLStencilElement {}
+  var HTMLDnnActionDeleteItemsElement: {
+    prototype: HTMLDnnActionDeleteItemsElement;
+    new (): HTMLDnnActionDeleteItemsElement;
+  };
+  interface HTMLDnnActionDownloadItemElement
+    extends Components.DnnActionDownloadItem,
+      HTMLStencilElement {}
+  var HTMLDnnActionDownloadItemElement: {
+    prototype: HTMLDnnActionDownloadItemElement;
+    new (): HTMLDnnActionDownloadItemElement;
+  };
+  interface HTMLDnnActionEditItemElement
+    extends Components.DnnActionEditItem,
+      HTMLStencilElement {}
+  var HTMLDnnActionEditItemElement: {
+    prototype: HTMLDnnActionEditItemElement;
+    new (): HTMLDnnActionEditItemElement;
+  };
+  interface HTMLDnnActionMoveItemsElement
+    extends Components.DnnActionMoveItems,
+      HTMLStencilElement {}
+  var HTMLDnnActionMoveItemsElement: {
+    prototype: HTMLDnnActionMoveItemsElement;
+    new (): HTMLDnnActionMoveItemsElement;
+  };
+  interface HTMLDnnActionOpenFileElement
+    extends Components.DnnActionOpenFile,
+      HTMLStencilElement {}
+  var HTMLDnnActionOpenFileElement: {
+    prototype: HTMLDnnActionOpenFileElement;
+    new (): HTMLDnnActionOpenFileElement;
+  };
+  interface HTMLDnnActionUnlinkItemsElement
+    extends Components.DnnActionUnlinkItems,
+      HTMLStencilElement {}
+  var HTMLDnnActionUnlinkItemsElement: {
+    prototype: HTMLDnnActionUnlinkItemsElement;
+    new (): HTMLDnnActionUnlinkItemsElement;
+  };
+  interface HTMLDnnActionUploadFileElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnActionUploadFileElement
+    extends Components.DnnActionUploadFile,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnActionUploadFileElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnActionUploadFileElement,
+        ev: DnnActionUploadFileCustomEvent<
+          HTMLDnnActionUploadFileElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnActionUploadFileElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnActionUploadFileElement,
+        ev: DnnActionUploadFileCustomEvent<
+          HTMLDnnActionUploadFileElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnActionUploadFileElement: {
+    prototype: HTMLDnnActionUploadFileElement;
+    new (): HTMLDnnActionUploadFileElement;
+  };
+  interface HTMLDnnResourceManagerElement
+    extends Components.DnnResourceManager,
+      HTMLStencilElement {}
+  var HTMLDnnResourceManagerElement: {
+    prototype: HTMLDnnResourceManagerElement;
+    new (): HTMLDnnResourceManagerElement;
+  };
+  interface HTMLDnnRmActionsBarElement
+    extends Components.DnnRmActionsBar,
+      HTMLStencilElement {}
+  var HTMLDnnRmActionsBarElement: {
+    prototype: HTMLDnnRmActionsBarElement;
+    new (): HTMLDnnRmActionsBarElement;
+  };
+  interface HTMLDnnRmCreateFolderElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnRmCreateFolderElement
+    extends Components.DnnRmCreateFolder,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmCreateFolderElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmCreateFolderElement,
+        ev: DnnRmCreateFolderCustomEvent<
+          HTMLDnnRmCreateFolderElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmCreateFolderElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmCreateFolderElement,
+        ev: DnnRmCreateFolderCustomEvent<
+          HTMLDnnRmCreateFolderElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmCreateFolderElement: {
+    prototype: HTMLDnnRmCreateFolderElement;
+    new (): HTMLDnnRmCreateFolderElement;
+  };
+  interface HTMLDnnRmDeleteItemsElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnRmDeleteItemsElement
+    extends Components.DnnRmDeleteItems,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmDeleteItemsElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmDeleteItemsElement,
+        ev: DnnRmDeleteItemsCustomEvent<HTMLDnnRmDeleteItemsElementEventMap[K]>,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmDeleteItemsElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmDeleteItemsElement,
+        ev: DnnRmDeleteItemsCustomEvent<HTMLDnnRmDeleteItemsElementEventMap[K]>,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmDeleteItemsElement: {
+    prototype: HTMLDnnRmDeleteItemsElement;
+    new (): HTMLDnnRmDeleteItemsElement;
+  };
+  interface HTMLDnnRmEditFileElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnRmEditFileElement
+    extends Components.DnnRmEditFile,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmEditFileElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmEditFileElement,
+        ev: DnnRmEditFileCustomEvent<HTMLDnnRmEditFileElementEventMap[K]>,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmEditFileElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmEditFileElement,
+        ev: DnnRmEditFileCustomEvent<HTMLDnnRmEditFileElementEventMap[K]>,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmEditFileElement: {
+    prototype: HTMLDnnRmEditFileElement;
+    new (): HTMLDnnRmEditFileElement;
+  };
+  interface HTMLDnnRmEditFolderElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnRmEditFolderElement
+    extends Components.DnnRmEditFolder,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmEditFolderElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmEditFolderElement,
+        ev: DnnRmEditFolderCustomEvent<HTMLDnnRmEditFolderElementEventMap[K]>,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmEditFolderElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmEditFolderElement,
+        ev: DnnRmEditFolderCustomEvent<HTMLDnnRmEditFolderElementEventMap[K]>,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmEditFolderElement: {
+    prototype: HTMLDnnRmEditFolderElement;
+    new (): HTMLDnnRmEditFolderElement;
+  };
+  interface HTMLDnnRmFileContextMenuElement
+    extends Components.DnnRmFileContextMenu,
+      HTMLStencilElement {}
+  var HTMLDnnRmFileContextMenuElement: {
+    prototype: HTMLDnnRmFileContextMenuElement;
+    new (): HTMLDnnRmFileContextMenuElement;
+  };
+  interface HTMLDnnRmFilesPaneElement
+    extends Components.DnnRmFilesPane,
+      HTMLStencilElement {}
+  var HTMLDnnRmFilesPaneElement: {
+    prototype: HTMLDnnRmFilesPaneElement;
+    new (): HTMLDnnRmFilesPaneElement;
+  };
+  interface HTMLDnnRmFolderContextMenuElement
+    extends Components.DnnRmFolderContextMenu,
+      HTMLStencilElement {}
+  var HTMLDnnRmFolderContextMenuElement: {
+    prototype: HTMLDnnRmFolderContextMenuElement;
+    new (): HTMLDnnRmFolderContextMenuElement;
+  };
+  interface HTMLDnnRmFolderListElementEventMap {
+    dnnRmFolderListFolderPicked: FolderTreeItem;
+    dnnRmcontextMenuOpened: number;
+  }
+  interface HTMLDnnRmFolderListElement
+    extends Components.DnnRmFolderList,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmFolderListElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmFolderListElement,
+        ev: DnnRmFolderListCustomEvent<HTMLDnnRmFolderListElementEventMap[K]>,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmFolderListElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmFolderListElement,
+        ev: DnnRmFolderListCustomEvent<HTMLDnnRmFolderListElementEventMap[K]>,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmFolderListElement: {
+    prototype: HTMLDnnRmFolderListElement;
+    new (): HTMLDnnRmFolderListElement;
+  };
+  interface HTMLDnnRmFolderListItemElementEventMap {
+    dnnRmcontextMenuOpened: number;
+    dnnRmFolderListItemClicked: FolderTreeItem;
+  }
+  interface HTMLDnnRmFolderListItemElement
+    extends Components.DnnRmFolderListItem,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmFolderListItemElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmFolderListItemElement,
+        ev: DnnRmFolderListItemCustomEvent<
+          HTMLDnnRmFolderListItemElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmFolderListItemElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmFolderListItemElement,
+        ev: DnnRmFolderListItemCustomEvent<
+          HTMLDnnRmFolderListItemElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmFolderListItemElement: {
+    prototype: HTMLDnnRmFolderListItemElement;
+    new (): HTMLDnnRmFolderListItemElement;
+  };
+  interface HTMLDnnRmFolderMappingsElement
+    extends Components.DnnRmFolderMappings,
+      HTMLStencilElement {}
+  var HTMLDnnRmFolderMappingsElement: {
+    prototype: HTMLDnnRmFolderMappingsElement;
+    new (): HTMLDnnRmFolderMappingsElement;
+  };
+  interface HTMLDnnRmItemsCardviewElementEventMap {
+    dnnRmFolderDoubleClicked: number;
+    dnnRmFileDoubleClicked: string;
+  }
+  interface HTMLDnnRmItemsCardviewElement
+    extends Components.DnnRmItemsCardview,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmItemsCardviewElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmItemsCardviewElement,
+        ev: DnnRmItemsCardviewCustomEvent<
+          HTMLDnnRmItemsCardviewElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmItemsCardviewElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmItemsCardviewElement,
+        ev: DnnRmItemsCardviewCustomEvent<
+          HTMLDnnRmItemsCardviewElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmItemsCardviewElement: {
+    prototype: HTMLDnnRmItemsCardviewElement;
+    new (): HTMLDnnRmItemsCardviewElement;
+  };
+  interface HTMLDnnRmItemsListviewElementEventMap {
+    dnnRmFolderDoubleClicked: number;
+    dnnRmFileDoubleClicked: string;
+  }
+  interface HTMLDnnRmItemsListviewElement
+    extends Components.DnnRmItemsListview,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmItemsListviewElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmItemsListviewElement,
+        ev: DnnRmItemsListviewCustomEvent<
+          HTMLDnnRmItemsListviewElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmItemsListviewElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmItemsListviewElement,
+        ev: DnnRmItemsListviewCustomEvent<
+          HTMLDnnRmItemsListviewElementEventMap[K]
+        >,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmItemsListviewElement: {
+    prototype: HTMLDnnRmItemsListviewElement;
+    new (): HTMLDnnRmItemsListviewElement;
+  };
+  interface HTMLDnnRmLeftPaneElement
+    extends Components.DnnRmLeftPane,
+      HTMLStencilElement {}
+  var HTMLDnnRmLeftPaneElement: {
+    prototype: HTMLDnnRmLeftPaneElement;
+    new (): HTMLDnnRmLeftPaneElement;
+  };
+  interface HTMLDnnRmMoveItemsElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnRmMoveItemsElement
+    extends Components.DnnRmMoveItems,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmMoveItemsElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmMoveItemsElement,
+        ev: DnnRmMoveItemsCustomEvent<HTMLDnnRmMoveItemsElementEventMap[K]>,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmMoveItemsElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmMoveItemsElement,
+        ev: DnnRmMoveItemsCustomEvent<HTMLDnnRmMoveItemsElementEventMap[K]>,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmMoveItemsElement: {
+    prototype: HTMLDnnRmMoveItemsElement;
+    new (): HTMLDnnRmMoveItemsElement;
+  };
+  interface HTMLDnnRmProgressBarElement
+    extends Components.DnnRmProgressBar,
+      HTMLStencilElement {}
+  var HTMLDnnRmProgressBarElement: {
+    prototype: HTMLDnnRmProgressBarElement;
+    new (): HTMLDnnRmProgressBarElement;
+  };
+  interface HTMLDnnRmQueuedFileElement
+    extends Components.DnnRmQueuedFile,
+      HTMLStencilElement {}
+  var HTMLDnnRmQueuedFileElement: {
+    prototype: HTMLDnnRmQueuedFileElement;
+    new (): HTMLDnnRmQueuedFileElement;
+  };
+  interface HTMLDnnRmRightPaneElement
+    extends Components.DnnRmRightPane,
+      HTMLStencilElement {}
+  var HTMLDnnRmRightPaneElement: {
+    prototype: HTMLDnnRmRightPaneElement;
+    new (): HTMLDnnRmRightPaneElement;
+  };
+  interface HTMLDnnRmStatusBarElement
+    extends Components.DnnRmStatusBar,
+      HTMLStencilElement {}
+  var HTMLDnnRmStatusBarElement: {
+    prototype: HTMLDnnRmStatusBarElement;
+    new (): HTMLDnnRmStatusBarElement;
+  };
+  interface HTMLDnnRmTopBarElement
+    extends Components.DnnRmTopBar,
+      HTMLStencilElement {}
+  var HTMLDnnRmTopBarElement: {
+    prototype: HTMLDnnRmTopBarElement;
+    new (): HTMLDnnRmTopBarElement;
+  };
+  interface HTMLDnnRmUnlinkItemsElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnRmUnlinkItemsElement
+    extends Components.DnnRmUnlinkItems,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmUnlinkItemsElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmUnlinkItemsElement,
+        ev: DnnRmUnlinkItemsCustomEvent<HTMLDnnRmUnlinkItemsElementEventMap[K]>,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmUnlinkItemsElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmUnlinkItemsElement,
+        ev: DnnRmUnlinkItemsCustomEvent<HTMLDnnRmUnlinkItemsElementEventMap[K]>,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmUnlinkItemsElement: {
+    prototype: HTMLDnnRmUnlinkItemsElement;
+    new (): HTMLDnnRmUnlinkItemsElement;
+  };
+  interface HTMLDnnRmUploadFileElementEventMap {
+    dnnRmFoldersChanged: void;
+  }
+  interface HTMLDnnRmUploadFileElement
+    extends Components.DnnRmUploadFile,
+      HTMLStencilElement {
+    addEventListener<K extends keyof HTMLDnnRmUploadFileElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmUploadFileElement,
+        ev: DnnRmUploadFileCustomEvent<HTMLDnnRmUploadFileElementEventMap[K]>,
+      ) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    addEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLDnnRmUploadFileElementEventMap>(
+      type: K,
+      listener: (
+        this: HTMLDnnRmUploadFileElement,
+        ev: DnnRmUploadFileCustomEvent<HTMLDnnRmUploadFileElementEventMap[K]>,
+      ) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof DocumentEventMap>(
+      type: K,
+      listener: (this: Document, ev: DocumentEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener<K extends keyof HTMLElementEventMap>(
+      type: K,
+      listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any,
+      options?: boolean | EventListenerOptions,
+    ): void;
+    removeEventListener(
+      type: string,
+      listener: EventListenerOrEventListenerObject,
+      options?: boolean | EventListenerOptions,
+    ): void;
+  }
+  var HTMLDnnRmUploadFileElement: {
+    prototype: HTMLDnnRmUploadFileElement;
+    new (): HTMLDnnRmUploadFileElement;
+  };
+  interface HTMLElementTagNameMap {
+    "dnn-action-copy-url": HTMLDnnActionCopyUrlElement;
+    "dnn-action-create-folder": HTMLDnnActionCreateFolderElement;
+    "dnn-action-delete-items": HTMLDnnActionDeleteItemsElement;
+    "dnn-action-download-item": HTMLDnnActionDownloadItemElement;
+    "dnn-action-edit-item": HTMLDnnActionEditItemElement;
+    "dnn-action-move-items": HTMLDnnActionMoveItemsElement;
+    "dnn-action-open-file": HTMLDnnActionOpenFileElement;
+    "dnn-action-unlink-items": HTMLDnnActionUnlinkItemsElement;
+    "dnn-action-upload-file": HTMLDnnActionUploadFileElement;
+    "dnn-resource-manager": HTMLDnnResourceManagerElement;
+    "dnn-rm-actions-bar": HTMLDnnRmActionsBarElement;
+    "dnn-rm-create-folder": HTMLDnnRmCreateFolderElement;
+    "dnn-rm-delete-items": HTMLDnnRmDeleteItemsElement;
+    "dnn-rm-edit-file": HTMLDnnRmEditFileElement;
+    "dnn-rm-edit-folder": HTMLDnnRmEditFolderElement;
+    "dnn-rm-file-context-menu": HTMLDnnRmFileContextMenuElement;
+    "dnn-rm-files-pane": HTMLDnnRmFilesPaneElement;
+    "dnn-rm-folder-context-menu": HTMLDnnRmFolderContextMenuElement;
+    "dnn-rm-folder-list": HTMLDnnRmFolderListElement;
+    "dnn-rm-folder-list-item": HTMLDnnRmFolderListItemElement;
+    "dnn-rm-folder-mappings": HTMLDnnRmFolderMappingsElement;
+    "dnn-rm-items-cardview": HTMLDnnRmItemsCardviewElement;
+    "dnn-rm-items-listview": HTMLDnnRmItemsListviewElement;
+    "dnn-rm-left-pane": HTMLDnnRmLeftPaneElement;
+    "dnn-rm-move-items": HTMLDnnRmMoveItemsElement;
+    "dnn-rm-progress-bar": HTMLDnnRmProgressBarElement;
+    "dnn-rm-queued-file": HTMLDnnRmQueuedFileElement;
+    "dnn-rm-right-pane": HTMLDnnRmRightPaneElement;
+    "dnn-rm-status-bar": HTMLDnnRmStatusBarElement;
+    "dnn-rm-top-bar": HTMLDnnRmTopBarElement;
+    "dnn-rm-unlink-items": HTMLDnnRmUnlinkItemsElement;
+    "dnn-rm-upload-file": HTMLDnnRmUploadFileElement;
+  }
 }
 declare namespace LocalJSX {
-    interface DnnActionCopyUrl {
-        "items": Item[];
-    }
-    interface DnnActionCreateFolder {
-        "parentFolderId"?: number;
-    }
-    interface DnnActionDeleteItems {
-        "items": Item[];
-    }
-    interface DnnActionDownloadItem {
-        "item": Item;
-    }
-    interface DnnActionEditItem {
-        "item": Item;
-    }
-    interface DnnActionMoveItems {
-        "items": Item[];
-    }
-    interface DnnActionOpenFile {
-        "item": Item;
-    }
-    interface DnnActionUnlinkItems {
-        "items": Item[];
-    }
-    interface DnnActionUploadFile {
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnActionUploadFileCustomEvent<void>) => void;
-        "parentFolderId"?: number;
-    }
-    interface DnnResourceManager {
-        /**
-          * The ID of the module.
-         */
-        "moduleId": number;
-    }
-    interface DnnRmActionsBar {
-    }
-    interface DnnRmCreateFolder {
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnRmCreateFolderCustomEvent<void>) => void;
-    }
-    interface DnnRmDeleteItems {
-        /**
-          * The list of items to delete.
-         */
-        "items": Item[];
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnRmDeleteItemsCustomEvent<void>) => void;
-    }
-    interface DnnRmEditFile {
-        /**
-          * The ID of the folder to edit.
-         */
-        "fileId": number;
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnRmEditFileCustomEvent<void>) => void;
-    }
-    interface DnnRmEditFolder {
-        /**
-          * The ID of the folder to edit.
-         */
-        "folderId": number;
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnRmEditFolderCustomEvent<void>) => void;
-    }
-    interface DnnRmFileContextMenu {
-        /**
-          * The item that triggered this menu.
-         */
-        "item": Item;
-    }
-    interface DnnRmFilesPane {
-        /**
-          * Defines how much more pixels to load under the fold.
-         */
-        "preloadOffset"?: number;
-    }
-    interface DnnRmFolderContextMenu {
-        /**
-          * The item that triggered this menu.
-         */
-        "item": Item;
-    }
-    interface DnnRmFolderList {
-        /**
-          * Fires when a folder is picked.
-         */
-        "onDnnRmFolderListFolderPicked"?: (event: DnnRmFolderListCustomEvent<FolderTreeItem>) => void;
-        /**
-          * Fires when a context menu is opened for this item. Emits the folder ID.
-         */
-        "onDnnRmcontextMenuOpened"?: (event: DnnRmFolderListCustomEvent<number>) => void;
-    }
-    interface DnnRmFolderListItem {
-        /**
-          * If true, this node will be expanded on load.
-         */
-        "expanded"?: boolean;
-        /**
-          * The basic information about the folder
-         */
-        "folder": FolderTreeItem;
-        /**
-          * Fires when a folder is clicked.
-         */
-        "onDnnRmFolderListItemClicked"?: (event: DnnRmFolderListItemCustomEvent<FolderTreeItem>) => void;
-        /**
-          * Fires when a context menu is opened for this item. Emits the folder ID.
-         */
-        "onDnnRmcontextMenuOpened"?: (event: DnnRmFolderListItemCustomEvent<number>) => void;
-        /**
-          * The ID of the parent folder.
-         */
-        "parentFolderId": number;
-        /**
-          * Indicates if this item is the currently selected one.
-         */
-        "selectedFolder"?: FolderTreeItem;
-    }
-    interface DnnRmFolderMappings {
-    }
-    interface DnnRmItemsCardview {
-        /**
-          * The list of current items.
-         */
-        "currentItems": GetFolderContentResponse;
-        /**
-          * Fires when a file is double-clicked and emits the file ID into the event.detail
-         */
-        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsCardviewCustomEvent<string>) => void;
-        /**
-          * Fires when a folder is double-clicked and emits the folder ID into the event.detail
-         */
-        "onDnnRmFolderDoubleClicked"?: (event: DnnRmItemsCardviewCustomEvent<number>) => void;
-    }
-    interface DnnRmItemsListview {
-        /**
-          * The list of current items.
-         */
-        "currentItems": GetFolderContentResponse;
-        /**
-          * Fires when a file is double-clicked and emits the file ID into the event.detail
-         */
-        "onDnnRmFileDoubleClicked"?: (event: DnnRmItemsListviewCustomEvent<string>) => void;
-        /**
-          * Fires when a folder is double-clicked and emits the folder ID into the event.detail
-         */
-        "onDnnRmFolderDoubleClicked"?: (event: DnnRmItemsListviewCustomEvent<number>) => void;
-    }
-    interface DnnRmLeftPane {
-    }
-    interface DnnRmMoveItems {
-        /**
-          * The list of items to delete.
-         */
-        "items": Item[];
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnRmMoveItemsCustomEvent<void>) => void;
-    }
-    interface DnnRmProgressBar {
-        /**
-          * Defines the max progress value.
-         */
-        "max"?: number;
-        /**
-          * Defines the current progress value.
-         */
-        "value"?: number;
-    }
-    interface DnnRmQueuedFile {
-        /**
-          * Whether to extract uploaded zip files.
-         */
-        "extract"?: boolean;
-        /**
-          * The file to upload.
-         */
-        "file": File;
-        /**
-          * Optionally limit the file types that can be uploaded.
-         */
-        "filter": string;
-        /**
-          * The maximal allowed file upload size
-         */
-        "maxUploadFileSize": number;
-        /**
-          * The validation code to use for uploads.
-         */
-        "validationCode": string;
-    }
-    interface DnnRmRightPane {
-    }
-    interface DnnRmStatusBar {
-    }
-    interface DnnRmTopBar {
-    }
-    interface DnnRmUnlinkItems {
-        /**
-          * The list of items to delete.
-         */
-        "items": Item[];
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnRmUnlinkItemsCustomEvent<void>) => void;
-    }
-    interface DnnRmUploadFile {
-        /**
-          * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
-         */
-        "onDnnRmFoldersChanged"?: (event: DnnRmUploadFileCustomEvent<void>) => void;
-    }
-    interface IntrinsicElements {
-        "dnn-action-copy-url": DnnActionCopyUrl;
-        "dnn-action-create-folder": DnnActionCreateFolder;
-        "dnn-action-delete-items": DnnActionDeleteItems;
-        "dnn-action-download-item": DnnActionDownloadItem;
-        "dnn-action-edit-item": DnnActionEditItem;
-        "dnn-action-move-items": DnnActionMoveItems;
-        "dnn-action-open-file": DnnActionOpenFile;
-        "dnn-action-unlink-items": DnnActionUnlinkItems;
-        "dnn-action-upload-file": DnnActionUploadFile;
-        "dnn-resource-manager": DnnResourceManager;
-        "dnn-rm-actions-bar": DnnRmActionsBar;
-        "dnn-rm-create-folder": DnnRmCreateFolder;
-        "dnn-rm-delete-items": DnnRmDeleteItems;
-        "dnn-rm-edit-file": DnnRmEditFile;
-        "dnn-rm-edit-folder": DnnRmEditFolder;
-        "dnn-rm-file-context-menu": DnnRmFileContextMenu;
-        "dnn-rm-files-pane": DnnRmFilesPane;
-        "dnn-rm-folder-context-menu": DnnRmFolderContextMenu;
-        "dnn-rm-folder-list": DnnRmFolderList;
-        "dnn-rm-folder-list-item": DnnRmFolderListItem;
-        "dnn-rm-folder-mappings": DnnRmFolderMappings;
-        "dnn-rm-items-cardview": DnnRmItemsCardview;
-        "dnn-rm-items-listview": DnnRmItemsListview;
-        "dnn-rm-left-pane": DnnRmLeftPane;
-        "dnn-rm-move-items": DnnRmMoveItems;
-        "dnn-rm-progress-bar": DnnRmProgressBar;
-        "dnn-rm-queued-file": DnnRmQueuedFile;
-        "dnn-rm-right-pane": DnnRmRightPane;
-        "dnn-rm-status-bar": DnnRmStatusBar;
-        "dnn-rm-top-bar": DnnRmTopBar;
-        "dnn-rm-unlink-items": DnnRmUnlinkItems;
-        "dnn-rm-upload-file": DnnRmUploadFile;
-    }
+  interface DnnActionCopyUrl {
+    items: Item[];
+  }
+  interface DnnActionCreateFolder {
+    parentFolderId?: number;
+  }
+  interface DnnActionDeleteItems {
+    items: Item[];
+  }
+  interface DnnActionDownloadItem {
+    item: Item;
+  }
+  interface DnnActionEditItem {
+    item: Item;
+  }
+  interface DnnActionMoveItems {
+    items: Item[];
+  }
+  interface DnnActionOpenFile {
+    item: Item;
+  }
+  interface DnnActionUnlinkItems {
+    items: Item[];
+  }
+  interface DnnActionUploadFile {
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (
+      event: DnnActionUploadFileCustomEvent<void>,
+    ) => void;
+    parentFolderId?: number;
+  }
+  interface DnnResourceManager {
+    /**
+     * The ID of the module.
+     */
+    moduleId: number;
+  }
+  interface DnnRmActionsBar {}
+  interface DnnRmCreateFolder {
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (event: DnnRmCreateFolderCustomEvent<void>) => void;
+  }
+  interface DnnRmDeleteItems {
+    /**
+     * The list of items to delete.
+     */
+    items: Item[];
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (event: DnnRmDeleteItemsCustomEvent<void>) => void;
+  }
+  interface DnnRmEditFile {
+    /**
+     * The ID of the folder to edit.
+     */
+    fileId: number;
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (event: DnnRmEditFileCustomEvent<void>) => void;
+  }
+  interface DnnRmEditFolder {
+    /**
+     * The ID of the folder to edit.
+     */
+    folderId: number;
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (event: DnnRmEditFolderCustomEvent<void>) => void;
+  }
+  interface DnnRmFileContextMenu {
+    /**
+     * The item that triggered this menu.
+     */
+    item: Item;
+  }
+  interface DnnRmFilesPane {
+    /**
+     * Defines how much more pixels to load under the fold.
+     */
+    preloadOffset?: number;
+  }
+  interface DnnRmFolderContextMenu {
+    /**
+     * The item that triggered this menu.
+     */
+    item: Item;
+  }
+  interface DnnRmFolderList {
+    /**
+     * Fires when a folder is picked.
+     */
+    onDnnRmFolderListFolderPicked?: (
+      event: DnnRmFolderListCustomEvent<FolderTreeItem>,
+    ) => void;
+    /**
+     * Fires when a context menu is opened for this item. Emits the folder ID.
+     */
+    onDnnRmcontextMenuOpened?: (
+      event: DnnRmFolderListCustomEvent<number>,
+    ) => void;
+  }
+  interface DnnRmFolderListItem {
+    /**
+     * If true, this node will be expanded on load.
+     */
+    expanded?: boolean;
+    /**
+     * The basic information about the folder
+     */
+    folder: FolderTreeItem;
+    /**
+     * Fires when a folder is clicked.
+     */
+    onDnnRmFolderListItemClicked?: (
+      event: DnnRmFolderListItemCustomEvent<FolderTreeItem>,
+    ) => void;
+    /**
+     * Fires when a context menu is opened for this item. Emits the folder ID.
+     */
+    onDnnRmcontextMenuOpened?: (
+      event: DnnRmFolderListItemCustomEvent<number>,
+    ) => void;
+    /**
+     * The ID of the parent folder.
+     */
+    parentFolderId: number;
+    /**
+     * Indicates if this item is the currently selected one.
+     */
+    selectedFolder?: FolderTreeItem;
+  }
+  interface DnnRmFolderMappings {}
+  interface DnnRmItemsCardview {
+    /**
+     * The list of current items.
+     */
+    currentItems: GetFolderContentResponse;
+    /**
+     * Fires when a file is double-clicked and emits the file ID into the event.detail
+     */
+    onDnnRmFileDoubleClicked?: (
+      event: DnnRmItemsCardviewCustomEvent<string>,
+    ) => void;
+    /**
+     * Fires when a folder is double-clicked and emits the folder ID into the event.detail
+     */
+    onDnnRmFolderDoubleClicked?: (
+      event: DnnRmItemsCardviewCustomEvent<number>,
+    ) => void;
+  }
+  interface DnnRmItemsListview {
+    /**
+     * The list of current items.
+     */
+    currentItems: GetFolderContentResponse;
+    /**
+     * Fires when a file is double-clicked and emits the file ID into the event.detail
+     */
+    onDnnRmFileDoubleClicked?: (
+      event: DnnRmItemsListviewCustomEvent<string>,
+    ) => void;
+    /**
+     * Fires when a folder is double-clicked and emits the folder ID into the event.detail
+     */
+    onDnnRmFolderDoubleClicked?: (
+      event: DnnRmItemsListviewCustomEvent<number>,
+    ) => void;
+  }
+  interface DnnRmLeftPane {}
+  interface DnnRmMoveItems {
+    /**
+     * The list of items to delete.
+     */
+    items: Item[];
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (event: DnnRmMoveItemsCustomEvent<void>) => void;
+  }
+  interface DnnRmProgressBar {
+    /**
+     * Defines the max progress value.
+     */
+    max?: number;
+    /**
+     * Defines the current progress value.
+     */
+    value?: number;
+  }
+  interface DnnRmQueuedFile {
+    /**
+     * Whether to extract uploaded zip files.
+     */
+    extract?: boolean;
+    /**
+     * The file to upload.
+     */
+    file: File;
+    /**
+     * Optionally limit the file types that can be uploaded.
+     */
+    filter: string;
+    /**
+     * The maximal allowed file upload size
+     */
+    maxUploadFileSize: number;
+    /**
+     * The validation code to use for uploads.
+     */
+    validationCode: string;
+  }
+  interface DnnRmRightPane {}
+  interface DnnRmStatusBar {}
+  interface DnnRmTopBar {}
+  interface DnnRmUnlinkItems {
+    /**
+     * The list of items to delete.
+     */
+    items: Item[];
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (event: DnnRmUnlinkItemsCustomEvent<void>) => void;
+  }
+  interface DnnRmUploadFile {
+    /**
+     * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
+     */
+    onDnnRmFoldersChanged?: (event: DnnRmUploadFileCustomEvent<void>) => void;
+  }
+  interface IntrinsicElements {
+    "dnn-action-copy-url": DnnActionCopyUrl;
+    "dnn-action-create-folder": DnnActionCreateFolder;
+    "dnn-action-delete-items": DnnActionDeleteItems;
+    "dnn-action-download-item": DnnActionDownloadItem;
+    "dnn-action-edit-item": DnnActionEditItem;
+    "dnn-action-move-items": DnnActionMoveItems;
+    "dnn-action-open-file": DnnActionOpenFile;
+    "dnn-action-unlink-items": DnnActionUnlinkItems;
+    "dnn-action-upload-file": DnnActionUploadFile;
+    "dnn-resource-manager": DnnResourceManager;
+    "dnn-rm-actions-bar": DnnRmActionsBar;
+    "dnn-rm-create-folder": DnnRmCreateFolder;
+    "dnn-rm-delete-items": DnnRmDeleteItems;
+    "dnn-rm-edit-file": DnnRmEditFile;
+    "dnn-rm-edit-folder": DnnRmEditFolder;
+    "dnn-rm-file-context-menu": DnnRmFileContextMenu;
+    "dnn-rm-files-pane": DnnRmFilesPane;
+    "dnn-rm-folder-context-menu": DnnRmFolderContextMenu;
+    "dnn-rm-folder-list": DnnRmFolderList;
+    "dnn-rm-folder-list-item": DnnRmFolderListItem;
+    "dnn-rm-folder-mappings": DnnRmFolderMappings;
+    "dnn-rm-items-cardview": DnnRmItemsCardview;
+    "dnn-rm-items-listview": DnnRmItemsListview;
+    "dnn-rm-left-pane": DnnRmLeftPane;
+    "dnn-rm-move-items": DnnRmMoveItems;
+    "dnn-rm-progress-bar": DnnRmProgressBar;
+    "dnn-rm-queued-file": DnnRmQueuedFile;
+    "dnn-rm-right-pane": DnnRmRightPane;
+    "dnn-rm-status-bar": DnnRmStatusBar;
+    "dnn-rm-top-bar": DnnRmTopBar;
+    "dnn-rm-unlink-items": DnnRmUnlinkItems;
+    "dnn-rm-upload-file": DnnRmUploadFile;
+  }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
-    export namespace JSX {
-        interface IntrinsicElements {
-            "dnn-action-copy-url": LocalJSX.DnnActionCopyUrl & JSXBase.HTMLAttributes<HTMLDnnActionCopyUrlElement>;
-            "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder & JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
-            "dnn-action-delete-items": LocalJSX.DnnActionDeleteItems & JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
-            "dnn-action-download-item": LocalJSX.DnnActionDownloadItem & JSXBase.HTMLAttributes<HTMLDnnActionDownloadItemElement>;
-            "dnn-action-edit-item": LocalJSX.DnnActionEditItem & JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
-            "dnn-action-move-items": LocalJSX.DnnActionMoveItems & JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
-            "dnn-action-open-file": LocalJSX.DnnActionOpenFile & JSXBase.HTMLAttributes<HTMLDnnActionOpenFileElement>;
-            "dnn-action-unlink-items": LocalJSX.DnnActionUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;
-            "dnn-action-upload-file": LocalJSX.DnnActionUploadFile & JSXBase.HTMLAttributes<HTMLDnnActionUploadFileElement>;
-            "dnn-resource-manager": LocalJSX.DnnResourceManager & JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
-            "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar & JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
-            "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder & JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
-            "dnn-rm-delete-items": LocalJSX.DnnRmDeleteItems & JSXBase.HTMLAttributes<HTMLDnnRmDeleteItemsElement>;
-            "dnn-rm-edit-file": LocalJSX.DnnRmEditFile & JSXBase.HTMLAttributes<HTMLDnnRmEditFileElement>;
-            "dnn-rm-edit-folder": LocalJSX.DnnRmEditFolder & JSXBase.HTMLAttributes<HTMLDnnRmEditFolderElement>;
-            "dnn-rm-file-context-menu": LocalJSX.DnnRmFileContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFileContextMenuElement>;
-            "dnn-rm-files-pane": LocalJSX.DnnRmFilesPane & JSXBase.HTMLAttributes<HTMLDnnRmFilesPaneElement>;
-            "dnn-rm-folder-context-menu": LocalJSX.DnnRmFolderContextMenu & JSXBase.HTMLAttributes<HTMLDnnRmFolderContextMenuElement>;
-            "dnn-rm-folder-list": LocalJSX.DnnRmFolderList & JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;
-            "dnn-rm-folder-list-item": LocalJSX.DnnRmFolderListItem & JSXBase.HTMLAttributes<HTMLDnnRmFolderListItemElement>;
-            "dnn-rm-folder-mappings": LocalJSX.DnnRmFolderMappings & JSXBase.HTMLAttributes<HTMLDnnRmFolderMappingsElement>;
-            "dnn-rm-items-cardview": LocalJSX.DnnRmItemsCardview & JSXBase.HTMLAttributes<HTMLDnnRmItemsCardviewElement>;
-            "dnn-rm-items-listview": LocalJSX.DnnRmItemsListview & JSXBase.HTMLAttributes<HTMLDnnRmItemsListviewElement>;
-            "dnn-rm-left-pane": LocalJSX.DnnRmLeftPane & JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;
-            "dnn-rm-move-items": LocalJSX.DnnRmMoveItems & JSXBase.HTMLAttributes<HTMLDnnRmMoveItemsElement>;
-            "dnn-rm-progress-bar": LocalJSX.DnnRmProgressBar & JSXBase.HTMLAttributes<HTMLDnnRmProgressBarElement>;
-            "dnn-rm-queued-file": LocalJSX.DnnRmQueuedFile & JSXBase.HTMLAttributes<HTMLDnnRmQueuedFileElement>;
-            "dnn-rm-right-pane": LocalJSX.DnnRmRightPane & JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;
-            "dnn-rm-status-bar": LocalJSX.DnnRmStatusBar & JSXBase.HTMLAttributes<HTMLDnnRmStatusBarElement>;
-            "dnn-rm-top-bar": LocalJSX.DnnRmTopBar & JSXBase.HTMLAttributes<HTMLDnnRmTopBarElement>;
-            "dnn-rm-unlink-items": LocalJSX.DnnRmUnlinkItems & JSXBase.HTMLAttributes<HTMLDnnRmUnlinkItemsElement>;
-            "dnn-rm-upload-file": LocalJSX.DnnRmUploadFile & JSXBase.HTMLAttributes<HTMLDnnRmUploadFileElement>;
-        }
+  export namespace JSX {
+    interface IntrinsicElements {
+      "dnn-action-copy-url": LocalJSX.DnnActionCopyUrl &
+        JSXBase.HTMLAttributes<HTMLDnnActionCopyUrlElement>;
+      "dnn-action-create-folder": LocalJSX.DnnActionCreateFolder &
+        JSXBase.HTMLAttributes<HTMLDnnActionCreateFolderElement>;
+      "dnn-action-delete-items": LocalJSX.DnnActionDeleteItems &
+        JSXBase.HTMLAttributes<HTMLDnnActionDeleteItemsElement>;
+      "dnn-action-download-item": LocalJSX.DnnActionDownloadItem &
+        JSXBase.HTMLAttributes<HTMLDnnActionDownloadItemElement>;
+      "dnn-action-edit-item": LocalJSX.DnnActionEditItem &
+        JSXBase.HTMLAttributes<HTMLDnnActionEditItemElement>;
+      "dnn-action-move-items": LocalJSX.DnnActionMoveItems &
+        JSXBase.HTMLAttributes<HTMLDnnActionMoveItemsElement>;
+      "dnn-action-open-file": LocalJSX.DnnActionOpenFile &
+        JSXBase.HTMLAttributes<HTMLDnnActionOpenFileElement>;
+      "dnn-action-unlink-items": LocalJSX.DnnActionUnlinkItems &
+        JSXBase.HTMLAttributes<HTMLDnnActionUnlinkItemsElement>;
+      "dnn-action-upload-file": LocalJSX.DnnActionUploadFile &
+        JSXBase.HTMLAttributes<HTMLDnnActionUploadFileElement>;
+      "dnn-resource-manager": LocalJSX.DnnResourceManager &
+        JSXBase.HTMLAttributes<HTMLDnnResourceManagerElement>;
+      "dnn-rm-actions-bar": LocalJSX.DnnRmActionsBar &
+        JSXBase.HTMLAttributes<HTMLDnnRmActionsBarElement>;
+      "dnn-rm-create-folder": LocalJSX.DnnRmCreateFolder &
+        JSXBase.HTMLAttributes<HTMLDnnRmCreateFolderElement>;
+      "dnn-rm-delete-items": LocalJSX.DnnRmDeleteItems &
+        JSXBase.HTMLAttributes<HTMLDnnRmDeleteItemsElement>;
+      "dnn-rm-edit-file": LocalJSX.DnnRmEditFile &
+        JSXBase.HTMLAttributes<HTMLDnnRmEditFileElement>;
+      "dnn-rm-edit-folder": LocalJSX.DnnRmEditFolder &
+        JSXBase.HTMLAttributes<HTMLDnnRmEditFolderElement>;
+      "dnn-rm-file-context-menu": LocalJSX.DnnRmFileContextMenu &
+        JSXBase.HTMLAttributes<HTMLDnnRmFileContextMenuElement>;
+      "dnn-rm-files-pane": LocalJSX.DnnRmFilesPane &
+        JSXBase.HTMLAttributes<HTMLDnnRmFilesPaneElement>;
+      "dnn-rm-folder-context-menu": LocalJSX.DnnRmFolderContextMenu &
+        JSXBase.HTMLAttributes<HTMLDnnRmFolderContextMenuElement>;
+      "dnn-rm-folder-list": LocalJSX.DnnRmFolderList &
+        JSXBase.HTMLAttributes<HTMLDnnRmFolderListElement>;
+      "dnn-rm-folder-list-item": LocalJSX.DnnRmFolderListItem &
+        JSXBase.HTMLAttributes<HTMLDnnRmFolderListItemElement>;
+      "dnn-rm-folder-mappings": LocalJSX.DnnRmFolderMappings &
+        JSXBase.HTMLAttributes<HTMLDnnRmFolderMappingsElement>;
+      "dnn-rm-items-cardview": LocalJSX.DnnRmItemsCardview &
+        JSXBase.HTMLAttributes<HTMLDnnRmItemsCardviewElement>;
+      "dnn-rm-items-listview": LocalJSX.DnnRmItemsListview &
+        JSXBase.HTMLAttributes<HTMLDnnRmItemsListviewElement>;
+      "dnn-rm-left-pane": LocalJSX.DnnRmLeftPane &
+        JSXBase.HTMLAttributes<HTMLDnnRmLeftPaneElement>;
+      "dnn-rm-move-items": LocalJSX.DnnRmMoveItems &
+        JSXBase.HTMLAttributes<HTMLDnnRmMoveItemsElement>;
+      "dnn-rm-progress-bar": LocalJSX.DnnRmProgressBar &
+        JSXBase.HTMLAttributes<HTMLDnnRmProgressBarElement>;
+      "dnn-rm-queued-file": LocalJSX.DnnRmQueuedFile &
+        JSXBase.HTMLAttributes<HTMLDnnRmQueuedFileElement>;
+      "dnn-rm-right-pane": LocalJSX.DnnRmRightPane &
+        JSXBase.HTMLAttributes<HTMLDnnRmRightPaneElement>;
+      "dnn-rm-status-bar": LocalJSX.DnnRmStatusBar &
+        JSXBase.HTMLAttributes<HTMLDnnRmStatusBarElement>;
+      "dnn-rm-top-bar": LocalJSX.DnnRmTopBar &
+        JSXBase.HTMLAttributes<HTMLDnnRmTopBarElement>;
+      "dnn-rm-unlink-items": LocalJSX.DnnRmUnlinkItems &
+        JSXBase.HTMLAttributes<HTMLDnnRmUnlinkItemsElement>;
+      "dnn-rm-upload-file": LocalJSX.DnnRmUploadFile &
+        JSXBase.HTMLAttributes<HTMLDnnRmUploadFileElement>;
     }
+  }
 }

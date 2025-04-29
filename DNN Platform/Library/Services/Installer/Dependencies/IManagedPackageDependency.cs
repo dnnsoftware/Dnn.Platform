@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Installer.Dependencies
-{
-    using DotNetNuke.Services.Installer.Packages;
+namespace DotNetNuke.Services.Installer.Dependencies;
 
-    public interface IManagedPackageDependency
-    {
-        PackageDependencyInfo PackageDependency { get; set; }
-    }
+using DotNetNuke.Services.Installer.Packages;
+
+public interface IManagedPackageDependency
+{
+    PackageDependencyInfo PackageDependency { get; set; }
 }

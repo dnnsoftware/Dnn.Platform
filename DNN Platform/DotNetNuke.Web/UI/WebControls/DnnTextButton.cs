@@ -1,151 +1,150 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.Web.UI.WebControls;
+
+using System;
+using System.ComponentModel;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Services.Localization;
+
+public class DnnTextButton : LinkButton, ILocalizable
 {
-    using System;
-    using System.ComponentModel;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
+    private bool localize = true;
 
-    using DotNetNuke.Services.Localization;
-
-    public class DnnTextButton : LinkButton, ILocalizable
+    [Bindable(true)]
+    [Category("Appearance")]
+    [DefaultValue("")]
+    [Localizable(true)]
+    public string ConfirmMessage
     {
-        private bool localize = true;
-
-        [Bindable(true)]
-        [Category("Appearance")]
-        [DefaultValue("")]
-        [Localizable(true)]
-        public string ConfirmMessage
+        get
         {
-            get
-            {
-                return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string)this.ViewState["ConfirmMessage"];
-            }
-
-            set
-            {
-                this.ViewState["ConfirmMessage"] = value;
-            }
+            return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string)this.ViewState["ConfirmMessage"];
         }
 
-        /// <inheritdoc/>
-        [Bindable(true)]
-        [Category("Appearance")]
-        [DefaultValue("")]
-        [Localizable(true)]
-        public override string CssClass
+        set
         {
-            get
-            {
-                return this.ViewState["CssClass"] == null ? string.Empty : (string)this.ViewState["CssClass"];
-            }
+            this.ViewState["ConfirmMessage"] = value;
+        }
+    }
 
-            set
-            {
-                this.ViewState["CssClass"] = value;
-            }
+    /// <inheritdoc/>
+    [Bindable(true)]
+    [Category("Appearance")]
+    [DefaultValue("")]
+    [Localizable(true)]
+    public override string CssClass
+    {
+        get
+        {
+            return this.ViewState["CssClass"] == null ? string.Empty : (string)this.ViewState["CssClass"];
         }
 
-        [Bindable(true)]
-        [Category("Appearance")]
-        [DefaultValue("")]
-        [Localizable(true)]
-        public new string DisabledCssClass
+        set
         {
-            get
-            {
-                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
-            }
+            this.ViewState["CssClass"] = value;
+        }
+    }
 
-            set
-            {
-                this.ViewState["DisabledCssClass"] = value;
-            }
+    [Bindable(true)]
+    [Category("Appearance")]
+    [DefaultValue("")]
+    [Localizable(true)]
+    public new string DisabledCssClass
+    {
+        get
+        {
+            return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
         }
 
-        [Bindable(true)]
-        [Category("Appearance")]
-        [DefaultValue("")]
-        [Localizable(true)]
-        public new string Text
+        set
         {
-            get
-            {
-                return this.ViewState["Text"] == null ? string.Empty : (string)this.ViewState["Text"];
-            }
+            this.ViewState["DisabledCssClass"] = value;
+        }
+    }
 
-            set
-            {
-                this.ViewState["Text"] = value;
-            }
+    [Bindable(true)]
+    [Category("Appearance")]
+    [DefaultValue("")]
+    [Localizable(true)]
+    public new string Text
+    {
+        get
+        {
+            return this.ViewState["Text"] == null ? string.Empty : (string)this.ViewState["Text"];
         }
 
-        /// <inheritdoc/>
-        public bool Localize
+        set
         {
-            get
-            {
-                return this.localize;
-            }
+            this.ViewState["Text"] = value;
+        }
+    }
 
-            set
-            {
-                this.localize = value;
-            }
+    /// <inheritdoc/>
+    public bool Localize
+    {
+        get
+        {
+            return this.localize;
         }
 
-        /// <inheritdoc/>
-        public string LocalResourceFile { get; set; }
-
-        /// <inheritdoc/>
-        public virtual void LocalizeStrings()
+        set
         {
-            if (this.Localize)
+            this.localize = value;
+        }
+    }
+
+    /// <inheritdoc/>
+    public string LocalResourceFile { get; set; }
+
+    /// <inheritdoc/>
+    public virtual void LocalizeStrings()
+    {
+        if (this.Localize)
+        {
+            if (!string.IsNullOrEmpty(this.ToolTip))
             {
-                if (!string.IsNullOrEmpty(this.ToolTip))
+                this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
+            }
+
+            if (!string.IsNullOrEmpty(this.Text))
+            {
+                this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
+
+                if (string.IsNullOrEmpty(this.ToolTip))
                 {
-                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
+                    this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
                 }
 
-                if (!string.IsNullOrEmpty(this.Text))
+                if (string.IsNullOrEmpty(this.ToolTip))
                 {
-                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
-
-                    if (string.IsNullOrEmpty(this.ToolTip))
-                    {
-                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
-                    }
-
-                    if (string.IsNullOrEmpty(this.ToolTip))
-                    {
-                        this.ToolTip = this.Text;
-                    }
+                    this.ToolTip = this.Text;
                 }
             }
         }
+    }
 
-        /// <inheritdoc/>
-        protected override void OnPreRender(EventArgs e)
+    /// <inheritdoc/>
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+    }
+
+    /// <inheritdoc/>
+    protected override void Render(HtmlTextWriter writer)
+    {
+        this.LocalizeStrings();
+        if (!this.Enabled && !string.IsNullOrEmpty(this.DisabledCssClass))
         {
-            base.OnPreRender(e);
-
-            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.CssClass = this.DisabledCssClass;
         }
 
-        /// <inheritdoc/>
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            if (!this.Enabled && !string.IsNullOrEmpty(this.DisabledCssClass))
-            {
-                this.CssClass = this.DisabledCssClass;
-            }
-
-            writer.AddAttribute("class", this.CssClass.Trim());
-            base.Render(writer);
-        }
+        writer.AddAttribute("class", this.CssClass.Trim());
+        base.Render(writer);
     }
 }

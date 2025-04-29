@@ -2,33 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Licensing.MenuControllers
+namespace Dnn.PersonaBar.Licensing.MenuControllers;
+
+using System.Collections.Generic;
+
+using Dnn.PersonaBar.Library.Controllers;
+using Dnn.PersonaBar.Library.Model;
+using DotNetNuke.Entities.Users;
+
+/// <summary>Controls the licensing menu.</summary>
+public class LicensingMenuController : IMenuItemController
 {
-    using System.Collections.Generic;
-
-    using Dnn.PersonaBar.Library.Controllers;
-    using Dnn.PersonaBar.Library.Model;
-    using DotNetNuke.Entities.Users;
-
-    /// <summary>Controls the licensing menu.</summary>
-    public class LicensingMenuController : IMenuItemController
+    /// <inheritdoc/>
+    public void UpdateParameters(MenuItem menuItem)
     {
-        /// <inheritdoc/>
-        public void UpdateParameters(MenuItem menuItem)
-        {
-        }
+    }
 
-        /// <inheritdoc/>
-        public bool Visible(MenuItem menuItem)
-        {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return user.IsSuperUser;
-        }
+    /// <inheritdoc/>
+    public bool Visible(MenuItem menuItem)
+    {
+        var user = UserController.Instance.GetCurrentUserInfo();
+        return user.IsSuperUser;
+    }
 
-        /// <inheritdoc/>
-        public IDictionary<string, object> GetSettings(MenuItem menuItem)
-        {
-            return null;
-        }
+    /// <inheritdoc/>
+    public IDictionary<string, object> GetSettings(MenuItem menuItem)
+    {
+        return null;
     }
 }

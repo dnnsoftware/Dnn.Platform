@@ -1,5 +1,3 @@
 import PortalService from "./portal";
 
-export {
-    PortalService
-};
+export { PortalService };

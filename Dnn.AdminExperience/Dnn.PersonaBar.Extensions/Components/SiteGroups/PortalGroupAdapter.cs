@@ -2,141 +2,140 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteGroups
+namespace Dnn.PersonaBar.SiteGroups;
+
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+
+using PortalGroupInfo = Dnn.PersonaBar.SiteGroups.Models.PortalGroupInfo;
+using PortalInfo = Dnn.PersonaBar.SiteGroups.Models.PortalInfo;
+
+public class PortalGroupAdapter : IManagePortalGroups
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-
-    using PortalGroupInfo = Dnn.PersonaBar.SiteGroups.Models.PortalGroupInfo;
-    using PortalInfo = Dnn.PersonaBar.SiteGroups.Models.PortalInfo;
-
-    public class PortalGroupAdapter : IManagePortalGroups
+    private IPortalGroupController PortalGroupController
     {
-        private IPortalGroupController PortalGroupController
-        {
-            get { return DotNetNuke.Entities.Portals.PortalGroupController.Instance; }
-        }
+        get { return DotNetNuke.Entities.Portals.PortalGroupController.Instance; }
+    }
 
-        /// <inheritdoc/>
-        public IEnumerable<PortalGroupInfo> SiteGroups()
+    /// <inheritdoc/>
+    public IEnumerable<PortalGroupInfo> SiteGroups()
+    {
+        return this.PortalGroupController.GetPortalGroups().Select(g => new PortalGroupInfo
         {
-            return this.PortalGroupController.GetPortalGroups().Select(g => new PortalGroupInfo
+            AuthenticationDomain = g.AuthenticationDomain,
+            PortalGroupId = g.PortalGroupId,
+            Description = g.PortalGroupDescription,
+            MasterPortal = new PortalInfo
             {
-                AuthenticationDomain = g.AuthenticationDomain,
-                PortalGroupId = g.PortalGroupId,
-                Description = g.PortalGroupDescription,
-                MasterPortal = new PortalInfo
+                PortalName = g.MasterPortalName,
+                PortalId = g.MasterPortalId,
+            },
+            PortalGroupName = g.PortalGroupName,
+            Portals = this.PortalsOfGroup(g.PortalGroupId, g.MasterPortalId)
+                .Select(p => new PortalInfo
                 {
-                    PortalName = g.MasterPortalName,
-                    PortalId = g.MasterPortalId,
-                },
-                PortalGroupName = g.PortalGroupName,
-                Portals = this.PortalsOfGroup(g.PortalGroupId, g.MasterPortalId)
-                        .Select(p => new PortalInfo
-                        {
-                            PortalId = p.PortalID,
-                            PortalName = p.PortalName,
-                        }),
+                    PortalId = p.PortalID,
+                    PortalName = p.PortalName,
+                }),
+        });
+    }
+
+    /// <inheritdoc/>
+    public IEnumerable<PortalInfo> AvailablePortals()
+    {
+        return new PortalController().GetPortals()
+            .Cast<DotNetNuke.Entities.Portals.PortalInfo>()
+            .Where(x => x.PortalGroupID == Null.NullInteger)
+            .Select(p => new PortalInfo
+            {
+                PortalId = p.PortalID,
+                PortalName = p.PortalName,
             });
-        }
+    }
 
-        /// <inheritdoc/>
-        public IEnumerable<PortalInfo> AvailablePortals()
+    /// <inheritdoc/>
+    public int Save(PortalGroupInfo portalGroup)
+    {
+        if (portalGroup.PortalGroupId == -1)
         {
-            return new PortalController().GetPortals()
-                        .Cast<DotNetNuke.Entities.Portals.PortalInfo>()
-                        .Where(x => x.PortalGroupID == Null.NullInteger)
-                        .Select(p => new PortalInfo
-                        {
-                            PortalId = p.PortalID,
-                            PortalName = p.PortalName,
-                        });
+            return this.AddPortalGroup(portalGroup);
         }
-
-        /// <inheritdoc/>
-        public int Save(PortalGroupInfo portalGroup)
+        else
         {
-            if (portalGroup.PortalGroupId == -1)
+            return this.UpdatePortalGroup(portalGroup);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void Delete(int portalGroupId)
+    {
+        var group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroupId);
+        this.PortalGroupController.DeletePortalGroup(group);
+    }
+
+    private IEnumerable<DotNetNuke.Entities.Portals.PortalInfo> PortalsOfGroup(int groupId, int masterPortalId)
+    {
+        return this.PortalGroupController
+            .GetPortalsByGroup(groupId)
+            .Where(x => x.PortalID != masterPortalId);
+    }
+
+    private int UpdatePortalGroup(PortalGroupInfo portalGroup)
+    {
+        UserCopiedCallback callback = e => { };
+        var @group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroup.PortalGroupId);
+        @group.PortalGroupName = portalGroup.PortalGroupName;
+        @group.AuthenticationDomain = portalGroup.AuthenticationDomain;
+        @group.PortalGroupDescription = portalGroup.Description;
+        this.PortalGroupController.UpdatePortalGroup(@group);
+        var currentPortals = this.PortalsOfGroup(portalGroup.PortalGroupId, portalGroup.MasterPortal.PortalId).ToList();
+        foreach (var portal in currentPortals)
+        {
+            if (portalGroup.Portals == null || portalGroup.Portals.All(p => p.PortalId != portal.PortalID))
             {
-                return this.AddPortalGroup(portalGroup);
+                this.PortalGroupController.RemovePortalFromGroup(portal, @group, false, callback);
             }
-            else
-            {
-                return this.UpdatePortalGroup(portalGroup);
-            }
         }
 
-        /// <inheritdoc/>
-        public void Delete(int portalGroupId)
+        if (portalGroup.Portals != null)
         {
-            var group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroupId);
-            this.PortalGroupController.DeletePortalGroup(group);
-        }
-
-        private IEnumerable<DotNetNuke.Entities.Portals.PortalInfo> PortalsOfGroup(int groupId, int masterPortalId)
-        {
-            return this.PortalGroupController
-                .GetPortalsByGroup(groupId)
-                .Where(x => x.PortalID != masterPortalId);
-        }
-
-        private int UpdatePortalGroup(PortalGroupInfo portalGroup)
-        {
-            UserCopiedCallback callback = e => { };
-            var @group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroup.PortalGroupId);
-            @group.PortalGroupName = portalGroup.PortalGroupName;
-            @group.AuthenticationDomain = portalGroup.AuthenticationDomain;
-            @group.PortalGroupDescription = portalGroup.Description;
-            this.PortalGroupController.UpdatePortalGroup(@group);
-            var currentPortals = this.PortalsOfGroup(portalGroup.PortalGroupId, portalGroup.MasterPortal.PortalId).ToList();
-            foreach (var portal in currentPortals)
+            foreach (var portal in portalGroup.Portals)
             {
-                if (portalGroup.Portals == null || portalGroup.Portals.All(p => p.PortalId != portal.PortalID))
-                {
-                    this.PortalGroupController.RemovePortalFromGroup(portal, @group, false, callback);
-                }
-            }
-
-            if (portalGroup.Portals != null)
-            {
-                foreach (var portal in portalGroup.Portals)
-                {
-                    if (currentPortals.All(p => p.PortalID != portal.PortalId))
-                    {
-                        var p = new PortalController().GetPortal(portal.PortalId);
-                        this.PortalGroupController.AddPortalToGroup(p, @group, callback);
-                    }
-                }
-            }
-
-            return @group.PortalGroupId;
-        }
-
-        private int AddPortalGroup(PortalGroupInfo portalGroup)
-        {
-            UserCopiedCallback callback = e => { };
-            var group = new DotNetNuke.Entities.Portals.PortalGroupInfo
-            {
-                AuthenticationDomain = portalGroup.AuthenticationDomain,
-                MasterPortalId = portalGroup.MasterPortal.PortalId,
-                PortalGroupDescription = portalGroup.Description,
-                PortalGroupName = portalGroup.PortalGroupName,
-            };
-            this.PortalGroupController.AddPortalGroup(@group);
-            if (portalGroup.Portals != null)
-            {
-                foreach (var portal in portalGroup.Portals)
+                if (currentPortals.All(p => p.PortalID != portal.PortalId))
                 {
                     var p = new PortalController().GetPortal(portal.PortalId);
                     this.PortalGroupController.AddPortalToGroup(p, @group, callback);
                 }
             }
-
-            return @group.PortalGroupId;
         }
+
+        return @group.PortalGroupId;
+    }
+
+    private int AddPortalGroup(PortalGroupInfo portalGroup)
+    {
+        UserCopiedCallback callback = e => { };
+        var group = new DotNetNuke.Entities.Portals.PortalGroupInfo
+        {
+            AuthenticationDomain = portalGroup.AuthenticationDomain,
+            MasterPortalId = portalGroup.MasterPortal.PortalId,
+            PortalGroupDescription = portalGroup.Description,
+            PortalGroupName = portalGroup.PortalGroupName,
+        };
+        this.PortalGroupController.AddPortalGroup(@group);
+        if (portalGroup.Portals != null)
+        {
+            foreach (var portal in portalGroup.Portals)
+            {
+                var p = new PortalController().GetPortal(portal.PortalId);
+                this.PortalGroupController.AddPortalToGroup(p, @group, callback);
+            }
+        }
+
+        return @group.PortalGroupId;
     }
 }

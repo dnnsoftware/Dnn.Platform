@@ -1,16 +1,29 @@
-﻿#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div, .connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div {
-    width: 100%;
+﻿#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div,
+.connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div {
+  width: 100%;
 }
 
-#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div input[type='text'], #connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div textarea, .connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div input[type='text'] {
-    width: 65% !important;
+#connector-CoreGoogleAnalytics4Connector
+  > div.edit-fields
+  > div
+  > div
+  input[type="text"],
+#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div textarea,
+.connector-CoreGoogleAnalytics4Connector
+  > div.edit-fields
+  > div
+  > div
+  input[type="text"] {
+  width: 65% !important;
 }
 
-#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div label, .connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div label {
-    width: 25% !important;
+#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div label,
+.connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div label {
+  width: 25% !important;
 }
 
-#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div span, .connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div span {
-    font-size:0.75em;
-    font-style:italic;
+#connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div span,
+.connector-CoreGoogleAnalytics4Connector > div.edit-fields > div > div span {
+  font-size: 0.75em;
+  font-style: italic;
 }

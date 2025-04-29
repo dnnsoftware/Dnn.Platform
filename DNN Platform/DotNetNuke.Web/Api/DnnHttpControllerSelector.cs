@@ -2,142 +2,141 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Api
+namespace DotNetNuke.Web.Api;
+
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Dispatcher;
+using System.Web.Http.Routing;
+
+using DotNetNuke.Common;
+using DotNetNuke.Services.Localization;
+
+internal class DnnHttpControllerSelector : IHttpControllerSelector
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
-    using System.Web.Http.Controllers;
-    using System.Web.Http.Dispatcher;
-    using System.Web.Http.Routing;
+    private const string ControllerSuffix = "Controller";
+    private const string ControllerKey = "controller";
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Services.Localization;
+    private readonly HttpConfiguration configuration;
+    private readonly Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>> descriptorCache;
 
-    internal class DnnHttpControllerSelector : IHttpControllerSelector
+    /// <summary>Initializes a new instance of the <see cref="DnnHttpControllerSelector"/> class.</summary>
+    /// <param name="configuration">The HTTP configuration.</param>
+    public DnnHttpControllerSelector(HttpConfiguration configuration)
     {
-        private const string ControllerSuffix = "Controller";
-        private const string ControllerKey = "controller";
+        Requires.NotNull("configuration", configuration);
 
-        private readonly HttpConfiguration configuration;
-        private readonly Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>> descriptorCache;
+        this.configuration = configuration;
+        this.descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(
+            this.InitTypeCache,
+            isThreadSafe: true);
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="DnnHttpControllerSelector"/> class.</summary>
-        /// <param name="configuration">The HTTP configuration.</param>
-        public DnnHttpControllerSelector(HttpConfiguration configuration)
+    private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache
+    {
+        get { return this.descriptorCache.Value; }
+    }
+
+    /// <inheritdoc/>
+    public HttpControllerDescriptor SelectController(HttpRequestMessage request)
+    {
+        Requires.NotNull("request", request);
+
+        string controllerName = this.GetControllerName(request);
+        IEnumerable<string> namespaces = this.GetNameSpaces(request);
+        if (namespaces == null || !namespaces.Any() || string.IsNullOrEmpty(controllerName))
         {
-            Requires.NotNull("configuration", configuration);
-
-            this.configuration = configuration;
-            this.descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(
-                this.InitTypeCache,
-                isThreadSafe: true);
+            throw new HttpResponseException(request.CreateErrorResponse(
+                HttpStatusCode.NotFound,
+                "Unable to locate a controller for " + request.RequestUri));
         }
 
-        private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache
+        var matches = new List<HttpControllerDescriptor>();
+        foreach (string ns in namespaces)
         {
-            get { return this.descriptorCache.Value; }
-        }
+            string fullName = this.GetFullName(controllerName, ns);
 
-        /// <inheritdoc/>
-        public HttpControllerDescriptor SelectController(HttpRequestMessage request)
-        {
-            Requires.NotNull("request", request);
-
-            string controllerName = this.GetControllerName(request);
-            IEnumerable<string> namespaces = this.GetNameSpaces(request);
-            if (namespaces == null || !namespaces.Any() || string.IsNullOrEmpty(controllerName))
+            HttpControllerDescriptor descriptor;
+            if (this.DescriptorCache.TryGetValue(fullName, out descriptor))
             {
-                throw new HttpResponseException(request.CreateErrorResponse(
-                    HttpStatusCode.NotFound,
-                    "Unable to locate a controller for " + request.RequestUri));
+                matches.Add(descriptor);
             }
-
-            var matches = new List<HttpControllerDescriptor>();
-            foreach (string ns in namespaces)
-            {
-                string fullName = this.GetFullName(controllerName, ns);
-
-                HttpControllerDescriptor descriptor;
-                if (this.DescriptorCache.TryGetValue(fullName, out descriptor))
-                {
-                    matches.Add(descriptor);
-                }
-            }
-
-            if (matches.Count == 1)
-            {
-                return matches.First();
-            }
-
-            // only errors thrown beyond this point
-            if (matches.Count == 0)
-            {
-                throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(Localization.GetString("ControllerNotFound", Localization.ExceptionsResourceFile), request.RequestUri, string.Join(", ", namespaces))));
-            }
-
-            throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.Conflict, string.Format(Localization.GetString("AmbiguousController", Localization.ExceptionsResourceFile), controllerName, string.Join(", ", namespaces))));
         }
 
-        /// <inheritdoc/>
-        public IDictionary<string, HttpControllerDescriptor> GetControllerMapping()
+        if (matches.Count == 1)
         {
-            return this.DescriptorCache;
+            return matches.First();
         }
 
-        private string GetFullName(string controllerName, string ns)
+        // only errors thrown beyond this point
+        if (matches.Count == 0)
         {
-            return string.Format("{0}.{1}{2}", ns, controllerName, ControllerSuffix).ToLowerInvariant();
+            throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(Localization.GetString("ControllerNotFound", Localization.ExceptionsResourceFile), request.RequestUri, string.Join(", ", namespaces))));
         }
 
-        private string[] GetNameSpaces(HttpRequestMessage request)
+        throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.Conflict, string.Format(Localization.GetString("AmbiguousController", Localization.ExceptionsResourceFile), controllerName, string.Join(", ", namespaces))));
+    }
+
+    /// <inheritdoc/>
+    public IDictionary<string, HttpControllerDescriptor> GetControllerMapping()
+    {
+        return this.DescriptorCache;
+    }
+
+    private string GetFullName(string controllerName, string ns)
+    {
+        return string.Format("{0}.{1}{2}", ns, controllerName, ControllerSuffix).ToLowerInvariant();
+    }
+
+    private string[] GetNameSpaces(HttpRequestMessage request)
+    {
+        IHttpRouteData routeData = request.GetRouteData();
+        if (routeData == null)
         {
-            IHttpRouteData routeData = request.GetRouteData();
-            if (routeData == null)
+            return null;
+        }
+
+        return routeData.Route.GetNameSpaces();
+    }
+
+    private string GetControllerName(HttpRequestMessage request)
+    {
+        IHttpRouteData routeData = request.GetRouteData();
+        if (routeData == null)
+        {
+            return null;
+        }
+
+        // Look up controller in route data
+        object controllerName;
+        routeData.Values.TryGetValue(ControllerKey, out controllerName);
+        return controllerName as string;
+    }
+
+    private ConcurrentDictionary<string, HttpControllerDescriptor> InitTypeCache()
+    {
+        IAssembliesResolver assembliesResolver = this.configuration.Services.GetAssembliesResolver();
+        IHttpControllerTypeResolver controllersResolver = this.configuration.Services.GetHttpControllerTypeResolver();
+
+        ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
+
+        var dict = new ConcurrentDictionary<string, HttpControllerDescriptor>();
+
+        foreach (Type type in controllerTypes)
+        {
+            if (type.FullName != null)
             {
-                return null;
+                string controllerName = type.Name.Substring(0, type.Name.Length - ControllerSuffix.Length);
+                dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(this.configuration, controllerName, type));
             }
-
-            return routeData.Route.GetNameSpaces();
         }
 
-        private string GetControllerName(HttpRequestMessage request)
-        {
-            IHttpRouteData routeData = request.GetRouteData();
-            if (routeData == null)
-            {
-                return null;
-            }
-
-            // Look up controller in route data
-            object controllerName;
-            routeData.Values.TryGetValue(ControllerKey, out controllerName);
-            return controllerName as string;
-        }
-
-        private ConcurrentDictionary<string, HttpControllerDescriptor> InitTypeCache()
-        {
-            IAssembliesResolver assembliesResolver = this.configuration.Services.GetAssembliesResolver();
-            IHttpControllerTypeResolver controllersResolver = this.configuration.Services.GetHttpControllerTypeResolver();
-
-            ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
-
-            var dict = new ConcurrentDictionary<string, HttpControllerDescriptor>();
-
-            foreach (Type type in controllerTypes)
-            {
-                if (type.FullName != null)
-                {
-                    string controllerName = type.Name.Substring(0, type.Name.Length - ControllerSuffix.Length);
-                    dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(this.configuration, controllerName, type));
-                }
-            }
-
-            return dict;
-        }
+        return dict;
     }
 }

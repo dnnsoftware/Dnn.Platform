@@ -1,4 +1,2 @@
 import CommonUsersActions from "./users";
-export {
-    CommonUsersActions
-};
+export { CommonUsersActions };

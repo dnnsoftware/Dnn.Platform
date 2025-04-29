@@ -7,20 +7,16 @@ export default function validateFields(field, value) {
     if (field === "name") {
         if (!value) {
             errors[field] = Localization.get("NotEmptyNameError");
-        }
-        else {
+        } else {
             errors[field] = undefined;
         }
-    }
-    else if (field === "cacheDuration" || field === "cacheMaxVaryByCount") {
+    } else if (field === "cacheDuration" || field === "cacheMaxVaryByCount") {
         if (!re.test(value)) {
             errors[field] = Localization.get(field + ".ErrorMessage");
-        }
-        else {
+        } else {
             errors[field] = undefined;
         }
-    }
-    else if (field === "cacheProvider" && !value) {
+    } else if (field === "cacheProvider" && !value) {
         errors["cacheDuration"] = undefined;
         errors["cacheMaxVaryByCount"] = undefined;
     }

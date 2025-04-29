@@ -3,18 +3,17 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable InconsistentNaming
-namespace Dnn.ExportImport.Dto.Pages
+namespace Dnn.ExportImport.Dto.Pages;
+
+using System;
+
+public class ExportPackage : BasicExportImportDto
 {
-    using System;
+    public string PackageType { get; set; }
 
-    public class ExportPackage : BasicExportImportDto
-    {
-        public string PackageType { get; set; }
+    public string PackageName { get; set; }
 
-        public string PackageName { get; set; }
+    public Version Version { get; set; }
 
-        public Version Version { get; set; }
-
-        public string PackageFileName { get; set; }
-    }
+    public string PackageFileName { get; set; }
 }

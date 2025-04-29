@@ -2,7 +2,7 @@
   {
     "name": "DnnPlugins",
     "folder": "DNN Platform/JavaScript Libraries/DnnPlugins/",
-    "destination":  "Install/JavaScriptLibrary"
+    "destination": "Install/JavaScriptLibrary"
   },
   {
     "name": "HoverIntent",
@@ -59,6 +59,6 @@
     "name": "MicrosoftFileSystemGlobbing",
     "folder": "DNN Platform/Components/Microsoft.Extensions.FileSystemGlobbing/",
     "destination": "Install/Library",
-    "excludes": [ "**/*.xml" ]
+    "excludes": ["**/*.xml"]
   }
 ]

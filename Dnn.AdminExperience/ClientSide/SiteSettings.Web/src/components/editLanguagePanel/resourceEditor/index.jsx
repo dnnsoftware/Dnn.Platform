@@ -3,137 +3,148 @@ import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
 import FullEditor from "./fullEditor";
 import "./style.less";
-import { SingleLineInput, MultiLineInput, Modal, SvgIcons } from "@dnnsoftware/dnn-react-common";
+import {
+  SingleLineInput,
+  MultiLineInput,
+  Modal,
+  SvgIcons,
+} from "@dnnsoftware/dnn-react-common";
 
 class ResourceEditor extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inFullMode: false,
-            content: props.value ? props.value : ""
-        };
-        this.debouncedOnChange = debounce(this.changeContent, 500);
+  constructor(props) {
+    super(props);
+    this.state = {
+      inFullMode: false,
+      content: props.value ? props.value : "",
+    };
+    this.debouncedOnChange = debounce(this.changeContent, 500);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.value !== prevProps.value) {
+      this.setState({ content: this.props.value });
+    }
+  }
+
+  onChange(e) {
+    this.setState({ content: e.target.value });
+    this.debouncedOnChange();
+  }
+
+  changeContent() {
+    const { props } = this;
+
+    if (props.enabled) {
+      props.onChange(this.state.content);
+    }
+  }
+
+  renderMulti() {
+    const { props, state } = this;
+
+    let lines = props.value.length / 30;
+    if (props.value.length % 30 !== 0) {
+      lines++;
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.value !== prevProps.value) {
-            this.setState({content: this.props.value});
-        }
+    let height = lines * 18 + 16;
+    if (height > 100) {
+      height = 100;
     }
 
-    onChange(e) {
-        this.setState({content: e.target.value});
-        this.debouncedOnChange();
-    }
+    return (
+      <MultiLineInput
+        className={props.className}
+        value={state.content}
+        enabled={props.enabled}
+        style={{ height: height + "px" }}
+        onChange={this.onChange.bind(this)}
+      />
+    );
+  }
 
-    changeContent() {
-        const { props } = this;
+  renderSingle() {
+    const { props, state } = this;
 
-        if (props.enabled) {
-            props.onChange(this.state.content);
-        }
-    }
+    return (
+      <SingleLineInput
+        className={props.className}
+        value={state.content}
+        enabled={props.enabled}
+        onChange={this.onChange.bind(this)}
+      />
+    );
+  }
 
-    renderMulti() {
-        const { props, state } = this;
+  onEnterFullMode() {
+    this.setState({
+      inFullMode: true,
+    });
 
-        let lines = props.value.length / 30;
-        if (props.value.length % 30 !== 0) {
-            lines ++;
-        }
+    window.dnn.stopEscapeFromClosingPB = true;
+  }
 
-        let height = lines * 18 + 16;
-        if (height > 100) {
-            height = 100;
-        }
+  onExitFullMode() {
+    this.setState({
+      inFullMode: false,
+    });
 
-        return (<MultiLineInput 
-            className={props.className} 
-            value={state.content} 
-            enabled={props.enabled}
-            style={{height: height + "px"}}
-            onChange={this.onChange.bind(this)} />);
-    }
+    window.dnn.stopEscapeFromClosingPB = false;
+  }
 
-    renderSingle() {
-        const { props, state } = this;
+  onFullEditorChange(value) {
+    const { props } = this;
 
-        return (<SingleLineInput 
-            className={props.className} 
-            value={state.content} 
-            enabled={props.enabled}
-            onChange={this.onChange.bind(this)} />);
-    }
+    props.onChange(value);
 
-    onEnterFullMode() {
-        this.setState({
-            inFullMode: true
-        });
+    this.onExitFullMode();
+  }
 
-        window.dnn.stopEscapeFromClosingPB = true;
-    }
+  onFullEditorCancel() {
+    this.onExitFullMode();
+  }
 
-    onExitFullMode() {
-        this.setState({
-            inFullMode: false
-        });
+  render() {
+    const { props, state } = this;
 
-        window.dnn.stopEscapeFromClosingPB = false;
-    }
+    const renderMulti = props.value && props.value.length > 30;
 
-    onFullEditorChange(value) {
-        const { props } = this;
-
-        props.onChange(value);
-
-        this.onExitFullMode();
-    }
-
-    onFullEditorCancel() {
-        this.onExitFullMode();
-    }
-    
-    /* eslint-disable react/no-danger */
-    render() {
-        const { props, state } = this;
-
-        const renderMulti = props.value && props.value.length > 30;
-
-        return (<div className="dnn-language-resource-editor">
-            {renderMulti ? this.renderMulti() : this.renderSingle()}
-            {props.enabled && 
-            <div 
-                className="edit-svg" 
-                dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
-                onClick={this.onEnterFullMode.bind(this)}>
-            </div>
-            }
-            {props.enabled && 
-            <Modal 
-                isOpen={state.inFullMode}
-                onRequestClose={this.onExitFullMode.bind(this)}
-                shouldCloseOnOverlayClick={false}
-                modalHeight={390}>
-                <FullEditor 
-                    value={props.value} 
-                    onChange={this.onFullEditorChange.bind(this)}
-                    onCancel={this.onFullEditorCancel.bind(this)}
-                />
-            </Modal>
-            }
-        </div>);
-    }
+    return (
+      <div className="dnn-language-resource-editor">
+        {renderMulti ? this.renderMulti() : this.renderSingle()}
+        {props.enabled && (
+          <div className="edit-svg" onClick={this.onEnterFullMode.bind(this)}>
+            <SvgIcons.EditIcon />
+          </div>
+        )}
+        {props.enabled && (
+          <Modal
+            isOpen={state.inFullMode}
+            onRequestClose={this.onExitFullMode.bind(this)}
+            shouldCloseOnOverlayClick={false}
+            modalHeight={390}
+          >
+            <FullEditor
+              value={props.value}
+              onChange={this.onFullEditorChange.bind(this)}
+              onCancel={this.onFullEditorCancel.bind(this)}
+            />
+          </Modal>
+        )}
+      </div>
+    );
+  }
 }
 
 ResourceEditor.propTypes = {
-    value: PropTypes.string,
-    enabled: PropTypes.bool,
-    onChange: PropTypes.func,
-    className: PropTypes.string
+  value: PropTypes.string,
+  enabled: PropTypes.bool,
+  onChange: PropTypes.func,
+  className: PropTypes.string,
 };
 
 ResourceEditor.defaultProps = {
-    enabled: true
+  enabled: true,
 };
 
 export default ResourceEditor;

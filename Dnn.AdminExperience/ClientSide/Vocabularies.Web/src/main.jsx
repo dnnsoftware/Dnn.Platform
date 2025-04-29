@@ -12,8 +12,8 @@ taxonomy.init();
 
 const appContainer = document.getElementById("vocabularies-panel");
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

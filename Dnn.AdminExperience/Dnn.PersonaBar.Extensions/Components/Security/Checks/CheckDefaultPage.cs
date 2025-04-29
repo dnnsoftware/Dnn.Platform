@@ -2,94 +2,93 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+
+using DotNetNuke.Application;
+using DotNetNuke.Common;
+
+public class CheckDefaultPage : IAuditCheck
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Xml;
+    /// <inheritdoc/>
+    public string Id => "CheckDefaultPage";
 
-    using DotNetNuke.Application;
-    using DotNetNuke.Common;
+    /// <inheritdoc/>
+    public bool LazyLoad => false;
 
-    public class CheckDefaultPage : IAuditCheck
+    /// <inheritdoc/>
+    public CheckResult Execute()
     {
-        /// <inheritdoc/>
-        public string Id => "CheckDefaultPage";
-
-        /// <inheritdoc/>
-        public bool LazyLoad => false;
-
-        /// <inheritdoc/>
-        public CheckResult Execute()
+        var result = new CheckResult(SeverityEnum.Unverified, this.Id);
+        try
         {
-            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            try
+            IList<string> modifiedFiles;
+            var fileModified = this.CheckDefaultPageModified(out modifiedFiles);
+            if (fileModified)
             {
-                IList<string> modifiedFiles;
-                var fileModified = this.CheckDefaultPageModified(out modifiedFiles);
-                if (fileModified)
+                if (modifiedFiles.Count == 0)
                 {
-                    if (modifiedFiles.Count == 0)
+                    if (DotNetNukeContext.Current.Application.Version.Major > 6)
                     {
-                        if (DotNetNukeContext.Current.Application.Version.Major > 6)
-                        {
-                            result.Notes.Add("There is no data available about your current installation, please upgrade this module to it's latest version.");
-                        }
-                        else
-                        {
-                            fileModified = false;
-                        }
+                        result.Notes.Add("There is no data available about your current installation, please upgrade this module to it's latest version.");
                     }
-
-                    result.Severity = SeverityEnum.Failure;
-                    foreach (var filename in modifiedFiles)
+                    else
                     {
-                        result.Notes.Add("file:" + filename);
+                        fileModified = false;
                     }
                 }
-                else
+
+                result.Severity = SeverityEnum.Failure;
+                foreach (var filename in modifiedFiles)
                 {
-                    result.Severity = SeverityEnum.Pass;
+                    result.Notes.Add("file:" + filename);
                 }
             }
-            catch (Exception)
+            else
             {
-                throw;
+                result.Severity = SeverityEnum.Pass;
             }
-
-            return result;
         }
-
-        private bool CheckDefaultPageModified(out IList<string> modifiedFiles)
+        catch (Exception)
         {
-            modifiedFiles = new List<string>();
-
-            var sumData = Utility.LoadFileSumData();
-
-            var appVersion = Utility.GetApplicationVersion();
-            var appType = Utility.GetApplicationType();
-
-            var dataNodes = sumData.SelectNodes("/checksums/sum[@version=\"" + appVersion + "\"][@type=\"" + appType + "\"]");
-            if (dataNodes == null || dataNodes.Count == 0)
-            {
-                return true; // when no record matched, need notify user to update the module.
-            }
-
-            var fileModified = false;
-            foreach (XmlNode node in dataNodes)
-            {
-                var fileName = node.Attributes["name"].Value;
-                var sum = node.Attributes["sum"].Value;
-                var file = Path.Combine(Globals.ApplicationMapPath, fileName);
-                if (!File.Exists(file) || !Utility.GetFileCheckSum(file).Equals(sum, StringComparison.OrdinalIgnoreCase))
-                {
-                    fileModified = true;
-                    modifiedFiles.Add(fileName);
-                }
-            }
-
-            return fileModified;
+            throw;
         }
+
+        return result;
+    }
+
+    private bool CheckDefaultPageModified(out IList<string> modifiedFiles)
+    {
+        modifiedFiles = new List<string>();
+
+        var sumData = Utility.LoadFileSumData();
+
+        var appVersion = Utility.GetApplicationVersion();
+        var appType = Utility.GetApplicationType();
+
+        var dataNodes = sumData.SelectNodes("/checksums/sum[@version=\"" + appVersion + "\"][@type=\"" + appType + "\"]");
+        if (dataNodes == null || dataNodes.Count == 0)
+        {
+            return true; // when no record matched, need notify user to update the module.
+        }
+
+        var fileModified = false;
+        foreach (XmlNode node in dataNodes)
+        {
+            var fileName = node.Attributes["name"].Value;
+            var sum = node.Attributes["sum"].Value;
+            var file = Path.Combine(Globals.ApplicationMapPath, fileName);
+            if (!File.Exists(file) || !Utility.GetFileCheckSum(file).Equals(sum, StringComparison.OrdinalIgnoreCase))
+            {
+                fileModified = true;
+                modifiedFiles.Add(fileName);
+            }
+        }
+
+        return fileModified;
     }
 }

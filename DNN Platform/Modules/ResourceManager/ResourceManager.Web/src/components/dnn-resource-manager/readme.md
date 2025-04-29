@@ -1,16 +1,12 @@
 # dnn-resource-manager
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
 | Property                | Attribute   | Description           | Type     | Default     |
 | ----------------------- | ----------- | --------------------- | -------- | ----------- |
 | `moduleId` _(required)_ | `module-id` | The ID of the module. | `number` | `undefined` |
-
 
 ## Dependencies
 
@@ -24,6 +20,7 @@
 - [dnn-rm-folder-mappings](../dnn-rm-folder-mappings)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-resource-manager --> dnn-rm-top-bar
@@ -125,6 +122,6 @@ graph TD;
   style dnn-resource-manager fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

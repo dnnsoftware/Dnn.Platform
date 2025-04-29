@@ -2,29 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Common
+namespace DotNetNuke.Web.Mvc.Common;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework;
+
+public class ModuleControlControllerAdapter : ServiceLocator<IModuleControlController, ModuleControlControllerAdapter>, IModuleControlController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Framework;
-
-    public class ModuleControlControllerAdapter : ServiceLocator<IModuleControlController, ModuleControlControllerAdapter>, IModuleControlController
+    /// <inheritdoc/>
+    public ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
     {
-        /// <inheritdoc/>
-        public ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
-        {
-            return ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefID);
-        }
+        return ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefID);
+    }
 
-        /// <inheritdoc/>
-        protected override Func<IModuleControlController> GetFactory()
-        {
-            return () => new ModuleControlControllerAdapter();
-        }
+    /// <inheritdoc/>
+    protected override Func<IModuleControlController> GetFactory()
+    {
+        return () => new ModuleControlControllerAdapter();
     }
 }

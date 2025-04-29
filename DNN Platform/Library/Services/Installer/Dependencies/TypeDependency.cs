@@ -1,57 +1,56 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Installer.Dependencies
+namespace DotNetNuke.Services.Installer.Dependencies;
+
+using System.Xml.XPath;
+
+using DotNetNuke.Framework;
+
+/// <summary>The TypeDependency determines whether the dependent type is installed.</summary>
+public class TypeDependency : DependencyBase
 {
-    using System.Xml.XPath;
+    private string missingDependentType = string.Empty;
+    private string dependentTypes;
 
-    using DotNetNuke.Framework;
-
-    /// <summary>The TypeDependency determines whether the dependent type is installed.</summary>
-    public class TypeDependency : DependencyBase
+    /// <inheritdoc/>
+    public override string ErrorMessage
     {
-        private string missingDependentType = string.Empty;
-        private string dependentTypes;
-
-        /// <inheritdoc/>
-        public override string ErrorMessage
+        get
         {
-            get
-            {
-                return Util.INSTALL_Namespace + " - " + this.missingDependentType;
-            }
+            return Util.INSTALL_Namespace + " - " + this.missingDependentType;
         }
+    }
 
-        /// <inheritdoc/>
-        public override bool IsValid
+    /// <inheritdoc/>
+    public override bool IsValid
+    {
+        get
         {
-            get
+            bool isValid = true;
+            if (!string.IsNullOrEmpty(this.dependentTypes))
             {
-                bool isValid = true;
-                if (!string.IsNullOrEmpty(this.dependentTypes))
+                foreach (string dependentType in (this.dependentTypes + ";").Split(';'))
                 {
-                    foreach (string dependentType in (this.dependentTypes + ";").Split(';'))
+                    if (!string.IsNullOrEmpty(dependentType.Trim()))
                     {
-                        if (!string.IsNullOrEmpty(dependentType.Trim()))
+                        if (Reflection.CreateType(dependentType, true) == null)
                         {
-                            if (Reflection.CreateType(dependentType, true) == null)
-                            {
-                                this.missingDependentType = dependentType;
-                                isValid = false;
-                                break;
-                            }
+                            this.missingDependentType = dependentType;
+                            isValid = false;
+                            break;
                         }
                     }
                 }
-
-                return isValid;
             }
-        }
 
-        /// <inheritdoc/>
-        public override void ReadManifest(XPathNavigator dependencyNav)
-        {
-            this.dependentTypes = dependencyNav.Value;
+            return isValid;
         }
+    }
+
+    /// <inheritdoc/>
+    public override void ReadManifest(XPathNavigator dependencyNav)
+    {
+        this.dependentTypes = dependencyNav.Value;
     }
 }

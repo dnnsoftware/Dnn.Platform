@@ -11,7 +11,10 @@ import Promise from "promise";
 const loadPage = function (dispatch, pageId, callback) {
     return new Promise((resolve) => {
         const currentPageId = utils.getCurrentPageId();
-        if (pageId === currentPageId && !utils.getCurrentPagePermissions().managePage) {
+        if (
+            pageId === currentPageId &&
+      !utils.getCurrentPagePermissions().managePage
+        ) {
             let permissions = utils.getCurrentPagePermissions();
             dispatch({
                 type: ActionTypes.LOADED_PAGE,
@@ -28,94 +31,100 @@ const loadPage = function (dispatch, pageId, callback) {
                         canCopyPage: permissions.copyPage,
                         canDeletePage: permissions.deletePage,
                         canNavigateToPage: true,
-                        name: utils.getCurrentPageName()
-                    }
-                },
-                selectedPageSettingTab: 0
-            });
-        }
-        else {
-            PagesService.getPage(pageId).then(response => {
-                dispatch({
-                    type: ActionTypes.LOADED_PAGE,
-                    data: {
-                        page: response
+                        name: utils.getCurrentPageName(),
                     },
-                    selectedPageSettingTab: 0
-                });
-                if (callback) {
-                    callback(response);
-                }
-                resolve(response);
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_LOADING_PAGE,
-                    data: { error }
-                });
-                resolve();
+                },
+                selectedPageSettingTab: 0,
             });
+        } else {
+            PagesService.getPage(pageId)
+                .then((response) => {
+                    dispatch({
+                        type: ActionTypes.LOADED_PAGE,
+                        data: {
+                            page: response,
+                        },
+                        selectedPageSettingTab: 0,
+                    });
+                    if (callback) {
+                        callback(response);
+                    }
+                    resolve(response);
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_LOADING_PAGE,
+                        data: { error },
+                    });
+                    resolve();
+                });
         }
     });
 };
 
 const redirectFromNonExistingPage = function (redirectUrl) {
-    window.top.location.href = redirectUrl ? redirectUrl : utils.getDefaultPageUrl();
+    window.top.location.href = redirectUrl
+        ? redirectUrl
+        : utils.getDefaultPageUrl();
 };
 
 const pageActions = {
     getPageList(id) {
-        return (dispatch) => PagesService.getPageList(id).then(pageList => {
-
-            dispatch({
-                type: PageListActionTypes.SAVE,
-                data: { pageList }
+        return (dispatch) =>
+            PagesService.getPageList(id).then((pageList) => {
+                dispatch({
+                    type: PageListActionTypes.SAVE,
+                    data: { pageList },
+                });
             });
-        });
     },
 
     searchPageList(searchKey) {
-        return (dispatch) => PagesService.searchPageList(searchKey).then((searchList) => {
-            dispatch({
-                type: SearchListActionTypes.SAVE_SEARCH_LIST,
-                data: { searchList }
+        return (dispatch) =>
+            PagesService.searchPageList(searchKey).then((searchList) => {
+                dispatch({
+                    type: SearchListActionTypes.SAVE_SEARCH_LIST,
+                    data: { searchList },
+                });
             });
-        });
     },
-
 
     getPageHierarchy(id) {
         return () => PagesService.getPageHierarchy(id);
     },
 
     searchAndFilterPageList(params) {
-        return (dispatch) => PagesService.searchAndFilterPageList(params).then((searchList) => {
-            searchList = searchList.Results;
-            dispatch({
-                type: SearchListActionTypes.SAVE_SEARCH_LIST,
-                data: { searchList }
+        return (dispatch) =>
+            PagesService.searchAndFilterPageList(params).then((searchList) => {
+                searchList = searchList.Results;
+                dispatch({
+                    type: SearchListActionTypes.SAVE_SEARCH_LIST,
+                    data: { searchList },
+                });
             });
-        });
     },
 
-    searchAndFilterPagedPageList(params,filtersUpdated) {
-        return (dispatch) => PagesService.searchAndFilterPageList(params).then(searchResult => {
-            dispatch({
-                type: SearchListActionTypes.SAVE_SEARCH_RESULT,
-                data: { 
-                    searchResult,
-                    filtersUpdated 
-                }
+    searchAndFilterPagedPageList(params, filtersUpdated) {
+        return (dispatch) =>
+            PagesService.searchAndFilterPageList(params).then((searchResult) => {
+                dispatch({
+                    type: SearchListActionTypes.SAVE_SEARCH_RESULT,
+                    data: {
+                        searchResult,
+                        filtersUpdated,
+                    },
+                });
             });
-        });
     },
 
     getWorkflowsList() {
-        return (dispatch) => PagesService.getWorkflowsList().then(workflowList => {
-            dispatch({
-                type: ActionTypes.GET_WORKFLOW_LIST,
-                data: { workflowList }
+        return (dispatch) =>
+            PagesService.getWorkflowsList().then((workflowList) => {
+                dispatch({
+                    type: ActionTypes.GET_WORKFLOW_LIST,
+                    data: { workflowList },
+                });
             });
-        });
     },
 
     getPage(id) {
@@ -130,7 +139,7 @@ const pageActions = {
         return (dispatch) => {
             dispatch({
                 type: PageListActionTypes.SAVE,
-                data: { pageList }
+                data: { pageList },
             });
         };
     },
@@ -139,7 +148,7 @@ const pageActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.SELECT_PAGE_SETTING_TAB,
-                selectedPageSettingTab
+                selectedPageSettingTab,
             });
         };
     },
@@ -152,9 +161,7 @@ const pageActions = {
 
     viewPage(id, url, callback) {
         PagesService.openPageInEditMode(id, url, callback);
-        return () => {
-
-        };
+        return () => {};
     },
 
     duplicatePage() {
@@ -172,9 +179,9 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.LOADED_PAGE,
                     data: {
-                        page: duplicatedPage
+                        page: duplicatedPage,
                     },
-                    selectedPageSettingTab: 0
+                    selectedPageSettingTab: 0,
                 });
             };
 
@@ -184,16 +191,16 @@ const pageActions = {
         };
     },
 
-
     getNewPage(parentPage) {
-        return (dispatch) => PagesService.getNewPage(parentPage).then((page) => {
-            page.referralTabId = parentPage.id;
-            dispatch({
-                type: ActionTypes.LOADED_PAGE,
-                data: { page },
-                selectedPageSettingTab: 0
+        return (dispatch) =>
+            PagesService.getNewPage(parentPage).then((page) => {
+                page.referralTabId = parentPage.id;
+                dispatch({
+                    type: ActionTypes.LOADED_PAGE,
+                    data: { page },
+                    selectedPageSettingTab: 0,
+                });
             });
-        });
     },
 
     cancelPage(reloadPageId) {
@@ -205,134 +212,145 @@ const pageActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CANCEL_PAGE,
-                data: {}
+                data: {},
             });
         };
     },
 
     deletePage(page, redirectUrl) {
-        
         return (dispatch) => {
             dispatch({
-                type: ActionTypes.DELETE_PAGE
+                type: ActionTypes.DELETE_PAGE,
             });
 
-            PagesService.deletePage(page).then(response => {
+            PagesService.deletePage(page)
+                .then((response) => {
+                    if (response.Status === responseStatus.ERROR) {
+                        utils.notifyError(response.Message, 3000);
+                        return;
+                    }
 
-                if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(response.Message, 3000);
-                    return;
-                }
-
-                dispatch({
-                    type: ActionTypes.DELETED_PAGE
-                });
-                if (page.tabId !== 0 && (page.tabId === utils.getCurrentPageId()) || redirectUrl) {
-                    redirectFromNonExistingPage(redirectUrl);
-                }
-                else if (page.hasChild === true) {
-                    let currentPageId = utils.getCurrentPageId();
-                    PagesService.getPageHierarchy(currentPageId).then(hierarchy => {
-                        if (Array.isArray(hierarchy) && hierarchy.indexOf(page.tabId) > -1) {
-                            redirectFromNonExistingPage(redirectUrl);
-                        }
+                    dispatch({
+                        type: ActionTypes.DELETED_PAGE,
                     });
-                }
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_DELETING_PAGE,
-                    data: { error }
+                    if (
+                        (page.tabId !== 0 && page.tabId === utils.getCurrentPageId()) ||
+            redirectUrl
+                    ) {
+                        redirectFromNonExistingPage(redirectUrl);
+                    } else if (page.hasChild === true) {
+                        let currentPageId = utils.getCurrentPageId();
+                        PagesService.getPageHierarchy(currentPageId).then((hierarchy) => {
+                            if (
+                                Array.isArray(hierarchy) &&
+                hierarchy.indexOf(page.tabId) > -1
+                            ) {
+                                redirectFromNonExistingPage(redirectUrl);
+                            }
+                        });
+                    }
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_DELETING_PAGE,
+                        data: { error },
+                    });
                 });
-            });
         };
     },
     deleteLocalizePage(page) {
         return (dispatch) => {
-            PagesService.deletePage(page, true).then(response => {
-                if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(response.Message, 3000);
-                    return;
-                }
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_DELETING_PAGE,
-                    data: { error }
+            PagesService.deletePage(page, true)
+                .then((response) => {
+                    if (response.Status === responseStatus.ERROR) {
+                        utils.notifyError(response.Message, 3000);
+                        return;
+                    }
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_DELETING_PAGE,
+                        data: { error },
+                    });
                 });
-            });
         };
     },
     createPage(callback) {
-
         return (dispatch, getState) => {
             dispatch({
-                type: ActionTypes.SAVE_PAGE
+                type: ActionTypes.SAVE_PAGE,
             });
             const { pages } = getState();
             const selectedPage = pages.selectedPage;
 
-            PagesService.savePage(selectedPage).then(response => {
+            PagesService.savePage(selectedPage)
+                .then((response) => {
+                    if (response.Status === responseStatus.ERROR) {
+                        utils.notifyError(response.Message, 3000);
+                        return;
+                    }
 
-                if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(response.Message, 3000);
-                    return;
-                }
-
-                if (selectedPage.tabId > 0) {
-                    utils.notify(Localization.get("PageUpdatedMessage"));
-                }
-                if (response.Page.canAddContentToPage && selectedPage.pageType === "normal" && !selectedPage.disableLink) {
-                    PagesService.openPageInEditMode(response.Page.id, response.Page.url);
-                }
-                else if (typeof callback === "function") {
-                    utils.notify(Localization.get("PageCreatedMessage"));
-                    callback(response.Page);
-                }
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_SAVING_PAGE,
-                    data: { error }
+                    if (selectedPage.tabId > 0) {
+                        utils.notify(Localization.get("PageUpdatedMessage"));
+                    }
+                    if (
+                        response.Page.canAddContentToPage &&
+            selectedPage.pageType === "normal" &&
+            !selectedPage.disableLink
+                    ) {
+                        PagesService.openPageInEditMode(
+                            response.Page.id,
+                            response.Page.url,
+                        );
+                    } else if (typeof callback === "function") {
+                        utils.notify(Localization.get("PageCreatedMessage"));
+                        callback(response.Page);
+                    }
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_SAVING_PAGE,
+                        data: { error },
+                    });
                 });
-            });
         };
     },
 
     updatePage(page, callback) {
         return (dispatch) => {
+            PagesService.savePage(page)
+                .then((response) => {
+                    if (response.Status === responseStatus.ERROR) {
+                        utils.notifyError(response.Message, 3000);
+                        return;
+                    }
 
-            PagesService.savePage(page).then(response => {
+                    if (page.tabId > 0) {
+                        utils.notify(Localization.get("PageUpdatedMessage"));
+                    }
 
-                if (response.Status === responseStatus.ERROR) {
-                    utils.notifyError(response.Message, 3000);
-                    return;
-                }
+                    dispatch({
+                        type: ActionTypes.SAVE_PAGE,
+                        data: response.Page,
+                    });
 
-                if (page.tabId > 0) {
-                    utils.notify(Localization.get("PageUpdatedMessage"));
-                }
-
-                dispatch({
-                    type: ActionTypes.SAVE_PAGE,
-                    data: response.Page
+                    callback(response.Page);
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_SAVING_PAGE,
+                        data: { error },
+                    });
                 });
-
-                callback(response.Page);
-
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_SAVING_PAGE,
-                    data: { error }
-                });
-            });
         };
     },
-
 
     changePageField(key, value) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CHANGE_FIELD_VALUE,
                 field: key,
-                value
+                value,
             });
         };
     },
@@ -341,7 +359,7 @@ const pageActions = {
         return {
             type: ActionTypes.CHANGE_FIELD_VALUE,
             field: "pageType",
-            value
+            value,
         };
     },
 
@@ -349,7 +367,7 @@ const pageActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CHANGE_PERMISSIONS,
-                permissions
+                permissions,
             });
         };
     },
@@ -358,20 +376,22 @@ const pageActions = {
         return (dispatch, getState) => {
             if (!getState().pages.cacheProviderList) {
                 dispatch({
-                    type: ActionTypes.FETCH_CACHE_PROVIDER_LIST
+                    type: ActionTypes.FETCH_CACHE_PROVIDER_LIST,
                 });
 
-                PagesService.getCacheProviderList().then(cacheProviderList => {
-                    dispatch({
-                        type: ActionTypes.FETCHED_CACHE_PROVIDER_LIST,
-                        data: { cacheProviderList }
+                PagesService.getCacheProviderList()
+                    .then((cacheProviderList) => {
+                        dispatch({
+                            type: ActionTypes.FETCHED_CACHE_PROVIDER_LIST,
+                            data: { cacheProviderList },
+                        });
+                    })
+                    .catch((error) => {
+                        dispatch({
+                            type: ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST,
+                            data: { error },
+                        });
                     });
-                }).catch((error) => {
-                    dispatch({
-                        type: ActionTypes.ERROR_FETCHING_CACHE_PROVIDER_LIST,
-                        data: { error }
-                    });
-                });
             }
         };
     },
@@ -379,54 +399,61 @@ const pageActions = {
     deletePageModule(module) {
         return (dispatch, getState) => {
             dispatch({
-                type: ActionTypes.DELETING_PAGE_MODULE
+                type: ActionTypes.DELETING_PAGE_MODULE,
             });
 
             const pageId = getState().pages.selectedPage.tabId;
             const moduleToDelete = {
                 moduleId: module.id,
-                pageId
+                pageId,
             };
-            PagesService.deletePageModule(moduleToDelete).then(() => {
-                utils.notify(Localization.get("DeletePageModuleSuccess").replace("[MODULETITLE]", module.title));
-                dispatch({
-                    type: ActionTypes.DELETED_PAGE_MODULE,
-                    data: { module }
+            PagesService.deletePageModule(moduleToDelete)
+                .then(() => {
+                    utils.notify(
+                        Localization.get("DeletePageModuleSuccess").replace(
+                            "[MODULETITLE]",
+                            module.title,
+                        ),
+                    );
+                    dispatch({
+                        type: ActionTypes.DELETED_PAGE_MODULE,
+                        data: { module },
+                    });
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_DELETING_PAGE_MODULE,
+                        data: { error },
+                    });
                 });
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_DELETING_PAGE_MODULE,
-                    data: { error }
-                });
-            });
         };
     },
 
     updatePageModuleCopy(id, key, event) {
         return {
             type: ActionTypes.UPDATED_PAGE_MODULE_COPY,
-            data: { id, key, event }
+            data: { id, key, event },
         };
     },
 
     editingPageModule(module) {
         return {
             type: ActionTypes.EDITING_PAGE_MODULE,
-            data: { module }
+            data: { module },
         };
     },
 
     cancelEditingPageModule() {
         return {
             type: ActionTypes.CANCEL_EDITING_PAGE_MODULE,
-            data: {}
+            data: {},
         };
     },
 
     copyAppearanceToDescendantPages() {
         return (dispatch, getState) => {
             dispatch({
-                type: ActionTypes.COPYING_APPEARANCE_TO_DESCENDANT_PAGES
+                type: ActionTypes.COPYING_APPEARANCE_TO_DESCENDANT_PAGES,
             });
 
             const state = getState();
@@ -434,7 +461,7 @@ const pageActions = {
             const { defaultPortalLayout, defaultPortalContainer } = state.theme;
             const theme = {
                 skinSrc: page.skinSrc || defaultPortalLayout,
-                containerSrc: page.containerSrc || defaultPortalContainer
+                containerSrc: page.containerSrc || defaultPortalContainer,
             };
 
             if (!theme.skinSrc || !theme.containerSrc) {
@@ -442,54 +469,64 @@ const pageActions = {
                 return;
             }
 
-            PagesService.copyAppearanceToDescendantPages(page.tabId, theme).then(() => {
-                utils.notify(Localization.get("CopyAppearanceToDescendantPagesSuccess"));
-                dispatch({
-                    type: ActionTypes.COPIED_APPEARANCE_TO_DESCENDANT_PAGES,
-                    data: {}
+            PagesService.copyAppearanceToDescendantPages(page.tabId, theme)
+                .then(() => {
+                    utils.notify(
+                        Localization.get("CopyAppearanceToDescendantPagesSuccess"),
+                    );
+                    dispatch({
+                        type: ActionTypes.COPIED_APPEARANCE_TO_DESCENDANT_PAGES,
+                        data: {},
+                    });
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_COPYING_APPEARANCE_TO_DESCENDANT_PAGES,
+                        data: { error },
+                    });
                 });
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_COPYING_APPEARANCE_TO_DESCENDANT_PAGES,
-                    data: { error }
-                });
-            });
         };
     },
 
     copyPermissionsToDescendantPages() {
         return (dispatch, getState) => {
             dispatch({
-                type: ActionTypes.COPYING_PERMISSIONS_TO_DESCENDANT_PAGES
+                type: ActionTypes.COPYING_PERMISSIONS_TO_DESCENDANT_PAGES,
             });
 
             const page = getState().pages.selectedPage;
-            PagesService.copyPermissionsToDescendantPages(page.tabId).then(() => {
-                utils.notify(Localization.get("CopyPermissionsToDescendantPagesSuccess"));
-                dispatch({
-                    type: ActionTypes.COPIED_PERMISSIONS_TO_DESCENDANT_PAGES,
-                    data: {}
+            PagesService.copyPermissionsToDescendantPages(page.tabId)
+                .then(() => {
+                    utils.notify(
+                        Localization.get("CopyPermissionsToDescendantPagesSuccess"),
+                    );
+                    dispatch({
+                        type: ActionTypes.COPIED_PERMISSIONS_TO_DESCENDANT_PAGES,
+                        data: {},
+                    });
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: ActionTypes.ERROR_COPYING_PERMISSIONS_TO_DESCENDANT_PAGES,
+                        data: { error },
+                    });
                 });
-            }).catch((error) => {
-                dispatch({
-                    type: ActionTypes.ERROR_COPYING_PERMISSIONS_TO_DESCENDANT_PAGES,
-                    data: { error }
-                });
-            });
         };
     },
 
     getCachedPageCount(cacheProvider) {
         return (dispatch, getState) => {
             const page = getState().pages.selectedPage;
-            PagesService.getCachedPageCount(cacheProvider, page.tabId).then(data => {
-                dispatch({
-                    type: ActionTypes.RETRIEVED_CACHED_PAGE_COUNT,
-                    data: {
-                        cachedPageCount: data.Count
-                    }
-                });
-            });
+            PagesService.getCachedPageCount(cacheProvider, page.tabId).then(
+                (data) => {
+                    dispatch({
+                        type: ActionTypes.RETRIEVED_CACHED_PAGE_COUNT,
+                        data: {
+                            cachedPageCount: data.Count,
+                        },
+                    });
+                },
+            );
         };
     },
 
@@ -500,8 +537,8 @@ const pageActions = {
                 dispatch({
                     type: ActionTypes.CLEARED_CACHED_PAGE,
                     data: {
-                        cachedPageCount: 0
-                    }
+                        cachedPageCount: 0,
+                    },
                 });
             });
         };
@@ -511,13 +548,18 @@ const pageActions = {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CLEAR_SELECTED_PAGE,
-                data: {}
+                data: {},
             });
         };
     },
 
     movePage({ Action, PageId, ParentId, RelatedPageId }) {
-        return PagesService.movePage({ Action, PageId, ParentId, RelatedPageId }).catch(() => {
+        return PagesService.movePage({
+            Action,
+            PageId,
+            ParentId,
+            RelatedPageId,
+        }).catch(() => {
             utils.notifyError(Localization.get("AnErrorOccurred"));
         });
     },
@@ -525,9 +567,9 @@ const pageActions = {
     dirtyCustomDetails() {
         return {
             type: ActionTypes.CUSTOM_PAGE_DETAILS_UPDATED,
-            data: {}
+            data: {},
         };
-    }
+    },
 };
 
 export default pageActions;

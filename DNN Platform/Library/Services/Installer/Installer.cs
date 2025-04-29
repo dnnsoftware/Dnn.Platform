@@ -1,526 +1,525 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Installer
+namespace DotNetNuke.Services.Installer;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.XPath;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Installers;
+using DotNetNuke.Services.Installer.Log;
+using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Installer.Writers;
+using DotNetNuke.Services.Log.EventLog;
+
+/// <summary>The Installer class provides a single entrypoint for Package Installation.</summary>
+public class Installer
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Xml;
-    using System.Xml.XPath;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
+    private readonly Stream inputStream;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Installer.Installers;
-    using DotNetNuke.Services.Installer.Log;
-    using DotNetNuke.Services.Installer.Packages;
-    using DotNetNuke.Services.Installer.Writers;
-    using DotNetNuke.Services.Log.EventLog;
-
-    /// <summary>The Installer class provides a single entrypoint for Package Installation.</summary>
-    public class Installer
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Installer"/> class.
+    /// This Constructor creates a new Installer instance from a string representing
+    /// the physical path to the temporary install folder and a string representing
+    /// the physical path to the root of the site.
+    /// </summary>
+    /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
+    /// <param name="manifest">The manifest filename.</param>
+    /// <param name="physicalSitePath">The physical path to the root of the site.</param>
+    /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
+    public Installer(string tempFolder, string manifest, string physicalSitePath, bool loadManifest)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
-        private readonly Stream inputStream;
+        this.Packages = new SortedList<int, PackageInstaller>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Installer"/> class.
-        /// This Constructor creates a new Installer instance from a string representing
-        /// the physical path to the temporary install folder and a string representing
-        /// the physical path to the root of the site.
-        /// </summary>
-        /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
-        /// <param name="manifest">The manifest filename.</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
-        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
-        public Installer(string tempFolder, string manifest, string physicalSitePath, bool loadManifest)
+        // Called from Interactive installer - default IgnoreWhiteList to false
+        this.InstallerInfo = new InstallerInfo(tempFolder, manifest, physicalSitePath) { IgnoreWhiteList = false };
+
+        if (loadManifest)
         {
-            this.Packages = new SortedList<int, PackageInstaller>();
+            this.ReadManifest(true);
+        }
+    }
 
-            // Called from Interactive installer - default IgnoreWhiteList to false
-            this.InstallerInfo = new InstallerInfo(tempFolder, manifest, physicalSitePath) { IgnoreWhiteList = false };
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Installer"/> class.
+    /// This Constructor creates a new Installer instance from a Stream and a
+    /// string representing the physical path to the root of the site.
+    /// </summary>
+    /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
+    /// <param name="physicalSitePath">The physical path to the root of the site.</param>
+    /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
+    public Installer(Stream inputStream, string physicalSitePath, bool loadManifest)
+        : this(inputStream, physicalSitePath, loadManifest, true)
+    {
+    }
 
-            if (loadManifest)
-            {
-                this.ReadManifest(true);
-            }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Installer"/> class.
+    /// This Constructor creates a new Installer instance from a Stream and a
+    /// string representing the physical path to the root of the site.
+    /// </summary>
+    /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
+    /// <param name="physicalSitePath">The physical path to the root of the site.</param>
+    /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
+    /// <param name="deleteTemp">Whether delete the temp folder.</param>
+    public Installer(Stream inputStream, string physicalSitePath, bool loadManifest, bool deleteTemp)
+    {
+        this.Packages = new SortedList<int, PackageInstaller>();
+
+        this.inputStream = new MemoryStream();
+        inputStream.CopyTo(this.inputStream);
+
+        // Called from Batch installer - default IgnoreWhiteList to true
+        this.InstallerInfo = new InstallerInfo(inputStream, physicalSitePath) { IgnoreWhiteList = true };
+
+        if (loadManifest)
+        {
+            this.ReadManifest(deleteTemp);
+        }
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Installer"/> class.
+    /// This Constructor creates a new Installer instance from a PackageInfo object.
+    /// </summary>
+    /// <param name="package">The PackageInfo instance.</param>
+    /// <param name="physicalSitePath">The physical path to the root of the site.</param>
+    public Installer(PackageInfo package, string physicalSitePath)
+    {
+        this.Packages = new SortedList<int, PackageInstaller>();
+        this.InstallerInfo = new InstallerInfo(package, physicalSitePath);
+
+        this.Packages.Add(this.Packages.Count, new PackageInstaller(package));
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="Installer"/> class.</summary>
+    /// <param name="manifest">The install package manifest.</param>
+    /// <param name="physicalSitePath">The physical path to the site.</param>
+    /// <param name="loadManifest">A value indicating whether to load the manifest.</param>
+    public Installer(string manifest, string physicalSitePath, bool loadManifest)
+    {
+        this.Packages = new SortedList<int, PackageInstaller>();
+        this.InstallerInfo = new InstallerInfo(physicalSitePath, InstallMode.ManifestOnly);
+        if (loadManifest)
+        {
+            this.ReadManifest(new FileStream(manifest, FileMode.Open, FileAccess.Read));
+        }
+    }
+
+    /// <summary>Gets a value indicating whether the associated InstallerInfo is valid.</summary>
+    /// <value>True - if valid, False if not.</value>
+    public bool IsValid
+    {
+        get
+        {
+            return this.InstallerInfo.IsValid;
+        }
+    }
+
+    /// <summary>Gets the installation temporary folder path.</summary>
+    /// <value>The installation temporory folder path.</value>
+    public string TempInstallFolder
+    {
+        get
+        {
+            return this.InstallerInfo.TempInstallFolder;
+        }
+    }
+
+    /// <summary>Gets the associated InstallerInfo object.</summary>
+    /// <value>An InstallerInfo.</value>
+    public InstallerInfo InstallerInfo { get; private set; }
+
+    /// <summary>Gets a SortedList of Packages that are included in the Package Zip.</summary>
+    /// <value>A SortedList(Of Integer, PackageInstaller).</value>
+    public SortedList<int, PackageInstaller> Packages { get; private set; }
+
+    /// <summary>Converts legacy manifest navigation to support old manifest format.</summary>
+    /// <param name="rootNav">The root xml navigation path.</param>
+    /// <param name="info"><see cref="InstallerInfo"/>.</param>
+    /// <returns>A new converted <see cref="XPathNavigator"/> that works with current manifest schema.</returns>
+    public static XPathNavigator ConvertLegacyNavigator(XPathNavigator rootNav, InstallerInfo info)
+    {
+        XPathNavigator nav = null;
+
+        var packageType = Null.NullString;
+        if (rootNav.Name == "dotnetnuke")
+        {
+            packageType = Util.ReadAttribute(rootNav, "type");
+        }
+        else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+        {
+            packageType = "LanguagePack";
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Installer"/> class.
-        /// This Constructor creates a new Installer instance from a Stream and a
-        /// string representing the physical path to the root of the site.
-        /// </summary>
-        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
-        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
-        public Installer(Stream inputStream, string physicalSitePath, bool loadManifest)
-            : this(inputStream, physicalSitePath, loadManifest, true)
+        XPathDocument legacyDoc;
+        string legacyManifest;
+        switch (packageType.ToLowerInvariant())
         {
-        }
+            case "module":
+                var sb = new StringBuilder();
+                using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+                {
+                    // Write manifest start element
+                    PackageWriterBase.WriteManifestStartElement(writer);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Installer"/> class.
-        /// This Constructor creates a new Installer instance from a Stream and a
-        /// string representing the physical path to the root of the site.
-        /// </summary>
-        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
-        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
-        /// <param name="deleteTemp">Whether delete the temp folder.</param>
-        public Installer(Stream inputStream, string physicalSitePath, bool loadManifest, bool deleteTemp)
-        {
-            this.Packages = new SortedList<int, PackageInstaller>();
-
-            this.inputStream = new MemoryStream();
-            inputStream.CopyTo(this.inputStream);
-
-            // Called from Batch installer - default IgnoreWhiteList to true
-            this.InstallerInfo = new InstallerInfo(inputStream, physicalSitePath) { IgnoreWhiteList = true };
-
-            if (loadManifest)
-            {
-                this.ReadManifest(deleteTemp);
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Installer"/> class.
-        /// This Constructor creates a new Installer instance from a PackageInfo object.
-        /// </summary>
-        /// <param name="package">The PackageInfo instance.</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
-        public Installer(PackageInfo package, string physicalSitePath)
-        {
-            this.Packages = new SortedList<int, PackageInstaller>();
-            this.InstallerInfo = new InstallerInfo(package, physicalSitePath);
-
-            this.Packages.Add(this.Packages.Count, new PackageInstaller(package));
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Installer"/> class.</summary>
-        /// <param name="manifest">The install package manifest.</param>
-        /// <param name="physicalSitePath">The physical path to the site.</param>
-        /// <param name="loadManifest">A value indicating whether to load the manifest.</param>
-        public Installer(string manifest, string physicalSitePath, bool loadManifest)
-        {
-            this.Packages = new SortedList<int, PackageInstaller>();
-            this.InstallerInfo = new InstallerInfo(physicalSitePath, InstallMode.ManifestOnly);
-            if (loadManifest)
-            {
-                this.ReadManifest(new FileStream(manifest, FileMode.Open, FileAccess.Read));
-            }
-        }
-
-        /// <summary>Gets a value indicating whether the associated InstallerInfo is valid.</summary>
-        /// <value>True - if valid, False if not.</value>
-        public bool IsValid
-        {
-            get
-            {
-                return this.InstallerInfo.IsValid;
-            }
-        }
-
-        /// <summary>Gets the installation temporary folder path.</summary>
-        /// <value>The installation temporory folder path.</value>
-        public string TempInstallFolder
-        {
-            get
-            {
-                return this.InstallerInfo.TempInstallFolder;
-            }
-        }
-
-        /// <summary>Gets the associated InstallerInfo object.</summary>
-        /// <value>An InstallerInfo.</value>
-        public InstallerInfo InstallerInfo { get; private set; }
-
-        /// <summary>Gets a SortedList of Packages that are included in the Package Zip.</summary>
-        /// <value>A SortedList(Of Integer, PackageInstaller).</value>
-        public SortedList<int, PackageInstaller> Packages { get; private set; }
-
-        /// <summary>Converts legacy manifest navigation to support old manifest format.</summary>
-        /// <param name="rootNav">The root xml navigation path.</param>
-        /// <param name="info"><see cref="InstallerInfo"/>.</param>
-        /// <returns>A new converted <see cref="XPathNavigator"/> that works with current manifest schema.</returns>
-        public static XPathNavigator ConvertLegacyNavigator(XPathNavigator rootNav, InstallerInfo info)
-        {
-            XPathNavigator nav = null;
-
-            var packageType = Null.NullString;
-            if (rootNav.Name == "dotnetnuke")
-            {
-                packageType = Util.ReadAttribute(rootNav, "type");
-            }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
-            {
-                packageType = "LanguagePack";
-            }
-
-            XPathDocument legacyDoc;
-            string legacyManifest;
-            switch (packageType.ToLowerInvariant())
-            {
-                case "module":
-                    var sb = new StringBuilder();
-                    using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+                    // Legacy Module - Process each folder
+                    foreach (XPathNavigator folderNav in rootNav.Select("folders/folder"))
                     {
-                        // Write manifest start element
-                        PackageWriterBase.WriteManifestStartElement(writer);
-
-                        // Legacy Module - Process each folder
-                        foreach (XPathNavigator folderNav in rootNav.Select("folders/folder"))
-                        {
-                            var modulewriter = new ModulePackageWriter(folderNav, info);
-                            modulewriter.WriteManifest(writer, true);
-                        }
-
-                        // Write manifest end element
-                        PackageWriterBase.WriteManifestEndElement(writer);
-
-                        // Close XmlWriter
-                        writer.Close();
+                        var modulewriter = new ModulePackageWriter(folderNav, info);
+                        modulewriter.WriteManifest(writer, true);
                     }
 
-                    // Load manifest into XPathDocument for processing
-                    legacyDoc = new XPathDocument(new StringReader(sb.ToString()));
+                    // Write manifest end element
+                    PackageWriterBase.WriteManifestEndElement(writer);
 
-                    // Parse the package nodes
-                    nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                    break;
-                case "languagepack":
-                    // Legacy Language Pack
-                    var languageWriter = new LanguagePackWriter(rootNav, info);
-                    info.LegacyError = languageWriter.LegacyError;
-                    if (string.IsNullOrEmpty(info.LegacyError))
-                    {
-                        legacyManifest = languageWriter.WriteManifest(false);
-                        legacyDoc = new XPathDocument(new StringReader(legacyManifest));
+                    // Close XmlWriter
+                    writer.Close();
+                }
 
-                        // Parse the package nodes
-                        nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                    }
+                // Load manifest into XPathDocument for processing
+                legacyDoc = new XPathDocument(new StringReader(sb.ToString()));
 
-                    break;
-                case "skinobject":
-                    // Legacy Skin Object
-                    var skinControlwriter = new SkinControlPackageWriter(rootNav, info);
-                    legacyManifest = skinControlwriter.WriteManifest(false);
+                // Parse the package nodes
+                nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
+                break;
+            case "languagepack":
+                // Legacy Language Pack
+                var languageWriter = new LanguagePackWriter(rootNav, info);
+                info.LegacyError = languageWriter.LegacyError;
+                if (string.IsNullOrEmpty(info.LegacyError))
+                {
+                    legacyManifest = languageWriter.WriteManifest(false);
                     legacyDoc = new XPathDocument(new StringReader(legacyManifest));
 
                     // Parse the package nodes
                     nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                    break;
-            }
+                }
 
-            return nav;
+                break;
+            case "skinobject":
+                // Legacy Skin Object
+                var skinControlwriter = new SkinControlPackageWriter(rootNav, info);
+                legacyManifest = skinControlwriter.WriteManifest(false);
+                legacyDoc = new XPathDocument(new StringReader(legacyManifest));
+
+                // Parse the package nodes
+                nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
+                break;
         }
 
-        /// <summary>Deletes the package temporary folder.</summary>
-        public void DeleteTempFolder()
+        return nav;
+    }
+
+    /// <summary>Deletes the package temporary folder.</summary>
+    public void DeleteTempFolder()
+    {
+        try
         {
-            try
+            if (!string.IsNullOrEmpty(this.TempInstallFolder))
             {
-                if (!string.IsNullOrEmpty(this.TempInstallFolder))
-                {
-                    Directory.Delete(this.TempInstallFolder, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Exception deleting folder " + this.TempInstallFolder + " while installing " + this.InstallerInfo.ManifestFile.Name, ex);
-                Exceptions.Exceptions.LogException(ex);
+                Directory.Delete(this.TempInstallFolder, true);
             }
         }
-
-        /// <summary>The Install method installs the feature.</summary>
-        /// <returns>A value indicating whether the install succeeded.</returns>
-        public bool Install()
+        catch (Exception ex)
         {
-            this.InstallerInfo.Log.StartJob(Util.INSTALL_Start);
-            bool succeeded = true;
-            try
+            Logger.Error("Exception deleting folder " + this.TempInstallFolder + " while installing " + this.InstallerInfo.ManifestFile.Name, ex);
+            Exceptions.Exceptions.LogException(ex);
+        }
+    }
+
+    /// <summary>The Install method installs the feature.</summary>
+    /// <returns>A value indicating whether the install succeeded.</returns>
+    public bool Install()
+    {
+        this.InstallerInfo.Log.StartJob(Util.INSTALL_Start);
+        bool succeeded = true;
+        try
+        {
+            bool clearClientCache = false;
+            this.InstallPackages(ref clearClientCache);
+            if (clearClientCache)
             {
-                bool clearClientCache = false;
-                this.InstallPackages(ref clearClientCache);
-                if (clearClientCache)
-                {
-                    // Update the version of the client resources - so the cache is cleared
-                    HostController.Instance.IncrementCrmVersion(true);
-                }
+                // Update the version of the client resources - so the cache is cleared
+                HostController.Instance.IncrementCrmVersion(true);
             }
-            catch (Exception ex)
+        }
+        catch (Exception ex)
+        {
+            this.InstallerInfo.Log.AddFailure(ex);
+            succeeded = false;
+        }
+        finally
+        {
+            // Delete Temp Folder
+            if (!string.IsNullOrEmpty(this.TempInstallFolder))
             {
-                this.InstallerInfo.Log.AddFailure(ex);
-                succeeded = false;
+                Globals.DeleteFolderRecursive(this.TempInstallFolder);
             }
-            finally
+
+            this.InstallerInfo.Log.AddInfo(Util.FOLDER_DeletedBackup);
+        }
+
+        if (this.InstallerInfo.Log.Valid)
+        {
+            this.InstallerInfo.Log.EndJob(Util.INSTALL_Success);
+        }
+        else
+        {
+            this.InstallerInfo.Log.EndJob(Util.INSTALL_Failed);
+            succeeded = false;
+        }
+
+        // log installation event
+        this.LogInstallEvent("Package", "Install");
+
+        // when the installer initialized by file stream, we need save the file stream into backup folder.
+        if (this.inputStream != null && succeeded && this.Packages.Any())
+        {
+            Task.Run(() =>
             {
-                // Delete Temp Folder
-                if (!string.IsNullOrEmpty(this.TempInstallFolder))
+                this.BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
+            });
+        }
+
+        // Clear Host Cache
+        DataCache.ClearHostCache(true);
+
+        if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
+        {
+            // force application restart after the new changes only when FCN is disabled
+            Config.Touch();
+        }
+
+        return succeeded;
+    }
+
+    /// <summary>The ReadManifest method reads the manifest file and parses it into packages.</summary>
+    /// <param name="deleteTemp">A value indicating whether to delete the temporary folder.</param>
+    public void ReadManifest(bool deleteTemp)
+    {
+        this.InstallerInfo.Log.StartJob(Util.DNN_Reading);
+        if (this.InstallerInfo.ManifestFile != null)
+        {
+            this.ReadManifest(new FileStream(this.InstallerInfo.ManifestFile.TempFileName, FileMode.Open, FileAccess.Read));
+        }
+
+        if (this.InstallerInfo.Log.Valid)
+        {
+            this.InstallerInfo.Log.EndJob(Util.DNN_Success);
+        }
+        else if (deleteTemp)
+        {
+            this.DeleteTempFolder();
+        }
+    }
+
+    /// <summary>The UnInstall method uninstalls the feature.</summary>
+    /// <param name="deleteFiles">A flag that indicates whether the files should be deleted.</param>
+    /// <returns>A value indicating whether the uninstall succeeded.</returns>
+    public bool UnInstall(bool deleteFiles)
+    {
+        this.InstallerInfo.Log.StartJob(Util.UNINSTALL_Start);
+        try
+        {
+            this.UnInstallPackages(deleteFiles);
+        }
+        catch (Exception ex)
+        {
+            this.InstallerInfo.Log.AddFailure(ex);
+            return false;
+        }
+
+        if (this.InstallerInfo.Log.HasWarnings)
+        {
+            this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Warnings);
+        }
+        else
+        {
+            this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Success);
+        }
+
+        // log installation event
+        this.LogInstallEvent("Package", "UnInstall");
+        return true;
+    }
+
+    /// <summary>The InstallPackages method installs the packages.</summary>
+    private void InstallPackages(ref bool clearClientCache)
+    {
+        for (int index = 0; index <= this.Packages.Count - 1; index++)
+        {
+            PackageInstaller installer = this.Packages.Values[index];
+
+            if (installer.Package.IsValid)
+            {
+                if (installer.Package.InstallerInfo.PackageID > Null.NullInteger || installer.Package.InstallerInfo.RepairInstall)
                 {
-                    Globals.DeleteFolderRecursive(this.TempInstallFolder);
+                    clearClientCache = true;
                 }
 
-                this.InstallerInfo.Log.AddInfo(Util.FOLDER_DeletedBackup);
-            }
-
-            if (this.InstallerInfo.Log.Valid)
-            {
-                this.InstallerInfo.Log.EndJob(Util.INSTALL_Success);
+                this.InstallerInfo.Log.AddInfo(Util.INSTALL_Start + " - " + installer.Package.Name);
+                installer.Install();
+                if (this.InstallerInfo.Log.Valid)
+                {
+                    this.InstallerInfo.Log.AddInfo(Util.INSTALL_Success + " - " + installer.Package.Name);
+                }
+                else
+                {
+                    this.InstallerInfo.Log.AddInfo(Util.INSTALL_Failed + " - " + installer.Package.Name);
+                }
             }
             else
             {
-                this.InstallerInfo.Log.EndJob(Util.INSTALL_Failed);
-                succeeded = false;
+                this.InstallerInfo.Log.AddFailure(Util.INSTALL_Aborted + " - " + installer.Package.Name);
             }
-
-            // log installation event
-            this.LogInstallEvent("Package", "Install");
-
-            // when the installer initialized by file stream, we need save the file stream into backup folder.
-            if (this.inputStream != null && succeeded && this.Packages.Any())
-            {
-                Task.Run(() =>
-                {
-                    this.BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
-                });
-            }
-
-            // Clear Host Cache
-            DataCache.ClearHostCache(true);
-
-            if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
-            {
-                // force application restart after the new changes only when FCN is disabled
-                Config.Touch();
-            }
-
-            return succeeded;
         }
+    }
 
-        /// <summary>The ReadManifest method reads the manifest file and parses it into packages.</summary>
-        /// <param name="deleteTemp">A value indicating whether to delete the temporary folder.</param>
-        public void ReadManifest(bool deleteTemp)
+    /// <summary>Logs the Install event to the Event Log.</summary>
+    /// <param name="package">The name of the package.</param>
+    /// <param name="eventType">Event Type.</param>
+    private void LogInstallEvent(string package, string eventType)
+    {
+        try
         {
-            this.InstallerInfo.Log.StartJob(Util.DNN_Reading);
+            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+
             if (this.InstallerInfo.ManifestFile != null)
             {
-                this.ReadManifest(new FileStream(this.InstallerInfo.ManifestFile.TempFileName, FileMode.Open, FileAccess.Read));
+                log.LogProperties.Add(new LogDetailInfo(eventType + " " + package + ":", this.InstallerInfo.ManifestFile.Name.Replace(".dnn", string.Empty)));
             }
 
-            if (this.InstallerInfo.Log.Valid)
+            foreach (LogEntry objLogEntry in this.InstallerInfo.Log.Logs)
             {
-                this.InstallerInfo.Log.EndJob(Util.DNN_Success);
+                log.LogProperties.Add(new LogDetailInfo("Info:", objLogEntry.Description));
             }
-            else if (deleteTemp)
+
+            LogController.Instance.AddLog(log);
+        }
+        catch (Exception exc)
+        {
+            Logger.Error(exc);
+        }
+    }
+
+    /// <summary>The ProcessPackages method processes the packages nodes in the manifest.</summary>
+    private void ProcessPackages(XPathNavigator rootNav)
+    {
+        // Parse the package nodes
+        foreach (XPathNavigator nav in rootNav.Select("packages/package"))
+        {
+            int order = this.Packages.Count;
+            string name = Util.ReadAttribute(nav, "name");
+            string installOrder = Util.ReadAttribute(nav, "installOrder");
+            if (!string.IsNullOrEmpty(installOrder))
             {
-                this.DeleteTempFolder();
+                order = int.Parse(installOrder);
             }
+
+            this.Packages.Add(order, new PackageInstaller(nav.OuterXml, this.InstallerInfo));
+        }
+    }
+
+    private void ReadManifest(Stream stream)
+    {
+        var doc = new XPathDocument(stream);
+
+        // Read the root node to determine what version the manifest is
+        XPathNavigator rootNav = doc.CreateNavigator();
+        rootNav.MoveToFirstChild();
+        while (rootNav.NodeType == XPathNodeType.Comment)
+        {
+            rootNav.MoveToNext();
         }
 
-        /// <summary>The UnInstall method uninstalls the feature.</summary>
-        /// <param name="deleteFiles">A flag that indicates whether the files should be deleted.</param>
-        /// <returns>A value indicating whether the uninstall succeeded.</returns>
-        public bool UnInstall(bool deleteFiles)
-        {
-            this.InstallerInfo.Log.StartJob(Util.UNINSTALL_Start);
-            try
-            {
-                this.UnInstallPackages(deleteFiles);
-            }
-            catch (Exception ex)
-            {
-                this.InstallerInfo.Log.AddFailure(ex);
-                return false;
-            }
+        string packageType = Null.NullString;
 
+        if (rootNav.Name == "dotnetnuke")
+        {
+            packageType = Util.ReadAttribute(rootNav, "type");
+        }
+        else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+        {
+            packageType = "LanguagePack";
+        }
+        else
+        {
+            this.InstallerInfo.Log.AddFailure(Util.PACKAGE_UnRecognizable);
+        }
+
+        switch (packageType.ToLowerInvariant())
+        {
+            case "package":
+                this.InstallerInfo.IsLegacyMode = false;
+
+                // Parse the package nodes
+                this.ProcessPackages(rootNav);
+                break;
+            case "module":
+            case "languagepack":
+            case "skinobject":
+                this.InstallerInfo.IsLegacyMode = true;
+                this.ProcessPackages(ConvertLegacyNavigator(rootNav, this.InstallerInfo));
+                break;
+        }
+    }
+
+    private void UnInstallPackages(bool deleteFiles)
+    {
+        for (int index = 0; index <= this.Packages.Count - 1; index++)
+        {
+            PackageInstaller installer = this.Packages.Values[index];
+            this.InstallerInfo.Log.AddInfo(Util.UNINSTALL_Start + " - " + installer.Package.Name);
+            installer.DeleteFiles = deleteFiles;
+            installer.UnInstall();
             if (this.InstallerInfo.Log.HasWarnings)
             {
-                this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Warnings);
+                this.InstallerInfo.Log.AddWarning(Util.UNINSTALL_Warnings + " - " + installer.Package.Name);
             }
             else
             {
-                this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Success);
-            }
-
-            // log installation event
-            this.LogInstallEvent("Package", "UnInstall");
-            return true;
-        }
-
-        /// <summary>The InstallPackages method installs the packages.</summary>
-        private void InstallPackages(ref bool clearClientCache)
-        {
-            for (int index = 0; index <= this.Packages.Count - 1; index++)
-            {
-                PackageInstaller installer = this.Packages.Values[index];
-
-                if (installer.Package.IsValid)
-                {
-                    if (installer.Package.InstallerInfo.PackageID > Null.NullInteger || installer.Package.InstallerInfo.RepairInstall)
-                    {
-                        clearClientCache = true;
-                    }
-
-                    this.InstallerInfo.Log.AddInfo(Util.INSTALL_Start + " - " + installer.Package.Name);
-                    installer.Install();
-                    if (this.InstallerInfo.Log.Valid)
-                    {
-                        this.InstallerInfo.Log.AddInfo(Util.INSTALL_Success + " - " + installer.Package.Name);
-                    }
-                    else
-                    {
-                        this.InstallerInfo.Log.AddInfo(Util.INSTALL_Failed + " - " + installer.Package.Name);
-                    }
-                }
-                else
-                {
-                    this.InstallerInfo.Log.AddFailure(Util.INSTALL_Aborted + " - " + installer.Package.Name);
-                }
+                this.InstallerInfo.Log.AddInfo(Util.UNINSTALL_Success + " - " + installer.Package.Name);
             }
         }
+    }
 
-        /// <summary>Logs the Install event to the Event Log.</summary>
-        /// <param name="package">The name of the package.</param>
-        /// <param name="eventType">Event Type.</param>
-        private void LogInstallEvent(string package, string eventType)
+    private void BackupStreamIntoFile(Stream stream, PackageInfo package)
+    {
+        try
         {
-            try
+            var filePath = Util.GetPackageBackupPath(package);
+
+            if (File.Exists(filePath))
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
-
-                if (this.InstallerInfo.ManifestFile != null)
-                {
-                    log.LogProperties.Add(new LogDetailInfo(eventType + " " + package + ":", this.InstallerInfo.ManifestFile.Name.Replace(".dnn", string.Empty)));
-                }
-
-                foreach (LogEntry objLogEntry in this.InstallerInfo.Log.Logs)
-                {
-                    log.LogProperties.Add(new LogDetailInfo("Info:", objLogEntry.Description));
-                }
-
-                LogController.Instance.AddLog(log);
+                File.SetAttributes(filePath, FileAttributes.Normal);
+                File.Delete(filePath);
             }
-            catch (Exception exc)
+
+            using (var fileStream = File.Create(filePath))
             {
-                Logger.Error(exc);
+                if (stream.CanSeek)
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                }
+
+                stream.CopyTo(fileStream);
             }
         }
-
-        /// <summary>The ProcessPackages method processes the packages nodes in the manifest.</summary>
-        private void ProcessPackages(XPathNavigator rootNav)
+        catch (Exception ex)
         {
-            // Parse the package nodes
-            foreach (XPathNavigator nav in rootNav.Select("packages/package"))
-            {
-                int order = this.Packages.Count;
-                string name = Util.ReadAttribute(nav, "name");
-                string installOrder = Util.ReadAttribute(nav, "installOrder");
-                if (!string.IsNullOrEmpty(installOrder))
-                {
-                    order = int.Parse(installOrder);
-                }
-
-                this.Packages.Add(order, new PackageInstaller(nav.OuterXml, this.InstallerInfo));
-            }
-        }
-
-        private void ReadManifest(Stream stream)
-        {
-            var doc = new XPathDocument(stream);
-
-            // Read the root node to determine what version the manifest is
-            XPathNavigator rootNav = doc.CreateNavigator();
-            rootNav.MoveToFirstChild();
-            while (rootNav.NodeType == XPathNodeType.Comment)
-            {
-                rootNav.MoveToNext();
-            }
-
-            string packageType = Null.NullString;
-
-            if (rootNav.Name == "dotnetnuke")
-            {
-                packageType = Util.ReadAttribute(rootNav, "type");
-            }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
-            {
-                packageType = "LanguagePack";
-            }
-            else
-            {
-                this.InstallerInfo.Log.AddFailure(Util.PACKAGE_UnRecognizable);
-            }
-
-            switch (packageType.ToLowerInvariant())
-            {
-                case "package":
-                    this.InstallerInfo.IsLegacyMode = false;
-
-                    // Parse the package nodes
-                    this.ProcessPackages(rootNav);
-                    break;
-                case "module":
-                case "languagepack":
-                case "skinobject":
-                    this.InstallerInfo.IsLegacyMode = true;
-                    this.ProcessPackages(ConvertLegacyNavigator(rootNav, this.InstallerInfo));
-                    break;
-            }
-        }
-
-        private void UnInstallPackages(bool deleteFiles)
-        {
-            for (int index = 0; index <= this.Packages.Count - 1; index++)
-            {
-                PackageInstaller installer = this.Packages.Values[index];
-                this.InstallerInfo.Log.AddInfo(Util.UNINSTALL_Start + " - " + installer.Package.Name);
-                installer.DeleteFiles = deleteFiles;
-                installer.UnInstall();
-                if (this.InstallerInfo.Log.HasWarnings)
-                {
-                    this.InstallerInfo.Log.AddWarning(Util.UNINSTALL_Warnings + " - " + installer.Package.Name);
-                }
-                else
-                {
-                    this.InstallerInfo.Log.AddInfo(Util.UNINSTALL_Success + " - " + installer.Package.Name);
-                }
-            }
-        }
-
-        private void BackupStreamIntoFile(Stream stream, PackageInfo package)
-        {
-            try
-            {
-                var filePath = Util.GetPackageBackupPath(package);
-
-                if (File.Exists(filePath))
-                {
-                    File.SetAttributes(filePath, FileAttributes.Normal);
-                    File.Delete(filePath);
-                }
-
-                using (var fileStream = File.Create(filePath))
-                {
-                    if (stream.CanSeek)
-                    {
-                        stream.Seek(0, SeekOrigin.Begin);
-                    }
-
-                    stream.CopyTo(fileStream);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
+            Logger.Error(ex);
         }
     }
 }

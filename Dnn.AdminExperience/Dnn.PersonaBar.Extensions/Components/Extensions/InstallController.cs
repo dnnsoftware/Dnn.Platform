@@ -2,293 +2,292 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Extensions.Components
+namespace Dnn.PersonaBar.Extensions.Components;
+
+using System;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Xml;
+
+using Dnn.PersonaBar.Extensions.Components.Dto;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DotNetNuke.Data.PetaPoco;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer;
+
+public class InstallController : ServiceLocator<IInstallController, InstallController>, IInstallController
 {
-    using System;
-    using System.Data;
-    using System.IO;
-    using System.Linq;
-    using System.Xml;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
 
-    using Dnn.PersonaBar.Extensions.Components.Dto;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Data.PetaPoco;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Installer;
-
-    public class InstallController : ServiceLocator<IInstallController, InstallController>, IInstallController
+    /// <inheritdoc/>
+    public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
+        var parseResult = new ParseResultDto();
+        var fileName = Path.GetFileName(filePath);
+        var extension = Path.GetExtension(fileName ?? string.Empty).ToLowerInvariant();
 
-        /// <inheritdoc/>
-        public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
+        if (extension != ".zip" && extension != ".resources")
         {
-            var parseResult = new ParseResultDto();
-            var fileName = Path.GetFileName(filePath);
-            var extension = Path.GetExtension(fileName ?? string.Empty).ToLowerInvariant();
+            parseResult.Failed("InvalidExt");
+        }
+        else
+        {
+            try
+            {
+                var installer = GetInstaller(stream, fileName, portalSettings.PortalId);
 
-            if (extension != ".zip" && extension != ".resources")
-            {
-                parseResult.Failed("InvalidExt");
-            }
-            else
-            {
                 try
                 {
-                    var installer = GetInstaller(stream, fileName, portalSettings.PortalId);
-
-                    try
+                    if (installer.IsValid)
                     {
-                        if (installer.IsValid)
+                        if (installer.Packages.Count > 0)
                         {
-                            if (installer.Packages.Count > 0)
-                            {
-                                parseResult = new ParseResultDto(installer.Packages[0].Package);
-                            }
-
-                            parseResult.AzureCompact = AzureCompact(installer).GetValueOrDefault(false);
-                            parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName);
-                            parseResult.LegacyError = installer.InstallerInfo.LegacyError;
-                            parseResult.HasInvalidFiles = !installer.InstallerInfo.HasValidFiles;
-                            parseResult.AlreadyInstalled = installer.InstallerInfo.Installed;
-                            parseResult.AddLogs(installer.InstallerInfo.Log.Logs);
+                            parseResult = new ParseResultDto(installer.Packages[0].Package);
                         }
-                        else
-                        {
-                            if (installer.InstallerInfo.ManifestFile == null)
-                            {
-                                parseResult.LegacySkinInstalled = CheckIfSkinAlreadyInstalled(fileName, installer, "Skin");
-                                parseResult.LegacyContainerInstalled = CheckIfSkinAlreadyInstalled(fileName, installer, "Container");
-                            }
 
-                            parseResult.Failed("InvalidFile", installer.InstallerInfo.Log.Logs);
-                            parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName);
-                            if (parseResult.NoManifest)
-                            {
-                                // we still can install when the manifest is missing
-                                parseResult.Success = true;
-                            }
-                        }
+                        parseResult.AzureCompact = AzureCompact(installer).GetValueOrDefault(false);
+                        parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile.TempFileName);
+                        parseResult.LegacyError = installer.InstallerInfo.LegacyError;
+                        parseResult.HasInvalidFiles = !installer.InstallerInfo.HasValidFiles;
+                        parseResult.AlreadyInstalled = installer.InstallerInfo.Installed;
+                        parseResult.AddLogs(installer.InstallerInfo.Log.Logs);
                     }
-                    finally
+                    else
                     {
-                        DeleteTempInstallFiles(installer);
+                        if (installer.InstallerInfo.ManifestFile == null)
+                        {
+                            parseResult.LegacySkinInstalled = CheckIfSkinAlreadyInstalled(fileName, installer, "Skin");
+                            parseResult.LegacyContainerInstalled = CheckIfSkinAlreadyInstalled(fileName, installer, "Container");
+                        }
+
+                        parseResult.Failed("InvalidFile", installer.InstallerInfo.Log.Logs);
+                        parseResult.NoManifest = string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName);
+                        if (parseResult.NoManifest)
+                        {
+                            // we still can install when the manifest is missing
+                            parseResult.Success = true;
+                        }
                     }
                 }
-                catch (InvalidDataException)
+                finally
                 {
-                    parseResult.Failed("ZipCriticalError");
+                    DeleteTempInstallFiles(installer);
                 }
             }
-
-            return parseResult;
+            catch (InvalidDataException)
+            {
+                parseResult.Failed("ZipCriticalError");
+            }
         }
 
-        /// <inheritdoc/>
-        public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)
-        {
-            var installResult = new InstallResultDto();
-            var fileName = Path.GetFileName(filePath);
-            var extension = Path.GetExtension(fileName ?? string.Empty).ToLowerInvariant();
+        return parseResult;
+    }
 
-            if (extension != ".zip" && extension != ".resources")
+    /// <inheritdoc/>
+    public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)
+    {
+        var installResult = new InstallResultDto();
+        var fileName = Path.GetFileName(filePath);
+        var extension = Path.GetExtension(fileName ?? string.Empty).ToLowerInvariant();
+
+        if (extension != ".zip" && extension != ".resources")
+        {
+            installResult.Failed("InvalidExt");
+        }
+        else
+        {
+            try
             {
-                installResult.Failed("InvalidExt");
-            }
-            else
-            {
+                var installer = GetInstaller(stream, fileName, portalSettings.PortalId, legacySkin, isPortalPackage);
+
                 try
                 {
-                    var installer = GetInstaller(stream, fileName, portalSettings.PortalId, legacySkin, isPortalPackage);
-
-                    try
+                    if (installer.IsValid)
                     {
-                        if (installer.IsValid)
-                        {
-                            // Reset Log
-                            installer.InstallerInfo.Log.Logs.Clear();
+                        // Reset Log
+                        installer.InstallerInfo.Log.Logs.Clear();
 
-                            // Set the IgnnoreWhiteList flag
-                            installer.InstallerInfo.IgnoreWhiteList = true;
+                        // Set the IgnnoreWhiteList flag
+                        installer.InstallerInfo.IgnoreWhiteList = true;
 
-                            // Set the Repair flag
-                            installer.InstallerInfo.RepairInstall = true;
+                        // Set the Repair flag
+                        installer.InstallerInfo.RepairInstall = true;
 
-                            // Install
-                            installer.Install();
+                        // Install
+                        installer.Install();
 
-                            installResult.AddLogs(installer.InstallerInfo.Log.Logs);
-                            if (!installer.IsValid)
-                            {
-                                installResult.Failed("InstallError");
-                            }
-                            else
-                            {
-                                installResult.NewPackageId = installer.Packages.Count == 0
-                                    ? Null.NullInteger
-                                    : installer.Packages.First().Value.Package.PackageID;
-                                installResult.Succeed();
-                                DeleteInstallFile(filePath);
-                            }
-                        }
-                        else
+                        installResult.AddLogs(installer.InstallerInfo.Log.Logs);
+                        if (!installer.IsValid)
                         {
                             installResult.Failed("InstallError");
                         }
+                        else
+                        {
+                            installResult.NewPackageId = installer.Packages.Count == 0
+                                ? Null.NullInteger
+                                : installer.Packages.First().Value.Package.PackageID;
+                            installResult.Succeed();
+                            DeleteInstallFile(filePath);
+                        }
                     }
-                    finally
+                    else
                     {
-                        DeleteTempInstallFiles(installer);
+                        installResult.Failed("InstallError");
                     }
                 }
-                catch (InvalidDataException)
+                finally
                 {
-                    installResult.Failed("ZipCriticalError");
+                    DeleteTempInstallFiles(installer);
                 }
             }
-
-            return installResult;
-        }
-
-        /// <inheritdoc/>
-        protected override Func<IInstallController> GetFactory()
-        {
-            return () => new InstallController();
-        }
-
-        private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null, bool isPortalPackage = false)
-        {
-            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false);
-            if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
+            catch (InvalidDataException)
             {
-                var manifestFile = CreateManifest(installer, fileName, legacySkin);
-
-                // Re-evaluate the package after creating a temporary manifest
-                installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
+                installResult.Failed("ZipCriticalError");
             }
-
-            // We always assume we are installing from //Host/Extensions (in the previous releases)
-            // This will not work when we try to install a skin/container under a specific portal.
-            installer.InstallerInfo.PortalID = isPortalPackage ? portalId : Null.NullInteger;
-
-            // Read the manifest
-            if (installer.InstallerInfo.ManifestFile != null)
-            {
-                installer.ReadManifest(true);
-            }
-
-            return installer;
         }
 
-        private static string CreateManifest(Installer installer, string fileName, string legacySkin)
-        {
-            var manifestFile = Path.Combine(installer.TempInstallFolder, Path.GetFileNameWithoutExtension(fileName) + ".dnn");
-            using (var manifestWriter = new StreamWriter(manifestFile))
-            {
-                manifestWriter.Write(LegacyUtil.CreateSkinManifest(fileName, legacySkin ?? "Skin", installer.TempInstallFolder));
-                manifestWriter.Close();
-            }
+        return installResult;
+    }
 
-            return manifestFile;
-        }
+    /// <inheritdoc/>
+    protected override Func<IInstallController> GetFactory()
+    {
+        return () => new InstallController();
+    }
 
-        private static bool CheckIfSkinAlreadyInstalled(string fileName, Installer installer, string legacySkin)
+    private static Installer GetInstaller(Stream stream, string fileName, int portalId, string legacySkin = null, bool isPortalPackage = false)
+    {
+        var installer = new Installer(stream, Globals.ApplicationMapPath, false, false);
+        if (string.IsNullOrEmpty(installer.InstallerInfo.ManifestFile?.TempFileName) && !string.IsNullOrEmpty(legacySkin))
         {
-            // this whole thing is to check for if already installed
             var manifestFile = CreateManifest(installer, fileName, legacySkin);
-            var installer2 = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
-            installer2.InstallerInfo.PortalID = installer.InstallerInfo.PortalID;
-            if (installer2.InstallerInfo.ManifestFile != null)
-            {
-                installer2.ReadManifest(true);
-            }
 
-            return installer2.IsValid && installer2.InstallerInfo.Installed;
+            // Re-evaluate the package after creating a temporary manifest
+            installer = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
         }
 
-        private static void DeleteTempInstallFiles(Installer installer)
+        // We always assume we are installing from //Host/Extensions (in the previous releases)
+        // This will not work when we try to install a skin/container under a specific portal.
+        installer.InstallerInfo.PortalID = isPortalPackage ? portalId : Null.NullInteger;
+
+        // Read the manifest
+        if (installer.InstallerInfo.ManifestFile != null)
         {
-            try
-            {
-                var tempFolder = installer.TempInstallFolder;
-                if (!string.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
-                {
-                    Globals.DeleteFolderRecursive(tempFolder);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
+            installer.ReadManifest(true);
         }
 
-        private static void DeleteInstallFile(string installerFile)
+        return installer;
+    }
+
+    private static string CreateManifest(Installer installer, string fileName, string legacySkin)
+    {
+        var manifestFile = Path.Combine(installer.TempInstallFolder, Path.GetFileNameWithoutExtension(fileName) + ".dnn");
+        using (var manifestWriter = new StreamWriter(manifestFile))
         {
-            try
-            {
-                if (File.Exists(installerFile))
-                {
-                    File.SetAttributes(installerFile, FileAttributes.Normal);
-                    File.Delete(installerFile);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
+            manifestWriter.Write(LegacyUtil.CreateSkinManifest(fileName, legacySkin ?? "Skin", installer.TempInstallFolder));
+            manifestWriter.Close();
         }
 
-        private static bool? AzureCompact(Installer installer)
+        return manifestFile;
+    }
+
+    private static bool CheckIfSkinAlreadyInstalled(string fileName, Installer installer, string legacySkin)
+    {
+        // this whole thing is to check for if already installed
+        var manifestFile = CreateManifest(installer, fileName, legacySkin);
+        var installer2 = new Installer(installer.TempInstallFolder, manifestFile, Globals.ApplicationMapPath, false);
+        installer2.InstallerInfo.PortalID = installer.InstallerInfo.PortalID;
+        if (installer2.InstallerInfo.ManifestFile != null)
         {
-            bool? compact = null;
-            string manifestFile = null;
-            if (installer.InstallerInfo.ManifestFile != null)
-            {
-                manifestFile = installer.InstallerInfo.ManifestFile.TempFileName;
-            }
+            installer2.ReadManifest(true);
+        }
 
-            if (installer.Packages.Count > 0)
-            {
-                if (installer.Packages[0].Package.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase)
-                        || installer.Packages[0].Package.PackageType.Equals("ExtensionLanguagePack", StringComparison.OrdinalIgnoreCase))
-                {
-                    compact = true;
-                }
-            }
+        return installer2.IsValid && installer2.InstallerInfo.Installed;
+    }
 
-            if (!IsAzureDatabase())
+    private static void DeleteTempInstallFiles(Installer installer)
+    {
+        try
+        {
+            var tempFolder = installer.TempInstallFolder;
+            if (!string.IsNullOrEmpty(tempFolder) && Directory.Exists(tempFolder))
+            {
+                Globals.DeleteFolderRecursive(tempFolder);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+        }
+    }
+
+    private static void DeleteInstallFile(string installerFile)
+    {
+        try
+        {
+            if (File.Exists(installerFile))
+            {
+                File.SetAttributes(installerFile, FileAttributes.Normal);
+                File.Delete(installerFile);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+        }
+    }
+
+    private static bool? AzureCompact(Installer installer)
+    {
+        bool? compact = null;
+        string manifestFile = null;
+        if (installer.InstallerInfo.ManifestFile != null)
+        {
+            manifestFile = installer.InstallerInfo.ManifestFile.TempFileName;
+        }
+
+        if (installer.Packages.Count > 0)
+        {
+            if (installer.Packages[0].Package.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase)
+                || installer.Packages[0].Package.PackageType.Equals("ExtensionLanguagePack", StringComparison.OrdinalIgnoreCase))
             {
                 compact = true;
             }
-            else if (manifestFile != null && File.Exists(manifestFile))
+        }
+
+        if (!IsAzureDatabase())
+        {
+            compact = true;
+        }
+        else if (manifestFile != null && File.Exists(manifestFile))
+        {
+            try
             {
-                try
+                var document = new XmlDocument { XmlResolver = null };
+                document.Load(manifestFile);
+                var compactNode = document.SelectSingleNode("/dotnetnuke/packages/package/azureCompatible");
+                if (compactNode != null && !string.IsNullOrEmpty(compactNode.InnerText))
                 {
-                    var document = new XmlDocument { XmlResolver = null };
-                    document.Load(manifestFile);
-                    var compactNode = document.SelectSingleNode("/dotnetnuke/packages/package/azureCompatible");
-                    if (compactNode != null && !string.IsNullOrEmpty(compactNode.InnerText))
-                    {
-                        compact = compactNode.InnerText.ToLowerInvariant() == "true";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
+                    compact = compactNode.InnerText.ToLowerInvariant() == "true";
                 }
             }
-
-            return compact;
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
-        private static bool IsAzureDatabase()
-        {
-            return PetaPocoHelper.ExecuteScalar<int>(DataProvider.Instance().ConnectionString, CommandType.Text, "SELECT CAST(ServerProperty('EngineEdition') as INT)") == 5;
-        }
+        return compact;
+    }
+
+    private static bool IsAzureDatabase()
+    {
+        return PetaPocoHelper.ExecuteScalar<int>(DataProvider.Instance().ConnectionString, CommandType.Text, "SELECT CAST(ServerProperty('EngineEdition') as INT)") == 5;
     }
 }

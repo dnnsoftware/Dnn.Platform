@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Modules
+namespace DotNetNuke.Entities.Modules;
+
+public enum ModuleSharing
 {
-    public enum ModuleSharing
-    {
-        Unknown = 0,
-        Unsupported = 1,
-        Supported = 2,
-    }
+    Unknown = 0,
+    Unsupported = 1,
+    Supported = 2,
 }

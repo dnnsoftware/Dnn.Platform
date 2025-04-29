@@ -1,30 +1,35 @@
 import util from "utils";
 function serializeQueryStringParameters(obj) {
-    let s = [];
-    for (let p in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, p)) {
-            s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
+  let s = [];
+  for (let p in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, p)) {
+      s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
     }
-    return s.join("&");
+  }
+  return s.join("&");
 }
 class UserService {
-    getServiceFramework(controller) {
-        let sf = util.utilities.sf;
+  getServiceFramework(controller) {
+    let sf = util.utilities.sf;
 
-        sf.moduleRoot = "PersonaBar";
-        sf.controller = controller;
+    sf.moduleRoot = "PersonaBar";
+    sf.controller = controller;
 
-        return sf;
-    }
-    getUsers(searchParameters, callback, errorCallback) {
-        const sf = this.getServiceFramework("Users");
-        sf.get("GetUsers?" + serializeQueryStringParameters(searchParameters), {}, callback, errorCallback);
-    }
-    getUserFilters(callback, errorCallback) {
-        const sf = this.getServiceFramework("Users");
-        sf.get("GetUserFilters", {}, callback, errorCallback);
-    }
+    return sf;
+  }
+  getUsers(searchParameters, callback, errorCallback) {
+    const sf = this.getServiceFramework("Users");
+    sf.get(
+      "GetUsers?" + serializeQueryStringParameters(searchParameters),
+      {},
+      callback,
+      errorCallback,
+    );
+  }
+  getUserFilters(callback, errorCallback) {
+    const sf = this.getServiceFramework("Users");
+    sf.get("GetUserFilters", {}, callback, errorCallback);
+  }
 }
 const userService = new UserService();
 export default userService;

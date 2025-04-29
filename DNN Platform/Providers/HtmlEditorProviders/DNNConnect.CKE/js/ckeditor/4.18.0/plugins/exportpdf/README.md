@@ -19,9 +19,9 @@ If this feature is used without authorization, the resulting documents will be w
 Starting with CKEditor 4 version `4.15.0`, **Export to PDF** plugin is included in `standard-all`, `full` and `full-all` official presets. The `full` and `full-all` presets have the plugin active by default while for `standard-all` it needs to be enabled with the [`config.extraPlugins`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-extraPlugins) configuration option:
 
 ```js
-CKEDITOR.replace( 'editor', {
-    extraPlugins: 'exportpdf'
-} );
+CKEDITOR.replace("editor", {
+  extraPlugins: "exportpdf",
+});
 ```
 
 ### Installation from npm
@@ -35,23 +35,26 @@ npm i ckeditor4-plugin-exportpdf
 Then add the plugin to your CKEditor 4 instance with the [`addExternal()` method](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_plugins.html#method-addExternal):
 
 ```js
-CKEDITOR.plugins.addExternal( 'exportpdf', './node_modules/ckeditor4-plugin-exportpdf/' );
+CKEDITOR.plugins.addExternal(
+  "exportpdf",
+  "./node_modules/ckeditor4-plugin-exportpdf/",
+);
 ```
 
 If you prefer not to link to the `node_modules` folder directly, you may simply copy the entire `./node_modules/ckeditor4-plugin-exportpdf/` directory as `ckeditor/plugins/exportpdf/` and add it with the [`config.extraPlugins`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-extraPlugins) configuration option:
 
 ```js
-CKEDITOR.replace( 'editor', {
-    extraPlugins: 'exportpdf'
-} );
+CKEDITOR.replace("editor", {
+  extraPlugins: "exportpdf",
+});
 ```
 
 ### Other Installation Methods
 
 You can also use the [CKEditor 4 Add-ons repository](https://ckeditor.com/cke4/addons/plugins/all) to obtain the plugin via:
 
-* [Custom build with online builder](https://ckeditor.com/cke4/builder)
-* [Manual download](https://ckeditor.com/cke4/addon/exportpdf)
+- [Custom build with online builder](https://ckeditor.com/cke4/builder)
+- [Manual download](https://ckeditor.com/cke4/addon/exportpdf)
 
 Refer to [Export to PDF installation documentation](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#installation) for more details. If you are having trouble setting up the Export to PDF plugin, please [contact us](https://ckeditor.com/contact/).
 
@@ -60,9 +63,9 @@ Refer to [Export to PDF installation documentation](https://ckeditor.com/docs/ck
 If you have a commercial license for **Export to PDF** plugin, [exportPdf_tokenUrl](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-exportPdf_tokenUrl) configuration option should be set to remove watermark from generated documents:
 
 ```js
-CKEDITOR.replace( 'editor', {
-	exportPdf_tokenUrl: 'https://example.com/cs-token-endpoint'
-} );
+CKEDITOR.replace("editor", {
+  exportPdf_tokenUrl: "https://example.com/cs-token-endpoint",
+});
 ```
 
 This value is unique for each customer and can be found in the [CKEditor Ecosystem dashboard](https://dashboard.ckeditor.com).
@@ -75,11 +78,11 @@ The CKEditor 4 Export to PDF plugin is really simple to use and works out-of-the
 
 The most important features are:
 
-*   Exporting HTML content from CKEditor 4 WYSIWYG editor to PDF with a single click.
-*   [Setting a custom name](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#setting-dynamic-file-name) for the generated PDF file.
-*   [Handling relative image paths](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#relative-vs-absolute-urls).
-*   [Changing the appearance of the PDF document](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#custom-css-rules) (like margins, text styling, custom headers and footers etc.) with custom CSS styles.
-*   [Pre-processing HTML content](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#data-preprocessing) via synchronous and asynchronous code before the generation of the PDF file.
+- Exporting HTML content from CKEditor 4 WYSIWYG editor to PDF with a single click.
+- [Setting a custom name](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#setting-dynamic-file-name) for the generated PDF file.
+- [Handling relative image paths](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#relative-vs-absolute-urls).
+- [Changing the appearance of the PDF document](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#custom-css-rules) (like margins, text styling, custom headers and footers etc.) with custom CSS styles.
+- [Pre-processing HTML content](https://ckeditor.com/docs/ckeditor4/latest/features/exporttopdf.html#data-preprocessing) via synchronous and asynchronous code before the generation of the PDF file.
 
 ## Browser and CKEditor 4 Support
 

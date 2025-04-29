@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -22,8 +22,10 @@
     <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
         <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing"
+  mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework
+  object]</value>
         <comment>This is a comment</comment>
     </data>
                 
@@ -59,7 +61,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -112,10 +115,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="nav_Security.Text" xml:space="preserve">
     <value>Security</value>
@@ -1212,5 +1217,227 @@
   </data>
   <data name="SslSetAllPagesSecure.Confirm" xml:space="preserve">
     <value>Do you wish to set all pages of this site to be only accessible through https?</value>
+  </data>
+  <data name="TabApiTokens.Text" xml:space="preserve">
+    <value>API Tokens</value>
+  </data>
+  <data name="CreatedBy.Header" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="CreatedOn.Header" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="ExpiresOn.Header" xml:space="preserve">
+    <value>Expires</value>
+  </data>
+  <data name="Revoke.Confirm" xml:space="preserve">
+    <value>Do you wish to revoke this token? Note this cannot be undone.</value>
+  </data>
+  <data name="Revoke.Text" xml:space="preserve">
+    <value>Revoke</value>
+  </data>
+  <data name="RevokedBy.Header" xml:space="preserve">
+    <value>Revoked By</value>
+  </data>
+  <data name="RevokedOn.Header" xml:space="preserve">
+    <value>Revoked On</value>
+  </data>
+  <data name="Scope.Header" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="TabAuthenticationSettings.Text" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="Active.Text" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Expired.Text" xml:space="preserve">
+    <value>Expired</value>
+  </data>
+  <data name="Host.Text" xml:space="preserve">
+    <value>Host</value>
+  </data>
+  <data name="Portal.Text" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="Revoked.Text" xml:space="preserve">
+    <value>Revoked</value>
+  </data>
+  <data name="RevokedOrExpired.Text" xml:space="preserve">
+    <value>Revoked or expired</value>
+  </data>
+  <data name="User.Text" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Portal.Header" xml:space="preserve">
+    <value>Site</value>
+  </data>
+  <data name="ApiKeys.Help" xml:space="preserve">
+    <value>This sets what parts of the available API the token can access.</value>
+  </data>
+  <data name="ApiKeys.Text" xml:space="preserve">
+    <value>APIs</value>
+  </data>
+  <data name="ApiTokenStatus.Header" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ApiTokenStatus.Text" xml:space="preserve">
+    <value>Token Status</value>
+  </data>
+  <data name="CreatedBy.Help" xml:space="preserve">
+    <value>Displayname and username of the user that created the token</value>
+  </data>
+  <data name="CreatedBy.Text" xml:space="preserve">
+    <value>Created By</value>
+  </data>
+  <data name="CreatedOnDate.Text" xml:space="preserve">
+    <value>Created On</value>
+  </data>
+  <data name="DeleteApiKey.Confirm" xml:space="preserve">
+    <value>Do you wish to delete this API token? Note this cannot be undone.</value>
+  </data>
+  <data name="DeleteApiKey.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ExpiresOn.Help" xml:space="preserve">
+    <value>After this date and time the token will no longer work</value>
+  </data>
+  <data name="ExpiresOn.Text" xml:space="preserve">
+    <value>Expires On</value>
+  </data>
+  <data name="RevokedBy.Help" xml:space="preserve">
+    <value>Displayname and username of the user that revoked the token.</value>
+  </data>
+  <data name="RevokedBy.Text" xml:space="preserve">
+    <value>Revoked By</value>
+  </data>
+  <data name="RevokedOn.Text" xml:space="preserve">
+    <value>Revoked On</value>
+  </data>
+  <data name="Scope.Help" xml:space="preserve">
+    <value>Scope defines at what level the token can operate. There are three levels: User, Site and Host. User scope allows the token to access a user's data. Site scope allows the token to access site level data and Host scope allows the token to access system level data.</value>
+  </data>
+  <data name="Scope.Text" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="ApiTokenCreated.Text" xml:space="preserve">
+    <value>This is the API token. Make sure to copy this to a safe place. It will not be shown again.</value>
+  </data>
+  <data name="ApiTokensDisabled.Help" xml:space="preserve">
+    <value>API tokens are disabled on this installation. The system administrator will need to enable this in the web.config.</value>
+  </data>
+  <data name="ApiTokenSettingsError.Text" xml:space="preserve">
+    <value>An error has occurred. The API token settings could not be updated. Please consult the admin log to determine the cause of this error.</value>
+  </data>
+  <data name="ApiTokenSettingsRestoreWarning.Text" xml:space="preserve">
+    <value>The changes to the API token settings will be discarded. Do you wish to continue?</value>
+  </data>
+  <data name="ApiTokenSettingsUpdateSuccess.Text" xml:space="preserve">
+    <value>API token settings updated</value>
+  </data>
+  <data name="MaxApiTokenDuration.Error" xml:space="preserve">
+    <value>This must be a positive integer value</value>
+  </data>
+  <data name="OptDays.Text" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="OptMonths.Text" xml:space="preserve">
+    <value>Months</value>
+  </data>
+  <data name="OptWeeks.Text" xml:space="preserve">
+    <value>Weeks</value>
+  </data>
+  <data name="OptYears.Text" xml:space="preserve">
+    <value>Years</value>
+  </data>
+  <data name="plAllowApiTokens.Help" xml:space="preserve">
+    <value>Allow API tokens on this site</value>
+  </data>
+  <data name="plAllowApiTokens.Text" xml:space="preserve">
+    <value>Allow API Tokens</value>
+  </data>
+  <data name="TabApiTokenSettings.Text" xml:space="preserve">
+    <value>API TOKEN SETTINGS</value>
+  </data>
+  <data name="TokenName.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TokenName.Help" xml:space="preserve">
+    <value>A descriptive name for the token. You can leave this blank.</value>
+  </data>
+  <data name="TokenName.Text" xml:space="preserve">
+    <value>Token Name</value>
+  </data>
+  <data name="Days180.Text" xml:space="preserve">
+    <value>180 Days</value>
+  </data>
+  <data name="Days30.Text" xml:space="preserve">
+    <value>30 Days</value>
+  </data>
+  <data name="Days60.Text" xml:space="preserve">
+    <value>60 Days</value>
+  </data>
+  <data name="Days90.Text" xml:space="preserve">
+    <value>90 Days</value>
+  </data>
+  <data name="ExpiresIn.Help" xml:space="preserve">
+    <value>Select how long this token will be valid.</value>
+  </data>
+  <data name="ExpiresIn.Text" xml:space="preserve">
+    <value>Expires In</value>
+  </data>
+  <data name="plMaximumSiteTimespan.Help" xml:space="preserve">
+    <value>Set the maximum timespan tor API tokens for any site on this DNN instance</value>
+  </data>
+  <data name="plMaximumSiteTimespan.Text" xml:space="preserve">
+    <value>Maximum Site Timespan</value>
+  </data>
+  <data name="plUserTokenTimespan.Help" xml:space="preserve">
+    <value>Set the timespan for user generated API tokens on this site</value>
+  </data>
+  <data name="plUserTokenTimespan.Text" xml:space="preserve">
+    <value>User API Token Timespan</value>
+  </data>
+  <data name="Years1.Text" xml:space="preserve">
+    <value>1 Year</value>
+  </data>
+  <data name="Years2.Text" xml:space="preserve">
+    <value>2 Years</value>
+  </data>
+  <data name="PageSizeOptions.Text" xml:space="preserve">
+    <value>{0} results per page</value>
+  </data>
+  <data name="PageSummary.Text" xml:space="preserve">
+    <value>Showing {0}-{1} of {2} results</value>
+  </data>
+  <data name="DeleteExpired.Confirm" xml:space="preserve">
+    <value>This will delete all expired and revoked tokens. Do you wish to continue?</value>
+  </data>
+  <data name="DeleteExpired.Text" xml:space="preserve">
+    <value>Delete Expired</value>
+  </data>
+  <data name="LastUsedOnDate.Text" xml:space="preserve">
+    <value>Last Used On</value>
+  </data>
+  <data name="plUserRequestIpHeader.Text" xml:space="preserve">
+    <value>User Request IP Header</value>
+  </data>
+  <data name="plUserRequestIpHeader.Help" xml:space="preserve">
+    <value>When set, this header will be used to find the actual user IP in scenarios where the request is forwared (WAF, ReverseProxy, LoadBalancer, etc.) "X-Forwarded-For" is a commonly used header for this. If unset the server variable "REMOTE_ADDR" will be utilized for all user IP address identification.</value>
+  </data>
+  <data name="plAllowOverrideThemeViaQueryString.Text" xml:space="preserve">
+    <value>Allow Overriding Theme via QueryString</value>
+  </data>
+  <data name="plAllowOverrideThemeViaQueryString.Help" xml:space="preserve">
+    <value>If true, any visitor can load themes (including unused ones) using the SkinSrc querystring parameter.</value>
+  </data>
+  <data name="plAllowRichTextModuleTitle.Text" xml:space="preserve">
+    <value>Allow Rich Text Module Titles</value>
+  </data>
+  <data name="plAllowRichTextModuleTitle.Help" xml:space="preserve">
+    <value>If enabled, HTML content will be allowed as module titles.</value>
   </data>
 </root>

@@ -2,99 +2,98 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Tabs.TabVersions
+namespace DotNetNuke.Entities.Tabs.TabVersions;
+
+using System.Collections.Generic;
+using System.Linq;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DotNetNuke.Framework;
+
+public class TabVersionDetailController : ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    private static readonly DataProvider Provider = DataProvider.Instance();
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Framework;
-
-    public class TabVersionDetailController : ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
+    /// <inheritdoc/>
+    public TabVersionDetail GetTabVersionDetail(int tabVersionDetailId, int tabVersionId, bool ignoreCache = false)
     {
-        private static readonly DataProvider Provider = DataProvider.Instance();
+        return this.GetTabVersionDetails(tabVersionId, ignoreCache).SingleOrDefault(tvd => tvd.TabVersionDetailId == tabVersionDetailId);
+    }
 
-        /// <inheritdoc/>
-        public TabVersionDetail GetTabVersionDetail(int tabVersionDetailId, int tabVersionId, bool ignoreCache = false)
+    /// <inheritdoc/>
+    public IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false)
+    {
+        // if we are not using the cache
+        if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
         {
-            return this.GetTabVersionDetails(tabVersionId, ignoreCache).SingleOrDefault(tvd => tvd.TabVersionDetailId == tabVersionDetailId);
+            return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId));
         }
 
-        /// <inheritdoc/>
-        public IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false)
-        {
-            // if we are not using the cache
-            if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
-            {
-                return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId));
-            }
-
-            return CBO.GetCachedObject<List<TabVersionDetail>>(
-                new CacheItemArgs(
+        return CBO.GetCachedObject<List<TabVersionDetail>>(
+            new CacheItemArgs(
                 GetTabVersionDetailCacheKey(tabVersionId),
                 DataCache.TabVersionDetailsCacheTimeOut,
                 DataCache.TabVersionDetailsCachePriority),
-                c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
-        }
+            c => CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId)));
+    }
 
-        /// <inheritdoc/>
-        public IEnumerable<TabVersionDetail> GetVersionHistory(int tabId, int version)
-        {
-            return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetailsHistory(tabId, version));
-        }
+    /// <inheritdoc/>
+    public IEnumerable<TabVersionDetail> GetVersionHistory(int tabId, int version)
+    {
+        return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetailsHistory(tabId, version));
+    }
 
-        /// <inheritdoc/>
-        public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail)
-        {
-            this.SaveTabVersionDetail(tabVersionDetail, tabVersionDetail.CreatedByUserID, tabVersionDetail.LastModifiedByUserID);
-        }
+    /// <inheritdoc/>
+    public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail)
+    {
+        this.SaveTabVersionDetail(tabVersionDetail, tabVersionDetail.CreatedByUserID, tabVersionDetail.LastModifiedByUserID);
+    }
 
-        /// <inheritdoc/>
-        public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID)
-        {
-            this.SaveTabVersionDetail(tabVersionDetail, createdByUserID, createdByUserID);
-        }
+    /// <inheritdoc/>
+    public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID)
+    {
+        this.SaveTabVersionDetail(tabVersionDetail, createdByUserID, createdByUserID);
+    }
 
-        /// <inheritdoc/>
-        public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID, int modifiedByUserID)
-        {
-            tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(
-                tabVersionDetail.TabVersionDetailId,
-                tabVersionDetail.TabVersionId,
-                tabVersionDetail.ModuleId,
-                tabVersionDetail.ModuleVersion,
-                tabVersionDetail.PaneName,
-                tabVersionDetail.ModuleOrder,
-                (int)tabVersionDetail.Action,
-                createdByUserID,
-                modifiedByUserID);
-            this.ClearCache(tabVersionDetail.TabVersionId);
-        }
+    /// <inheritdoc/>
+    public void SaveTabVersionDetail(TabVersionDetail tabVersionDetail, int createdByUserID, int modifiedByUserID)
+    {
+        tabVersionDetail.TabVersionDetailId = Provider.SaveTabVersionDetail(
+            tabVersionDetail.TabVersionDetailId,
+            tabVersionDetail.TabVersionId,
+            tabVersionDetail.ModuleId,
+            tabVersionDetail.ModuleVersion,
+            tabVersionDetail.PaneName,
+            tabVersionDetail.ModuleOrder,
+            (int)tabVersionDetail.Action,
+            createdByUserID,
+            modifiedByUserID);
+        this.ClearCache(tabVersionDetail.TabVersionId);
+    }
 
-        /// <inheritdoc/>
-        public void DeleteTabVersionDetail(int tabVersionId, int tabVersionDetailId)
-        {
-            Provider.DeleteTabVersionDetail(tabVersionDetailId);
-            this.ClearCache(tabVersionId);
-        }
+    /// <inheritdoc/>
+    public void DeleteTabVersionDetail(int tabVersionId, int tabVersionDetailId)
+    {
+        Provider.DeleteTabVersionDetail(tabVersionDetailId);
+        this.ClearCache(tabVersionId);
+    }
 
-        /// <inheritdoc/>
-        public void ClearCache(int tabVersionId)
-        {
-            DataCache.RemoveCache(GetTabVersionDetailCacheKey(tabVersionId));
-        }
+    /// <inheritdoc/>
+    public void ClearCache(int tabVersionId)
+    {
+        DataCache.RemoveCache(GetTabVersionDetailCacheKey(tabVersionId));
+    }
 
-        /// <inheritdoc/>
-        protected override System.Func<ITabVersionDetailController> GetFactory()
-        {
-            return () => new TabVersionDetailController();
-        }
+    /// <inheritdoc/>
+    protected override System.Func<ITabVersionDetailController> GetFactory()
+    {
+        return () => new TabVersionDetailController();
+    }
 
-        private static string GetTabVersionDetailCacheKey(int tabVersionId)
-        {
-            return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);
-        }
+    private static string GetTabVersionDetailCacheKey(int tabVersionId)
+    {
+        return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);
     }
 }

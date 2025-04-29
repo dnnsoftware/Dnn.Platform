@@ -1,5 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="09.13.09">
+    <packages>
+        <package name="DNNConnect.CKEditorProvider" type="Provider" version="09.13.10">
             <friendlyName>CKEditor Provider</friendlyName>
             <description>CKEditor Provider for DNN</description>
             <iconFile>~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png</iconFile>
@@ -80,18 +81,40 @@
                         <install>
                             <configuration>
                                 <nodes>
-                                    <node path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='' or @defaultProvider='DotNetNuke.RadEditorProvider']"
-                                          action="updateattribute"
-                                          name="defaultProvider"
-                                          value="DNNConnect.CKE" />
+                                    <node
+                                        path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='' or @defaultProvider='DotNetNuke.RadEditorProvider']"
+                                        action="updateattribute"
+                                        name="defaultProvider"
+                                        value="DNNConnect.CKE" />
                                     <node path="/configuration/dotnetnuke/htmlEditor/providers"
-                                          action="update"
-                                          key="name"
-                                          collision="ignore">
+                                        action="update"
+                                        key="name"
+                                        collision="ignore">
                                         <add name="DNNConnect.CKE"
-                                             type="DNNConnect.CKEditorProvider.CKHtmlEditorProvider, DNNConnect.CKEditorProvider"
-                                             providerPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/"
-                                             settingsControlPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx" />
+                                            type="DNNConnect.CKEditorProvider.CKHtmlEditorProvider, DNNConnect.CKEditorProvider"
+                                            providerPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/"
+                                            settingsControlPath="~/Providers/HtmlEditorProviders/DNNConnect.CKE/Module/EditorConfigManager.ascx" />
+                                    </node>
+                                    <node path="/configuration" action="update" key="path"
+                                        collision="ignore">
+                                        <location
+                                            path="Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/FileUploader.ashx">
+                                            <system.web>
+                                                <authorization>
+                                                    <deny users="?" />
+                                                    <!-- Deny anonymous users -->
+                                                </authorization>
+                                            </system.web>
+                                        </location>
+                                        <location
+                                            path="Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx">
+                                            <system.web>
+                                                <authorization>
+                                                    <deny users="?" />
+                                                    <!-- Deny anonymous users -->
+                                                </authorization>
+                                            </system.web>
+                                        </location>
                                     </node>
                                 </nodes>
                             </configuration>
@@ -99,20 +122,27 @@
                         <uninstall>
                             <configuration>
                                 <nodes>
-                                    <node path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='DNNConnect.CKE']"
-                                          action="updateattribute"
-                                          name="defaultProvider"
-                                          value="DotNetNuke.RadEditorProvider" />
-                                    <node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='DNNConnect.CKE']"
-                                          action="remove" />
+                                    <node
+                                        path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='DNNConnect.CKE']"
+                                        action="updateattribute"
+                                        name="defaultProvider"
+                                        value="DotNetNuke.RadEditorProvider" />
+                                    <node
+                                        path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='DNNConnect.CKE']"
+                                        action="remove" />
+                                    <node
+                                        path="/configuration/location[@path='Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/FileUploader.ashx']"
+                                        action="remove" />
+                                    <node
+                                        path="/configuration/location[@path='Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx']"
+                                        action="remove" />
                                 </nodes>
                             </configuration>
                         </uninstall>
                     </config>
                 </component>
                 <component type="Cleanup"
-                           glob="Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/**/*">
-                </component>
+                    glob="Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.15.1/**/*" />
             </components>
         </package>
     </packages>

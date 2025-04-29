@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Authentication.OAuth
+namespace DotNetNuke.Services.Authentication.OAuth;
+
+public enum AuthorisationResult
 {
-    public enum AuthorisationResult
-    {
-        Denied = 0,
-        Authorized = 1,
-        RequestingCode = 2,
-    }
+    Denied = 0,
+    Authorized = 1,
+    RequestingCode = 2,
 }

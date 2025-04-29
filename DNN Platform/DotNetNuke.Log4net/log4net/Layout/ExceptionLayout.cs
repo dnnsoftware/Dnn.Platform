@@ -25,73 +25,72 @@ using System.Text;
 using log4net.Util;
 using log4net.Core;
 
-namespace log4net.Layout
+namespace log4net.Layout;
+
+/// <summary>
+/// A Layout that renders only the Exception text from the logging event
+/// </summary>
+/// <remarks>
+/// <para>
+/// A Layout that renders only the Exception text from the logging event.
+/// </para>
+/// <para>
+/// This Layout should only be used with appenders that utilize multiple
+/// layouts (e.g. <see cref="log4net.Appender.AdoNetAppender"/>).
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+/// <author>Gert Driesen</author>
+public class ExceptionLayout : LayoutSkeleton
 {
     /// <summary>
-    /// A Layout that renders only the Exception text from the logging event
+    /// Default constructor
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A Layout that renders only the Exception text from the logging event.
-    /// </para>
-    /// <para>
-    /// This Layout should only be used with appenders that utilize multiple
-    /// layouts (e.g. <see cref="log4net.Appender.AdoNetAppender"/>).
+    /// Constructs a ExceptionLayout
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    public class ExceptionLayout : LayoutSkeleton
+    public ExceptionLayout()
     {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Constructs a ExceptionLayout
-        /// </para>
-        /// </remarks>
-        public ExceptionLayout()
+        this.IgnoresException = false;
+    }
+
+    /// <summary>
+    /// Activate component options
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Part of the <see cref="IOptionHandler"/> component activation
+    /// framework.
+    /// </para>
+    /// <para>
+    /// This method does nothing as options become effective immediately.
+    /// </para>
+    /// </remarks>
+    public override void ActivateOptions() 
+    {
+        // nothing to do.
+    }
+
+    /// <summary>
+    /// Gets the exception text from the logging event
+    /// </summary>
+    /// <param name="writer">The TextWriter to write the formatted event to</param>
+    /// <param name="loggingEvent">the event being logged</param>
+    /// <remarks>
+    /// <para>
+    /// Write the exception string to the <see cref="TextWriter"/>.
+    /// The exception string is retrieved from <see cref="M:LoggingEvent.GetExceptionString()"/>.
+    /// </para>
+    /// </remarks>
+    public override void Format(TextWriter writer, LoggingEvent loggingEvent) 
+    {
+        if (loggingEvent == null)
         {
-            this.IgnoresException = false;
+            throw new ArgumentNullException("loggingEvent");
         }
 
-        /// <summary>
-        /// Activate component options
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// Part of the <see cref="IOptionHandler"/> component activation
-        /// framework.
-        /// </para>
-        /// <para>
-        /// This method does nothing as options become effective immediately.
-        /// </para>
-        /// </remarks>
-        public override void ActivateOptions() 
-        {
-            // nothing to do.
-        }
-
-        /// <summary>
-        /// Gets the exception text from the logging event
-        /// </summary>
-        /// <param name="writer">The TextWriter to write the formatted event to</param>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <remarks>
-        /// <para>
-        /// Write the exception string to the <see cref="TextWriter"/>.
-        /// The exception string is retrieved from <see cref="M:LoggingEvent.GetExceptionString()"/>.
-        /// </para>
-        /// </remarks>
-        public override void Format(TextWriter writer, LoggingEvent loggingEvent) 
-        {
-            if (loggingEvent == null)
-            {
-                throw new ArgumentNullException("loggingEvent");
-            }
-
-            writer.Write(loggingEvent.GetExceptionString());
-        }
+        writer.Write(loggingEvent.GetExceptionString());
     }
 }

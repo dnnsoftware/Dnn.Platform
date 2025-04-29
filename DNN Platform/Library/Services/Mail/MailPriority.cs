@@ -2,13 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Mail
+namespace DotNetNuke.Services.Mail;
+
+/// <summary>Enum MailPriority, there are 3 levels of priorities: Normal, Low or High.</summary>
+public enum MailPriority
 {
-    /// <summary>Enum MailPriority, there are 3 levels of priorities: Normal, Low or High.</summary>
-    public enum MailPriority
-    {
-        Normal = 0,
-        Low = 1,
-        High = 2,
-    }
+    Normal = 0,
+    Low = 1,
+    High = 2,
 }

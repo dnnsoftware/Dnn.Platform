@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -8,39 +8,38 @@ import PageExternalUrl from "./PageExternalUrl/PageExternalUrl";
 import styles from "./style.module.less";
 
 class PageUrl extends Component {
-
-    getDetail(pageType) {        
-        switch (pageType) {
-            case "tab":
-                return PageExisting;
-            case "url":
-                return PageExternalUrl;
-            case "file":
-                return PageFile;
-            default: 
-                throw "invalid page type";                                                                        
-        }        
+  getDetail(pageType) {
+    switch (pageType) {
+      case "tab":
+        return PageExisting;
+      case "url":
+        return PageExternalUrl;
+      case "file":
+        return PageFile;
+      default:
+        throw "invalid page type";
     }
+  }
 
-    render() {
-        const DetailComponent = this.getDetail(this.props.page.pageType);
-        return (
-            <div className={styles.pageUrl}>
-                <DetailComponent onChangeField={this.props.onChangeField} />
-            </div>
-        );
-    }
+  render() {
+    const DetailComponent = this.getDetail(this.props.page.pageType);
+    return (
+      <div className={styles.pageUrl}>
+        <DetailComponent onChangeField={this.props.onChangeField} />
+      </div>
+    );
+  }
 }
 
 PageUrl.propTypes = {
-    page: PropTypes.object.isRequired,
-    onChangeField: PropTypes.func.isRequired
+  page: PropTypes.object.isRequired,
+  onChangeField: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
-    return ({
-        page: state.pages.selectedPage
-    });
+  return {
+    page: state.pages.selectedPage,
+  };
 };
 
 export default connect(mapStateToProps)(PageUrl);

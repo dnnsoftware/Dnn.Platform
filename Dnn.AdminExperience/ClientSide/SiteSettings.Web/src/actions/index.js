@@ -7,11 +7,11 @@ import languages from "./languages";
 import languageEditor from "./languageEditor";
 
 export {
-    pagination,
-    visiblePanel,
-    siteInfo,
-    siteBehavior,
-    search,
-    languages,
-    languageEditor
+  pagination,
+  visiblePanel,
+  siteInfo,
+  siteBehavior,
+  search,
+  languages,
+  languageEditor,
 };

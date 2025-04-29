@@ -1,40 +1,41 @@
 :host {
   display: block;
 }
-.general{
+.general {
   display: flex;
-  .left{
+  .left {
     max-width: 256px;
     border-right: 1px solid lightgray;
     padding: 1em;
-    img{
+    img {
       width: 100%;
     }
   }
-  .right{
+  .right {
     padding: 1em;
   }
 }
 
-.form{
+.form {
   display: grid;
   grid-template-columns: 1fr 2fr;
   align-items: flex-end;
-  label{
+  label {
     font-weight: bold;
     text-align: right;
     margin-right: 0.5em;
-    &::after{
-      content: ':';
+    &::after {
+      content: ":";
     }
     align-self: flex-start;
   }
-  input, textarea{
+  input,
+  textarea {
     margin-top: 0.5em;
   }
 }
 
-.controls{
+.controls {
   margin-top: 2em;
   display: flex;
   justify-content: flex-end;

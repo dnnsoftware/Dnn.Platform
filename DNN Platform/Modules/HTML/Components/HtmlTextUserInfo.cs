@@ -2,61 +2,60 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Html
+namespace DotNetNuke.Modules.Html;
+
+using System;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+
+/// Namespace:  DotNetNuke.Modules.Html
+/// Project:    DotNetNuke
+/// Class:      HtmlTextUserInfo
+/// <summary>  Defines an instance of an HtmlTextUser object.</summary>
+public class HtmlTextUserInfo
 {
-    using System;
+    // local property declarations
+    private ModuleInfo module;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-
-    /// Namespace:  DotNetNuke.Modules.Html
-    /// Project:    DotNetNuke
-    /// Class:      HtmlTextUserInfo
-    /// <summary>  Defines an instance of an HtmlTextUser object.</summary>
-    public class HtmlTextUserInfo
+    public string ModuleTitle
     {
-        // local property declarations
-        private ModuleInfo module;
-
-        public string ModuleTitle
+        get
         {
-            get
+            string moduleTitle = Null.NullString;
+            if (this.Module != null)
             {
-                string moduleTitle = Null.NullString;
-                if (this.Module != null)
-                {
-                    moduleTitle = this.Module.ModuleTitle;
-                }
-
-                return moduleTitle;
+                moduleTitle = this.Module.ModuleTitle;
             }
+
+            return moduleTitle;
         }
-
-        public ModuleInfo Module
-        {
-            get
-            {
-                if (this.module == null)
-                {
-                    this.module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
-                }
-
-                return this.module;
-            }
-        }
-
-        public int ItemID { get; set; }
-
-        public int StateID { get; set; }
-
-        public string StateName { get; set; }
-
-        public int ModuleID { get; set; }
-
-        public int TabID { get; set; }
-
-        public int UserID { get; set; }
-
-        public DateTime CreatedOnDate { get; set; }
     }
+
+    public ModuleInfo Module
+    {
+        get
+        {
+            if (this.module == null)
+            {
+                this.module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
+            }
+
+            return this.module;
+        }
+    }
+
+    public int ItemID { get; set; }
+
+    public int StateID { get; set; }
+
+    public string StateName { get; set; }
+
+    public int ModuleID { get; set; }
+
+    public int TabID { get; set; }
+
+    public int UserID { get; set; }
+
+    public DateTime CreatedOnDate { get; set; }
 }

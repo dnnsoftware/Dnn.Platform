@@ -2,9 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteImportExport.Components
+namespace Dnn.PersonaBar.SiteImportExport.Components;
+
+public class SiteImportExportController
 {
-    public class SiteImportExportController
-    {
-    }
 }

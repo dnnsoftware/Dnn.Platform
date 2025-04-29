@@ -1,61 +1,60 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Installer.Installers
+namespace DotNetNuke.Services.Installer.Installers;
+
+using DotNetNuke.UI.Skins;
+
+/// <summary>The ContainerInstaller installs Container Components to a DotNetNuke site.</summary>
+public class ContainerInstaller : SkinInstaller
 {
-    using DotNetNuke.UI.Skins;
-
-    /// <summary>The ContainerInstaller installs Container Components to a DotNetNuke site.</summary>
-    public class ContainerInstaller : SkinInstaller
+    /// <summary>Gets the name of the Collection Node ("containerFiles").</summary>
+    /// <value>A String.</value>
+    protected override string CollectionNodeName
     {
-        /// <summary>Gets the name of the Collection Node ("containerFiles").</summary>
-        /// <value>A String.</value>
-        protected override string CollectionNodeName
+        get
         {
-            get
-            {
-                return "containerFiles";
-            }
+            return "containerFiles";
         }
+    }
 
-        /// <summary>Gets the name of the Item Node ("containerFile").</summary>
-        /// <value>A String.</value>
-        protected override string ItemNodeName
+    /// <summary>Gets the name of the Item Node ("containerFile").</summary>
+    /// <value>A String.</value>
+    protected override string ItemNodeName
+    {
+        get
         {
-            get
-            {
-                return "containerFile";
-            }
+            return "containerFile";
         }
+    }
 
-        /// <summary>Gets the name of the SkinName Node ("containerName").</summary>
-        /// <value>A String.</value>
-        protected override string SkinNameNodeName
+    /// <summary>Gets the name of the SkinName Node ("containerName").</summary>
+    /// <value>A String.</value>
+    protected override string SkinNameNodeName
+    {
+        get
         {
-            get
-            {
-                return "containerName";
-            }
+            return "containerName";
         }
+    }
 
-        /// <summary>Gets the RootName of the Skin.</summary>
-        /// <value>A String.</value>
-        protected override string SkinRoot
+    /// <summary>Gets the RootName of the Skin.</summary>
+    /// <value>A String.</value>
+    protected override string SkinRoot
+    {
+        get
         {
-            get
-            {
-                return SkinController.RootContainer;
-            }
+            return SkinController.RootContainer;
         }
+    }
 
-        /// <summary>Gets the Type of the Skin.</summary>
-        /// <value>A String.</value>
-        protected override string SkinType
+    /// <summary>Gets the Type of the Skin.</summary>
+    /// <value>A String.</value>
+    protected override string SkinType
+    {
+        get
         {
-            get
-            {
-                return "Container";
-            }
+            return "Container";
         }
     }
 }

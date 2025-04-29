@@ -12,8 +12,8 @@ application.init();
 
 const appContainer = document.getElementById("security-container");
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

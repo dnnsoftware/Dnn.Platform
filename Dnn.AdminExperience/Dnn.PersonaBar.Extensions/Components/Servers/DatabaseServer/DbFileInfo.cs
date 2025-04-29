@@ -2,33 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
+namespace Dnn.PersonaBar.Servers.Components.DatabaseServer;
+
+using System;
+
+public class DbFileInfo
 {
-    using System;
+    public decimal Megabytes => Convert.ToDecimal(this.Size / 1024);
 
-    public class DbFileInfo
+    public string ShortFileName
     {
-        public decimal Megabytes => Convert.ToDecimal(this.Size / 1024);
-
-        public string ShortFileName
+        get
         {
-            get
+            if (this.FileName.IndexOf('\\') == this.FileName.LastIndexOf('\\'))
             {
-                if (this.FileName.IndexOf('\\') == this.FileName.LastIndexOf('\\'))
-                {
-                    return this.FileName;
-                }
-
-                return string.Format("{0}...{1}", this.FileName.Substring(0, this.FileName.IndexOf('\\') + 1), this.FileName.Substring(this.FileName.LastIndexOf('\\', this.FileName.LastIndexOf('\\') - 1)));
+                return this.FileName;
             }
+
+            return string.Format("{0}...{1}", this.FileName.Substring(0, this.FileName.IndexOf('\\') + 1), this.FileName.Substring(this.FileName.LastIndexOf('\\', this.FileName.LastIndexOf('\\') - 1)));
         }
-
-        public string FileType { get; set; }
-
-        public string Name { get; set; }
-
-        public long Size { get; set; }
-
-        public string FileName { get; set; }
     }
+
+    public string FileType { get; set; }
+
+    public string Name { get; set; }
+
+    public long Size { get; set; }
+
+    public string FileName { get; set; }
 }

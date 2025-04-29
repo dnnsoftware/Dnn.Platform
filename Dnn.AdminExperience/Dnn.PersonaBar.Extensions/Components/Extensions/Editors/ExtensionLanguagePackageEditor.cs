@@ -2,93 +2,92 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Extensions.Components.Editors
+namespace Dnn.PersonaBar.Extensions.Components.Editors;
+
+using System;
+
+using Dnn.PersonaBar.Extensions.Components.Dto;
+using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Packages;
+using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
+
+public class ExtensionLanguagePackageEditor : IPackageEditor
 {
-    using System;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
 
-    using Dnn.PersonaBar.Extensions.Components.Dto;
-    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Installer.Packages;
-    using DotNetNuke.Services.Localization;
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class ExtensionLanguagePackageEditor : IPackageEditor
+    /// <summary>Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.</summary>
+    public ExtensionLanguagePackageEditor()
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
+        this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.</summary>
-        public ExtensionLanguagePackageEditor()
+    protected INavigationManager NavigationManager { get; }
+
+    /// <inheritdoc/>
+    public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
+    {
+        var languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
+        var languagesTab = TabController.GetTabByTabPath(portalId, "//Admin//Languages", Null.NullString);
+
+        var detail = new ExtensionLanguagePackageDetailDto(portalId, package)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            Locales = Utility.GetAllLanguagesList(),
+            LanguageId = languagePack.LanguageID,
+            DependentPackageId = languagePack.DependentPackageID,
+            EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, string.Empty, "Locale={0}"),
+        };
+
+        if (languagePack.PackageType == LanguagePackType.Extension)
+        {
+            // Get all the packages but only bind to combo if not a language package
+            detail.Packages = Utility.GetAllPackagesListExceptLangPacks();
         }
 
-        protected INavigationManager NavigationManager { get; }
+        return detail;
+    }
 
-        /// <inheritdoc/>
-        public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
+    /// <inheritdoc/>
+    public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
+    {
+        errorMessage = string.Empty;
+
+        try
         {
-            var languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
-            var languagesTab = TabController.GetTabByTabPath(portalId, "//Admin//Languages", Null.NullString);
-
-            var detail = new ExtensionLanguagePackageDetailDto(portalId, package)
+            string value;
+            var changed = false;
+            var languagePack = LanguagePackController.GetLanguagePackByPackage(packageSettings.PackageId);
+            if (packageSettings.EditorActions.TryGetValue("languageId", out value)
+                && !string.IsNullOrEmpty(value) && value != languagePack.LanguageID.ToString())
             {
-                Locales = Utility.GetAllLanguagesList(),
-                LanguageId = languagePack.LanguageID,
-                DependentPackageId = languagePack.DependentPackageID,
-                EditUrlFormat = this.NavigationManager.NavigateURL(languagesTab, string.Empty, "Locale={0}"),
-            };
-
-            if (languagePack.PackageType == LanguagePackType.Extension)
-            {
-                // Get all the packages but only bind to combo if not a language package
-                detail.Packages = Utility.GetAllPackagesListExceptLangPacks();
+                languagePack.LanguageID = Convert.ToInt32(value);
+                changed = true;
             }
 
-            return detail;
+            if (packageSettings.EditorActions.TryGetValue("dependentPackageId", out value)
+                && !string.IsNullOrEmpty(value) && value != languagePack.DependentPackageID.ToString())
+            {
+                languagePack.DependentPackageID = Convert.ToInt32(value);
+                changed = true;
+            }
+
+            if (changed)
+            {
+                LanguagePackController.SaveLanguagePack(languagePack);
+            }
+
+            return true;
         }
-
-        /// <inheritdoc/>
-        public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
+        catch (Exception ex)
         {
-            errorMessage = string.Empty;
-
-            try
-            {
-                string value;
-                var changed = false;
-                var languagePack = LanguagePackController.GetLanguagePackByPackage(packageSettings.PackageId);
-                if (packageSettings.EditorActions.TryGetValue("languageId", out value)
-                    && !string.IsNullOrEmpty(value) && value != languagePack.LanguageID.ToString())
-                {
-                    languagePack.LanguageID = Convert.ToInt32(value);
-                    changed = true;
-                }
-
-                if (packageSettings.EditorActions.TryGetValue("dependentPackageId", out value)
-                    && !string.IsNullOrEmpty(value) && value != languagePack.DependentPackageID.ToString())
-                {
-                    languagePack.DependentPackageID = Convert.ToInt32(value);
-                    changed = true;
-                }
-
-                if (changed)
-                {
-                    LanguagePackController.SaveLanguagePack(languagePack);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                errorMessage = ex.Message;
-                return false;
-            }
+            Logger.Error(ex);
+            errorMessage = ex.Message;
+            return false;
         }
     }
 }

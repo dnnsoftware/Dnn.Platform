@@ -551,7 +551,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
                             if (usersWithSameDisplayName.Any(user => user.UserID != this.User.UserID))
                             {
-                                UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                                UI.Skins.Skin.AddModuleMessage(this, this.LocalizeText("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
                                 return;
                             }
                         }

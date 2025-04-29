@@ -1,6 +1,6 @@
 ﻿#menu-AddExistingModule button {
-    background: url('../images/AddExistingModule_Sprite.png') no-repeat 0 0;
+  background: url("../images/AddExistingModule_Sprite.png") no-repeat 0 0;
 }
 #menu-AddExistingModule button:hover {
-    background-position: 0 -33px;
+  background-position: 0 -33px;
 }

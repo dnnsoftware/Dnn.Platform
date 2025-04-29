@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Search.Internals
+namespace DotNetNuke.Services.Search.Internals;
+
+using DotNetNuke.Services.Search.Entities;
+
+internal class LuceneSearchContext
 {
-    using DotNetNuke.Services.Search.Entities;
+    public LuceneQuery LuceneQuery { get; set; }
 
-    internal class LuceneSearchContext
-    {
-        public LuceneQuery LuceneQuery { get; set; }
+    public SearchQuery SearchQuery { get; set; }
 
-        public SearchQuery SearchQuery { get; set; }
-
-        public SecurityCheckerDelegate SecurityCheckerDelegate { get; set; }
-    }
+    public SecurityCheckerDelegate SecurityCheckerDelegate { get; set; }
 }

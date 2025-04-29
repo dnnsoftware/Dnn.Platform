@@ -19,5 +19,5 @@ export {
     templateActionTypes,
     visiblePanelActionTypes,
     visiblePageSettings,
-    languagesActionTypes
+    languagesActionTypes,
 };

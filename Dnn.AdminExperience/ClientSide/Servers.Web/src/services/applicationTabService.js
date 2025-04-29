@@ -2,15 +2,17 @@ import serviceFramework from "./serviceFramework";
 import utils from "../utils";
 
 function getControllerName() {
-    return utils.isHostUser() ? "SystemInfoApplicationHost" : "SystemInfoApplicationAdmin";
+  return utils.isHostUser()
+    ? "SystemInfoApplicationHost"
+    : "SystemInfoApplicationAdmin";
 }
 
 const getApplicationInfo = function () {
-    return serviceFramework.get(getControllerName(), "GetApplicationInfo");
+  return serviceFramework.get(getControllerName(), "GetApplicationInfo");
 };
 
 const applicationTabService = {
-    getApplicationInfo: getApplicationInfo
+  getApplicationInfo: getApplicationInfo,
 };
 
-export default applicationTabService; 
+export default applicationTabService;

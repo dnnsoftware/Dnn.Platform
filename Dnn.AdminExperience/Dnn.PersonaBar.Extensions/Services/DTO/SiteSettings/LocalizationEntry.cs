@@ -2,17 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteSettings.Services.Dto
+namespace Dnn.PersonaBar.SiteSettings.Services.Dto;
+
+using Newtonsoft.Json;
+
+[JsonObject]
+public class LocalizationEntry
 {
-    using Newtonsoft.Json;
+    public string Name { get; set; }
 
-    [JsonObject]
-    public class LocalizationEntry
-    {
-        public string Name { get; set; }
+    public string DefaultValue { get; set; }
 
-        public string DefaultValue { get; set; }
-
-        public string NewValue { get; set; }
-    }
+    public string NewValue { get; set; }
 }

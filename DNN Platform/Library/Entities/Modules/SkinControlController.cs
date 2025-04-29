@@ -1,91 +1,90 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Modules
+namespace DotNetNuke.Entities.Modules;
+
+using System.Collections.Generic;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Log.EventLog;
+
+/// <summary>ModuleControlController provides the Business Layer for Module Controls.</summary>
+public class SkinControlController
 {
-    using System.Collections.Generic;
+    private static readonly DataProvider DataProvider = DataProvider.Instance();
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Log.EventLog;
-
-    /// <summary>ModuleControlController provides the Business Layer for Module Controls.</summary>
-    public class SkinControlController
+    /// <summary>DeleteSkinControl deletes a Skin Control in the database.</summary>
+    /// <param name="skinControl">The Skin Control to delete.</param>
+    public static void DeleteSkinControl(SkinControlInfo skinControl)
     {
-        private static readonly DataProvider DataProvider = DataProvider.Instance();
+        DataProvider.DeleteSkinControl(skinControl.SkinControlID);
+        EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_DELETED);
+    }
 
-        /// <summary>DeleteSkinControl deletes a Skin Control in the database.</summary>
-        /// <param name="skinControl">The Skin Control to delete.</param>
-        public static void DeleteSkinControl(SkinControlInfo skinControl)
+    /// <summary>GetSkinControl gets a single Skin Control from the database.</summary>
+    /// <param name="skinControlID">The ID of the SkinControl.</param>
+    /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
+    public static SkinControlInfo GetSkinControl(int skinControlID)
+    {
+        return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControl(skinControlID));
+    }
+
+    /// <summary>GetSkinControlByPackageID gets a single Skin Control from the database.</summary>
+    /// <param name="packageID">The ID of the Package.</param>
+    /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
+    public static SkinControlInfo GetSkinControlByPackageID(int packageID)
+    {
+        return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControlByPackageID(packageID));
+    }
+
+    /// <summary>GetSkinControlByKey gets a single Skin Control from the database.</summary>
+    /// <param name="key">The key of the Control.</param>
+    /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
+    public static SkinControlInfo GetSkinControlByKey(string key)
+    {
+        return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControlByKey(key));
+    }
+
+    /// <summary>GetSkinControls gets all the Skin Controls from the database.</summary>
+    /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping skin control ID to <see cref="SkinControlInfo"/>.</returns>
+    public static Dictionary<string, SkinControlInfo> GetSkinControls()
+    {
+        return CBO.FillDictionary("ControlKey", DataProvider.GetSkinControls(), new Dictionary<string, SkinControlInfo>());
+    }
+
+    /// <summary>SaveSkinControl updates a Skin Control in the database.</summary>
+    /// <param name="skinControl">The Skin Control to save.</param>
+    /// <returns>The skin control ID.</returns>
+    public static int SaveSkinControl(SkinControlInfo skinControl)
+    {
+        int skinControlID = skinControl.SkinControlID;
+        if (skinControlID == Null.NullInteger)
         {
-            DataProvider.DeleteSkinControl(skinControl.SkinControlID);
-            EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_DELETED);
+            // Add new Skin Control
+            skinControlID = DataProvider.AddSkinControl(
+                skinControl.PackageID,
+                skinControl.ControlKey,
+                skinControl.ControlSrc,
+                skinControl.SupportsPartialRendering,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_CREATED);
+        }
+        else
+        {
+            // Upgrade Skin Control
+            DataProvider.UpdateSkinControl(
+                skinControl.SkinControlID,
+                skinControl.PackageID,
+                skinControl.ControlKey,
+                skinControl.ControlSrc,
+                skinControl.SupportsPartialRendering,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_UPDATED);
         }
 
-        /// <summary>GetSkinControl gets a single Skin Control from the database.</summary>
-        /// <param name="skinControlID">The ID of the SkinControl.</param>
-        /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
-        public static SkinControlInfo GetSkinControl(int skinControlID)
-        {
-            return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControl(skinControlID));
-        }
-
-        /// <summary>GetSkinControlByPackageID gets a single Skin Control from the database.</summary>
-        /// <param name="packageID">The ID of the Package.</param>
-        /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
-        public static SkinControlInfo GetSkinControlByPackageID(int packageID)
-        {
-            return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControlByPackageID(packageID));
-        }
-
-        /// <summary>GetSkinControlByKey gets a single Skin Control from the database.</summary>
-        /// <param name="key">The key of the Control.</param>
-        /// <returns>The <see cref="SkinControlInfo"/> or <see langword="null"/>.</returns>
-        public static SkinControlInfo GetSkinControlByKey(string key)
-        {
-            return CBO.FillObject<SkinControlInfo>(DataProvider.GetSkinControlByKey(key));
-        }
-
-        /// <summary>GetSkinControls gets all the Skin Controls from the database.</summary>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping skin control ID to <see cref="SkinControlInfo"/>.</returns>
-        public static Dictionary<string, SkinControlInfo> GetSkinControls()
-        {
-            return CBO.FillDictionary("ControlKey", DataProvider.GetSkinControls(), new Dictionary<string, SkinControlInfo>());
-        }
-
-        /// <summary>SaveSkinControl updates a Skin Control in the database.</summary>
-        /// <param name="skinControl">The Skin Control to save.</param>
-        /// <returns>The skin control ID.</returns>
-        public static int SaveSkinControl(SkinControlInfo skinControl)
-        {
-            int skinControlID = skinControl.SkinControlID;
-            if (skinControlID == Null.NullInteger)
-            {
-                // Add new Skin Control
-                skinControlID = DataProvider.AddSkinControl(
-                    skinControl.PackageID,
-                    skinControl.ControlKey,
-                    skinControl.ControlSrc,
-                    skinControl.SupportsPartialRendering,
-                    UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_CREATED);
-            }
-            else
-            {
-                // Upgrade Skin Control
-                DataProvider.UpdateSkinControl(
-                    skinControl.SkinControlID,
-                    skinControl.PackageID,
-                    skinControl.ControlKey,
-                    skinControl.ControlSrc,
-                    skinControl.SupportsPartialRendering,
-                    UserController.Instance.GetCurrentUserInfo().UserID);
-                EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_UPDATED);
-            }
-
-            return skinControlID;
-        }
+        return skinControlID;
     }
 }

@@ -1,97 +1,96 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Tabs
+namespace DotNetNuke.Entities.Tabs;
+
+using System;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Tabs.TabVersions;
+using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
+
+public class TabChangeTracker : ServiceLocator<ITabChangeTracker, TabChangeTracker>, ITabChangeTracker
 {
-    using System;
+    public const string IsModuleDoesNotBelongToPage = nameof(IsModuleDoesNotBelongToPage);
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Tabs.TabVersions;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Localization;
-
-    public class TabChangeTracker : ServiceLocator<ITabChangeTracker, TabChangeTracker>, ITabChangeTracker
+    /// <inheritdoc/>
+    public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
     {
-        public const string IsModuleDoesNotBelongToPage = nameof(IsModuleDoesNotBelongToPage);
-
-        /// <inheritdoc/>
-        public void TrackModuleAddition(ModuleInfo module, int moduleVersion, int userId)
+        var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
+        if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
         {
-            var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
-            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
-            {
-                TabVersionTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
-            }
-
-            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
-            {
-                TabWorkflowTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
-            }
+            TabVersionTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
         }
 
-        /// <inheritdoc/>
-        public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
+        if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
         {
-            if (ModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
-            {
-                var exceptionToThrow = new InvalidOperationException(
-                    Localization.GetExceptionMessage(
+            TabWorkflowTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
+    {
+        if (ModuleController.Instance.IsSharedModule(module) && moduleVersion != Null.NullInteger)
+        {
+            var exceptionToThrow = new InvalidOperationException(
+                Localization.GetExceptionMessage(
                     "ModuleDoesNotBelongToPage",
                     "This module does not belong to the page. Please, move to its master page to change the module"));
-                exceptionToThrow.Data.Add(IsModuleDoesNotBelongToPage, true);
-                throw exceptionToThrow;
-            }
-
-            var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
-            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
-            {
-                TabVersionTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
-            }
-
-            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
-            {
-                TabWorkflowTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
-            }
+            exceptionToThrow.Data.Add(IsModuleDoesNotBelongToPage, true);
+            throw exceptionToThrow;
         }
 
-        /// <inheritdoc/>
-        public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
+        var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
+        if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
         {
-            var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
-            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
-            {
-                TabVersionTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
-            }
-
-            if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
-            {
-                TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
-            }
+            TabVersionTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
         }
 
-        /// <inheritdoc/>
-        public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
         {
-            if (module != null && TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
-            {
-                TabVersionTracker.Instance.TrackModuleUncopy(module, moduleVersion, originalTabId, userId);
-            }
+            TabWorkflowTracker.Instance.TrackModuleModification(module, moduleVersion, userId);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void TrackModuleDeletion(ModuleInfo module, int moduleVersion, int userId)
+    {
+        var unPublishedVersion = TabVersionBuilder.Instance.GetUnPublishedVersion(module.TabID);
+        if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+        {
+            TabVersionTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
         }
 
-        /// <inheritdoc/>
-        public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+        if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
         {
-            if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
-            {
-                TabVersionTracker.Instance.TrackModuleCopy(module, moduleVersion, originalTabId, userId);
-            }
+            TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
         }
+    }
 
-        /// <inheritdoc/>
-        protected override Func<ITabChangeTracker> GetFactory()
+    /// <inheritdoc/>
+    public void TrackModuleUncopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+    {
+        if (module != null && TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
         {
-            return () => new TabChangeTracker();
+            TabVersionTracker.Instance.TrackModuleUncopy(module, moduleVersion, originalTabId, userId);
         }
+    }
+
+    /// <inheritdoc/>
+    public void TrackModuleCopy(ModuleInfo module, int moduleVersion, int originalTabId, int userId)
+    {
+        if (TabChangeSettings.Instance.IsChangeControlEnabled(module.PortalID, module.TabID))
+        {
+            TabVersionTracker.Instance.TrackModuleCopy(module, moduleVersion, originalTabId, userId);
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override Func<ITabChangeTracker> GetFactory()
+    {
+        return () => new TabChangeTracker();
     }
 }

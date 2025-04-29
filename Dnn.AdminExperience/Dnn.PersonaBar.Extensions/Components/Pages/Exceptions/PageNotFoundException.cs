@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Components.Exceptions
-{
-    using System;
+namespace Dnn.PersonaBar.Pages.Components.Exceptions;
 
-    public class PageNotFoundException : Exception
-    {
-    }
+using System;
+
+public class PageNotFoundException : Exception
+{
 }

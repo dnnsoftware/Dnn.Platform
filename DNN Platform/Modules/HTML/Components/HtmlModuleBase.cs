@@ -2,36 +2,35 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Html.Components
+namespace DotNetNuke.Modules.Html.Components;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+using DotNetNuke.Entities.Modules;
+
+public class HtmlModuleBase : PortalModuleBase
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+    private HtmlModuleSettings settings;
 
-    using DotNetNuke.Entities.Modules;
-
-    public class HtmlModuleBase : PortalModuleBase
+    public new HtmlModuleSettings Settings
     {
-        private HtmlModuleSettings settings;
-
-        public new HtmlModuleSettings Settings
+        get
         {
-            get
+            if (this.settings == null)
             {
-                if (this.settings == null)
-                {
-                    var repo = new HtmlModuleSettingsRepository();
-                    this.settings = repo.GetSettings(this.ModuleConfiguration);
-                }
-
-                return this.settings;
+                var repo = new HtmlModuleSettingsRepository();
+                this.settings = repo.GetSettings(this.ModuleConfiguration);
             }
 
-            set
-            {
-                this.settings = value;
-            }
+            return this.settings;
+        }
+
+        set
+        {
+            this.settings = value;
         }
     }
 }

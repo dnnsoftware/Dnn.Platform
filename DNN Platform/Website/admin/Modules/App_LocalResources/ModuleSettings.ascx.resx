@@ -400,6 +400,12 @@
   <data name="MonikerExists.Text" xml:space="preserve">
     <value>The new value of the moniker already exists; it must be unique in the portal.</value>
   </data>
+  <data name="JavaScriptInHeader.Text" xml:space="preserve">
+    <value>JavaScript is not allowed in the header of modules.</value>
+  </data>
+  <data name="JavaScriptInFooter.Text" xml:space="preserve">
+    <value>JavaScript is not allowed in the footer of modules.</value>
+  </data>
   <data name="plModuleId.Help" xml:space="preserve">
     <value>Displays the id of the module.</value>
   </data>

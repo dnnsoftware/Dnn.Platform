@@ -2,87 +2,86 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Api
+namespace DotNetNuke.Web.Api;
+
+using System;
+using System.Net.Http;
+using System.Text;
+using System.Web.Http.Tracing;
+
+using DotNetNuke.Instrumentation;
+
+internal sealed class TraceWriter : ITraceWriter
 {
-    using System;
-    using System.Net.Http;
-    using System.Text;
-    using System.Web.Http.Tracing;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
+    private readonly bool enabled;
 
-    using DotNetNuke.Instrumentation;
-
-    internal sealed class TraceWriter : ITraceWriter
+    public TraceWriter(bool isTracingEnabled)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
-        private readonly bool enabled;
+        this.enabled = isTracingEnabled;
+    }
 
-        public TraceWriter(bool isTracingEnabled)
+    /// <inheritdoc/>
+    public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
+    {
+        if (!this.enabled || level == TraceLevel.Off)
         {
-            this.enabled = isTracingEnabled;
+            return;
         }
 
-        /// <inheritdoc/>
-        public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
+        var rec = new TraceRecord(request, category, level);
+        traceAction(rec);
+        this.Log(rec);
+    }
+
+    private void Log(TraceRecord rec)
+    {
+        var message = new StringBuilder();
+
+        if (rec.Request != null)
         {
-            if (!this.enabled || level == TraceLevel.Off)
+            if (rec.Request.Method != null)
             {
-                return;
+                message.Append(" ").Append(rec.Request.Method.Method);
             }
 
-            var rec = new TraceRecord(request, category, level);
-            traceAction(rec);
-            this.Log(rec);
+            if (rec.Request.RequestUri != null)
+            {
+                message.Append(" ").Append(rec.Request.RequestUri.AbsoluteUri);
+            }
         }
 
-        private void Log(TraceRecord rec)
+        if (!string.IsNullOrEmpty(rec.Category))
         {
-            var message = new StringBuilder();
+            message.Append(" ").Append(rec.Category);
+        }
 
-            if (rec.Request != null)
+        if (!string.IsNullOrEmpty(rec.Message))
+        {
+            message.Append(" ").Append(rec.Message);
+        }
+
+        string output = message.ToString();
+
+        if (!string.IsNullOrEmpty(output))
+        {
+            switch (rec.Level)
             {
-                if (rec.Request.Method != null)
-                {
-                    message.Append(" ").Append(rec.Request.Method.Method);
-                }
-
-                if (rec.Request.RequestUri != null)
-                {
-                    message.Append(" ").Append(rec.Request.RequestUri.AbsoluteUri);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(rec.Category))
-            {
-                message.Append(" ").Append(rec.Category);
-            }
-
-            if (!string.IsNullOrEmpty(rec.Message))
-            {
-                message.Append(" ").Append(rec.Message);
-            }
-
-            string output = message.ToString();
-
-            if (!string.IsNullOrEmpty(output))
-            {
-                switch (rec.Level)
-                {
-                    case TraceLevel.Debug:
-                        Logger.Debug(output);
-                        break;
-                    case TraceLevel.Info:
-                        Logger.Info(output);
-                        break;
-                    case TraceLevel.Warn:
-                        Logger.Warn(output);
-                        break;
-                    case TraceLevel.Error:
-                        Logger.Error(output);
-                        break;
-                    case TraceLevel.Fatal:
-                        Logger.Fatal(output);
-                        break;
-                }
+                case TraceLevel.Debug:
+                    Logger.Debug(output);
+                    break;
+                case TraceLevel.Info:
+                    Logger.Info(output);
+                    break;
+                case TraceLevel.Warn:
+                    Logger.Warn(output);
+                    break;
+                case TraceLevel.Error:
+                    Logger.Error(output);
+                    break;
+                case TraceLevel.Fatal:
+                    Logger.Fatal(output);
+                    break;
             }
         }
     }

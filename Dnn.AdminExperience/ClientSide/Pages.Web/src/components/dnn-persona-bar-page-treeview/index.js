@@ -1,1 +1,1 @@
-export {connectedPersonaBarPageTreeviewInteractor as PersonaBarPageTreeviewInteractor } from "./src/PersonaBarPageTreeviewInteractor";
+export { connectedPersonaBarPageTreeviewInteractor as PersonaBarPageTreeviewInteractor } from "./src/PersonaBarPageTreeviewInteractor";

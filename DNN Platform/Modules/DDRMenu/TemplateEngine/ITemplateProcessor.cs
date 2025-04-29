@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.DDRMenu.TemplateEngine
+namespace DotNetNuke.Web.DDRMenu.TemplateEngine;
+
+using System.Web.UI;
+
+internal interface ITemplateProcessor
 {
-    using System.Web.UI;
+    bool LoadDefinition(TemplateDefinition baseDefinition);
 
-    internal interface ITemplateProcessor
-    {
-        bool LoadDefinition(TemplateDefinition baseDefinition);
-
-        void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition);
-    }
+    void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition);
 }

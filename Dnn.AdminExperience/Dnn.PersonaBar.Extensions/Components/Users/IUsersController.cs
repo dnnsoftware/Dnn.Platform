@@ -2,39 +2,38 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Users.Components
+namespace Dnn.PersonaBar.Users.Components;
+
+using System;
+using System.Collections.Generic;
+using System.Net;
+
+using Dnn.PersonaBar.Users.Components.Contracts;
+using Dnn.PersonaBar.Users.Components.Dto;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+
+public interface IUsersController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
+    IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords);
 
-    using Dnn.PersonaBar.Users.Components.Contracts;
-    using Dnn.PersonaBar.Users.Components.Dto;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
+    IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false);
 
-    public interface IUsersController
-    {
-        IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords);
+    UserDetailDto GetUserDetail(int portalId, int userId);
 
-        IEnumerable<KeyValuePair<string, int>> GetUserFilters(bool isSuperUser = false);
+    bool ChangePassword(int portalId, int userId, string newPassword);
 
-        UserDetailDto GetUserDetail(int portalId, int userId);
+    UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int portalId = -1);
 
-        bool ChangePassword(int portalId, int userId, string newPassword);
+    UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser, bool isOwner);
 
-        UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int portalId = -1);
+    void AddUserToRoles(UserInfo currentUserInfo, int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null);
 
-        UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser, bool isOwner);
+    IList<UserRoleInfo> GetUserRoles(UserInfo user, string keyword, out int total, int pageIndex = -1, int pageSize = -1);
 
-        void AddUserToRoles(UserInfo currentUserInfo, int userId, int portalId, string roleNames, string roleDelimiter = ",", DateTime? effectiveDate = null, DateTime? expiryDate = null);
+    IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total, out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1);
 
-        IList<UserRoleInfo> GetUserRoles(UserInfo user, string keyword, out int total, int pageIndex = -1, int pageSize = -1);
+    bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify);
 
-        IEnumerable<UserInfo> GetUsersInRole(PortalSettings portalSettings, string roleName, out int total, out KeyValuePair<HttpStatusCode, string> message, int pageIndex = -1, int pageSize = -1);
-
-        bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify);
-
-        void UpdateAuthorizeStatus(UserInfo userInfo, int portalId, bool authorized);
-    }
+    void UpdateAuthorizeStatus(UserInfo userInfo, int portalId, bool authorized);
 }

@@ -2,246 +2,245 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Content
+namespace DotNetNuke.Tests.Content;
+
+using System;
+using System.Linq;
+
+using DotNetNuke.Abstractions;
+using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Data;
+using DotNetNuke.Entities.Content.Taxonomy;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Services.Cache;
+using DotNetNuke.Tests.Content.Mocks;
+using DotNetNuke.Tests.Utilities;
+using DotNetNuke.Tests.Utilities.Mocks;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
+
+using NUnit.Framework;
+
+/// <summary>  Summary description for ScopeTypeTests.</summary>
+[TestFixture]
+public class ScopeTypeControllerTests
 {
-    using System;
-    using System.Linq;
+    private Mock<CachingProvider> mockCache;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Content.Data;
-    using DotNetNuke.Entities.Content.Taxonomy;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Services.Cache;
-    using DotNetNuke.Tests.Content.Mocks;
-    using DotNetNuke.Tests.Utilities;
-    using DotNetNuke.Tests.Utilities.Mocks;
+    [SetUp]
 
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Moq;
-
-    using NUnit.Framework;
-
-    /// <summary>  Summary description for ScopeTypeTests.</summary>
-    [TestFixture]
-    public class ScopeTypeControllerTests
+    public void SetUp()
     {
-        private Mock<CachingProvider> mockCache;
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
+        serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+        serviceCollection.AddTransient<IHostSettingsService, HostController>();
+        Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
 
-        [SetUp]
+        // Register MockCachingProvider
+        this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+        MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
+    }
 
-        public void SetUp()
-        {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+    [TearDown]
+    public void TearDown()
+    {
+        Globals.DependencyProvider = null;
+        MockComponentProvider.ResetContainer();
+    }
 
-            // Register MockCachingProvider
-            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
-            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
-        }
+    [Test]
+    public void ScopeTypeController_AddScopeType_Throws_On_Null_ScopeType()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-        [TearDown]
-        public void TearDown()
-        {
-            Globals.DependencyProvider = null;
-            MockComponentProvider.ResetContainer();
-        }
+        // Act, Arrange
+        Assert.Throws<ArgumentNullException>(() => scopeTypeController.AddScopeType(null));
+    }
 
-        [Test]
-        public void ScopeTypeController_AddScopeType_Throws_On_Null_ScopeType()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+    [Test]
+    public void ScopeTypeController_AddScopeType_Calls_DataService_On_Valid_Arguments()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-            // Act, Arrange
-            Assert.Throws<ArgumentNullException>(() => scopeTypeController.AddScopeType(null));
-        }
+        var scopeType = ContentTestHelper.CreateValidScopeType();
 
-        [Test]
-        public void ScopeTypeController_AddScopeType_Calls_DataService_On_Valid_Arguments()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        // Act
+        int scopeTypeId = scopeTypeController.AddScopeType(scopeType);
 
-            var scopeType = ContentTestHelper.CreateValidScopeType();
+        // Assert
+        mockDataService.Verify(ds => ds.AddScopeType(scopeType));
+    }
 
-            // Act
-            int scopeTypeId = scopeTypeController.AddScopeType(scopeType);
+    [Test]
+    public void ScopeTypeController_AddScopeType_Returns_ValidId_On_Valid_ScopeType()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        mockDataService.Setup(ds => ds.AddScopeType(It.IsAny<ScopeType>())).Returns(Constants.SCOPETYPE_AddScopeTypeId);
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
 
-            // Assert
-            mockDataService.Verify(ds => ds.AddScopeType(scopeType));
-        }
+        // Act
+        int scopeTypeId = scopeTypeController.AddScopeType(scopeType);
 
-        [Test]
-        public void ScopeTypeController_AddScopeType_Returns_ValidId_On_Valid_ScopeType()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.AddScopeType(It.IsAny<ScopeType>())).Returns(Constants.SCOPETYPE_AddScopeTypeId);
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
-            ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
+        // Assert
+        Assert.That(scopeTypeId, Is.EqualTo(Constants.SCOPETYPE_AddScopeTypeId));
+    }
 
-            // Act
-            int scopeTypeId = scopeTypeController.AddScopeType(scopeType);
+    [Test]
+    public void ScopeTypeController_AddScopeType_Sets_ValidId_On_Valid_ScopeType()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        mockDataService.Setup(ds => ds.AddScopeType(It.IsAny<ScopeType>())).Returns(Constants.SCOPETYPE_AddScopeTypeId);
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        var scopeType = ContentTestHelper.CreateValidScopeType();
 
-            // Assert
-            Assert.That(scopeTypeId, Is.EqualTo(Constants.SCOPETYPE_AddScopeTypeId));
-        }
+        // Act
+        scopeTypeController.AddScopeType(scopeType);
 
-        [Test]
-        public void ScopeTypeController_AddScopeType_Sets_ValidId_On_Valid_ScopeType()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.AddScopeType(It.IsAny<ScopeType>())).Returns(Constants.SCOPETYPE_AddScopeTypeId);
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
-            var scopeType = ContentTestHelper.CreateValidScopeType();
+        // Assert
+        Assert.That(scopeType.ScopeTypeId, Is.EqualTo(Constants.SCOPETYPE_AddScopeTypeId));
+    }
 
-            // Act
-            scopeTypeController.AddScopeType(scopeType);
+    [Test]
+    public void ScopeTypeController_DeleteScopeType_Throws_On_Null_ScopeType()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-            // Assert
-            Assert.That(scopeType.ScopeTypeId, Is.EqualTo(Constants.SCOPETYPE_AddScopeTypeId));
-        }
+        // Act, Arrange
+        Assert.Throws<ArgumentNullException>(() => scopeTypeController.DeleteScopeType(null));
+    }
 
-        [Test]
-        public void ScopeTypeController_DeleteScopeType_Throws_On_Null_ScopeType()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+    [Test]
+    public void ScopeTypeController_DeleteScopeType_Throws_On_Negative_ScopeTypeId()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-            // Act, Arrange
-            Assert.Throws<ArgumentNullException>(() => scopeTypeController.DeleteScopeType(null));
-        }
+        ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
+        scopeType.ScopeTypeId = Null.NullInteger;
 
-        [Test]
-        public void ScopeTypeController_DeleteScopeType_Throws_On_Negative_ScopeTypeId()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        Assert.Throws<ArgumentOutOfRangeException>(() => scopeTypeController.DeleteScopeType(scopeType));
+    }
 
-            ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
-            scopeType.ScopeTypeId = Null.NullInteger;
+    [Test]
+    public void ScopeTypeController_DeleteScopeType_Calls_DataService_On_Valid_ContentTypeId()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => scopeTypeController.DeleteScopeType(scopeType));
-        }
+        var scopeType = ContentTestHelper.CreateValidScopeType();
+        scopeType.ScopeTypeId = Constants.SCOPETYPE_ValidScopeTypeId;
 
-        [Test]
-        public void ScopeTypeController_DeleteScopeType_Calls_DataService_On_Valid_ContentTypeId()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        // Act
+        scopeTypeController.DeleteScopeType(scopeType);
 
-            var scopeType = ContentTestHelper.CreateValidScopeType();
-            scopeType.ScopeTypeId = Constants.SCOPETYPE_ValidScopeTypeId;
+        // Assert
+        mockDataService.Verify(ds => ds.DeleteScopeType(scopeType));
+    }
 
-            // Act
-            scopeTypeController.DeleteScopeType(scopeType);
+    [Test]
 
-            // Assert
-            mockDataService.Verify(ds => ds.DeleteScopeType(scopeType));
-        }
+    public void ScopeTypeController_GetScopeTypes_Calls_DataService()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        mockDataService.Setup(ds => ds.GetScopeTypes()).Returns(MockHelper.CreateValidScopeTypesReader(Constants.SCOPETYPE_ValidScopeTypeCount));
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-        [Test]
+        // Act
+        IQueryable<ScopeType> scopeTypes = scopeTypeController.GetScopeTypes();
 
-        public void ScopeTypeController_GetScopeTypes_Calls_DataService()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetScopeTypes()).Returns(MockHelper.CreateValidScopeTypesReader(Constants.SCOPETYPE_ValidScopeTypeCount));
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        // Assert
+        mockDataService.Verify(ds => ds.GetScopeTypes());
+    }
 
-            // Act
-            IQueryable<ScopeType> scopeTypes = scopeTypeController.GetScopeTypes();
+    [Test]
 
-            // Assert
-            mockDataService.Verify(ds => ds.GetScopeTypes());
-        }
+    public void ScopeTypeController_GetScopeTypes_Returns_Empty_List_Of_ScopeTypes_If_No_ScopeTypes()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        mockDataService.Setup(ds => ds.GetScopeTypes()).Returns(MockHelper.CreateEmptyScopeTypeReader());
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-        [Test]
+        // Act
+        var scopeTypes = scopeTypeController.GetScopeTypes();
 
-        public void ScopeTypeController_GetScopeTypes_Returns_Empty_List_Of_ScopeTypes_If_No_ScopeTypes()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetScopeTypes()).Returns(MockHelper.CreateEmptyScopeTypeReader());
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        // Assert
+        Assert.That(scopeTypes, Is.Not.Null);
+        Assert.That(scopeTypes.Count(), Is.EqualTo(0));
+    }
 
-            // Act
-            var scopeTypes = scopeTypeController.GetScopeTypes();
+    [Test]
 
-            // Assert
-            Assert.That(scopeTypes, Is.Not.Null);
-            Assert.That(scopeTypes.Count(), Is.EqualTo(0));
-        }
+    public void ScopeTypeController_GetScopeTypes_Returns_List_Of_ScopeTypes()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        mockDataService.Setup(ds => ds.GetScopeTypes()).Returns(MockHelper.CreateValidScopeTypesReader(Constants.SCOPETYPE_ValidScopeTypeCount));
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-        [Test]
+        // Act
+        var scopeTypes = scopeTypeController.GetScopeTypes();
 
-        public void ScopeTypeController_GetScopeTypes_Returns_List_Of_ScopeTypes()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetScopeTypes()).Returns(MockHelper.CreateValidScopeTypesReader(Constants.SCOPETYPE_ValidScopeTypeCount));
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        // Assert
+        Assert.That(scopeTypes.Count(), Is.EqualTo(Constants.SCOPETYPE_ValidScopeTypeCount));
+    }
 
-            // Act
-            var scopeTypes = scopeTypeController.GetScopeTypes();
+    [Test]
+    public void ScopeTypeController_UpdateScopeType_Throws_On_Null_ScopeType()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-            // Assert
-            Assert.That(scopeTypes.Count(), Is.EqualTo(Constants.SCOPETYPE_ValidScopeTypeCount));
-        }
+        // Act, Arrange
+        Assert.Throws<ArgumentNullException>(() => scopeTypeController.UpdateScopeType(null));
+    }
 
-        [Test]
-        public void ScopeTypeController_UpdateScopeType_Throws_On_Null_ScopeType()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+    [Test]
+    public void ScopeTypeController_UpdateScopeType_Throws_On_Negative_ScopeTypeId()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-            // Act, Arrange
-            Assert.Throws<ArgumentNullException>(() => scopeTypeController.UpdateScopeType(null));
-        }
+        ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
+        scopeType.ScopeType = Constants.SCOPETYPE_InValidScopeType;
 
-        [Test]
-        public void ScopeTypeController_UpdateScopeType_Throws_On_Negative_ScopeTypeId()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        Assert.Throws<ArgumentOutOfRangeException>(() => scopeTypeController.UpdateScopeType(scopeType));
+    }
 
-            ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
-            scopeType.ScopeType = Constants.SCOPETYPE_InValidScopeType;
+    [Test]
+    public void ScopeTypeController_UpdateScopeType_Calls_DataService_On_Valid_ContentType()
+    {
+        // Arrange
+        var mockDataService = new Mock<IDataService>();
+        var scopeTypeController = new ScopeTypeController(mockDataService.Object);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => scopeTypeController.UpdateScopeType(scopeType));
-        }
+        ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
+        scopeType.ScopeTypeId = Constants.SCOPETYPE_UpdateScopeTypeId;
+        scopeType.ScopeType = Constants.SCOPETYPE_UpdateScopeType;
 
-        [Test]
-        public void ScopeTypeController_UpdateScopeType_Calls_DataService_On_Valid_ContentType()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-            var scopeTypeController = new ScopeTypeController(mockDataService.Object);
+        // Act
+        scopeTypeController.UpdateScopeType(scopeType);
 
-            ScopeType scopeType = ContentTestHelper.CreateValidScopeType();
-            scopeType.ScopeTypeId = Constants.SCOPETYPE_UpdateScopeTypeId;
-            scopeType.ScopeType = Constants.SCOPETYPE_UpdateScopeType;
-
-            // Act
-            scopeTypeController.UpdateScopeType(scopeType);
-
-            // Assert
-            mockDataService.Verify(ds => ds.UpdateScopeType(scopeType));
-        }
+        // Assert
+        mockDataService.Verify(ds => ds.UpdateScopeType(scopeType));
     }
 }

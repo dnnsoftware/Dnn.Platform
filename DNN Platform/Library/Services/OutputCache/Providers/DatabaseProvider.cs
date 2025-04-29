@@ -2,121 +2,120 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.OutputCache.Providers
+namespace DotNetNuke.Services.OutputCache.Providers;
+
+using System;
+using System.Data;
+using System.IO;
+using System.Text;
+using System.Web;
+
+using DotNetNuke.Data;
+
+/// <summary>DatabaseProvider implements the OutputCachingProvider for database storage.</summary>
+public class DatabaseProvider : OutputCachingProvider
 {
-    using System;
-    using System.Data;
-    using System.IO;
-    using System.Text;
-    using System.Web;
-
-    using DotNetNuke.Data;
-
-    /// <summary>DatabaseProvider implements the OutputCachingProvider for database storage.</summary>
-    public class DatabaseProvider : OutputCachingProvider
+    /// <inheritdoc/>
+    public override int GetItemCount(int tabId)
     {
-        /// <inheritdoc/>
-        public override int GetItemCount(int tabId)
-        {
-            return DataProvider.Instance().GetOutputCacheItemCount(tabId);
-        }
+        return DataProvider.Instance().GetOutputCacheItemCount(tabId);
+    }
 
-        /// <inheritdoc/>
-        public override byte[] GetOutput(int tabId, string cacheKey)
+    /// <inheritdoc/>
+    public override byte[] GetOutput(int tabId, string cacheKey)
+    {
+        IDataReader dr = null;
+        try
         {
-            IDataReader dr = null;
-            try
+            dr = DataProvider.Instance().GetOutputCacheItem(cacheKey);
+            if (dr == null)
             {
-                dr = DataProvider.Instance().GetOutputCacheItem(cacheKey);
-                if (dr == null)
+                return null;
+            }
+            else
+            {
+                if (!dr.Read())
                 {
                     return null;
                 }
-                else
-                {
-                    if (!dr.Read())
-                    {
-                        return null;
-                    }
 
-                    return Encoding.UTF8.GetBytes(dr["Data"].ToString());
-                }
-            }
-            finally
-            {
-                if (dr != null)
-                {
-                    dr.Close();
-                }
+                return Encoding.UTF8.GetBytes(dr["Data"].ToString());
             }
         }
-
-        /// <inheritdoc/>
-        public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
+        finally
         {
-            return new DatabaseResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
-        }
-
-        /// <inheritdoc/>
-        public override void PurgeCache(int portalId)
-        {
-            DataProvider.Instance().PurgeOutputCache();
-        }
-
-        /// <inheritdoc/>
-        public override void PurgeExpiredItems(int portalId)
-        {
-            DataProvider.Instance().PurgeExpiredOutputCacheItems();
-        }
-
-        /// <inheritdoc/>
-        public override void Remove(int tabId)
-        {
-            DataProvider.Instance().RemoveOutputCacheItem(tabId);
-        }
-
-        /// <inheritdoc/>
-        public override void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output)
-        {
-            string data = Encoding.UTF8.GetString(output);
-            DataProvider.Instance().AddOutputCacheItem(tabId, cacheKey, data, DateTime.UtcNow.Add(duration));
-        }
-
-        /// <inheritdoc/>
-        public override bool StreamOutput(int tabId, string cacheKey, HttpContext context)
-        {
-            IDataReader dr = null;
-            try
+            if (dr != null)
             {
-                dr = DataProvider.Instance().GetOutputCacheItem(cacheKey);
-                if (dr == null)
+                dr.Close();
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
+    {
+        return new DatabaseResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
+    }
+
+    /// <inheritdoc/>
+    public override void PurgeCache(int portalId)
+    {
+        DataProvider.Instance().PurgeOutputCache();
+    }
+
+    /// <inheritdoc/>
+    public override void PurgeExpiredItems(int portalId)
+    {
+        DataProvider.Instance().PurgeExpiredOutputCacheItems();
+    }
+
+    /// <inheritdoc/>
+    public override void Remove(int tabId)
+    {
+        DataProvider.Instance().RemoveOutputCacheItem(tabId);
+    }
+
+    /// <inheritdoc/>
+    public override void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output)
+    {
+        string data = Encoding.UTF8.GetString(output);
+        DataProvider.Instance().AddOutputCacheItem(tabId, cacheKey, data, DateTime.UtcNow.Add(duration));
+    }
+
+    /// <inheritdoc/>
+    public override bool StreamOutput(int tabId, string cacheKey, HttpContext context)
+    {
+        IDataReader dr = null;
+        try
+        {
+            dr = DataProvider.Instance().GetOutputCacheItem(cacheKey);
+            if (dr == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (!dr.Read())
                 {
                     return false;
                 }
-                else
+
+                var expireTime = Convert.ToDateTime(dr["Expiration"]);
+                if (expireTime < DateTime.UtcNow)
                 {
-                    if (!dr.Read())
-                    {
-                        return false;
-                    }
-
-                    var expireTime = Convert.ToDateTime(dr["Expiration"]);
-                    if (expireTime < DateTime.UtcNow)
-                    {
-                        DataProvider.Instance().RemoveOutputCacheItem(tabId);
-                        return false;
-                    }
-
-                    context.Response.BinaryWrite(Encoding.Default.GetBytes(dr["Data"].ToString()));
-                    return true;
+                    DataProvider.Instance().RemoveOutputCacheItem(tabId);
+                    return false;
                 }
+
+                context.Response.BinaryWrite(Encoding.Default.GetBytes(dr["Data"].ToString()));
+                return true;
             }
-            finally
+        }
+        finally
+        {
+            if (dr != null)
             {
-                if (dr != null)
-                {
-                    dr.Close();
-                }
+                dr.Close();
             }
         }
     }

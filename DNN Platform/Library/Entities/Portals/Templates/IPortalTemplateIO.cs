@@ -2,26 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Portals.Internal
+namespace DotNetNuke.Entities.Portals.Internal;
+
+using System.Collections.Generic;
+using System.IO;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+[DnnDeprecated(9, 11, 1, "No replacement")]
+public partial interface IPortalTemplateIO
 {
-    using System.Collections.Generic;
-    using System.IO;
+    IEnumerable<string> EnumerateTemplates();
 
-    using DotNetNuke.Internal.SourceGenerators;
+    IEnumerable<string> EnumerateLanguageFiles();
 
-    [DnnDeprecated(9, 11, 1, "No replacement")]
-    public partial interface IPortalTemplateIO
-    {
-        IEnumerable<string> EnumerateTemplates();
+    string GetResourceFilePath(string templateFilePath);
 
-        IEnumerable<string> EnumerateLanguageFiles();
+    string GetLanguageFilePath(string templateFilePath, string cultureCode);
 
-        string GetResourceFilePath(string templateFilePath);
+    TextReader OpenTextReader(string filePath);
 
-        string GetLanguageFilePath(string templateFilePath, string cultureCode);
-
-        TextReader OpenTextReader(string filePath);
-
-        (string, List<string>) GetTemplateLanguages(string templateFilePath);
-    }
+    (string CultureCode, List<string> Locales) GetTemplateLanguages(string templateFilePath);
 }

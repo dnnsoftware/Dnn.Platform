@@ -1,18 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Urls
+namespace DotNetNuke.Entities.Urls;
+
+using System.Collections.Generic;
+
+public interface IExtensionUrlProviderSettingsControl
 {
-    using System.Collections.Generic;
+    ExtensionUrlProviderInfo Provider { get; set; }
 
-    public interface IExtensionUrlProviderSettingsControl
-    {
-        ExtensionUrlProviderInfo Provider { get; set; }
+    void LoadSettings();
 
-        void LoadSettings();
-
-        /// <summary>Build the Settings Dictionary and return it to the caller to persist to the database.</summary>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}"/> of keys and values.</returns>
-        Dictionary<string, string> SaveSettings();
-    }
+    /// <summary>Build the Settings Dictionary and return it to the caller to persist to the database.</summary>
+    /// <returns>A <see cref="Dictionary{TKey,TValue}"/> of keys and values.</returns>
+    Dictionary<string, string> SaveSettings();
 }

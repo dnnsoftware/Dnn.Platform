@@ -4,9 +4,9 @@ import visiblePanel from "./visiblePanelReducer";
 import licensing from "./licensingReducer";
 
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    licensing
+  pagination,
+  visiblePanel,
+  licensing,
 });
 
 export default rootReducer;

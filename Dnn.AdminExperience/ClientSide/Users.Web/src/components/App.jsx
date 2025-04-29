@@ -2,43 +2,43 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Body from "./Body";
-import {CommonUsersActions } from "dnn-users-common-actions";
+import { CommonUsersActions } from "dnn-users-common-actions";
 import { PersonaBarPage } from "@dnnsoftware/dnn-react-common";
 
 class App extends Component {
-    constructor() {
-        super();
-    }
-    componentDidMount() {
-        const {props} = this;
-        props.dispatch(CommonUsersActions.getUsers({
-            searchText: "",
-            filter: 0,
-            pageIndex: 0,
-            pageSize: 10,
-            sortColumn: "",
-            sortAscending: false
-        }));
-    }
-    render() {
-        return (
-            <div className="boilerplate-app personaBar-mainContainer">
-                <PersonaBarPage isOpen={true}>
-                    <Body />
-                </PersonaBarPage>
-            </div>
-        );
-    }
+  constructor() {
+    super();
+  }
+  componentDidMount() {
+    const { props } = this;
+    props.dispatch(
+      CommonUsersActions.getUsers({
+        searchText: "",
+        filter: 0,
+        pageIndex: 0,
+        pageSize: 10,
+        sortColumn: "",
+        sortAscending: false,
+      }),
+    );
+  }
+  render() {
+    return (
+      <div className="boilerplate-app personaBar-mainContainer">
+        <PersonaBarPage isOpen={true}>
+          <Body />
+        </PersonaBarPage>
+      </div>
+    );
+  }
 }
 
 App.propTypes = {
-    dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
-
 function mapStateToProps() {
-    return {};
+  return {};
 }
-
 
 export default connect(mapStateToProps)(App);

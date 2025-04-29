@@ -23,143 +23,142 @@ using System.IO;
 
 using log4net.Core;
 
-namespace log4net.Util
+namespace log4net.Util;
+
+/// <summary>
+/// Subclass of <see cref="QuietTextWriter"/> that maintains a count of 
+/// the number of bytes written.
+/// </summary>
+/// <remarks>
+/// <para>
+/// This writer counts the number of bytes written.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+/// <author>Gert Driesen</author>
+public class CountingQuietTextWriter : QuietTextWriter 
 {
     /// <summary>
-    /// Subclass of <see cref="QuietTextWriter"/> that maintains a count of 
-    /// the number of bytes written.
+    /// Constructor
     /// </summary>
+    /// <param name="writer">The <see cref="TextWriter" /> to actually write to.</param>
+    /// <param name="errorHandler">The <see cref="IErrorHandler" /> to report errors to.</param>
     /// <remarks>
     /// <para>
-    /// This writer counts the number of bytes written.
+    /// Creates a new instance of the <see cref="CountingQuietTextWriter" /> class 
+    /// with the specified <see cref="TextWriter" /> and <see cref="IErrorHandler" />.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    public class CountingQuietTextWriter : QuietTextWriter 
+    public CountingQuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer, errorHandler)
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="writer">The <see cref="TextWriter" /> to actually write to.</param>
-        /// <param name="errorHandler">The <see cref="IErrorHandler" /> to report errors to.</param>
-        /// <remarks>
-        /// <para>
-        /// Creates a new instance of the <see cref="CountingQuietTextWriter" /> class 
-        /// with the specified <see cref="TextWriter" /> and <see cref="IErrorHandler" />.
-        /// </para>
-        /// </remarks>
-        public CountingQuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer, errorHandler)
-        {
-            this.m_countBytes = 0;
-        }
+        this.m_countBytes = 0;
+    }
 
-        /// <summary>
-        /// Writes a character to the underlying writer and counts the number of bytes written.
-        /// </summary>
-        /// <param name="value">the char to write</param>
-        /// <remarks>
-        /// <para>
-        /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts
-        /// the number of bytes written.
-        /// </para>
-        /// </remarks>
-        public override void Write(char value) 
+    /// <summary>
+    /// Writes a character to the underlying writer and counts the number of bytes written.
+    /// </summary>
+    /// <param name="value">the char to write</param>
+    /// <remarks>
+    /// <para>
+    /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts
+    /// the number of bytes written.
+    /// </para>
+    /// </remarks>
+    public override void Write(char value) 
+    {
+        try 
+        {
+            base.Write(value);
+
+            // get the number of bytes needed to represent the 
+            // char using the supplied encoding.
+            this.m_countBytes += this.Encoding.GetByteCount(new char[] { value });
+        } 
+        catch(Exception e) 
+        {
+            this.ErrorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
+        }
+    }
+    
+    /// <summary>
+    /// Writes a buffer to the underlying writer and counts the number of bytes written.
+    /// </summary>
+    /// <param name="buffer">the buffer to write</param>
+    /// <param name="index">the start index to write from</param>
+    /// <param name="count">the number of characters to write</param>
+    /// <remarks>
+    /// <para>
+    /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts
+    /// the number of bytes written.
+    /// </para>
+    /// </remarks>
+    public override void Write(char[] buffer, int index, int count) 
+    {
+        if (count > 0)
         {
             try 
             {
-                base.Write(value);
+                base.Write(buffer, index, count);
 
                 // get the number of bytes needed to represent the 
-                // char using the supplied encoding.
-                this.m_countBytes += this.Encoding.GetByteCount(new char[] { value });
+                // char array using the supplied encoding.
+                this.m_countBytes += this.Encoding.GetByteCount(buffer, index, count);
             } 
             catch(Exception e) 
             {
-                this.ErrorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
+                this.ErrorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
             }
         }
-    
-        /// <summary>
-        /// Writes a buffer to the underlying writer and counts the number of bytes written.
-        /// </summary>
-        /// <param name="buffer">the buffer to write</param>
-        /// <param name="index">the start index to write from</param>
-        /// <param name="count">the number of characters to write</param>
-        /// <remarks>
-        /// <para>
-        /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts
-        /// the number of bytes written.
-        /// </para>
-        /// </remarks>
-        public override void Write(char[] buffer, int index, int count) 
-        {
-            if (count > 0)
-            {
-                try 
-                {
-                    base.Write(buffer, index, count);
-
-                    // get the number of bytes needed to represent the 
-                    // char array using the supplied encoding.
-                    this.m_countBytes += this.Encoding.GetByteCount(buffer, index, count);
-                } 
-                catch(Exception e) 
-                {
-                    this.ErrorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Writes a string to the output and counts the number of bytes written.
-        /// </summary>
-        /// <param name="str">The string data to write to the output.</param>
-        /// <remarks>
-        /// <para>
-        /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts
-        /// the number of bytes written.
-        /// </para>
-        /// </remarks>
-        public override void Write(string str) 
-        {
-            if (str != null && str.Length > 0)
-            {
-                try 
-                {
-                    base.Write(str);
-
-                    // get the number of bytes needed to represent the 
-                    // string using the supplied encoding.
-                    this.m_countBytes += this.Encoding.GetByteCount(str);
-                }
-                catch(Exception e) 
-                {
-                    this.ErrorHandler.Error("Failed to write [" + str + "].", e, ErrorCode.WriteFailure);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the total number of bytes written.
-        /// </summary>
-        /// <value>
-        /// The total number of bytes written.
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Gets or sets the total number of bytes written.
-        /// </para>
-        /// </remarks>
-        public long Count 
-        {
-            get { return this.m_countBytes; }
-            set { this.m_countBytes = value; }
-        }
-
-        /// <summary>
-        /// Total number of bytes written.
-        /// </summary>
-        private long m_countBytes;
     }
+
+    /// <summary>
+    /// Writes a string to the output and counts the number of bytes written.
+    /// </summary>
+    /// <param name="str">The string data to write to the output.</param>
+    /// <remarks>
+    /// <para>
+    /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts
+    /// the number of bytes written.
+    /// </para>
+    /// </remarks>
+    public override void Write(string str) 
+    {
+        if (str != null && str.Length > 0)
+        {
+            try 
+            {
+                base.Write(str);
+
+                // get the number of bytes needed to represent the 
+                // string using the supplied encoding.
+                this.m_countBytes += this.Encoding.GetByteCount(str);
+            }
+            catch(Exception e) 
+            {
+                this.ErrorHandler.Error("Failed to write [" + str + "].", e, ErrorCode.WriteFailure);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the total number of bytes written.
+    /// </summary>
+    /// <value>
+    /// The total number of bytes written.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Gets or sets the total number of bytes written.
+    /// </para>
+    /// </remarks>
+    public long Count 
+    {
+        get { return this.m_countBytes; }
+        set { this.m_countBytes = value; }
+    }
+
+    /// <summary>
+    /// Total number of bytes written.
+    /// </summary>
+    private long m_countBytes;
 }

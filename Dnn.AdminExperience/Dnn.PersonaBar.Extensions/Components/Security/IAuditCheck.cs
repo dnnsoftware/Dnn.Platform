@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components
+namespace Dnn.PersonaBar.Security.Components;
+
+public interface IAuditCheck
 {
-    public interface IAuditCheck
-    {
-        string Id { get; }
+    string Id { get; }
 
-        bool LazyLoad { get; }
+    bool LazyLoad { get; }
 
-        CheckResult Execute();
-    }
+    CheckResult Execute();
 }

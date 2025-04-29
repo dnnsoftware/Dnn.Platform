@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.ExportImport.Dto.PageTemplates
-{
-    using Dnn.ExportImport.Dto.Assets;
+namespace Dnn.ExportImport.Dto.PageTemplates;
 
-    public class ExportPageTemplate : ExportFile
-    {
-    }
+using Dnn.ExportImport.Dto.Assets;
+
+public class ExportPageTemplate : ExportFile
+{
 }

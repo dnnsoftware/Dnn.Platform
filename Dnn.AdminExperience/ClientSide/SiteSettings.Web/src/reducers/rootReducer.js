@@ -8,28 +8,30 @@ import search from "./searchReducer";
 import languageEditor from "./languageEditorReducer";
 
 function getExtraReducers() {
-    let extraReducers = {};
-    if (window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras) {
-        window.dnn.SiteSettings.SiteBehaviorExtras.forEach((extra) => {
-            extraReducers[extra.ReducerKey] = extra.Reducer;
-        });
-    }    
-    if (window.dnn.SiteSettings && window.dnn.SiteSettings.SearchExtras) {
-        window.dnn.SiteSettings.SearchExtras.forEach((extra) => {
-            extraReducers[extra.ReducerKey] = extra.Reducer;
-        });
-    }
-    return extraReducers;
+  let extraReducers = {};
+  if (window.dnn.SiteSettings && window.dnn.SiteSettings.SiteBehaviorExtras) {
+    window.dnn.SiteSettings.SiteBehaviorExtras.forEach((extra) => {
+      extraReducers[extra.ReducerKey] = extra.Reducer;
+    });
+  }
+  if (window.dnn.SiteSettings && window.dnn.SiteSettings.SearchExtras) {
+    window.dnn.SiteSettings.SearchExtras.forEach((extra) => {
+      extraReducers[extra.ReducerKey] = extra.Reducer;
+    });
+  }
+  return extraReducers;
 }
 
-const rootReducer = combineReducers(Object.assign(getExtraReducers(), {
+const rootReducer = combineReducers(
+  Object.assign(getExtraReducers(), {
     pagination,
     visiblePanel,
     siteInfo,
     siteBehavior,
     languages,
     search,
-    languageEditor
-}));
+    languageEditor,
+  }),
+);
 
 export default rootReducer;

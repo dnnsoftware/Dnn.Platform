@@ -16,8 +16,12 @@
   background-color: #2f2f2f;
   background-image: url("data:image/svg+xml,%3Csvg aria-hidden='true' focusable='false' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512'%3E%3Cpath fill='%23727272' d='M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat, repeat;
-  background-position: right 0.7em top 50%, 0 0;
-  background-size: 0.65em auto, 100%;
+  background-position:
+    right 0.7em top 50%,
+    0 0;
+  background-size:
+    0.65em auto,
+    100%;
 }
 
 #menu-QuickAddModule .caret-up {
@@ -28,7 +32,8 @@
   display: none;
 }
 
-#menu-QuickAddModule select:hover, #menu-QuickAddModule select:focus {
+#menu-QuickAddModule select:hover,
+#menu-QuickAddModule select:focus {
   color: #fff;
   border-color: #fff;
 }
@@ -40,7 +45,9 @@
 *[dir="rtl"] #menu-QuickAddModule select,
 :root:lang(ar) #menu-QuickAddModule select,
 :root:lang(iw) #menu-QuickAddModule select {
-  background-position: left 0.7em top 50%, 0 0;
+  background-position:
+    left 0.7em top 50%,
+    0 0;
   padding: 0.6em 0.8em 0.5em 1.4em;
 }
 
@@ -51,7 +58,9 @@ select#menu-QuickAddModule-btn {
   background-image: url("data:image/svg+xml,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23727272' d='M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z'%3E%3C/path%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 50% top 50%;
-  background-size: 0.65em auto, 100%;
+  background-size:
+    0.65em auto,
+    100%;
   border: 1px solid #727272;
   border-radius: 0.2em;
   width: 32px;

@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Components.Dto
+namespace Dnn.PersonaBar.Pages.Components.Dto;
+
+public class PageUrlResult
 {
-    public class PageUrlResult
-    {
-        public bool Success { get; set; }
+    public bool Success { get; set; }
 
-        public string ErrorMessage { get; set; }
+    public string ErrorMessage { get; set; }
 
-        public string SuggestedUrlPath { get; set; }
+    public string SuggestedUrlPath { get; set; }
 
-        public int? Id { get; set; }
-    }
+    public int? Id { get; set; }
 }

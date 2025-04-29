@@ -2,46 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Upgrade.Internals
+namespace DotNetNuke.Services.Upgrade.Internals;
+
+using System.Globalization;
+
+using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+
+/// <summary>  Interface for InstallController. This Interface is meant for Internal use only.</summary>
+public interface IInstallController
 {
-    using System.Globalization;
+    string InstallerLogName { get; }
 
-    using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+    bool IsValidSqlServerVersion(string connectionString);
 
-    /// <summary>  Interface for InstallController. This Interface is meant for Internal use only.</summary>
-    public interface IInstallController
-    {
-        string InstallerLogName { get; }
+    bool IsAbleToPerformDatabaseActions(string connectionString);
 
-        bool IsValidSqlServerVersion(string connectionString);
+    bool IsValidDotNetVersion();
 
-        bool IsAbleToPerformDatabaseActions(string connectionString);
+    bool IsSqlServerDbo();
 
-        bool IsValidDotNetVersion();
+    bool IsAvailableLanguagePack(string cultureCode);
 
-        bool IsSqlServerDbo();
+    /// <summary>GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.</summary>
+    /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
+    InstallConfig GetInstallConfig();
 
-        bool IsAvailableLanguagePack(string cultureCode);
+    /// <summary>SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.</summary>
+    void SetInstallConfig(InstallConfig installConfig);
 
-        /// <summary>GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.</summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
-        InstallConfig GetInstallConfig();
+    /// <summary>RemoveFromInstallConfig - Removes the specified XML Node from the InstallConfig.</summary>
+    /// <param name="xmlNodePath"></param>
+    void RemoveFromInstallConfig(string xmlNodePath);
 
-        /// <summary>SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.</summary>
-        void SetInstallConfig(InstallConfig installConfig);
+    /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>
+    /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
+    ConnectionConfig GetConnectionFromWebConfig();
 
-        /// <summary>RemoveFromInstallConfig - Removes the specified XML Node from the InstallConfig.</summary>
-        /// <param name="xmlNodePath"></param>
-        void RemoveFromInstallConfig(string xmlNodePath);
+    CultureInfo GetCurrentLanguage();
 
-        /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
-        ConnectionConfig GetConnectionFromWebConfig();
+    string TestDatabaseConnection(ConnectionConfig connectionConfig);
 
-        CultureInfo GetCurrentLanguage();
-
-        string TestDatabaseConnection(ConnectionConfig connectionConfig);
-
-        CultureInfo GetCultureFromCookie();
-    }
+    CultureInfo GetCultureFromCookie();
 }

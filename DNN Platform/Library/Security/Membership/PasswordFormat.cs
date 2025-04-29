@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Security.Membership
+namespace DotNetNuke.Security.Membership;
+
+public enum PasswordFormat
 {
-    public enum PasswordFormat
-    {
-        Clear = 0,
-        Hashed = 1,
-        Encrypted = 2,
-    }
+    Clear = 0,
+    Hashed = 1,
+    Encrypted = 2,
 }

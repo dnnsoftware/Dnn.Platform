@@ -28,7 +28,7 @@ const rootReducer = combineReducers({
     pageSeo,
     extensions,
     template,
-    languages
+    languages,
 });
 
 export default rootReducer;

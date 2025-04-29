@@ -1,218 +1,217 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.WebControls
+namespace DotNetNuke.UI.WebControls;
+
+using System.Web;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Common.Utilities;
+
+/// Project:    DotNetNuke
+/// Namespace:  DotNetNuke.UI.WebControls
+/// Class:      DNNMultiStateBoxColumn
+/// <summary>The DNNMultiStateBoxColumn control provides a DNNMultiState Box column for a Data Grid.</summary>
+public class DNNMultiStateBoxColumn : TemplateColumn
 {
-    using System.Web;
-    using System.Web.UI.WebControls;
+    private bool mAutoPostBack = true;
+    private string mDataField = Null.NullString;
+    private bool mEnabled = true;
+    private string mEnabledField = Null.NullString;
+    private string mImagePath = string.Empty;
+    private string mSelectedStateKey = string.Empty;
+    private DNNMultiStateCollection mStates;
 
-    using DotNetNuke.Common.Utilities;
-
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNMultiStateBoxColumn
-    /// <summary>The DNNMultiStateBoxColumn control provides a DNNMultiState Box column for a Data Grid.</summary>
-    public class DNNMultiStateBoxColumn : TemplateColumn
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumn"/> class.
+    /// Constructs the DNNMultiStateBoxColumn.
+    /// </summary>
+    public DNNMultiStateBoxColumn()
+        : this(false)
     {
-        private bool mAutoPostBack = true;
-        private string mDataField = Null.NullString;
-        private bool mEnabled = true;
-        private string mEnabledField = Null.NullString;
-        private string mImagePath = string.Empty;
-        private string mSelectedStateKey = string.Empty;
-        private DNNMultiStateCollection mStates;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumn"/> class.
-        /// Constructs the DNNMultiStateBoxColumn.
-        /// </summary>
-        public DNNMultiStateBoxColumn()
-            : this(false)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumn"/> class.
+    /// Constructs the MultiStateBoxColumn, with an optional AutoPostBack (where each change
+    /// of state of the control causes a Post Back).
+    /// </summary>
+    /// <param name="autoPostBack">Optional set the control to postback.</param>
+    public DNNMultiStateBoxColumn(bool autoPostBack)
+    {
+        this.AutoPostBack = autoPostBack;
+    }
+
+    /// <summary>Gets or sets a value indicating whether the column fires a postback when the control changes.</summary>
+    /// <value>A Boolean.</value>
+    public bool AutoPostBack
+    {
+        get
         {
+            return this.mAutoPostBack;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumn"/> class.
-        /// Constructs the MultiStateBoxColumn, with an optional AutoPostBack (where each change
-        /// of state of the control causes a Post Back).
-        /// </summary>
-        /// <param name="autoPostBack">Optional set the control to postback.</param>
-        public DNNMultiStateBoxColumn(bool autoPostBack)
+        set
         {
-            this.AutoPostBack = autoPostBack;
+            this.mAutoPostBack = value;
+        }
+    }
+
+    /// <summary>Gets or sets the selected state of the DNNMultiStateBox (unless DataBound).</summary>
+    /// <value>A Boolean.</value>
+    public string SelectedStateKey
+    {
+        get
+        {
+            return this.mSelectedStateKey;
         }
 
-        /// <summary>Gets or sets a value indicating whether the column fires a postback when the control changes.</summary>
-        /// <value>A Boolean.</value>
-        public bool AutoPostBack
+        set
         {
-            get
-            {
-                return this.mAutoPostBack;
-            }
+            this.mSelectedStateKey = value;
+        }
+    }
 
-            set
-            {
-                this.mAutoPostBack = value;
-            }
+    /// <summary>
+    /// Gets or sets the Data Field that the column should bind to
+    /// changed.
+    /// </summary>
+    /// <value>A Boolean.</value>
+    public string DataField
+    {
+        get
+        {
+            return this.mDataField;
         }
 
-        /// <summary>Gets or sets the selected state of the DNNMultiStateBox (unless DataBound).</summary>
-        /// <value>A Boolean.</value>
-        public string SelectedStateKey
+        set
         {
-            get
-            {
-                return this.mSelectedStateKey;
-            }
+            this.mDataField = value;
+        }
+    }
 
-            set
-            {
-                this.mSelectedStateKey = value;
-            }
+    /// <summary>
+    /// Gets or sets a value indicating whether an flag that indicates whether the control is enabled (this is overridden if
+    /// the EnabledField is set)
+    /// changed.
+    /// </summary>
+    /// <value>A Boolean.</value>
+    public bool Enabled
+    {
+        get
+        {
+            return this.mEnabled;
         }
 
-        /// <summary>
-        /// Gets or sets the Data Field that the column should bind to
-        /// changed.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        public string DataField
+        set
         {
-            get
-            {
-                return this.mDataField;
-            }
+            this.mEnabled = value;
+        }
+    }
 
-            set
-            {
-                this.mDataField = value;
-            }
+    /// <summary>
+    /// Gets or sets the Data Field that determines whether the control is Enabled
+    /// changed.
+    /// </summary>
+    /// <value>A String.</value>
+    public string EnabledField
+    {
+        get
+        {
+            return this.mEnabledField;
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether an flag that indicates whether the control is enabled (this is overridden if
-        /// the EnabledField is set)
-        /// changed.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        public bool Enabled
+        set
         {
-            get
-            {
-                return this.mEnabled;
-            }
+            this.mEnabledField = value;
+        }
+    }
 
-            set
-            {
-                this.mEnabled = value;
-            }
+    /// <summary>Gets or sets the image path of the DNNMultiStateBox.</summary>
+    /// <value>A Boolean.</value>
+    public string ImagePath
+    {
+        get
+        {
+            return this.mImagePath;
         }
 
-        /// <summary>
-        /// Gets or sets the Data Field that determines whether the control is Enabled
-        /// changed.
-        /// </summary>
-        /// <value>A String.</value>
-        public string EnabledField
+        set
         {
-            get
+            this.mImagePath = value;
+        }
+    }
+
+    /// <summary>Gets or sets the state collection of the DNNMultiStateBox.</summary>
+    /// <value>A Boolean.</value>
+    public DNNMultiStateCollection States
+    {
+        get
+        {
+            if (this.mStates == null)
             {
-                return this.mEnabledField;
+                this.mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
             }
 
-            set
-            {
-                this.mEnabledField = value;
-            }
+            return this.mStates;
         }
 
-        /// <summary>Gets or sets the image path of the DNNMultiStateBox.</summary>
-        /// <value>A Boolean.</value>
-        public string ImagePath
+        set
         {
-            get
-            {
-                return this.mImagePath;
-            }
+            this.mStates = value;
+        }
+    }
 
-            set
-            {
-                this.mImagePath = value;
-            }
+    /// <summary>Initialises the Column.</summary>
+    public override void Initialize()
+    {
+        this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+        this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+        this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
+        if (HttpContext.Current == null)
+        {
+            this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+            this.HeaderStyle.Font.Size = new FontUnit("10pt");
+            this.HeaderStyle.Font.Bold = true;
         }
 
-        /// <summary>Gets or sets the state collection of the DNNMultiStateBox.</summary>
-        /// <value>A Boolean.</value>
-        public DNNMultiStateCollection States
+        this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+        this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+    }
+
+    /// <summary>Creates a DNNMultiStateBoxColumnTemplate.</summary>
+    /// <returns>A DNNMultiStateBoxColumnTemplate.</returns>
+    private DNNMultiStateBoxColumnTemplate CreateTemplate(ListItemType type)
+    {
+        bool isDesignMode = false;
+        if (HttpContext.Current == null)
         {
-            get
-            {
-                if (this.mStates == null)
-                {
-                    this.mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
-                }
-
-                return this.mStates;
-            }
-
-            set
-            {
-                this.mStates = value;
-            }
+            isDesignMode = true;
         }
 
-        /// <summary>Initialises the Column.</summary>
-        public override void Initialize()
+        var template = new DNNMultiStateBoxColumnTemplate(type);
+        if (type != ListItemType.Header)
         {
-            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
-            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
-            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
-            if (HttpContext.Current == null)
-            {
-                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.HeaderStyle.Font.Size = new FontUnit("10pt");
-                this.HeaderStyle.Font.Bold = true;
-            }
-
-            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+            template.AutoPostBack = this.AutoPostBack;
         }
 
-        /// <summary>Creates a DNNMultiStateBoxColumnTemplate.</summary>
-        /// <returns>A DNNMultiStateBoxColumnTemplate.</returns>
-        private DNNMultiStateBoxColumnTemplate CreateTemplate(ListItemType type)
+        template.DataField = this.DataField;
+        template.Enabled = this.Enabled;
+        template.EnabledField = this.EnabledField;
+        template.ImagePath = this.ImagePath;
+        foreach (DNNMultiState objState in this.States)
         {
-            bool isDesignMode = false;
-            if (HttpContext.Current == null)
-            {
-                isDesignMode = true;
-            }
-
-            var template = new DNNMultiStateBoxColumnTemplate(type);
-            if (type != ListItemType.Header)
-            {
-                template.AutoPostBack = this.AutoPostBack;
-            }
-
-            template.DataField = this.DataField;
-            template.Enabled = this.Enabled;
-            template.EnabledField = this.EnabledField;
-            template.ImagePath = this.ImagePath;
-            foreach (DNNMultiState objState in this.States)
-            {
-                template.States.Add(objState);
-            }
-
-            template.SelectedStateKey = this.SelectedStateKey;
-            if (type == ListItemType.Header)
-            {
-                template.Text = this.HeaderText;
-                template.AutoPostBack = true;
-            }
-
-            template.DesignMode = isDesignMode;
-            return template;
+            template.States.Add(objState);
         }
+
+        template.SelectedStateKey = this.SelectedStateKey;
+        if (type == ListItemType.Header)
+        {
+            template.Text = this.HeaderText;
+            template.AutoPostBack = true;
+        }
+
+        template.DesignMode = isDesignMode;
+        return template;
     }
 }

@@ -2,55 +2,54 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Api
+namespace DotNetNuke.Web.Api;
+
+using System.Linq;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+
+using DotNetNuke.Entities.Modules;
+
+public class SupportedModulesAttribute : AuthorizeAttributeBase
 {
-    using System.Linq;
-    using System.Net.Http;
-    using System.Web.Http.Controllers;
+    private readonly string[] supportedModules;
 
-    using DotNetNuke.Entities.Modules;
-
-    public class SupportedModulesAttribute : AuthorizeAttributeBase
+    public SupportedModulesAttribute(string supportedModules)
     {
-        private readonly string[] supportedModules;
+        this.supportedModules = supportedModules.Split(new[] { ',' });
+    }
 
-        public SupportedModulesAttribute(string supportedModules)
+    public SupportedModulesAttribute(params string[] supportedModules)
+    {
+        this.supportedModules = supportedModules;
+    }
+
+    /// <inheritdoc/>
+    public override bool IsAuthorized(AuthFilterContext context)
+    {
+        var module = this.FindModuleInfo(context.ActionContext.Request);
+
+        if (module != null)
         {
-            this.supportedModules = supportedModules.Split(new[] { ',' });
+            return this.ModuleIsSupported(module);
         }
 
-        public SupportedModulesAttribute(params string[] supportedModules)
-        {
-            this.supportedModules = supportedModules;
-        }
+        return false;
+    }
 
-        /// <inheritdoc/>
-        public override bool IsAuthorized(AuthFilterContext context)
-        {
-            var module = this.FindModuleInfo(context.ActionContext.Request);
+    protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)
+    {
+        return request.FindModuleInfo();
+    }
 
-            if (module != null)
-            {
-                return this.ModuleIsSupported(module);
-            }
+    /// <inheritdoc/>
+    protected override bool SkipAuthorization(HttpActionContext actionContext)
+    {
+        return false;
+    }
 
-            return false;
-        }
-
-        protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)
-        {
-            return request.FindModuleInfo();
-        }
-
-        /// <inheritdoc/>
-        protected override bool SkipAuthorization(HttpActionContext actionContext)
-        {
-            return false;
-        }
-
-        private bool ModuleIsSupported(ModuleInfo module)
-        {
-            return this.supportedModules.Contains(module.DesktopModule.ModuleName);
-        }
+    private bool ModuleIsSupported(ModuleInfo module)
+    {
+        return this.supportedModules.Contains(module.DesktopModule.ModuleName);
     }
 }

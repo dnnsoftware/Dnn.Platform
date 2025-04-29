@@ -7,7 +7,7 @@ const themeService = {
     },
     getThemeFiles(themeName, level) {
         const api = new Api("Pages");
-        return api.get("GetThemeFiles", {themeName, level});
-    }
+        return api.get("GetThemeFiles", { themeName, level });
+    },
 };
 export default themeService;

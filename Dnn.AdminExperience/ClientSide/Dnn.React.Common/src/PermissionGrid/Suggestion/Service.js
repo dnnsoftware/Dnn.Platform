@@ -1,24 +1,23 @@
-
 function serializeQueryStringParameters(obj) {
-    let s = [];
-    for (let p in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, p)) {
-            s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        }
+  let s = [];
+  for (let p in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, p)) {
+      s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
     }
-    return s.join("&");
+  }
+  return s.join("&");
 }
 let sf = null;
 class Service {
-    constructor(serviceFramework) {
-        sf = serviceFramework;
-    }
+  constructor(serviceFramework) {
+    sf = serviceFramework;
+  }
 
-    getSuggestions(actionName, parameters, callback, errorCallback) {
-        sf.moduleRoot = "PersonaBar";
-        sf.controller = "Components";
+  getSuggestions(actionName, parameters, callback, errorCallback) {
+    sf.moduleRoot = "PersonaBar";
+    sf.controller = "Components";
 
-        sf.get(actionName, parameters, callback, errorCallback);
-    }
+    sf.get(actionName, parameters, callback, errorCallback);
+  }
 }
 export default Service;

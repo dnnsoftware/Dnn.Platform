@@ -2,9 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Urls
+namespace DotNetNuke.Tests.Urls;
+
+public static class UrlAssert
 {
-    public static class UrlAssert
-    {
-    }
 }

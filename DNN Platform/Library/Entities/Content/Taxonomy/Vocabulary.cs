@@ -1,260 +1,259 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Content.Taxonomy
+namespace DotNetNuke.Entities.Content.Taxonomy;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Common;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
+
+/// <summary>Class of Vocabulary.</summary>
+/// <seealso cref="TermController"/>
+[Serializable]
+public class Vocabulary : BaseEntityInfo, IHydratable
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
+    private static readonly PortalSecurity Security = PortalSecurity.Instance;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Content.Common;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security;
+    private string description;
+    private bool isSystem;
+    private string name;
+    private int scopeId;
+    private ScopeType scopeType;
+    private int scopeTypeId;
+    private List<Term> terms;
+    private VocabularyType type;
+    private int vocabularyId;
 
-    /// <summary>Class of Vocabulary.</summary>
-    /// <seealso cref="TermController"/>
-    [Serializable]
-    public class Vocabulary : BaseEntityInfo, IHydratable
+    private int weight;
+
+    /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
+    public Vocabulary()
+        : this(Null.NullString, Null.NullString, VocabularyType.Simple)
     {
-        private static readonly PortalSecurity Security = PortalSecurity.Instance;
+    }
 
-        private string description;
-        private bool isSystem;
-        private string name;
-        private int scopeId;
-        private ScopeType scopeType;
-        private int scopeTypeId;
-        private List<Term> terms;
-        private VocabularyType type;
-        private int vocabularyId;
+    /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
+    /// <param name="name"></param>
+    public Vocabulary(string name)
+        : this(name, Null.NullString, VocabularyType.Simple)
+    {
+    }
 
-        private int weight;
+    /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
+    /// <param name="name"></param>
+    /// <param name="description"></param>
+    public Vocabulary(string name, string description)
+        : this(name, description, VocabularyType.Simple)
+    {
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        public Vocabulary()
-            : this(Null.NullString, Null.NullString, VocabularyType.Simple)
+    /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
+    /// <param name="type"></param>
+    public Vocabulary(VocabularyType type)
+        : this(Null.NullString, Null.NullString, type)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
+    /// <param name="name"></param>
+    /// <param name="description"></param>
+    /// <param name="type"></param>
+    public Vocabulary(string name, string description, VocabularyType type)
+    {
+        this.Description = description;
+        this.Name = name;
+        this.Type = type;
+
+        this.ScopeId = Null.NullInteger;
+        this.ScopeTypeId = Null.NullInteger;
+        this.VocabularyId = Null.NullInteger;
+        this.Weight = 0;
+    }
+
+    public bool IsHeirarchical
+    {
+        get
         {
+            return this.Type == VocabularyType.Hierarchy;
+        }
+    }
+
+    public ScopeType ScopeType
+    {
+        get
+        {
+            if (this.scopeType == null)
+            {
+                this.scopeType = this.GetScopeType(this.scopeTypeId);
+            }
+
+            return this.scopeType;
+        }
+    }
+
+    public List<Term> Terms
+    {
+        get
+        {
+            if (this.terms == null)
+            {
+                this.terms = this.GetTerms(this.vocabularyId);
+            }
+
+            return this.terms;
+        }
+    }
+
+    public string Description
+    {
+        get
+        {
+            return this.description;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="name"></param>
-        public Vocabulary(string name)
-            : this(name, Null.NullString, VocabularyType.Simple)
+        set
         {
+            this.description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+        }
+    }
+
+    public bool IsSystem
+    {
+        get
+        {
+            return this.isSystem;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        public Vocabulary(string name, string description)
-            : this(name, description, VocabularyType.Simple)
+        set
         {
+            this.isSystem = value;
+        }
+    }
+
+    public string Name
+    {
+        get
+        {
+            return this.name;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="type"></param>
-        public Vocabulary(VocabularyType type)
-            : this(Null.NullString, Null.NullString, type)
+        set
         {
+            if (HtmlUtils.ContainsEntity(value))
+            {
+                value = System.Net.WebUtility.HtmlDecode(value);
+            }
+
+            this.name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+        }
+    }
+
+    public int ScopeId
+    {
+        get
+        {
+            return this.scopeId;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="type"></param>
-        public Vocabulary(string name, string description, VocabularyType type)
+        set
         {
-            this.Description = description;
-            this.Name = name;
-            this.Type = type;
+            this.scopeId = value;
+        }
+    }
 
-            this.ScopeId = Null.NullInteger;
-            this.ScopeTypeId = Null.NullInteger;
-            this.VocabularyId = Null.NullInteger;
-            this.Weight = 0;
+    public int ScopeTypeId
+    {
+        get
+        {
+            return this.scopeTypeId;
         }
 
-        public bool IsHeirarchical
+        set
         {
-            get
-            {
-                return this.Type == VocabularyType.Hierarchy;
-            }
+            this.scopeTypeId = value;
+        }
+    }
+
+    public VocabularyType Type
+    {
+        get
+        {
+            return this.type;
         }
 
-        public ScopeType ScopeType
+        set
         {
-            get
-            {
-                if (this.scopeType == null)
-                {
-                    this.scopeType = this.GetScopeType(this.scopeTypeId);
-                }
+            this.type = value;
+        }
+    }
 
-                return this.scopeType;
-            }
+    public int VocabularyId
+    {
+        get
+        {
+            return this.vocabularyId;
         }
 
-        public List<Term> Terms
+        set
         {
-            get
-            {
-                if (this.terms == null)
-                {
-                    this.terms = this.GetTerms(this.vocabularyId);
-                }
+            this.vocabularyId = value;
+        }
+    }
 
-                return this.terms;
-            }
+    public int Weight
+    {
+        get
+        {
+            return this.weight;
         }
 
-        public string Description
+        set
         {
-            get
-            {
-                return this.description;
-            }
+            this.weight = value;
+        }
+    }
 
-            set
-            {
-                this.description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-            }
+    /// <inheritdoc/>
+    public virtual int KeyID
+    {
+        get
+        {
+            return this.VocabularyId;
         }
 
-        public bool IsSystem
+        set
         {
-            get
-            {
-                return this.isSystem;
-            }
+            this.VocabularyId = value;
+        }
+    }
 
-            set
-            {
-                this.isSystem = value;
-            }
+    /// <inheritdoc/>
+    public virtual void Fill(IDataReader dr)
+    {
+        this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
+        switch (Convert.ToInt16(dr["VocabularyTypeID"]))
+        {
+            case 1:
+                this.Type = VocabularyType.Simple;
+                break;
+            case 2:
+                this.Type = VocabularyType.Hierarchy;
+                break;
         }
 
-        public string Name
-        {
-            get
-            {
-                return this.name;
-            }
+        this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
+        this.Name = Null.SetNullString(dr["Name"]);
+        this.Description = Null.SetNullString(dr["Description"]);
+        this.ScopeId = Null.SetNullInteger(dr["ScopeID"]);
+        this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
+        this.Weight = Null.SetNullInteger(dr["Weight"]);
 
-            set
-            {
-                if (HtmlUtils.ContainsEntity(value))
-                {
-                    value = System.Net.WebUtility.HtmlDecode(value);
-                }
-
-                this.name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-            }
-        }
-
-        public int ScopeId
-        {
-            get
-            {
-                return this.scopeId;
-            }
-
-            set
-            {
-                this.scopeId = value;
-            }
-        }
-
-        public int ScopeTypeId
-        {
-            get
-            {
-                return this.scopeTypeId;
-            }
-
-            set
-            {
-                this.scopeTypeId = value;
-            }
-        }
-
-        public VocabularyType Type
-        {
-            get
-            {
-                return this.type;
-            }
-
-            set
-            {
-                this.type = value;
-            }
-        }
-
-        public int VocabularyId
-        {
-            get
-            {
-                return this.vocabularyId;
-            }
-
-            set
-            {
-                this.vocabularyId = value;
-            }
-        }
-
-        public int Weight
-        {
-            get
-            {
-                return this.weight;
-            }
-
-            set
-            {
-                this.weight = value;
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual int KeyID
-        {
-            get
-            {
-                return this.VocabularyId;
-            }
-
-            set
-            {
-                this.VocabularyId = value;
-            }
-        }
-
-        /// <inheritdoc/>
-        public virtual void Fill(IDataReader dr)
-        {
-            this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
-            switch (Convert.ToInt16(dr["VocabularyTypeID"]))
-            {
-                case 1:
-                    this.Type = VocabularyType.Simple;
-                    break;
-                case 2:
-                    this.Type = VocabularyType.Hierarchy;
-                    break;
-            }
-
-            this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
-            this.Name = Null.SetNullString(dr["Name"]);
-            this.Description = Null.SetNullString(dr["Description"]);
-            this.ScopeId = Null.SetNullInteger(dr["ScopeID"]);
-            this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
-            this.Weight = Null.SetNullInteger(dr["Weight"]);
-
-            // Fill base class properties
-            this.FillInternal(dr);
-        }
+        // Fill base class properties
+        this.FillInternal(dr);
     }
 }

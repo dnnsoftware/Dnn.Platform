@@ -2,50 +2,49 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
+namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb;
+
+using System;
+using System.Configuration;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+
+using DNN.Integration.Test.Framework;
+using NUnit.Framework;
+
+[TestFixture]
+public class DotNetNukeWebTests : IntegrationTestBase
 {
-    using System;
-    using System.Configuration;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web;
+    private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
+    private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
 
-    using DNN.Integration.Test.Framework;
-    using NUnit.Framework;
+    private readonly HttpClient _httpClient;
 
-    [TestFixture]
-    public class DotNetNukeWebTests : IntegrationTestBase
+    private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
+
+    public DotNetNukeWebTests()
     {
-        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
-        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
+        var url = ConfigurationManager.AppSettings["siteUrl"];
+        var siteUri = new Uri(url);
+        this._httpClient = new HttpClient { BaseAddress = siteUri, Timeout = this._timeout };
+    }
 
-        private readonly HttpClient _httpClient;
+    [OneTimeTearDown]
+    public override void TestFixtureTearDown()
+    {
+        base.TestFixtureTearDown();
+        this._httpClient?.Dispose();
+    }
 
-        private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
-
-        public DotNetNukeWebTests()
-        {
-            var url = ConfigurationManager.AppSettings["siteUrl"];
-            var siteUri = new Uri(url);
-            this._httpClient = new HttpClient { BaseAddress = siteUri, Timeout = this._timeout };
-        }
-
-        [OneTimeTearDown]
-        public override void TestFixtureTearDown()
-        {
-            base.TestFixtureTearDown();
-            this._httpClient?.Dispose();
-        }
-
-        [Test]
-        [TestCase(GetMonikerQuery)]
-        [TestCase(GetModuleDetailsQuery)]
-        public void CallingHelperForAnonymousUserShouldReturnSuccess(string query)
-        {
-            var result = this._httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
-            var content = result.Content.ReadAsStringAsync().Result;
-            LogText(@"content => " + content);
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-        }
+    [Test]
+    [TestCase(GetMonikerQuery)]
+    [TestCase(GetModuleDetailsQuery)]
+    public void CallingHelperForAnonymousUserShouldReturnSuccess(string query)
+    {
+        var result = this._httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
+        var content = result.Content.ReadAsStringAsync().Result;
+        LogText(@"content => " + content);
+        Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.OK));
     }
 }

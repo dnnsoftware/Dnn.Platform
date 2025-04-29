@@ -1,21 +1,19 @@
 # dnn-rm-left-pane
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Dependencies
 
 ### Used by
 
- - [dnn-resource-manager](../dnn-resource-manager)
+- [dnn-resource-manager](../dnn-resource-manager)
 
 ### Depends on
 
 - [dnn-rm-folder-list](../dnn-rm-folder-list)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-left-pane --> dnn-rm-folder-list
@@ -76,6 +74,6 @@ graph TD;
   style dnn-rm-left-pane fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

@@ -1,32 +1,27 @@
 import utilities from "../utils";
+import "../less/style.less";
+
 const boilerPlate = {
-    init() {
-        // This setting is required and define the public path 
-        // to allow the web application to download assets on demand 
-        // eslint-disable-next-line no-undef
-        // __webpack_public_path__ = options.publicPath;        
-        let options = window.dnn.initSiteSettings();
+  init() {
+    let options = window.dnn.initSiteSettings();
 
-        utilities.init(options.utility);
-        utilities.moduleName = options.moduleName;
-        utilities.settings = options.settings;
-        utilities.identifier = options.identifier;
-        utilities.siteRoot = options.siteRoot;
+    utilities.init(options.utility);
+    utilities.moduleName = options.moduleName;
+    utilities.settings = options.settings;
+    utilities.identifier = options.identifier;
+    utilities.siteRoot = options.siteRoot;
 
-        if (!window.dnn.SiteSettings) {
-            window.dnn.SiteSettings = {};
-        }
-
-        window.dnn.SiteSettings.bundleLoaded = true;
-
-        // delay the styles loading after the __webpack_public_path__ is set
-        // this allows the fonts associated to be loaded properly in production
-        require("../less/style.less");
-    },
-    dispatch() {
-        throw new Error("dispatch method needs to be overwritten from the Redux store");
+    if (!window.dnn.SiteSettings) {
+      window.dnn.SiteSettings = {};
     }
-};
 
+    window.dnn.SiteSettings.bundleLoaded = true;
+  },
+  dispatch() {
+    throw new Error(
+      "dispatch method needs to be overwritten from the Redux store",
+    );
+  },
+};
 
 export default boilerPlate;

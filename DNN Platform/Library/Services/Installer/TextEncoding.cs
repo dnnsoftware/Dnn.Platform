@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Installer
+namespace DotNetNuke.Services.Installer;
+
+public enum TextEncoding
 {
-    public enum TextEncoding
-    {
-        UTF7 = 0,
-        UTF8 = 1,
-        UTF16BigEndian = 2,
-        UTF16LittleEndian = 3,
-        Unknown = 4,
-    }
+    UTF7 = 0,
+    UTF8 = 1,
+    UTF16BigEndian = 2,
+    UTF16LittleEndian = 3,
+    Unknown = 4,
 }

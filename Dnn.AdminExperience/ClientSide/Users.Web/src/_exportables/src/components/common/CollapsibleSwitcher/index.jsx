@@ -3,20 +3,20 @@ import { Component } from "react";
 import "./style.less";
 
 class CollapsibleSwitcher extends Component {
-    constructor() {
-        super();
-    }
-    render() {
-        const {props} = this;
-        return props.renderIndex >= 0 && props.children[props.renderIndex];
-    }
+  constructor() {
+    super();
+  }
+  render() {
+    const { props } = this;
+    return props.renderIndex >= 0 && props.children[props.renderIndex];
+  }
 }
 CollapsibleSwitcher.propTypes = {
-    renderIndex: PropTypes.number,
-    children: PropTypes.node
+  renderIndex: PropTypes.number,
+  children: PropTypes.node,
 };
 CollapsibleSwitcher.defaultProps = {
-    renderIndex: 0
+  renderIndex: 0,
 };
 
-export default (CollapsibleSwitcher);
+export default CollapsibleSwitcher;

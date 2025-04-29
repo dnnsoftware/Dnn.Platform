@@ -2,50 +2,49 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Html
+namespace DotNetNuke.Modules.Html;
+
+using System;
+
+/// Namespace:  DotNetNuke.Modules.Html
+/// Project:    DotNetNuke
+/// Class:      WorkflowStateInfo
+/// <summary>  Defines an instance of a WorkflowState object.</summary>
+[Serializable]
+public class WorkflowStateInfo
 {
-    using System;
+    // local property declarations
+    private bool isActive = true;
 
-    /// Namespace:  DotNetNuke.Modules.Html
-    /// Project:    DotNetNuke
-    /// Class:      WorkflowStateInfo
-    /// <summary>  Defines an instance of a WorkflowState object.</summary>
-    [Serializable]
-    public class WorkflowStateInfo
+    // public properties
+    public int PortalID { get; set; }
+
+    public int WorkflowID { get; set; }
+
+    public string WorkflowName { get; set; }
+
+    public string Description { get; set; }
+
+    public bool IsDeleted { get; set; }
+
+    public int StateID { get; set; }
+
+    public string StateName { get; set; }
+
+    public int Order { get; set; }
+
+    public bool Notify { get; set; }
+
+    public bool IsActive
     {
-        // local property declarations
-        private bool isActive = true;
-
-        // public properties
-        public int PortalID { get; set; }
-
-        public int WorkflowID { get; set; }
-
-        public string WorkflowName { get; set; }
-
-        public string Description { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public int StateID { get; set; }
-
-        public string StateName { get; set; }
-
-        public int Order { get; set; }
-
-        public bool Notify { get; set; }
-
-        public bool IsActive
+        get
         {
-            get
-            {
-                return this.isActive;
-            }
+            return this.isActive;
+        }
 
-            set
-            {
-                this.isActive = value;
-            }
+        set
+        {
+            this.isActive = value;
         }
     }
 }

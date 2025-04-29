@@ -4,9 +4,9 @@ import { action } from "@storybook/addon-actions";
 import MultiLineInput from "./index";
 
 storiesOf("MultiLineInput", module).add("with content", () => (
-    <MultiLineInput
-        inputId={"create-term-description"}
-        placeholder="Long descritpion here"
-        onChange={action("changed")}
-    />
+  <MultiLineInput
+    inputId={"create-term-description"}
+    placeholder="Long descritpion here"
+    onChange={action("changed")}
+  />
 ));

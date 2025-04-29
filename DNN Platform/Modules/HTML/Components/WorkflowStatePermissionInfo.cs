@@ -2,163 +2,162 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Security.Permissions
+namespace DotNetNuke.Security.Permissions;
+
+using System;
+using System.Data;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+
+/// Project  : DotNetNuke
+/// Namespace: DotNetNuke.Security.Permissions
+/// Class    : DesktopModulePermissionInfo
+/// <summary>
+///   DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
+///   Permissions.
+/// </summary>
+[Serializable]
+public class WorkflowStatePermissionInfo : PermissionInfoBase, IHydratable
 {
-    using System;
-    using System.Data;
+    // local property declarations
+    private int stateID;
+    private int workflowStatePermissionID;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : DesktopModulePermissionInfo
     /// <summary>
-    ///   DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
-    ///   Permissions.
+    /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
+    ///   Constructs a new WorkflowStatePermissionInfo.
     /// </summary>
-    [Serializable]
-    public class WorkflowStatePermissionInfo : PermissionInfoBase, IHydratable
+    public WorkflowStatePermissionInfo()
     {
-        // local property declarations
-        private int stateID;
-        private int workflowStatePermissionID;
+        this.workflowStatePermissionID = Null.NullInteger;
+        this.stateID = Null.NullInteger;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
-        ///   Constructs a new WorkflowStatePermissionInfo.
-        /// </summary>
-        public WorkflowStatePermissionInfo()
+    // New
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
+    ///   Constructs a new WorkflowStatePermissionInfo.
+    /// </summary>
+    /// <param name="permission">A PermissionInfo object.</param>
+    public WorkflowStatePermissionInfo(PermissionInfo permission)
+        : this()
+    {
+        this.ModuleDefID = permission.ModuleDefID;
+        this.PermissionCode = permission.PermissionCode;
+        this.PermissionID = permission.PermissionID;
+        this.PermissionKey = permission.PermissionKey;
+        this.PermissionName = permission.PermissionName;
+    }
+
+    /// <summary>  Gets or sets and sets the WorkflowState Permission ID.</summary>
+    /// <returns>An Integer.</returns>
+    public int WorkflowStatePermissionID
+    {
+        get
         {
-            this.workflowStatePermissionID = Null.NullInteger;
-            this.stateID = Null.NullInteger;
+            return this.workflowStatePermissionID;
         }
 
-        // New
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
-        ///   Constructs a new WorkflowStatePermissionInfo.
-        /// </summary>
-        /// <param name="permission">A PermissionInfo object.</param>
-        public WorkflowStatePermissionInfo(PermissionInfo permission)
-            : this()
+        set
         {
-            this.ModuleDefID = permission.ModuleDefID;
-            this.PermissionCode = permission.PermissionCode;
-            this.PermissionID = permission.PermissionID;
-            this.PermissionKey = permission.PermissionKey;
-            this.PermissionName = permission.PermissionName;
+            this.workflowStatePermissionID = value;
+        }
+    }
+
+    /// <summary>  Gets or sets and sets the State ID.</summary>
+    /// <returns>An Integer.</returns>
+    public int StateID
+    {
+        get
+        {
+            return this.stateID;
         }
 
-        /// <summary>  Gets or sets and sets the WorkflowState Permission ID.</summary>
-        /// <returns>An Integer.</returns>
-        public int WorkflowStatePermissionID
+        set
         {
-            get
-            {
-                return this.workflowStatePermissionID;
-            }
+            this.stateID = value;
+        }
+    }
 
-            set
-            {
-                this.workflowStatePermissionID = value;
-            }
+    /// <summary>  Gets or sets and sets the Key ID.</summary>
+    /// <returns>An Integer.</returns>
+    public int KeyID
+    {
+        get
+        {
+            return this.WorkflowStatePermissionID;
         }
 
-        /// <summary>  Gets or sets and sets the State ID.</summary>
-        /// <returns>An Integer.</returns>
-        public int StateID
+        set
         {
-            get
-            {
-                return this.stateID;
-            }
+            this.WorkflowStatePermissionID = value;
+        }
+    }
 
-            set
-            {
-                this.stateID = value;
-            }
+    /// <summary>  Compares if two WorkflowStatePermissionInfo objects are equivalent/equal.</summary>
+    /// <param name="obj">a WorkflowStatePermissionObject.</param>
+    /// <returns>true if the permissions being passed represents the same permission
+    ///   in the current object.
+    /// </returns>
+    /// <remarks>
+    ///   This function is needed to prevent adding duplicates to the WorkflowStatePermissionCollection.
+    ///   WorkflowStatePermissionCollection.Contains will use this method to check if a given permission
+    ///   is already included in the collection.
+    /// </remarks>
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj))
+        {
+            return false;
         }
 
-        /// <summary>  Gets or sets and sets the Key ID.</summary>
-        /// <returns>An Integer.</returns>
-        public int KeyID
+        if (ReferenceEquals(this, obj))
         {
-            get
-            {
-                return this.WorkflowStatePermissionID;
-            }
-
-            set
-            {
-                this.WorkflowStatePermissionID = value;
-            }
+            return true;
         }
 
-        /// <summary>  Compares if two WorkflowStatePermissionInfo objects are equivalent/equal.</summary>
-        /// <param name="obj">a WorkflowStatePermissionObject.</param>
-        /// <returns>true if the permissions being passed represents the same permission
-        ///   in the current object.
-        /// </returns>
-        /// <remarks>
-        ///   This function is needed to prevent adding duplicates to the WorkflowStatePermissionCollection.
-        ///   WorkflowStatePermissionCollection.Contains will use this method to check if a given permission
-        ///   is already included in the collection.
-        /// </remarks>
-        public override bool Equals(object obj)
+        if (obj.GetType() != typeof(WorkflowStatePermissionInfo))
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != typeof(WorkflowStatePermissionInfo))
-            {
-                return false;
-            }
-
-            return this.Equals((WorkflowStatePermissionInfo)obj);
+            return false;
         }
 
-        public bool Equals(WorkflowStatePermissionInfo other)
+        return this.Equals((WorkflowStatePermissionInfo)obj);
+    }
+
+    public bool Equals(WorkflowStatePermissionInfo other)
+    {
+        if (ReferenceEquals(null, other))
         {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return (this.AllowAccess == other.AllowAccess) && (this.StateID == other.StateID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
+            return false;
         }
 
-        /// <inheritdoc/>
-        public override int GetHashCode()
+        if (ReferenceEquals(this, other))
         {
-            unchecked
-            {
-                return (this.stateID * 397) ^ this.workflowStatePermissionID;
-            }
+            return true;
         }
 
-        /// <summary>  Fills a WorkflowStatePermissionInfo from a Data Reader.</summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        public void Fill(IDataReader dr)
-        {
-            // Call the base classes fill method to populate base class proeprties
-            this.FillInternal(dr);
+        return (this.AllowAccess == other.AllowAccess) && (this.StateID == other.StateID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
+    }
 
-            this.WorkflowStatePermissionID = Null.SetNullInteger(dr["WorkflowStatePermissionID"]);
-            this.StateID = Null.SetNullInteger(dr["StateID"]);
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return (this.stateID * 397) ^ this.workflowStatePermissionID;
         }
+    }
+
+    /// <summary>  Fills a WorkflowStatePermissionInfo from a Data Reader.</summary>
+    /// <param name="dr">The Data Reader to use.</param>
+    public void Fill(IDataReader dr)
+    {
+        // Call the base classes fill method to populate base class proeprties
+        this.FillInternal(dr);
+
+        this.WorkflowStatePermissionID = Null.SetNullInteger(dr["WorkflowStatePermissionID"]);
+        this.StateID = Null.SetNullInteger(dr["StateID"]);
     }
 }

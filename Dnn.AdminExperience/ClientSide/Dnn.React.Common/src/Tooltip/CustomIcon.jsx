@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-/* eslint-disable react/no-danger */
-const CustomIcon = props => (
-    <div dangerouslySetInnerHTML={{ __html: props.icon }} />
-);
+const CustomIcon = (props) => {
+  let Icon = props.icon;
+  return (
+    <div>
+      <Icon />
+    </div>
+  );
+};
 CustomIcon.propTypes = {
-    icon: PropTypes.string
+  icon: PropTypes.string,
 };
 export default CustomIcon;

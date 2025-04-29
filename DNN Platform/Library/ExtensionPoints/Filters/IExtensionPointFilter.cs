@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints.Filters
+namespace DotNetNuke.ExtensionPoints.Filters;
+
+public interface IExtensionPointFilter
 {
-    public interface IExtensionPointFilter
-    {
-        bool Condition(IExtensionPointData m);
-    }
+    bool Condition(IExtensionPointData m);
 }

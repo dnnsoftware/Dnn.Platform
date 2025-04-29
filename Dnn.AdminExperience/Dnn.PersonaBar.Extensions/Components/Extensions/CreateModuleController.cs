@@ -2,294 +2,288 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Extensions.Components
+namespace Dnn.PersonaBar.Extensions.Components;
+
+using System;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+
+using Dnn.PersonaBar.Extensions.Components.Dto;
+using DotNetNuke.Abstractions;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Framework;
+using DotNetNuke.Security;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Installer;
+using DotNetNuke.Services.Installer.Packages;
+using Microsoft.Extensions.DependencyInjection;
+
+public class CreateModuleController : ServiceLocator<ICreateModuleController, CreateModuleController>, ICreateModuleController
 {
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
-    using Dnn.PersonaBar.Extensions.Components.Dto;
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Definitions;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Security;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Installer;
-    using DotNetNuke.Services.Installer.Packages;
-    using Microsoft.Extensions.DependencyInjection;
-
-    public class CreateModuleController : ServiceLocator<ICreateModuleController, CreateModuleController>, ICreateModuleController
+    /// <summary>Initializes a new instance of the <see cref="CreateModuleController"/> class.</summary>
+    public CreateModuleController()
     {
-        /// <summary>Initializes a new instance of the <see cref="CreateModuleController"/> class.</summary>
-        public CreateModuleController()
+        this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+    }
+
+    protected INavigationManager NavigationManager { get; }
+
+    /// <summary>create new module.</summary>
+    /// <param name="createModuleDto"></param>
+    /// <param name="newPageUrl"></param>
+    /// <param name="errorMessage"></param>
+    /// <returns>return the new package id.</returns>
+    public int CreateModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+    {
+        errorMessage = string.Empty;
+        newPageUrl = string.Empty;
+        var packageId = Null.NullInteger;
+        switch (createModuleDto.Type)
         {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            case CreateModuleType.New:
+                packageId = this.CreateNewModule(createModuleDto, out newPageUrl, out errorMessage);
+                break;
+            case CreateModuleType.Control:
+                packageId = this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
+                break;
+            case CreateModuleType.Manifest:
+                packageId = this.CreateModuleFromManifest(createModuleDto, out newPageUrl, out errorMessage);
+                break;
         }
 
-        protected INavigationManager NavigationManager { get; }
+        return packageId;
+    }
 
-        /// <summary>create new module.</summary>
-        /// <param name="createModuleDto"></param>
-        /// <param name="newPageUrl"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns>return the new package id.</returns>
-        public int CreateModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+    /// <inheritdoc/>
+    protected override Func<ICreateModuleController> GetFactory()
+    {
+        return () => new CreateModuleController();
+    }
+
+    private static bool InvalidFilename(string fileName)
+    {
+        var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
+        return invalidFilenameChars.IsMatch(fileName);
+    }
+
+    private int CreateNewModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+    {
+        newPageUrl = string.Empty;
+        errorMessage = string.Empty;
+        if (string.IsNullOrEmpty(createModuleDto.ModuleFolder))
         {
-            errorMessage = string.Empty;
-            newPageUrl = string.Empty;
-            var packageId = Null.NullInteger;
-            switch (createModuleDto.Type)
-            {
-                case CreateModuleType.New:
-                    packageId = this.CreateNewModule(createModuleDto, out newPageUrl, out errorMessage);
-                    break;
-                case CreateModuleType.Control:
-                    packageId = this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
-                    break;
-                case CreateModuleType.Manifest:
-                    packageId = this.CreateModuleFromManifest(createModuleDto, out newPageUrl, out errorMessage);
-                    break;
-            }
-
-            return packageId;
+            errorMessage = "NoModuleFolder";
+            return Null.NullInteger;
         }
 
-        /// <inheritdoc/>
-        protected override Func<ICreateModuleController> GetFactory()
+        if (string.IsNullOrEmpty(createModuleDto.Language))
         {
-            return () => new CreateModuleController();
+            errorMessage = "LanguageError";
+            return Null.NullInteger;
         }
 
-        private static bool InvalidFilename(string fileName)
+        // remove spaces so file is created correctly
+        var controlSrc = createModuleDto.FileName.Replace(" ", string.Empty);
+        if (InvalidFilename(controlSrc))
         {
-            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
-            return invalidFilenameChars.IsMatch(fileName);
+            errorMessage = "InvalidFilename";
+            return Null.NullInteger;
         }
 
-        private int CreateNewModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+        if (string.IsNullOrEmpty(controlSrc))
         {
-            newPageUrl = string.Empty;
-            errorMessage = string.Empty;
-            if (string.IsNullOrEmpty(createModuleDto.ModuleFolder))
-            {
-                errorMessage = "NoModuleFolder";
-                return Null.NullInteger;
-            }
+            errorMessage = "MissingControl";
+            return Null.NullInteger;
+        }
 
-            if (string.IsNullOrEmpty(createModuleDto.Language))
-            {
-                errorMessage = "LanguageError";
-                return Null.NullInteger;
-            }
+        if (string.IsNullOrEmpty(createModuleDto.ModuleName))
+        {
+            errorMessage = "MissingFriendlyname";
+            return Null.NullInteger;
+        }
 
-            // remove spaces so file is created correctly
-            var controlSrc = createModuleDto.FileName.Replace(" ", string.Empty);
-            if (InvalidFilename(controlSrc))
-            {
-                errorMessage = "InvalidFilename";
-                return Null.NullInteger;
-            }
+        if (!controlSrc.EndsWith(".ascx"))
+        {
+            controlSrc += ".ascx";
+        }
 
-            if (string.IsNullOrEmpty(controlSrc))
+        var uniqueName = true;
+        foreach (var package in PackageController.Instance.GetExtensionPackages(Null.NullInteger))
+        {
+            if (package.Name.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase)
+                || package.FriendlyName.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase))
             {
-                errorMessage = "MissingControl";
-                return Null.NullInteger;
+                uniqueName = false;
+                break;
             }
+        }
 
-            if (string.IsNullOrEmpty(createModuleDto.ModuleName))
-            {
-                errorMessage = "MissingFriendlyname";
-                return Null.NullInteger;
-            }
+        if (!uniqueName)
+        {
+            errorMessage = "NonuniqueName";
+            return Null.NullInteger;
+        }
 
-            if (!controlSrc.EndsWith(".ascx"))
-            {
-                controlSrc += ".ascx";
-            }
+        // First create the control
+        createModuleDto.FileName = controlSrc;
+        var message = this.CreateControl(createModuleDto);
+        if (string.IsNullOrEmpty(message))
+        {
+            // Next import the control
+            return this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
+        }
 
-            var uniqueName = true;
-            foreach (var package in PackageController.Instance.GetExtensionPackages(Null.NullInteger))
-            {
-                if (package.Name.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase)
-                    || package.FriendlyName.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase))
-                {
-                    uniqueName = false;
-                    break;
-                }
-            }
+        return Null.NullInteger;
+    }
 
-            if (!uniqueName)
+    private int CreateModuleFromControl(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+    {
+        newPageUrl = string.Empty;
+        errorMessage = string.Empty;
+        if (string.IsNullOrEmpty(createModuleDto.FileName))
+        {
+            errorMessage = "NoControl";
+            return Null.NullInteger;
+        }
+
+        try
+        {
+            var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
+            var friendlyName = createModuleDto.ModuleName;
+            var name = createModuleDto.ModuleName;
+            var moduleControl = "DesktopModules/" + folder + "/" + createModuleDto.FileName;
+
+            var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
+                p.Name.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase)
+                || p.FriendlyName.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase));
+            if (packageInfo != null)
             {
                 errorMessage = "NonuniqueName";
                 return Null.NullInteger;
             }
 
-            // First create the control
-            createModuleDto.FileName = controlSrc;
-            var message = this.CreateControl(createModuleDto);
-            if (string.IsNullOrEmpty(message))
+            var package = new PackageInfo
             {
-                // Next import the control
-                return this.CreateModuleFromControl(createModuleDto, out newPageUrl, out errorMessage);
+                Name = name,
+                FriendlyName = friendlyName,
+                Description = createModuleDto.Description,
+                Version = new Version(1, 0, 0),
+                PackageType = "Module",
+                License = Util.PACKAGE_NoLicense,
+            };
+
+            // Save Package
+            PackageController.Instance.SaveExtensionPackage(package);
+
+            var objDesktopModule = new DesktopModuleInfo
+            {
+                DesktopModuleID = Null.NullInteger,
+                ModuleName = name,
+                FolderName = folder,
+                FriendlyName = friendlyName,
+                Description = createModuleDto.Description,
+                IsPremium = false,
+                IsAdmin = false,
+                Version = "01.00.00",
+                BusinessControllerClass = string.Empty,
+                CompatibleVersions = string.Empty,
+                Dependencies = string.Empty,
+                Permissions = string.Empty,
+                PackageID = package.PackageID,
+            };
+
+            objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
+
+            // Add module to all portals
+            DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
+
+            // Save module definition
+            var moduleDefinition = new ModuleDefinitionInfo();
+
+            moduleDefinition.ModuleDefID = Null.NullInteger;
+            moduleDefinition.DesktopModuleID = objDesktopModule.DesktopModuleID;
+            moduleDefinition.FriendlyName = friendlyName;
+            moduleDefinition.DefaultCacheTime = 0;
+
+            moduleDefinition.ModuleDefID = ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
+
+            // Save module control
+            var objModuleControl = new ModuleControlInfo();
+
+            objModuleControl.ModuleControlID = Null.NullInteger;
+            objModuleControl.ModuleDefID = moduleDefinition.ModuleDefID;
+            objModuleControl.ControlKey = string.Empty;
+            objModuleControl.ControlSrc = moduleControl;
+            objModuleControl.ControlTitle = string.Empty;
+            objModuleControl.ControlType = SecurityAccessLevel.View;
+            objModuleControl.HelpURL = string.Empty;
+            objModuleControl.IconFile = string.Empty;
+            objModuleControl.ViewOrder = 0;
+            objModuleControl.SupportsPartialRendering = false;
+
+            ModuleControlController.AddModuleControl(objModuleControl);
+
+            if (createModuleDto.AddPage)
+            {
+                newPageUrl = this.CreateNewPage(moduleDefinition);
             }
 
+            return package.PackageID;
+        }
+        catch (Exception ex)
+        {
+            Exceptions.LogException(ex);
+            errorMessage = "CreateModuleFailed";
+            return Null.NullInteger;
+        }
+    }
+
+    private int CreateModuleFromManifest(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+    {
+        newPageUrl = string.Empty;
+        errorMessage = string.Empty;
+        if (string.IsNullOrEmpty(createModuleDto.Manifest))
+        {
+            errorMessage = "MissingManifest";
             return Null.NullInteger;
         }
 
-        private int CreateModuleFromControl(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
+        try
         {
-            newPageUrl = string.Empty;
-            errorMessage = string.Empty;
-            if (string.IsNullOrEmpty(createModuleDto.FileName))
+            var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
+            var manifest = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", folder, createModuleDto.Manifest);
+            var installer = new Installer(manifest, Globals.ApplicationMapPath, true);
+
+            if (installer.IsValid)
             {
-                errorMessage = "NoControl";
-                return Null.NullInteger;
-            }
-
-            try
-            {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
-                var friendlyName = createModuleDto.ModuleName;
-                var name = createModuleDto.ModuleName;
-                var moduleControl = "DesktopModules/" + folder + "/" + createModuleDto.FileName;
-
-                var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
-                                    p.Name.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase)
-                                     || p.FriendlyName.Equals(createModuleDto.ModuleName, StringComparison.OrdinalIgnoreCase));
-                if (packageInfo != null)
-                {
-                    errorMessage = "NonuniqueName";
-                    return Null.NullInteger;
-                }
-
-                var package = new PackageInfo
-                {
-                    Name = name,
-                    FriendlyName = friendlyName,
-                    Description = createModuleDto.Description,
-                    Version = new Version(1, 0, 0),
-                    PackageType = "Module",
-                    License = Util.PACKAGE_NoLicense,
-                };
-
-                // Save Package
-                PackageController.Instance.SaveExtensionPackage(package);
-
-                var objDesktopModule = new DesktopModuleInfo
-                {
-                    DesktopModuleID = Null.NullInteger,
-                    ModuleName = name,
-                    FolderName = folder,
-                    FriendlyName = friendlyName,
-                    Description = createModuleDto.Description,
-                    IsPremium = false,
-                    IsAdmin = false,
-                    Version = "01.00.00",
-                    BusinessControllerClass = string.Empty,
-                    CompatibleVersions = string.Empty,
-                    Dependencies = string.Empty,
-                    Permissions = string.Empty,
-                    PackageID = package.PackageID,
-                };
-
-                objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
-
-                // Add module to all portals
-                DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
-
-                // Save module definition
-                var moduleDefinition = new ModuleDefinitionInfo();
-
-                moduleDefinition.ModuleDefID = Null.NullInteger;
-                moduleDefinition.DesktopModuleID = objDesktopModule.DesktopModuleID;
-                moduleDefinition.FriendlyName = friendlyName;
-                moduleDefinition.DefaultCacheTime = 0;
-
-                moduleDefinition.ModuleDefID = ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
-
-                // Save module control
-                var objModuleControl = new ModuleControlInfo();
-
-                objModuleControl.ModuleControlID = Null.NullInteger;
-                objModuleControl.ModuleDefID = moduleDefinition.ModuleDefID;
-                objModuleControl.ControlKey = string.Empty;
-                objModuleControl.ControlSrc = moduleControl;
-                objModuleControl.ControlTitle = string.Empty;
-                objModuleControl.ControlType = SecurityAccessLevel.View;
-                objModuleControl.HelpURL = string.Empty;
-                objModuleControl.IconFile = string.Empty;
-                objModuleControl.ViewOrder = 0;
-                objModuleControl.SupportsPartialRendering = false;
-
-                ModuleControlController.AddModuleControl(objModuleControl);
-
-                if (createModuleDto.AddPage)
-                {
-                    newPageUrl = this.CreateNewPage(moduleDefinition);
-                }
-
-                return package.PackageID;
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                errorMessage = "CreateModuleFailed";
-                return Null.NullInteger;
-            }
-        }
-
-        private int CreateModuleFromManifest(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
-        {
-            newPageUrl = string.Empty;
-            errorMessage = string.Empty;
-            if (string.IsNullOrEmpty(createModuleDto.Manifest))
-            {
-                errorMessage = "MissingManifest";
-                return Null.NullInteger;
-            }
-
-            try
-            {
-                var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
-                var manifest = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", folder, createModuleDto.Manifest);
-                var installer = new Installer(manifest, Globals.ApplicationMapPath, true);
+                installer.InstallerInfo.Log.Logs.Clear();
+                installer.Install();
 
                 if (installer.IsValid)
                 {
-                    installer.InstallerInfo.Log.Logs.Clear();
-                    installer.Install();
-
-                    if (installer.IsValid)
+                    if (createModuleDto.AddPage)
                     {
-                        if (createModuleDto.AddPage)
+                        var desktopModule =
+                            DesktopModuleController.GetDesktopModuleByPackageID(installer.InstallerInfo.PackageID);
+                        if (desktopModule != null && desktopModule.ModuleDefinitions.Count > 0)
                         {
-                            var desktopModule =
-                                DesktopModuleController.GetDesktopModuleByPackageID(installer.InstallerInfo.PackageID);
-                            if (desktopModule != null && desktopModule.ModuleDefinitions.Count > 0)
+                            foreach (var kvp in desktopModule.ModuleDefinitions)
                             {
-                                foreach (var kvp in desktopModule.ModuleDefinitions)
-                                {
-                                    var moduleDefinition = kvp.Value;
+                                var moduleDefinition = kvp.Value;
 
-                                    newPageUrl = this.CreateNewPage(moduleDefinition);
-                                    break;
-                                }
+                                newPageUrl = this.CreateNewPage(moduleDefinition);
+                                break;
                             }
                         }
+                    }
 
-                        return installer.InstallerInfo.PackageID;
-                    }
-                    else
-                    {
-                        errorMessage = "InstallError";
-                        return Null.NullInteger;
-                    }
+                    return installer.InstallerInfo.PackageID;
                 }
                 else
                 {
@@ -297,115 +291,120 @@ namespace Dnn.PersonaBar.Extensions.Components
                     return Null.NullInteger;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                Exceptions.LogException(ex);
-                errorMessage = "CreateModuleFailed";
+                errorMessage = "InstallError";
                 return Null.NullInteger;
             }
         }
-
-        private string CreateNewPage(ModuleDefinitionInfo moduleDefinition)
+        catch (Exception ex)
         {
-            if (PortalSettings.Current == null)
-            {
-                return string.Empty;
-            }
+            Exceptions.LogException(ex);
+            errorMessage = "CreateModuleFailed";
+            return Null.NullInteger;
+        }
+    }
 
-            var portalId = PortalSettings.Current.PortalId;
-            var tabName = "Test " + moduleDefinition.FriendlyName + " Page";
-            var tabPath = Globals.GenerateTabPath(Null.NullInteger, tabName);
-            var tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
-            if (tabId == Null.NullInteger)
-            {
-                // Create a new page
-                var newTab = new TabInfo();
-                newTab.TabName = tabName;
-                newTab.ParentId = Null.NullInteger;
-                newTab.PortalID = portalId;
-                newTab.IsVisible = true;
-                newTab.TabID = TabController.Instance.AddTabBefore(newTab, PortalSettings.Current.AdminTabId);
-                var objModule = new ModuleInfo();
-                objModule.Initialize(portalId);
-                objModule.PortalID = portalId;
-                objModule.TabID = newTab.TabID;
-                objModule.ModuleOrder = Null.NullInteger;
-                objModule.ModuleTitle = moduleDefinition.FriendlyName;
-                objModule.PaneName = Globals.glbDefaultPane;
-                objModule.ModuleDefID = moduleDefinition.ModuleDefID;
-                objModule.InheritViewPermissions = true;
-                objModule.AllTabs = false;
-                ModuleController.Instance.AddModule(objModule);
-
-                return this.NavigationManager.NavigateURL(newTab.TabID);
-            }
-
+    private string CreateNewPage(ModuleDefinitionInfo moduleDefinition)
+    {
+        if (PortalSettings.Current == null)
+        {
             return string.Empty;
         }
 
-        private string CreateControl(CreateModuleDto createModuleDto)
+        var portalId = PortalSettings.Current.PortalId;
+        var tabName = "Test " + moduleDefinition.FriendlyName + " Page";
+        var tabPath = Globals.GenerateTabPath(Null.NullInteger, tabName);
+        var tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
+        if (tabId == Null.NullInteger)
         {
-            var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
-            var className = this.GetClassName(createModuleDto);
-            var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules/" + folder + "/" + createModuleDto.FileName);
-            var message = Null.NullString;
+            // Create a new page
+            var newTab = new TabInfo();
+            newTab.TabName = tabName;
+            newTab.ParentId = Null.NullInteger;
+            newTab.PortalID = portalId;
+            newTab.IsVisible = true;
+            newTab.TabID = TabController.Instance.AddTabBefore(newTab, PortalSettings.Current.AdminTabId);
+            var objModule = new ModuleInfo();
+            objModule.Initialize(portalId);
+            objModule.PortalID = portalId;
+            objModule.TabID = newTab.TabID;
+            objModule.ModuleOrder = Null.NullInteger;
+            objModule.ModuleTitle = moduleDefinition.FriendlyName;
+            objModule.PaneName = Globals.glbDefaultPane;
+            objModule.ModuleDefID = moduleDefinition.ModuleDefID;
+            objModule.InheritViewPermissions = true;
+            objModule.AllTabs = false;
+            ModuleController.Instance.AddModule(objModule);
 
-            var source = string.Format(this.LoadControlTemplate(), createModuleDto.Language, className);
-
-            // reset attributes
-            if (File.Exists(moduleControlPath))
-            {
-                message = "FileExists";
-            }
-            else
-            {
-                using (var stream = File.CreateText(moduleControlPath))
-                {
-                    stream.WriteLine(source);
-                }
-            }
-
-            return message;
+            return this.NavigationManager.NavigateURL(newTab.TabID);
         }
 
-        private string LoadControlTemplate()
+        return string.Empty;
+    }
+
+    private string CreateControl(CreateModuleDto createModuleDto)
+    {
+        var folder = PathUtils.Instance.RemoveTrailingSlash(this.GetSourceFolder(createModuleDto));
+        var className = this.GetClassName(createModuleDto);
+        var moduleControlPath = Path.Combine(Globals.ApplicationMapPath, "DesktopModules/" + folder + "/" + createModuleDto.FileName);
+        var message = Null.NullString;
+
+        var source = string.Format(this.LoadControlTemplate(), createModuleDto.Language, className);
+
+        // reset attributes
+        if (File.Exists(moduleControlPath))
         {
-            var personaBarFolder = Library.Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
-            var filePath = Path.Combine(Globals.ApplicationMapPath, personaBarFolder, "Modules/Dnn.Extensions/data/ModuleControlTemplate.resources");
-            return File.ReadAllText(filePath, Encoding.UTF8);
+            message = "FileExists";
+        }
+        else
+        {
+            using (var stream = File.CreateText(moduleControlPath))
+            {
+                stream.WriteLine(source);
+            }
         }
 
-        private string GetSourceFolder(CreateModuleDto createModuleDto)
+        return message;
+    }
+
+    private string LoadControlTemplate()
+    {
+        var personaBarFolder = Library.Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
+        var filePath = Path.Combine(Globals.ApplicationMapPath, personaBarFolder, "Modules/Dnn.Extensions/data/ModuleControlTemplate.resources");
+        return File.ReadAllText(filePath, Encoding.UTF8);
+    }
+
+    private string GetSourceFolder(CreateModuleDto createModuleDto)
+    {
+        var folder = Null.NullString;
+        if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
         {
-            var folder = Null.NullString;
-            if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
-            {
-                folder += createModuleDto.OwnerFolder + "/";
-            }
-
-            if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
-            {
-                folder += createModuleDto.ModuleFolder + "/";
-            }
-
-            return folder;
+            folder += createModuleDto.OwnerFolder + "/";
         }
 
-        private string GetClassName(CreateModuleDto createModuleDto)
+        if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
         {
-            var className = Null.NullString;
-            if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
-            {
-                className += createModuleDto.OwnerFolder + ".";
-            }
-
-            if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
-            {
-                className += createModuleDto.ModuleFolder;
-            }
-
-            // return class and remove any spaces that might appear in folder structure
-            return className.Replace(" ", string.Empty);
+            folder += createModuleDto.ModuleFolder + "/";
         }
+
+        return folder;
+    }
+
+    private string GetClassName(CreateModuleDto createModuleDto)
+    {
+        var className = Null.NullString;
+        if (!string.IsNullOrEmpty(createModuleDto.OwnerFolder))
+        {
+            className += createModuleDto.OwnerFolder + ".";
+        }
+
+        if (!string.IsNullOrEmpty(createModuleDto.ModuleFolder))
+        {
+            className += createModuleDto.ModuleFolder;
+        }
+
+        // return class and remove any spaces that might appear in folder structure
+        return className.Replace(" ", string.Empty);
     }
 }

@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Components
+namespace Dnn.PersonaBar.Pages.Components;
+
+public enum PublishStatus
 {
-    public enum PublishStatus
-    {
-        All = 0,
-        Published = 1,
-        Draft = 2,
-    }
+    All = 0,
+    Published = 1,
+    Draft = 2,
 }

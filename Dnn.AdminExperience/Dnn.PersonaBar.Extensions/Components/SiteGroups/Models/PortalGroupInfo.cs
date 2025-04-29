@@ -2,22 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteGroups.Models
+namespace Dnn.PersonaBar.SiteGroups.Models;
+
+using System.Collections.Generic;
+
+public class PortalGroupInfo
 {
-    using System.Collections.Generic;
+    public int PortalGroupId { get; set; }
 
-    public class PortalGroupInfo
-    {
-        public int PortalGroupId { get; set; }
+    public string PortalGroupName { get; set; }
 
-        public string PortalGroupName { get; set; }
+    public string AuthenticationDomain { get; set; }
 
-        public string AuthenticationDomain { get; set; }
+    public PortalInfo MasterPortal { get; set; }
 
-        public PortalInfo MasterPortal { get; set; }
+    public IEnumerable<PortalInfo> Portals { get; set; }
 
-        public IEnumerable<PortalInfo> Portals { get; set; }
-
-        public string Description { get; set; }
-    }
+    public string Description { get; set; }
 }

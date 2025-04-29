@@ -883,7 +883,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             else
             {
-                this.AddLocalizedModuleMessage(this.LocalizeString("NoEmail"), ModuleMessage.ModuleMessageType.RedError, true);
+                this.AddLocalizedModuleMessage(this.LocalizeText("NoEmail"), ModuleMessage.ModuleMessageType.RedError, true);
                 foreach (DnnFormItemBase formItem in this.userForm.Items)
                 {
                     formItem.Visible = formItem.DataField == "Email";

@@ -4,9 +4,9 @@ import visiblePanel from "./visiblePanelReducer";
 import importExport from "./importExportReducer";
 
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    importExport
+  pagination,
+  visiblePanel,
+  importExport,
 });
 
 export default rootReducer;

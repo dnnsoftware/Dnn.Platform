@@ -25,115 +25,114 @@ using System.IO;
 using log4net.Util;
 using log4net.Core;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Layout.Pattern;
+
+/// <summary>Write the caller stack frames to the output</summary>
+/// <remarks>
+/// <para>
+/// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer, using format:
+/// type3.MethodCall3 > type2.MethodCall2 > type1.MethodCall1
+/// </para>
+/// </remarks>
+/// <author>Michael Cromwell</author>
+internal class StackTracePatternConverter : PatternLayoutConverter, IOptionHandler
 {
-    /// <summary>Write the caller stack frames to the output</summary>
+    private int m_stackFrameLevel = 1;
+        
+    /// <summary>Initialize the converter</summary>
     /// <remarks>
     /// <para>
-    /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer, using format:
-    /// type3.MethodCall3 > type2.MethodCall2 > type1.MethodCall1
+    /// This is part of the <see cref="IOptionHandler"/> delayed object
+    /// activation scheme. The <see cref="ActivateOptions"/> method must 
+    /// be called on this object after the configuration properties have
+    /// been set. Until <see cref="ActivateOptions"/> is called this
+    /// object is in an undefined state and must not be used. 
+    /// </para>
+    /// <para>
+    /// If any of the configuration properties are modified then 
+    /// <see cref="ActivateOptions"/> must be called again.
     /// </para>
     /// </remarks>
-    /// <author>Michael Cromwell</author>
-    internal class StackTracePatternConverter : PatternLayoutConverter, IOptionHandler
+    public void ActivateOptions()
     {
-        private int m_stackFrameLevel = 1;
-        
-        /// <summary>Initialize the converter</summary>
-        /// <remarks>
-        /// <para>
-        /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
-        /// be called on this object after the configuration properties have
-        /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
-        /// </para>
-        /// <para>
-        /// If any of the configuration properties are modified then 
-        /// <see cref="ActivateOptions"/> must be called again.
-        /// </para>
-        /// </remarks>
-        public void ActivateOptions()
+        if (this.Option == null)
         {
-            if (this.Option == null)
-            {
-                return;
-            }
+            return;
+        }
 
-            string optStr = this.Option.Trim();
-            if (optStr.Length != 0)
+        string optStr = this.Option.Trim();
+        if (optStr.Length != 0)
+        {
+            int stackLevelVal;
+            if (SystemInfo.TryParse(optStr, out stackLevelVal))
             {
-                int stackLevelVal;
-                if (SystemInfo.TryParse(optStr, out stackLevelVal))
+                if (stackLevelVal <= 0) 
                 {
-                    if (stackLevelVal <= 0) 
-                    {
-                        LogLog.Error(declaringType, "StackTracePatternConverter: StackeFrameLevel option (" + optStr + ") isn't a positive integer.");
-                    }
-                    else
-                    {
-                        this.m_stackFrameLevel = stackLevelVal;
-                    }
-                } 
+                    LogLog.Error(declaringType, "StackTracePatternConverter: StackeFrameLevel option (" + optStr + ") isn't a positive integer.");
+                }
                 else
                 {
-                    LogLog.Error(declaringType, "StackTracePatternConverter: StackFrameLevel option \"" + optStr + "\" not a decimal integer.");
+                    this.m_stackFrameLevel = stackLevelVal;
                 }
-            }
-        }
-        
-        /// <summary>Write the strack frames to the output</summary>
-        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <remarks>
-        /// <para>
-        /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer.
-        /// </para>
-        /// </remarks>
-        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
-        {
-            StackFrameItem[] stackframes = loggingEvent.LocationInformation.StackFrames;
-            if ((stackframes == null) || (stackframes.Length <= 0))
+            } 
+            else
             {
-                LogLog.Error(declaringType, "loggingEvent.LocationInformation.StackFrames was null or empty.");
-                return;
-            }
-            
-            int stackFrameIndex = this.m_stackFrameLevel - 1;
-            while (stackFrameIndex >= 0)
-            {
-                if (stackFrameIndex >= stackframes.Length)
-                {
-                    stackFrameIndex--;
-                    continue;
-                }
-                
-                StackFrameItem stackFrame = stackframes[stackFrameIndex];
-                writer.Write("{0}.{1}", stackFrame.ClassName, this.GetMethodInformation(stackFrame.Method));
-                if (stackFrameIndex > 0)
-                {
-                    // TODO: make this user settable?
-                    writer.Write(" > ");
-                }
-                stackFrameIndex--;
+                LogLog.Error(declaringType, "StackTracePatternConverter: StackFrameLevel option \"" + optStr + "\" not a decimal integer.");
             }
         }
-
-                /// <summary>Returns the Name of the method</summary>
-        /// <param name="method"></param>
-        /// <remarks>This method was created, so this class could be used as a base class for StackTraceDetailPatternConverter</remarks>
-        /// <returns>string</returns>
-        internal virtual string GetMethodInformation(MethodItem method)
-        {
-            return method.Name;
-        }
-
-                /// <summary>The fully qualified type of the StackTracePatternConverter class.</summary>
-        /// <remarks>
-        /// Used by the internal logger to record the Type of the
-        /// log message.
-        /// </remarks>
-        private static readonly Type declaringType = typeof(StackTracePatternConverter);
     }
+        
+    /// <summary>Write the strack frames to the output</summary>
+    /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+    /// <param name="loggingEvent">the event being logged</param>
+    /// <remarks>
+    /// <para>
+    /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer.
+    /// </para>
+    /// </remarks>
+    protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
+    {
+        StackFrameItem[] stackframes = loggingEvent.LocationInformation.StackFrames;
+        if ((stackframes == null) || (stackframes.Length <= 0))
+        {
+            LogLog.Error(declaringType, "loggingEvent.LocationInformation.StackFrames was null or empty.");
+            return;
+        }
+            
+        int stackFrameIndex = this.m_stackFrameLevel - 1;
+        while (stackFrameIndex >= 0)
+        {
+            if (stackFrameIndex >= stackframes.Length)
+            {
+                stackFrameIndex--;
+                continue;
+            }
+                
+            StackFrameItem stackFrame = stackframes[stackFrameIndex];
+            writer.Write("{0}.{1}", stackFrame.ClassName, this.GetMethodInformation(stackFrame.Method));
+            if (stackFrameIndex > 0)
+            {
+                // TODO: make this user settable?
+                writer.Write(" > ");
+            }
+            stackFrameIndex--;
+        }
+    }
+
+    /// <summary>Returns the Name of the method</summary>
+    /// <param name="method"></param>
+    /// <remarks>This method was created, so this class could be used as a base class for StackTraceDetailPatternConverter</remarks>
+    /// <returns>string</returns>
+    internal virtual string GetMethodInformation(MethodItem method)
+    {
+        return method.Name;
+    }
+
+    /// <summary>The fully qualified type of the StackTracePatternConverter class.</summary>
+    /// <remarks>
+    /// Used by the internal logger to record the Type of the
+    /// log message.
+    /// </remarks>
+    private static readonly Type declaringType = typeof(StackTracePatternConverter);
 }
 #endif // !NETCF && NET_2_0

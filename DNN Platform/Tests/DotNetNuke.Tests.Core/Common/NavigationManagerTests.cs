@@ -2,418 +2,417 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core.Common
+namespace DotNetNuke.Tests.Core.Common;
+
+using System.Collections.Generic;
+using System.Linq;
+
+using DotNetNuke.Abstractions;
+using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Services.Localization;
+using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
+
+using NUnit.Framework;
+
+[TestFixture]
+public class NavigationManagerTests
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    private const int TabID = 100;
+    private const int PortalID = 7;
+    private const string DefaultURLPattern = "/Default.aspx?tabid={0}";
+    private const string DefaultSuperTabPattern = "&portalid={0}";
+    private const string ControlKeyPattern = "&ctl={0}";
+    private const string LanguagePattern = "&language={0}";
+    private INavigationManager navigationManager;
 
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Services.Localization;
-    using Microsoft.Extensions.DependencyInjection;
+    [OneTimeSetUp]
 
-    using Moq;
-
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class NavigationManagerTests
+    public void Setup()
     {
-        private const int TabID = 100;
-        private const int PortalID = 7;
-        private const string DefaultURLPattern = "/Default.aspx?tabid={0}";
-        private const string DefaultSuperTabPattern = "&portalid={0}";
-        private const string ControlKeyPattern = "&ctl={0}";
-        private const string LanguagePattern = "&language={0}";
-        private INavigationManager navigationManager;
+        var portalControllerMock = PortalControllerMock();
+        this.navigationManager = new NavigationManager(portalControllerMock);
+        PortalController.SetTestableInstance(portalControllerMock);
+        TabController.SetTestableInstance(TabControllerMock());
+        LocaleController.SetTestableInstance(LocaleControllerMock());
 
-        [OneTimeSetUp]
-
-        public void Setup()
+        IPortalController PortalControllerMock()
         {
-            var portalControllerMock = PortalControllerMock();
-            this.navigationManager = new NavigationManager(portalControllerMock);
-            PortalController.SetTestableInstance(portalControllerMock);
-            TabController.SetTestableInstance(TabControllerMock());
-            LocaleController.SetTestableInstance(LocaleControllerMock());
+            var mockPortalController = new Mock<IPortalController>();
+            mockPortalController
+                .Setup(x => x.GetCurrentPortalSettings())
+                .Returns(PortalSettingsMock());
+            mockPortalController
+                .Setup(x => x.GetCurrentSettings())
+                .Returns(PortalSettingsMock());
 
-            IPortalController PortalControllerMock()
+            return mockPortalController.Object;
+
+            PortalSettings PortalSettingsMock()
             {
-                var mockPortalController = new Mock<IPortalController>();
-                mockPortalController
-                    .Setup(x => x.GetCurrentPortalSettings())
-                    .Returns(PortalSettingsMock());
-                mockPortalController
-                    .Setup(x => x.GetCurrentSettings())
-                    .Returns(PortalSettingsMock());
-
-                return mockPortalController.Object;
-
-                PortalSettings PortalSettingsMock()
+                var portalSettings = new PortalSettings
                 {
-                    var portalSettings = new PortalSettings
+                    PortalId = PortalID,
+                    ActiveTab = new TabInfo
                     {
-                        PortalId = PortalID,
-                        ActiveTab = new TabInfo
-                        {
-                            TabID = TabID,
-                        },
-                    };
+                        TabID = TabID,
+                    },
+                };
 
-                    return portalSettings;
-                }
+                return portalSettings;
             }
-
-            ITabController TabControllerMock()
-            {
-                var mockTabController = new Mock<ITabController>();
-                mockTabController
-                    .Setup(x => x.GetTabsByPortal(Null.NullInteger))
-                    .Returns(default(TabCollection));
-                mockTabController
-                    .Setup(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
-                    .Returns(new TabInfo
-                    {
-                        CultureCode = "en-US",
-                    });
-
-                return mockTabController.Object;
-            }
-
-            ILocaleController LocaleControllerMock()
-            {
-                var mockLocaleController = new Mock<ILocaleController>();
-                mockLocaleController
-                    .Setup(x => x.GetLocales(It.IsAny<int>()))
-                    .Returns(new Dictionary<string, Locale>
-                    {
-                        { "en-US", new Locale() },
-                        { "TEST", new Locale() },
-                    });
-
-                return mockLocaleController.Object;
-            }
-
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<INavigationManager>(container => this.navigationManager);
-            serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient<IHostSettingsService, HostController>();
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
         }
 
-        [OneTimeTearDown]
-        public void TearDown()
+        ITabController TabControllerMock()
         {
-            Globals.DependencyProvider = null;
-            this.navigationManager = null;
-            TabController.ClearInstance();
-            LocaleController.ClearInstance();
+            var mockTabController = new Mock<ITabController>();
+            mockTabController
+                .Setup(x => x.GetTabsByPortal(Null.NullInteger))
+                .Returns(default(TabCollection));
+            mockTabController
+                .Setup(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
+                .Returns(new TabInfo
+                {
+                    CultureCode = "en-US",
+                });
+
+            return mockTabController.Object;
         }
 
-        [Test]
-        public void NavigateUrlTest()
+        ILocaleController LocaleControllerMock()
         {
-            var expected = string.Format(DefaultURLPattern, TabID);
-            var actual = this.navigationManager.NavigateURL();
+            var mockLocaleController = new Mock<ILocaleController>();
+            mockLocaleController
+                .Setup(x => x.GetLocales(It.IsAny<int>()))
+                .Returns(new Dictionary<string, Locale>
+                {
+                    { "en-US", new Locale() },
+                    { "TEST", new Locale() },
+                });
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
+            return mockLocaleController.Object;
         }
 
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(11)]
-        public void NavigateUrl_CustomTabID(int tabId)
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddTransient<INavigationManager>(container => this.navigationManager);
+        serviceCollection.AddTransient<IApplicationStatusInfo>(container => new DotNetNuke.Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+        serviceCollection.AddTransient<IHostSettingsService, HostController>();
+        Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+    }
+
+    [OneTimeTearDown]
+    public void TearDown()
+    {
+        Globals.DependencyProvider = null;
+        this.navigationManager = null;
+        TabController.ClearInstance();
+        LocaleController.ClearInstance();
+    }
+
+    [Test]
+    public void NavigateUrlTest()
+    {
+        var expected = string.Format(DefaultURLPattern, TabID);
+        var actual = this.navigationManager.NavigateURL();
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    [TestCase(8)]
+    [TestCase(9)]
+    [TestCase(10)]
+    [TestCase(11)]
+    public void NavigateUrl_CustomTabID(int tabId)
+    {
+        var expected = string.Format(DefaultURLPattern, tabId);
+        var actual = this.navigationManager.NavigateURL(tabId);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void NavigateUrl_CustomTab_NotSuperTab()
+    {
+        var customTabId = 55;
+        var expected = string.Format(DefaultURLPattern, customTabId);
+        var actual = this.navigationManager.NavigateURL(customTabId, false);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    [TestCase(8)]
+    [TestCase(9)]
+    [TestCase(10)]
+    [TestCase(11)]
+    public void NavigateUrl_CustomTab_IsSuperTab(int tabId)
+    {
+        var expected = string.Format(DefaultURLPattern, tabId) + string.Format(DefaultSuperTabPattern, PortalID);
+        var actual = this.navigationManager.NavigateURL(tabId, true);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    [Ignore("TODO - We can't properly test this until we migrate Globals.AccessDeniedURL to an interface in the abstraction project")]
+    public void NavigateUrl_ControlKey_AccessDenied()
+    {
+        // The dependencies go very deep and make it very
+        // difficult to properly test just the NavigationManager logic.
+        var actual = this.navigationManager.NavigateURL("Access Denied");
+    }
+
+    [Test]
+    public void NavigateUrl_ControlKey()
+    {
+        var controlKey = "My-Control-Key";
+        var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
+        var actual = this.navigationManager.NavigateURL(controlKey);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void NavigateUrl_ControlKey_EmptyAdditionalParameter()
+    {
+        var controlKey = "My-Control-Key";
+        var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
+        var actual = this.navigationManager.NavigateURL(controlKey, new string[0]);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void NavigateUrl_ControlKey_SingleAdditionalParameter()
+    {
+        var controlKey = "My-Control-Key";
+        var parameters = new string[] { "My-Parameter" };
+        var expected = string.Format(DefaultURLPattern, TabID) +
+                       string.Format(ControlKeyPattern, controlKey) +
+                       $"&{parameters[0]}";
+        var actual = this.navigationManager.NavigateURL(controlKey, parameters);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    [TestCase(8)]
+    [TestCase(9)]
+    [TestCase(10)]
+    public void NavigateUrl_ControlKey_MultipleAdditionalParameter(int count)
+    {
+        string[] parameters = new string[count];
+        for (int index = 0; index < count; index++)
         {
-            var expected = string.Format(DefaultURLPattern, tabId);
-            var actual = this.navigationManager.NavigateURL(tabId);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
+            parameters[index] = $"My-Parameter{index}";
         }
 
-        [Test]
-        public void NavigateUrl_CustomTab_NotSuperTab()
+        var controlKey = "My-Control-Key";
+        var expected = string.Format(DefaultURLPattern, TabID) +
+                       string.Format(ControlKeyPattern, controlKey) +
+                       parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
+        var actual = this.navigationManager.NavigateURL(controlKey, parameters);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    [TestCase(8)]
+    [TestCase(9)]
+    [TestCase(10)]
+    [TestCase(11)]
+    public void NavigateUrl_TabID_ControlKey(int tabId)
+    {
+        var controlKey = "My-Control-Key";
+        var expected = string.Format(DefaultURLPattern, tabId) + string.Format(ControlKeyPattern, controlKey);
+        var actual = this.navigationManager.NavigateURL(tabId, controlKey);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    [TestCase(8)]
+    [TestCase(9)]
+    [TestCase(10)]
+    [TestCase(11)]
+    public void NavigateUrl_TabID_EmptyControlKey(int tabId)
+    {
+        var expected = string.Format(DefaultURLPattern, tabId);
+        var actual = this.navigationManager.NavigateURL(tabId, string.Empty);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(1)]
+    [TestCase(2)]
+    [TestCase(3)]
+    [TestCase(4)]
+    [TestCase(5)]
+    [TestCase(6)]
+    [TestCase(7)]
+    [TestCase(8)]
+    [TestCase(9)]
+    [TestCase(10)]
+    [TestCase(11)]
+    public void NavigateUrl_TabID_NullControlKey(int tabId)
+    {
+        var expected = string.Format(DefaultURLPattern, tabId);
+        var actual = this.navigationManager.NavigateURL(tabId, string.Empty);
+
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [TestCase(0, "My-Control-Key-0")]
+    [TestCase(1, "My-Control-Key-1")]
+    [TestCase(2, "My-Control-Key-2")]
+    [TestCase(3, "My-Control-Key-3")]
+    [TestCase(4, "My-Control-Key-4")]
+    [TestCase(5, "My-Control-Key-5")]
+    [TestCase(6, "My-Control-Key-6")]
+    [TestCase(7, "My-Control-Key-7")]
+    [TestCase(8, "My-Control-Key-8")]
+    [TestCase(9, "My-Control-Key-9")]
+    [TestCase(10, "My-Control-Key-10")]
+    public void NavigateUrl_TabID_ControlKey_Parameter(int count, string controlKey)
+    {
+        string[] parameters = new string[count];
+        for (int index = 0; index < count; index++)
         {
-            var customTabId = 55;
-            var expected = string.Format(DefaultURLPattern, customTabId);
-            var actual = this.navigationManager.NavigateURL(customTabId, false);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
+            parameters[index] = $"My-Parameter{index}";
         }
 
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(11)]
-        public void NavigateUrl_CustomTab_IsSuperTab(int tabId)
+        var customTabId = 51;
+        var expected = string.Format(DefaultURLPattern, customTabId) +
+                       string.Format(ControlKeyPattern, controlKey);
+
+        if (parameters.Length > 0)
         {
-            var expected = string.Format(DefaultURLPattern, tabId) + string.Format(DefaultSuperTabPattern, PortalID);
-            var actual = this.navigationManager.NavigateURL(tabId, true);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
+            expected += parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
         }
 
-        [Test]
-        [Ignore("TODO - We can't properly test this until we migrate Globals.AccessDeniedURL to an interface in the abstraction project")]
-        public void NavigateUrl_ControlKey_AccessDenied()
-        {
-            // The dependencies go very deep and make it very
-            // difficult to properly test just the NavigationManager logic.
-            var actual = this.navigationManager.NavigateURL("Access Denied");
-        }
+        var actual = this.navigationManager.NavigateURL(customTabId, controlKey, parameters);
 
-        [Test]
-        public void NavigateUrl_ControlKey()
-        {
-            var controlKey = "My-Control-Key";
-            var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
-            var actual = this.navigationManager.NavigateURL(controlKey);
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
+    [TestCase(0, "My-Control-Key-0")]
+    [TestCase(1, "My-Control-Key-1")]
+    [TestCase(2, "My-Control-Key-2")]
+    [TestCase(3, "My-Control-Key-3")]
+    [TestCase(4, "My-Control-Key-4")]
+    [TestCase(5, "My-Control-Key-5")]
+    [TestCase(6, "My-Control-Key-6")]
+    [TestCase(7, "My-Control-Key-7")]
+    [TestCase(8, "My-Control-Key-8")]
+    [TestCase(9, "My-Control-Key-9")]
+    [TestCase(10, "My-Control-Key-10")]
+    public void NavigateUrl_TabID_ControlKey_NullParameter(int tabId, string controlKey)
+    {
+        var expected = string.Format(DefaultURLPattern, tabId) +
+                       string.Format(ControlKeyPattern, controlKey);
 
-        [Test]
-        public void NavigateUrl_ControlKey_EmptyAdditionalParameter()
-        {
-            var controlKey = "My-Control-Key";
-            var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
-            var actual = this.navigationManager.NavigateURL(controlKey, new string[0]);
+        var actual = this.navigationManager.NavigateURL(tabId, controlKey, null);
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
 
-        [Test]
-        public void NavigateUrl_ControlKey_SingleAdditionalParameter()
-        {
-            var controlKey = "My-Control-Key";
-            var parameters = new string[] { "My-Parameter" };
-            var expected = string.Format(DefaultURLPattern, TabID) +
-                string.Format(ControlKeyPattern, controlKey) +
-                $"&{parameters[0]}";
-            var actual = this.navigationManager.NavigateURL(controlKey, parameters);
+    [TestCase(0, "My-Control-Key-0")]
+    [TestCase(1, "My-Control-Key-1")]
+    [TestCase(2, "My-Control-Key-2")]
+    [TestCase(3, "My-Control-Key-3")]
+    [TestCase(4, "My-Control-Key-4")]
+    [TestCase(5, "My-Control-Key-5")]
+    [TestCase(6, "My-Control-Key-6")]
+    [TestCase(7, "My-Control-Key-7")]
+    [TestCase(8, "My-Control-Key-8")]
+    [TestCase(9, "My-Control-Key-9")]
+    [TestCase(10, "My-Control-Key-10")]
+    public void NavigateUrl_TabId_NullSettings_ControlKey(int tabId, string controlKey)
+    {
+        var expected = string.Format(DefaultURLPattern, tabId) +
+                       string.Format(ControlKeyPattern, controlKey);
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
+        var actual = this.navigationManager.NavigateURL(tabId, default(IPortalSettings), controlKey, null);
 
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        public void NavigateUrl_ControlKey_MultipleAdditionalParameter(int count)
-        {
-            string[] parameters = new string[count];
-            for (int index = 0; index < count; index++)
-            {
-                parameters[index] = $"My-Parameter{index}";
-            }
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
+    }
 
-            var controlKey = "My-Control-Key";
-            var expected = string.Format(DefaultURLPattern, TabID) +
-                string.Format(ControlKeyPattern, controlKey) +
-                parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
-            var actual = this.navigationManager.NavigateURL(controlKey, parameters);
+    [TestCase(0, "My-Control-Key-0")]
+    [TestCase(1, "My-Control-Key-1")]
+    [TestCase(2, "My-Control-Key-2")]
+    [TestCase(3, "My-Control-Key-3")]
+    [TestCase(4, "My-Control-Key-4")]
+    [TestCase(5, "My-Control-Key-5")]
+    [TestCase(6, "My-Control-Key-6")]
+    [TestCase(7, "My-Control-Key-7")]
+    [TestCase(8, "My-Control-Key-8")]
+    [TestCase(9, "My-Control-Key-9")]
+    [TestCase(10, "My-Control-Key-10")]
+    public void NavigateUrl_TabId_Settings_ControlKey(int tabId, string controlKey)
+    {
+        var mockSettings = new Mock<IPortalSettings>();
+        mockSettings
+            .Setup(x => x.ContentLocalizationEnabled)
+            .Returns(true);
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
+        var expected = string.Format(DefaultURLPattern, tabId) +
+                       string.Format(ControlKeyPattern, controlKey) +
+                       string.Format(LanguagePattern, "en-US");
 
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(11)]
-        public void NavigateUrl_TabID_ControlKey(int tabId)
-        {
-            var controlKey = "My-Control-Key";
-            var expected = string.Format(DefaultURLPattern, tabId) + string.Format(ControlKeyPattern, controlKey);
-            var actual = this.navigationManager.NavigateURL(tabId, controlKey);
+        var actual = this.navigationManager.NavigateURL(tabId, mockSettings.Object, controlKey, null);
 
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(11)]
-        public void NavigateUrl_TabID_EmptyControlKey(int tabId)
-        {
-            var expected = string.Format(DefaultURLPattern, tabId);
-            var actual = this.navigationManager.NavigateURL(tabId, string.Empty);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [TestCase(1)]
-        [TestCase(2)]
-        [TestCase(3)]
-        [TestCase(4)]
-        [TestCase(5)]
-        [TestCase(6)]
-        [TestCase(7)]
-        [TestCase(8)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(11)]
-        public void NavigateUrl_TabID_NullControlKey(int tabId)
-        {
-            var expected = string.Format(DefaultURLPattern, tabId);
-            var actual = this.navigationManager.NavigateURL(tabId, string.Empty);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [TestCase(0, "My-Control-Key-0")]
-        [TestCase(1, "My-Control-Key-1")]
-        [TestCase(2, "My-Control-Key-2")]
-        [TestCase(3, "My-Control-Key-3")]
-        [TestCase(4, "My-Control-Key-4")]
-        [TestCase(5, "My-Control-Key-5")]
-        [TestCase(6, "My-Control-Key-6")]
-        [TestCase(7, "My-Control-Key-7")]
-        [TestCase(8, "My-Control-Key-8")]
-        [TestCase(9, "My-Control-Key-9")]
-        [TestCase(10, "My-Control-Key-10")]
-        public void NavigateUrl_TabID_ControlKey_Parameter(int count, string controlKey)
-        {
-            string[] parameters = new string[count];
-            for (int index = 0; index < count; index++)
-            {
-                parameters[index] = $"My-Parameter{index}";
-            }
-
-            var customTabId = 51;
-            var expected = string.Format(DefaultURLPattern, customTabId) +
-                string.Format(ControlKeyPattern, controlKey);
-
-            if (parameters.Length > 0)
-            {
-                expected += parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
-            }
-
-            var actual = this.navigationManager.NavigateURL(customTabId, controlKey, parameters);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [TestCase(0, "My-Control-Key-0")]
-        [TestCase(1, "My-Control-Key-1")]
-        [TestCase(2, "My-Control-Key-2")]
-        [TestCase(3, "My-Control-Key-3")]
-        [TestCase(4, "My-Control-Key-4")]
-        [TestCase(5, "My-Control-Key-5")]
-        [TestCase(6, "My-Control-Key-6")]
-        [TestCase(7, "My-Control-Key-7")]
-        [TestCase(8, "My-Control-Key-8")]
-        [TestCase(9, "My-Control-Key-9")]
-        [TestCase(10, "My-Control-Key-10")]
-        public void NavigateUrl_TabID_ControlKey_NullParameter(int tabId, string controlKey)
-        {
-            var expected = string.Format(DefaultURLPattern, tabId) +
-                string.Format(ControlKeyPattern, controlKey);
-
-            var actual = this.navigationManager.NavigateURL(tabId, controlKey, null);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [TestCase(0, "My-Control-Key-0")]
-        [TestCase(1, "My-Control-Key-1")]
-        [TestCase(2, "My-Control-Key-2")]
-        [TestCase(3, "My-Control-Key-3")]
-        [TestCase(4, "My-Control-Key-4")]
-        [TestCase(5, "My-Control-Key-5")]
-        [TestCase(6, "My-Control-Key-6")]
-        [TestCase(7, "My-Control-Key-7")]
-        [TestCase(8, "My-Control-Key-8")]
-        [TestCase(9, "My-Control-Key-9")]
-        [TestCase(10, "My-Control-Key-10")]
-        public void NavigateUrl_TabId_NullSettings_ControlKey(int tabId, string controlKey)
-        {
-            var expected = string.Format(DefaultURLPattern, tabId) +
-                string.Format(ControlKeyPattern, controlKey);
-
-            var actual = this.navigationManager.NavigateURL(tabId, default(IPortalSettings), controlKey, null);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
-
-        [TestCase(0, "My-Control-Key-0")]
-        [TestCase(1, "My-Control-Key-1")]
-        [TestCase(2, "My-Control-Key-2")]
-        [TestCase(3, "My-Control-Key-3")]
-        [TestCase(4, "My-Control-Key-4")]
-        [TestCase(5, "My-Control-Key-5")]
-        [TestCase(6, "My-Control-Key-6")]
-        [TestCase(7, "My-Control-Key-7")]
-        [TestCase(8, "My-Control-Key-8")]
-        [TestCase(9, "My-Control-Key-9")]
-        [TestCase(10, "My-Control-Key-10")]
-        public void NavigateUrl_TabId_Settings_ControlKey(int tabId, string controlKey)
-        {
-            var mockSettings = new Mock<IPortalSettings>();
-            mockSettings
-                .Setup(x => x.ContentLocalizationEnabled)
-                .Returns(true);
-
-            var expected = string.Format(DefaultURLPattern, tabId) +
-                string.Format(ControlKeyPattern, controlKey) +
-                string.Format(LanguagePattern, "en-US");
-
-            var actual = this.navigationManager.NavigateURL(tabId, mockSettings.Object, controlKey, null);
-
-            Assert.That(actual, Is.Not.Null);
-            Assert.That(actual, Is.EqualTo(expected));
-        }
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(expected));
     }
 }

@@ -2,70 +2,69 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Journal
+namespace DotNetNuke.Services.Journal;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+
+[Serializable]
+public class JournalTypeInfo : IHydratable
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
+    public int JournalTypeId { get; set; }
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
+    public int PortalId { get; set; }
 
-    [Serializable]
-    public class JournalTypeInfo : IHydratable
+    public string JournalType { get; set; }
+
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    public string icon { get; set; }
+
+    public bool AppliesToProfile { get; set; }
+
+    public bool AppliesToGroup { get; set; }
+
+    public bool AppliesToStream { get; set; }
+
+    public bool SupportsNotify { get; set; }
+
+    public string Options { get; set; }
+
+    public bool IsEnabled { get; set; }
+
+    public bool EnableComments { get; set; }
+
+    /// <inheritdoc/>
+    public int KeyID
     {
-        public int JournalTypeId { get; set; }
-
-        public int PortalId { get; set; }
-
-        public string JournalType { get; set; }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
-        public string icon { get; set; }
-
-        public bool AppliesToProfile { get; set; }
-
-        public bool AppliesToGroup { get; set; }
-
-        public bool AppliesToStream { get; set; }
-
-        public bool SupportsNotify { get; set; }
-
-        public string Options { get; set; }
-
-        public bool IsEnabled { get; set; }
-
-        public bool EnableComments { get; set; }
-
-        /// <inheritdoc/>
-        public int KeyID
+        get
         {
-            get
-            {
-                return this.JournalTypeId;
-            }
-
-            set
-            {
-                this.JournalTypeId = value;
-            }
+            return this.JournalTypeId;
         }
 
-        /// <inheritdoc/>
-        public void Fill(System.Data.IDataReader dr)
+        set
         {
-            this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
-            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
-            this.JournalType = Null.SetNullString(dr["JournalType"]);
-            this.icon = Null.SetNullString(dr["icon"]);
-            this.AppliesToProfile = Null.SetNullBoolean(dr["AppliesToProfile"]);
-            this.AppliesToGroup = Null.SetNullBoolean(dr["AppliesToGroup"]);
-            this.AppliesToStream = Null.SetNullBoolean(dr["AppliesToStream"]);
-            this.SupportsNotify = Null.SetNullBoolean(dr["SupportsNotify"]);
-            this.Options = Null.SetNullString(dr["Options"]);
-            this.IsEnabled = Null.SetNullBoolean(dr["IsEnabled"]);
-            this.EnableComments = Null.SetNullBoolean(dr["EnableComments"]);
+            this.JournalTypeId = value;
         }
+    }
+
+    /// <inheritdoc/>
+    public void Fill(System.Data.IDataReader dr)
+    {
+        this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
+        this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+        this.JournalType = Null.SetNullString(dr["JournalType"]);
+        this.icon = Null.SetNullString(dr["icon"]);
+        this.AppliesToProfile = Null.SetNullBoolean(dr["AppliesToProfile"]);
+        this.AppliesToGroup = Null.SetNullBoolean(dr["AppliesToGroup"]);
+        this.AppliesToStream = Null.SetNullBoolean(dr["AppliesToStream"]);
+        this.SupportsNotify = Null.SetNullBoolean(dr["SupportsNotify"]);
+        this.Options = Null.SetNullString(dr["Options"]);
+        this.IsEnabled = Null.SetNullBoolean(dr["IsEnabled"]);
+        this.EnableComments = Null.SetNullBoolean(dr["EnableComments"]);
     }
 }

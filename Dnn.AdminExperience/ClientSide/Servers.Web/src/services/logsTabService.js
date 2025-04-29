@@ -2,46 +2,52 @@ import * as dayjs from "dayjs";
 import serviceFramework from "./serviceFramework";
 
 const getLogs = function () {
-    return serviceFramework
-        .get("ServerSettingsLogs", "GetLogs")
-        .then(response => {
-            const logList = response.Results.LogList.map(
-                ({ Name, LastWriteTimeUtc, Size }) => {
-                    return {
-                        name: Name,
-                        lastWriteTimeUtc: LastWriteTimeUtc,
-                        size: Size,
-                        upgradeLog: false
-                    };
-                });
-            
-            const upgradeLogList = response.Results.UpgradeLogList.map(
-                ({ Name, LastWriteTimeUtc, Size }) => {
-                    return {
-                        name: Name,
-                        lastWriteTimeUtc: LastWriteTimeUtc,
-                        size: Size,
-                        upgradeLog: true
-                    };
-                });
-            
-            return logList
-                .concat(upgradeLogList)
-                .sort((a, b) => dayjs(b.lastWriteTimeUtc) - dayjs(a.lastWriteTimeUtc));
-        });
+  return serviceFramework
+    .get("ServerSettingsLogs", "GetLogs")
+    .then((response) => {
+      const logList = response.Results.LogList.map(
+        ({ Name, LastWriteTimeUtc, Size }) => {
+          return {
+            name: Name,
+            lastWriteTimeUtc: LastWriteTimeUtc,
+            size: Size,
+            upgradeLog: false,
+          };
+        },
+      );
+
+      const upgradeLogList = response.Results.UpgradeLogList.map(
+        ({ Name, LastWriteTimeUtc, Size }) => {
+          return {
+            name: Name,
+            lastWriteTimeUtc: LastWriteTimeUtc,
+            size: Size,
+            upgradeLog: true,
+          };
+        },
+      );
+
+      return logList
+        .concat(upgradeLogList)
+        .sort((a, b) => dayjs(b.lastWriteTimeUtc) - dayjs(a.lastWriteTimeUtc));
+    });
 };
 
 const getLog = function (fileName, upgradeLog) {
-    if (upgradeLog) {
-        return serviceFramework.get("ServerSettingsLogs", "GetUpgradeLogFile", {logName: fileName});    
-    }
-    
-    return serviceFramework.get("ServerSettingsLogs", "GetLogFile", {fileName: fileName});
+  if (upgradeLog) {
+    return serviceFramework.get("ServerSettingsLogs", "GetUpgradeLogFile", {
+      logName: fileName,
+    });
+  }
+
+  return serviceFramework.get("ServerSettingsLogs", "GetLogFile", {
+    fileName: fileName,
+  });
 };
 
 const databaseTabService = {
-    getLogs: getLogs,
-    getLog: getLog
+  getLogs: getLogs,
+  getLog: getLog,
 };
 
-export default databaseTabService; 
+export default databaseTabService;

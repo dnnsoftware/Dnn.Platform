@@ -1,95 +1,94 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Tests.Core.Collections
+namespace DotNetNuke.Tests.Core.Collections;
+
+using System;
+using System.Collections.Generic;
+
+using DotNetNuke.Collections;
+using DotNetNuke.Tests.Utilities;
+using NUnit.Framework;
+
+[TestFixture]
+public class PageSelectorTests
 {
-    using System;
-    using System.Collections.Generic;
+    private IEnumerable<int> list;
 
-    using DotNetNuke.Collections;
-    using DotNetNuke.Tests.Utilities;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class PageSelectorTests
+    [SetUp]
+    public void SetUp()
     {
-        private IEnumerable<int> list;
+        this.list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
+    }
 
-        [SetUp]
-        public void SetUp()
+    [Test]
+    [TestCase(0)]
+    [TestCase(1)]
+    [TestCase(Constants.PAGE_Last)]
+    public void PageSelector_Returns_CorrectPage_When_Given_Valid_Index(int index)
+    {
+        // Arrange
+        var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
+
+        // Act
+        IPagedList<int> pagedList = selector.GetPage(index);
+
+        // Assert
+        Assert.That(pagedList.PageIndex, Is.EqualTo(index));
+    }
+
+    [Test]
+    [TestCase(5)]
+    [TestCase(8)]
+    public void PageSelector_Returns_Correct_RecordCount_When_Given_Valid_Index(int pageSize)
+    {
+        // Arrange
+        var selector = new PageSelector<int>(this.list, pageSize);
+
+        // Act
+        IPagedList<int> pagedList = selector.GetPage(Constants.PAGE_First);
+
+        // Assert
+        Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
+    }
+
+    [Test]
+    [TestCase(0, 5)]
+    [TestCase(0, 6)]
+    [TestCase(2, 4)]
+    [TestCase(4, 4)]
+    public void PageSelector_Returns_Correct_Values_When_Given_Valid_Index_And_PageSize(int index, int pageSize)
+    {
+        // Arrange
+        var selector = new PageSelector<int>(this.list, pageSize);
+
+        // Act
+        IPagedList<int> pagedList = selector.GetPage(index);
+
+        // Assert
+        for (int i = 0; i < pageSize; i++)
         {
-            this.list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
+            Assert.That(pagedList[i], Is.EqualTo((index * pageSize) + i));
         }
+    }
 
-        [Test]
-        [TestCase(0)]
-        [TestCase(1)]
-        [TestCase(Constants.PAGE_Last)]
-        public void PageSelector_Returns_CorrectPage_When_Given_Valid_Index(int index)
-        {
-            // Arrange
-            var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
+    [Test]
+    public void PageSelector_Throws_When_Given_InValid_Index()
+    {
+        // Arrange
+        var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
 
-            // Act
-            IPagedList<int> pagedList = selector.GetPage(index);
+        // Assert
+        Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_OutOfRange));
+    }
 
-            // Assert
-            Assert.That(pagedList.PageIndex, Is.EqualTo(index));
-        }
+    [Test]
+    public void PageSelector_Throws_When_Given_Negative_Index()
+    {
+        // Arrange
+        var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
 
-        [Test]
-        [TestCase(5)]
-        [TestCase(8)]
-        public void PageSelector_Returns_Correct_RecordCount_When_Given_Valid_Index(int pageSize)
-        {
-            // Arrange
-            var selector = new PageSelector<int>(this.list, pageSize);
-
-            // Act
-            IPagedList<int> pagedList = selector.GetPage(Constants.PAGE_First);
-
-            // Assert
-            Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
-        }
-
-        [Test]
-        [TestCase(0, 5)]
-        [TestCase(0, 6)]
-        [TestCase(2, 4)]
-        [TestCase(4, 4)]
-        public void PageSelector_Returns_Correct_Values_When_Given_Valid_Index_And_PageSize(int index, int pageSize)
-        {
-            // Arrange
-            var selector = new PageSelector<int>(this.list, pageSize);
-
-            // Act
-            IPagedList<int> pagedList = selector.GetPage(index);
-
-            // Assert
-            for (int i = 0; i < pageSize; i++)
-            {
-                Assert.That(pagedList[i], Is.EqualTo((index * pageSize) + i));
-            }
-        }
-
-        [Test]
-        public void PageSelector_Throws_When_Given_InValid_Index()
-        {
-            // Arrange
-            var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
-
-            // Assert
-            Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_OutOfRange));
-        }
-
-        [Test]
-        public void PageSelector_Throws_When_Given_Negative_Index()
-        {
-            // Arrange
-            var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
-
-            // Assert
-            Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_NegativeIndex));
-        }
+        // Assert
+        Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_NegativeIndex));
     }
 }

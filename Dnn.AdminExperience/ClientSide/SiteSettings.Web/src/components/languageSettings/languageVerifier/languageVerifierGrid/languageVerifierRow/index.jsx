@@ -4,53 +4,58 @@ import { Collapsible, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 
 class LanguageVerifierRow extends Component {
+  componentDidMount() {
+    let opened =
+      this.props.openId !== "" && this.props.id === this.props.openId;
+    this.setState({
+      opened,
+    });
+  }
 
-    componentDidMount() {
-        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
-        this.setState({
-            opened
-        });
+  toggle() {
+    if (this.props.openId !== "" && this.props.id === this.props.openId) {
+      this.props.Collapse();
+    } else {
+      this.props.OpenCollapse(this.props.id);
     }
+  }
 
-    toggle() {
-        if ((this.props.openId !== "" && this.props.id === this.props.openId)) {
-            this.props.Collapse();
+  render() {
+    const { props } = this;
+    let opened =
+      this.props.openId !== "" && this.props.id === this.props.openId;
+    return (
+      <div
+        className={
+          "collapsible-component-verifier" + (opened ? " row-opened" : "")
         }
-        else {
-            this.props.OpenCollapse(this.props.id);
-        }
-    }    
-
-    /* eslint-disable react/no-danger */
-    render() {
-        const {props} = this;
-        let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
-        return (
-            <div className={"collapsible-component-verifier" + (opened ? " row-opened" : "")}>
-                <div className={"collapsible-header-verifier " + !opened} >
-                    <div className={"row"}>
-                        <div className="verifier-item item-row-name">
-                            {props.text}
-                        </div>     
-                        <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }} onClick={this.toggle.bind(this)} />
-                    </div>
-                </div>
-                <Collapsible isOpened={opened} className="collapsible-body-verifier">{opened && props.children}</Collapsible>
+      >
+        <div className={"collapsible-header-verifier " + !opened}>
+          <div className={"row"}>
+            <div className="verifier-item item-row-name">{props.text}</div>
+            <div className="arrow-icon" onClick={this.toggle.bind(this)}>
+              <SvgIcons.ArrowDownIcon />
             </div>
-        );
-    }
+          </div>
+        </div>
+        <Collapsible isOpened={opened} className="collapsible-body-verifier">
+          {opened && props.children}
+        </Collapsible>
+      </div>
+    );
+  }
 }
 
 LanguageVerifierRow.propTypes = {
-    text: PropTypes.string,
-    OpenCollapse: PropTypes.func,
-    Collapse: PropTypes.func,
-    id: PropTypes.string,
-    openId: PropTypes.string,
-    children: PropTypes.node
+  text: PropTypes.string,
+  OpenCollapse: PropTypes.func,
+  Collapse: PropTypes.func,
+  id: PropTypes.string,
+  openId: PropTypes.string,
+  children: PropTypes.node,
 };
 
 LanguageVerifierRow.defaultProps = {
-    collapsed: true
+  collapsed: true,
 };
-export default (LanguageVerifierRow);
+export default LanguageVerifierRow;

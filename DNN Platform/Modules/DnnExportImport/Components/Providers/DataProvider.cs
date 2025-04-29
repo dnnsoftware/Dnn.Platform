@@ -2,406 +2,405 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.ExportImport.Components.Providers
+namespace Dnn.ExportImport.Components.Providers;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+
+using Dnn.ExportImport.Components.Common;
+using Dnn.ExportImport.Components.Entities;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Security.Permissions;
+
+internal class DataProvider
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
+    private static readonly DataProvider Provider;
 
-    using Dnn.ExportImport.Components.Common;
-    using Dnn.ExportImport.Components.Entities;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Security.Permissions;
+    private readonly DotNetNuke.Data.DataProvider dataProvider = DotNetNuke.Data.DataProvider.Instance();
 
-    internal class DataProvider
+    static DataProvider()
     {
-        private static readonly DataProvider Provider;
+        Provider = new DataProvider();
+    }
 
-        private readonly DotNetNuke.Data.DataProvider dataProvider = DotNetNuke.Data.DataProvider.Instance();
+    private DataProvider()
+    {
+        // so it can't be instantiated outside this class
+    }
 
-        static DataProvider()
+    public static DataProvider Instance()
+    {
+        return Provider;
+    }
+
+    public void UpdateRecordChangers(string tableName, string primaryKeyName, int primaryKeyId, int? createdBy, int? modifiedBy)
+    {
+        this.dataProvider.ExecuteNonQuery(
+            "Export_GenericUpdateRecordChangers", tableName, primaryKeyName, primaryKeyId, createdBy, modifiedBy);
+    }
+
+    public void UpdateUniqueId(string tableName, string primaryKeyName, int primaryKeyId, Guid uniqueId)
+    {
+        this.dataProvider.ExecuteNonQuery("Export_UpdateUniqueId", tableName, primaryKeyName, primaryKeyId, uniqueId);
+    }
+
+    public void UpdateSettingRecordChangers(string tableName, string primaryKeyName, int parentKeyId, string settingName, int? createdBy, int? modifiedBy)
+    {
+        this.dataProvider.ExecuteNonQuery(
+            "Export_GenedicUpdateSettingsRecordChangers", tableName, primaryKeyName, parentKeyId, settingName, createdBy, modifiedBy);
+    }
+
+    public int AddNewJob(int portalId, int userId, JobType jobType, string jobName, string jobDescription, string directory, string serializedObject)
+    {
+        return this.dataProvider.ExecuteScalar<int>(
+            "ExportImportJobs_Add",
+            portalId,
+            (int)jobType,
+            userId,
+            jobName,
+            jobDescription,
+            directory,
+            serializedObject);
+    }
+
+    public void UpdateJobInfo(int jobId, string name, string description)
+    {
+        this.dataProvider.ExecuteNonQuery("ExportImportJobs_UpdateInfo", jobId, name, description);
+    }
+
+    public void UpdateJobStatus(int jobId, JobStatus jobStatus)
+    {
+        DateTime? completeDate = null;
+        if (jobStatus == JobStatus.Failed || jobStatus == JobStatus.Successful)
         {
-            Provider = new DataProvider();
+            completeDate = DateUtils.GetDatabaseUtcTime();
         }
 
-        private DataProvider()
+        this.dataProvider.ExecuteNonQuery(
+            "ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
+    }
+
+    public void SetJobCancelled(int jobId)
+    {
+        this.dataProvider.ExecuteNonQuery("ExportImportJobs_SetCancelled", jobId);
+    }
+
+    public void RemoveJob(int jobId)
+    {
+        // using 60 sec timeout because cascading deletes in logs might take a lot of time
+        this.dataProvider.ExecuteNonQuery(60, "ExportImportJobs_Remove", jobId);
+    }
+
+    public IDataReader GetExportImportSettings()
+    {
+        return this.dataProvider.ExecuteReader("ExportImport_Settings");
+    }
+
+    public void AddExportImportSetting(ExportImportSetting exportImportSetting)
+    {
+        this.dataProvider.ExecuteNonQuery(
+            "ExportImport_AddSetting",
+            exportImportSetting.SettingName,
+            exportImportSetting.SettingValue,
+            exportImportSetting.SettingIsSecure,
+            exportImportSetting.CreatedByUserId);
+    }
+
+    public IDataReader GetFirstActiveJob()
+    {
+        return this.dataProvider.ExecuteReader("ExportImportJobs_FirstActive");
+    }
+
+    public IDataReader GetJobById(int jobId)
+    {
+        return this.dataProvider.ExecuteReader("ExportImportJobs_GetById", jobId);
+    }
+
+    public IDataReader GetJobSummaryLog(int jobId)
+    {
+        return this.dataProvider.ExecuteReader("ExportImportJobLogs_Summary", jobId);
+    }
+
+    public IDataReader GetJobFullLog(int jobId)
+    {
+        return this.dataProvider.ExecuteReader("ExportImportJobLogs_Full", jobId);
+    }
+
+    public int GetAllJobsCount(int? portalId, int? jobType, string keywords)
+    {
+        return this.dataProvider.ExecuteScalar<int>("ExportImport_GetJobsCount", portalId, jobType, keywords);
+    }
+
+    public IDataReader GetAllJobs(int? portalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
+    {
+        return this.dataProvider.ExecuteReader(
+            "ExportImportJobs_GetAll", portalId, pageSize, pageIndex, jobType, keywords);
+    }
+
+    public IDataReader GetJobChekpoints(int jobId)
+    {
+        return this.dataProvider.ExecuteReader("ExportImportCheckpoints_GetByJob", jobId);
+    }
+
+    public DateTime? GetLastJobTime(int portalId, JobType jobType)
+    {
+        var datim = this.dataProvider.ExecuteScalar<DateTime?>("ExportImportJobLogs_LastJobTime", portalId, jobType);
+        if (datim.HasValue)
         {
-            // so it can't be instantiated outside this class
+            var d = datim.Value;
+            datim = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
         }
 
-        public static DataProvider Instance()
-        {
-            return Provider;
-        }
+        return datim;
+    }
 
-        public void UpdateRecordChangers(string tableName, string primaryKeyName, int primaryKeyId, int? createdBy, int? modifiedBy)
-        {
-            this.dataProvider.ExecuteNonQuery(
-                "Export_GenericUpdateRecordChangers", tableName, primaryKeyName, primaryKeyId, createdBy, modifiedBy);
-        }
+    public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
+    {
+        this.dataProvider.ExecuteNonQuery(
+            "ExportImportCheckpoints_Upsert",
+            checkpoint.JobId,
+            checkpoint.AssemblyName,
+            checkpoint.Category,
+            checkpoint.Stage,
+            checkpoint.StageData,
+            Null.SetNullInteger(Math.Floor(checkpoint.Progress)),
+            checkpoint.TotalItems,
+            checkpoint.ProcessedItems,
+            this.dataProvider.GetNull(checkpoint.StartDate),
+            checkpoint.Completed);
+    }
 
-        public void UpdateUniqueId(string tableName, string primaryKeyName, int primaryKeyId, Guid uniqueId)
-        {
-            this.dataProvider.ExecuteNonQuery("Export_UpdateUniqueId", tableName, primaryKeyName, primaryKeyId, uniqueId);
-        }
+    public IDataReader GetAllScopeTypes()
+    {
+        return this.dataProvider.ExecuteReader("ExportTaxonomy_ScopeTypes");
+    }
 
-        public void UpdateSettingRecordChangers(string tableName, string primaryKeyName, int parentKeyId, string settingName, int? createdBy, int? modifiedBy)
-        {
-            this.dataProvider.ExecuteNonQuery(
-                "Export_GenedicUpdateSettingsRecordChangers", tableName, primaryKeyName, parentKeyId, settingName, createdBy, modifiedBy);
-        }
+    public IDataReader GetAllVocabularyTypes()
+    {
+        return this.dataProvider.ExecuteReader("ExportTaxonomy_VocabularyTypes");
+    }
 
-        public int AddNewJob(int portalId, int userId, JobType jobType, string jobName, string jobDescription, string directory, string serializedObject)
-        {
-            return this.dataProvider.ExecuteScalar<int>(
-                "ExportImportJobs_Add",
-                portalId,
-                (int)jobType,
-                userId,
-                jobName,
-                jobDescription,
-                directory,
-                serializedObject);
-        }
+    public IDataReader GetAllTerms(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("ExportTaxonomy_Terms", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public void UpdateJobInfo(int jobId, string name, string description)
-        {
-            this.dataProvider.ExecuteNonQuery("ExportImportJobs_UpdateInfo", jobId, name, description);
-        }
+    public IDataReader GetAllVocabularies(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("ExportTaxonomy_Vocabularies", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public void UpdateJobStatus(int jobId, JobStatus jobStatus)
-        {
-            DateTime? completeDate = null;
-            if (jobStatus == JobStatus.Failed || jobStatus == JobStatus.Successful)
-            {
-                completeDate = DateUtils.GetDatabaseUtcTime();
-            }
+    public IDataReader GetAllRoleGroups(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_RoleGroups", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-            this.dataProvider.ExecuteNonQuery(
-                "ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
-        }
+    public IDataReader GetAllRoles(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_Roles", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public void SetJobCancelled(int jobId)
-        {
-            this.dataProvider.ExecuteNonQuery("ExportImportJobs_SetCancelled", jobId);
-        }
+    public IDataReader GetAllRoleSettings(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_RoleSettings", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public void RemoveJob(int jobId)
-        {
-            // using 60 sec timeout because cascading deletes in logs might take a lot of time
-            this.dataProvider.ExecuteNonQuery(60, "ExportImportJobs_Remove", jobId);
-        }
+    public int GetRoleIdByName(int portalId, string roleName)
+    {
+        return this.dataProvider.ExecuteScalar<int>("Export_RoleIdByName", this.dataProvider.GetNull(portalId), roleName);
+    }
 
-        public IDataReader GetExportImportSettings()
-        {
-            return this.dataProvider.ExecuteReader("ExportImport_Settings");
-        }
+    public void SetRoleAutoAssign(int roleId)
+    {
+        this.dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);
+    }
 
-        public void AddExportImportSetting(ExportImportSetting exportImportSetting)
-        {
-            this.dataProvider.ExecuteNonQuery(
-                "ExportImport_AddSetting",
-                exportImportSetting.SettingName,
-                exportImportSetting.SettingValue,
-                exportImportSetting.SettingIsSecure,
-                exportImportSetting.CreatedByUserId);
-        }
+    public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader(
+            "Export_GetPropertyDefinitionsByPortal",
+            portalId,
+            includeDeleted,
+            toDate,
+            this.dataProvider.GetNull(fromDate));
+    }
 
-        public IDataReader GetFirstActiveJob()
-        {
-            return this.dataProvider.ExecuteReader("ExportImportJobs_FirstActive");
-        }
+    public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
+    {
+        return this.dataProvider.ExecuteReader(
+            "Export_GetAllUsers",
+            portalId,
+            pageIndex,
+            pageSize,
+            includeDeleted,
+            toDateUtc,
+            this.dataProvider.GetNull(fromDateUtc),
+            false);
+    }
 
-        public IDataReader GetJobById(int jobId)
-        {
-            return this.dataProvider.ExecuteReader("ExportImportJobs_GetById", jobId);
-        }
+    public int GetUsersCount(int portalId, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
+    {
+        return this.dataProvider
+            .ExecuteScalar<int>("Export_GetAllUsers", portalId, 0, 0, includeDeleted, toDateUtc, this.dataProvider.GetNull(fromDateUtc), true);
+    }
 
-        public IDataReader GetJobSummaryLog(int jobId)
-        {
-            return this.dataProvider.ExecuteReader("ExportImportJobLogs_Summary", jobId);
-        }
+    public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
+    {
+        this.dataProvider.ExecuteNonQuery(
+            "Export_UpdateUsersChangers", userId, createdByUserName, modifiedByUserName);
+    }
 
-        public IDataReader GetJobFullLog(int jobId)
-        {
-            return this.dataProvider.ExecuteReader("ExportImportJobLogs_Full", jobId);
-        }
+    public IDataReader GetPortalSettings(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public int GetAllJobsCount(int? portalId, int? jobType, string keywords)
-        {
-            return this.dataProvider.ExecuteScalar<int>("ExportImport_GetJobsCount", portalId, jobType, keywords);
-        }
+    public IDataReader GetPortalLanguages(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_GetPortalLanguages", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public IDataReader GetAllJobs(int? portalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
-        {
-            return this.dataProvider.ExecuteReader(
-                "ExportImportJobs_GetAll", portalId, pageSize, pageIndex, jobType, keywords);
-        }
+    public IDataReader GetPortalLocalizations(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_GetPortalLocalizations", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public IDataReader GetJobChekpoints(int jobId)
-        {
-            return this.dataProvider.ExecuteReader("ExportImportCheckpoints_GetByJob", jobId);
-        }
+    public IDataReader GetFolders(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_GetFolders", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public DateTime? GetLastJobTime(int portalId, JobType jobType)
-        {
-            var datim = this.dataProvider.ExecuteScalar<DateTime?>("ExportImportJobLogs_LastJobTime", portalId, jobType);
-            if (datim.HasValue)
-            {
-                var d = datim.Value;
-                datim = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
-            }
+    public IDataReader GetFolderPermissionsByPath(int portalId, string folderPath, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider
+            .ExecuteReader("Export_GetFolderPermissionsByPath", portalId, folderPath, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-            return datim;
-        }
+    public IDataReader GetFolderMappings(int portalId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_GetFolderMappings", portalId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
-        {
-            this.dataProvider.ExecuteNonQuery(
-                "ExportImportCheckpoints_Upsert",
-                checkpoint.JobId,
-                checkpoint.AssemblyName,
-                checkpoint.Category,
-                checkpoint.Stage,
-                checkpoint.StageData,
-                Null.SetNullInteger(Math.Floor(checkpoint.Progress)),
-                checkpoint.TotalItems,
-                checkpoint.ProcessedItems,
-                this.dataProvider.GetNull(checkpoint.StartDate),
-                checkpoint.Completed);
-        }
+    public IDataReader GetFiles(int portalId, int? folderId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_GetFiles", portalId, folderId, toDate, this.dataProvider.GetNull(fromDate));
+    }
 
-        public IDataReader GetAllScopeTypes()
-        {
-            return this.dataProvider.ExecuteReader("ExportTaxonomy_ScopeTypes");
-        }
-
-        public IDataReader GetAllVocabularyTypes()
-        {
-            return this.dataProvider.ExecuteReader("ExportTaxonomy_VocabularyTypes");
-        }
-
-        public IDataReader GetAllTerms(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("ExportTaxonomy_Terms", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetAllVocabularies(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("ExportTaxonomy_Vocabularies", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetAllRoleGroups(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_RoleGroups", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetAllRoles(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_Roles", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetAllRoleSettings(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_RoleSettings", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public int GetRoleIdByName(int portalId, string roleName)
-        {
-            return this.dataProvider.ExecuteScalar<int>("Export_RoleIdByName", this.dataProvider.GetNull(portalId), roleName);
-        }
-
-        public void SetRoleAutoAssign(int roleId)
-        {
-            this.dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);
-        }
-
-        public IDataReader GetPropertyDefinitionsByPortal(int portalId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader(
-                "Export_GetPropertyDefinitionsByPortal",
-                portalId,
-                includeDeleted,
-                toDate,
-                this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetAllUsers(int portalId, int pageIndex, int pageSize, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
-        {
-            return this.dataProvider.ExecuteReader(
-                "Export_GetAllUsers",
-                portalId,
-                pageIndex,
-                pageSize,
-                includeDeleted,
-                toDateUtc,
-                this.dataProvider.GetNull(fromDateUtc),
-                false);
-        }
-
-        public int GetUsersCount(int portalId, bool includeDeleted, DateTime toDateUtc, DateTime? fromDateUtc)
-        {
-            return this.dataProvider
-                .ExecuteScalar<int>("Export_GetAllUsers", portalId, 0, 0, includeDeleted, toDateUtc, this.dataProvider.GetNull(fromDateUtc), true);
-        }
-
-        public void UpdateUserChangers(int userId, string createdByUserName, string modifiedByUserName)
-        {
-            this.dataProvider.ExecuteNonQuery(
-                "Export_UpdateUsersChangers", userId, createdByUserName, modifiedByUserName);
-        }
-
-        public IDataReader GetPortalSettings(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_GetPortalSettings", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetPortalLanguages(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_GetPortalLanguages", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetPortalLocalizations(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_GetPortalLocalizations", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetFolders(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_GetFolders", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetFolderPermissionsByPath(int portalId, string folderPath, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider
-                .ExecuteReader("Export_GetFolderPermissionsByPath", portalId, folderPath, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetFolderMappings(int portalId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_GetFolderMappings", portalId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public IDataReader GetFiles(int portalId, int? folderId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_GetFiles", portalId, folderId, toDate, this.dataProvider.GetNull(fromDate));
-        }
-
-        public int? GetPermissionId(string permissionCode, string permissionKey, string permissionName)
-        {
-            return
-                CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+    public int? GetPermissionId(string permissionCode, string permissionKey, string permissionName)
+    {
+        return
+            CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
                     new CacheItemArgs(
-                    DataCache.PermissionsCacheKey,
-                    DataCache.PermissionsCacheTimeout,
-                    DataCache.PermissionsCachePriority),
+                        DataCache.PermissionsCacheKey,
+                        DataCache.PermissionsCacheTimeout,
+                        DataCache.PermissionsCachePriority),
                     c =>
                         CBO.FillCollection<PermissionInfo>(
                             this.dataProvider.ExecuteReader("GetPermissions")))
-                    .FirstOrDefault(x => x.PermissionCode == permissionCode &&
-                    x.PermissionKey == permissionKey
-                    && x.PermissionName.Equals(permissionName, StringComparison.InvariantCultureIgnoreCase))?.PermissionID;
-        }
+                .FirstOrDefault(x => x.PermissionCode == permissionCode &&
+                                     x.PermissionKey == permissionKey
+                                     && x.PermissionName.Equals(permissionName, StringComparison.InvariantCultureIgnoreCase))?.PermissionID;
+    }
 
-        public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_Tabs", portalId, includeDeleted, includeSystem, toDate, fromDate);
-        }
+    public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_Tabs", portalId, includeDeleted, includeSystem, toDate, fromDate);
+    }
 
-        public IDataReader GetAllTabSettings(int tabId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_TabSettings", tabId, toDate, fromDate);
-        }
+    public IDataReader GetAllTabSettings(int tabId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_TabSettings", tabId, toDate, fromDate);
+    }
 
-        public IDataReader GetAllTabPermissions(int tabId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_TabPermissions", tabId, toDate, fromDate);
-        }
+    public IDataReader GetAllTabPermissions(int tabId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_TabPermissions", tabId, toDate, fromDate);
+    }
 
-        public IDataReader GetAllTabUrls(int tabId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_TabUrls", tabId, toDate, fromDate);
-        }
+    public IDataReader GetAllTabUrls(int tabId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_TabUrls", tabId, toDate, fromDate);
+    }
 
-        public IDataReader GetAllModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_Modules", tabId, includeDeleted, toDate, fromDate);
-        }
+    public IDataReader GetAllModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_Modules", tabId, includeDeleted, toDate, fromDate);
+    }
 
-        public IDataReader GetAllModuleSettings(int moduleId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_ModuleSettings", moduleId, toDate, fromDate);
-        }
+    public IDataReader GetAllModuleSettings(int moduleId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_ModuleSettings", moduleId, toDate, fromDate);
+    }
 
-        public IDataReader GetAllModulePermissions(int moduleId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_ModulePermissions", moduleId, toDate, fromDate);
-        }
+    public IDataReader GetAllModulePermissions(int moduleId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_ModulePermissions", moduleId, toDate, fromDate);
+    }
 
-        public IDataReader GetAllTabModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_TabModules", tabId, includeDeleted, toDate, fromDate);
-        }
+    public IDataReader GetAllTabModules(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_TabModules", tabId, includeDeleted, toDate, fromDate);
+    }
 
-        public bool CheckTabModuleUniqueIdExists(Guid uniqueId)
-        {
-            return this.dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabModuleUniqueIdExists", uniqueId) > 0;
-        }
+    public bool CheckTabModuleUniqueIdExists(Guid uniqueId)
+    {
+        return this.dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabModuleUniqueIdExists", uniqueId) > 0;
+    }
 
-        public bool CheckTabUniqueIdExists(Guid uniqueId)
-        {
-            return this.dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabUniqueIdExists", uniqueId) > 0;
-        }
+    public bool CheckTabUniqueIdExists(Guid uniqueId)
+    {
+        return this.dataProvider.ExecuteScalar<int?>("ExportImport_CheckTabUniqueIdExists", uniqueId) > 0;
+    }
 
-        public IDataReader GetAllTabModuleSettings(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, includeDeleted, toDate, fromDate);
-        }
+    public IDataReader GetAllTabModuleSettings(int tabId, bool includeDeleted, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_TabModuleSettings", tabId, includeDeleted, toDate, fromDate);
+    }
 
-        public void SetTabSpecificData(int tabId, bool isDeleted, bool isVisible)
-        {
-            this.dataProvider.ExecuteNonQuery("Export_SetTabSpecificData", tabId, isDeleted, isVisible);
-        }
+    public void SetTabSpecificData(int tabId, bool isDeleted, bool isVisible)
+    {
+        this.dataProvider.ExecuteNonQuery("Export_SetTabSpecificData", tabId, isDeleted, isVisible);
+    }
 
-        public void SetTabModuleDeleted(int tabModuleId, bool isDeleted)
-        {
-            this.dataProvider.ExecuteNonQuery("Export_SetTabModuleDeleted", tabModuleId, isDeleted);
-        }
+    public void SetTabModuleDeleted(int tabModuleId, bool isDeleted)
+    {
+        this.dataProvider.ExecuteNonQuery("Export_SetTabModuleDeleted", tabModuleId, isDeleted);
+    }
 
-        public void SetUserDeleted(int portalId, int userId, bool isDeleted)
-        {
-            this.dataProvider.ExecuteNonQuery("Export_SetUserDeleted", portalId, userId, isDeleted);
-        }
+    public void SetUserDeleted(int portalId, int userId, bool isDeleted)
+    {
+        this.dataProvider.ExecuteNonQuery("Export_SetUserDeleted", portalId, userId, isDeleted);
+    }
 
-        public IDataReader GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)
-        {
-            return this.dataProvider.ExecuteReader("Export_GetPermissionInfo", permissionCode, permissionKey, permissionName);
-        }
+    public IDataReader GetPermissionInfo(string permissionCode, string permissionKey, string permissionName)
+    {
+        return this.dataProvider.ExecuteReader("Export_GetPermissionInfo", permissionCode, permissionKey, permissionName);
+    }
 
-        public void UpdateTabUrlChangers(int tabId, int seqNum, int? createdBy, int? modifiedBy)
-        {
-            this.dataProvider.ExecuteNonQuery("Export_UpdateTabUrlChangers", tabId, seqNum, createdBy, modifiedBy);
-        }
+    public void UpdateTabUrlChangers(int tabId, int seqNum, int? createdBy, int? modifiedBy)
+    {
+        this.dataProvider.ExecuteNonQuery("Export_UpdateTabUrlChangers", tabId, seqNum, createdBy, modifiedBy);
+    }
 
-        public IDataReader GetAllWorkflows(int portalId, bool includeDeleted)
-        {
-            return this.dataProvider.ExecuteReader("Export_ContentWorkflows", portalId, includeDeleted);
-        }
+    public IDataReader GetAllWorkflows(int portalId, bool includeDeleted)
+    {
+        return this.dataProvider.ExecuteReader("Export_ContentWorkflows", portalId, includeDeleted);
+    }
 
-        public IDataReader GetAllWorkflowSources(int workflowId)
-        {
-            return this.dataProvider.ExecuteReader("Export_ContentWorkflowSources", workflowId);
-        }
+    public IDataReader GetAllWorkflowSources(int workflowId)
+    {
+        return this.dataProvider.ExecuteReader("Export_ContentWorkflowSources", workflowId);
+    }
 
-        public IDataReader GetAllWorkflowStates(int workflowId)
-        {
-            return this.dataProvider.ExecuteReader("Export_ContentWorkflowStates", workflowId);
-        }
+    public IDataReader GetAllWorkflowStates(int workflowId)
+    {
+        return this.dataProvider.ExecuteReader("Export_ContentWorkflowStates", workflowId);
+    }
 
-        public IDataReader GetAllWorkflowStatePermissions(int workflowStateId, DateTime toDate, DateTime? fromDate)
-        {
-            return this.dataProvider.ExecuteReader("Export_ContentWorkflowStatePermissions", workflowStateId, toDate, fromDate);
-        }
+    public IDataReader GetAllWorkflowStatePermissions(int workflowStateId, DateTime toDate, DateTime? fromDate)
+    {
+        return this.dataProvider.ExecuteReader("Export_ContentWorkflowStatePermissions", workflowStateId, toDate, fromDate);
     }
 }

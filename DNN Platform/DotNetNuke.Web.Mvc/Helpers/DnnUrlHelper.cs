@@ -1,129 +1,128 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.Mvc.Helpers
+namespace DotNetNuke.Web.Mvc.Helpers;
+
+using System;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+using DotNetNuke.Common;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Common;
+using DotNetNuke.Web.Mvc.Framework.Controllers;
+using DotNetNuke.Web.Mvc.Routing;
+
+public class DnnUrlHelper
 {
-    using System;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
+    private readonly ViewContext viewContext;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Mvc.Common;
-    using DotNetNuke.Web.Mvc.Framework.Controllers;
-    using DotNetNuke.Web.Mvc.Routing;
+    private readonly IDnnController controller;
 
-    public class DnnUrlHelper
+    public DnnUrlHelper(ViewContext viewContext)
+        : this(viewContext, RouteTable.Routes)
     {
-        private readonly ViewContext viewContext;
+    }
 
-        private readonly IDnnController controller;
+    public DnnUrlHelper(RequestContext requestContext, IDnnController controller)
+    {
+        Requires.NotNull("requestContext", requestContext);
+        Requires.NotNull("controller", controller);
 
-        public DnnUrlHelper(ViewContext viewContext)
-            : this(viewContext, RouteTable.Routes)
+        this.UrlHelper = new UrlHelper(requestContext);
+        this.controller = controller;
+        this.ModuleContext = this.controller.ModuleContext;
+    }
+
+    public DnnUrlHelper(ViewContext viewContext, RouteCollection routeCollection)
+    {
+        Requires.NotNull("viewContext", viewContext);
+
+        this.UrlHelper = new UrlHelper(viewContext.RequestContext, routeCollection);
+
+        this.viewContext = viewContext;
+
+        this.controller = viewContext.Controller as IDnnController;
+
+        if (this.controller == null)
         {
+            throw new InvalidOperationException("The DnnUrlHelper class can only be used in Views that inherit from DnnWebViewPage");
         }
 
-        public DnnUrlHelper(RequestContext requestContext, IDnnController controller)
-        {
-            Requires.NotNull("requestContext", requestContext);
-            Requires.NotNull("controller", controller);
+        this.ModuleContext = this.controller.ModuleContext;
+    }
 
-            this.UrlHelper = new UrlHelper(requestContext);
-            this.controller = controller;
-            this.ModuleContext = this.controller.ModuleContext;
-        }
+    public ModuleInstanceContext ModuleContext { get; set; }
 
-        public DnnUrlHelper(ViewContext viewContext, RouteCollection routeCollection)
-        {
-            Requires.NotNull("viewContext", viewContext);
+    internal UrlHelper UrlHelper { get; set; }
 
-            this.UrlHelper = new UrlHelper(viewContext.RequestContext, routeCollection);
+    public virtual string Encode(string url)
+    {
+        return HttpUtility.UrlEncode(url);
+    }
 
-            this.viewContext = viewContext;
+    /// <summary>Converts a virtual (relative) path to an application absolute path.</summary>
+    ///
+    /// <returns>
+    /// The application absolute path.
+    /// </returns>
+    /// <param name="contentPath">The virtual path of the content.</param>
+    public virtual string Content(string contentPath)
+    {
+        return this.UrlHelper.Content(contentPath);
+    }
 
-            this.controller = viewContext.Controller as IDnnController;
+    /// <summary>Returns a value that indicates whether the URL is local.</summary>
+    ///
+    /// <returns>
+    /// true if the URL is local; otherwise, false.
+    /// </returns>
+    /// <param name="url">The URL.</param>
+    public virtual bool IsLocalUrl(string url)
+    {
+        return this.UrlHelper.IsLocalUrl(url);
+    }
 
-            if (this.controller == null)
-            {
-                throw new InvalidOperationException("The DnnUrlHelper class can only be used in Views that inherit from DnnWebViewPage");
-            }
+    public virtual string Action()
+    {
+        return this.UrlHelper.RequestContext.HttpContext.Request.RawUrl;
+    }
 
-            this.ModuleContext = this.controller.ModuleContext;
-        }
+    public virtual string Action(string actionName)
+    {
+        return this.GenerateUrl(actionName, null, new RouteValueDictionary());
+    }
 
-        public ModuleInstanceContext ModuleContext { get; set; }
+    public virtual string Action(string actionName, RouteValueDictionary routeValues)
+    {
+        return this.GenerateUrl(actionName, null, routeValues);
+    }
 
-        internal UrlHelper UrlHelper { get; set; }
+    public virtual string Action(string actionName, object routeValues)
+    {
+        return this.GenerateUrl(actionName, null, TypeHelper.ObjectToDictionary(routeValues));
+    }
 
-        public virtual string Encode(string url)
-        {
-            return HttpUtility.UrlEncode(url);
-        }
+    public virtual string Action(string actionName, string controllerName)
+    {
+        return this.GenerateUrl(actionName, controllerName, new RouteValueDictionary());
+    }
 
-        /// <summary>Converts a virtual (relative) path to an application absolute path.</summary>
-        ///
-        /// <returns>
-        /// The application absolute path.
-        /// </returns>
-        /// <param name="contentPath">The virtual path of the content.</param>
-        public virtual string Content(string contentPath)
-        {
-            return this.UrlHelper.Content(contentPath);
-        }
+    public virtual string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
+    {
+        return this.GenerateUrl(actionName, controllerName, routeValues);
+    }
 
-        /// <summary>Returns a value that indicates whether the URL is local.</summary>
-        ///
-        /// <returns>
-        /// true if the URL is local; otherwise, false.
-        /// </returns>
-        /// <param name="url">The URL.</param>
-        public virtual bool IsLocalUrl(string url)
-        {
-            return this.UrlHelper.IsLocalUrl(url);
-        }
+    public virtual string Action(string actionName, string controllerName, object routeValues)
+    {
+        return this.GenerateUrl(actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
+    }
 
-        public virtual string Action()
-        {
-            return this.UrlHelper.RequestContext.HttpContext.Request.RawUrl;
-        }
-
-        public virtual string Action(string actionName)
-        {
-            return this.GenerateUrl(actionName, null, new RouteValueDictionary());
-        }
-
-        public virtual string Action(string actionName, RouteValueDictionary routeValues)
-        {
-            return this.GenerateUrl(actionName, null, routeValues);
-        }
-
-        public virtual string Action(string actionName, object routeValues)
-        {
-            return this.GenerateUrl(actionName, null, TypeHelper.ObjectToDictionary(routeValues));
-        }
-
-        public virtual string Action(string actionName, string controllerName)
-        {
-            return this.GenerateUrl(actionName, controllerName, new RouteValueDictionary());
-        }
-
-        public virtual string Action(string actionName, string controllerName, RouteValueDictionary routeValues)
-        {
-            return this.GenerateUrl(actionName, controllerName, routeValues);
-        }
-
-        public virtual string Action(string actionName, string controllerName, object routeValues)
-        {
-            return this.GenerateUrl(actionName, controllerName, TypeHelper.ObjectToDictionary(routeValues));
-        }
-
-        private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
-        {
-            routeValues["controller"] = controllerName ?? this.controller.ControllerContext?.RouteData.Values["controller"];
-            routeValues["action"] = actionName;
-            return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, this.ModuleContext);
-        }
+    private string GenerateUrl(string actionName, string controllerName, RouteValueDictionary routeValues)
+    {
+        routeValues["controller"] = controllerName ?? this.controller.ControllerContext?.RouteData.Values["controller"];
+        routeValues["action"] = actionName;
+        return ModuleRoutingProvider.Instance().GenerateUrl(routeValues, this.ModuleContext);
     }
 }

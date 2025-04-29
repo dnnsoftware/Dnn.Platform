@@ -7,7 +7,7 @@
   gap: 1em;
 }
 
-button{
+button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +16,7 @@ button{
   margin: 0;
   background-color: transparent;
   cursor: pointer;
-  svg{
+  svg {
     fill: var(--dnn-color-primary-contrast);
   }
 }

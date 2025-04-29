@@ -1,11 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Modules.Groups
-{
-    using DotNetNuke.Entities.Modules;
+namespace DotNetNuke.Modules.Groups;
 
-    public class GroupsSettingsBase : ModuleSettingsBase
-    {
-    }
+using DotNetNuke.Entities.Modules;
+
+public class GroupsSettingsBase : ModuleSettingsBase
+{
 }

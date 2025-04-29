@@ -1,15 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.EventQueue.Config
+namespace DotNetNuke.Services.EventQueue.Config;
+
+using System;
+
+[Serializable]
+public class PublishedEvent
 {
-    using System;
+    public string EventName { get; set; }
 
-    [Serializable]
-    public class PublishedEvent
-    {
-        public string EventName { get; set; }
-
-        public string Subscribers { get; set; }
-    }
+    public string Subscribers { get; set; }
 }

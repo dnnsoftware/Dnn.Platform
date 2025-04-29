@@ -2,40 +2,39 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
+namespace Dnn.PersonaBar.Prompt.Components.Commands.Host;
+
+using System;
+
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt.Models;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
+
+[ConsoleCommand("clear-cache", Constants.HostCategory, "Prompt_ClearCache_Description")]
+
+public class ClearCache : ConsoleCommandBase
 {
-    using System;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearCache));
 
-    using Dnn.PersonaBar.Library.Prompt;
-    using Dnn.PersonaBar.Library.Prompt.Attributes;
-    using Dnn.PersonaBar.Library.Prompt.Models;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Instrumentation;
+    /// <inheritdoc/>
+    public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-    [ConsoleCommand("clear-cache", Constants.HostCategory, "Prompt_ClearCache_Description")]
-
-    public class ClearCache : ConsoleCommandBase
+    /// <inheritdoc/>
+    public override ConsoleResultModel Run()
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearCache));
-
-        /// <inheritdoc/>
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
-        /// <inheritdoc/>
-        public override ConsoleResultModel Run()
+        try
         {
-            try
-            {
-                DataCache.ClearCache();
-                DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.ClearCache();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearCache_Error"));
-            }
-
-            return new ConsoleResultModel(this.LocalizeString("Prompt_ClearCache_Success")) { MustReload = true };
+            DataCache.ClearCache();
+            DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.ClearCache();
         }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearCache_Error"));
+        }
+
+        return new ConsoleResultModel(this.LocalizeString("Prompt_ClearCache_Success")) { MustReload = true };
     }
 }

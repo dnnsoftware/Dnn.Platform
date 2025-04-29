@@ -1,27 +1,25 @@
-import { Config } from '@stencil/core';
+import { Config } from "@stencil/core";
 import { sass } from "@stencil/sass";
 
 export const config: Config = {
-  namespace: 'dnn-resource-manager',
+  namespace: "dnn-resource-manager",
   outputTargets: [
     {
-      type: 'dist',
-      esmLoaderPath: '../loader',
+      type: "dist",
+      esmLoaderPath: "../loader",
     },
     {
-      type: 'dist-custom-elements',
+      type: "dist-custom-elements",
     },
     {
-      type: 'docs-readme',
+      type: "docs-readme",
     },
     {
-      type: 'www',
+      type: "www",
       serviceWorker: null, // disable service workers
     },
   ],
-  plugins: [
-    sass(),
-  ],
+  plugins: [sass()],
   sourceMap: true,
-  buildEs5: 'prod',
+  buildEs5: "prod",
 };

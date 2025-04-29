@@ -1,109 +1,108 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Data.PetaPoco
+namespace DotNetNuke.Data.PetaPoco;
+
+using System;
+using System.Reflection;
+using System.Threading;
+
+using DotNetNuke.ComponentModel.DataAnnotations;
+using global::PetaPoco;
+
+public class PetaPocoMapper : IMapper
 {
-    using System;
-    using System.Reflection;
-    using System.Threading;
+    private static IMapper defaultMapper;
+    private static ReaderWriterLockSlim @lock = new ReaderWriterLockSlim();
+    private readonly string tablePrefix;
 
-    using DotNetNuke.ComponentModel.DataAnnotations;
-    using global::PetaPoco;
-
-    public class PetaPocoMapper : IMapper
+    /// <summary>Initializes a new instance of the <see cref="PetaPocoMapper"/> class.</summary>
+    /// <param name="tablePrefix"></param>
+    public PetaPocoMapper(string tablePrefix)
     {
-        private static IMapper defaultMapper;
-        private static ReaderWriterLockSlim @lock = new ReaderWriterLockSlim();
-        private readonly string tablePrefix;
+        this.tablePrefix = tablePrefix;
+        defaultMapper = new StandardMapper();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="PetaPocoMapper"/> class.</summary>
-        /// <param name="tablePrefix"></param>
-        public PetaPocoMapper(string tablePrefix)
+    public static void SetMapper<T>(IMapper mapper)
+    {
+        @lock.EnterWriteLock();
+        try
         {
-            this.tablePrefix = tablePrefix;
-            defaultMapper = new StandardMapper();
-        }
-
-        public static void SetMapper<T>(IMapper mapper)
-        {
-            @lock.EnterWriteLock();
-            try
+            if (Mappers.GetMapper(typeof(T), defaultMapper) is StandardMapper)
             {
-                if (Mappers.GetMapper(typeof(T), defaultMapper) is StandardMapper)
-                {
-                    Mappers.Register(typeof(T), mapper);
-                }
-            }
-            finally
-            {
-                @lock.ExitWriteLock();
+                Mappers.Register(typeof(T), mapper);
             }
         }
-
-        /// <inheritdoc/>
-        public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
+        finally
         {
-            bool includeColumn = true;
+            @lock.ExitWriteLock();
+        }
+    }
 
-            // Check if the class has the ExplictColumnsAttribute
-            bool declareColumns = pocoProperty.DeclaringType != null
-                            && pocoProperty.DeclaringType.GetCustomAttributes(typeof(DeclareColumnsAttribute), true).Length > 0;
+    /// <inheritdoc/>
+    public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
+    {
+        bool includeColumn = true;
 
-            if (declareColumns)
+        // Check if the class has the ExplictColumnsAttribute
+        bool declareColumns = pocoProperty.DeclaringType != null
+                              && pocoProperty.DeclaringType.GetCustomAttributes(typeof(DeclareColumnsAttribute), true).Length > 0;
+
+        if (declareColumns)
+        {
+            if (pocoProperty.GetCustomAttributes(typeof(IncludeColumnAttribute), true).Length == 0)
             {
-                if (pocoProperty.GetCustomAttributes(typeof(IncludeColumnAttribute), true).Length == 0)
-                {
-                    includeColumn = false;
-                }
+                includeColumn = false;
             }
-            else
+        }
+        else
+        {
+            if (pocoProperty.GetCustomAttributes(typeof(IgnoreColumnAttribute), true).Length > 0)
             {
-                if (pocoProperty.GetCustomAttributes(typeof(IgnoreColumnAttribute), true).Length > 0)
-                {
-                    includeColumn = false;
-                }
+                includeColumn = false;
             }
-
-            ColumnInfo ci = null;
-            if (includeColumn)
-            {
-                ci = ColumnInfo.FromProperty(pocoProperty);
-                ci.ColumnName = DataUtil.GetColumnName(pocoProperty, ci.ColumnName);
-
-                ci.ResultColumn = pocoProperty.GetCustomAttributes(typeof(ReadOnlyColumnAttribute), true).Length > 0;
-            }
-
-            return ci;
         }
 
-        /// <inheritdoc/>
-        public TableInfo GetTableInfo(Type pocoType)
+        ColumnInfo ci = null;
+        if (includeColumn)
         {
-            TableInfo ti = TableInfo.FromPoco(pocoType);
+            ci = ColumnInfo.FromProperty(pocoProperty);
+            ci.ColumnName = DataUtil.GetColumnName(pocoProperty, ci.ColumnName);
 
-            // Table Name
-            ti.TableName = DataUtil.GetTableName(pocoType, ti.TableName + "s");
-
-            ti.TableName = this.tablePrefix + ti.TableName;
-
-            // Primary Key
-            ti.PrimaryKey = DataUtil.GetPrimaryKeyColumn(pocoType, ti.PrimaryKey);
-
-            ti.AutoIncrement = DataUtil.GetAutoIncrement(pocoType, true);
-
-            return ti;
+            ci.ResultColumn = pocoProperty.GetCustomAttributes(typeof(ReadOnlyColumnAttribute), true).Length > 0;
         }
 
-        /// <inheritdoc/>
-        public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type sourceType)
-        {
-            return null;
-        }
+        return ci;
+    }
 
-        /// <inheritdoc/>
-        public Func<object, object> GetToDbConverter(PropertyInfo sourceProperty)
-        {
-            return null;
-        }
+    /// <inheritdoc/>
+    public TableInfo GetTableInfo(Type pocoType)
+    {
+        TableInfo ti = TableInfo.FromPoco(pocoType);
+
+        // Table Name
+        ti.TableName = DataUtil.GetTableName(pocoType, ti.TableName + "s");
+
+        ti.TableName = this.tablePrefix + ti.TableName;
+
+        // Primary Key
+        ti.PrimaryKey = DataUtil.GetPrimaryKeyColumn(pocoType, ti.PrimaryKey);
+
+        ti.AutoIncrement = DataUtil.GetAutoIncrement(pocoType, true);
+
+        return ti;
+    }
+
+    /// <inheritdoc/>
+    public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type sourceType)
+    {
+        return null;
+    }
+
+    /// <inheritdoc/>
+    public Func<object, object> GetToDbConverter(PropertyInfo sourceProperty)
+    {
+        return null;
     }
 }

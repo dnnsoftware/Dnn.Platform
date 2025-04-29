@@ -2,44 +2,43 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+
+using DotNetNuke.Entities.Host;
+
+public class CheckAllowableFileExtensions : IAuditCheck
 {
-    using System;
+    /// <inheritdoc/>
+    public string Id => "CheckAllowableFileExtensions";
 
-    using DotNetNuke.Entities.Host;
+    /// <inheritdoc/>
+    public bool LazyLoad => false;
 
-    public class CheckAllowableFileExtensions : IAuditCheck
+    /// <inheritdoc/>
+    public CheckResult Execute()
     {
-        /// <inheritdoc/>
-        public string Id => "CheckAllowableFileExtensions";
-
-        /// <inheritdoc/>
-        public bool LazyLoad => false;
-
-        /// <inheritdoc/>
-        public CheckResult Execute()
+        var result = new CheckResult(SeverityEnum.Unverified, this.Id);
+        try
         {
-            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            try
+            if (Host.AllowedExtensionWhitelist.IsAllowedExtension("asp")
+                || Host.AllowedExtensionWhitelist.IsAllowedExtension("aspx")
+                || Host.AllowedExtensionWhitelist.IsAllowedExtension("php"))
             {
-                if (Host.AllowedExtensionWhitelist.IsAllowedExtension("asp")
-                        || Host.AllowedExtensionWhitelist.IsAllowedExtension("aspx")
-                        || Host.AllowedExtensionWhitelist.IsAllowedExtension("php"))
-                {
-                    result.Severity = SeverityEnum.Failure;
-                    result.Notes.Add("Extensions: " + Host.AllowedExtensionWhitelist.ToDisplayString());
-                }
-                else
-                {
-                    result.Severity = SeverityEnum.Pass;
-                }
+                result.Severity = SeverityEnum.Failure;
+                result.Notes.Add("Extensions: " + Host.AllowedExtensionWhitelist.ToDisplayString());
             }
-            catch (Exception)
+            else
             {
-                throw;
+                result.Severity = SeverityEnum.Pass;
             }
-
-            return result;
         }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return result;
     }
 }

@@ -1,202 +1,201 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Security.Membership
+namespace DotNetNuke.Security.Membership;
+
+using System.ComponentModel;
+
+using DotNetNuke.UI.WebControls;
+
+/// <summary>The MembershipProviderConfig class provides a wrapper to the Membership providers configuration.</summary>
+public class MembershipProviderConfig
 {
-    using System.ComponentModel;
+    private static readonly MembershipProvider MemberProvider = MembershipProvider.Instance();
 
-    using DotNetNuke.UI.WebControls;
-
-    /// <summary>The MembershipProviderConfig class provides a wrapper to the Membership providers configuration.</summary>
-    public class MembershipProviderConfig
+    /// <summary>Gets a value indicating whether the Provider Properties can be edited.</summary>
+    [Browsable(false)]
+    public static bool CanEditProviderProperties
     {
-        private static readonly MembershipProvider MemberProvider = MembershipProvider.Instance();
-
-        /// <summary>Gets a value indicating whether the Provider Properties can be edited.</summary>
-        [Browsable(false)]
-        public static bool CanEditProviderProperties
+        get
         {
-            get
-            {
-                return MemberProvider.CanEditProviderProperties;
-            }
+            return MemberProvider.CanEditProviderProperties;
+        }
+    }
+
+    /// <summary>Gets or sets the maximum number of invalid attempts to login are allowed.</summary>
+    [SortOrder(8)]
+    [Category("Password")]
+    public static int MaxInvalidPasswordAttempts
+    {
+        get
+        {
+            return MemberProvider.MaxInvalidPasswordAttempts;
         }
 
-        /// <summary>Gets or sets the maximum number of invalid attempts to login are allowed.</summary>
-        [SortOrder(8)]
-        [Category("Password")]
-        public static int MaxInvalidPasswordAttempts
+        set
         {
-            get
-            {
-                return MemberProvider.MaxInvalidPasswordAttempts;
-            }
+            MemberProvider.MaxInvalidPasswordAttempts = value;
+        }
+    }
 
-            set
-            {
-                MemberProvider.MaxInvalidPasswordAttempts = value;
-            }
+    /// <summary>Gets or sets the Mimimum no of Non AlphNumeric characters required.</summary>
+    /// <returns>An Integer.</returns>
+    [SortOrder(5)]
+    [Category("Password")]
+    public static int MinNonAlphanumericCharacters
+    {
+        get
+        {
+            return MemberProvider.MinNonAlphanumericCharacters;
         }
 
-        /// <summary>Gets or sets the Mimimum no of Non AlphNumeric characters required.</summary>
-        /// <returns>An Integer.</returns>
-        [SortOrder(5)]
-        [Category("Password")]
-        public static int MinNonAlphanumericCharacters
+        set
         {
-            get
-            {
-                return MemberProvider.MinNonAlphanumericCharacters;
-            }
+            MemberProvider.MinNonAlphanumericCharacters = value;
+        }
+    }
 
-            set
-            {
-                MemberProvider.MinNonAlphanumericCharacters = value;
-            }
+    /// <summary>Gets or sets the Mimimum Password Length.</summary>
+    /// <returns>An Integer.</returns>
+    [SortOrder(4)]
+    [Category("Password")]
+    public static int MinPasswordLength
+    {
+        get
+        {
+            return MemberProvider.MinPasswordLength;
         }
 
-        /// <summary>Gets or sets the Mimimum Password Length.</summary>
-        /// <returns>An Integer.</returns>
-        [SortOrder(4)]
-        [Category("Password")]
-        public static int MinPasswordLength
+        set
         {
-            get
-            {
-                return MemberProvider.MinPasswordLength;
-            }
+            MemberProvider.MinPasswordLength = value;
+        }
+    }
 
-            set
-            {
-                MemberProvider.MinPasswordLength = value;
-            }
+    /// <summary>Gets or sets the window in minutes that the maxium attempts are tracked for.</summary>
+    /// <returns>A Boolean.</returns>
+    [SortOrder(9)]
+    [Category("Password")]
+    public static int PasswordAttemptWindow
+    {
+        get
+        {
+            return MemberProvider.PasswordAttemptWindow;
         }
 
-        /// <summary>Gets or sets the window in minutes that the maxium attempts are tracked for.</summary>
-        /// <returns>A Boolean.</returns>
-        [SortOrder(9)]
-        [Category("Password")]
-        public static int PasswordAttemptWindow
+        set
         {
-            get
-            {
-                return MemberProvider.PasswordAttemptWindow;
-            }
+            MemberProvider.PasswordAttemptWindow = value;
+        }
+    }
 
-            set
-            {
-                MemberProvider.PasswordAttemptWindow = value;
-            }
+    /// <summary>Gets or sets the Password Format.</summary>
+    /// <returns>A PasswordFormat enumeration.</returns>
+    [SortOrder(1)]
+    [Category("Password")]
+    public static PasswordFormat PasswordFormat
+    {
+        get
+        {
+            return MemberProvider.PasswordFormat;
         }
 
-        /// <summary>Gets or sets the Password Format.</summary>
-        /// <returns>A PasswordFormat enumeration.</returns>
-        [SortOrder(1)]
-        [Category("Password")]
-        public static PasswordFormat PasswordFormat
+        set
         {
-            get
-            {
-                return MemberProvider.PasswordFormat;
-            }
+            MemberProvider.PasswordFormat = value;
+        }
+    }
 
-            set
-            {
-                MemberProvider.PasswordFormat = value;
-            }
+    /// <summary>Gets or sets a value indicating whether the Users's Password can be reset.</summary>
+    /// <returns>A Boolean.</returns>
+    [SortOrder(3)]
+    [Category("Password")]
+    public static bool PasswordResetEnabled
+    {
+        get
+        {
+            return MemberProvider.PasswordResetEnabled;
         }
 
-        /// <summary>Gets or sets a value indicating whether the Users's Password can be reset.</summary>
-        /// <returns>A Boolean.</returns>
-        [SortOrder(3)]
-        [Category("Password")]
-        public static bool PasswordResetEnabled
+        set
         {
-            get
+            MemberProvider.PasswordResetEnabled = value;
+        }
+    }
+
+    /// <summary>Gets or sets a value indicating whether the Users's Password can be retrieved.</summary>
+    /// <returns>A Boolean.</returns>
+    [SortOrder(2)]
+    [Category("Password")]
+    public static bool PasswordRetrievalEnabled
+    {
+        get
+        {
+            bool enabled = MemberProvider.PasswordRetrievalEnabled;
+
+            // If password format is hashed the password cannot be retrieved
+            if (MemberProvider.PasswordFormat == PasswordFormat.Hashed)
             {
-                return MemberProvider.PasswordResetEnabled;
+                enabled = false;
             }
 
-            set
-            {
-                MemberProvider.PasswordResetEnabled = value;
-            }
+            return enabled;
         }
 
-        /// <summary>Gets or sets a value indicating whether the Users's Password can be retrieved.</summary>
-        /// <returns>A Boolean.</returns>
-        [SortOrder(2)]
-        [Category("Password")]
-        public static bool PasswordRetrievalEnabled
+        set
         {
-            get
-            {
-                bool enabled = MemberProvider.PasswordRetrievalEnabled;
+            MemberProvider.PasswordRetrievalEnabled = value;
+        }
+    }
 
-                // If password format is hashed the password cannot be retrieved
-                if (MemberProvider.PasswordFormat == PasswordFormat.Hashed)
-                {
-                    enabled = false;
-                }
-
-                return enabled;
-            }
-
-            set
-            {
-                MemberProvider.PasswordRetrievalEnabled = value;
-            }
+    /// <summary>Gets or sets a Regular Expression that determines the strength of the password.</summary>
+    /// <returns>A String.</returns>
+    [SortOrder(7)]
+    [Category("Password")]
+    public static string PasswordStrengthRegularExpression
+    {
+        get
+        {
+            return MemberProvider.PasswordStrengthRegularExpression;
         }
 
-        /// <summary>Gets or sets a Regular Expression that determines the strength of the password.</summary>
-        /// <returns>A String.</returns>
-        [SortOrder(7)]
-        [Category("Password")]
-        public static string PasswordStrengthRegularExpression
+        set
         {
-            get
-            {
-                return MemberProvider.PasswordStrengthRegularExpression;
-            }
+            MemberProvider.PasswordStrengthRegularExpression = value;
+        }
+    }
 
-            set
-            {
-                MemberProvider.PasswordStrengthRegularExpression = value;
-            }
+    /// <summary>Gets or sets a value indicating whether a Question/Answer is required for Password retrieval.</summary>
+    /// <returns>A Boolean.</returns>
+    [SortOrder(6)]
+    [Category("Password")]
+    public static bool RequiresQuestionAndAnswer
+    {
+        get
+        {
+            return MemberProvider.RequiresQuestionAndAnswer;
         }
 
-        /// <summary>Gets or sets a value indicating whether a Question/Answer is required for Password retrieval.</summary>
-        /// <returns>A Boolean.</returns>
-        [SortOrder(6)]
-        [Category("Password")]
-        public static bool RequiresQuestionAndAnswer
+        set
         {
-            get
-            {
-                return MemberProvider.RequiresQuestionAndAnswer;
-            }
+            MemberProvider.RequiresQuestionAndAnswer = value;
+        }
+    }
 
-            set
-            {
-                MemberProvider.RequiresQuestionAndAnswer = value;
-            }
+    /// <summary>Gets or sets a value indicating whether a Unique Email is required.</summary>
+    /// <returns>A Boolean.</returns>
+    [SortOrder(0)]
+    [Category("User")]
+    public static bool RequiresUniqueEmail
+    {
+        get
+        {
+            return MemberProvider.RequiresUniqueEmail;
         }
 
-        /// <summary>Gets or sets a value indicating whether a Unique Email is required.</summary>
-        /// <returns>A Boolean.</returns>
-        [SortOrder(0)]
-        [Category("User")]
-        public static bool RequiresUniqueEmail
+        set
         {
-            get
-            {
-                return MemberProvider.RequiresUniqueEmail;
-            }
-
-            set
-            {
-                MemberProvider.RequiresUniqueEmail = value;
-            }
+            MemberProvider.RequiresUniqueEmail = value;
         }
     }
 }

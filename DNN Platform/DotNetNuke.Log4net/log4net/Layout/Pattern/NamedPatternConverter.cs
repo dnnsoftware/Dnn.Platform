@@ -26,130 +26,129 @@ using System.IO;
 using log4net.Core;
 using log4net.Util;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Layout.Pattern;
+
+/// <summary>Converter to output and truncate <c>'.'</c> separated strings</summary>
+/// <remarks>
+/// <para>
+/// This abstract class supports truncating a <c>'.'</c> separated string
+/// to show a specified number of elements from the right hand side.
+/// This is used to truncate class names that are fully qualified.
+/// </para>
+/// <para>
+/// Subclasses should override the <see cref="GetFullyQualifiedName"/> method to
+/// return the fully qualified string.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+public abstract class NamedPatternConverter : PatternLayoutConverter, IOptionHandler
 {
-    /// <summary>Converter to output and truncate <c>'.'</c> separated strings</summary>
+    private int m_precision = 0;
+
+    /// <summary>Initialize the converter </summary>
     /// <remarks>
     /// <para>
-    /// This abstract class supports truncating a <c>'.'</c> separated string
-    /// to show a specified number of elements from the right hand side.
-    /// This is used to truncate class names that are fully qualified.
+    /// This is part of the <see cref="IOptionHandler"/> delayed object
+    /// activation scheme. The <see cref="ActivateOptions"/> method must 
+    /// be called on this object after the configuration properties have
+    /// been set. Until <see cref="ActivateOptions"/> is called this
+    /// object is in an undefined state and must not be used. 
     /// </para>
     /// <para>
-    /// Subclasses should override the <see cref="GetFullyQualifiedName"/> method to
-    /// return the fully qualified string.
+    /// If any of the configuration properties are modified then 
+    /// <see cref="ActivateOptions"/> must be called again.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    public abstract class NamedPatternConverter : PatternLayoutConverter, IOptionHandler
+    public void ActivateOptions()
     {
-        private int m_precision = 0;
+        this.m_precision = 0;
 
-        /// <summary>Initialize the converter </summary>
-        /// <remarks>
-        /// <para>
-        /// This is part of the <see cref="IOptionHandler"/> delayed object
-        /// activation scheme. The <see cref="ActivateOptions"/> method must 
-        /// be called on this object after the configuration properties have
-        /// been set. Until <see cref="ActivateOptions"/> is called this
-        /// object is in an undefined state and must not be used. 
-        /// </para>
-        /// <para>
-        /// If any of the configuration properties are modified then 
-        /// <see cref="ActivateOptions"/> must be called again.
-        /// </para>
-        /// </remarks>
-        public void ActivateOptions()
+        if (this.Option != null) 
         {
-            this.m_precision = 0;
-
-            if (this.Option != null) 
+            string optStr = this.Option.Trim();
+            if (optStr.Length > 0)
             {
-                string optStr = this.Option.Trim();
-                if (optStr.Length > 0)
+                int precisionVal;
+                if (SystemInfo.TryParse(optStr, out precisionVal))
                 {
-                    int precisionVal;
-                    if (SystemInfo.TryParse(optStr, out precisionVal))
+                    if (precisionVal <= 0) 
                     {
-                        if (precisionVal <= 0) 
-                        {
-                            LogLog.Error(declaringType, "NamedPatternConverter: Precision option (" + optStr + ") isn't a positive integer.");
-                        }
-                        else
-                        {
-                            this.m_precision = precisionVal;
-                        }
-                    } 
+                        LogLog.Error(declaringType, "NamedPatternConverter: Precision option (" + optStr + ") isn't a positive integer.");
+                    }
                     else
                     {
-                        LogLog.Error(declaringType, "NamedPatternConverter: Precision option \"" + optStr + "\" not a decimal integer.");
+                        this.m_precision = precisionVal;
                     }
-                }
-            }
-        }
-
-        /// <summary>Get the fully qualified string data</summary>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <returns>the fully qualified name</returns>
-        /// <remarks>
-        /// <para>
-        /// Overridden by subclasses to get the fully qualified name before the
-        /// precision is applied to it.
-        /// </para>
-        /// <para>
-        /// Return the fully qualified <c>'.'</c> (dot/period) separated string.
-        /// </para>
-        /// </remarks>
-        protected abstract string GetFullyQualifiedName(LoggingEvent loggingEvent);
-    
-        /// <summary>Convert the pattern to the rendered message</summary>
-        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <remarks>
-        /// Render the <see cref="GetFullyQualifiedName"/> to the precision
-        /// specified by the <see cref="PatternConverter.Option"/> property.
-        /// </remarks>
-        protected sealed override void Convert(TextWriter writer, LoggingEvent loggingEvent)
-        {
-            string name = this.GetFullyQualifiedName(loggingEvent);
-            if (this.m_precision <= 0 || name == null || name.Length < 2)
-            {
-                writer.Write(name);
-            }
-            else 
-            {
-                int len = name.Length;
-                string trailingDot = string.Empty;
-                if (name.EndsWith(DOT))
-                {
-                    trailingDot = DOT;
-                    name = name.Substring(0, len - 1);
-                    len--;
-                }
-
-                int end = name.LastIndexOf(DOT);
-                for(int i = 1; end > 0 && i < this.m_precision; i++) 
-                {
-                    end = name.LastIndexOf('.', end - 1);
-                }
-                if (end == -1)
-                {
-                    writer.Write(name + trailingDot);
-                }
+                } 
                 else
                 {
-                    writer.Write(name.Substring(end + 1, len - end - 1) + trailingDot);
+                    LogLog.Error(declaringType, "NamedPatternConverter: Precision option \"" + optStr + "\" not a decimal integer.");
                 }
-            }	  
+            }
         }
-
-        /// <summary>The fully qualified type of the NamedPatternConverter class.</summary>
-        /// <remarks>
-        /// Used by the internal logger to record the Type of the
-        /// log message.
-        /// </remarks>
-        private static readonly Type declaringType = typeof(NamedPatternConverter);
-
-        private const string DOT = ".";
     }
+
+    /// <summary>Get the fully qualified string data</summary>
+    /// <param name="loggingEvent">the event being logged</param>
+    /// <returns>the fully qualified name</returns>
+    /// <remarks>
+    /// <para>
+    /// Overridden by subclasses to get the fully qualified name before the
+    /// precision is applied to it.
+    /// </para>
+    /// <para>
+    /// Return the fully qualified <c>'.'</c> (dot/period) separated string.
+    /// </para>
+    /// </remarks>
+    protected abstract string GetFullyQualifiedName(LoggingEvent loggingEvent);
+    
+    /// <summary>Convert the pattern to the rendered message</summary>
+    /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+    /// <param name="loggingEvent">the event being logged</param>
+    /// <remarks>
+    /// Render the <see cref="GetFullyQualifiedName"/> to the precision
+    /// specified by the <see cref="PatternConverter.Option"/> property.
+    /// </remarks>
+    protected sealed override void Convert(TextWriter writer, LoggingEvent loggingEvent)
+    {
+        string name = this.GetFullyQualifiedName(loggingEvent);
+        if (this.m_precision <= 0 || name == null || name.Length < 2)
+        {
+            writer.Write(name);
+        }
+        else 
+        {
+            int len = name.Length;
+            string trailingDot = string.Empty;
+            if (name.EndsWith(DOT))
+            {
+                trailingDot = DOT;
+                name = name.Substring(0, len - 1);
+                len--;
+            }
+
+            int end = name.LastIndexOf(DOT);
+            for(int i = 1; end > 0 && i < this.m_precision; i++) 
+            {
+                end = name.LastIndexOf('.', end - 1);
+            }
+            if (end == -1)
+            {
+                writer.Write(name + trailingDot);
+            }
+            else
+            {
+                writer.Write(name.Substring(end + 1, len - end - 1) + trailingDot);
+            }
+        }	  
+    }
+
+    /// <summary>The fully qualified type of the NamedPatternConverter class.</summary>
+    /// <remarks>
+    /// Used by the internal logger to record the Type of the
+    /// log message.
+    /// </remarks>
+    private static readonly Type declaringType = typeof(NamedPatternConverter);
+
+    private const string DOT = ".";
 }

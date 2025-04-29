@@ -1,152 +1,151 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Tests.Urls
+namespace DotNetNuke.Tests.Urls;
+
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data;
+using System.Linq;
+
+using DotNetNuke.Abstractions;
+using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
+using DotNetNuke.Tests.Utilities;
+using DotNetNuke.Tests.Utilities.Mocks;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
+
+using NUnit.Framework;
+
+[TestFixture]
+public class ExtensionUrlProviderControllerTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Data;
-    using System.Linq;
-
-    using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Urls;
-    using DotNetNuke.Tests.Utilities;
-    using DotNetNuke.Tests.Utilities.Mocks;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Moq;
-
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class ExtensionUrlProviderControllerTests
+    [SetUp]
+    public void SetUp()
     {
-        [SetUp]
-        public void SetUp()
-        {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
-            serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
-        }
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
+        serviceCollection.AddTransient(container => Mock.Of<IApplicationStatusInfo>());
+        serviceCollection.AddTransient(container => Mock.Of<IHostSettingsService>());
+        Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+    }
 
-        [Test]
+    [Test]
 
-        public void GetModuleProviders_ExcludeSingleProviderWithTypeThatDoesNotExist()
-        {
-            var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();
-            var providersTable = getExtensionUrlProvidersDataSet.Tables[0];
-            AddProviderRow(providersTable, providerType: "This.Is.Not.A.Real.Type");
-            SetupGetModuleProvidersCall(getExtensionUrlProvidersDataSet.CreateDataReader());
+    public void GetModuleProviders_ExcludeSingleProviderWithTypeThatDoesNotExist()
+    {
+        var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();
+        var providersTable = getExtensionUrlProvidersDataSet.Tables[0];
+        AddProviderRow(providersTable, providerType: "This.Is.Not.A.Real.Type");
+        SetupGetModuleProvidersCall(getExtensionUrlProvidersDataSet.CreateDataReader());
 
-            var providers = ExtensionUrlProviderController.GetModuleProviders(Constants.PORTAL_ValidPortalId);
+        var providers = ExtensionUrlProviderController.GetModuleProviders(Constants.PORTAL_ValidPortalId);
 
-            Assert.That(providers, Is.Not.Null, "Providers list should be empty, not null");
-            Assert.That(providers, Is.Empty, "Providers list should be empty, since there is only an invalid entry");
-        }
+        Assert.That(providers, Is.Not.Null, "Providers list should be empty, not null");
+        Assert.That(providers, Is.Empty, "Providers list should be empty, since there is only an invalid entry");
+    }
 
-        [Test]
+    [Test]
 
-        public void GetModuleProviders_OnlyExcludeProviderWithTypeThatDoesNotExistButIncludeOther()
-        {
-            var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();
-            var providersTable = getExtensionUrlProvidersDataSet.Tables[0];
-            AddProviderRow(providersTable, providerName: "Broken Provider", providerType: "This.Is.Not.A.Real.Type");
-            AddProviderRow(providersTable, providerName: "Working Provider", providerType: typeof(FakeExtensionUrlProvider).AssemblyQualifiedName);
-            SetupGetModuleProvidersCall(getExtensionUrlProvidersDataSet.CreateDataReader());
+    public void GetModuleProviders_OnlyExcludeProviderWithTypeThatDoesNotExistButIncludeOther()
+    {
+        var getExtensionUrlProvidersDataSet = GetDataSetForExtensionUrlProvidersCall();
+        var providersTable = getExtensionUrlProvidersDataSet.Tables[0];
+        AddProviderRow(providersTable, providerName: "Broken Provider", providerType: "This.Is.Not.A.Real.Type");
+        AddProviderRow(providersTable, providerName: "Working Provider", providerType: typeof(FakeExtensionUrlProvider).AssemblyQualifiedName);
+        SetupGetModuleProvidersCall(getExtensionUrlProvidersDataSet.CreateDataReader());
 
-            var providers = ExtensionUrlProviderController.GetModuleProviders(Constants.PORTAL_ValidPortalId);
+        var providers = ExtensionUrlProviderController.GetModuleProviders(Constants.PORTAL_ValidPortalId);
 
-            Assert.That(providers, Is.Not.Null, "Providers list should be empty, not null");
-            Assert.That(providers, Has.Count.EqualTo(1), "Providers list should have the one valid entry, but not the invalid entry");
-            Assert.That(providers[0].ProviderConfig.ProviderName, Is.EqualTo("Working Provider"), "Providers list should have the valid entry");
-        }
+        Assert.That(providers, Is.Not.Null, "Providers list should be empty, not null");
+        Assert.That(providers, Has.Count.EqualTo(1), "Providers list should have the one valid entry, but not the invalid entry");
+        Assert.That(providers[0].ProviderConfig.ProviderName, Is.EqualTo("Working Provider"), "Providers list should have the valid entry");
+    }
 
-        private static void SetupGetModuleProvidersCall(IDataReader getExtensionUrlProvidersReader)
-        {
-            Globals.SetStatus(Globals.UpgradeStatus.None);
-            MockComponentProvider.CreateDataCacheProvider();
-            var dataProvider = MockComponentProvider.CreateDataProvider();
+    private static void SetupGetModuleProvidersCall(IDataReader getExtensionUrlProvidersReader)
+    {
+        Globals.SetStatus(Globals.UpgradeStatus.None);
+        MockComponentProvider.CreateDataCacheProvider();
+        var dataProvider = MockComponentProvider.CreateDataProvider();
 
-            dataProvider.Setup(dp => dp.GetExtensionUrlProviders(Constants.PORTAL_ValidPortalId)).Returns(getExtensionUrlProvidersReader);
-        }
+        dataProvider.Setup(dp => dp.GetExtensionUrlProviders(Constants.PORTAL_ValidPortalId)).Returns(getExtensionUrlProvidersReader);
+    }
 
-        private static DataSet GetDataSetForExtensionUrlProvidersCall()
-        {
-            var getExtensionUrlProvidersDataSet = new DataSet();
+    private static DataSet GetDataSetForExtensionUrlProvidersCall()
+    {
+        var getExtensionUrlProvidersDataSet = new DataSet();
 
-            var providersTable = getExtensionUrlProvidersDataSet.Tables.Add();
-            providersTable.Columns.AddRange(
-                new[]
-                {
-                    new DataColumn("ExtensionUrlProviderId", typeof(int)), new DataColumn("PortalId", typeof(int)),
-                    new DataColumn("DesktopModuleId", typeof(int)), new DataColumn("ProviderName", typeof(string)),
-                    new DataColumn("ProviderType", typeof(string)), new DataColumn("SettingsControlSrc", typeof(string)),
-                    new DataColumn("IsActive", typeof(bool)), new DataColumn("RewriteAllUrls", typeof(bool)), new DataColumn("RedirectAllUrls", typeof(bool)),
-                    new DataColumn("ReplaceAllUrls", typeof(bool)),
-                });
-            var providerSettingsTable = getExtensionUrlProvidersDataSet.Tables.Add();
-            providerSettingsTable.Columns.AddRange(
-                new[]
-                {
-                    new DataColumn("ExtensionUrlProviderID", typeof(int)), new DataColumn("PortalID", typeof(int)),
-                    new DataColumn("SettingName", typeof(string)), new DataColumn("SettingValue", typeof(string)),
-                });
-
-            var providerTabsTable = getExtensionUrlProvidersDataSet.Tables.Add();
-            providerTabsTable.Columns.AddRange(new[] { new DataColumn("ExtensionUrlProviderID", typeof(int)), new DataColumn("TabId", typeof(int)), });
-
-            return getExtensionUrlProvidersDataSet;
-        }
-
-        private static void AddProviderRow(DataTable providersTable, int extensionUrlProviderId = 1, int portalId = Constants.PORTAL_ValidPortalId, int? desktopModuleId = null, string providerName = "", string providerType = "", string settingsControlSrc = "", bool isActive = true, bool rewriteAllUrls = true, bool redirectAllUrls = true, bool replaceAllUrls = true)
-        {
-            providersTable.Rows.Add(
-                extensionUrlProviderId,
-                portalId,
-                desktopModuleId.HasValue ? desktopModuleId : (object)DBNull.Value,
-                providerName,
-                providerType,
-                settingsControlSrc,
-                isActive,
-                rewriteAllUrls,
-                redirectAllUrls,
-                replaceAllUrls);
-        }
-
-        internal class FakeExtensionUrlProvider : ExtensionUrlProvider
-        {
-            public override bool AlwaysUsesDnnPagePath(int portalId)
+        var providersTable = getExtensionUrlProvidersDataSet.Tables.Add();
+        providersTable.Columns.AddRange(
+            new[]
             {
-                throw new NotImplementedException();
-            }
-
-            public override string ChangeFriendlyUrl(TabInfo tab, string friendlyUrlPath, FriendlyUrlOptions options, string cultureCode, ref string endingPageName, out bool useDnnPagePath, ref List<string> messages)
+                new DataColumn("ExtensionUrlProviderId", typeof(int)), new DataColumn("PortalId", typeof(int)),
+                new DataColumn("DesktopModuleId", typeof(int)), new DataColumn("ProviderName", typeof(string)),
+                new DataColumn("ProviderType", typeof(string)), new DataColumn("SettingsControlSrc", typeof(string)),
+                new DataColumn("IsActive", typeof(bool)), new DataColumn("RewriteAllUrls", typeof(bool)), new DataColumn("RedirectAllUrls", typeof(bool)),
+                new DataColumn("ReplaceAllUrls", typeof(bool)),
+            });
+        var providerSettingsTable = getExtensionUrlProvidersDataSet.Tables.Add();
+        providerSettingsTable.Columns.AddRange(
+            new[]
             {
-                throw new NotImplementedException();
-            }
+                new DataColumn("ExtensionUrlProviderID", typeof(int)), new DataColumn("PortalID", typeof(int)),
+                new DataColumn("SettingName", typeof(string)), new DataColumn("SettingValue", typeof(string)),
+            });
 
-            public override bool CheckForRedirect(int tabId, int portalid, string httpAlias, Uri requestUri, NameValueCollection queryStringCol, FriendlyUrlOptions options, out string redirectLocation, ref List<string> messages)
-            {
-                throw new NotImplementedException();
-            }
+        var providerTabsTable = getExtensionUrlProvidersDataSet.Tables.Add();
+        providerTabsTable.Columns.AddRange(new[] { new DataColumn("ExtensionUrlProviderID", typeof(int)), new DataColumn("TabId", typeof(int)), });
 
-            public override Dictionary<string, string> GetProviderPortalSettings()
-            {
-                throw new NotImplementedException();
-            }
+        return getExtensionUrlProvidersDataSet;
+    }
 
-            public override string TransformFriendlyUrlToQueryString(string[] urlParms, int tabId, int portalId, FriendlyUrlOptions options, string cultureCode, PortalAliasInfo portalAlias, ref List<string> messages, out int status, out string location)
-            {
-                throw new NotImplementedException();
-            }
+    private static void AddProviderRow(DataTable providersTable, int extensionUrlProviderId = 1, int portalId = Constants.PORTAL_ValidPortalId, int? desktopModuleId = null, string providerName = "", string providerType = "", string settingsControlSrc = "", bool isActive = true, bool rewriteAllUrls = true, bool redirectAllUrls = true, bool replaceAllUrls = true)
+    {
+        providersTable.Rows.Add(
+            extensionUrlProviderId,
+            portalId,
+            desktopModuleId.HasValue ? desktopModuleId : (object)DBNull.Value,
+            providerName,
+            providerType,
+            settingsControlSrc,
+            isActive,
+            rewriteAllUrls,
+            redirectAllUrls,
+            replaceAllUrls);
+    }
+
+    internal class FakeExtensionUrlProvider : ExtensionUrlProvider
+    {
+        public override bool AlwaysUsesDnnPagePath(int portalId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ChangeFriendlyUrl(TabInfo tab, string friendlyUrlPath, FriendlyUrlOptions options, string cultureCode, ref string endingPageName, out bool useDnnPagePath, ref List<string> messages)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool CheckForRedirect(int tabId, int portalid, string httpAlias, Uri requestUri, NameValueCollection queryStringCol, FriendlyUrlOptions options, out string redirectLocation, ref List<string> messages)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Dictionary<string, string> GetProviderPortalSettings()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string TransformFriendlyUrlToQueryString(string[] urlParms, int tabId, int portalId, FriendlyUrlOptions options, string cultureCode, PortalAliasInfo portalAlias, ref List<string> messages, out int status, out string location)
+        {
+            throw new NotImplementedException();
         }
     }
 }

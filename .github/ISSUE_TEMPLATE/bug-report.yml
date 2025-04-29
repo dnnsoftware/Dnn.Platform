@@ -14,8 +14,8 @@ body:
       label: Is there an existing issue for this?
       description: Please search to see if an issue already exists for the bug you encountered.
       options:
-      - label: I have searched the existing issues
-        required: true
+        - label: I have searched the existing issues
+          required: true
   - type: textarea
     id: what-happened
     attributes:
@@ -29,7 +29,7 @@ body:
     attributes:
       label: Steps to reproduce?
       description: List the precise steps to reproduce the bug.
-      placeholder: | 
+      placeholder: |
         1. Go to '...'
         2. Click on '...'
         3. Scroll to '...'
@@ -58,7 +58,7 @@ body:
     id: anything-else
     attributes:
       label: Anything else?
-      description: | 
+      description: |
         Links? References? Anything that will give us more context about the issue you are encountering!
         _Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in._
     validations:
@@ -67,7 +67,7 @@ body:
     id: affected-versions
     attributes:
       label: Affected Versions
-      description: | 
+      description: |
         What version of DNN are you running?
         **NOTE:** _If your version is not listed, please upgrade to the latest version. If you cannot upgrade at this time, please open a [Discussion](https://github.com/dnnsoftware/Dnn.Platform/discussions) instead._
       multiple: true

@@ -26,9 +26,26 @@ using System.Collections;
 using log4net.Core;
 using log4net.Repository;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Layout.Pattern;
+
+/// <summary>Property pattern converter</summary>
+/// <remarks>
+/// <para>
+/// Writes out the value of a named property. The property name
+/// should be set in the <see cref="log4net.Util.PatternConverter.Option"/>
+/// property.
+/// </para>
+/// <para>
+/// If the <see cref="log4net.Util.PatternConverter.Option"/> is set to <c>null</c>
+/// then all the properties are written as key value pairs.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+internal sealed class PropertyPatternConverter : PatternLayoutConverter 
 {
-    /// <summary>Property pattern converter</summary>
+    /// <summary>Write the property value to the output</summary>
+    /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+    /// <param name="loggingEvent">the event being logged</param>
     /// <remarks>
     /// <para>
     /// Writes out the value of a named property. The property name
@@ -40,35 +57,17 @@ namespace log4net.Layout.Pattern
     /// then all the properties are written as key value pairs.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    internal sealed class PropertyPatternConverter : PatternLayoutConverter 
+    protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
     {
-        /// <summary>Write the property value to the output</summary>
-        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <remarks>
-        /// <para>
-        /// Writes out the value of a named property. The property name
-        /// should be set in the <see cref="log4net.Util.PatternConverter.Option"/>
-        /// property.
-        /// </para>
-        /// <para>
-        /// If the <see cref="log4net.Util.PatternConverter.Option"/> is set to <c>null</c>
-        /// then all the properties are written as key value pairs.
-        /// </para>
-        /// </remarks>
-        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        if (this.Option != null)
         {
-            if (this.Option != null)
-            {
-                // Write the value for the specified key
-                WriteObject(writer, loggingEvent.Repository, loggingEvent.LookupProperty(this.Option));
-            }
-            else
-            {
-                // Write all the key value pairs
-                WriteDictionary(writer, loggingEvent.Repository, loggingEvent.GetProperties());
-            }
+            // Write the value for the specified key
+            WriteObject(writer, loggingEvent.Repository, loggingEvent.LookupProperty(this.Option));
+        }
+        else
+        {
+            // Write all the key value pairs
+            WriteDictionary(writer, loggingEvent.Repository, loggingEvent.GetProperties());
         }
     }
 }

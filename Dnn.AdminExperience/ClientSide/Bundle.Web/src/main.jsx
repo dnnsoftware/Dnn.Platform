@@ -18,15 +18,11 @@ import ReactWidgets from "react-widgets";
 import Promise from "es6-promise";
 import PersonaBarComponents from "./components/persona-bar-components";
 
-/** Polyfills */
-require("es6-object-assign").polyfill();
-require("array.prototype.find").shim();
-require("array.prototype.findindex").shim();
 if (!window.dnn) {
-    window.dnn = {};
+  window.dnn = {};
 }
 if (!window.dnn.nodeModules) {
-    window.dnn.nodeModules = {};
+  window.dnn.nodeModules = {};
 }
 
 window.dnn.nodeModules.React = React;
@@ -44,7 +40,8 @@ window.dnn.nodeModules.PersonaBarComponents = PersonaBarComponents;
 window.dnn.nodeModules.ReduxDevTools = ReduxDevTools;
 window.dnn.nodeModules.ReduxDevToolsDockMonitor = ReduxDevToolsDockMonitor;
 window.dnn.nodeModules.ReduxDevToolsLogMonitor = ReduxDevToolsLogMonitor;
-window.dnn.nodeModules.ReduxImmutableStateInvariant = ReduxImmutableStateInvariant;
+window.dnn.nodeModules.ReduxImmutableStateInvariant =
+  ReduxImmutableStateInvariant;
 window.dnn.nodeModules.ReduxThunk = ReduxThunk;
 window.dnn.nodeModules.Moment = Moment;
 window.dnn.nodeModules.Es6Promise = Promise;

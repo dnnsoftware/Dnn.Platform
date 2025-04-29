@@ -22,7 +22,7 @@ markComment: >
   majority and to close the ones that have become 'stale' (inactive). If no 
   further activity is detected within the next 14 days, the issue will be 
   closed automatically.
-  
+
   If new comments are are posted and/or a solution (pull request) is 
   submitted for review that references this issue, the issue will not be 
   closed. Closed issues can be reopened at any time in the future. Please

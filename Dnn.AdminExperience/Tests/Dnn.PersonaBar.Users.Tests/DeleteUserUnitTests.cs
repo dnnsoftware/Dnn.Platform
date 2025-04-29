@@ -2,128 +2,127 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Users.Tests
+namespace Dnn.PersonaBar.Users.Tests;
+
+using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Users.Components;
+using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+using DotNetNuke.Entities.Users;
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+
+public class DeleteUserUnitTests : CommandTests<DeleteUser>
 {
-    using Dnn.PersonaBar.Library.Prompt.Models;
-    using Dnn.PersonaBar.Users.Components;
-    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-    using DotNetNuke.Entities.Users;
-    using Moq;
-    using NUnit.Framework;
+    private Mock<IUserValidator> _userValidatorMock;
+    private Mock<IUserControllerWrapper> _userControllerWrapperMock;
 
-    [TestFixture]
+    protected override string CommandName => "Delete-User";
 
-    public class DeleteUserUnitTests : CommandTests<DeleteUser>
+    [Test]
+
+    public void Run_DeleteValidUserId_ReturnSuccessResponse()
     {
-        private Mock<IUserValidator> _userValidatorMock;
-        private Mock<IUserControllerWrapper> _userControllerWrapperMock;
+        // Arrange
+        int userId = 2;
 
-        protected override string CommandName => "Delete-User";
+        UserInfo userInfo = this.GetUser(userId, false);
 
-        [Test]
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+            .Returns(this.errorResultModel);
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userInfo))
+            .Returns(this.errorResultModel);
 
-        public void Run_DeleteValidUserId_ReturnSuccessResponse()
-        {
-            // Arrange
-            int userId = 2;
+        this._userControllerWrapperMock
+            .Setup(u => u.DeleteUserAndClearCache(ref userInfo, false, false))
+            .Returns(true);
+        this._userControllerWrapperMock
+            .Setup(u => u.GetUserById(this.testPortalId, userId))
+            .Returns(userInfo);
 
-            UserInfo userInfo = this.GetUser(userId, false);
+        // Act
+        var result = this.RunCommand(userId.ToString());
 
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
-                .Returns(this.errorResultModel);
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userInfo))
-                .Returns(this.errorResultModel);
+        // Assert
+        Assert.That(result.IsError, Is.False);
+    }
 
-            this._userControllerWrapperMock
-                .Setup(u => u.DeleteUserAndClearCache(ref userInfo, false, false))
-                .Returns(true);
-            this._userControllerWrapperMock
-                .Setup(u => u.GetUserById(this.testPortalId, userId))
-                .Returns(userInfo);
+    [Test]
 
-            // Act
-            var result = this.RunCommand(userId.ToString());
+    public void Run_DeleteAlreadyDeletedUser_ReturnErrorResponse()
+    {
+        // Arrange
+        int userId = 2;
 
-            // Assert
-            Assert.That(result.IsError, Is.False);
-        }
+        UserInfo userInfo = this.GetUser(userId, true);
 
-        [Test]
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+            .Returns(this.errorResultModel);
 
-        public void Run_DeleteAlreadyDeletedUser_ReturnErrorResponse()
-        {
-            // Arrange
-            int userId = 2;
+        // Act
+        var result = this.RunCommand(userId.ToString());
 
-            UserInfo userInfo = this.GetUser(userId, true);
+        // Assert
+        Assert.That(result.IsError, Is.True);
+    }
 
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
-                .Returns(this.errorResultModel);
+    [Test]
 
-            // Act
-            var result = this.RunCommand(userId.ToString());
+    public void Run_DeleteUserFailed_ReturnErrorResponse()
+    {
+        // Arrange
+        int userId = 2;
 
-            // Assert
-            Assert.That(result.IsError, Is.True);
-        }
+        UserInfo userInfo = this.GetUser(userId, false);
 
-        [Test]
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
+            .Returns(this.errorResultModel);
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userInfo))
+            .Returns(this.errorResultModel);
 
-        public void Run_DeleteUserFailed_ReturnErrorResponse()
-        {
-            // Arrange
-            int userId = 2;
+        this._userControllerWrapperMock
+            .Setup(u => u.DeleteUserAndClearCache(ref userInfo, false, false))
+            .Returns(false);
 
-            UserInfo userInfo = this.GetUser(userId, false);
+        // Act
+        var result = this.RunCommand(userId.ToString());
 
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(userId, this.portalSettings, null, out userInfo))
-                .Returns(this.errorResultModel);
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userInfo))
-                .Returns(this.errorResultModel);
+        // Assert
+        Assert.That(result.IsError, Is.True);
+    }
 
-            this._userControllerWrapperMock
-                .Setup(u => u.DeleteUserAndClearCache(ref userInfo, false, false))
-                .Returns(false);
+    [Test]
 
-            // Act
-            var result = this.RunCommand(userId.ToString());
+    public void Run_DeleteNullUserId_ReturnErrorResponse()
+    {
+        // Arrange
+        UserInfo userinfo;
+        this.errorResultModel = new ConsoleErrorResultModel();
+        this._userValidatorMock
+            .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userinfo))
+            .Returns(this.errorResultModel);
 
-            // Assert
-            Assert.That(result.IsError, Is.True);
-        }
+        // Act
+        var result = this.RunCommand();
 
-        [Test]
+        // Assert
+        Assert.That(result.IsError, Is.True);
+    }
 
-        public void Run_DeleteNullUserId_ReturnErrorResponse()
-        {
-            // Arrange
-            UserInfo userinfo;
-            this.errorResultModel = new ConsoleErrorResultModel();
-            this._userValidatorMock
-                .Setup(u => u.ValidateUser(-1, this.portalSettings, null, out userinfo))
-                .Returns(this.errorResultModel);
+    protected override DeleteUser CreateCommand()
+    {
+        return new DeleteUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
+    }
 
-            // Act
-            var result = this.RunCommand();
-
-            // Assert
-            Assert.That(result.IsError, Is.True);
-        }
-
-        protected override DeleteUser CreateCommand()
-        {
-            return new DeleteUser(this._userValidatorMock.Object, this._userControllerWrapperMock.Object);
-        }
-
-        protected override void ChildSetup()
-        {
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
-        }
+    protected override void ChildSetup()
+    {
+        this._userValidatorMock = new Mock<IUserValidator>();
+        this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
     }
 }

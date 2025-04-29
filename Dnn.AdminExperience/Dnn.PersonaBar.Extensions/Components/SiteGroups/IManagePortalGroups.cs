@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteGroups
+namespace Dnn.PersonaBar.SiteGroups;
+
+using System.Collections.Generic;
+
+using Dnn.PersonaBar.SiteGroups.Models;
+
+public interface IManagePortalGroups
 {
-    using System.Collections.Generic;
+    IEnumerable<PortalInfo> AvailablePortals();
 
-    using Dnn.PersonaBar.SiteGroups.Models;
+    void Delete(int portalGroupId);
 
-    public interface IManagePortalGroups
-    {
-        IEnumerable<PortalInfo> AvailablePortals();
+    IEnumerable<PortalGroupInfo> SiteGroups();
 
-        void Delete(int portalGroupId);
-
-        IEnumerable<PortalGroupInfo> SiteGroups();
-
-        int Save(PortalGroupInfo portalGroup);
-    }
+    int Save(PortalGroupInfo portalGroup);
 }

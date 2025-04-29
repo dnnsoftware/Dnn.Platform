@@ -2,37 +2,37 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Client.ClientResourceManagement
+namespace DotNetNuke.Web.Client.ClientResourceManagement;
+
+using System;
+using System.Web;
+using System.Web.UI;
+
+using ClientDependency.Core.Controls;
+
+/// <summary>The central control with which all client resources are registered.</summary>
+public class ClientResourceLoader : ClientDependencyLoader
 {
-    using System;
-    using System.Web;
-    using System.Web.UI;
-
-    using ClientDependency.Core.Controls;
-
-    /// <summary>The central control with which all client resources are registered.</summary>
-    public class ClientResourceLoader : ClientDependencyLoader
+    private bool AsyncPostBackHandlerEnabled
     {
-        private bool AsyncPostBackHandlerEnabled
+        get
         {
-            get
-            {
-                return HttpContext.Current != null
-                       && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
-            }
+            return HttpContext.Current != null
+                   && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPreRender(System.EventArgs e)
+    {
+        foreach (var path in this.Paths)
+        {
+            path.Name = path.Name.ToLowerInvariant();
         }
 
-        /// <inheritdoc/>
-        protected override void OnPreRender(System.EventArgs e)
+        if (this.AsyncPostBackHandlerEnabled)
         {
-            foreach (var path in this.Paths)
-            {
-                path.Name = path.Name.ToLowerInvariant();
-            }
-
-            if (this.AsyncPostBackHandlerEnabled)
-            {
-                const string handlerScript = @"
+            const string handlerScript = @"
 var loadScriptInSingleMode = function(){
     var s = document.createElement( 'script' );
     s.type = 'text/javascript';
@@ -130,10 +130,9 @@ Sys._ScriptLoader.getInstance().loadScripts = function(){
 };
 }(jQuery));
 ";
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
-            }
-
-            base.OnPreRender(e);
+            this.Page.ClientScript.RegisterStartupScript(this.GetType(), "CRMHandler", handlerScript, true);
         }
+
+        base.OnPreRender(e);
     }
 }

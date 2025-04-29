@@ -2,335 +2,334 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Users.Components
+namespace Dnn.PersonaBar.Users.Components;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+using Dnn.PersonaBar.Library;
+using Dnn.PersonaBar.Library.Common;
+using Dnn.PersonaBar.Users.Components.Contracts;
+using Dnn.PersonaBar.Users.Components.Dto;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Membership;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Cache;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Mail;
+using DotNetNuke.Services.Social.Notifications;
+
+internal class RegisterController : ServiceLocator<IRegisterController, RegisterController>, IRegisterController
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using System.Text.RegularExpressions;
-
-    using Dnn.PersonaBar.Library;
-    using Dnn.PersonaBar.Library.Common;
-    using Dnn.PersonaBar.Users.Components.Contracts;
-    using Dnn.PersonaBar.Users.Components.Dto;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Membership;
-    using DotNetNuke.Security.Roles;
-    using DotNetNuke.Services.Cache;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Mail;
-    using DotNetNuke.Services.Social.Notifications;
-
-    internal class RegisterController : ServiceLocator<IRegisterController, RegisterController>, IRegisterController
+    public static void SendNewUserNotifications(UserInfo newUser, PortalSettings portalSettings, List<RoleInfo> roles)
     {
-        public static void SendNewUserNotifications(UserInfo newUser, PortalSettings portalSettings, List<RoleInfo> roles)
+        var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
+        var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
+        var notification = new Notification
         {
-            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
-            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
-            var notification = new Notification
-            {
-                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
-                IncludeDismissAction = newUser.Membership.Approved,
-                SenderUserID = portalSettings.AdministratorId,
-                Subject = GetNotificationSubject(locale, newUser, portalSettings),
-                Body = GetNotificationBody(locale, newUser, portalSettings),
-                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture),
-            };
+            NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
+            IncludeDismissAction = newUser.Membership.Approved,
+            SenderUserID = portalSettings.AdministratorId,
+            Subject = GetNotificationSubject(locale, newUser, portalSettings),
+            Body = GetNotificationBody(locale, newUser, portalSettings),
+            Context = newUser.UserID.ToString(CultureInfo.InvariantCulture),
+        };
 
-            notification.Body = Utilities.FixDoublEntityEncoding(notification.Body);
-            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
+        notification.Body = Utilities.FixDoublEntityEncoding(notification.Body);
+        NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
+    }
+
+    // NOTE - While making modifications in this method, developer must refer to call tree in Register.ascx.cs.
+    // Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.
+    // This method can easily be modified to pass passowrd, display name, etc.
+    // It is recommended to write unit tests.
+
+    /// <inheritdoc/>
+    public UserBasicDto Register(RegisterationDetails registerationDetails)
+    {
+        var portalSettings = registerationDetails.PortalSettings;
+        var username = registerationDetails.UserName;
+        var email = registerationDetails.Email;
+
+        Requires.NotNullOrEmpty("email", email);
+
+        var disallowRegistration = !registerationDetails.IgnoreRegistrationMode &&
+                                   ((portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration) ||
+                                    (portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration));
+
+        if (disallowRegistration)
+        {
+            throw new Exception(Localization.GetString("RegistrationNotAllowed", Library.Constants.SharedResources));
         }
 
-        // NOTE - While making modifications in this method, developer must refer to call tree in Register.ascx.cs.
-        // Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.
-        // This method can easily be modified to pass passowrd, display name, etc.
-        // It is recommended to write unit tests.
-
-        /// <inheritdoc/>
-        public UserBasicDto Register(RegisterationDetails registerationDetails)
+        // initial creation of the new User object
+        var newUser = new UserInfo
         {
-            var portalSettings = registerationDetails.PortalSettings;
-            var username = registerationDetails.UserName;
-            var email = registerationDetails.Email;
+            PortalID = portalSettings.PortalId,
+            Email = email,
+        };
 
-            Requires.NotNullOrEmpty("email", email);
+        var cleanUsername = PortalSecurity.Instance.InputFilter(
+            username,
+            PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
-            var disallowRegistration = !registerationDetails.IgnoreRegistrationMode &&
-                                   ((portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration) ||
-                                   (portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration));
+        if (!cleanUsername.Equals(username))
+        {
+            throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+        }
 
-            if (disallowRegistration)
-            {
-                throw new Exception(Localization.GetString("RegistrationNotAllowed", Library.Constants.SharedResources));
-            }
+        var valid = UserController.Instance.IsValidUserName(username);
 
-            // initial creation of the new User object
-            var newUser = new UserInfo
-            {
-                PortalID = portalSettings.PortalId,
-                Email = email,
-            };
+        if (!valid)
+        {
+            throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
+        }
 
-            var cleanUsername = PortalSecurity.Instance.InputFilter(
-                username,
-                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+        // ensure this user doesn't exist
+        if (!string.IsNullOrEmpty(username) && UserController.GetUserByName(portalSettings.PortalId, username) != null)
+        {
+            throw new Exception(Localization.GetString(
+                "RegistrationUsernameAlreadyPresent",
+                Library.Constants.SharedResources));
+        }
 
-            if (!cleanUsername.Equals(username))
-            {
-                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
-            }
+        // set username as email if not specified
+        newUser.Username = string.IsNullOrEmpty(username) ? email : username;
 
-            var valid = UserController.Instance.IsValidUserName(username);
+        if (!string.IsNullOrEmpty(registerationDetails.Password) && !registerationDetails.RandomPassword)
+        {
+            newUser.Membership.Password = registerationDetails.Password;
+        }
+        else
+        {
+            // Generate a random password for the user
+            newUser.Membership.Password = UserController.GeneratePassword();
+        }
 
-            if (!valid)
-            {
-                throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
-            }
+        newUser.Membership.PasswordConfirm = newUser.Membership.Password;
 
-            // ensure this user doesn't exist
-            if (!string.IsNullOrEmpty(username) && UserController.GetUserByName(portalSettings.PortalId, username) != null)
+        // set other profile properties
+        newUser.Profile.InitialiseProfile(portalSettings.PortalId);
+        newUser.Profile.PreferredLocale = new Localization().CurrentUICulture;
+        newUser.Profile.PreferredTimeZone = portalSettings.TimeZone;
+
+        // derive display name from supplied firstname, lastname or from email
+        if (!string.IsNullOrEmpty(registerationDetails.FirstName) &&
+            !string.IsNullOrEmpty(registerationDetails.LastName))
+        {
+            newUser.DisplayName = registerationDetails.FirstName + " " + registerationDetails.LastName;
+            newUser.FirstName = registerationDetails.FirstName;
+            newUser.LastName = registerationDetails.LastName;
+        }
+        else
+        {
+            newUser.DisplayName = newUser.Email.Substring(0, newUser.Email.IndexOf("@", StringComparison.Ordinal));
+        }
+
+        // read all the user account settings
+        var settings = UserController.GetUserSettings(portalSettings.PortalId);
+
+        // Verify Profanity filter
+        if (this.GetBoolSetting(settings, "Registration_UseProfanityFilter"))
+        {
+            var portalSecurity = PortalSecurity.Instance;
+            if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
             {
                 throw new Exception(Localization.GetString(
-                    "RegistrationUsernameAlreadyPresent",
+                    "RegistrationProfanityNotAllowed",
                     Library.Constants.SharedResources));
             }
+        }
 
-            // set username as email if not specified
-            newUser.Username = string.IsNullOrEmpty(username) ? email : username;
-
-            if (!string.IsNullOrEmpty(registerationDetails.Password) && !registerationDetails.RandomPassword)
+        // Email Address Validation
+        var emailValidator = this.GetStringSetting(settings, "Security_EmailValidation");
+        if (!string.IsNullOrEmpty(emailValidator))
+        {
+            var regExp = RegexUtils.GetCachedRegex(emailValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            var matches = regExp.Matches(newUser.Email);
+            if (matches.Count == 0)
             {
-                newUser.Membership.Password = registerationDetails.Password;
+                throw new Exception(Localization.GetString(
+                    "RegistrationInvalidEmailUsed",
+                    Library.Constants.SharedResources));
             }
-            else
+        }
+
+        // Excluded Terms Verification
+        var excludeRegex = this.GetExcludeTermsRegex(settings);
+        if (!string.IsNullOrEmpty(excludeRegex))
+        {
+            var regExp = RegexUtils.GetCachedRegex(excludeRegex, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            var matches = regExp.Matches(newUser.Username);
+            if (matches.Count > 0)
             {
-                // Generate a random password for the user
-                newUser.Membership.Password = UserController.GeneratePassword();
+                throw new Exception(Localization.GetString(
+                    "RegistrationExcludedTermsUsed",
+                    Library.Constants.SharedResources));
             }
+        }
 
-            newUser.Membership.PasswordConfirm = newUser.Membership.Password;
-
-            // set other profile properties
-            newUser.Profile.InitialiseProfile(portalSettings.PortalId);
-            newUser.Profile.PreferredLocale = new Localization().CurrentUICulture;
-            newUser.Profile.PreferredTimeZone = portalSettings.TimeZone;
-
-            // derive display name from supplied firstname, lastname or from email
-            if (!string.IsNullOrEmpty(registerationDetails.FirstName) &&
-                !string.IsNullOrEmpty(registerationDetails.LastName))
+        // User Name Validation
+        var userNameValidator = this.GetStringSetting(settings, "Security_UserNameValidation");
+        if (!string.IsNullOrEmpty(userNameValidator))
+        {
+            var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
+            var matches = regExp.Matches(newUser.Username);
+            if (matches.Count == 0)
             {
-                newUser.DisplayName = registerationDetails.FirstName + " " + registerationDetails.LastName;
-                newUser.FirstName = registerationDetails.FirstName;
-                newUser.LastName = registerationDetails.LastName;
+                throw new Exception(Localization.GetString(
+                    "RegistrationInvalidUserNameUsed",
+                    Library.Constants.SharedResources));
             }
-            else
-            {
-                newUser.DisplayName = newUser.Email.Substring(0, newUser.Email.IndexOf("@", StringComparison.Ordinal));
-            }
+        }
 
-            // read all the user account settings
-            var settings = UserController.GetUserSettings(portalSettings.PortalId);
-
-            // Verify Profanity filter
-            if (this.GetBoolSetting(settings, "Registration_UseProfanityFilter"))
+        // ensure unique username
+        var user = UserController.GetUserByName(portalSettings.PortalId, newUser.Username);
+        if (user != null)
+        {
+            if (this.GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
             {
-                var portalSecurity = PortalSecurity.Instance;
-                if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
-                {
-                    throw new Exception(Localization.GetString(
-                        "RegistrationProfanityNotAllowed",
-                        Library.Constants.SharedResources));
-                }
-            }
-
-            // Email Address Validation
-            var emailValidator = this.GetStringSetting(settings, "Security_EmailValidation");
-            if (!string.IsNullOrEmpty(emailValidator))
-            {
-                var regExp = RegexUtils.GetCachedRegex(emailValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                var matches = regExp.Matches(newUser.Email);
-                if (matches.Count == 0)
-                {
-                    throw new Exception(Localization.GetString(
-                        "RegistrationInvalidEmailUsed",
-                        Library.Constants.SharedResources));
-                }
+                throw new Exception(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
             }
 
-            // Excluded Terms Verification
-            var excludeRegex = this.GetExcludeTermsRegex(settings);
-            if (!string.IsNullOrEmpty(excludeRegex))
+            var i = 1;
+            string userName = null;
+            while (user != null)
             {
-                var regExp = RegexUtils.GetCachedRegex(excludeRegex, RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                var matches = regExp.Matches(newUser.Username);
-                if (matches.Count > 0)
-                {
-                    throw new Exception(Localization.GetString(
-                        "RegistrationExcludedTermsUsed",
-                        Library.Constants.SharedResources));
-                }
+                userName = newUser.Username + "0" + i.ToString(CultureInfo.InvariantCulture);
+                user = UserController.GetUserByName(portalSettings.PortalId, userName);
+                i++;
             }
 
-            // User Name Validation
-            var userNameValidator = this.GetStringSetting(settings, "Security_UserNameValidation");
-            if (!string.IsNullOrEmpty(userNameValidator))
-            {
-                var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                var matches = regExp.Matches(newUser.Username);
-                if (matches.Count == 0)
-                {
-                    throw new Exception(Localization.GetString(
-                        "RegistrationInvalidUserNameUsed",
-                        Library.Constants.SharedResources));
-                }
-            }
+            newUser.Username = userName;
+        }
 
-            // ensure unique username
-            var user = UserController.GetUserByName(portalSettings.PortalId, newUser.Username);
+        // ensure unique display name
+        if (this.GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
+        {
+            user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, newUser.DisplayName);
             if (user != null)
             {
-                if (this.GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
-                {
-                    throw new Exception(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
-                }
-
                 var i = 1;
-                string userName = null;
+                string displayName = null;
                 while (user != null)
                 {
-                    userName = newUser.Username + "0" + i.ToString(CultureInfo.InvariantCulture);
-                    user = UserController.GetUserByName(portalSettings.PortalId, userName);
+                    displayName = newUser.DisplayName + " 0" + i.ToString(CultureInfo.InvariantCulture);
+                    user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, displayName);
                     i++;
                 }
 
-                newUser.Username = userName;
+                newUser.DisplayName = displayName;
             }
-
-            // ensure unique display name
-            if (this.GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
-            {
-                user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, newUser.DisplayName);
-                if (user != null)
-                {
-                    var i = 1;
-                    string displayName = null;
-                    while (user != null)
-                    {
-                        displayName = newUser.DisplayName + " 0" + i.ToString(CultureInfo.InvariantCulture);
-                        user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, displayName);
-                        i++;
-                    }
-
-                    newUser.DisplayName = displayName;
-                }
-            }
-
-            // Update display name format
-            var displaynameFormat = this.GetStringSetting(settings, "Security_DisplayNameFormat");
-            if (!string.IsNullOrEmpty(displaynameFormat))
-            {
-                newUser.UpdateDisplayName(displaynameFormat);
-            }
-
-            // membership is approved only for public registration
-            newUser.Membership.Approved =
-                (registerationDetails.IgnoreRegistrationMode ||
-                portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration) && registerationDetails.Authorize;
-            newUser.Membership.PasswordQuestion = registerationDetails.Question;
-            newUser.Membership.PasswordAnswer = registerationDetails.Answer;
-
-            // final creation of user
-            var createStatus = UserController.CreateUser(ref newUser, registerationDetails.Notify);
-
-            // clear cache
-            if (createStatus == UserCreateStatus.Success)
-            {
-                CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalSettings.PortalId));
-            }
-
-            if (createStatus != UserCreateStatus.Success)
-            {
-                throw new InvalidUserRegisterException(UserController.GetUserCreateStatus(createStatus));
-            }
-
-            // if (registerationDetails.IgnoreRegistrationMode)
-            //            {
-            //                Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-            //                return UserBasicDto.FromUserInfo(newUser);
-            //            }
-
-            // send notification to portal administrator of new user registration
-            // check the receive notification setting first, but if register type is Private, we will always send the notification email.
-            // because the user need administrators to do the approve action so that he can continue use the website.
-            if (!registerationDetails.IgnoreRegistrationMode &&
-                    (portalSettings.EnableRegisterNotification || portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration))
-            {
-                Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, portalSettings);
-                SendAdminNotification(newUser, portalSettings);
-            }
-
-            return UserBasicDto.FromUserInfo(newUser);
         }
 
-        /// <inheritdoc/>
-        protected override Func<IRegisterController> GetFactory()
+        // Update display name format
+        var displaynameFormat = this.GetStringSetting(settings, "Security_DisplayNameFormat");
+        if (!string.IsNullOrEmpty(displaynameFormat))
         {
-            return () => new RegisterController();
+            newUser.UpdateDisplayName(displaynameFormat);
         }
 
-        private static void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
+        // membership is approved only for public registration
+        newUser.Membership.Approved =
+            (registerationDetails.IgnoreRegistrationMode ||
+             portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration) && registerationDetails.Authorize;
+        newUser.Membership.PasswordQuestion = registerationDetails.Question;
+        newUser.Membership.PasswordAnswer = registerationDetails.Answer;
+
+        // final creation of user
+        var createStatus = UserController.CreateUser(ref newUser, registerationDetails.Notify);
+
+        // clear cache
+        if (createStatus == UserCreateStatus.Success)
         {
-            var roleController = new RoleController();
-            var adminrole = roleController.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
-            var roles = new List<RoleInfo> { adminrole };
-            SendNewUserNotifications(newUser, portalSettings, roles);
+            CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalSettings.PortalId));
         }
 
-        private static string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
+        if (createStatus != UserCreateStatus.Success)
         {
-            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
-            return LocalizeNotificationText(text, locale, newUser, portalSettings);
+            throw new InvalidUserRegisterException(UserController.GetUserCreateStatus(createStatus));
         }
 
-        private static string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
+        // if (registerationDetails.IgnoreRegistrationMode)
+        //            {
+        //                Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
+        //                return UserBasicDto.FromUserInfo(newUser);
+        //            }
+
+        // send notification to portal administrator of new user registration
+        // check the receive notification setting first, but if register type is Private, we will always send the notification email.
+        // because the user need administrators to do the approve action so that he can continue use the website.
+        if (!registerationDetails.IgnoreRegistrationMode &&
+            (portalSettings.EnableRegisterNotification || portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration))
         {
-            // This method could need a custom ArrayList in future notification types. Currently it is null
-            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
+            Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, portalSettings);
+            SendAdminNotification(newUser, portalSettings);
         }
 
-        private static string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
+        return UserBasicDto.FromUserInfo(newUser);
+    }
+
+    /// <inheritdoc/>
+    protected override Func<IRegisterController> GetFactory()
+    {
+        return () => new RegisterController();
+    }
+
+    private static void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
+    {
+        var roleController = new RoleController();
+        var adminrole = roleController.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
+        var roles = new List<RoleInfo> { adminrole };
+        SendNewUserNotifications(newUser, portalSettings, roles);
+    }
+
+    private static string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
+    {
+        const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_BODY";
+        return LocalizeNotificationText(text, locale, newUser, portalSettings);
+    }
+
+    private static string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
+    {
+        // This method could need a custom ArrayList in future notification types. Currently it is null
+        return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
+    }
+
+    private static string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
+    {
+        const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
+        return LocalizeNotificationText(text, locale, newUser, portalSettings);
+    }
+
+    private bool GetBoolSetting(Hashtable settings, string settingKey)
+    {
+        return settings[settingKey] != null && Convert.ToBoolean(settings[settingKey]);
+    }
+
+    private string GetStringSetting(Hashtable settings, string settingKey)
+    {
+        return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
+    }
+
+    private string GetExcludeTermsRegex(Hashtable settings)
+    {
+        var excludeTerms = this.GetStringSetting(settings, "Registration_ExcludeTerms");
+        var regex = string.Empty;
+        if (!string.IsNullOrEmpty(excludeTerms))
         {
-            const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
-            return LocalizeNotificationText(text, locale, newUser, portalSettings);
+            regex = excludeTerms.Replace(" ", string.Empty).Replace(",", "|");
         }
 
-        private bool GetBoolSetting(Hashtable settings, string settingKey)
-        {
-            return settings[settingKey] != null && Convert.ToBoolean(settings[settingKey]);
-        }
-
-        private string GetStringSetting(Hashtable settings, string settingKey)
-        {
-            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
-        }
-
-        private string GetExcludeTermsRegex(Hashtable settings)
-        {
-            var excludeTerms = this.GetStringSetting(settings, "Registration_ExcludeTerms");
-            var regex = string.Empty;
-            if (!string.IsNullOrEmpty(excludeTerms))
-            {
-                regex = excludeTerms.Replace(" ", string.Empty).Replace(",", "|");
-            }
-
-            return regex;
-        }
+        return regex;
     }
 }

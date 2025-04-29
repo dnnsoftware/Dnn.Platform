@@ -4,38 +4,37 @@ const pageHierarchyActions = {
     setSearchKeyword(searchKeyword) {
         return {
             type: ActionTypes.SET_SEARCH_KEYWORD,
-            searchKeyword
-        };    
+            searchKeyword,
+        };
     },
 
     setItemTemplate(itemTemplate) {
         return {
             type: ActionTypes.SET_ITEM_TEMPLATE,
-            itemTemplate
+            itemTemplate,
         };
     },
 
     setDragItemTemplate(itemTemplate) {
         return {
             type: ActionTypes.SET_DRAG_ITEM_TEMPLATE,
-            itemTemplate
+            itemTemplate,
         };
     },
 
     selectPage(page) {
         return {
             type: ActionTypes.SELECT_PAGE,
-            page
+            page,
         };
     },
 
     changeSelectedPagePath(path) {
         return {
             type: ActionTypes.CHANGE_SELECTED_PAGE_PATH,
-            path
+            path,
         };
-    }
+    },
 };
-
 
 export default pageHierarchyActions;

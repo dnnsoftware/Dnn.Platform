@@ -2,46 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Content.Workflow.Repositories
+namespace DotNetNuke.Entities.Content.Workflow.Repositories;
+
+using System;
+using System.Collections.Generic;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Data;
+using DotNetNuke.Entities.Content.Workflow.Entities;
+using DotNetNuke.Framework;
+
+internal class WorkflowStatePermissionsRepository : ServiceLocator<IWorkflowStatePermissionsRepository, WorkflowStatePermissionsRepository>, IWorkflowStatePermissionsRepository
 {
-    using System;
-    using System.Collections.Generic;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Data;
-    using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Framework;
-
-    internal class WorkflowStatePermissionsRepository : ServiceLocator<IWorkflowStatePermissionsRepository, WorkflowStatePermissionsRepository>, IWorkflowStatePermissionsRepository
+    /// <inheritdoc/>
+    public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)
     {
-        /// <inheritdoc/>
-        public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)
-        {
-            return CBO.FillCollection<WorkflowStatePermission>(DataProvider.Instance().GetContentWorkflowStatePermissionsByStateID(stateId));
-        }
+        return CBO.FillCollection<WorkflowStatePermission>(DataProvider.Instance().GetContentWorkflowStatePermissionsByStateID(stateId));
+    }
 
-        /// <inheritdoc/>
-        public int AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId)
-        {
-            return DataProvider.Instance().AddContentWorkflowStatePermission(
-                permission.StateID,
-                permission.PermissionID,
-                permission.RoleID,
-                permission.AllowAccess,
-                permission.UserID,
-                lastModifiedByUserId);
-        }
+    /// <inheritdoc/>
+    public int AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId)
+    {
+        return DataProvider.Instance().AddContentWorkflowStatePermission(
+            permission.StateID,
+            permission.PermissionID,
+            permission.RoleID,
+            permission.AllowAccess,
+            permission.UserID,
+            lastModifiedByUserId);
+    }
 
-        /// <inheritdoc/>
-        public void DeleteWorkflowStatePermission(int workflowStatePermissionId)
-        {
-            DataProvider.Instance().DeleteContentWorkflowStatePermission(workflowStatePermissionId);
-        }
+    /// <inheritdoc/>
+    public void DeleteWorkflowStatePermission(int workflowStatePermissionId)
+    {
+        DataProvider.Instance().DeleteContentWorkflowStatePermission(workflowStatePermissionId);
+    }
 
-        /// <inheritdoc/>
-        protected override Func<IWorkflowStatePermissionsRepository> GetFactory()
-        {
-            return () => new WorkflowStatePermissionsRepository();
-        }
+    /// <inheritdoc/>
+    protected override Func<IWorkflowStatePermissionsRepository> GetFactory()
+    {
+        return () => new WorkflowStatePermissionsRepository();
     }
 }

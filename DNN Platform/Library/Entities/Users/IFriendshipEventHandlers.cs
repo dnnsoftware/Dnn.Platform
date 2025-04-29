@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Friends
+namespace DotNetNuke.Entities.Friends;
+
+using DotNetNuke.Entities.Users;
+
+public interface IFriendshipEventHandlers
 {
-    using DotNetNuke.Entities.Users;
+    void FriendshipRequested(object sender, RelationshipEventArgs args);
 
-    public interface IFriendshipEventHandlers
-    {
-        void FriendshipRequested(object sender, RelationshipEventArgs args);
+    void FriendshipAccepted(object sender, RelationshipEventArgs args);
 
-        void FriendshipAccepted(object sender, RelationshipEventArgs args);
-
-        void FriendshipDeleted(object sender, RelationshipEventArgs args);
-    }
+    void FriendshipDeleted(object sender, RelationshipEventArgs args);
 }

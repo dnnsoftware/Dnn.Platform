@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Web.Mvc.Fakes.Filters
+namespace DotNetNuke.Tests.Web.Mvc.Fakes.Filters;
+
+using System.Web.Mvc;
+
+public class FakeHandleExceptionRedirectAttribute : FakeRedirectAttribute, IExceptionFilter
 {
-    using System.Web.Mvc;
+    public static bool IsExceptionHandled { get; set; }
 
-    public class FakeHandleExceptionRedirectAttribute : FakeRedirectAttribute, IExceptionFilter
+    public void OnException(ExceptionContext filterContext)
     {
-        public static bool IsExceptionHandled { get; set; }
-
-        public void OnException(ExceptionContext filterContext)
-        {
-            filterContext.Result = Result;
-            filterContext.ExceptionHandled = IsExceptionHandled;
-        }
+        filterContext.Result = Result;
+        filterContext.ExceptionHandled = IsExceptionHandled;
     }
 }

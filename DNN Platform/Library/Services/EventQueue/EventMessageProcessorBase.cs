@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.EventQueue
+namespace DotNetNuke.Services.EventQueue;
+
+/// <summary>Basic class of EventMessageProcessor.</summary>
+public abstract class EventMessageProcessorBase
 {
-    /// <summary>Basic class of EventMessageProcessor.</summary>
-    public abstract class EventMessageProcessorBase
-    {
-        public abstract bool ProcessMessage(EventMessage message);
-    }
+    public abstract bool ProcessMessage(EventMessage message);
 }

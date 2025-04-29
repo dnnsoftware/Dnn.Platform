@@ -6,11 +6,11 @@ import FolderActions from "./folder";
 import ModuleDefinitionActions from "./moduleDefinition";
 import CreatePackageActions from "./createPackage";
 export {
-    PaginationActions,
-    VisiblePanelActions,
-    ExtensionActions,
-    InstallationActions,
-    FolderActions,
-    ModuleDefinitionActions,
-    CreatePackageActions
+  PaginationActions,
+  VisiblePanelActions,
+  ExtensionActions,
+  InstallationActions,
+  FolderActions,
+  ModuleDefinitionActions,
+  CreatePackageActions,
 };

@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints.Filters
+namespace DotNetNuke.ExtensionPoints.Filters;
+
+public class NoFilter : IExtensionPointFilter
 {
-    public class NoFilter : IExtensionPointFilter
+    /// <inheritdoc/>
+    public bool Condition(IExtensionPointData m)
     {
-        /// <inheritdoc/>
-        public bool Condition(IExtensionPointData m)
-        {
-            return true;
-        }
+        return true;
     }
 }

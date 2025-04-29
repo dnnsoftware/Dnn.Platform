@@ -2,138 +2,137 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core.Controllers.Messaging
+namespace DotNetNuke.Tests.Core.Controllers.Messaging;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+
+using DotNetNuke.ComponentModel;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Cache;
+using DotNetNuke.Services.Social.Messaging;
+using DotNetNuke.Services.Social.Messaging.Data;
+using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
+using DotNetNuke.Tests.Core.Controllers.Messaging.Helpers;
+using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
+using DotNetNuke.Tests.Utilities;
+using DotNetNuke.Tests.Utilities.Mocks;
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+public class UserPreferencesControllerTests
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
+    private UserPreferencesController userPrefencesController;
+    private Mock<IDataService> mockDataService;
+    private Mock<CachingProvider> mockCacheProvider;
 
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Cache;
-    using DotNetNuke.Services.Social.Messaging;
-    using DotNetNuke.Services.Social.Messaging.Data;
-    using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
-    using DotNetNuke.Tests.Core.Controllers.Messaging.Helpers;
-    using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
-    using DotNetNuke.Tests.Utilities;
-    using DotNetNuke.Tests.Utilities.Mocks;
-    using Moq;
-    using NUnit.Framework;
+    [SetUp]
 
-    [TestFixture]
-    public class UserPreferencesControllerTests
+    public void SetUp()
     {
-        private UserPreferencesController userPrefencesController;
-        private Mock<IDataService> mockDataService;
-        private Mock<CachingProvider> mockCacheProvider;
+        // Setup Mocks and Stub
+        this.mockDataService = new Mock<IDataService>();
+        this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
 
-        [SetUp]
+        DataService.RegisterInstance(this.mockDataService.Object);
+        SetupCachingProviderHelper.SetupCachingProvider(this.mockCacheProvider);
 
-        public void SetUp()
-        {
-            // Setup Mocks and Stub
-            this.mockDataService = new Mock<IDataService>();
-            this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
+        // Setup SUT
+        this.userPrefencesController = new UserPreferencesController();
+    }
 
-            DataService.RegisterInstance(this.mockDataService.Object);
-            SetupCachingProviderHelper.SetupCachingProvider(this.mockCacheProvider);
+    [TearDown]
+    public void TearDown()
+    {
+        ComponentFactory.Container = null;
+    }
 
-            // Setup SUT
-            this.userPrefencesController = new UserPreferencesController();
-        }
+    [Test]
+    public void UserPreferencesController_ShouldThrowArgumentNullException_WhenNullDataServiceIsPassedInTheConstructor()
+    {
+        // Act, Assert
+        Assert.Throws<ArgumentNullException>(() => new UserPreferencesController(null));
+    }
 
-        [TearDown]
-        public void TearDown()
-        {
-            ComponentFactory.Container = null;
-        }
+    [Test]
+    public void SetUserPreference_ShouldCallDataService_WhenNoError()
+    {
+        // Arrange
+        var userPreference = new UserPreferenceBuilder().Build();
 
-        [Test]
-        public void UserPreferencesController_ShouldThrowArgumentNullException_WhenNullDataServiceIsPassedInTheConstructor()
-        {
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new UserPreferencesController(null));
-        }
+        this.mockDataService.Setup(ds => ds.SetUserPreference(
+            userPreference.PortalId,
+            userPreference.UserId,
+            (int)userPreference.MessagesEmailFrequency,
+            (int)userPreference.NotificationsEmailFrequency)).Verifiable();
 
-        [Test]
-        public void SetUserPreference_ShouldCallDataService_WhenNoError()
-        {
-            // Arrange
-            var userPreference = new UserPreferenceBuilder().Build();
+        // Act
+        this.userPrefencesController.SetUserPreference(userPreference);
 
-            this.mockDataService.Setup(ds => ds.SetUserPreference(
-                userPreference.PortalId,
-                userPreference.UserId,
-                (int)userPreference.MessagesEmailFrequency,
-                (int)userPreference.NotificationsEmailFrequency)).Verifiable();
-
-            // Act
-            this.userPrefencesController.SetUserPreference(userPreference);
-
-            // Assert
-            this.mockDataService.Verify(
-                ds => ds.SetUserPreference(
+        // Assert
+        this.mockDataService.Verify(
+            ds => ds.SetUserPreference(
                 userPreference.PortalId,
                 userPreference.UserId,
                 (int)userPreference.MessagesEmailFrequency,
                 (int)userPreference.NotificationsEmailFrequency), Times.Once);
-        }
+    }
 
-        [Test]
+    [Test]
 
-        public void GetUserPreference_ShouldReturnNullObject_WhenUserDoesNotHavePreference()
+    public void GetUserPreference_ShouldReturnNullObject_WhenUserDoesNotHavePreference()
+    {
+        // Arrange
+        var user = GetValidUser();
+        this.mockDataService.Setup(ds => ds.GetUserPreference(
+            Constants.PORTAL_ValidPortalId,
+            Constants.UserID_User12)).Returns(UserPreferenceDataReaderMockHelper.CreateEmptyUserPreferenceReader);
+
+        // Act
+        var userPreference = this.userPrefencesController.GetUserPreference(user);
+
+        // Assert
+        Assert.That(userPreference, Is.Null);
+    }
+
+    [Test]
+
+    public void GetUserPreference_ShouldReturnUserPreference_WhenUserHasPreference()
+    {
+        // Arrange
+        var expectedUserPreference = new UserPreferenceBuilder()
+            .WithUserId(Constants.UserID_User12)
+            .WithPortalId(Constants.PORTAL_ValidPortalId)
+            .Build();
+
+        var user = GetValidUser();
+        this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId, Constants.UserID_User12))
+            .Returns(UserPreferenceDataReaderMockHelper.CreateUserPreferenceReader(expectedUserPreference));
+
+        // Act
+        var userPreference = this.userPrefencesController.GetUserPreference(user);
+
+        // Assert
+        Assert.That(userPreference, Is.Not.Null);
+        Assert.Multiple(() =>
         {
-            // Arrange
-            var user = GetValidUser();
-            this.mockDataService.Setup(ds => ds.GetUserPreference(
-                Constants.PORTAL_ValidPortalId,
-                Constants.UserID_User12)).Returns(UserPreferenceDataReaderMockHelper.CreateEmptyUserPreferenceReader);
+            Assert.That(userPreference.MessagesEmailFrequency, Is.EqualTo(expectedUserPreference.MessagesEmailFrequency));
+            Assert.That(userPreference.NotificationsEmailFrequency, Is.EqualTo(expectedUserPreference.NotificationsEmailFrequency));
+            Assert.That(userPreference.PortalId, Is.EqualTo(user.PortalID));
+            Assert.That(userPreference.UserId, Is.EqualTo(user.UserID));
+        });
+    }
 
-            // Act
-            var userPreference = this.userPrefencesController.GetUserPreference(user);
-
-            // Assert
-            Assert.That(userPreference, Is.Null);
-        }
-
-        [Test]
-
-        public void GetUserPreference_ShouldReturnUserPreference_WhenUserHasPreference()
+    private static UserInfo GetValidUser()
+    {
+        return new UserInfo
         {
-            // Arrange
-            var expectedUserPreference = new UserPreferenceBuilder()
-                .WithUserId(Constants.UserID_User12)
-                .WithPortalId(Constants.PORTAL_ValidPortalId)
-                .Build();
-
-            var user = GetValidUser();
-            this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId, Constants.UserID_User12))
-                .Returns(UserPreferenceDataReaderMockHelper.CreateUserPreferenceReader(expectedUserPreference));
-
-            // Act
-            var userPreference = this.userPrefencesController.GetUserPreference(user);
-
-            // Assert
-            Assert.That(userPreference, Is.Not.Null);
-            Assert.Multiple(() =>
-            {
-                Assert.That(userPreference.MessagesEmailFrequency, Is.EqualTo(expectedUserPreference.MessagesEmailFrequency));
-                Assert.That(userPreference.NotificationsEmailFrequency, Is.EqualTo(expectedUserPreference.NotificationsEmailFrequency));
-                Assert.That(userPreference.PortalId, Is.EqualTo(user.PortalID));
-                Assert.That(userPreference.UserId, Is.EqualTo(user.UserID));
-            });
-        }
-
-        private static UserInfo GetValidUser()
-        {
-            return new UserInfo
-            {
-                DisplayName = Constants.UserDisplayName_User12,
-                UserID = Constants.UserID_User12,
-                PortalID = Constants.PORTAL_ValidPortalId,
-            };
-        }
+            DisplayName = Constants.UserDisplayName_User12,
+            UserID = Constants.UserID_User12,
+            PortalID = Constants.PORTAL_ValidPortalId,
+        };
     }
 }

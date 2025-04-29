@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Library.AppEvents
-{
-    public interface IEventsController
-    {
-        void ApplicationStartEvent();
+namespace Dnn.PersonaBar.Library.AppEvents;
 
-        void ApplicationEndEvent();
-    }
+public interface IEventsController
+{
+    void ApplicationStartEvent();
+
+    void ApplicationEndEvent();
 }

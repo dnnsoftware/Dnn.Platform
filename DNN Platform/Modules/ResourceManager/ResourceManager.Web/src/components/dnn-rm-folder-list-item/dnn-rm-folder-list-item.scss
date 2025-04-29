@@ -5,14 +5,14 @@
   transition: all 300ms ease-in-out;
   position: relative;
 }
-:host(.selected){
-  .item-name{
+:host(.selected) {
+  .item-name {
     font-weight: bolder;
-    color: var(--dnn-color-primary-dark, #0D569E);
+    color: var(--dnn-color-primary-dark, #0d569e);
   }
 }
 
-button{
+button {
   display: flex;
   align-items: center;
   border: none;
@@ -22,7 +22,7 @@ button{
   gap: 0.5em;
   cursor: pointer;
 }
-dnn-collapsible{
+dnn-collapsible {
   position: absolute;
   display: none;
   border: 1px solid lightgray;

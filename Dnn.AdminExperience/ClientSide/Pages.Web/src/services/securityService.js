@@ -10,7 +10,9 @@ const securityService = {
         if (!permission) {
             return true;
         }
-        const userPermissionsOverPage = selectedPage && selectedPage.pagePermissions || utils.getCurrentPagePermissions();
+        const userPermissionsOverPage =
+      (selectedPage && selectedPage.pagePermissions) ||
+      utils.getCurrentPagePermissions();
 
         return userPermissionsOverPage[permission];
     },

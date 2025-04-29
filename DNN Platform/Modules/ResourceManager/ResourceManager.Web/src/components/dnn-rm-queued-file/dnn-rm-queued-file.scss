@@ -5,63 +5,63 @@
   margin-top: 1em;
 }
 
-.container{
+.container {
+  display: flex;
+  align-items: center;
+  .preview {
+    width: 32px;
+    height: 32px;
+    padding: 0.5em;
+  }
+  .file {
+    flex-grow: 1;
     display: flex;
-    align-items: center;
-    .preview{
-        width: 32px;
-        height: 32px;
-        padding: 0.5em;
+    flex-direction: column;
+    padding: 0.5em;
+    .success {
+      color: green;
+      margin-top: 0.25em;
+      font-weight: bold;
     }
-    .file{
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        padding: 0.5em;
-        .success{
-            color: green;
-            margin-top: 0.25em;
-            font-weight: bold;
-        }
-        .warning{
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 1em;
-            margin-top: 0.5em;
-            span{
-                color: red;
-                margin-right: auto;
-            }
-        }
+    .warning {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1em;
+      margin-top: 0.5em;
+      span {
+        color: red;
+        margin-right: auto;
+      }
     }
-    .progress{
-        width: 100%;
-        background-color: lightgray;
-        border-radius: var(--dnn-controls-radius, 5px);
-        .progress-bar{
-            height: 1em;
-            background-color: var(--dnn-color-primary, #0078d7);
-            border-radius: var(--dnn-controls-radius, 5px);
-            transition: width 0.5s ease-in-out;
-        }
+  }
+  .progress {
+    width: 100%;
+    background-color: lightgray;
+    border-radius: var(--dnn-controls-radius, 5px);
+    .progress-bar {
+      height: 1em;
+      background-color: var(--dnn-color-primary, #0078d7);
+      border-radius: var(--dnn-controls-radius, 5px);
+      transition: width 0.5s ease-in-out;
     }
-    .warning{
-        margin: 0.25em;
-        font-weight: bold;
+  }
+  .warning {
+    margin: 0.25em;
+    font-weight: bold;
+  }
+  .dismiss {
+    button {
+      margin: 0;
+      padding: 0;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
     }
-    .dismiss{
-        button{
-            margin: 0;
-            padding: 0;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-        }
+  }
+  .uploaded {
+    .success {
+      fill: green;
     }
-    .uploaded{
-        .success{
-            fill: green;
-        }
-    }
+  }
 }

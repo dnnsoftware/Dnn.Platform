@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Components
+namespace Dnn.PersonaBar.Pages.Components;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Urls;
+
+public interface IFriendlyUrlWrapper
 {
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Urls;
+    string CleanNameForUrl(string urlPath, FriendlyUrlOptions options, out bool modified);
 
-    public interface IFriendlyUrlWrapper
-    {
-        string CleanNameForUrl(string urlPath, FriendlyUrlOptions options, out bool modified);
-
-        void ValidateUrl(string urlPath, int tabId, PortalSettings portalSettings, out bool modified);
-    }
+    void ValidateUrl(string urlPath, int tabId, PortalSettings portalSettings, out bool modified);
 }

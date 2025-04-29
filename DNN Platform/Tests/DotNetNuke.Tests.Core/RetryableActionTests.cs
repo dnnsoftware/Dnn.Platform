@@ -2,145 +2,144 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core
+namespace DotNetNuke.Tests.Core;
+
+using System;
+using System.Collections.Generic;
+
+using DotNetNuke.Common.Utilities.Internal;
+using NUnit.Framework;
+
+[TestFixture]
+public class RetryableActionTests
 {
-    using System;
-    using System.Collections.Generic;
+    private SleepMonitor _sleepMonitor;
 
-    using DotNetNuke.Common.Utilities.Internal;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class RetryableActionTests
+    [SetUp]
+    public void Setup()
     {
-        private SleepMonitor _sleepMonitor;
+        this._sleepMonitor = new SleepMonitor();
+        RetryableAction.SleepAction = this._sleepMonitor.GoToSleep;
+    }
 
-        [SetUp]
-        public void Setup()
+    [Test]
+    public void ActionSucceedsFirstTime()
+    {
+        var monitor = new ActionMonitor();
+        var retryable = CreateRetryable(monitor.Action);
+
+        retryable.TryIt();
+
+        Assert.That(monitor.TimesCalled, Is.EqualTo(1));
+    }
+
+    [Test]
+    public void ActionFailsTwice()
+    {
+        var monitor = new ActionMonitor(2);
+        var retryable = CreateRetryable(monitor.Action);
+
+        retryable.TryIt();
+
+        Assert.That(monitor.TimesCalled, Is.EqualTo(3));
+    }
+
+    [Test]
+    public void DelaysIncreaseWithEachRetry()
+    {
+        var monitor = new ActionMonitor(3);
+        var retryable = CreateRetryable(monitor.Action, 10);
+
+        retryable.TryIt();
+
+        var firstRetry = this._sleepMonitor.SleepPeriod[0];
+        var secondRetry = this._sleepMonitor.SleepPeriod[1];
+        var thirdRetry = this._sleepMonitor.SleepPeriod[2];
+
+        Assert.Multiple(() =>
         {
-            this._sleepMonitor = new SleepMonitor();
-            RetryableAction.SleepAction = this._sleepMonitor.GoToSleep;
-        }
+            Assert.That(firstRetry, Is.EqualTo(5));
+            Assert.That(secondRetry, Is.EqualTo(50));
+            Assert.That(thirdRetry, Is.EqualTo(500));
+        });
+    }
 
-        [Test]
-        public void ActionSucceedsFirstTime()
+    [Test]
+    public void ActionNeverSucceeds()
+    {
+        var monitor = new ActionMonitor(-1);
+        var retryable = CreateRetryable(monitor.Action);
+
+        Assert.Throws<Exception>(() => retryable.TryIt());
+    }
+
+    private static RetryableAction CreateRetryable(Action action)
+    {
+        return CreateRetryable(action, 1);
+    }
+
+    private static RetryableAction CreateRetryable(Action action, int factor)
+    {
+        return new RetryableAction(action, "foo", 10, TimeSpan.FromMilliseconds(5), factor);
+    }
+}
+
+internal class SleepMonitor
+{
+    private readonly List<int> _periods = new List<int>();
+
+    public IList<int> SleepPeriod
+    {
+        get
         {
-            var monitor = new ActionMonitor();
-            var retryable = CreateRetryable(monitor.Action);
-
-            retryable.TryIt();
-
-            Assert.That(monitor.TimesCalled, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void ActionFailsTwice()
-        {
-            var monitor = new ActionMonitor(2);
-            var retryable = CreateRetryable(monitor.Action);
-
-            retryable.TryIt();
-
-            Assert.That(monitor.TimesCalled, Is.EqualTo(3));
-        }
-
-        [Test]
-        public void DelaysIncreaseWithEachRetry()
-        {
-            var monitor = new ActionMonitor(3);
-            var retryable = CreateRetryable(monitor.Action, 10);
-
-            retryable.TryIt();
-
-            var firstRetry = this._sleepMonitor.SleepPeriod[0];
-            var secondRetry = this._sleepMonitor.SleepPeriod[1];
-            var thirdRetry = this._sleepMonitor.SleepPeriod[2];
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(firstRetry, Is.EqualTo(5));
-                Assert.That(secondRetry, Is.EqualTo(50));
-                Assert.That(thirdRetry, Is.EqualTo(500));
-            });
-        }
-
-        [Test]
-        public void ActionNeverSucceeds()
-        {
-            var monitor = new ActionMonitor(-1);
-            var retryable = CreateRetryable(monitor.Action);
-
-            Assert.Throws<Exception>(() => retryable.TryIt());
-        }
-
-        private static RetryableAction CreateRetryable(Action action)
-        {
-            return CreateRetryable(action, 1);
-        }
-
-        private static RetryableAction CreateRetryable(Action action, int factor)
-        {
-            return new RetryableAction(action, "foo", 10, TimeSpan.FromMilliseconds(5), factor);
+            return this._periods.AsReadOnly();
         }
     }
 
-    internal class SleepMonitor
+    public void GoToSleep(int delay)
     {
-        private readonly List<int> _periods = new List<int>();
+        this._periods.Add(delay);
+    }
+}
 
-        public IList<int> SleepPeriod
-        {
-            get
-            {
-                return this._periods.AsReadOnly();
-            }
-        }
+internal class ActionMonitor
+{
+    private readonly List<DateTime> _callTimes = new List<DateTime>();
+    private int _failuresRemaining;
 
-        public void GoToSleep(int delay)
+    public ActionMonitor()
+        : this(0)
+    {
+    }
+
+    public ActionMonitor(int failureCount)
+    {
+        this._failuresRemaining = failureCount;
+    }
+
+    public IList<DateTime> CallTime
+    {
+        get
         {
-            this._periods.Add(delay);
+            return this._callTimes.AsReadOnly();
         }
     }
 
-    internal class ActionMonitor
+    public int TimesCalled { get; private set; }
+
+    public void Action()
     {
-        private readonly List<DateTime> _callTimes = new List<DateTime>();
-        private int _failuresRemaining;
+        this._callTimes.Add(DateTime.Now);
+        this.TimesCalled++;
 
-        public ActionMonitor()
-            : this(0)
+        if (this._failuresRemaining != 0)
         {
-        }
-
-        public ActionMonitor(int failureCount)
-        {
-            this._failuresRemaining = failureCount;
-        }
-
-        public IList<DateTime> CallTime
-        {
-            get
+            if (this._failuresRemaining > 0)
             {
-                return this._callTimes.AsReadOnly();
+                this._failuresRemaining--;
             }
-        }
 
-        public int TimesCalled { get; private set; }
-
-        public void Action()
-        {
-            this._callTimes.Add(DateTime.Now);
-            this.TimesCalled++;
-
-            if (this._failuresRemaining != 0)
-            {
-                if (this._failuresRemaining > 0)
-                {
-                    this._failuresRemaining--;
-                }
-
-                throw new Exception("it failed");
-            }
+            throw new Exception("it failed");
         }
     }
 }

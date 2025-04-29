@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.UI.UserControls
+namespace DotNetNuke.UI.UserControls;
+
+public interface IFilePickerUploader
 {
-    public interface IFilePickerUploader
-    {
-        int FileID { get; set; }
+    int FileID { get; set; }
 
-        string FilePath { get; set; }
+    string FilePath { get; set; }
 
-        string FileFilter { get; set; }
-    }
+    string FileFilter { get; set; }
 }

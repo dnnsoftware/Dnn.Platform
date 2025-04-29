@@ -2,54 +2,53 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Api
+namespace DotNetNuke.Web.Api;
+
+using System;
+using System.Web.Http;
+
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+
+/// <summary>Defines properties and methods for Dnn specific API controllers.</summary>
+[DnnExceptionFilter]
+public abstract class DnnApiController : ApiController
 {
-    using System;
-    using System.Web.Http;
+    private readonly Lazy<ModuleInfo> activeModule;
 
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-
-    /// <summary>Defines properties and methods for Dnn specific API controllers.</summary>
-    [DnnExceptionFilter]
-    public abstract class DnnApiController : ApiController
+    /// <summary>Initializes a new instance of the <see cref="DnnApiController"/> class.</summary>
+    protected DnnApiController()
     {
-        private readonly Lazy<ModuleInfo> activeModule;
+        this.activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="DnnApiController"/> class.</summary>
-        protected DnnApiController()
+    /// <summary>Gets portalSettings for the current portal.</summary>
+    public PortalSettings PortalSettings
+    {
+        get
         {
-            this.activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
+            return PortalController.Instance.GetCurrentPortalSettings();
         }
+    }
 
-        /// <summary>Gets portalSettings for the current portal.</summary>
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+    /// <summary>Gets userInfo for the current user.</summary>
+    public UserInfo UserInfo
+    {
+        get { return this.PortalSettings.UserInfo; }
+    }
 
-        /// <summary>Gets userInfo for the current user.</summary>
-        public UserInfo UserInfo
-        {
-            get { return this.PortalSettings.UserInfo; }
-        }
+    /// <summary>
+    /// Gets moduleInfo for the current module.
+    /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
+    /// </summary>
+    public ModuleInfo ActiveModule
+    {
+        get { return this.activeModule.Value; }
+    }
 
-        /// <summary>
-        /// Gets moduleInfo for the current module.
-        /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
-        /// </summary>
-        public ModuleInfo ActiveModule
-        {
-            get { return this.activeModule.Value; }
-        }
-
-        private ModuleInfo InitModuleInfo()
-        {
-            return this.Request.FindModuleInfo();
-        }
+    private ModuleInfo InitModuleInfo()
+    {
+        return this.Request.FindModuleInfo();
     }
 }

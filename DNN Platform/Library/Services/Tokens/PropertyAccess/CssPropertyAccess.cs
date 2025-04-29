@@ -3,49 +3,48 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable once CheckNamespace
-namespace DotNetNuke.Services.Tokens
+namespace DotNetNuke.Services.Tokens;
+
+using System;
+using System.Web.UI;
+
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Web.Client;
+using DotNetNuke.Web.Client.ClientResourceManagement;
+
+public class CssPropertyAccess : JsonPropertyAccess<StylesheetDto>
 {
-    using System;
-    using System.Web.UI;
+    private readonly Page page;
 
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-
-    public class CssPropertyAccess : JsonPropertyAccess<StylesheetDto>
+    /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
+    /// <param name="page"></param>
+    public CssPropertyAccess(Page page)
     {
-        private readonly Page page;
+        this.page = page;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
-        /// <param name="page"></param>
-        public CssPropertyAccess(Page page)
+    /// <inheritdoc/>
+    protected override string ProcessToken(StylesheetDto model, UserInfo accessingUser, Scope accessLevel)
+    {
+        if (string.IsNullOrEmpty(model.Path))
         {
-            this.page = page;
+            throw new ArgumentException("The Css token must specify a path or property.");
         }
 
-        /// <inheritdoc/>
-        protected override string ProcessToken(StylesheetDto model, UserInfo accessingUser, Scope accessLevel)
+        if (model.Priority == 0)
         {
-            if (string.IsNullOrEmpty(model.Path))
-            {
-                throw new ArgumentException("The Css token must specify a path or property.");
-            }
-
-            if (model.Priority == 0)
-            {
-                model.Priority = (int)FileOrder.Css.DefaultPriority;
-            }
-
-            if (string.IsNullOrEmpty(model.Provider))
-            {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority);
-            }
-            else
-            {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority, model.Provider);
-            }
-
-            return string.Empty;
+            model.Priority = (int)FileOrder.Css.DefaultPriority;
         }
+
+        if (string.IsNullOrEmpty(model.Provider))
+        {
+            ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority);
+        }
+        else
+        {
+            ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority, model.Provider);
+        }
+
+        return string.Empty;
     }
 }

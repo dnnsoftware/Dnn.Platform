@@ -2,81 +2,80 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.UI.Validation
+namespace DotNetNuke.Tests.UI.Validation;
+
+using System.Linq;
+
+using DotNetNuke.Tests.Utilities;
+using DotNetNuke.Web.Validators;
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+public class ValidatorTests
 {
-    using System.Linq;
+    private static readonly ValidationResult FailedResult = new ValidationResult(new[] { new ValidationError() });
 
-    using DotNetNuke.Tests.Utilities;
-    using DotNetNuke.Web.Validators;
-    using Moq;
-    using NUnit.Framework;
+    private static readonly ValidationResult AnotherFailedResult = new ValidationResult(new[] { new ValidationError() });
 
-    [TestFixture]
-    public class ValidatorTests
+    [Test]
+    public void ValidateObject_Returns_Successful_Result_If_All_Validators_Return_Successful()
     {
-        private static readonly ValidationResult FailedResult = new ValidationResult(new[] { new ValidationError() });
+        // Arrange
+        var validator = new Validator();
+        object target = new object();
+        SetupValidators(validator, target, ValidationResult.Successful, ValidationResult.Successful, ValidationResult.Successful);
 
-        private static readonly ValidationResult AnotherFailedResult = new ValidationResult(new[] { new ValidationError() });
+        // Act
+        ValidationResult result = validator.ValidateObject(target);
 
-        [Test]
-        public void ValidateObject_Returns_Successful_Result_If_All_Validators_Return_Successful()
+        // Assert
+        Assert.That(result.IsValid, Is.True);
+    }
+
+    [Test]
+    public void ValidateObject_Returns_Failed_Result_If_Any_Validator_Returns_Failed()
+    {
+        // Arrange
+        var validator = new Validator();
+        object target = new object();
+        SetupValidators(validator, target, ValidationResult.Successful, ValidationResult.Successful, FailedResult, ValidationResult.Successful);
+
+        // Act
+        ValidationResult result = validator.ValidateObject(target);
+
+        // Assert
+        Assert.That(result.IsValid, Is.False);
+    }
+
+    [Test]
+    public void ValidateObject_Collects_Errors_From_All_Validators()
+    {
+        // Arrange
+        var validator = new Validator();
+        object target = new object();
+        SetupValidators(validator, target, ValidationResult.Successful, FailedResult, AnotherFailedResult, ValidationResult.Successful);
+
+        // Act
+        ValidationResult result = validator.ValidateObject(target);
+
+        Assert.Multiple(() =>
         {
-            // Arrange
-            var validator = new Validator();
-            object target = new object();
-            SetupValidators(validator, target, ValidationResult.Successful, ValidationResult.Successful, ValidationResult.Successful);
-
-            // Act
-            ValidationResult result = validator.ValidateObject(target);
-
-            // Assert
-            Assert.That(result.IsValid, Is.True);
-        }
-
-        [Test]
-        public void ValidateObject_Returns_Failed_Result_If_Any_Validator_Returns_Failed()
-        {
-            // Arrange
-            var validator = new Validator();
-            object target = new object();
-            SetupValidators(validator, target, ValidationResult.Successful, ValidationResult.Successful, FailedResult, ValidationResult.Successful);
-
-            // Act
-            ValidationResult result = validator.ValidateObject(target);
-
             // Assert
             Assert.That(result.IsValid, Is.False);
-        }
+            Assert.That(result.Errors.Count(), Is.EqualTo(2));
+        });
+        EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult }, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
+    }
 
-        [Test]
-        public void ValidateObject_Collects_Errors_From_All_Validators()
+    private static void SetupValidators(Validator validator, object target, params ValidationResult[] validationResults)
+    {
+        validator.Validators.Clear();
+        for (int i = 0; i < validationResults.Length; i++)
         {
-            // Arrange
-            var validator = new Validator();
-            object target = new object();
-            SetupValidators(validator, target, ValidationResult.Successful, FailedResult, AnotherFailedResult, ValidationResult.Successful);
-
-            // Act
-            ValidationResult result = validator.ValidateObject(target);
-
-            Assert.Multiple(() =>
-            {
-                // Assert
-                Assert.That(result.IsValid, Is.False);
-                Assert.That(result.Errors.Count(), Is.EqualTo(2));
-            });
-            EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult }, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
-        }
-
-        private static void SetupValidators(Validator validator, object target, params ValidationResult[] validationResults)
-        {
-            validator.Validators.Clear();
-            for (int i = 0; i < validationResults.Length; i++)
-            {
-                var mockValidator = new Mock<ObjectValidator>();
-                mockValidator.Setup(v => v.ValidateObject(target)).Returns(validationResults[i]);
-                validator.Validators.Add(mockValidator.Object);
-            }
+            var mockValidator = new Mock<ObjectValidator>();
+            mockValidator.Setup(v => v.ValidateObject(target)).Returns(validationResults[i]);
+            validator.Validators.Add(mockValidator.Object);
         }
     }
 }

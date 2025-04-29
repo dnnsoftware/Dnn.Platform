@@ -2,103 +2,102 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
+namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using DNN.Integration.Test.Framework;
+using DNN.Integration.Test.Framework.Helpers;
+using Newtonsoft.Json;
+using NUnit.Framework;
+
+[TestFixture]
+public class AddPageTests : IntegrationTestBase
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private const string AddBulkPagesApi = "/API/PersonaBar/Pages/SaveBulkPages";
+    private const string VerigyBulkPagesApi = "/API/PersonaBar/Pages/PreSaveBulkPagesValidate";
 
-    using DNN.Integration.Test.Framework;
-    using DNN.Integration.Test.Framework.Helpers;
-    using Newtonsoft.Json;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class AddPageTests : IntegrationTestBase
+    [Test]
+    public void Add_Multi_Pages_For_Exisitng_Shoul_Return_Results()
     {
-        private const string AddBulkPagesApi = "/API/PersonaBar/Pages/SaveBulkPages";
-        private const string VerigyBulkPagesApi = "/API/PersonaBar/Pages/PreSaveBulkPagesValidate";
-
-        [Test]
-        public void Add_Multi_Pages_For_Exisitng_Shoul_Return_Results()
+        var rnd = new Random().Next(1000, 10000);
+        var addPagesDto = new BulkPage
         {
-            var rnd = new Random().Next(1000, 10000);
-            var addPagesDto = new BulkPage
-            {
-                BulkPages = "Page_" + rnd,
-                ParentId = -1,
-                Keywords = string.Empty,
-                Tags = string.Empty,
-                IncludeInMenu = true,
-                StartDate = null,
-                EndDate = null,
-            };
+            BulkPages = "Page_" + rnd,
+            ParentId = -1,
+            Keywords = string.Empty,
+            Tags = string.Empty,
+            IncludeInMenu = true,
+            StartDate = null,
+            EndDate = null,
+        };
 
-            Console.WriteLine(@"Add bulk pages request = {0}", JsonConvert.SerializeObject(addPagesDto));
-            var connector = WebApiTestHelper.LoginHost();
-            var response = connector.PostJson(AddBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response);
-            Console.WriteLine(@"Add bulk pages ersponse = {0}", response);
-            Assert.Multiple(() =>
-            {
-                Assert.That(result.Status, Is.EqualTo(0));
-                Assert.That(result.Response.Pages.First().ErrorMessage, Is.Null);
-            });
-
-            var response2 = connector.PostJson(VerigyBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
-            var result2 = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response2);
-            Console.WriteLine(@"Verify bulk pages ersponse = {0}", response2);
-            Assert.Multiple(() =>
-            {
-                Assert.That(int.Parse(result2.Status.ToString()), Is.EqualTo(0));
-                Assert.That(result2.Response.Pages.First().ErrorMessage, Is.Not.Null.And.Not.Empty);
-            });
-        }
-
-        [JsonObject]
-        public class BulkPage
+        Console.WriteLine(@"Add bulk pages request = {0}", JsonConvert.SerializeObject(addPagesDto));
+        var connector = WebApiTestHelper.LoginHost();
+        var response = connector.PostJson(AddBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
+        var result = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response);
+        Console.WriteLine(@"Add bulk pages ersponse = {0}", response);
+        Assert.Multiple(() =>
         {
-            public string BulkPages { get; set; }
+            Assert.That(result.Status, Is.EqualTo(0));
+            Assert.That(result.Response.Pages.First().ErrorMessage, Is.Null);
+        });
 
-            public int ParentId { get; set; }
-
-            public string Keywords { get; set; }
-
-            public string Tags { get; set; }
-
-            public bool IncludeInMenu { get; set; }
-
-            public DateTime? StartDate { get; set; }
-
-            public DateTime? EndDate { get; set; }
-        }
-
-        [JsonObject]
-        public class BulkPageResponseItem
+        var response2 = connector.PostJson(VerigyBulkPagesApi, addPagesDto).Content.ReadAsStringAsync().Result;
+        var result2 = JsonConvert.DeserializeObject<BulkPageResponseWrapper>(response2);
+        Console.WriteLine(@"Verify bulk pages ersponse = {0}", response2);
+        Assert.Multiple(() =>
         {
-            public string PageName { get; set; }
+            Assert.That(int.Parse(result2.Status.ToString()), Is.EqualTo(0));
+            Assert.That(result2.Response.Pages.First().ErrorMessage, Is.Not.Null.And.Not.Empty);
+        });
+    }
 
-            public int Status { get; set; }
+    [JsonObject]
+    public class BulkPage
+    {
+        public string BulkPages { get; set; }
 
-            public int TabId { get; set; }
+        public int ParentId { get; set; }
 
-            public string ErrorMessage { get; set; }
-        }
+        public string Keywords { get; set; }
 
-        [JsonObject]
-        public class BulkPageResponse
-        {
-            public int OverallStatus { get; set; }
+        public string Tags { get; set; }
 
-            public IEnumerable<BulkPageResponseItem> Pages { get; set; }
-        }
+        public bool IncludeInMenu { get; set; }
 
-        [JsonObject]
-        public class BulkPageResponseWrapper
-        {
-            public int Status { get; set; }
+        public DateTime? StartDate { get; set; }
 
-            public BulkPageResponse Response { get; set; }
-        }
+        public DateTime? EndDate { get; set; }
+    }
+
+    [JsonObject]
+    public class BulkPageResponseItem
+    {
+        public string PageName { get; set; }
+
+        public int Status { get; set; }
+
+        public int TabId { get; set; }
+
+        public string ErrorMessage { get; set; }
+    }
+
+    [JsonObject]
+    public class BulkPageResponse
+    {
+        public int OverallStatus { get; set; }
+
+        public IEnumerable<BulkPageResponseItem> Pages { get; set; }
+    }
+
+    [JsonObject]
+    public class BulkPageResponseWrapper
+    {
+        public int Status { get; set; }
+
+        public BulkPageResponse Response { get; set; }
     }
 }

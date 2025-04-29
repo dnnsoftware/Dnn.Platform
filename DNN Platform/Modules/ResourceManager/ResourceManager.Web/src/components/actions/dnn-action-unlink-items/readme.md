@@ -1,9 +1,6 @@
 # dnn-action-move-items
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,13 +8,12 @@
 | -------------------- | --------- | ----------- | -------- | ----------- |
 | `items` _(required)_ | --        |             | `Item[]` | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
- - [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
+- [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
+- [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
 
 ### Depends on
 
@@ -25,6 +21,7 @@
 - [dnn-rm-unlink-items](../../dnn-rm-unlink-items)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-action-unlink-items --> dnn-modal
@@ -38,6 +35,6 @@ graph TD;
   style dnn-action-unlink-items fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

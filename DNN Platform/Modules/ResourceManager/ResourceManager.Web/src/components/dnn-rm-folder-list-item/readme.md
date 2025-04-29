@@ -1,9 +1,6 @@
 # dnn-rm-folder-list-item
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -14,7 +11,6 @@
 | `parentFolderId` _(required)_ | `parent-folder-id` | The ID of the parent folder.                          | `number`         | `undefined` |
 | `selectedFolder`              | --                 | Indicates if this item is the currently selected one. | `FolderTreeItem` | `undefined` |
 
-
 ## Events
 
 | Event                        | Description                                                             | Type                          |
@@ -22,13 +18,12 @@
 | `dnnRmcontextMenuOpened`     | Fires when a context menu is opened for this item. Emits the folder ID. | `CustomEvent<number>`         |
 | `dnnRmFolderListItemClicked` | Fires when a folder is clicked.                                         | `CustomEvent<FolderTreeItem>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-folder-list](../dnn-rm-folder-list)
- - [dnn-rm-folder-list-item](.)
+- [dnn-rm-folder-list](../dnn-rm-folder-list)
+- [dnn-rm-folder-list-item](.)
 
 ### Depends on
 
@@ -38,6 +33,7 @@
 - [dnn-rm-folder-list-item](.)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-folder-list-item --> dnn-rm-folder-list-item
@@ -91,6 +87,6 @@ graph TD;
   style dnn-rm-folder-list-item fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

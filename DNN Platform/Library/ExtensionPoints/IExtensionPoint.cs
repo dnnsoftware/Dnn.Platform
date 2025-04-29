@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+public interface IExtensionPoint
 {
-    public interface IExtensionPoint
-    {
-        string Text { get; }
+    string Text { get; }
 
-        string Icon { get; }
+    string Icon { get; }
 
-        int Order { get; }
-    }
+    int Order { get; }
 }

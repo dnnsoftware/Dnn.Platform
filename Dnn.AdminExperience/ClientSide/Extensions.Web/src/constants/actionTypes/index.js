@@ -6,11 +6,11 @@ import folder from "./folder";
 import moduleDefinition from "./moduleDefinition";
 import createPackage from "./createPackage";
 export {
-    pagination,
-    visiblePanel,
-    extension,
-    installation,
-    folder,
-    moduleDefinition,
-    createPackage
+  pagination,
+  visiblePanel,
+  extension,
+  installation,
+  folder,
+  moduleDefinition,
+  createPackage,
 };

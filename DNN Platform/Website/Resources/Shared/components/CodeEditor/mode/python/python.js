@@ -1,14 +1,15 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
+(function (mod) {
+  if (typeof exports == "object" && typeof module == "object")
+    // CommonJS
     mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
+  else if (typeof define == "function" && define.amd)
+    // AMD
+    define(["../../lib/codemirror"], mod); // Plain browser env
+  else mod(CodeMirror);
+})(function (CodeMirror) {
   "use strict";
 
   function wordRegexp(words) {
@@ -16,59 +17,178 @@
   }
 
   var wordOperators = wordRegexp(["and", "or", "not", "is"]);
-  var commonKeywords = ["as", "assert", "break", "class", "continue",
-                        "def", "del", "elif", "else", "except", "finally",
-                        "for", "from", "global", "if", "import",
-                        "lambda", "pass", "raise", "return",
-                        "try", "while", "with", "yield", "in"];
-  var commonBuiltins = ["abs", "all", "any", "bin", "bool", "bytearray", "callable", "chr",
-                        "classmethod", "compile", "complex", "delattr", "dict", "dir", "divmod",
-                        "enumerate", "eval", "filter", "float", "format", "frozenset",
-                        "getattr", "globals", "hasattr", "hash", "help", "hex", "id",
-                        "input", "int", "isinstance", "issubclass", "iter", "len",
-                        "list", "locals", "map", "max", "memoryview", "min", "next",
-                        "object", "oct", "open", "ord", "pow", "property", "range",
-                        "repr", "reversed", "round", "set", "setattr", "slice",
-                        "sorted", "staticmethod", "str", "sum", "super", "tuple",
-                        "type", "vars", "zip", "__import__", "NotImplemented",
-                        "Ellipsis", "__debug__"];
-  var py2 = {builtins: ["apply", "basestring", "buffer", "cmp", "coerce", "execfile",
-                        "file", "intern", "long", "raw_input", "reduce", "reload",
-                        "unichr", "unicode", "xrange", "False", "True", "None"],
-             keywords: ["exec", "print"]};
-  var py3 = {builtins: ["ascii", "bytes", "exec", "print"],
-             keywords: ["nonlocal", "False", "True", "None", "async", "await"]};
+  var commonKeywords = [
+    "as",
+    "assert",
+    "break",
+    "class",
+    "continue",
+    "def",
+    "del",
+    "elif",
+    "else",
+    "except",
+    "finally",
+    "for",
+    "from",
+    "global",
+    "if",
+    "import",
+    "lambda",
+    "pass",
+    "raise",
+    "return",
+    "try",
+    "while",
+    "with",
+    "yield",
+    "in",
+  ];
+  var commonBuiltins = [
+    "abs",
+    "all",
+    "any",
+    "bin",
+    "bool",
+    "bytearray",
+    "callable",
+    "chr",
+    "classmethod",
+    "compile",
+    "complex",
+    "delattr",
+    "dict",
+    "dir",
+    "divmod",
+    "enumerate",
+    "eval",
+    "filter",
+    "float",
+    "format",
+    "frozenset",
+    "getattr",
+    "globals",
+    "hasattr",
+    "hash",
+    "help",
+    "hex",
+    "id",
+    "input",
+    "int",
+    "isinstance",
+    "issubclass",
+    "iter",
+    "len",
+    "list",
+    "locals",
+    "map",
+    "max",
+    "memoryview",
+    "min",
+    "next",
+    "object",
+    "oct",
+    "open",
+    "ord",
+    "pow",
+    "property",
+    "range",
+    "repr",
+    "reversed",
+    "round",
+    "set",
+    "setattr",
+    "slice",
+    "sorted",
+    "staticmethod",
+    "str",
+    "sum",
+    "super",
+    "tuple",
+    "type",
+    "vars",
+    "zip",
+    "__import__",
+    "NotImplemented",
+    "Ellipsis",
+    "__debug__",
+  ];
+  var py2 = {
+    builtins: [
+      "apply",
+      "basestring",
+      "buffer",
+      "cmp",
+      "coerce",
+      "execfile",
+      "file",
+      "intern",
+      "long",
+      "raw_input",
+      "reduce",
+      "reload",
+      "unichr",
+      "unicode",
+      "xrange",
+      "False",
+      "True",
+      "None",
+    ],
+    keywords: ["exec", "print"],
+  };
+  var py3 = {
+    builtins: ["ascii", "bytes", "exec", "print"],
+    keywords: ["nonlocal", "False", "True", "None", "async", "await"],
+  };
 
-  CodeMirror.registerHelper("hintWords", "python", commonKeywords.concat(commonBuiltins));
+  CodeMirror.registerHelper(
+    "hintWords",
+    "python",
+    commonKeywords.concat(commonBuiltins),
+  );
 
   function top(state) {
     return state.scopes[state.scopes.length - 1];
   }
 
-  CodeMirror.defineMode("python", function(conf, parserConf) {
+  CodeMirror.defineMode("python", function (conf, parserConf) {
     var ERRORCLASS = "error";
 
-    var singleDelimiters = parserConf.singleDelimiters || new RegExp("^[\\(\\)\\[\\]\\{\\}@,:`=;\\.]");
-    var doubleOperators = parserConf.doubleOperators || new RegExp("^((==)|(!=)|(<=)|(>=)|(<>)|(<<)|(>>)|(//)|(\\*\\*))");
-    var doubleDelimiters = parserConf.doubleDelimiters || new RegExp("^((\\+=)|(\\-=)|(\\*=)|(%=)|(/=)|(&=)|(\\|=)|(\\^=))");
-    var tripleDelimiters = parserConf.tripleDelimiters || new RegExp("^((//=)|(>>=)|(<<=)|(\\*\\*=))");
+    var singleDelimiters =
+      parserConf.singleDelimiters ||
+      new RegExp("^[\\(\\)\\[\\]\\{\\}@,:`=;\\.]");
+    var doubleOperators =
+      parserConf.doubleOperators ||
+      new RegExp("^((==)|(!=)|(<=)|(>=)|(<>)|(<<)|(>>)|(//)|(\\*\\*))");
+    var doubleDelimiters =
+      parserConf.doubleDelimiters ||
+      new RegExp("^((\\+=)|(\\-=)|(\\*=)|(%=)|(/=)|(&=)|(\\|=)|(\\^=))");
+    var tripleDelimiters =
+      parserConf.tripleDelimiters ||
+      new RegExp("^((//=)|(>>=)|(<<=)|(\\*\\*=))");
 
-    if (parserConf.version && parseInt(parserConf.version, 10) == 3){
-        // since http://legacy.python.org/dev/peps/pep-0465/ @ is also an operator
-        var singleOperators = parserConf.singleOperators || new RegExp("^[\\+\\-\\*/%&|\\^~<>!@]");
-        var identifiers = parserConf.identifiers|| new RegExp("^[_A-Za-z\u00A1-\uFFFF][_A-Za-z0-9\u00A1-\uFFFF]*");
+    if (parserConf.version && parseInt(parserConf.version, 10) == 3) {
+      // since http://legacy.python.org/dev/peps/pep-0465/ @ is also an operator
+      var singleOperators =
+        parserConf.singleOperators || new RegExp("^[\\+\\-\\*/%&|\\^~<>!@]");
+      var identifiers =
+        parserConf.identifiers ||
+        new RegExp("^[_A-Za-z\u00A1-\uFFFF][_A-Za-z0-9\u00A1-\uFFFF]*");
     } else {
-        var singleOperators = parserConf.singleOperators || new RegExp("^[\\+\\-\\*/%&|\\^~<>!]");
-        var identifiers = parserConf.identifiers|| new RegExp("^[_A-Za-z][_A-Za-z0-9]*");
+      var singleOperators =
+        parserConf.singleOperators || new RegExp("^[\\+\\-\\*/%&|\\^~<>!]");
+      var identifiers =
+        parserConf.identifiers || new RegExp("^[_A-Za-z][_A-Za-z0-9]*");
     }
 
     var hangingIndent = parserConf.hangingIndent || conf.indentUnit;
 
-    var myKeywords = commonKeywords, myBuiltins = commonBuiltins;
-    if(parserConf.extra_keywords != undefined){
+    var myKeywords = commonKeywords,
+      myBuiltins = commonBuiltins;
+    if (parserConf.extra_keywords != undefined) {
       myKeywords = myKeywords.concat(parserConf.extra_keywords);
     }
-    if(parserConf.extra_builtins != undefined){
+    if (parserConf.extra_builtins != undefined) {
       myBuiltins = myBuiltins.concat(parserConf.extra_builtins);
     }
     if (parserConf.version && parseInt(parserConf.version, 10) == 3) {
@@ -78,7 +198,10 @@
     } else {
       myKeywords = myKeywords.concat(py2.keywords);
       myBuiltins = myBuiltins.concat(py2.builtins);
-      var stringPrefixes = new RegExp("^(([rub]|(ur)|(br))?('{3}|\"{3}|['\"]))", "i");
+      var stringPrefixes = new RegExp(
+        "^(([rub]|(ur)|(br))?('{3}|\"{3}|['\"]))",
+        "i",
+      );
     }
     var keywords = wordRegexp(myKeywords);
     var builtins = wordRegexp(myBuiltins);
@@ -90,8 +213,7 @@
         var scopeOffset = top(state).offset;
         if (stream.eatSpace()) {
           var lineOffset = stream.indentation();
-          if (lineOffset > scopeOffset)
-            pushScope(stream, state, "py");
+          if (lineOffset > scopeOffset) pushScope(stream, state, "py");
           else if (lineOffset < scopeOffset && dedent(stream, state))
             state.errorToken = true;
           return null;
@@ -120,9 +242,15 @@
       if (stream.match(/^[0-9\.]/, false)) {
         var floatLiteral = false;
         // Floats
-        if (stream.match(/^\d*\.\d+(e[\+\-]?\d+)?/i)) { floatLiteral = true; }
-        if (stream.match(/^\d+\.\d*/)) { floatLiteral = true; }
-        if (stream.match(/^\.\d+/)) { floatLiteral = true; }
+        if (stream.match(/^\d*\.\d+(e[\+\-]?\d+)?/i)) {
+          floatLiteral = true;
+        }
+        if (stream.match(/^\d+\.\d*/)) {
+          floatLiteral = true;
+        }
+        if (stream.match(/^\.\d+/)) {
+          floatLiteral = true;
+        }
         if (floatLiteral) {
           // Float literals may be "imaginary"
           stream.eat(/J/i);
@@ -165,17 +293,14 @@
       if (stream.match(doubleOperators) || stream.match(singleOperators))
         return "operator";
 
-      if (stream.match(singleDelimiters))
-        return null;
+      if (stream.match(singleDelimiters)) return null;
 
       if (stream.match(keywords) || stream.match(wordOperators))
         return "keyword";
 
-      if (stream.match(builtins))
-        return "builtin";
+      if (stream.match(builtins)) return "builtin";
 
-      if (stream.match(/^(self|cls)\b/))
-        return "variable-2";
+      if (stream.match(/^(self|cls)\b/)) return "variable-2";
 
       if (stream.match(identifiers)) {
         if (state.lastToken == "def" || state.lastToken == "class")
@@ -200,8 +325,7 @@
           stream.eatWhile(/[^'"\\]/);
           if (stream.eat("\\")) {
             stream.next();
-            if (singleline && stream.eol())
-              return OUTCLASS;
+            if (singleline && stream.eol()) return OUTCLASS;
           } else if (stream.match(delimiter)) {
             state.tokenize = tokenBase;
             return OUTCLASS;
@@ -210,10 +334,8 @@
           }
         }
         if (singleline) {
-          if (parserConf.singleLineStringErrors)
-            return ERRORCLASS;
-          else
-            state.tokenize = tokenBase;
+          if (parserConf.singleLineStringErrors) return ERRORCLASS;
+          else state.tokenize = tokenBase;
         }
         return OUTCLASS;
       }
@@ -222,15 +344,16 @@
     }
 
     function pushScope(stream, state, type) {
-      var offset = 0, align = null;
+      var offset = 0,
+        align = null;
       if (type == "py") {
-        while (top(state).type != "py")
-          state.scopes.pop();
+        while (top(state).type != "py") state.scopes.pop();
       }
-      offset = top(state).offset + (type == "py" ? conf.indentUnit : hangingIndent);
+      offset =
+        top(state).offset + (type == "py" ? conf.indentUnit : hangingIndent);
       if (type != "py" && !stream.match(/^(\s|#.*)*$/, false))
         align = stream.column() + 1;
-      state.scopes.push({offset: offset, type: type, align: align});
+      state.scopes.push({ offset: offset, type: type, align: align });
     }
 
     function dedent(stream, state) {
@@ -258,21 +381,22 @@
       }
 
       // Handle decorators
-      if (current == "@"){
-        if(parserConf.version && parseInt(parserConf.version, 10) == 3){
-            return stream.match(identifiers, false) ? "meta" : "operator";
+      if (current == "@") {
+        if (parserConf.version && parseInt(parserConf.version, 10) == 3) {
+          return stream.match(identifiers, false) ? "meta" : "operator";
         } else {
-            return stream.match(identifiers, false) ? "meta" : ERRORCLASS;
+          return stream.match(identifiers, false) ? "meta" : ERRORCLASS;
         }
       }
 
-      if ((style == "variable" || style == "builtin")
-          && state.lastStyle == "meta")
+      if (
+        (style == "variable" || style == "builtin") &&
+        state.lastStyle == "meta"
+      )
         style = "meta";
 
       // Handle scope changes.
-      if (current == "pass" || current == "return")
-        state.dedent += 1;
+      if (current == "pass" || current == "return") state.dedent += 1;
 
       if (current == "lambda") state.lambda = true;
       if (current == ":" && !state.lambda && top(state).type == "py")
@@ -280,7 +404,11 @@
 
       var delimiter_index = current.length == 1 ? "[({".indexOf(current) : -1;
       if (delimiter_index != -1)
-        pushScope(stream, state, "])}".slice(delimiter_index, delimiter_index+1));
+        pushScope(
+          stream,
+          state,
+          "])}".slice(delimiter_index, delimiter_index + 1),
+        );
 
       delimiter_index = "])}".indexOf(current);
       if (delimiter_index != -1) {
@@ -296,18 +424,18 @@
     }
 
     var external = {
-      startState: function(basecolumn) {
+      startState: function (basecolumn) {
         return {
           tokenize: tokenBase,
-          scopes: [{offset: basecolumn || 0, type: "py", align: null}],
+          scopes: [{ offset: basecolumn || 0, type: "py", align: null }],
           lastStyle: null,
           lastToken: null,
           lambda: false,
-          dedent: 0
+          dedent: 0,
         };
       },
 
-      token: function(stream, state) {
+      token: function (stream, state) {
         var addErr = state.errorToken;
         if (addErr) state.errorToken = false;
         var style = tokenLexer(stream, state);
@@ -315,44 +443,43 @@
         state.lastStyle = style;
 
         var current = stream.current();
-        if (current && style)
-          state.lastToken = current;
+        if (current && style) state.lastToken = current;
 
-        if (stream.eol() && state.lambda)
-          state.lambda = false;
+        if (stream.eol() && state.lambda) state.lambda = false;
         return addErr ? style + " " + ERRORCLASS : style;
       },
 
-      indent: function(state, textAfter) {
+      indent: function (state, textAfter) {
         if (state.tokenize != tokenBase)
           return state.tokenize.isString ? CodeMirror.Pass : 0;
 
         var scope = top(state);
         var closing = textAfter && textAfter.charAt(0) == scope.type;
-        if (scope.align != null)
-          return scope.align - (closing ? 1 : 0);
+        if (scope.align != null) return scope.align - (closing ? 1 : 0);
         else if (closing && state.scopes.length > 1)
           return state.scopes[state.scopes.length - 2].offset;
-        else
-          return scope.offset;
+        else return scope.offset;
       },
 
-      closeBrackets: {triples: "'\""},
+      closeBrackets: { triples: "'\"" },
       lineComment: "#",
-      fold: "indent"
+      fold: "indent",
     };
     return external;
   });
 
   CodeMirror.defineMIME("text/x-python", "python");
 
-  var words = function(str) { return str.split(" "); };
+  var words = function (str) {
+    return str.split(" ");
+  };
 
   CodeMirror.defineMIME("text/x-cython", {
     name: "python",
-    extra_keywords: words("by cdef cimport cpdef ctypedef enum except"+
-                          "extern gil include nogil property public"+
-                          "readonly struct union DEF IF ELIF ELSE")
+    extra_keywords: words(
+      "by cdef cimport cpdef ctypedef enum except" +
+        "extern gil include nogil property public" +
+        "readonly struct union DEF IF ELIF ELSE",
+    ),
   });
-
 });

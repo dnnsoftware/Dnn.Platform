@@ -2,254 +2,253 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DNN.Connectors.GoogleAnalytics
+namespace DNN.Connectors.GoogleAnalytics;
+
+using System;
+using System.Collections.Generic;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Analytics.Config;
+using DotNetNuke.Services.Connections;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+
+/// <summary>Connector to provide configuration for Google Analytics support.</summary>
+public class GoogleAnalyticsConnector : IConnector
 {
-    using System;
-    using System.Collections.Generic;
+    private const string DefaultDisplayName = "Google Analytics (Legacy UA)";
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Services.Analytics.Config;
-    using DotNetNuke.Services.Connections;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
+    private string displayName;
 
-    /// <summary>Connector to provide configuration for Google Analytics support.</summary>
-    public class GoogleAnalyticsConnector : IConnector
+    /// <inheritdoc/>
+    public string Name
     {
-        private const string DefaultDisplayName = "Google Analytics (Legacy UA)";
+        get { return "Core Google Analytics Connector"; }
+    }
 
-        private string displayName;
+    /// <inheritdoc/>
+    public string IconUrl
+    {
+        get { return "~/DesktopModules/Connectors/GoogleAnalytics/Images/GoogleAnalytics_32X32_Standard.png"; }
+    }
 
-        /// <inheritdoc/>
-        public string Name
+    /// <inheritdoc/>
+    public string PluginFolder
+    {
+        get { return "~/DesktopModules/Connectors/GoogleAnalytics/"; }
+    }
+
+    /// <inheritdoc/>
+    public bool IsEngageConnector
+    {
+        get
         {
-            get { return "Core Google Analytics Connector"; }
+            return false;
         }
+    }
 
-        /// <inheritdoc/>
-        public string IconUrl
-        {
-            get { return "~/DesktopModules/Connectors/GoogleAnalytics/Images/GoogleAnalytics_32X32_Standard.png"; }
-        }
+    /// <inheritdoc/>
+    public ConnectorCategories Type => ConnectorCategories.Analytics;
 
-        /// <inheritdoc/>
-        public string PluginFolder
-        {
-            get { return "~/DesktopModules/Connectors/GoogleAnalytics/"; }
-        }
+    /// <inheritdoc/>
+    // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
+    public bool SupportsMultiple => false;
 
-        /// <inheritdoc/>
-        public bool IsEngageConnector
+    /// <inheritdoc/>
+    public string DisplayName
+    {
+        get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
+        set => this.displayName = value;
+    }
+
+    /// <inheritdoc/>
+    public string Id { get; set; }
+
+    /// <inheritdoc/>
+    public IEnumerable<IConnector> GetConnectors(int portalId)
+    {
+        return new List<IConnector> { this };
+    }
+
+    /// <inheritdoc/>
+    public void DeleteConnector(int portalId)
+    {
+    }
+
+    /// <inheritdoc/>
+    public bool HasConfig(int portalId)
+    {
+        IDictionary<string, string> config = this.GetConfig(portalId);
+
+        return config.ContainsKey("TrackingID") && !string.IsNullOrEmpty(config["TrackingID"]);
+    }
+
+    /// <inheritdoc/>
+    public IDictionary<string, string> GetConfig(int portalId)
+    {
+        var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
+        var portalSettings = new PortalSettings(portalId);
+
+        // Important, knockout handles empty strings as false and any other string as true
+        // so we need to pass empty strings when we mean false, however it passes us back the string "false"
+        // when saving the settings in the SaveConfig method, so we need to handle that case too
+        var trackingId = string.Empty;
+        var urlParameter = string.Empty;
+        var trackForAdmin = string.Empty;
+        var anonymizeIp = string.Empty;
+        var trackUserId = string.Empty;
+
+        if (analyticsConfig != null)
         {
-            get
+            foreach (AnalyticsSetting setting in analyticsConfig.Settings)
             {
-                return false;
+                switch (setting.SettingName.ToLower())
+                {
+                    case "trackingid":
+                        trackingId = setting.SettingValue;
+                        break;
+                    case "urlparameter":
+                        urlParameter = setting.SettingValue;
+                        break;
+                    case "trackforadmin":
+                        trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
+                        break;
+                    case "anonymizeip":
+                        anonymizeIp = this.HandleCustomBoolean(setting.SettingValue);
+                        break;
+                    case "trackuserid":
+                        trackUserId = this.HandleCustomBoolean(setting.SettingValue);
+                        break;
+                }
             }
         }
 
-        /// <inheritdoc/>
-        public ConnectorCategories Type => ConnectorCategories.Analytics;
+        if (portalSettings.DataConsentActive)
+        {
+            anonymizeIp = "true";
+        }
 
-        /// <inheritdoc/>
+        var configItems = new Dictionary<string, string>
+        {
+            { "TrackingID", trackingId },
+            { "UrlParameter", urlParameter },
+            { "TrackAdministrators", trackForAdmin },
+            { "AnonymizeIp", anonymizeIp },
+            { "TrackUserId", trackUserId },
+            { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
+            { "isDeactivating", this.HandleCustomBoolean("false") },
+        };
+
+        return configItems;
+    }
+
+    /// <inheritdoc/>
+    public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
+    {
+        // Delete / Deactivation functionality added into SaveConfig because
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-        public bool SupportsMultiple => false;
+        customErrorMessage = string.Empty;
+        bool isValid;
 
-        /// <inheritdoc/>
-        public string DisplayName
+        try
         {
-            get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
-            set => this.displayName = value;
-        }
+            var isDeactivating = false;
 
-        /// <inheritdoc/>
-        public string Id { get; set; }
+            bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
 
-        /// <inheritdoc/>
-        public IEnumerable<IConnector> GetConnectors(int portalId)
-        {
-            return new List<IConnector> { this };
-        }
+            string trackingID;
+            string urlParameter;
+            string trackForAdmin;
+            string anonymizeIp;
+            string trackUserId;
 
-        /// <inheritdoc/>
-        public void DeleteConnector(int portalId)
-        {
-        }
+            isValid = true;
 
-        /// <inheritdoc/>
-        public bool HasConfig(int portalId)
-        {
-            IDictionary<string, string> config = this.GetConfig(portalId);
-
-            return config.ContainsKey("TrackingID") && !string.IsNullOrEmpty(config["TrackingID"]);
-        }
-
-        /// <inheritdoc/>
-        public IDictionary<string, string> GetConfig(int portalId)
-        {
-            var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
-            var portalSettings = new PortalSettings(portalId);
-
-            // Important, knockout handles empty strings as false and any other string as true
-            // so we need to pass empty strings when we mean false, however it passes us back the string "false"
-            // when saving the settings in the SaveConfig method, so we need to handle that case too
-            var trackingId = string.Empty;
-            var urlParameter = string.Empty;
-            var trackForAdmin = string.Empty;
-            var anonymizeIp = string.Empty;
-            var trackUserId = string.Empty;
-
-            if (analyticsConfig != null)
+            if (isDeactivating)
             {
-                foreach (AnalyticsSetting setting in analyticsConfig.Settings)
+                trackingID = null;
+                urlParameter = null;
+                trackForAdmin = null;
+                anonymizeIp = null;
+                trackUserId = null;
+            }
+            else
+            {
+                trackingID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
+                urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
+                trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
+                anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
+                trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
+
+                if (string.IsNullOrEmpty(trackingID))
                 {
-                    switch (setting.SettingName.ToLower())
-                    {
-                        case "trackingid":
-                            trackingId = setting.SettingValue;
-                            break;
-                        case "urlparameter":
-                            urlParameter = setting.SettingValue;
-                            break;
-                        case "trackforadmin":
-                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
-                            break;
-                        case "anonymizeip":
-                            anonymizeIp = this.HandleCustomBoolean(setting.SettingValue);
-                            break;
-                        case "trackuserid":
-                            trackUserId = this.HandleCustomBoolean(setting.SettingValue);
-                            break;
-                    }
+                    isValid = false;
+                    customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
                 }
             }
 
-            if (portalSettings.DataConsentActive)
+            if (isValid)
             {
-                anonymizeIp = "true";
+                var config = new AnalyticsConfiguration
+                {
+                    Settings = new AnalyticsSettingCollection(),
+                };
+
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "TrackingId",
+                    SettingValue = trackingID,
+                });
+
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "UrlParameter",
+                    SettingValue = urlParameter,
+                });
+
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "TrackForAdmin",
+                    SettingValue = trackForAdmin,
+                });
+
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "AnonymizeIp",
+                    SettingValue = anonymizeIp,
+                });
+
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "TrackUserId",
+                    SettingValue = trackUserId,
+                });
+
+                AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
             }
 
-            var configItems = new Dictionary<string, string>
-            {
-                { "TrackingID", trackingId },
-                { "UrlParameter", urlParameter },
-                { "TrackAdministrators", trackForAdmin },
-                { "AnonymizeIp", anonymizeIp },
-                { "TrackUserId", trackUserId },
-                { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
-                { "isDeactivating", this.HandleCustomBoolean("false") },
-            };
-
-            return configItems;
+            return isValid;
         }
-
-        /// <inheritdoc/>
-        public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
+        catch (Exception ex)
         {
-            // Delete / Deactivation functionality added into SaveConfig because
-            // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-            customErrorMessage = string.Empty;
-            bool isValid;
-
-            try
-            {
-                var isDeactivating = false;
-
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
-
-                string trackingID;
-                string urlParameter;
-                string trackForAdmin;
-                string anonymizeIp;
-                string trackUserId;
-
-                isValid = true;
-
-                if (isDeactivating)
-                {
-                    trackingID = null;
-                    urlParameter = null;
-                    trackForAdmin = null;
-                    anonymizeIp = null;
-                    trackUserId = null;
-                }
-                else
-                {
-                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
-                    urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
-                    trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
-                    anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
-                    trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
-
-                    if (string.IsNullOrEmpty(trackingID))
-                    {
-                        isValid = false;
-                        customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
-                    }
-                }
-
-                if (isValid)
-                {
-                    var config = new AnalyticsConfiguration
-                    {
-                        Settings = new AnalyticsSettingCollection(),
-                    };
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackingId",
-                        SettingValue = trackingID,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "UrlParameter",
-                        SettingValue = urlParameter,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "AnonymizeIp",
-                        SettingValue = anonymizeIp,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackUserId",
-                        SettingValue = trackUserId,
-                    });
-
-                    AnalyticsConfiguration.SaveConfig("GoogleAnalytics", config);
-                }
-
-                return isValid;
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return false;
-            }
+            Exceptions.LogException(ex);
+            return false;
         }
+    }
 
-        /// <summary>
-        /// Handles custom conversion from "true" => "true"
-        /// Anything else to "" to support the strange knockout handling of string as booleans.
-        /// </summary>
-        /// <param name="value">The string representing a boolean.</param>
-        /// <returns>The string representing a boolean after the correction.</returns>
-        private string HandleCustomBoolean(string value)
+    /// <summary>
+    /// Handles custom conversion from "true" => "true"
+    /// Anything else to "" to support the strange knockout handling of string as booleans.
+    /// </summary>
+    /// <param name="value">The string representing a boolean.</param>
+    /// <returns>The string representing a boolean after the correction.</returns>
+    private string HandleCustomBoolean(string value)
+    {
+        if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
         {
-            if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
-            {
-                return "true";
-            }
-
-            return string.Empty;
+            return "true";
         }
+
+        return string.Empty;
     }
 }

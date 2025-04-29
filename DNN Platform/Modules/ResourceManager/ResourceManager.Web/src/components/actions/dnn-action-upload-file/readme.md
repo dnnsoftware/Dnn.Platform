@@ -1,9 +1,6 @@
 # dnn-action-upload-file
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,19 +8,17 @@
 | ---------------- | ------------------ | ----------- | -------- | ----------- |
 | `parentFolderId` | `parent-folder-id` |             | `number` | `undefined` |
 
-
 ## Events
 
 | Event                 | Description                                                                                                        | Type                |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
 | `dnnRmFoldersChanged` | Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh. | `CustomEvent<void>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
+- [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
 
 ### Depends on
 
@@ -31,6 +26,7 @@
 - [dnn-rm-upload-file](../../dnn-rm-upload-file)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-action-upload-file --> dnn-modal
@@ -45,6 +41,6 @@ graph TD;
   style dnn-action-upload-file fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

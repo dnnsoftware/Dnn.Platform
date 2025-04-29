@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Providers.FolderProviders.Components
+namespace DotNetNuke.Providers.FolderProviders.Components;
+
+using System;
+
+public interface IRemoteStorageItem
 {
-    using System;
+    string Key { get; }
 
-    public interface IRemoteStorageItem
-    {
-        string Key { get; }
+    DateTime LastModified { get; }
 
-        DateTime LastModified { get; }
+    long Size { get; }
 
-        long Size { get; }
-
-        string HashCode { get; }
-    }
+    string HashCode { get; }
 }

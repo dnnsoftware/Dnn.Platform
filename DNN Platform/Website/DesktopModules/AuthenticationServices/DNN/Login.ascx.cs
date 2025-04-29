@@ -216,7 +216,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 useEmailAsUserName = !registrationFields.Contains("Username");
             }
 
-            this.plUsername.Text = this.LocalizeString(useEmailAsUserName ? "Email" : "Username");
+            this.plUsername.Text = this.LocalizeText(useEmailAsUserName ? "Email" : "Username");
             this.divCaptcha1.Visible = this.UseCaptcha;
             this.divCaptcha2.Visible = this.UseCaptcha;
         }

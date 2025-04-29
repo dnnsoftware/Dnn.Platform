@@ -1,18 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Social.Messaging
+namespace DotNetNuke.Services.Social.Messaging;
+
+/// <summary>Read Status of a Message.</summary>
+public enum MessageReadStatus
 {
-    /// <summary>Read Status of a Message.</summary>
-    public enum MessageReadStatus
-    {
-        /// <summary>Read Message Status</summary>
-        Read = 1,
+    /// <summary>Read Message Status.</summary>
+    Read = 1,
 
-        /// <summary>UnRead Message Status</summary>
-        UnRead = 0,
+    /// <summary>UnRead Message Status.</summary>
+    UnRead = 0,
 
-        /// <summary>Any Message Status - Both Read and UnRead</summary>
-        Any = -1,
-    }
+    /// <summary>Any Message Status - Both Read and UnRead.</summary>
+    Any = -1,
 }

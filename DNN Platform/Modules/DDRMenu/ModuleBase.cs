@@ -2,64 +2,63 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.DDRMenu
+namespace DotNetNuke.Web.DDRMenu;
+
+using System;
+
+using DotNetNuke.Entities.Modules;
+
+public class ModuleBase : PortalModuleBase
 {
-    using System;
-
-    using DotNetNuke.Entities.Modules;
-
-    public class ModuleBase : PortalModuleBase
+    protected string GetStringSetting(string name, string defaultValue)
     {
-        protected string GetStringSetting(string name, string defaultValue)
+        var result = this.Request.QueryString[name];
+        if (string.IsNullOrEmpty(result))
         {
-            var result = this.Request.QueryString[name];
-            if (string.IsNullOrEmpty(result))
-            {
-                result = (string)this.Settings[name];
-            }
-
-            if (string.IsNullOrEmpty(result))
-            {
-                result = defaultValue;
-            }
-
-            if (result != null)
-            {
-                result = result.Trim();
-            }
-
-            if (result == "-")
-            {
-                result = string.Empty;
-            }
-
-            return result;
+            result = (string)this.Settings[name];
         }
 
-        protected string GetStringSetting(string name)
+        if (string.IsNullOrEmpty(result))
         {
-            return this.GetStringSetting(name, string.Empty);
+            result = defaultValue;
         }
 
-        protected int GetIntSetting(string name, int defaultValue)
+        if (result != null)
         {
-            return Convert.ToInt32(this.GetStringSetting(name, defaultValue.ToString()));
+            result = result.Trim();
         }
 
-        protected int GetIntSetting(string name)
+        if (result == "-")
         {
-            return this.GetIntSetting(name, 0);
+            result = string.Empty;
         }
 
-        protected bool GetBoolSetting(string name, bool defaultValue)
-        {
-            var result = this.GetStringSetting(name);
-            return (result == string.Empty) ? defaultValue : Convert.ToBoolean(result);
-        }
+        return result;
+    }
 
-        protected bool GetBoolSetting(string name)
-        {
-            return this.GetBoolSetting(name, false);
-        }
+    protected string GetStringSetting(string name)
+    {
+        return this.GetStringSetting(name, string.Empty);
+    }
+
+    protected int GetIntSetting(string name, int defaultValue)
+    {
+        return Convert.ToInt32(this.GetStringSetting(name, defaultValue.ToString()));
+    }
+
+    protected int GetIntSetting(string name)
+    {
+        return this.GetIntSetting(name, 0);
+    }
+
+    protected bool GetBoolSetting(string name, bool defaultValue)
+    {
+        var result = this.GetStringSetting(name);
+        return (result == string.Empty) ? defaultValue : Convert.ToBoolean(result);
+    }
+
+    protected bool GetBoolSetting(string name)
+    {
+        return this.GetBoolSetting(name, false);
     }
 }

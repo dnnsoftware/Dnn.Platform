@@ -1,9 +1,6 @@
 # dnn-rm-folder-list
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Events
 
@@ -12,13 +9,12 @@
 | `dnnRmcontextMenuOpened`      | Fires when a context menu is opened for this item. Emits the folder ID. | `CustomEvent<number>`         |
 | `dnnRmFolderListFolderPicked` | Fires when a folder is picked.                                          | `CustomEvent<FolderTreeItem>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-left-pane](../dnn-rm-left-pane)
- - [dnn-rm-move-items](../dnn-rm-move-items)
+- [dnn-rm-left-pane](../dnn-rm-left-pane)
+- [dnn-rm-move-items](../dnn-rm-move-items)
 
 ### Depends on
 
@@ -27,6 +23,7 @@
 - [dnn-rm-folder-list-item](../dnn-rm-folder-list-item)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-folder-list --> dnn-collapsible
@@ -84,6 +81,6 @@ graph TD;
   style dnn-rm-folder-list fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

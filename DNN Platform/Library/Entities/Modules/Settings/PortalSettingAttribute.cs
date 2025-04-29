@@ -2,13 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Modules.Settings
-{
-    using System;
+namespace DotNetNuke.Entities.Modules.Settings;
 
-    /// <summary>When applied to a property this attribute persists the value of the property in the DNN PortalSettings referenced by the PortalId within the context.</summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class PortalSettingAttribute : ParameterAttributeBase
-    {
-    }
+using System;
+
+/// <summary>When applied to a property this attribute persists the value of the property in the DNN PortalSettings referenced by the PortalId within the context.</summary>
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+public class PortalSettingAttribute : ParameterAttributeBase
+{
 }

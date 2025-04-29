@@ -1,9 +1,6 @@
 # dnn-rm-edit-folder
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Events
 
@@ -11,12 +8,11 @@
 | --------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
 | `dnnRmFoldersChanged` | Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh. | `CustomEvent<void>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-action-create-folder](../actions/dnn-action-create-folder)
+- [dnn-action-create-folder](../actions/dnn-action-create-folder)
 
 ### Depends on
 
@@ -25,6 +21,7 @@
 - dnn-button
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-create-folder --> dnn-input
@@ -38,6 +35,6 @@ graph TD;
   style dnn-rm-create-folder fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

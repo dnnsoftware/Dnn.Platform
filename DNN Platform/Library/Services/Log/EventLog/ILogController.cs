@@ -2,50 +2,49 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Log.EventLog
+namespace DotNetNuke.Services.Log.EventLog;
+
+using System.Collections;
+using System.Collections.Generic;
+
+using DotNetNuke.Abstractions.Logging;
+
+public interface ILogController
 {
-    using System.Collections;
-    using System.Collections.Generic;
+    void AddLog(LogInfo logInfo);
 
-    using DotNetNuke.Abstractions.Logging;
+    void AddLogType(string configFile, string fallbackConfigFile);
 
-    public interface ILogController
-    {
-        void AddLog(LogInfo logInfo);
+    void AddLogType(LogTypeInfo logType);
 
-        void AddLogType(string configFile, string fallbackConfigFile);
+    void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
 
-        void AddLogType(LogTypeInfo logType);
+    void ClearLog();
 
-        void AddLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
+    void DeleteLog(LogInfo logInfo);
 
-        void ClearLog();
+    void DeleteLogType(LogTypeInfo logType);
 
-        void DeleteLog(LogInfo logInfo);
+    void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
 
-        void DeleteLogType(LogTypeInfo logType);
+    List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords);
 
-        void DeleteLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
+    ArrayList GetLogTypeConfigInfo();
 
-        List<LogInfo> GetLogs(int portalID, string logType, int pageSize, int pageIndex, ref int totalRecords);
+    LogTypeConfigInfo GetLogTypeConfigInfoByID(string id);
 
-        ArrayList GetLogTypeConfigInfo();
+    Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary();
 
-        LogTypeConfigInfo GetLogTypeConfigInfoByID(string id);
+    object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType);
 
-        Dictionary<string, LogTypeInfo> GetLogTypeInfoDictionary();
+    /// <summary>Retrieves a single event log via the Log Guid.</summary>
+    /// <param name="logGuid">A string reprenstation of the log Guid.</param>
+    /// <returns>The <see cref="ILogInfo"/>.</returns>
+    ILogInfo GetLog(string logGuid);
 
-        object GetSingleLog(LogInfo log, LoggingProvider.ReturnType returnType);
+    void PurgeLogBuffer();
 
-        /// <summary>Retrieves a single event log via the Log Guid.</summary>
-        /// <param name="logGuid">A string reprenstation of the log Guid.</param>
-        /// <returns>The <see cref="ILogInfo"/>.</returns>
-        ILogInfo GetLog(string logGuid);
+    void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
 
-        void PurgeLogBuffer();
-
-        void UpdateLogTypeConfigInfo(LogTypeConfigInfo logTypeConfig);
-
-        void UpdateLogType(LogTypeInfo logType);
-    }
+    void UpdateLogType(LogTypeInfo logType);
 }

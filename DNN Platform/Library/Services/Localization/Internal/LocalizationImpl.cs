@@ -2,83 +2,82 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Localization.Internal
+namespace DotNetNuke.Services.Localization.Internal;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+
+internal class LocalizationImpl : ILocalization
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
-
-    internal class LocalizationImpl : ILocalization
+    /// <inheritdoc/>
+    public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)
     {
-        /// <inheritdoc/>
-        public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)
+        if (cultureCodes == null)
         {
-            if (cultureCodes == null)
+            throw new ArgumentException("cultureCodes cannot be null");
+        }
+
+        if (fallback == null)
+        {
+            throw new ArgumentException("fallback cannot be null");
+        }
+
+        var values = cultureCodes.ToList();
+
+        foreach (string langHeader in HttpContextSource.Current.Request.UserLanguages ?? new string[0])
+        {
+            string lang = langHeader;
+
+            // strip any ;q=xx
+            lang = lang.Split(';')[0];
+
+            // check for exact match e.g. de-DE == de-DE
+            if (lang.Contains('-'))
             {
-                throw new ArgumentException("cultureCodes cannot be null");
-            }
-
-            if (fallback == null)
-            {
-                throw new ArgumentException("fallback cannot be null");
-            }
-
-            var values = cultureCodes.ToList();
-
-            foreach (string langHeader in HttpContextSource.Current.Request.UserLanguages ?? new string[0])
-            {
-                string lang = langHeader;
-
-                // strip any ;q=xx
-                lang = lang.Split(';')[0];
-
-                // check for exact match e.g. de-DE == de-DE
-                if (lang.Contains('-'))
+                var match = values.FirstOrDefault(x => x == lang);
+                if (match != null)
                 {
-                    var match = values.FirstOrDefault(x => x == lang);
-                    if (match != null)
-                    {
-                        return match;
-                    }
-                }
-
-                // only keep the initial language value
-                if (lang.Length > 1)
-                {
-                    lang = lang.Substring(0, 2);
-
-                    // check for language match e.g. en-GB == en-US because en == en
-                    var match = values.FirstOrDefault(x => x.StartsWith(lang));
-                    if (match != null)
-                    {
-                        return match;
-                    }
+                    return match;
                 }
             }
 
-            return fallback;
+            // only keep the initial language value
+            if (lang.Length > 1)
+            {
+                lang = lang.Substring(0, 2);
+
+                // check for language match e.g. en-GB == en-US because en == en
+                var match = values.FirstOrDefault(x => x.StartsWith(lang));
+                if (match != null)
+                {
+                    return match;
+                }
+            }
         }
 
-        /// <inheritdoc/>
-        public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes)
-        {
-            return this.BestCultureCodeBasedOnBrowserLanguages(cultureCodes, Localization.SystemLocale);
-        }
+        return fallback;
+    }
 
-        /// <inheritdoc/>
-        public CultureInfo GetPageLocale(PortalSettings portalSettings)
-        {
-            return Localization.GetPageLocale(portalSettings);
-        }
+    /// <inheritdoc/>
+    public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes)
+    {
+        return this.BestCultureCodeBasedOnBrowserLanguages(cultureCodes, Localization.SystemLocale);
+    }
 
-        /// <inheritdoc/>
-        public void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
-        {
-            Localization.SetThreadCultures(cultureInfo, portalSettings);
-        }
+    /// <inheritdoc/>
+    public CultureInfo GetPageLocale(PortalSettings portalSettings)
+    {
+        return Localization.GetPageLocale(portalSettings);
+    }
+
+    /// <inheritdoc/>
+    public void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
+    {
+        Localization.SetThreadCultures(cultureInfo, portalSettings);
     }
 }

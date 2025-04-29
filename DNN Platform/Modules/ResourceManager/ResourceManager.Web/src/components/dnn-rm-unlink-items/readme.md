@@ -1,9 +1,6 @@
 # dnn-rm-edit-file
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,19 +8,17 @@
 | -------------------- | --------- | ---------------------------- | -------- | ----------- |
 | `items` _(required)_ | --        | The list of items to delete. | `Item[]` | `undefined` |
 
-
 ## Events
 
 | Event                 | Description                                                                                                        | Type                |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
 | `dnnRmFoldersChanged` | Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh. | `CustomEvent<void>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-action-unlink-items](../actions/dnn-action-unlink-items)
+- [dnn-action-unlink-items](../actions/dnn-action-unlink-items)
 
 ### Depends on
 
@@ -31,6 +26,7 @@
 - dnn-button
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-unlink-items --> dnn-rm-progress-bar
@@ -41,6 +37,6 @@ graph TD;
   style dnn-rm-unlink-items fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

@@ -1,4 +1,3 @@
-
 body {
   background: #f4f4f4 url(body_bg.jpg) repeat-x 0 0;
   width: 900px;
@@ -22,7 +21,8 @@ span#lblDotNetNukeInstalltion {
   padding: 20px 20px 20px 20px;
   margin-top: 20px;
   box-shadow: 5px 5px 20px grey;
-  /*IE8*/ -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808080')";
+  /*IE8*/
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#808080')";
 }
 
 div#tabs {
@@ -30,22 +30,22 @@ div#tabs {
   background-color: white;
 }
 
-  div#tabs ul {
-    border: none;
-  }
+div#tabs ul {
+  border: none;
+}
 
-  div#tabs .tabSubTitle {
-    font-size: 1.4em;
-    font-weight: bold;
-    line-height: 2.5em;
-  }
+div#tabs .tabSubTitle {
+  font-size: 1.4em;
+  font-weight: bold;
+  line-height: 2.5em;
+}
 
-  div#tabs .installIntro {
-    font-size: 1.5em;
-    font-weight: lighter;
-    color: grey;
-    margin-left: -10px;
-  }
+div#tabs .installIntro {
+  font-size: 1.5em;
+  font-weight: lighter;
+  color: grey;
+  margin-left: -10px;
+}
 
 hr {
   margin: 15px 0px 5px 0px;
@@ -109,14 +109,21 @@ hr {
   display: none;
 }
 
-A.dnnDisabledAction:link, A.dnnDisabledAction:visited, A.dnnDisabledAction:active, A.dnnDisabledAction:hover {
+A.dnnDisabledAction:link,
+A.dnnDisabledAction:visited,
+A.dnnDisabledAction:active,
+A.dnnDisabledAction:hover {
   text-decoration: none;
   color: Silver;
   opacity: 0.5;
-  /*IE8*/ -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  /*IE8*/
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 }
 
-.permissionsCheckBoxes .aspNetDisabled, .permissionsCheckBoxe a.aspNetDisabled, .permissionsCheckBoxe .dnnDisabled, a.dnnDisabled {
+.permissionsCheckBoxes .aspNetDisabled,
+.permissionsCheckBoxe a.aspNetDisabled,
+.permissionsCheckBoxe .dnnDisabled,
+a.dnnDisabled {
   color: black;
   display: inline-block;
   width: 300px;
@@ -139,9 +146,9 @@ div#installation-progress {
   margin-left: -20px;
 }
 
-  div#installation-progress hr {
-    margin-left: 0px;
-  }
+div#installation-progress hr {
+  margin-left: 0px;
+}
 
 div#installation-steps {
   width: 290px;
@@ -150,14 +157,14 @@ div#installation-steps {
   background-color: #eee;
 }
 
-  div#installation-steps > p {
-    padding: 0 0 0 0;
-    margin: 0 0 8px 8px;
-  }
+div#installation-steps > p {
+  padding: 0 0 0 0;
+  margin: 0 0 8px 8px;
+}
 
-    div#installation-steps > p > span {
-      display: inline-block;
-    }
+div#installation-steps > p > span {
+  display: inline-block;
+}
 
 span.states-icons {
   width: 25px;
@@ -205,7 +212,7 @@ div#installation-log-container {
   overflow: auto;
   border: 1px solid #aaa;
   display: none;
-  padding: .5em;
+  padding: 0.5em;
 }
 
 div#installation-log {
@@ -213,7 +220,8 @@ div#installation-log {
 }
 
 /* update form style */
-.dnnFormItem input[type="checkbox"] + span, .dnnFormItem input[type="radio"] + span {
+.dnnFormItem input[type="checkbox"] + span,
+.dnnFormItem input[type="radio"] + span {
   display: inline-block;
   margin: 7px 5px 10px 5px;
   width: auto;
@@ -230,7 +238,8 @@ div#installation-log {
   padding-bottom: 10px;
 }
 
-#timer, #percentage {
+#timer,
+#percentage {
   font-size: smaller;
   font-style: italic;
 }
@@ -244,7 +253,7 @@ img#finishImage {
 .promptMessage {
   display: inline-block;
   padding-top: 13px;
-  background-color: #FFFF81;
+  background-color: #ffff81;
   width: 394px;
   text-align: center;
 }
@@ -261,9 +270,9 @@ img#finishImage {
   margin-top: 5px;
 }
 
-  .permission img {
-    margin: 0 5px;
-  }
+.permission img {
+  margin: 0 5px;
+}
 
 #permissionCheckMessage {
   display: none;
@@ -298,7 +307,7 @@ img#finishImage {
 .selectedFlag {
   border-bottom-style: solid;
   border-width: 1px;
-  border-color: #3792ED;
+  border-color: #3792ed;
 }
 
 .dnnFormPopup .ui-dialog-titlebar-close {
@@ -336,7 +345,11 @@ a.videoLink:hover {
   cursor: default;
 }
 
-.accept-terms input#chkAcceptTerms + span + span + span.dnnFormMessage.dnnFormError {
+.accept-terms
+  input#chkAcceptTerms
+  + span
+  + span
+  + span.dnnFormMessage.dnnFormError {
   display: block;
   position: absolute;
   overflow: visible;
@@ -347,13 +360,17 @@ a.videoLink:hover {
   padding: 10px;
   border: none;
   border-radius: 3px;
-  background: rgba(255,0,0,0.75);
+  background: rgba(255, 0, 0, 0.75);
   font-size: 12px;
   color: #fff;
   text-align: left;
 }
 
-.accept-terms input#chkAcceptTerms + span + span + span.dnnFormMessage.dnnFormError:after {
+.accept-terms
+  input#chkAcceptTerms
+  + span
+  + span
+  + span.dnnFormMessage.dnnFormError:after {
   position: absolute;
   bottom: -7px;
   left: 15px;

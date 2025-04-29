@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ComponentModel
+namespace DotNetNuke.ComponentModel;
+
+public enum ComponentLifeStyleType
 {
-    public enum ComponentLifeStyleType
-    {
-        Singleton = 0,
-        Transient = 1,
-    }
+    Singleton = 0,
+    Transient = 1,
 }

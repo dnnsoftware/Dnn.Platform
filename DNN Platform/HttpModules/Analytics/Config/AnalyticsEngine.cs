@@ -1,68 +1,67 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.HttpModules.Config
+namespace DotNetNuke.HttpModules.Config;
+
+using System;
+
+[Serializable]
+public class AnalyticsEngine
 {
-    using System;
+    private string elementId;
+    private string engineType;
+    private bool injectTop;
+    private string scriptTemplate;
 
-    [Serializable]
-    public class AnalyticsEngine
+    public string EngineType
     {
-        private string elementId;
-        private string engineType;
-        private bool injectTop;
-        private string scriptTemplate;
-
-        public string EngineType
+        get
         {
-            get
-            {
-                return this.engineType;
-            }
-
-            set
-            {
-                this.engineType = value;
-            }
+            return this.engineType;
         }
 
-        public string ScriptTemplate
+        set
         {
-            get
-            {
-                return this.scriptTemplate;
-            }
+            this.engineType = value;
+        }
+    }
 
-            set
-            {
-                this.scriptTemplate = value;
-            }
+    public string ScriptTemplate
+    {
+        get
+        {
+            return this.scriptTemplate;
         }
 
-        public string ElementId
+        set
         {
-            get
-            {
-                return this.elementId;
-            }
+            this.scriptTemplate = value;
+        }
+    }
 
-            set
-            {
-                this.elementId = value;
-            }
+    public string ElementId
+    {
+        get
+        {
+            return this.elementId;
         }
 
-        public bool InjectTop
+        set
         {
-            get
-            {
-                return this.injectTop;
-            }
+            this.elementId = value;
+        }
+    }
 
-            set
-            {
-                this.injectTop = value;
-            }
+    public bool InjectTop
+    {
+        get
+        {
+            return this.injectTop;
+        }
+
+        set
+        {
+            this.injectTop = value;
         }
     }
 }

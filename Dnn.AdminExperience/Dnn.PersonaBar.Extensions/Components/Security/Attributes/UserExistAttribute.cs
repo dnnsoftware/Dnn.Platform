@@ -2,46 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Attributes
+namespace Dnn.PersonaBar.Security.Attributes;
+
+using System;
+using System.ComponentModel.DataAnnotations;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
+
+[AttributeUsage(AttributeTargets.Property)]
+internal class UserExistAttribute : ValidationAttribute
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
+    public string[] RoleNames { get; set; }
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
-
-    [AttributeUsage(AttributeTargets.Property)]
-    internal class UserExistAttribute : ValidationAttribute
+    /// <inheritdoc/>
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        public string[] RoleNames { get; set; }
+        var propertyName = validationContext.DisplayName;
+        int userId;
 
-        /// <inheritdoc/>
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        if (int.TryParse(value.ToString(), out userId))
         {
-            var propertyName = validationContext.DisplayName;
-            int userId;
+            var portalSetting = PortalController.Instance.GetCurrentPortalSettings();
+            var user = UserController.Instance.GetUserById(portalSetting.PortalId, userId);
 
-            if (int.TryParse(value.ToString(), out userId))
+            if (user != null)
             {
-                var portalSetting = PortalController.Instance.GetCurrentPortalSettings();
-                var user = UserController.Instance.GetUserById(portalSetting.PortalId, userId);
-
-                if (user != null)
+                foreach (var roleName in this.RoleNames)
                 {
-                    foreach (var roleName in this.RoleNames)
+                    if (!user.IsInRole(roleName))
                     {
-                        if (!user.IsInRole(roleName))
-                        {
-                            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.UserNotMemberOfRole, Components.Constants.LocalResourcesFile), roleName));
-                        }
+                        return new ValidationResult(string.Format(Localization.GetString(Components.Constants.UserNotMemberOfRole, Components.Constants.LocalResourcesFile), roleName));
                     }
-
-                    return ValidationResult.Success;
                 }
-            }
 
-            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
+                return ValidationResult.Success;
+            }
         }
+
+        return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
     }
 }

@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Security.Permissions
+namespace DotNetNuke.Security.Permissions;
+
+public class CorePermissionProvider : PermissionProvider
 {
-    public class CorePermissionProvider : PermissionProvider
+    /// <inheritdoc/>
+    public override bool SupportsFullControl()
     {
-        /// <inheritdoc/>
-        public override bool SupportsFullControl()
-        {
-            return false;
-        }
+        return false;
     }
 }

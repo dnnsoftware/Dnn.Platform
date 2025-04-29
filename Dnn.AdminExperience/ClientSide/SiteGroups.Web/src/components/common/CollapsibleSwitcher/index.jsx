@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { Component } from "react";
 import "./style.less";
 
@@ -7,16 +7,16 @@ class CollapsibleSwitcher extends Component {
     super();
   }
   render() {
-    const {props} = this;
+    const { props } = this;
     return props.renderIndex >= 0 && props.children[props.renderIndex];
   }
 }
 CollapsibleSwitcher.propTypes = {
   renderIndex: PropTypes.number,
-  children: PropTypes.array
+  children: PropTypes.array,
 };
 CollapsibleSwitcher.defaultProps = {
-  renderIndex: 0
+  renderIndex: 0,
 };
 
-export default (CollapsibleSwitcher);
+export default CollapsibleSwitcher;

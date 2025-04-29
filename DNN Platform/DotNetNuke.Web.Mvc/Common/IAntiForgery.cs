@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Common
-{
-    public interface IAntiForgery
-    {
-        string CookieName { get; }
+namespace DotNetNuke.Web.Mvc.Common;
 
-        void Validate(string cookieToken, string headerToken);
-    }
+public interface IAntiForgery
+{
+    string CookieName { get; }
+
+    void Validate(string cookieToken, string headerToken);
 }

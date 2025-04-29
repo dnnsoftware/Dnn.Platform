@@ -1,19 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Tokens
+namespace DotNetNuke.Services.Tokens;
+
+using Newtonsoft.Json;
+
+public class StylesheetDto
 {
-    using Newtonsoft.Json;
+    [JsonProperty("path")]
+    public string Path { get; set; }
 
-    public class StylesheetDto
-    {
-        [JsonProperty("path")]
-        public string Path { get; set; }
+    [JsonProperty("priority")]
+    public int Priority { get; set; }
 
-        [JsonProperty("priority")]
-        public int Priority { get; set; }
-
-        [JsonProperty("provider")]
-        public string Provider { get; set; }
-    }
+    [JsonProperty("provider")]
+    public string Provider { get; set; }
 }

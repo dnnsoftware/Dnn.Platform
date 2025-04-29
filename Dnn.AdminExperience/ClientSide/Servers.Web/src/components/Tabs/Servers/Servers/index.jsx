@@ -17,8 +17,6 @@ import "../../tabs.less";
 import "./style.less";
 import ServerList from "../ServerList";
 
-const defaultPlaceHolder = "...";
-
 class Servers extends Component {
   componentDidMount() {
     this.props.onRetrieveServers();
@@ -44,7 +42,7 @@ class Servers extends Component {
       Localization.get("Cancel"),
       function () {
         this.props.deleteNonActiveServers();
-      }.bind(this)
+      }.bind(this),
     );
   }
 
@@ -133,7 +131,7 @@ function mapDispatchToProps(dispatch) {
         deleteServer: ServersTabActions.deleteServer,
         deleteNonActiveServers: ServersTabActions.deleteNonActiveServers,
       },
-      dispatch
+      dispatch,
     ),
   };
 }

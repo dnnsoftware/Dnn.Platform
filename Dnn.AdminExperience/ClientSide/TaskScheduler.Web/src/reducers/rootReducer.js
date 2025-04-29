@@ -4,9 +4,9 @@ import visiblePanel from "./visiblePanelReducer";
 import task from "./taskReducer";
 
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    task
+  pagination,
+  visiblePanel,
+  task,
 });
 
 export default rootReducer;

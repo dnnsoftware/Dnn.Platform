@@ -11,13 +11,13 @@ application.dispatch = store.dispatch;
 
 const appContainer = document.getElementById("users-container");
 if (appContainer) {
-    application.init();
+  application.init();
 } else {
-    throw Error("Cannot find users container.");
+  throw Error("Cannot find users container.");
 }
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

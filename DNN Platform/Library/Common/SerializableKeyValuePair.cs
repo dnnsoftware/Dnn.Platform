@@ -2,34 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Common
+namespace DotNetNuke.Common;
+
+using System.Runtime.Serialization;
+
+using DotNetNuke.Common.Utilities;
+
+[DataContract]
+public class SerializableKeyValuePair<TKey, TValue>
 {
-    using System.Runtime.Serialization;
-
-    using DotNetNuke.Common.Utilities;
-
-    [DataContract]
-    public class SerializableKeyValuePair<TKey, TValue>
+    /// <summary>Initializes a new instance of the <see cref="SerializableKeyValuePair{TKey, TValue}"/> class.</summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    public SerializableKeyValuePair(TKey key, TValue value)
     {
-        /// <summary>Initializes a new instance of the <see cref="SerializableKeyValuePair{TKey, TValue}"/> class.</summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        public SerializableKeyValuePair(TKey key, TValue value)
-        {
-            this.Key = key;
-            this.Value = value;
-        }
+        this.Key = key;
+        this.Value = value;
+    }
 
-        [DataMember(Name = "key")]
-        public TKey Key { get; set; }
+    [DataMember(Name = "key")]
+    public TKey Key { get; set; }
 
-        [DataMember(Name = "value")]
-        public TValue Value { get; set; }
+    [DataMember(Name = "value")]
+    public TValue Value { get; set; }
 
-        /// <inheritdoc/>
-        public override string ToString()
-        {
-            return Json.Serialize(this);
-        }
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return Json.Serialize(this);
     }
 }

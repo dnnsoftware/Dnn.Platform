@@ -1,186 +1,185 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.OutputCache
+namespace DotNetNuke.Services.OutputCache;
+
+using System;
+using System.IO;
+using System.Text;
+
+// helper class to capture the response into a file
+public abstract class OutputCacheResponseFilter : Stream
 {
-    using System;
-    using System.IO;
-    using System.Text;
+    private Stream captureStream;
 
-    // helper class to capture the response into a file
-    public abstract class OutputCacheResponseFilter : Stream
+    /// <summary>Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.</summary>
+    /// <param name="filterChain"></param>
+    /// <param name="cacheKey"></param>
+    /// <param name="cacheDuration"></param>
+    /// <param name="maxVaryByCount"></param>
+    public OutputCacheResponseFilter(Stream filterChain, string cacheKey, TimeSpan cacheDuration, int maxVaryByCount)
     {
-        private Stream captureStream;
+        this.ChainedStream = filterChain;
+        this.CacheKey = cacheKey;
+        this.CacheDuration = cacheDuration;
+        this.MaxVaryByCount = maxVaryByCount;
+        this.captureStream = this.CaptureStream;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.</summary>
-        /// <param name="filterChain"></param>
-        /// <param name="cacheKey"></param>
-        /// <param name="cacheDuration"></param>
-        /// <param name="maxVaryByCount"></param>
-        public OutputCacheResponseFilter(Stream filterChain, string cacheKey, TimeSpan cacheDuration, int maxVaryByCount)
+    /// <inheritdoc/>
+    public override bool CanRead
+    {
+        get
         {
-            this.ChainedStream = filterChain;
-            this.CacheKey = cacheKey;
-            this.CacheDuration = cacheDuration;
-            this.MaxVaryByCount = maxVaryByCount;
-            this.captureStream = this.CaptureStream;
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override bool CanSeek
+    {
+        get
+        {
+            return false;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override bool CanWrite
+    {
+        get
+        {
+            return true;
+        }
+    }
+
+    /// <inheritdoc/>
+    public override long Length
+    {
+        get
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    public TimeSpan CacheDuration { get; set; }
+
+    public virtual string CacheKey { get; set; }
+
+    public Stream CaptureStream
+    {
+        get
+        {
+            return this.captureStream;
         }
 
-        /// <inheritdoc/>
-        public override bool CanRead
+        set
         {
-            get
-            {
-                return false;
-            }
+            this.captureStream = value;
         }
+    }
 
-        /// <inheritdoc/>
-        public override bool CanSeek
-        {
-            get
-            {
-                return false;
-            }
-        }
+    public Stream ChainedStream { get; set; }
 
-        /// <inheritdoc/>
-        public override bool CanWrite
-        {
-            get
-            {
-                return true;
-            }
-        }
+    public bool HasErrored { get; set; }
 
-        /// <inheritdoc/>
-        public override long Length
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-        }
+    public int MaxVaryByCount { get; set; }
 
-        public TimeSpan CacheDuration { get; set; }
-
-        public virtual string CacheKey { get; set; }
-
-        public Stream CaptureStream
-        {
-            get
-            {
-                return this.captureStream;
-            }
-
-            set
-            {
-                this.captureStream = value;
-            }
-        }
-
-        public Stream ChainedStream { get; set; }
-
-        public bool HasErrored { get; set; }
-
-        public int MaxVaryByCount { get; set; }
-
-        /// <inheritdoc/>
-        public override long Position
-        {
-            get
-            {
-                throw new NotSupportedException();
-            }
-
-            set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void Flush()
-        {
-            this.ChainedStream.Flush();
-            if (this.HasErrored)
-            {
-                return;
-            }
-
-            if (this.captureStream != null)
-            {
-                this.captureStream.Flush();
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void Write(byte[] buffer, int offset, int count)
-        {
-            this.ChainedStream.Write(buffer, offset, count);
-            if (this.HasErrored)
-            {
-                return;
-            }
-
-            if (this.captureStream != null)
-            {
-                this.captureStream.Write(buffer, offset, count);
-            }
-        }
-
-        /// <inheritdoc/>
-        public override int Read(byte[] buffer, int offset, int count)
+    /// <inheritdoc/>
+    public override long Position
+    {
+        get
         {
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc/>
-        public override long Seek(long offset, SeekOrigin origin)
+        set
         {
             throw new NotSupportedException();
         }
+    }
 
-        /// <inheritdoc/>
-        public override void SetLength(long value)
+    /// <inheritdoc/>
+    public override void Flush()
+    {
+        this.ChainedStream.Flush();
+        if (this.HasErrored)
         {
-            throw new NotSupportedException();
+            return;
         }
 
-        public virtual byte[] StopFiltering(int itemId, bool deleteData)
+        if (this.captureStream != null)
         {
-            if (this.HasErrored)
-            {
-                return null;
-            }
+            this.captureStream.Flush();
+        }
+    }
 
-            if (this.CaptureStream != null)
-            {
-                this.CaptureStream.Position = 0;
-                using (var reader = new StreamReader(this.CaptureStream, Encoding.Default))
-                {
-                    string output = reader.ReadToEnd();
-                    this.AddItemToCache(itemId, output);
-                }
+    /// <inheritdoc/>
+    public override void Write(byte[] buffer, int offset, int count)
+    {
+        this.ChainedStream.Write(buffer, offset, count);
+        if (this.HasErrored)
+        {
+            return;
+        }
 
-                this.CaptureStream.Close();
-                this.CaptureStream = null;
-            }
+        if (this.captureStream != null)
+        {
+            this.captureStream.Write(buffer, offset, count);
+        }
+    }
 
-            if (deleteData)
-            {
-                this.RemoveItemFromCache(itemId);
-            }
+    /// <inheritdoc/>
+    public override int Read(byte[] buffer, int offset, int count)
+    {
+        throw new NotSupportedException();
+    }
 
+    /// <inheritdoc/>
+    public override long Seek(long offset, SeekOrigin origin)
+    {
+        throw new NotSupportedException();
+    }
+
+    /// <inheritdoc/>
+    public override void SetLength(long value)
+    {
+        throw new NotSupportedException();
+    }
+
+    public virtual byte[] StopFiltering(int itemId, bool deleteData)
+    {
+        if (this.HasErrored)
+        {
             return null;
         }
 
-        protected virtual void AddItemToCache(int itemId, string output)
+        if (this.CaptureStream != null)
         {
+            this.CaptureStream.Position = 0;
+            using (var reader = new StreamReader(this.CaptureStream, Encoding.Default))
+            {
+                string output = reader.ReadToEnd();
+                this.AddItemToCache(itemId, output);
+            }
+
+            this.CaptureStream.Close();
+            this.CaptureStream = null;
         }
 
-        protected virtual void RemoveItemFromCache(int itemId)
+        if (deleteData)
         {
+            this.RemoveItemFromCache(itemId);
         }
+
+        return null;
+    }
+
+    protected virtual void AddItemToCache(int itemId, string output)
+    {
+    }
+
+    protected virtual void RemoveItemFromCache(int itemId)
+    {
     }
 }

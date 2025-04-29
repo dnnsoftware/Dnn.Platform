@@ -1,9 +1,6 @@
 # dnn-rm-progress-bar
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,7 +8,6 @@
 | -------- | --------- | ----------------------------------- | -------- | ------- |
 | `max`    | `max`     | Defines the max progress value.     | `number` | `100`   |
 | `value`  | `value`   | Defines the current progress value. | `number` | `0`     |
-
 
 ## CSS Custom Properties
 
@@ -21,16 +17,16 @@
 | `--progress-color`      | Sets the color of the progress bar.            |
 | `--progress-height`     | Sets the height of the progress bar.           |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-delete-items](../dnn-rm-delete-items)
- - [dnn-rm-move-items](../dnn-rm-move-items)
- - [dnn-rm-unlink-items](../dnn-rm-unlink-items)
+- [dnn-rm-delete-items](../dnn-rm-delete-items)
+- [dnn-rm-move-items](../dnn-rm-move-items)
+- [dnn-rm-unlink-items](../dnn-rm-unlink-items)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-delete-items --> dnn-rm-progress-bar
@@ -39,6 +35,6 @@ graph TD;
   style dnn-rm-progress-bar fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

@@ -1,9 +1,6 @@
 # dnn-rm-edit-folder
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,19 +8,17 @@
 | ----------------------- | ----------- | ----------------------------- | -------- | ----------- |
 | `folderId` _(required)_ | `folder-id` | The ID of the folder to edit. | `number` | `undefined` |
 
-
 ## Events
 
 | Event                 | Description                                                                                                        | Type                |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
 | `dnnRmFoldersChanged` | Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh. | `CustomEvent<void>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-action-edit-item](../actions/dnn-action-edit-item)
+- [dnn-action-edit-item](../actions/dnn-action-edit-item)
 
 ### Depends on
 
@@ -34,6 +29,7 @@
 - dnn-button
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-edit-folder --> dnn-tabs
@@ -52,6 +48,6 @@ graph TD;
   style dnn-rm-edit-folder fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

@@ -1,6 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { SingleLineInputWithError, IconButton } from "@dnnsoftware/dnn-react-common";
+import {
+  SingleLineInputWithError,
+  IconButton,
+} from "@dnnsoftware/dnn-react-common";
 
 function TextEdit(props) {
   if (props.inEdit) {
@@ -35,4 +38,5 @@ TextEdit.propTypes = {
   inEdit: PropTypes.bool,
   toggleEdit: PropTypes.func,
   onChange: PropTypes.func,
+  error: PropTypes.string,
 };

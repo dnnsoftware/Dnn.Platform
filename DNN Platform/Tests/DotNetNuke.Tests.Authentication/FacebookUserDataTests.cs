@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Authentication
+namespace DotNetNuke.Tests.Authentication;
+
+using System;
+
+using DotNetNuke.Authentication.Facebook.Components;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Authentication.OAuth;
+using NUnit.Framework;
+
+[TestFixture]
+public class FacebookUserDataTests
 {
-    using System;
-
-    using DotNetNuke.Authentication.Facebook.Components;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Services.Authentication.OAuth;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class FacebookUserDataTests
-    {
-        private const string SampleUserJson = @"{
+    private const string SampleUserJson = @"{
     ""id"": ""220439"",
     ""name"": ""Bret the Taylor"",
     ""first_name"": ""Bret"",
@@ -25,28 +25,27 @@ namespace DotNetNuke.Tests.Authentication
     ""locale"": ""en_US""
 }";
 
-        [Test]
-        public void FacebookUserData_Populates_Inherited_Name_Properties_When_Deserialized()
+    [Test]
+    public void FacebookUserData_Populates_Inherited_Name_Properties_When_Deserialized()
+    {
+        // Act
+        UserData sampleUser = Json.Deserialize<FacebookUserData>(SampleUserJson);
+
+        Assert.Multiple(() =>
         {
-            // Act
-            UserData sampleUser = Json.Deserialize<FacebookUserData>(SampleUserJson);
-
-            Assert.Multiple(() =>
-            {
-                // Assert
-                Assert.That(sampleUser.FirstName, Is.EqualTo("Bret"), "Should correctly pull first name from first_name field, not by parsing name");
-                Assert.That(sampleUser.LastName, Is.EqualTo("Taylor"), "Should correctly pull first name from first_name field, not by parsing name");
-            });
-        }
-
-        [Test]
-        public void FacebookUserData_Populates_Link_Property_When_Deserialized()
-        {
-            // Act
-            var sampleUser = Json.Deserialize<FacebookUserData>(SampleUserJson);
-
             // Assert
-            Assert.That(sampleUser.Link, Is.EqualTo(new Uri("https://www.facebook.com/btaylor", UriKind.Absolute)));
-        }
+            Assert.That(sampleUser.FirstName, Is.EqualTo("Bret"), "Should correctly pull first name from first_name field, not by parsing name");
+            Assert.That(sampleUser.LastName, Is.EqualTo("Taylor"), "Should correctly pull first name from first_name field, not by parsing name");
+        });
+    }
+
+    [Test]
+    public void FacebookUserData_Populates_Link_Property_When_Deserialized()
+    {
+        // Act
+        var sampleUser = Json.Deserialize<FacebookUserData>(SampleUserJson);
+
+        // Assert
+        Assert.That(sampleUser.Link, Is.EqualTo(new Uri("https://www.facebook.com/btaylor", UriKind.Absolute)));
     }
 }

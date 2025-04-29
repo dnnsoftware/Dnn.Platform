@@ -7,13 +7,13 @@ import folder from "./folderReducer";
 import moduleDefinition from "./moduleDefinitionReducer";
 import createPackage from "./createPackageReducer";
 const rootReducer = combineReducers({
-    pagination,
-    visiblePanel,
-    extension,
-    installation,
-    folder,
-    moduleDefinition,
-    createPackage
+  pagination,
+  visiblePanel,
+  extension,
+  installation,
+  folder,
+  moduleDefinition,
+  createPackage,
 });
 
 export default rootReducer;

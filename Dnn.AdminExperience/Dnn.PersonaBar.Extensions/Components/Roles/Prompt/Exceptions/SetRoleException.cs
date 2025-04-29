@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Roles.Components.Prompt.Exceptions
-{
-    using System;
+namespace Dnn.PersonaBar.Roles.Components.Prompt.Exceptions;
 
-    public class SetRoleException : Exception
+using System;
+
+public class SetRoleException : Exception
+{
+    public SetRoleException(string message)
+        : base(message)
     {
-        public SetRoleException(string message)
-            : base(message)
-        {
-        }
     }
 }

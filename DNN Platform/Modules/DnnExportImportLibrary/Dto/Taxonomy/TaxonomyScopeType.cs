@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.ExportImport.Dto.Taxonomy
-{
-    public class TaxonomyScopeType : BasicExportImportDto
-    {
-        public int ScopeTypeID { get; set; }
+namespace Dnn.ExportImport.Dto.Taxonomy;
 
-        public string ScopeType { get; set; }
-    }
+public class TaxonomyScopeType : BasicExportImportDto
+{
+    public int ScopeTypeID { get; set; }
+
+    public string ScopeType { get; set; }
 }

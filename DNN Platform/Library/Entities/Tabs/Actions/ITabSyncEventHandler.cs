@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Tabs.Actions
-{
-    public interface ITabSyncEventHandler
-    {
-        void TabSerialize(object sender, TabSyncEventArgs args);
+namespace DotNetNuke.Entities.Tabs.Actions;
 
-        void TabDeserialize(object sender, TabSyncEventArgs args);
-    }
+public interface ITabSyncEventHandler
+{
+    void TabSerialize(object sender, TabSyncEventArgs args);
+
+    void TabDeserialize(object sender, TabSyncEventArgs args);
 }

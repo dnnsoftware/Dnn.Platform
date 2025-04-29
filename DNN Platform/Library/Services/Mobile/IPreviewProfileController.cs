@@ -1,18 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Mobile
+namespace DotNetNuke.Services.Mobile;
+
+using System.Collections.Generic;
+
+public interface IPreviewProfileController
 {
-    using System.Collections.Generic;
+    void Save(IPreviewProfile profile);
 
-    public interface IPreviewProfileController
-    {
-        void Save(IPreviewProfile profile);
+    void Delete(int portalId, int id);
 
-        void Delete(int portalId, int id);
+    IList<IPreviewProfile> GetProfilesByPortal(int portalId);
 
-        IList<IPreviewProfile> GetProfilesByPortal(int portalId);
-
-        IPreviewProfile GetProfileById(int portalId, int id);
-    }
+    IPreviewProfile GetProfileById(int portalId, int id);
 }

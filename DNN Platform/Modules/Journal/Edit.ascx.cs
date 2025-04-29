@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Journal
-{
-    /*
+namespace DotNetNuke.Modules.Journal;
+
+/*
 ' Copyright (c) 2010 DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -15,37 +15,35 @@ namespace DotNetNuke.Modules.Journal
 ' DEALINGS IN THE SOFTWARE.
 '
 */
+using System;
 
-    using System;
+using DotNetNuke.Services.Exceptions;
 
-    using DotNetNuke.Services.Exceptions;
-
-    /// <summary>The EditJournal class is used to manage content.</summary>
-    public partial class Edit : JournalModuleBase
+/// <summary>The EditJournal class is used to manage content.</summary>
+public partial class Edit : JournalModuleBase
+{
+    /// <inheritdoc/>
+    protected override void OnInit(EventArgs e)
     {
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
-        {
-            this.InitializeComponent();
-            base.OnInit(e);
-        }
+        this.InitializeComponent();
+        base.OnInit(e);
+    }
 
-        private void InitializeComponent()
-        {
-            this.Load += new System.EventHandler(this.Page_Load);
-        }
+    private void InitializeComponent()
+    {
+        this.Load += new System.EventHandler(this.Page_Load);
+    }
 
-        /// <summary>Page_Load runs when the control is loaded.</summary>
-        private void Page_Load(object sender, System.EventArgs e)
+    /// <summary>Page_Load runs when the control is loaded.</summary>
+    private void Page_Load(object sender, System.EventArgs e)
+    {
+        try
         {
-            try
-            {
-                // Implement your edit logic for your module
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+            // Implement your edit logic for your module
+        }
+        catch (Exception exc)
+        {
+            Exceptions.ProcessModuleLoadException(this, exc);
         }
     }
 }

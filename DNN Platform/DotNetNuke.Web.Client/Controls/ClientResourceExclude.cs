@@ -2,46 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Client.Controls
+namespace DotNetNuke.Web.Client.Controls;
+
+using System;
+using System.Web.UI;
+
+using ClientDependency.Core;
+using ClientDependency.Core.Controls;
+
+public abstract class ClientResourceExclude : Control
 {
-    using System;
-    using System.Web.UI;
+    public string Name { get; set; }
 
-    using ClientDependency.Core;
-    using ClientDependency.Core.Controls;
+    public ClientDependencyType DependencyType { get; internal set; }
 
-    public abstract class ClientResourceExclude : Control
+    /// <inheritdoc/>
+    protected override void OnPreRender(EventArgs e)
     {
-        public string Name { get; set; }
+        base.OnPreRender(e);
+        var loader = this.Page.FindControl("ClientResourceIncludes");
+        this.Name = this.Name.ToLowerInvariant();
 
-        public ClientDependencyType DependencyType { get; internal set; }
-
-        /// <inheritdoc/>
-        protected override void OnPreRender(EventArgs e)
+        if (loader != null)
         {
-            base.OnPreRender(e);
-            var loader = this.Page.FindControl("ClientResourceIncludes");
-            this.Name = this.Name.ToLowerInvariant();
-
-            if (loader != null)
+            ClientDependencyInclude ctlToRemove = null;
+            if (!string.IsNullOrEmpty(this.Name))
             {
-                ClientDependencyInclude ctlToRemove = null;
-                if (!string.IsNullOrEmpty(this.Name))
+                foreach (ClientDependencyInclude ctl in loader.Controls)
                 {
-                    foreach (ClientDependencyInclude ctl in loader.Controls)
+                    if (ctl.Name.ToLowerInvariant() == this.Name && ctl.DependencyType == this.DependencyType)
                     {
-                        if (ctl.Name.ToLowerInvariant() == this.Name && ctl.DependencyType == this.DependencyType)
-                        {
-                            ctlToRemove = ctl;
-                            break;
-                        }
+                        ctlToRemove = ctl;
+                        break;
                     }
                 }
+            }
 
-                if (ctlToRemove != null)
-                {
-                    loader.Controls.Remove(ctlToRemove);
-                }
+            if (ctlToRemove != null)
+            {
+                loader.Controls.Remove(ctlToRemove);
             }
         }
     }

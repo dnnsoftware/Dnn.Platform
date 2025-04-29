@@ -2,108 +2,107 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Authentication.OAuth
+namespace DotNetNuke.Services.Authentication.OAuth;
+
+using System;
+using System.Globalization;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Portals;
+
+/// <summary>The Config class provides a central area for management of Module Configuration Settings.</summary>
+[Serializable]
+public class OAuthConfigBase : AuthenticationConfigBase
 {
-    using System;
-    using System.Globalization;
+    private const string CacheKey = "Authentication";
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Portals;
-
-    /// <summary>The Config class provides a central area for management of Module Configuration Settings.</summary>
-    [Serializable]
-    public class OAuthConfigBase : AuthenticationConfigBase
+    /// <summary>Initializes a new instance of the <see cref="OAuthConfigBase"/> class.</summary>
+    /// <param name="service"></param>
+    /// <param name="portalId"></param>
+    protected OAuthConfigBase(string service, int portalId)
+        : base(portalId)
     {
-        private const string CacheKey = "Authentication";
+        this.Service = service;
 
-        /// <summary>Initializes a new instance of the <see cref="OAuthConfigBase"/> class.</summary>
-        /// <param name="service"></param>
-        /// <param name="portalId"></param>
-        protected OAuthConfigBase(string service, int portalId)
-            : base(portalId)
+        var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, string.Empty);
+        var hostApiKey = string.Empty;
+
+        if (string.IsNullOrEmpty(portalApiKey))
         {
-            this.Service = service;
-
-            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, string.Empty);
-            var hostApiKey = string.Empty;
-
-            if (string.IsNullOrEmpty(portalApiKey))
-            {
-                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", string.Empty);
-                this.HostConfig = !string.IsNullOrEmpty(hostApiKey);
-            }
-            else
-            {
-                this.HostConfig = false;
-            }
-
-            if (this.HostConfig)
-            {
-                this.APIKey = hostApiKey;
-                this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", string.Empty);
-                this.Enabled = HostController.Instance.GetBoolean(this.Service + "_Enabled", false);
-            }
-            else
-            {
-                this.APIKey = portalApiKey;
-                this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, string.Empty);
-                this.Enabled = PortalController.GetPortalSettingAsBoolean(this.Service + "_Enabled", portalId, false);
-            }
+            hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", string.Empty);
+            this.HostConfig = !string.IsNullOrEmpty(hostApiKey);
+        }
+        else
+        {
+            this.HostConfig = false;
         }
 
-        public string APIKey { get; set; }
-
-        public string APISecret { get; set; }
-
-        public bool Enabled { get; set; }
-
-        public bool HostConfig { get; set; }
-
-        protected string Service { get; set; }
-
-        public static void ClearConfig(string service, int portalId)
+        if (this.HostConfig)
         {
-            DataCache.RemoveCache(GetCacheKey(service, portalId));
+            this.APIKey = hostApiKey;
+            this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", string.Empty);
+            this.Enabled = HostController.Instance.GetBoolean(this.Service + "_Enabled", false);
+        }
+        else
+        {
+            this.APIKey = portalApiKey;
+            this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, string.Empty);
+            this.Enabled = PortalController.GetPortalSettingAsBoolean(this.Service + "_Enabled", portalId, false);
+        }
+    }
+
+    public string APIKey { get; set; }
+
+    public string APISecret { get; set; }
+
+    public bool Enabled { get; set; }
+
+    public bool HostConfig { get; set; }
+
+    protected string Service { get; set; }
+
+    public static void ClearConfig(string service, int portalId)
+    {
+        DataCache.RemoveCache(GetCacheKey(service, portalId));
+    }
+
+    public static OAuthConfigBase GetConfig(string service, int portalId)
+    {
+        string key = GetCacheKey(service, portalId);
+        var config = (OAuthConfigBase)DataCache.GetCache(key);
+        if (config == null)
+        {
+            config = new OAuthConfigBase(service, portalId);
+            DataCache.SetCache(key, config);
         }
 
-        public static OAuthConfigBase GetConfig(string service, int portalId)
-        {
-            string key = GetCacheKey(service, portalId);
-            var config = (OAuthConfigBase)DataCache.GetCache(key);
-            if (config == null)
-            {
-                config = new OAuthConfigBase(service, portalId);
-                DataCache.SetCache(key, config);
-            }
+        return config;
+    }
 
-            return config;
+    public static void UpdateConfig(OAuthConfigBase config)
+    {
+        if (config.HostConfig)
+        {
+            HostController.Instance.Update(config.Service + "_APIKey", config.APIKey, true);
+            HostController.Instance.Update(config.Service + "_APISecret", config.APISecret, true);
+            HostController.Instance.Update(config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture), true);
+            PortalController.DeletePortalSetting(config.PortalID, config.Service + "_APIKey");
+            PortalController.DeletePortalSetting(config.PortalID, config.Service + "_APISecret");
+            PortalController.DeletePortalSetting(config.PortalID, config.Service + "_Enabled");
+        }
+        else
+        {
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APIKey", config.APIKey);
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APISecret", config.APISecret);
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture));
         }
 
-        public static void UpdateConfig(OAuthConfigBase config)
-        {
-            if (config.HostConfig)
-            {
-                HostController.Instance.Update(config.Service + "_APIKey", config.APIKey, true);
-                HostController.Instance.Update(config.Service + "_APISecret", config.APISecret, true);
-                HostController.Instance.Update(config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture), true);
-                PortalController.DeletePortalSetting(config.PortalID, config.Service + "_APIKey");
-                PortalController.DeletePortalSetting(config.PortalID, config.Service + "_APISecret");
-                PortalController.DeletePortalSetting(config.PortalID, config.Service + "_Enabled");
-            }
-            else
-            {
-                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APIKey", config.APIKey);
-                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_APISecret", config.APISecret);
-                PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString(CultureInfo.InvariantCulture));
-            }
+        ClearConfig(config.Service, config.PortalID);
+    }
 
-            ClearConfig(config.Service, config.PortalID);
-        }
-
-        private static string GetCacheKey(string service, int portalId)
-        {
-            return CacheKey + "." + service + "_" + portalId;
-        }
+    private static string GetCacheKey(string service, int portalId)
+    {
+        return CacheKey + "." + service + "_" + portalId;
     }
 }

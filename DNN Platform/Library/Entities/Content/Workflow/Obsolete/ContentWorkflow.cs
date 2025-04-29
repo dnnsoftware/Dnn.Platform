@@ -3,39 +3,37 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable CheckNamespace
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow;
 
 // ReSharper enable CheckNamespace
+using System.Collections.Generic;
+
+using DotNetNuke.Internal.SourceGenerators;
+
+/// <summary>This entity represents a Workflow.</summary>
+[DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+public partial class ContentWorkflow
 {
-    using System.Collections.Generic;
+    /// <summary>Gets or sets workflow Id.</summary>
+    public int WorkflowID { get; set; }
 
-    using DotNetNuke.Internal.SourceGenerators;
+    /// <summary>Gets or sets portal Id.</summary>
+    public int PortalID { get; set; }
 
-    /// <summary>This entity represents a Workflow.</summary>
-    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-    public partial class ContentWorkflow
-    {
-        /// <summary>Gets or sets workflow Id.</summary>
-        public int WorkflowID { get; set; }
+    /// <summary>Gets or sets workflow Name.</summary>
+    public string WorkflowName { get; set; }
 
-        /// <summary>Gets or sets portal Id.</summary>
-        public int PortalID { get; set; }
+    /// <summary>Gets or sets workflow Description.</summary>
+    public string Description { get; set; }
 
-        /// <summary>Gets or sets workflow Name.</summary>
-        public string WorkflowName { get; set; }
+    public bool IsDeleted { get; set; }
 
-        /// <summary>Gets or sets workflow Description.</summary>
-        public string Description { get; set; }
+    public bool StartAfterCreating { get; set; }
 
-        public bool IsDeleted { get; set; }
+    public bool StartAfterEditing { get; set; }
 
-        public bool StartAfterCreating { get; set; }
+    public bool DispositionEnabled { get; set; }
 
-        public bool StartAfterEditing { get; set; }
-
-        public bool DispositionEnabled { get; set; }
-
-        /// <summary>Gets or sets workflow states.</summary>
-        public IEnumerable<ContentWorkflowState> States { get; set; }
-    }
+    /// <summary>Gets or sets workflow states.</summary>
+    public IEnumerable<ContentWorkflowState> States { get; set; }
 }

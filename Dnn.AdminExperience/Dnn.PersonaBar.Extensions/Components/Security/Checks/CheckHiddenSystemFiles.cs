@@ -2,45 +2,44 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+using System.Linq;
+
+public class CheckHiddenSystemFiles : IAuditCheck
 {
-    using System;
-    using System.Linq;
+    /// <inheritdoc/>
+    public string Id => "CheckHiddenSystemFiles";
 
-    public class CheckHiddenSystemFiles : IAuditCheck
+    /// <inheritdoc/>
+    public bool LazyLoad => true;
+
+    /// <inheritdoc/>
+    public CheckResult Execute()
     {
-        /// <inheritdoc/>
-        public string Id => "CheckHiddenSystemFiles";
-
-        /// <inheritdoc/>
-        public bool LazyLoad => true;
-
-        /// <inheritdoc/>
-        public CheckResult Execute()
+        var result = new CheckResult(SeverityEnum.Unverified, this.Id);
+        try
         {
-            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            try
+            var investigatefiles = Utility.FineHiddenSystemFiles();
+            if (investigatefiles.Any())
             {
-                var investigatefiles = Utility.FineHiddenSystemFiles();
-                if (investigatefiles.Any())
+                result.Severity = SeverityEnum.Failure;
+                foreach (var filename in investigatefiles)
                 {
-                    result.Severity = SeverityEnum.Failure;
-                    foreach (var filename in investigatefiles)
-                    {
-                        result.Notes.Add("file:" + filename);
-                    }
-                }
-                else
-                {
-                    result.Severity = SeverityEnum.Pass;
+                    result.Notes.Add("file:" + filename);
                 }
             }
-            catch (Exception)
+            else
             {
-                throw;
+                result.Severity = SeverityEnum.Pass;
             }
-
-            return result;
         }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return result;
     }
 }

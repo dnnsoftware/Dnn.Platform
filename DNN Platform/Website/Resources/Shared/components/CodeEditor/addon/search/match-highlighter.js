@@ -18,14 +18,15 @@
 // delay is used to specify how much time to wait, in milliseconds, before
 // highlighting the matches.
 
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
+(function (mod) {
+  if (typeof exports == "object" && typeof module == "object")
+    // CommonJS
     mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
+  else if (typeof define == "function" && define.amd)
+    // AMD
+    define(["../../lib/codemirror"], mod); // Plain browser env
+  else mod(CodeMirror);
+})(function (CodeMirror) {
   "use strict";
 
   var DEFAULT_MIN_CHARS = 2;
@@ -48,29 +49,35 @@
     this.overlay = this.timeout = null;
   }
 
-  CodeMirror.defineOption("highlightSelectionMatches", false, function(cm, val, old) {
-    if (old && old != CodeMirror.Init) {
-      var over = cm.state.matchHighlighter.overlay;
-      if (over) cm.removeOverlay(over);
-      clearTimeout(cm.state.matchHighlighter.timeout);
-      cm.state.matchHighlighter = null;
-      cm.off("cursorActivity", cursorActivity);
-    }
-    if (val) {
-      cm.state.matchHighlighter = new State(val);
-      highlightMatches(cm);
-      cm.on("cursorActivity", cursorActivity);
-    }
-  });
+  CodeMirror.defineOption(
+    "highlightSelectionMatches",
+    false,
+    function (cm, val, old) {
+      if (old && old != CodeMirror.Init) {
+        var over = cm.state.matchHighlighter.overlay;
+        if (over) cm.removeOverlay(over);
+        clearTimeout(cm.state.matchHighlighter.timeout);
+        cm.state.matchHighlighter = null;
+        cm.off("cursorActivity", cursorActivity);
+      }
+      if (val) {
+        cm.state.matchHighlighter = new State(val);
+        highlightMatches(cm);
+        cm.on("cursorActivity", cursorActivity);
+      }
+    },
+  );
 
   function cursorActivity(cm) {
     var state = cm.state.matchHighlighter;
     clearTimeout(state.timeout);
-    state.timeout = setTimeout(function() {highlightMatches(cm);}, state.delay);
+    state.timeout = setTimeout(function () {
+      highlightMatches(cm);
+    }, state.delay);
   }
 
   function highlightMatches(cm) {
-    cm.operation(function() {
+    cm.operation(function () {
       var state = cm.state.matchHighlighter;
       if (state.overlay) {
         cm.removeOverlay(state.overlay);
@@ -78,51 +85,70 @@
       }
       if (!cm.somethingSelected() && state.showToken) {
         var re = state.showToken === true ? /[\w$]/ : state.showToken;
-        var cur = cm.getCursor(), line = cm.getLine(cur.line), start = cur.ch, end = start;
+        var cur = cm.getCursor(),
+          line = cm.getLine(cur.line),
+          start = cur.ch,
+          end = start;
         while (start && re.test(line.charAt(start - 1))) --start;
         while (end < line.length && re.test(line.charAt(end))) ++end;
         if (start < end)
-          cm.addOverlay(state.overlay = makeOverlay(line.slice(start, end), re, state.style));
+          cm.addOverlay(
+            (state.overlay = makeOverlay(
+              line.slice(start, end),
+              re,
+              state.style,
+            )),
+          );
         return;
       }
-      var from = cm.getCursor("from"), to = cm.getCursor("to");
+      var from = cm.getCursor("from"),
+        to = cm.getCursor("to");
       if (from.line != to.line) return;
       if (state.wordsOnly && !isWord(cm, from, to)) return;
       var selection = cm.getRange(from, to).replace(/^\s+|\s+$/g, "");
       if (selection.length >= state.minChars)
-        cm.addOverlay(state.overlay = makeOverlay(selection, false, state.style));
+        cm.addOverlay(
+          (state.overlay = makeOverlay(selection, false, state.style)),
+        );
     });
   }
 
   function isWord(cm, from, to) {
     var str = cm.getRange(from, to);
     if (str.match(/^\w+$/) !== null) {
-        if (from.ch > 0) {
-            var pos = {line: from.line, ch: from.ch - 1};
-            var chr = cm.getRange(pos, from);
-            if (chr.match(/\W/) === null) return false;
-        }
-        if (to.ch < cm.getLine(from.line).length) {
-            var pos = {line: to.line, ch: to.ch + 1};
-            var chr = cm.getRange(to, pos);
-            if (chr.match(/\W/) === null) return false;
-        }
-        return true;
+      if (from.ch > 0) {
+        var pos = { line: from.line, ch: from.ch - 1 };
+        var chr = cm.getRange(pos, from);
+        if (chr.match(/\W/) === null) return false;
+      }
+      if (to.ch < cm.getLine(from.line).length) {
+        var pos = { line: to.line, ch: to.ch + 1 };
+        var chr = cm.getRange(to, pos);
+        if (chr.match(/\W/) === null) return false;
+      }
+      return true;
     } else return false;
   }
 
   function boundariesAround(stream, re) {
-    return (!stream.start || !re.test(stream.string.charAt(stream.start - 1))) &&
-      (stream.pos == stream.string.length || !re.test(stream.string.charAt(stream.pos)));
+    return (
+      (!stream.start || !re.test(stream.string.charAt(stream.start - 1))) &&
+      (stream.pos == stream.string.length ||
+        !re.test(stream.string.charAt(stream.pos)))
+    );
   }
 
   function makeOverlay(query, hasBoundary, style) {
-    return {token: function(stream) {
-      if (stream.match(query) &&
-          (!hasBoundary || boundariesAround(stream, hasBoundary)))
-        return style;
-      stream.next();
-      stream.skipTo(query.charAt(0)) || stream.skipToEnd();
-    }};
+    return {
+      token: function (stream) {
+        if (
+          stream.match(query) &&
+          (!hasBoundary || boundariesAround(stream, hasBoundary))
+        )
+          return style;
+        stream.next();
+        stream.skipTo(query.charAt(0)) || stream.skipToEnd();
+      },
+    };
   }
 });

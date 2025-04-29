@@ -3,11 +3,11 @@ const portalAliasUsageType = {
     Default: 0,
     ChildPagesInherit: 1,
     ChildPagesDoNotInherit: 2,
-    InheritedFromParent: 3
+    InheritedFromParent: 3,
 };
 
 const toBackEndUrl = function (url, tabId, primaryAliasId) {
-    const id = url.id  ? url.id : -1;
+    const id = url.id ? url.id : -1;
     let siteAliasUsage = "";
     if (url.siteAlias.Key === primaryAliasId) {
         siteAliasUsage = portalAliasUsageType.Default;
@@ -18,7 +18,7 @@ const toBackEndUrl = function (url, tabId, primaryAliasId) {
     } else {
         siteAliasUsage = portalAliasUsageType.ChildPagesDoNotInherit;
     }
-    
+
     return {
         tabId,
         saveUrl: {
@@ -29,8 +29,8 @@ const toBackEndUrl = function (url, tabId, primaryAliasId) {
             LocaleKey: url.locale.Key,
             StatusCodeKey: url.statusCode.Key,
             SiteAliasUsage: siteAliasUsage,
-            IsSystem: false
-        }
+            IsSystem: false,
+        },
     };
 };
 
@@ -39,35 +39,41 @@ const PageService = function () {
     function getApi() {
         if (api === null) {
             return new Api("Pages");
-        }        
+        }
         return api;
     }
 
     const add = function (url, tabId, primaryAliasId) {
         const api = getApi();
-        return api.post("CreateCustomUrl", toBackEndUrl(url, tabId, primaryAliasId));
+        return api.post(
+            "CreateCustomUrl",
+            toBackEndUrl(url, tabId, primaryAliasId),
+        );
     };
 
     const save = function (url, tabId, primaryAliasId) {
         const api = getApi();
-        return api.post("UpdateCustomUrl", toBackEndUrl(url, tabId, primaryAliasId));
+        return api.post(
+            "UpdateCustomUrl",
+            toBackEndUrl(url, tabId, primaryAliasId),
+        );
     };
-    
+
     const deleteUrl = function (url, tabId) {
         const api = getApi();
-        return api.post("DeleteCustomUrl", {id: url.id, tabId});
+        return api.post("DeleteCustomUrl", { id: url.id, tabId });
     };
 
     const getUrls = function (pageId) {
         const api = getApi();
         return api.get("GetCustomUrls", { pageId });
     };
-    
+
     return {
         add: add,
         save: save,
         delete: deleteUrl,
-        get: getUrls
+        get: getUrls,
     };
 };
 

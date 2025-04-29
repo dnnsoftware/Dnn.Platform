@@ -3,52 +3,51 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable MemberCanBePrivate.Global
-namespace DotNetNuke.Security.Cookies
+namespace DotNetNuke.Security.Cookies;
+
+using System;
+using System.Data;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Entities.Modules;
+
+[Serializable]
+[TableName("AuthCookies")]
+[PrimaryKey("CookieId")]
+public class PersistedAuthCookie : IHydratable
 {
-    using System;
-    using System.Data;
+    public int CookieId { get; private set; }
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel.DataAnnotations;
-    using DotNetNuke.Entities.Modules;
+    public string CookieValue { get; private set; }
 
-    [Serializable]
-    [TableName("AuthCookies")]
-    [PrimaryKey("CookieId")]
-    public class PersistedAuthCookie : IHydratable
+    public DateTime ExpiresOn { get; private set; } // UTC
+
+    /// <inheritdoc/>
+    public int KeyID
     {
-        public int CookieId { get; private set; }
+        get { return this.CookieId; }
+        set { this.CookieId = value; }
+    }
 
-        public string CookieValue { get; private set; }
+    /// <inheritdoc/>
+    public void Fill(IDataReader dr)
+    {
+        this.CookieId = Null.SetNullInteger(dr[nameof(this.CookieId)]);
+        this.CookieValue = Null.SetNullString(dr[nameof(this.CookieValue)]);
+        this.ExpiresOn = Null.SetNullDateTime(dr[nameof(this.ExpiresOn)]);
 
-        public DateTime ExpiresOn { get; private set; } // UTC
-
-        /// <inheritdoc/>
-        public int KeyID
+        if (this.ExpiresOn.Kind != DateTimeKind.Utc)
         {
-            get { return this.CookieId; }
-            set { this.CookieId = value; }
-        }
-
-        /// <inheritdoc/>
-        public void Fill(IDataReader dr)
-        {
-            this.CookieId = Null.SetNullInteger(dr[nameof(this.CookieId)]);
-            this.CookieValue = Null.SetNullString(dr[nameof(this.CookieValue)]);
-            this.ExpiresOn = Null.SetNullDateTime(dr[nameof(this.ExpiresOn)]);
-
-            if (this.ExpiresOn.Kind != DateTimeKind.Utc)
-            {
-                this.ExpiresOn = new DateTime(
-                    this.ExpiresOn.Year,
-                    this.ExpiresOn.Month,
-                    this.ExpiresOn.Day,
-                    this.ExpiresOn.Hour,
-                    this.ExpiresOn.Minute,
-                    this.ExpiresOn.Second,
-                    this.ExpiresOn.Millisecond,
-                    DateTimeKind.Utc);
-            }
+            this.ExpiresOn = new DateTime(
+                this.ExpiresOn.Year,
+                this.ExpiresOn.Month,
+                this.ExpiresOn.Day,
+                this.ExpiresOn.Hour,
+                this.ExpiresOn.Minute,
+                this.ExpiresOn.Second,
+                this.ExpiresOn.Millisecond,
+                DateTimeKind.Utc);
         }
     }
 }

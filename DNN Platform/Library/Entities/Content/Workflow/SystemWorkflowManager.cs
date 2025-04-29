@@ -2,160 +2,159 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow;
+
+using System;
+using System.Linq;
+
+using DotNetNuke.Entities.Content.Workflow.Entities;
+using DotNetNuke.Entities.Content.Workflow.Repositories;
+using DotNetNuke.Framework;
+using DotNetNuke.Services.Localization;
+
+public class SystemWorkflowManager : ServiceLocator<ISystemWorkflowManager, SystemWorkflowManager>, ISystemWorkflowManager
 {
-    using System;
-    using System.Linq;
+    public const string DirectPublishWorkflowKey = "DirectPublish";
+    public const string SaveDraftWorkflowKey = "SaveDraft";
+    public const string ContentAprovalWorkflowKey = "ContentApproval";
+    private readonly IWorkflowRepository workflowRepository;
+    private readonly IWorkflowStateRepository workflowStateRepository;
 
-    using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Content.Workflow.Repositories;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Localization;
-
-    public class SystemWorkflowManager : ServiceLocator<ISystemWorkflowManager, SystemWorkflowManager>, ISystemWorkflowManager
+    /// <summary>Initializes a new instance of the <see cref="SystemWorkflowManager"/> class.</summary>
+    public SystemWorkflowManager()
     {
-        public const string DirectPublishWorkflowKey = "DirectPublish";
-        public const string SaveDraftWorkflowKey = "SaveDraft";
-        public const string ContentAprovalWorkflowKey = "ContentApproval";
-        private readonly IWorkflowRepository workflowRepository;
-        private readonly IWorkflowStateRepository workflowStateRepository;
+        this.workflowRepository = WorkflowRepository.Instance;
+        this.workflowStateRepository = WorkflowStateRepository.Instance;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="SystemWorkflowManager"/> class.</summary>
-        public SystemWorkflowManager()
+    /// <inheritdoc/>
+    public void CreateSystemWorkflows(int portalId)
+    {
+        this.CreateDirectPublishWorkflow(portalId);
+        this.CreateSaveDraftWorkflow(portalId);
+        this.CreateContentApprovalWorkflow(portalId);
+    }
+
+    /// <inheritdoc/>
+    public Entities.Workflow GetDirectPublishWorkflow(int portalId)
+    {
+        return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == DirectPublishWorkflowKey);
+    }
+
+    /// <inheritdoc/>
+    public Entities.Workflow GetSaveDraftWorkflow(int portalId)
+    {
+        return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == SaveDraftWorkflowKey);
+    }
+
+    /// <inheritdoc/>
+    public Entities.Workflow GetContentApprovalWorkflow(int portalId)
+    {
+        return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == ContentAprovalWorkflowKey);
+    }
+
+    /// <inheritdoc/>
+    public WorkflowState GetDraftStateDefinition(int order)
+    {
+        var state = this.GetDefaultWorkflowState(order);
+        state.StateName = Localization.GetString("DefaultWorkflowState1.StateName");
+        return state;
+    }
+
+    /// <inheritdoc/>
+    public WorkflowState GetPublishedStateDefinition(int order)
+    {
+        var state = this.GetDefaultWorkflowState(order);
+        state.StateName = Localization.GetString("DefaultWorkflowState3.StateName");
+        return state;
+    }
+
+    /// <inheritdoc/>
+    public WorkflowState GetReadyForReviewStateDefinition(int order)
+    {
+        var state = this.GetDefaultWorkflowState(order);
+        state.StateName = Localization.GetString("DefaultWorkflowState2.StateName");
+        state.SendNotification = true;
+        state.SendNotificationToAdministrators = true;
+        return state;
+    }
+
+    /// <inheritdoc/>
+    protected override Func<ISystemWorkflowManager> GetFactory()
+    {
+        return () => new SystemWorkflowManager();
+    }
+
+    private WorkflowState GetDefaultWorkflowState(int order)
+    {
+        return new WorkflowState
         {
-            this.workflowRepository = WorkflowRepository.Instance;
-            this.workflowStateRepository = WorkflowStateRepository.Instance;
-        }
+            IsSystem = true,
+            SendNotification = true,
+            SendNotificationToAdministrators = false,
+            Order = order,
+        };
+    }
 
-        /// <inheritdoc/>
-        public void CreateSystemWorkflows(int portalId)
+    private void CreateDirectPublishWorkflow(int portalId)
+    {
+        var workflow = new Entities.Workflow
         {
-            this.CreateDirectPublishWorkflow(portalId);
-            this.CreateSaveDraftWorkflow(portalId);
-            this.CreateContentApprovalWorkflow(portalId);
-        }
+            WorkflowName = Localization.GetString("DefaultDirectPublishWorkflowName"),
+            Description = Localization.GetString("DefaultDirectPublishWorkflowDescription"),
+            WorkflowKey = DirectPublishWorkflowKey,
+            IsSystem = true,
+            PortalID = portalId,
+        };
+        this.workflowRepository.AddWorkflow(workflow);
+        var publishedState = this.GetPublishedStateDefinition(1);
+        publishedState.WorkflowID = workflow.WorkflowID;
+        this.workflowStateRepository.AddWorkflowState(publishedState);
+    }
 
-        /// <inheritdoc/>
-        public Entities.Workflow GetDirectPublishWorkflow(int portalId)
+    private void CreateSaveDraftWorkflow(int portalId)
+    {
+        var workflow = new Entities.Workflow
         {
-            return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == DirectPublishWorkflowKey);
-        }
+            WorkflowName = Localization.GetString("DefaultSaveDraftWorkflowName"),
+            Description = Localization.GetString("DefaultSaveDraftWorkflowDescription"),
+            WorkflowKey = SaveDraftWorkflowKey,
+            IsSystem = true,
+            PortalID = portalId,
+        };
+        this.workflowRepository.AddWorkflow(workflow);
 
-        /// <inheritdoc/>
-        public Entities.Workflow GetSaveDraftWorkflow(int portalId)
+        var state = this.GetDraftStateDefinition(1);
+        state.WorkflowID = workflow.WorkflowID;
+        this.workflowStateRepository.AddWorkflowState(state);
+
+        state = this.GetPublishedStateDefinition(2);
+        state.WorkflowID = workflow.WorkflowID;
+        this.workflowStateRepository.AddWorkflowState(state);
+    }
+
+    private void CreateContentApprovalWorkflow(int portalId)
+    {
+        var workflow = new Entities.Workflow
         {
-            return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == SaveDraftWorkflowKey);
-        }
+            WorkflowName = Localization.GetString("DefaultWorkflowName"),
+            Description = Localization.GetString("DefaultWorkflowDescription"),
+            WorkflowKey = ContentAprovalWorkflowKey,
+            IsSystem = true,
+            PortalID = portalId,
+        };
+        this.workflowRepository.AddWorkflow(workflow);
 
-        /// <inheritdoc/>
-        public Entities.Workflow GetContentApprovalWorkflow(int portalId)
-        {
-            return this.workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == ContentAprovalWorkflowKey);
-        }
+        var state = this.GetDraftStateDefinition(1);
+        state.WorkflowID = workflow.WorkflowID;
+        this.workflowStateRepository.AddWorkflowState(state);
 
-        /// <inheritdoc/>
-        public WorkflowState GetDraftStateDefinition(int order)
-        {
-            var state = this.GetDefaultWorkflowState(order);
-            state.StateName = Localization.GetString("DefaultWorkflowState1.StateName");
-            return state;
-        }
+        state = this.GetReadyForReviewStateDefinition(2);
+        state.WorkflowID = workflow.WorkflowID;
+        this.workflowStateRepository.AddWorkflowState(state);
 
-        /// <inheritdoc/>
-        public WorkflowState GetPublishedStateDefinition(int order)
-        {
-            var state = this.GetDefaultWorkflowState(order);
-            state.StateName = Localization.GetString("DefaultWorkflowState3.StateName");
-            return state;
-        }
-
-        /// <inheritdoc/>
-        public WorkflowState GetReadyForReviewStateDefinition(int order)
-        {
-            var state = this.GetDefaultWorkflowState(order);
-            state.StateName = Localization.GetString("DefaultWorkflowState2.StateName");
-            state.SendNotification = true;
-            state.SendNotificationToAdministrators = true;
-            return state;
-        }
-
-        /// <inheritdoc/>
-        protected override Func<ISystemWorkflowManager> GetFactory()
-        {
-            return () => new SystemWorkflowManager();
-        }
-
-        private WorkflowState GetDefaultWorkflowState(int order)
-        {
-            return new WorkflowState
-            {
-                IsSystem = true,
-                SendNotification = true,
-                SendNotificationToAdministrators = false,
-                Order = order,
-            };
-        }
-
-        private void CreateDirectPublishWorkflow(int portalId)
-        {
-            var workflow = new Entities.Workflow
-            {
-                WorkflowName = Localization.GetString("DefaultDirectPublishWorkflowName"),
-                Description = Localization.GetString("DefaultDirectPublishWorkflowDescription"),
-                WorkflowKey = DirectPublishWorkflowKey,
-                IsSystem = true,
-                PortalID = portalId,
-            };
-            this.workflowRepository.AddWorkflow(workflow);
-            var publishedState = this.GetPublishedStateDefinition(1);
-            publishedState.WorkflowID = workflow.WorkflowID;
-            this.workflowStateRepository.AddWorkflowState(publishedState);
-        }
-
-        private void CreateSaveDraftWorkflow(int portalId)
-        {
-            var workflow = new Entities.Workflow
-            {
-                WorkflowName = Localization.GetString("DefaultSaveDraftWorkflowName"),
-                Description = Localization.GetString("DefaultSaveDraftWorkflowDescription"),
-                WorkflowKey = SaveDraftWorkflowKey,
-                IsSystem = true,
-                PortalID = portalId,
-            };
-            this.workflowRepository.AddWorkflow(workflow);
-
-            var state = this.GetDraftStateDefinition(1);
-            state.WorkflowID = workflow.WorkflowID;
-            this.workflowStateRepository.AddWorkflowState(state);
-
-            state = this.GetPublishedStateDefinition(2);
-            state.WorkflowID = workflow.WorkflowID;
-            this.workflowStateRepository.AddWorkflowState(state);
-        }
-
-        private void CreateContentApprovalWorkflow(int portalId)
-        {
-            var workflow = new Entities.Workflow
-            {
-                WorkflowName = Localization.GetString("DefaultWorkflowName"),
-                Description = Localization.GetString("DefaultWorkflowDescription"),
-                WorkflowKey = ContentAprovalWorkflowKey,
-                IsSystem = true,
-                PortalID = portalId,
-            };
-            this.workflowRepository.AddWorkflow(workflow);
-
-            var state = this.GetDraftStateDefinition(1);
-            state.WorkflowID = workflow.WorkflowID;
-            this.workflowStateRepository.AddWorkflowState(state);
-
-            state = this.GetReadyForReviewStateDefinition(2);
-            state.WorkflowID = workflow.WorkflowID;
-            this.workflowStateRepository.AddWorkflowState(state);
-
-            state = this.GetPublishedStateDefinition(3);
-            state.WorkflowID = workflow.WorkflowID;
-            this.workflowStateRepository.AddWorkflowState(state);
-        }
+        state = this.GetPublishedStateDefinition(3);
+        state.WorkflowID = workflow.WorkflowID;
+        this.workflowStateRepository.AddWorkflowState(state);
     }
 }

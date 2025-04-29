@@ -21,99 +21,98 @@
 #if !NETCF
 using System;
 
-namespace log4net.Util
+namespace log4net.Util;
+
+/// <summary>Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/></summary>
+/// <remarks>
+/// <para>
+/// Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/>
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+public sealed class LogicalThreadContextStacks
 {
-    /// <summary>Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/></summary>
+    private readonly LogicalThreadContextProperties m_properties;
+
+    /// <summary>Internal constructor</summary>
     /// <remarks>
     /// <para>
-    /// Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/>
+    /// Initializes a new instance of the <see cref="ThreadContextStacks" /> class.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    public sealed class LogicalThreadContextStacks
+    internal LogicalThreadContextStacks(LogicalThreadContextProperties properties)
     {
-        private readonly LogicalThreadContextProperties m_properties;
+        this.m_properties = properties;
+    }
 
-        /// <summary>Internal constructor</summary>
-        /// <remarks>
-        /// <para>
-        /// Initializes a new instance of the <see cref="ThreadContextStacks" /> class.
-        /// </para>
-        /// </remarks>
-        internal LogicalThreadContextStacks(LogicalThreadContextProperties properties)
+    /// <summary>Gets the named thread context stack</summary>
+    /// <value>
+    /// The named stack
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Gets the named thread context stack
+    /// </para>
+    /// </remarks>
+    public LogicalThreadContextStack this[string key]
+    {
+        get
         {
-            this.m_properties = properties;
-        }
+            LogicalThreadContextStack stack = null;
 
-        /// <summary>Gets the named thread context stack</summary>
-        /// <value>
-        /// The named stack
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Gets the named thread context stack
-        /// </para>
-        /// </remarks>
-        public LogicalThreadContextStack this[string key]
-        {
-            get
+            object propertyValue = this.m_properties[key];
+            if (propertyValue == null)
             {
-                LogicalThreadContextStack stack = null;
-
-                object propertyValue = this.m_properties[key];
-                if (propertyValue == null)
-                {
-                    // Stack does not exist, create
+                // Stack does not exist, create
 #if NET_2_0 || MONO_2_0 || NETSTANDARD
-                    stack = new LogicalThreadContextStack(key, this.registerNew);
+                stack = new LogicalThreadContextStack(key, this.registerNew);
 #else
                     stack = new LogicalThreadContextStack(key, new TwoArgAction(registerNew));
 #endif
-                    this.m_properties[key] = stack;
-                }
-                else
+                this.m_properties[key] = stack;
+            }
+            else
+            {
+                // Look for existing stack
+                stack = propertyValue as LogicalThreadContextStack;
+                if (stack == null)
                 {
-                    // Look for existing stack
-                    stack = propertyValue as LogicalThreadContextStack;
-                    if (stack == null)
+                    // Property is not set to a stack!
+                    string propertyValueString = SystemInfo.NullText;
+
+                    try
                     {
-                        // Property is not set to a stack!
-                        string propertyValueString = SystemInfo.NullText;
+                        propertyValueString = propertyValue.ToString();
+                    }
+                    catch
+                    {
+                    }
 
-                        try
-                        {
-                            propertyValueString = propertyValue.ToString();
-                        }
-                        catch
-                        {
-                        }
-
-                        LogLog.Error(declaringType, "ThreadContextStacks: Request for stack named [" + key + "] failed because a property with the same name exists which is a [" + propertyValue.GetType().Name + "] with value [" + propertyValueString + "]");
+                    LogLog.Error(declaringType, "ThreadContextStacks: Request for stack named [" + key + "] failed because a property with the same name exists which is a [" + propertyValue.GetType().Name + "] with value [" + propertyValueString + "]");
 
 #if NET_2_0 || MONO_2_0 || NETSTANDARD
-                        stack = new LogicalThreadContextStack(key, this.registerNew);
+                    stack = new LogicalThreadContextStack(key, this.registerNew);
 #else
                         stack = new LogicalThreadContextStack(key, new TwoArgAction(registerNew));
 #endif
-                    }
                 }
-
-                return stack;
             }
-        }
 
-        private void registerNew(string stackName, LogicalThreadContextStack stack)
-        {
-            this.m_properties[stackName] = stack;
+            return stack;
         }
-
-        /// <summary>The fully qualified type of the ThreadContextStacks class.</summary>
-        /// <remarks>
-        /// Used by the internal logger to record the Type of the
-        /// log message.
-        /// </remarks>
-        private static readonly Type declaringType = typeof(LogicalThreadContextStacks);
     }
+
+    private void registerNew(string stackName, LogicalThreadContextStack stack)
+    {
+        this.m_properties[stackName] = stack;
+    }
+
+    /// <summary>The fully qualified type of the ThreadContextStacks class.</summary>
+    /// <remarks>
+    /// Used by the internal logger to record the Type of the
+    /// log message.
+    /// </remarks>
+    private static readonly Type declaringType = typeof(LogicalThreadContextStacks);
 }
 
 #endif

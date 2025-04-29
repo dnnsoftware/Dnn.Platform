@@ -1,77 +1,76 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.Web.UI.WebControls;
+
+using System;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Services.Localization;
+
+public class DnnLabel : Label, ILocalizable
 {
-    using System;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
+    private bool localize = true;
 
-    using DotNetNuke.Services.Localization;
-
-    public class DnnLabel : Label, ILocalizable
+    /// <summary>Initializes a new instance of the <see cref="DnnLabel"/> class.</summary>
+    public DnnLabel()
     {
-        private bool localize = true;
+        this.CssClass = "dnnFormLabel";
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="DnnLabel"/> class.</summary>
-        public DnnLabel()
+    /// <inheritdoc/>
+    public bool Localize
+    {
+        get
         {
-            this.CssClass = "dnnFormLabel";
+            return !this.DesignMode && this.localize;
         }
 
-        /// <inheritdoc/>
-        public bool Localize
+        set
         {
-            get
-            {
-                return !this.DesignMode && this.localize;
-            }
-
-            set
-            {
-                this.localize = value;
-            }
+            this.localize = value;
         }
+    }
 
-        /// <inheritdoc/>
-        public string LocalResourceFile { get; set; }
+    /// <inheritdoc/>
+    public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
-        public virtual void LocalizeStrings()
+    /// <inheritdoc/>
+    public virtual void LocalizeStrings()
+    {
+        if (this.Localize)
         {
-            if (this.Localize)
+            if (!string.IsNullOrEmpty(this.ToolTip))
             {
-                if (!string.IsNullOrEmpty(this.ToolTip))
+                this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
+            }
+
+            if (!string.IsNullOrEmpty(this.Text))
+            {
+                var unLocalized = this.Text;
+
+                this.Text = Localization.GetString(unLocalized, this.LocalResourceFile);
+
+                if (string.IsNullOrEmpty(this.ToolTip))
                 {
-                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
-                }
-
-                if (!string.IsNullOrEmpty(this.Text))
-                {
-                    var unLocalized = this.Text;
-
-                    this.Text = Localization.GetString(unLocalized, this.LocalResourceFile);
-
-                    if (string.IsNullOrEmpty(this.ToolTip))
-                    {
-                        this.ToolTip = Localization.GetString(unLocalized + ".ToolTip", this.LocalResourceFile);
-                    }
+                    this.ToolTip = Localization.GetString(unLocalized + ".ToolTip", this.LocalResourceFile);
                 }
             }
         }
+    }
 
-        /// <inheritdoc/>
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
-        }
+    /// <inheritdoc/>
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+        this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+    }
 
-        /// <inheritdoc/>
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            base.Render(writer);
-        }
+    /// <inheritdoc/>
+    protected override void Render(HtmlTextWriter writer)
+    {
+        this.LocalizeStrings();
+        base.Render(writer);
     }
 }

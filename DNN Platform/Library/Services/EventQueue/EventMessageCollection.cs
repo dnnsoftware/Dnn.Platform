@@ -1,28 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.EventQueue
+namespace DotNetNuke.Services.EventQueue;
+
+using System.Collections;
+
+public class EventMessageCollection : CollectionBase
 {
-    using System.Collections;
-
-    public class EventMessageCollection : CollectionBase
+    public virtual EventMessage this[int index]
     {
-        public virtual EventMessage this[int index]
+        get
         {
-            get
-            {
-                return (EventMessage)this.List[index];
-            }
-
-            set
-            {
-                this.List[index] = value;
-            }
+            return (EventMessage)this.List[index];
         }
 
-        public void Add(EventMessage message)
+        set
         {
-            this.InnerList.Add(message);
+            this.List[index] = value;
         }
+    }
+
+    public void Add(EventMessage message)
+    {
+        this.InnerList.Add(message);
     }
 }

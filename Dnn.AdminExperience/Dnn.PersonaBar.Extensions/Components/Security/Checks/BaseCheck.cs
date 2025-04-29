@@ -2,72 +2,71 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
+
+/// <summary>Base class for security checks.</summary>
+public abstract class BaseCheck : IAuditCheck
 {
-    using System;
+    private readonly Lazy<ILog> logger;
 
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Localization;
-
-    /// <summary>Base class for security checks.</summary>
-    public abstract class BaseCheck : IAuditCheck
+    /// <summary>Initializes a new instance of the <see cref="BaseCheck"/> class.</summary>
+    public BaseCheck()
     {
-        private readonly Lazy<ILog> logger;
+        this.logger = new Lazy<ILog>(() => LoggerSource.Instance.GetLogger(this.GetType()));
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="BaseCheck"/> class.</summary>
-        public BaseCheck()
+    /// <inheritdoc cref="IAuditCheck.Id" />
+    public virtual string Id => this.GetType().Name;
+
+    /// <inheritdoc cref="IAuditCheck.LazyLoad" />
+    public virtual bool LazyLoad => false;
+
+    /// <summary>Gets the path to the resources file (.resx).</summary>
+    protected virtual string LocalResourceFile =>
+        "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
+
+    /// <summary>Gets a typed instance of the <see cref="ILog"/> interface.</summary>
+    protected virtual ILog Logger => this.logger.Value;
+
+    /// <inheritdoc cref="IAuditCheck.Execute" />
+    public virtual CheckResult Execute()
+    {
+        try
         {
-            this.logger = new Lazy<ILog>(() => LoggerSource.Instance.GetLogger(this.GetType()));
+            return this.ExecuteInternal();
         }
-
-        /// <inheritdoc cref="IAuditCheck.Id" />
-        public virtual string Id => this.GetType().Name;
-
-        /// <inheritdoc cref="IAuditCheck.LazyLoad" />
-        public virtual bool LazyLoad => false;
-
-        /// <summary>Gets the path to the resources file (.resx).</summary>
-        protected virtual string LocalResourceFile =>
-            "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
-
-        /// <summary>Gets a typed instance of the <see cref="ILog"/> interface.</summary>
-        protected virtual ILog Logger => this.logger.Value;
-
-        /// <inheritdoc cref="IAuditCheck.Execute" />
-        public virtual CheckResult Execute()
+        catch (Exception ex)
         {
-            try
-            {
-                return this.ExecuteInternal();
-            }
-            catch (Exception ex)
-            {
-                this.Logger.Error($"{this.Id} failed.", ex);
-                return this.Unverified("An internal error occurred. See logs for details.");
-            }
+            this.Logger.Error($"{this.Id} failed.", ex);
+            return this.Unverified("An internal error occurred. See logs for details.");
         }
+    }
 
-        /// <summary>Performs the actual security check.</summary>
-        /// <returns>A <see cref="CheckResult"/> with the outcome of the security check.</returns>
-        protected abstract CheckResult ExecuteInternal();
+    /// <summary>Performs the actual security check.</summary>
+    /// <returns>A <see cref="CheckResult"/> with the outcome of the security check.</returns>
+    protected abstract CheckResult ExecuteInternal();
 
-        /// <inheritdoc cref="Localization.GetString(string, string)" />
-        protected virtual string GetLocalizedString(string key)
+    /// <inheritdoc cref="Localization.GetString(string, string)" />
+    protected virtual string GetLocalizedString(string key)
+    {
+        return Localization.GetString(this.Id + key, this.LocalResourceFile);
+    }
+
+    /// <summary>Returns an "unverified" result.</summary>
+    /// <param name="reason">The reason why we are returning an unverified result.
+    /// This text will be displayed in the Notes column.</param>
+    /// <returns>A <see cref="CheckResult"/> with a <see cref="CheckResult.Severity"/>
+    /// of <see cref="SeverityEnum.Unverified"/>.</returns>
+    protected virtual CheckResult Unverified(string reason)
+    {
+        return new CheckResult(SeverityEnum.Unverified, this.Id)
         {
-            return Localization.GetString(this.Id + key, this.LocalResourceFile);
-        }
-
-        /// <summary>Returns an "unverified" result.</summary>
-        /// <param name="reason">The reason why we are returning an unverified result.
-        /// This text will be displayed in the Notes column.</param>
-        /// <returns>A <see cref="CheckResult"/> with a <see cref="CheckResult.Severity"/>
-        /// of <see cref="SeverityEnum.Unverified"/>.</returns>
-        protected virtual CheckResult Unverified(string reason)
-        {
-            return new CheckResult(SeverityEnum.Unverified, this.Id)
-            {
-                Notes = { reason },
-            };
-        }
+            Notes = { reason },
+        };
     }
 }

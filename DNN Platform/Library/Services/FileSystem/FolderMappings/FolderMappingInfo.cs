@@ -2,135 +2,134 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem;
+
+using System;
+using System.Collections;
+using System.Data;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.FileSystem.Internal;
+
+/// <summary>  Represents the FolderMapping object and holds the Properties of that object.</summary>
+[Serializable]
+public class FolderMappingInfo : IHydratable
 {
-    using System;
-    using System.Collections;
-    using System.Data;
+    private Hashtable folderMappingSettings;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.FileSystem.Internal;
+    private string imageUrl;
 
-    /// <summary>  Represents the FolderMapping object and holds the Properties of that object.</summary>
-    [Serializable]
-    public class FolderMappingInfo : IHydratable
+    /// <summary>Initializes a new instance of the <see cref="FolderMappingInfo"/> class.</summary>
+    public FolderMappingInfo()
     {
-        private Hashtable folderMappingSettings;
+        this.FolderMappingID = Null.NullInteger;
+        this.PortalID = Null.NullInteger;
+    }
 
-        private string imageUrl;
+    /// <summary>Initializes a new instance of the <see cref="FolderMappingInfo"/> class.</summary>
+    /// <param name="portalID"></param>
+    /// <param name="mappingName"></param>
+    /// <param name="folderProviderType"></param>
+    public FolderMappingInfo(int portalID, string mappingName, string folderProviderType)
+    {
+        this.FolderMappingID = Null.NullInteger;
+        this.PortalID = portalID;
+        this.MappingName = mappingName;
+        this.FolderProviderType = folderProviderType;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="FolderMappingInfo"/> class.</summary>
-        public FolderMappingInfo()
+    public Hashtable FolderMappingSettings
+    {
+        get
         {
-            this.FolderMappingID = Null.NullInteger;
-            this.PortalID = Null.NullInteger;
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="FolderMappingInfo"/> class.</summary>
-        /// <param name="portalID"></param>
-        /// <param name="mappingName"></param>
-        /// <param name="folderProviderType"></param>
-        public FolderMappingInfo(int portalID, string mappingName, string folderProviderType)
-        {
-            this.FolderMappingID = Null.NullInteger;
-            this.PortalID = portalID;
-            this.MappingName = mappingName;
-            this.FolderProviderType = folderProviderType;
-        }
-
-        public Hashtable FolderMappingSettings
-        {
-            get
+            if (this.folderMappingSettings == null)
             {
-                if (this.folderMappingSettings == null)
+                if (this.FolderMappingID == Null.NullInteger)
                 {
-                    if (this.FolderMappingID == Null.NullInteger)
-                    {
-                        this.folderMappingSettings = new Hashtable();
-                    }
-                    else
-                    {
-                        this.folderMappingSettings = FolderMappingController.Instance.GetFolderMappingSettings(this.FolderMappingID);
-                    }
+                    this.folderMappingSettings = new Hashtable();
                 }
-
-                return this.folderMappingSettings;
-            }
-        }
-
-        public string ImageUrl
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.imageUrl))
+                else
                 {
-                    this.imageUrl = FolderProvider.Instance(this.FolderProviderType).GetFolderProviderIconPath();
+                    this.folderMappingSettings = FolderMappingController.Instance.GetFolderMappingSettings(this.FolderMappingID);
                 }
-
-                return this.imageUrl;
             }
-        }
 
-        public bool IsEditable
+            return this.folderMappingSettings;
+        }
+    }
+
+    public string ImageUrl
+    {
+        get
         {
-            get
+            if (string.IsNullOrEmpty(this.imageUrl))
             {
-                return !DefaultFolderProviders.GetDefaultProviders().Contains(this.FolderProviderType);
+                this.imageUrl = FolderProvider.Instance(this.FolderProviderType).GetFolderProviderIconPath();
             }
+
+            return this.imageUrl;
         }
+    }
 
-        public int FolderMappingID { get; set; }
-
-        public int PortalID { get; set; }
-
-        public string MappingName { get; set; }
-
-        public string FolderProviderType { get; set; }
-
-        public int Priority { get; set; }
-
-        public bool SyncAllSubFolders
+    public bool IsEditable
+    {
+        get
         {
-            get
-            {
-                if (this.FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
-                {
-                    return bool.Parse(this.FolderMappingSettings["SyncAllSubFolders"].ToString());
-                }
-
-                return true;
-            }
-
-            set
-            {
-                this.FolderMappingSettings["SyncAllSubFolders"] = value;
-            }
+            return !DefaultFolderProviders.GetDefaultProviders().Contains(this.FolderProviderType);
         }
+    }
 
-        /// <summary>  Gets or sets and sets the Key ID.</summary>
-        public int KeyID
+    public int FolderMappingID { get; set; }
+
+    public int PortalID { get; set; }
+
+    public string MappingName { get; set; }
+
+    public string FolderProviderType { get; set; }
+
+    public int Priority { get; set; }
+
+    public bool SyncAllSubFolders
+    {
+        get
         {
-            get
+            if (this.FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
             {
-                return this.FolderMappingID;
+                return bool.Parse(this.FolderMappingSettings["SyncAllSubFolders"].ToString());
             }
 
-            set
-            {
-                this.FolderMappingID = value;
-            }
+            return true;
         }
 
-        /// <summary>  Fills a FolderInfo from a Data Reader.</summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        public void Fill(IDataReader dr)
+        set
         {
-            this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-            this.MappingName = Null.SetNullString(dr["MappingName"]);
-            this.FolderProviderType = Null.SetNullString(dr["FolderProviderType"]);
-            this.Priority = Null.SetNullInteger(dr["Priority"]);
+            this.FolderMappingSettings["SyncAllSubFolders"] = value;
         }
+    }
+
+    /// <summary>  Gets or sets and sets the Key ID.</summary>
+    public int KeyID
+    {
+        get
+        {
+            return this.FolderMappingID;
+        }
+
+        set
+        {
+            this.FolderMappingID = value;
+        }
+    }
+
+    /// <summary>  Fills a FolderInfo from a Data Reader.</summary>
+    /// <param name="dr">The Data Reader to use.</param>
+    public void Fill(IDataReader dr)
+    {
+        this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
+        this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+        this.MappingName = Null.SetNullString(dr["MappingName"]);
+        this.FolderProviderType = Null.SetNullString(dr["FolderProviderType"]);
+        this.Priority = Null.SetNullInteger(dr["Priority"]);
     }
 }

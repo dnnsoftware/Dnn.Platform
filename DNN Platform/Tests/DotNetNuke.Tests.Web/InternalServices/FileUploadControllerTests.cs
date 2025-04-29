@@ -1,131 +1,130 @@
-﻿namespace DotNetNuke.Tests.Web.InternalServices
+﻿namespace DotNetNuke.Tests.Web.InternalServices;
+
+using System.Data;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+
+using Abstractions;
+using Abstractions.Application;
+using Abstractions.Logging;
+
+using Common;
+using Common.Lists;
+
+using Data;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Web.InternalServices;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
+
+using NUnit.Framework;
+
+using Services.Cache;
+
+using Utilities.Mocks;
+/// <summary>Tests FileUploadController methods.</summary>
+[TestFixture]
+public class FileUploadControllerTests
 {
-    using System.Data;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
+    private Mock<DataProvider> _mockDataProvider;
+    private FileUploadController _testInstance;
+    private Mock<CachingProvider> _mockCachingProvider;
+    private Mock<IPortalController> _mockPortalController;
+    private TestSynchronizationContext _synchronizationContext = new TestSynchronizationContext();
 
-    using Abstractions;
-    using Abstractions.Application;
-    using Abstractions.Logging;
-
-    using Common;
-    using Common.Lists;
-
-    using Data;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Web.InternalServices;
-
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Moq;
-
-    using NUnit.Framework;
-
-    using Services.Cache;
-
-    using Utilities.Mocks;
-    /// <summary>Tests FileUploadController methods</summary>
-    [TestFixture]
-    public class FileUploadControllerTests
+    [SetUp]
+    public void SetUp()
     {
-        private Mock<DataProvider> _mockDataProvider;
-        private FileUploadController _testInstance;
-        private Mock<CachingProvider> _mockCachingProvider;
-        private Mock<IPortalController> _mockPortalController;
-        private TestSynchronizationContext _synchronizationContext = new TestSynchronizationContext();
+        this.SetupDataProvider();
 
-        [SetUp]
-        public void SetUp()
-        {
-            this.SetupDataProvider();
+        this.SetupCachingProvider();
 
-            this.SetupCachingProvider();
+        this.SetupPortalSettings();
+        this.SetupServiceProvider();
+        this.SetupSynchronizationContext();
+    }
 
-            this.SetupPortalSettings();
-            this.SetupServiceProvider();
-            this.SetupSynchronizationContext();
-        }
+    [TearDown]
+    public void TearDown()
+    {
+        this._testInstance?.Dispose();
+    }
 
-        [TearDown]
-        public void TearDown()
-        {
-            this._testInstance?.Dispose();
-        }
+    [Test]
+    [SetCulture("tr-TR")]
 
-        [Test]
-        [SetCulture("tr-TR")]
+    public async Task UploadFromLocal_ShouldUploadFile_WithTrCultureAsync()
+    {
+        var formDataContent = new MultipartFormDataContent();
+        formDataContent.Add(new StringContent("Hello World!"), "\"postfile\"", "\"testing\"");
 
-        public async Task UploadFromLocal_ShouldUploadFile_WithTrCultureAsync()
-        {
-            var formDataContent = new MultipartFormDataContent();
-            formDataContent.Add(new StringContent("Hello World!"), "\"postfile\"", "\"testing\"");
+        var request = new HttpRequestMessage();
+        request.Content = formDataContent;
+        this._testInstance.Request = request;
+        await this._testInstance.UploadFromLocal(-1);
 
-            var request = new HttpRequestMessage();
-            request.Content = formDataContent;
-            this._testInstance.Request = request;
-            await this._testInstance.UploadFromLocal(-1);
+        Assert.That(_synchronizationContext.IsUploadFileCalled(), Is.True);
+    }
 
-            Assert.That(_synchronizationContext.IsUploadFileCalled(), Is.True);
-        }
+    private void SetupPortalSettings()
+    {
+        _mockPortalController = MockComponentProvider.CreatePortalController();
+        _mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(new PortalSettings() { PortalId = 0 });
+        PortalController.SetTestableInstance(_mockPortalController.Object);
+    }
 
-        private void SetupPortalSettings()
-        {
-            _mockPortalController = MockComponentProvider.CreatePortalController();
-            _mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(new PortalSettings() { PortalId = 0 });
-            PortalController.SetTestableInstance(_mockPortalController.Object);
-        }
+    private void SetupDataProvider()
+    {
+        this._mockDataProvider = MockComponentProvider.CreateDataProvider();
+        this._mockDataProvider.Setup(x => x.GetListEntriesByListName("ImageTypes", string.Empty, It.IsAny<int>()))
+            .Returns(Mock.Of<IDataReader>());
+    }
 
-        private void SetupDataProvider()
-        {
-            this._mockDataProvider = MockComponentProvider.CreateDataProvider();
-            this._mockDataProvider.Setup(x => x.GetListEntriesByListName("ImageTypes", string.Empty, It.IsAny<int>()))
-                .Returns(Mock.Of<IDataReader>());
-        }
+    private void SetupCachingProvider()
+    {
+        this._mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
+        this._mockCachingProvider.Setup(x => x.GetItem(It.IsAny<string>()))
+            .Returns(Enumerable.Empty<ListEntryInfo>());
+    }
 
-        private void SetupCachingProvider()
-        {
-            this._mockCachingProvider = MockComponentProvider.CreateDataCacheProvider();
-            this._mockCachingProvider.Setup(x => x.GetItem(It.IsAny<string>()))
-                .Returns(Enumerable.Empty<ListEntryInfo>());
-        }
-
-        private void SetupServiceProvider()
-        {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddTransient<IApplicationStatusInfo>(
+    private void SetupServiceProvider()
+    {
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddTransient<IApplicationStatusInfo>(
             container => new Application.ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
-            serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
-            serviceCollection.AddTransient(container => Mock.Of<IEventLogger>());
-            Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+        serviceCollection.AddTransient(container => Mock.Of<INavigationManager>());
+        serviceCollection.AddTransient(container => Mock.Of<IEventLogger>());
+        Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+    }
+
+    private void SetupSynchronizationContext()
+    {
+        _synchronizationContext = new TestSynchronizationContext();
+        SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
+        this._testInstance = new FileUploadController();
+    }
+
+    private class TestSynchronizationContext : SynchronizationContext
+    {
+        private bool isUploadFileCalled;
+
+        public override void Post(SendOrPostCallback d, object state)
+        {
+            d(state);
         }
 
-        private void SetupSynchronizationContext()
+        public override void Send(SendOrPostCallback d, object state)
         {
-            _synchronizationContext = new TestSynchronizationContext();
-            SynchronizationContext.SetSynchronizationContext(_synchronizationContext);
-            this._testInstance = new FileUploadController();
+            isUploadFileCalled = true;
         }
 
-        private class TestSynchronizationContext : SynchronizationContext
+        public bool IsUploadFileCalled()
         {
-            private bool isUploadFileCalled;
-
-            public override void Post(SendOrPostCallback d, object state)
-            {
-                d(state);
-            }
-
-            public override void Send(SendOrPostCallback d, object state)
-            {
-                isUploadFileCalled = true;
-            }
-
-            public bool IsUploadFileCalled()
-            {
-                return isUploadFileCalled;
-            }
+            return isUploadFileCalled;
         }
     }
 }

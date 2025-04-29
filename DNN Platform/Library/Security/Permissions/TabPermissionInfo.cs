@@ -1,111 +1,110 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Security.Permissions
+namespace DotNetNuke.Security.Permissions;
+
+using System;
+using System.Data;
+using System.Xml.Serialization;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using Newtonsoft.Json;
+
+/// Project  : DotNetNuke
+/// Namespace: DotNetNuke.Security.Permissions
+/// Class    : TabPermissionInfo
+/// <summary>TabPermissionInfo provides the Entity Layer for Tab Permissions.</summary>
+[Serializable]
+[XmlRoot("permission")]
+public class TabPermissionInfo : PermissionInfoBase, IHydratable
 {
-    using System;
-    using System.Data;
-    using System.Xml.Serialization;
+    private int tabID;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using Newtonsoft.Json;
+    // local property declarations
+    private int tabPermissionID;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : TabPermissionInfo
-    /// <summary>TabPermissionInfo provides the Entity Layer for Tab Permissions.</summary>
-    [Serializable]
-    [XmlRoot("permission")]
-    public class TabPermissionInfo : PermissionInfoBase, IHydratable
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
+    /// Constructs a new TabPermissionInfo.
+    /// </summary>
+    public TabPermissionInfo()
     {
-        private int tabID;
+        this.tabPermissionID = Null.NullInteger;
+        this.tabID = Null.NullInteger;
+    }
 
-        // local property declarations
-        private int tabPermissionID;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
+    /// Constructs a new TabPermissionInfo.
+    /// </summary>
+    /// <param name="permission">A PermissionInfo object.</param>
+    public TabPermissionInfo(PermissionInfo permission)
+        : this()
+    {
+        this.ModuleDefID = permission.ModuleDefID;
+        this.PermissionCode = permission.PermissionCode;
+        this.PermissionID = permission.PermissionID;
+        this.PermissionKey = permission.PermissionKey;
+        this.PermissionName = permission.PermissionName;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
-        /// Constructs a new TabPermissionInfo.
-        /// </summary>
-        public TabPermissionInfo()
+    /// <summary>Gets or sets the Tab Permission ID.</summary>
+    /// <returns>An Integer.</returns>
+    [XmlElement("tabpermissionid")]
+    public int TabPermissionID
+    {
+        get
         {
-            this.tabPermissionID = Null.NullInteger;
-            this.tabID = Null.NullInteger;
+            return this.tabPermissionID;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
-        /// Constructs a new TabPermissionInfo.
-        /// </summary>
-        /// <param name="permission">A PermissionInfo object.</param>
-        public TabPermissionInfo(PermissionInfo permission)
-            : this()
+        set
         {
-            this.ModuleDefID = permission.ModuleDefID;
-            this.PermissionCode = permission.PermissionCode;
-            this.PermissionID = permission.PermissionID;
-            this.PermissionKey = permission.PermissionKey;
-            this.PermissionName = permission.PermissionName;
+            this.tabPermissionID = value;
+        }
+    }
+
+    /// <summary>Gets or sets the Tab ID.</summary>
+    /// <returns>An Integer.</returns>
+    [XmlElement("tabid")]
+    public int TabID
+    {
+        get
+        {
+            return this.tabID;
         }
 
-        /// <summary>Gets or sets the Tab Permission ID.</summary>
-        /// <returns>An Integer.</returns>
-        [XmlElement("tabpermissionid")]
-        public int TabPermissionID
+        set
         {
-            get
-            {
-                return this.tabPermissionID;
-            }
+            this.tabID = value;
+        }
+    }
 
-            set
-            {
-                this.tabPermissionID = value;
-            }
+    /// <summary>Gets or sets the Key ID.</summary>
+    /// <returns>An Integer.</returns>
+    [XmlIgnore]
+    [JsonIgnore]
+    public int KeyID
+    {
+        get
+        {
+            return this.TabPermissionID;
         }
 
-        /// <summary>Gets or sets the Tab ID.</summary>
-        /// <returns>An Integer.</returns>
-        [XmlElement("tabid")]
-        public int TabID
+        set
         {
-            get
-            {
-                return this.tabID;
-            }
-
-            set
-            {
-                this.tabID = value;
-            }
+            this.TabPermissionID = value;
         }
+    }
 
-        /// <summary>Gets or sets the Key ID.</summary>
-        /// <returns>An Integer.</returns>
-        [XmlIgnore]
-        [JsonIgnore]
-        public int KeyID
-        {
-            get
-            {
-                return this.TabPermissionID;
-            }
-
-            set
-            {
-                this.TabPermissionID = value;
-            }
-        }
-
-        /// <summary>Fills a TabPermissionInfo from a Data Reader.</summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        public void Fill(IDataReader dr)
-        {
-            // Call the base classes fill method to populate base class properties
-            this.FillInternal(dr);
-            this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
-            this.TabID = Null.SetNullInteger(dr["TabID"]);
-        }
+    /// <summary>Fills a TabPermissionInfo from a Data Reader.</summary>
+    /// <param name="dr">The Data Reader to use.</param>
+    public void Fill(IDataReader dr)
+    {
+        // Call the base classes fill method to populate base class properties
+        this.FillInternal(dr);
+        this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
+        this.TabID = Null.SetNullInteger(dr["TabID"]);
     }
 }

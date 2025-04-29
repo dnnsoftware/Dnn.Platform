@@ -1,12 +1,11 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, Host, h } from "@stencil/core";
 
 @Component({
-  tag: 'dnn-rm-right-pane',
-  styleUrl: 'dnn-rm-right-pane.scss',
+  tag: "dnn-rm-right-pane",
+  styleUrl: "dnn-rm-right-pane.scss",
   shadow: true,
 })
 export class DnnRmRightPane {
-
   render() {
     return (
       <Host>
@@ -16,5 +15,4 @@ export class DnnRmRightPane {
       </Host>
     );
   }
-
 }

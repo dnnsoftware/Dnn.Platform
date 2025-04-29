@@ -1,115 +1,114 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.Skins.Controls
+namespace DotNetNuke.UI.Skins.Controls;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Services.Exceptions;
+
+/// <summary></summary>
+public class ModuleMessage : SkinObjectBase
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel dnnSkinMessage;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblHeading;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblMessage;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Control scrollScript;
 
-    using DotNetNuke.Services.Exceptions;
-
-    /// <summary></summary>
-    public class ModuleMessage : SkinObjectBase
+    public enum ModuleMessageType
     {
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel dnnSkinMessage;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblHeading;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblMessage;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Control scrollScript;
+        GreenSuccess = 0,
+        YellowWarning = 1,
+        RedError = 2,
+        BlueInfo = 3,
+    }
 
-        public enum ModuleMessageType
+    /// <summary>Gets a value indicating whether check this message is shown as page message or module message.</summary>
+    public bool IsModuleMessage
+    {
+        get
         {
-            GreenSuccess = 0,
-            YellowWarning = 1,
-            RedError = 2,
-            BlueInfo = 3,
+            return this.Parent.ID == "MessagePlaceHolder";
         }
+    }
 
-        /// <summary>Gets a value indicating whether check this message is shown as page message or module message.</summary>
-        public bool IsModuleMessage
+    public string Text { get; set; }
+
+    public string Heading { get; set; }
+
+    public ModuleMessageType IconType { get; set; }
+
+    public string IconImage { get; set; }
+
+    /// <summary>
+    /// The Page_Load server event handler on this page is used
+    /// to populate the role information for the page.
+    /// </summary>
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+
+        try
         {
-            get
+            var strMessage = string.Empty;
+
+            // check to see if a url
+            // was passed in for an icon
+            if (!string.IsNullOrEmpty(this.IconImage))
             {
-                return this.Parent.ID == "MessagePlaceHolder";
+                strMessage += this.Text;
+                this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
             }
-        }
-
-        public string Text { get; set; }
-
-        public string Heading { get; set; }
-
-        public ModuleMessageType IconType { get; set; }
-
-        public string IconImage { get; set; }
-
-        /// <summary>
-        /// The Page_Load server event handler on this page is used
-        /// to populate the role information for the page.
-        /// </summary>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            try
+            else
             {
-                var strMessage = string.Empty;
-
-                // check to see if a url
-                // was passed in for an icon
-                if (!string.IsNullOrEmpty(this.IconImage))
+                switch (this.IconType)
                 {
-                    strMessage += this.Text;
-                    this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
-                }
-                else
-                {
-                    switch (this.IconType)
-                    {
-                        case ModuleMessageType.GreenSuccess:
-                            strMessage += this.Text;
-                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormSuccess";
-                            break;
-                        case ModuleMessageType.YellowWarning:
-                            strMessage += this.Text;
-                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
-                            break;
-                        case ModuleMessageType.BlueInfo:
-                            strMessage += this.Text;
-                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormInfo";
-                            break;
-                        case ModuleMessageType.RedError:
-                            strMessage += this.Text;
-                            this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormValidationSummary";
-                            break;
-                    }
-                }
-
-                this.lblMessage.Text = strMessage;
-
-                if (!string.IsNullOrEmpty(this.Heading))
-                {
-                    this.lblHeading.Visible = true;
-                    this.lblHeading.Text = this.Heading;
+                    case ModuleMessageType.GreenSuccess:
+                        strMessage += this.Text;
+                        this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormSuccess";
+                        break;
+                    case ModuleMessageType.YellowWarning:
+                        strMessage += this.Text;
+                        this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
+                        break;
+                    case ModuleMessageType.BlueInfo:
+                        strMessage += this.Text;
+                        this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormInfo";
+                        break;
+                    case ModuleMessageType.RedError:
+                        strMessage += this.Text;
+                        this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormValidationSummary";
+                        break;
                 }
             }
-            catch (Exception exc)
+
+            this.lblMessage.Text = strMessage;
+
+            if (!string.IsNullOrEmpty(this.Heading))
             {
-                Exceptions.ProcessModuleLoadException(this, exc, false);
+                this.lblHeading.Visible = true;
+                this.lblHeading.Text = this.Heading;
             }
         }
-
-        /// <inheritdoc/>
-        protected override void OnPreRender(EventArgs e)
+        catch (Exception exc)
         {
-            base.OnPreRender(e);
-
-            // set the scroll js only shown for module message and in postback mode.
-            this.scrollScript.Visible = this.IsPostBack && this.IsModuleMessage;
+            Exceptions.ProcessModuleLoadException(this, exc, false);
         }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        // set the scroll js only shown for module message and in postback mode.
+        this.scrollScript.Visible = this.IsPostBack && this.IsModuleMessage;
     }
 }

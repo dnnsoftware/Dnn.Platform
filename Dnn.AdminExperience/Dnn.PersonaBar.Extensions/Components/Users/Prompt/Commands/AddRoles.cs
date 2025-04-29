@@ -2,140 +2,134 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
+namespace Dnn.PersonaBar.Users.Components.Prompt.Commands;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt.Models;
+using Dnn.PersonaBar.Roles.Components;
+using Dnn.PersonaBar.Users.Components.Prompt.Models;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
+
+using Constants = Dnn.PersonaBar.Users.Components.Constants;
+
+[ConsoleCommand("add-roles", Constants.UsersCategory, "Prompt_AddRoles_Description")]
+public class AddRoles : ConsoleCommandBase
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    [FlagParameter("id", "Prompt_AddRoles_FlagId", "Integer", true)]
+    private const string FlagId = "id";
 
-    using Dnn.PersonaBar.Library.Prompt;
-    using Dnn.PersonaBar.Library.Prompt.Attributes;
-    using Dnn.PersonaBar.Library.Prompt.Models;
-    using Dnn.PersonaBar.Roles.Components;
-    using Dnn.PersonaBar.Users.Components.Prompt.Models;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security.Roles;
+    [FlagParameter("roles", "Prompt_AddRoles_FlagRoles", "String", true)]
+    private const string FlagRoles = "roles";
 
-    using Constants = Dnn.PersonaBar.Users.Components.Constants;
+    [FlagParameter("start", "Prompt_AddRoles_FlagStart", "DateTime")]
+    private const string FlagStart = "start";
 
-    [ConsoleCommand("add-roles", Constants.UsersCategory, "Prompt_AddRoles_Description")]
+    [FlagParameter("end", "Prompt_AddRoles_FlagEnd", "DateTime")]
+    private const string FlagEnd = "end";
 
-    public class AddRoles : ConsoleCommandBase
+    private readonly IUserValidator userValidator;
+    private readonly IUsersController usersController;
+    private readonly IRolesController rolesController;
+
+    /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
+    public AddRoles()
+        : this(new UserValidator(), UsersController.Instance, RolesController.Instance)
     {
-        [FlagParameter("id", "Prompt_AddRoles_FlagId", "Integer", true)]
+    }
 
-        private const string FlagId = "id";
+    /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
+    /// <param name="userValidator"></param>
+    /// <param name="userController"></param>
+    /// <param name="rolesController"></param>
+    public AddRoles(IUserValidator userValidator, IUsersController userController, IRolesController rolesController)
+    {
+        this.userValidator = userValidator;
+        this.usersController = userController;
+        this.rolesController = rolesController;
+    }
 
-        [FlagParameter("roles", "Prompt_AddRoles_FlagRoles", "String", true)]
+    /// <inheritdoc/>
+    public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        private const string FlagRoles = "roles";
+    private int UserId { get; set; }
 
-        [FlagParameter("start", "Prompt_AddRoles_FlagStart", "DateTime")]
+    private string Roles { get; set; }
 
-        private const string FlagStart = "start";
+    private DateTime? StartDate { get; set; }
 
-        [FlagParameter("end", "Prompt_AddRoles_FlagEnd", "DateTime")]
+    private DateTime? EndDate { get; set; }
 
-        private const string FlagEnd = "end";
+    /// <inheritdoc/>
+    public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+    {
+        this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
+        this.Roles = this.GetFlagValue(FlagRoles, "Roles", string.Empty, true);
+        this.StartDate = this.GetFlagValue<DateTime?>(FlagStart, "Start Date", null);
+        this.EndDate = this.GetFlagValue<DateTime?>(FlagEnd, "End Date", null);
 
-        private IUserValidator userValidator;
-        private IUsersController usersController;
-        private IRolesController rolesController;
-
-        /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
-        public AddRoles()
-            : this(new UserValidator(), UsersController.Instance, RolesController.Instance)
+        // validate end date is beyond the start date
+        if (this.StartDate.HasValue && this.EndDate.HasValue)
         {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
-        /// <param name="userValidator"></param>
-        /// <param name="userController"></param>
-        /// <param name="rolesController"></param>
-        public AddRoles(IUserValidator userValidator, IUsersController userController, IRolesController rolesController)
-        {
-            this.userValidator = userValidator;
-            this.usersController = userController;
-            this.rolesController = rolesController;
-        }
-
-        /// <inheritdoc/>
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
-        private int UserId { get; set; }
-
-        private string Roles { get; set; }
-
-        private DateTime? StartDate { get; set; }
-
-        private DateTime? EndDate { get; set; }
-
-        /// <inheritdoc/>
-        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {
-            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            this.Roles = this.GetFlagValue(FlagRoles, "Roles", string.Empty, true);
-            this.StartDate = this.GetFlagValue<DateTime?>(FlagStart, "Start Date", null);
-            this.EndDate = this.GetFlagValue<DateTime?>(FlagEnd, "End Date", null);
-
-            // validate end date is beyond the start date
-            if (this.StartDate.HasValue && this.EndDate.HasValue)
+            if (this.EndDate < this.StartDate)
             {
-                if (this.EndDate < this.StartDate)
-                {
-                    this.AddMessage(this.LocalizeString("Prompt_StartDateGreaterThanEnd") + " ");
-                }
+                this.AddMessage(this.LocalizeString("Prompt_StartDateGreaterThanEnd") + " ");
             }
         }
+    }
 
-        /// <inheritdoc/>
-        public override ConsoleResultModel Run()
+    /// <inheritdoc/>
+    public override ConsoleResultModel Run()
+    {
+        ConsoleErrorResultModel errorResultModel;
+        UserInfo userInfo;
+
+        this.CheckRoles();
+
+        if ((errorResultModel = this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo)) != null)
         {
-            ConsoleErrorResultModel errorResultModel;
-            UserInfo userInfo;
-
-            this.CheckRoles();
-
-            if ((errorResultModel = this.userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo)) != null)
-            {
-                return errorResultModel;
-            }
-
-            try
-            {
-                this.usersController.AddUserToRoles(this.User, userInfo.UserID, userInfo.PortalID, this.Roles, ",", this.StartDate, this.EndDate);
-                int totalRoles;
-                var userRoles = this.usersController.GetUserRoles(userInfo, string.Empty, out totalRoles).Select(UserRoleModel.FromDnnUserRoleInfo).ToList();
-                return new ConsoleResultModel(string.Empty) { Data = userRoles, Output = "Total Roles: " + totalRoles, Records = userRoles.Count };
-            }
-            catch (Exception ex)
-            {
-                return new ConsoleErrorResultModel(ex.Message);
-            }
+            return errorResultModel;
         }
 
-        private void CheckRoles()
+        try
         {
-            IList<string> rolesFilter = new List<string>();
-            if (!string.IsNullOrWhiteSpace(this.Roles))
+            this.usersController.AddUserToRoles(this.User, userInfo.UserID, userInfo.PortalID, this.Roles, ",", this.StartDate, this.EndDate);
+            int totalRoles;
+            var userRoles = this.usersController.GetUserRoles(userInfo, string.Empty, out totalRoles).Select(UserRoleModel.FromDnnUserRoleInfo).ToList();
+            return new ConsoleResultModel(string.Empty) { Data = userRoles, Output = "Total Roles: " + totalRoles, Records = userRoles.Count };
+        }
+        catch (Exception ex)
+        {
+            return new ConsoleErrorResultModel(ex.Message);
+        }
+    }
+
+    private void CheckRoles()
+    {
+        IList<string> rolesFilter = new List<string>();
+        if (!string.IsNullOrWhiteSpace(this.Roles))
+        {
+            this.Roles.Split(',').ToList().ForEach((role) => rolesFilter.Add(role.Trim()));
+        }
+
+        if (rolesFilter.Count() > 0)
+        {
+            IList<RoleInfo> foundRoles = this.rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
+            HashSet<string> foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
+            HashSet<string> roleFiltersSet = new HashSet<string>(rolesFilter);
+            roleFiltersSet.ExceptWith(foundRolesNames);
+
+            int notFoundCount = roleFiltersSet.Count();
+
+            if (notFoundCount > 0)
             {
-                this.Roles.Split(',').ToList().ForEach((role) => rolesFilter.Add(role.Trim()));
-            }
-
-            if (rolesFilter.Count() > 0)
-            {
-                IList<RoleInfo> foundRoles = this.rolesController.GetRolesByNames(this.PortalSettings, -1, rolesFilter);
-                HashSet<string> foundRolesNames = new HashSet<string>(foundRoles.Select(role => role.RoleName));
-                HashSet<string> roleFiltersSet = new HashSet<string>(rolesFilter);
-                roleFiltersSet.ExceptWith(foundRolesNames);
-
-                int notFoundCount = roleFiltersSet.Count();
-
-                if (notFoundCount > 0)
-                {
-                    throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : string.Empty, string.Join(",", roleFiltersSet)));
-                }
+                throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : string.Empty, string.Join(",", roleFiltersSet)));
             }
         }
     }

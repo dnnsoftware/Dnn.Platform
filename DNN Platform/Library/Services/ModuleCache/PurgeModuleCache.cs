@@ -1,63 +1,62 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.ModuleCache
+namespace DotNetNuke.Services.ModuleCache;
+
+using System;
+using System.Collections.Generic;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Scheduling;
+
+public class PurgeModuleCache : SchedulerClient
 {
-    using System;
-    using System.Collections.Generic;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Scheduling;
-
-    public class PurgeModuleCache : SchedulerClient
+    /// <summary>Initializes a new instance of the <see cref="PurgeModuleCache"/> class.</summary>
+    /// <param name="objScheduleHistoryItem"></param>
+    public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
+        this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="PurgeModuleCache"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
-        public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
+    /// <inheritdoc/>
+    public override void DoWork()
+    {
+        try
         {
-            this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
-        }
-
-        /// <inheritdoc/>
-        public override void DoWork()
-        {
-            try
+            var portals = PortalController.Instance.GetPortals();
+            foreach (KeyValuePair<string, ModuleCachingProvider> kvp in ModuleCachingProvider.GetProviderList())
             {
-                var portals = PortalController.Instance.GetPortals();
-                foreach (KeyValuePair<string, ModuleCachingProvider> kvp in ModuleCachingProvider.GetProviderList())
+                try
                 {
-                    try
+                    foreach (PortalInfo portal in portals)
                     {
-                        foreach (PortalInfo portal in portals)
-                        {
-                            kvp.Value.PurgeExpiredItems(portal.PortalID);
-                            this.ScheduleHistoryItem.AddLogNote(string.Format("Purged Module cache for {0}.  ", kvp.Key));
-                        }
-                    }
-                    catch (NotSupportedException exc)
-                    {
-                        // some Module caching providers don't use this feature
-                        Logger.Debug(exc);
+                        kvp.Value.PurgeExpiredItems(portal.PortalID);
+                        this.ScheduleHistoryItem.AddLogNote(string.Format("Purged Module cache for {0}.  ", kvp.Key));
                     }
                 }
-
-                this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
+                catch (NotSupportedException exc)
+                {
+                    // some Module caching providers don't use this feature
+                    Logger.Debug(exc);
+                }
             }
-            catch (Exception exc)
-            {
-                this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging Module cache task failed: {0}.", exc.ToString()));
+            this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
+        }
+        catch (Exception exc)
+        {
+            this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                // notification that we have errored
-                this.Errored(ref exc); // REQUIRED
+            this.ScheduleHistoryItem.AddLogNote(string.Format("Purging Module cache task failed: {0}.", exc.ToString()));
 
-                // log the exception
-                Exceptions.Exceptions.LogException(exc); // OPTIONAL
-            }
+            // notification that we have errored
+            this.Errored(ref exc); // REQUIRED
+
+            // log the exception
+            Exceptions.Exceptions.LogException(exc); // OPTIONAL
         }
     }
 }

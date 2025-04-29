@@ -1,12 +1,12 @@
-:host{
-    display: flex;
-    flex-direction: column;
+:host {
+  display: flex;
+  flex-direction: column;
 }
-:host(*){
-    background-color: transparent;
-    border: none;
-    padding: 0.5em 1em;
-    margin: 0;
-    border-bottom: 1px solid lightgray;
-    white-space: nowrap;
+:host(*) {
+  background-color: transparent;
+  border: none;
+  padding: 0.5em 1em;
+  margin: 0;
+  border-bottom: 1px solid lightgray;
+  white-space: nowrap;
 }

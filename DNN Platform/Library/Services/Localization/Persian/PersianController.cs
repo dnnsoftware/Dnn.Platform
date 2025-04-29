@@ -2,72 +2,71 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Localization.Persian
+namespace DotNetNuke.Services.Localization.Persian;
+
+using System;
+using System.Globalization;
+using System.Reflection;
+
+internal class PersianController
 {
-    using System;
-    using System.Globalization;
-    using System.Reflection;
-
-    internal class PersianController
+    public static CultureInfo GetPersianCultureInfo()
     {
-        public static CultureInfo GetPersianCultureInfo()
+        var persianCultureInfo = new CultureInfo("fa-IR");
+
+        SetPersianDateTimeFormatInfo(persianCultureInfo.DateTimeFormat);
+        SetNumberFormatInfo(persianCultureInfo.NumberFormat);
+
+        var cal = new PersianCalendar();
+
+        FieldInfo fieldInfo = persianCultureInfo.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (fieldInfo != null)
         {
-            var persianCultureInfo = new CultureInfo("fa-IR");
-
-            SetPersianDateTimeFormatInfo(persianCultureInfo.DateTimeFormat);
-            SetNumberFormatInfo(persianCultureInfo.NumberFormat);
-
-            var cal = new PersianCalendar();
-
-            FieldInfo fieldInfo = persianCultureInfo.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (fieldInfo != null)
-            {
-                fieldInfo.SetValue(persianCultureInfo, cal);
-            }
-
-            FieldInfo info = persianCultureInfo.DateTimeFormat.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (info != null)
-            {
-                info.SetValue(persianCultureInfo.DateTimeFormat, cal);
-            }
-
-            return persianCultureInfo;
+            fieldInfo.SetValue(persianCultureInfo, cal);
         }
 
-        public static void SetPersianDateTimeFormatInfo(DateTimeFormatInfo persianDateTimeFormatInfo)
+        FieldInfo info = persianCultureInfo.DateTimeFormat.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (info != null)
         {
-            persianDateTimeFormatInfo.MonthNames = new[] { "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند", string.Empty };
-            persianDateTimeFormatInfo.MonthGenitiveNames = persianDateTimeFormatInfo.MonthNames;
-            persianDateTimeFormatInfo.AbbreviatedMonthNames = persianDateTimeFormatInfo.MonthNames;
-            persianDateTimeFormatInfo.AbbreviatedMonthGenitiveNames = persianDateTimeFormatInfo.MonthNames;
-
-            persianDateTimeFormatInfo.DayNames = new[] { "یکشنبه", "دوشنبه", "ﺳﻪشنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه" };
-            persianDateTimeFormatInfo.AbbreviatedDayNames = new[] { "ی", "د", "س", "چ", "پ", "ج", "ش" };
-            persianDateTimeFormatInfo.ShortestDayNames = persianDateTimeFormatInfo.AbbreviatedDayNames;
-            persianDateTimeFormatInfo.FirstDayOfWeek = DayOfWeek.Saturday;
-
-            persianDateTimeFormatInfo.AMDesignator = "ق.ظ";
-            persianDateTimeFormatInfo.PMDesignator = "ب.ظ";
-
-            persianDateTimeFormatInfo.DateSeparator = "/";
-            persianDateTimeFormatInfo.TimeSeparator = ":";
-
-            persianDateTimeFormatInfo.FullDateTimePattern = "tt hh:mm:ss yyyy mmmm dd dddd";
-            persianDateTimeFormatInfo.YearMonthPattern = "yyyy, MMMM";
-            persianDateTimeFormatInfo.MonthDayPattern = "dd MMMM";
-
-            persianDateTimeFormatInfo.LongDatePattern = "dddd, dd MMMM,yyyy";
-            persianDateTimeFormatInfo.ShortDatePattern = "yyyy/MM/dd";
-
-            persianDateTimeFormatInfo.LongTimePattern = "hh:mm:ss tt";
-            persianDateTimeFormatInfo.ShortTimePattern = "hh:mm tt";
+            info.SetValue(persianCultureInfo.DateTimeFormat, cal);
         }
 
-        public static void SetNumberFormatInfo(NumberFormatInfo persianNumberFormatInfo)
-        {
-            persianNumberFormatInfo.NumberDecimalSeparator = "/";
-            persianNumberFormatInfo.DigitSubstitution = DigitShapes.NativeNational;
-            persianNumberFormatInfo.NumberNegativePattern = 0;
-        }
+        return persianCultureInfo;
+    }
+
+    public static void SetPersianDateTimeFormatInfo(DateTimeFormatInfo persianDateTimeFormatInfo)
+    {
+        persianDateTimeFormatInfo.MonthNames = new[] { "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند", string.Empty };
+        persianDateTimeFormatInfo.MonthGenitiveNames = persianDateTimeFormatInfo.MonthNames;
+        persianDateTimeFormatInfo.AbbreviatedMonthNames = persianDateTimeFormatInfo.MonthNames;
+        persianDateTimeFormatInfo.AbbreviatedMonthGenitiveNames = persianDateTimeFormatInfo.MonthNames;
+
+        persianDateTimeFormatInfo.DayNames = new[] { "یکشنبه", "دوشنبه", "ﺳﻪشنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه" };
+        persianDateTimeFormatInfo.AbbreviatedDayNames = new[] { "ی", "د", "س", "چ", "پ", "ج", "ش" };
+        persianDateTimeFormatInfo.ShortestDayNames = persianDateTimeFormatInfo.AbbreviatedDayNames;
+        persianDateTimeFormatInfo.FirstDayOfWeek = DayOfWeek.Saturday;
+
+        persianDateTimeFormatInfo.AMDesignator = "ق.ظ";
+        persianDateTimeFormatInfo.PMDesignator = "ب.ظ";
+
+        persianDateTimeFormatInfo.DateSeparator = "/";
+        persianDateTimeFormatInfo.TimeSeparator = ":";
+
+        persianDateTimeFormatInfo.FullDateTimePattern = "tt hh:mm:ss yyyy mmmm dd dddd";
+        persianDateTimeFormatInfo.YearMonthPattern = "yyyy, MMMM";
+        persianDateTimeFormatInfo.MonthDayPattern = "dd MMMM";
+
+        persianDateTimeFormatInfo.LongDatePattern = "dddd, dd MMMM,yyyy";
+        persianDateTimeFormatInfo.ShortDatePattern = "yyyy/MM/dd";
+
+        persianDateTimeFormatInfo.LongTimePattern = "hh:mm:ss tt";
+        persianDateTimeFormatInfo.ShortTimePattern = "hh:mm tt";
+    }
+
+    public static void SetNumberFormatInfo(NumberFormatInfo persianNumberFormatInfo)
+    {
+        persianNumberFormatInfo.NumberDecimalSeparator = "/";
+        persianNumberFormatInfo.DigitSubstitution = DigitShapes.NativeNational;
+        persianNumberFormatInfo.NumberNegativePattern = 0;
     }
 }

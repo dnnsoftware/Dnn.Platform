@@ -1,127 +1,126 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.Web.UI.WebControls;
+
+using System;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Personalization;
+
+public class DnnLanguageLabel : CompositeControl, ILocalizable
 {
-    using System;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
+    private Image flag;
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Personalization;
+    private Label label;
 
-    public class DnnLanguageLabel : CompositeControl, ILocalizable
+    public DnnLanguageLabel()
     {
-        private Image flag;
+        this.Localize = true;
+    }
 
-        private Label label;
+    public CultureDropDownTypes DisplayType { get; set; }
 
-        public DnnLanguageLabel()
+    public string Language
+    {
+        get
         {
-            this.Localize = true;
+            return (string)this.ViewState["Language"];
         }
 
-        public CultureDropDownTypes DisplayType { get; set; }
-
-        public string Language
+        set
         {
-            get
-            {
-                return (string)this.ViewState["Language"];
-            }
+            this.ViewState["Language"] = value;
+        }
+    }
 
-            set
+    /// <inheritdoc/>
+    public bool Localize { get; set; }
+
+    /// <inheritdoc/>
+    public string LocalResourceFile { get; set; }
+
+    /// <inheritdoc/>
+    public virtual void LocalizeStrings()
+    {
+    }
+
+    /// <inheritdoc/>
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+        this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+    }
+
+    /// <summary>
+    ///   CreateChildControls overrides the Base class's method to correctly build the
+    ///   control based on the configuration.
+    /// </summary>
+    protected override void CreateChildControls()
+    {
+        // First clear the controls collection
+        this.Controls.Clear();
+
+        this.flag = new Image { ViewStateMode = ViewStateMode.Disabled };
+        this.Controls.Add(this.flag);
+
+        this.Controls.Add(new LiteralControl("&nbsp;"));
+
+        this.label = new Label();
+        this.label.ViewStateMode = ViewStateMode.Disabled;
+        this.Controls.Add(this.label);
+
+        // Call base class's method
+        base.CreateChildControls();
+    }
+
+    /// <summary>  OnPreRender runs just before the control is rendered.</summary>
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        if (string.IsNullOrEmpty(this.Language))
+        {
+            this.flag.ImageUrl = "~/images/Flags/none.gif";
+        }
+        else
+        {
+            this.flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", this.Language);
+        }
+
+        if (this.DisplayType == 0)
+        {
+            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            string viewTypePersonalizationKey = "ViewType" + portalSettings.PortalId;
+            string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
+            switch (viewType)
             {
-                this.ViewState["Language"] = value;
+                case "NATIVE":
+                    this.DisplayType = CultureDropDownTypes.NativeName;
+                    break;
+                case "ENGLISH":
+                    this.DisplayType = CultureDropDownTypes.EnglishName;
+                    break;
+                default:
+                    this.DisplayType = CultureDropDownTypes.DisplayName;
+                    break;
             }
         }
 
-        /// <inheritdoc/>
-        public bool Localize { get; set; }
-
-        /// <inheritdoc/>
-        public string LocalResourceFile { get; set; }
-
-        /// <inheritdoc/>
-        public virtual void LocalizeStrings()
+        string localeName = null;
+        if (string.IsNullOrEmpty(this.Language))
         {
+            localeName = Localization.GetString("NeutralCulture", Localization.GlobalResourceFile);
+        }
+        else
+        {
+            localeName = Localization.GetLocaleName(this.Language, this.DisplayType);
         }
 
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
-        }
-
-        /// <summary>
-        ///   CreateChildControls overrides the Base class's method to correctly build the
-        ///   control based on the configuration.
-        /// </summary>
-        protected override void CreateChildControls()
-        {
-            // First clear the controls collection
-            this.Controls.Clear();
-
-            this.flag = new Image { ViewStateMode = ViewStateMode.Disabled };
-            this.Controls.Add(this.flag);
-
-            this.Controls.Add(new LiteralControl("&nbsp;"));
-
-            this.label = new Label();
-            this.label.ViewStateMode = ViewStateMode.Disabled;
-            this.Controls.Add(this.label);
-
-            // Call base class's method
-            base.CreateChildControls();
-        }
-
-        /// <summary>  OnPreRender runs just before the control is rendered.</summary>
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (string.IsNullOrEmpty(this.Language))
-            {
-                this.flag.ImageUrl = "~/images/Flags/none.gif";
-            }
-            else
-            {
-                this.flag.ImageUrl = string.Format("~/images/Flags/{0}.gif", this.Language);
-            }
-
-            if (this.DisplayType == 0)
-            {
-                PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                string viewTypePersonalizationKey = "ViewType" + portalSettings.PortalId;
-                string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey));
-                switch (viewType)
-                {
-                    case "NATIVE":
-                        this.DisplayType = CultureDropDownTypes.NativeName;
-                        break;
-                    case "ENGLISH":
-                        this.DisplayType = CultureDropDownTypes.EnglishName;
-                        break;
-                    default:
-                        this.DisplayType = CultureDropDownTypes.DisplayName;
-                        break;
-                }
-            }
-
-            string localeName = null;
-            if (string.IsNullOrEmpty(this.Language))
-            {
-                localeName = Localization.GetString("NeutralCulture", Localization.GlobalResourceFile);
-            }
-            else
-            {
-                localeName = Localization.GetLocaleName(this.Language, this.DisplayType);
-            }
-
-            this.label.Text = localeName;
-            this.flag.AlternateText = localeName;
-        }
+        this.label.Text = localeName;
+        this.flag.AlternateText = localeName;
     }
 }

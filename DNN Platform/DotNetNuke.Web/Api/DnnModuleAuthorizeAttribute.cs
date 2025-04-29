@@ -2,42 +2,41 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Api
+namespace DotNetNuke.Web.Api;
+
+using System.Net.Http;
+
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
+
+public class DnnModuleAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
 {
-    using System.Net.Http;
-
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
-
-    public class DnnModuleAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
+    /// <summary>Initializes a new instance of the <see cref="DnnModuleAuthorizeAttribute"/> class.</summary>
+    public DnnModuleAuthorizeAttribute()
     {
-        /// <summary>Initializes a new instance of the <see cref="DnnModuleAuthorizeAttribute"/> class.</summary>
-        public DnnModuleAuthorizeAttribute()
+        this.AccessLevel = SecurityAccessLevel.Host;
+    }
+
+    public string PermissionKey { get; set; }
+
+    public SecurityAccessLevel AccessLevel { get; set; }
+
+    /// <inheritdoc/>
+    public override bool IsAuthorized(AuthFilterContext context)
+    {
+        var activeModule = this.FindModuleInfo(context.ActionContext.Request);
+
+        if (activeModule != null)
         {
-            this.AccessLevel = SecurityAccessLevel.Host;
+            return ModulePermissionController.HasModuleAccess(this.AccessLevel, this.PermissionKey, activeModule);
         }
 
-        public string PermissionKey { get; set; }
+        return false;
+    }
 
-        public SecurityAccessLevel AccessLevel { get; set; }
-
-        /// <inheritdoc/>
-        public override bool IsAuthorized(AuthFilterContext context)
-        {
-            var activeModule = this.FindModuleInfo(context.ActionContext.Request);
-
-            if (activeModule != null)
-            {
-                return ModulePermissionController.HasModuleAccess(this.AccessLevel, this.PermissionKey, activeModule);
-            }
-
-            return false;
-        }
-
-        protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)
-        {
-            return request.FindModuleInfo();
-        }
+    protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)
+    {
+        return request.FindModuleInfo();
     }
 }

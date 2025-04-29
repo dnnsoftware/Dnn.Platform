@@ -2,34 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Common
+namespace DotNetNuke.Web.Common;
+
+using DotNetNuke.Services.Localization;
+
+public class DynamicSharedConstants
 {
-    using DotNetNuke.Services.Localization;
-
-    public class DynamicSharedConstants
+    public static string RootFolder
     {
-        public static string RootFolder
+        get
         {
-            get
-            {
-                return Localization.GetString("RootFolder.Name", Localization.SharedResourceFile);
-            }
+            return Localization.GetString("RootFolder.Name", Localization.SharedResourceFile);
         }
+    }
 
-        public static string HostRootFolder
+    public static string HostRootFolder
+    {
+        get
         {
-            get
-            {
-                return Localization.GetString("HostRootFolder.Name", Localization.SharedResourceFile);
-            }
+            return Localization.GetString("HostRootFolder.Name", Localization.SharedResourceFile);
         }
+    }
 
-        public static string Unspecified
+    public static string Unspecified
+    {
+        get
         {
-            get
-            {
-                return "<" + Localization.GetString("None_Specified", Localization.SharedResourceFile) + ">";
-            }
+            return "<" + Localization.GetString("None_Specified", Localization.SharedResourceFile) + ">";
         }
     }
 }

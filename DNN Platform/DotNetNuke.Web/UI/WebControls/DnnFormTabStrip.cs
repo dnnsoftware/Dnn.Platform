@@ -2,33 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.Web.UI.WebControls;
+
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public class DnnFormTabStrip : ListControl
 {
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
-
-    public class DnnFormTabStrip : ListControl
+    /// <inheritdoc/>
+    protected override void Render(HtmlTextWriter writer)
     {
-        /// <inheritdoc/>
-        protected override void Render(HtmlTextWriter writer)
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
+        writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+
+        foreach (ListItem item in this.Items)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
-            writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+            writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-            foreach (ListItem item in this.Items)
-            {
-                writer.RenderBeginTag(HtmlTextWriterTag.Li);
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, item.Value);
+            writer.RenderBeginTag(HtmlTextWriterTag.A);
+            writer.Write(item.Text);
 
-                writer.AddAttribute(HtmlTextWriterAttribute.Href, item.Value);
-                writer.RenderBeginTag(HtmlTextWriterTag.A);
-                writer.Write(item.Text);
-
-                writer.RenderEndTag();
-
-                writer.RenderEndTag();
-            }
+            writer.RenderEndTag();
 
             writer.RenderEndTag();
         }
+
+        writer.RenderEndTag();
     }
 }

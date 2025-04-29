@@ -2,68 +2,67 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem.Internal
+namespace DotNetNuke.Services.FileSystem.Internal;
+
+using System;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Content.Workflow;
+using DotNetNuke.Framework;
+
+public class FileLockingController : ServiceLocator<IFileLockingController, FileLockingController>, IFileLockingController
 {
-    using System;
-
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Content.Workflow;
-    using DotNetNuke.Framework;
-
-    public class FileLockingController : ServiceLocator<IFileLockingController, FileLockingController>, IFileLockingController
+    /// <inheritdoc/>
+    public bool IsFileLocked(IFileInfo file, out string lockReasonKey)
     {
-        /// <inheritdoc/>
-        public bool IsFileLocked(IFileInfo file, out string lockReasonKey)
+        lockReasonKey = string.Empty;
+
+        var allowedUser = UserSecurityController.Instance.IsHostAdminUser(file.PortalId);
+        if (allowedUser)
         {
-            lockReasonKey = string.Empty;
-
-            var allowedUser = UserSecurityController.Instance.IsHostAdminUser(file.PortalId);
-            if (allowedUser)
-            {
-                return false;
-            }
-
-            if (file.ContentItemID != Null.NullInteger)
-            {
-                var workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
-                if (!workflowCompleted)
-                {
-                    lockReasonKey = "FileLockedRunningWorkflowError";
-                    return true;
-                }
-            }
-
-            var outOfPublishPeriod = this.IsFileOutOfPublishPeriod(file);
-            if (outOfPublishPeriod)
-            {
-                lockReasonKey = "FileLockedOutOfPublishPeriodError";
-                return true;
-            }
-
             return false;
         }
 
-        /// <inheritdoc/>
-        public bool IsFileOutOfPublishPeriod(IFileInfo file, int portalId, int userId)
+        if (file.ContentItemID != Null.NullInteger)
         {
-            if (UserSecurityController.Instance.IsHostAdminUser(portalId, userId))
+            var workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
+            if (!workflowCompleted)
             {
-                return false;
+                lockReasonKey = "FileLockedRunningWorkflowError";
+                return true;
             }
-
-            return this.IsFileOutOfPublishPeriod(file);
         }
 
-        /// <inheritdoc/>
-        protected override Func<IFileLockingController> GetFactory()
+        var outOfPublishPeriod = this.IsFileOutOfPublishPeriod(file);
+        if (outOfPublishPeriod)
         {
-            return () => new FileLockingController();
+            lockReasonKey = "FileLockedOutOfPublishPeriodError";
+            return true;
         }
 
-        private bool IsFileOutOfPublishPeriod(IFileInfo file)
+        return false;
+    }
+
+    /// <inheritdoc/>
+    public bool IsFileOutOfPublishPeriod(IFileInfo file, int portalId, int userId)
+    {
+        if (UserSecurityController.Instance.IsHostAdminUser(portalId, userId))
         {
-            // Publish Period locks
-            return file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate));
+            return false;
         }
+
+        return this.IsFileOutOfPublishPeriod(file);
+    }
+
+    /// <inheritdoc/>
+    protected override Func<IFileLockingController> GetFactory()
+    {
+        return () => new FileLockingController();
+    }
+
+    private bool IsFileOutOfPublishPeriod(IFileInfo file)
+    {
+        // Publish Period locks
+        return file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate));
     }
 }

@@ -2,111 +2,110 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core.Entities.Tabs
+namespace DotNetNuke.Tests.Core.Entities.Tabs;
+
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Tests.Utilities.Mocks;
+using NUnit.Framework;
+
+[TestFixture]
+public class TabControllerTests
 {
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Tests.Utilities.Mocks;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class TabControllerTests
+    [SetUp]
+    public void SetUp()
     {
-        [SetUp]
-        public void SetUp()
+        MockComponentProvider.CreateDataProvider();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        MockComponentProvider.ResetContainer();
+        TabController.ClearInstance();
+    }
+
+    [Test]
+    [TestCase("Lpt1")]
+    [TestCase("Lpt2")]
+    [TestCase("Lpt3")]
+    [TestCase("Lpt4")]
+    [TestCase("Lpt5")]
+    [TestCase("Lpt6")]
+    [TestCase("Lpt7")]
+    [TestCase("Lpt8")]
+    [TestCase("Lpt9")]
+    [TestCase("Com1")]
+    [TestCase("Com2")]
+    [TestCase("Com3")]
+    [TestCase("Com4")]
+    [TestCase("Com5")]
+    [TestCase("Com6")]
+    [TestCase("Com7")]
+    [TestCase("Com8")]
+    [TestCase("Com9")]
+    [TestCase("Aux")]
+    [TestCase("Con")]
+    [TestCase("Nul")]
+    [TestCase("SiteMap")]
+    [TestCase("Linkclick")]
+    [TestCase("KeepAlive")]
+    [TestCase("Default")]
+    [TestCase("ErrorPage")]
+    [TestCase("Login")]
+    [TestCase("Register")]
+
+    public void IsValidadTab_Returns_False_For_Forbidden_PageNames(string tabName)
+    {
+        // Arrange
+        string invalidType;
+
+        // Act
+        var isValid = TabController.IsValidTabName(tabName, out invalidType);
+
+        Assert.Multiple(() =>
         {
-            MockComponentProvider.CreateDataProvider();
-        }
+            // Assert
+            Assert.That(isValid, Is.False, "A forbidden tab name is allowed");
+            Assert.That(invalidType, Is.EqualTo("InvalidTabName"), "The invalidType is not the expected one");
+        });
+    }
 
-        [TearDown]
-        public void TearDown()
+    [Test]
+
+    public void IsValidadTab_Returns_False_For_Empty_PageNames()
+    {
+        // Arrange
+        string invalidType;
+
+        // Act
+        var isValid = TabController.IsValidTabName(string.Empty, out invalidType);
+
+        Assert.Multiple(() =>
         {
-            MockComponentProvider.ResetContainer();
-            TabController.ClearInstance();
-        }
+            // Assert
+            Assert.That(isValid, Is.False, "An empty tab name is allowed");
+            Assert.That(invalidType, Is.EqualTo("EmptyTabName"), "The invalidType is not the expected one");
+        });
+    }
 
-        [Test]
-        [TestCase("Lpt1")]
-        [TestCase("Lpt2")]
-        [TestCase("Lpt3")]
-        [TestCase("Lpt4")]
-        [TestCase("Lpt5")]
-        [TestCase("Lpt6")]
-        [TestCase("Lpt7")]
-        [TestCase("Lpt8")]
-        [TestCase("Lpt9")]
-        [TestCase("Com1")]
-        [TestCase("Com2")]
-        [TestCase("Com3")]
-        [TestCase("Com4")]
-        [TestCase("Com5")]
-        [TestCase("Com6")]
-        [TestCase("Com7")]
-        [TestCase("Com8")]
-        [TestCase("Com9")]
-        [TestCase("Aux")]
-        [TestCase("Con")]
-        [TestCase("Nul")]
-        [TestCase("SiteMap")]
-        [TestCase("Linkclick")]
-        [TestCase("KeepAlive")]
-        [TestCase("Default")]
-        [TestCase("ErrorPage")]
-        [TestCase("Login")]
-        [TestCase("Register")]
+    [Test]
+    [TestCase("test")]
+    [TestCase("mypage")]
+    [TestCase("products")]
 
-        public void IsValidadTab_Returns_False_For_Forbidden_PageNames(string tabName)
+    public void IsValidadTab_Returns_True_For_Regular_PageNames(string tabName)
+    {
+        // Arrange
+        string invalidType;
+
+        // Act
+        var isValid = TabController.IsValidTabName(tabName, out invalidType);
+
+        Assert.Multiple(() =>
         {
-            // Arrange
-            string invalidType;
-
-            // Act
-            var isValid = TabController.IsValidTabName(tabName, out invalidType);
-
-            Assert.Multiple(() =>
-            {
-                // Assert
-                Assert.That(isValid, Is.False, "A forbidden tab name is allowed");
-                Assert.That(invalidType, Is.EqualTo("InvalidTabName"), "The invalidType is not the expected one");
-            });
-        }
-
-        [Test]
-
-        public void IsValidadTab_Returns_False_For_Empty_PageNames()
-        {
-            // Arrange
-            string invalidType;
-
-            // Act
-            var isValid = TabController.IsValidTabName(string.Empty, out invalidType);
-
-            Assert.Multiple(() =>
-            {
-                // Assert
-                Assert.That(isValid, Is.False, "An empty tab name is allowed");
-                Assert.That(invalidType, Is.EqualTo("EmptyTabName"), "The invalidType is not the expected one");
-            });
-        }
-
-        [Test]
-        [TestCase("test")]
-        [TestCase("mypage")]
-        [TestCase("products")]
-
-        public void IsValidadTab_Returns_True_For_Regular_PageNames(string tabName)
-        {
-            // Arrange
-            string invalidType;
-
-            // Act
-            var isValid = TabController.IsValidTabName(tabName, out invalidType);
-
-            Assert.Multiple(() =>
-            {
-                // Assert
-                Assert.That(isValid, Is.True, "A regular tab name is not allowed");
-                Assert.That(invalidType, Is.EqualTo(string.Empty), "The invalidType is not the expected one");
-            });
-        }
+            // Assert
+            Assert.That(isValid, Is.True, "A regular tab name is not allowed");
+            Assert.That(invalidType, Is.EqualTo(string.Empty), "The invalidType is not the expected one");
+        });
     }
 }

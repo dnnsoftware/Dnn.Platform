@@ -1,37 +1,38 @@
-define(['jquery', 'main/extension', 'main/config'], function ($, ext, cf) {
-    'use strict';
-    var identifier;
-    var utility;
-    cf.init();
-    var init = function (wrapper, util, params, callback) {
-        identifier = params.identifier;
-        utility = util;
+define(["jquery", "main/extension", "main/config"], function ($, ext, cf) {
+  "use strict";
+  var identifier;
+  var utility;
+  cf.init();
+  var init = function (wrapper, util, params, callback) {
+    identifier = params.identifier;
+    utility = util;
 
-        window.dnn.initPrompt = function initializePrompt() {
-            return {
-                utility: utility,
-                settings: params.settings,
-                moduleName: 'Prompt'
-            };
-        };
-        utility.loadBundleScript('modules/dnn.Prompt/scripts/bundles/prompt-bundle.js');
-
-        if (typeof callback === 'function') {
-            callback();
-        }
+    window.dnn.initPrompt = function initializePrompt() {
+      return {
+        utility: utility,
+        settings: params.settings,
+        moduleName: "Prompt",
+      };
     };
+    utility.loadBundleScript(
+      "modules/dnn.Prompt/scripts/bundles/prompt-bundle.js",
+    );
 
-    var load = function (params, callback) {
-        if (typeof callback === 'function') {
-            callback();
-        }
-    };
+    if (typeof callback === "function") {
+      callback();
+    }
+  };
 
+  var load = function (params, callback) {
+    if (typeof callback === "function") {
+      callback();
+    }
+  };
 
-    return {
-        init: init,
-        load: load
-    };
+  return {
+    init: init,
+    load: load,
+  };
 });
 
 //return {

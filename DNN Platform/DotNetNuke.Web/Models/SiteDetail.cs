@@ -2,32 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Models
+namespace DotNetNuke.Web.Models;
+
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+[DataContract]
+public class SiteDetail
 {
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
-
-    [DataContract]
-    public class SiteDetail
+    public SiteDetail()
     {
-        public SiteDetail()
-        {
-            this.Modules = new List<ModuleDetail>();
-        }
-
-        [DataMember]
-        public string DnnVersion { get; set; }
-
-        [DataMember]
-        public string SiteName { get; set; }
-
-        [DataMember]
-        public bool IsHost { get; set; }
-
-        [DataMember]
-        public bool IsAdmin { get; set; }
-
-        [DataMember]
-        public IList<ModuleDetail> Modules { get; set; }
+        this.Modules = new List<ModuleDetail>();
     }
+
+    [DataMember]
+    public string DnnVersion { get; set; }
+
+    [DataMember]
+    public string SiteName { get; set; }
+
+    [DataMember]
+    public bool IsHost { get; set; }
+
+    [DataMember]
+    public bool IsAdmin { get; set; }
+
+    [DataMember]
+    public IList<ModuleDetail> Modules { get; set; }
 }

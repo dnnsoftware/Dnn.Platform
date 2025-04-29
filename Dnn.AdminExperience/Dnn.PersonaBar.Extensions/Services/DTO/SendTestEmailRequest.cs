@@ -2,22 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Servers.Services.Dto
+namespace Dnn.PersonaBar.Servers.Services.Dto;
+
+public class SendTestEmailRequest
 {
-    public class SendTestEmailRequest
-    {
-        public string SmtpServerMode { get; set; }
+    public string SmtpServerMode { get; set; }
 
-        public string SmtpServer { get; set; }
+    public string SmtpServer { get; set; }
 
-        public int SmtpAuthentication { get; set; }
+    public int SmtpAuthentication { get; set; }
 
-        public string SmtpUsername { get; set; }
+    public string SmtpUsername { get; set; }
 
-        public string SmtpPassword { get; set; }
+    public string SmtpPassword { get; set; }
 
-        public bool EnableSmtpSsl { get; set; }
+    public bool EnableSmtpSsl { get; set; }
 
-        public string AuthProvider { get; set; }
-    }
+    public string AuthProvider { get; set; }
 }

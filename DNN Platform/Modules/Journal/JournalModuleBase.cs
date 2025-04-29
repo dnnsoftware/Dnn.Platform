@@ -2,9 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Journal
-{
-    /*
+namespace DotNetNuke.Modules.Journal;
+
+/*
 ' Copyright (c) 2010 DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -15,83 +15,81 @@ namespace DotNetNuke.Modules.Journal
 ' DEALINGS IN THE SOFTWARE.
 '
 */
+using System;
 
-    using System;
+using DotNetNuke.Modules.Journal.Components;
 
-    using DotNetNuke.Modules.Journal.Components;
-
-    public class JournalModuleBase : DotNetNuke.Entities.Modules.PortalModuleBase
+public class JournalModuleBase : DotNetNuke.Entities.Modules.PortalModuleBase
+{
+    public enum JournalMode
     {
-        public enum JournalMode
-        {
-            Auto = 0,
-            Profile = 1,
-            Group = 2,
-        }
+        Auto = 0,
+        Profile = 1,
+        Group = 2,
+    }
 
-        public JournalMode FilterMode
+    public JournalMode FilterMode
+    {
+        get
         {
-            get
+            if (!this.Settings.ContainsKey(Constants.JournalFilterMode))
             {
-                if (!this.Settings.ContainsKey(Constants.JournalFilterMode))
+                return JournalMode.Auto;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilterMode].ToString()))
                 {
                     return JournalMode.Auto;
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilterMode].ToString()))
-                    {
-                        return JournalMode.Auto;
-                    }
-                    else
-                    {
-                        return (JournalMode)Convert.ToInt16(this.Settings[Constants.JournalFilterMode].ToString());
-                    }
+                    return (JournalMode)Convert.ToInt16(this.Settings[Constants.JournalFilterMode].ToString());
                 }
             }
         }
+    }
 
-        public int GroupId
+    public int GroupId
+    {
+        get
         {
-            get
+            int groupId = -1;
+            if (!string.IsNullOrEmpty(this.Request.QueryString["groupid"]))
             {
-                int groupId = -1;
-                if (!string.IsNullOrEmpty(this.Request.QueryString["groupid"]))
+                if (int.TryParse(this.Request.QueryString["groupid"], out groupId))
                 {
-                    if (int.TryParse(this.Request.QueryString["groupid"], out groupId))
-                    {
-                        return groupId;
-                    }
-                    else
-                    {
-                        return -1;
-                    }
+                    return groupId;
                 }
                 else
                 {
                     return -1;
                 }
             }
-        }
-
-        public bool EditorEnabled
-        {
-            get
+            else
             {
-                if (!this.Settings.ContainsKey(Constants.JournalEditorEnabled))
+                return -1;
+            }
+        }
+    }
+
+    public bool EditorEnabled
+    {
+        get
+        {
+            if (!this.Settings.ContainsKey(Constants.JournalEditorEnabled))
+            {
+                return true;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(this.Settings[Constants.JournalEditorEnabled].ToString()))
                 {
                     return true;
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(this.Settings[Constants.JournalEditorEnabled].ToString()))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return (bool)Convert.ToBoolean(this.Settings[Constants.JournalEditorEnabled].ToString());
-                    }
+                    return (bool)Convert.ToBoolean(this.Settings[Constants.JournalEditorEnabled].ToString());
                 }
             }
         }

@@ -2,27 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Framework
+namespace DotNetNuke.Web.Mvc.Framework;
+
+using System.Web.Mvc;
+
+using DotNetNuke.Web.Mvc.Helpers;
+
+public abstract class DnnWebViewPage : WebViewPage
 {
-    using System.Web.Mvc;
+    public DnnHelper<object> Dnn { get; set; }
 
-    using DotNetNuke.Web.Mvc.Helpers;
+    public new DnnHtmlHelper<object> Html { get; set; }
 
-    public abstract class DnnWebViewPage : WebViewPage
+    public new DnnUrlHelper Url { get; set; }
+
+    /// <inheritdoc/>
+    public override void InitHelpers()
     {
-        public DnnHelper<object> Dnn { get; set; }
-
-        public new DnnHtmlHelper<object> Html { get; set; }
-
-        public new DnnUrlHelper Url { get; set; }
-
-        /// <inheritdoc/>
-        public override void InitHelpers()
-        {
-            this.Ajax = new AjaxHelper<object>(this.ViewContext, this);
-            this.Html = new DnnHtmlHelper<object>(this.ViewContext, this);
-            this.Url = new DnnUrlHelper(this.ViewContext);
-            this.Dnn = new DnnHelper<object>(this.ViewContext, this);
-        }
+        this.Ajax = new AjaxHelper<object>(this.ViewContext, this);
+        this.Html = new DnnHtmlHelper<object>(this.ViewContext, this);
+        this.Url = new DnnUrlHelper(this.ViewContext);
+        this.Dnn = new DnnHelper<object>(this.ViewContext, this);
     }
 }

@@ -1,178 +1,177 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace Dnn.PersonaBar.Library.Model
+namespace Dnn.PersonaBar.Library.Model;
+
+using System;
+using System.Data;
+using System.Xml.Serialization;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security.Permissions;
+using Newtonsoft.Json;
+
+/// Project  : DotNetNuke
+/// Namespace: DotNetNuke.Security.Permissions
+/// Class    : MenuPermissionInfo
+/// <summary>MenuPermissionInfo provides the Entity Layer for Module Permissions.</summary>
+[Serializable]
+public class MenuPermissionInfo : PermissionInfoBase, IHydratable
 {
-    using System;
-    using System.Data;
-    using System.Xml.Serialization;
+    private int menuId;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security.Permissions;
-    using Newtonsoft.Json;
+    // local property declarations
+    private int menuPermissionId;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : MenuPermissionInfo
-    /// <summary>MenuPermissionInfo provides the Entity Layer for Module Permissions.</summary>
-    [Serializable]
-    public class MenuPermissionInfo : PermissionInfoBase, IHydratable
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
+    /// Constructs a new MenuPermissionInfo.
+    /// </summary>
+    public MenuPermissionInfo()
     {
-        private int menuId;
+        this.menuPermissionId = Null.NullInteger;
+        this.menuId = Null.NullInteger;
+    }
 
-        // local property declarations
-        private int menuPermissionId;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
+    /// Constructs a new MenuPermissionInfo.
+    /// </summary>
+    /// <param name="permission">A PermissionInfo object.</param>
+    public MenuPermissionInfo(PermissionInfo permission)
+        : this()
+    {
+        this.ModuleDefID = Null.NullInteger;
+        this.PermissionCode = "PERSONABAR_MENU";
+        this.PermissionID = permission.PermissionId;
+        this.PermissionKey = permission.PermissionKey;
+        this.PermissionName = permission.PermissionName;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
-        /// Constructs a new MenuPermissionInfo.
-        /// </summary>
-        public MenuPermissionInfo()
+    /// <summary>Gets or sets the Module Permission ID.</summary>
+    /// <returns>An Integer.</returns>
+    [XmlElement("menupermissionid")]
+    public int MenuPermissionId
+    {
+        get
         {
-            this.menuPermissionId = Null.NullInteger;
-            this.menuId = Null.NullInteger;
+            return this.menuPermissionId;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
-        /// Constructs a new MenuPermissionInfo.
-        /// </summary>
-        /// <param name="permission">A PermissionInfo object.</param>
-        public MenuPermissionInfo(PermissionInfo permission)
-            : this()
+        set
         {
-            this.ModuleDefID = Null.NullInteger;
-            this.PermissionCode = "PERSONABAR_MENU";
-            this.PermissionID = permission.PermissionId;
-            this.PermissionKey = permission.PermissionKey;
-            this.PermissionName = permission.PermissionName;
+            this.menuPermissionId = value;
+        }
+    }
+
+    /// <summary>Gets or sets the Module ID.</summary>
+    /// <returns>An Integer.</returns>
+    [XmlElement("menuid")]
+    public int MenuId
+    {
+        get
+        {
+            return this.menuId;
         }
 
-        /// <summary>Gets or sets the Module Permission ID.</summary>
-        /// <returns>An Integer.</returns>
-        [XmlElement("menupermissionid")]
-        public int MenuPermissionId
+        set
         {
-            get
-            {
-                return this.menuPermissionId;
-            }
+            this.menuId = value;
+        }
+    }
 
-            set
-            {
-                this.menuPermissionId = value;
-            }
+    [XmlElement("portalid")]
+    public int PortalId { get; set; }
+
+    /// <summary>Gets or sets the Key ID.</summary>
+    /// <returns>An Integer.</returns>
+    [XmlIgnore]
+    [JsonIgnore]
+    public int KeyID
+    {
+        get
+        {
+            return this.MenuPermissionId;
         }
 
-        /// <summary>Gets or sets the Module ID.</summary>
-        /// <returns>An Integer.</returns>
-        [XmlElement("menuid")]
-        public int MenuId
+        set
         {
-            get
-            {
-                return this.menuId;
-            }
+            this.MenuPermissionId = value;
+        }
+    }
 
-            set
-            {
-                this.menuId = value;
-            }
+    /// <summary>Fills a MenuPermissionInfo from a Data Reader.</summary>
+    /// <param name="dr">The Data Reader to use.</param>
+    public void Fill(IDataReader dr)
+    {
+        this.FillInternal(dr);
+        this.MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
+        this.MenuId = Null.SetNullInteger(dr["MenuId"]);
+        this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+    }
+
+    /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
+    /// <param name="other">a ModulePermissionObject.</param>
+    /// <returns>true if the permissions being passed represents the same permission
+    /// in the current object.
+    /// </returns>
+    /// <remarks>
+    /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
+    /// ModulePermissionCollection.Contains will use this method to check if a given permission
+    /// is already included in the collection.
+    /// </remarks>
+    public bool Equals(MenuPermissionInfo other)
+    {
+        if (ReferenceEquals(null, other))
+        {
+            return false;
         }
 
-        [XmlElement("portalid")]
-        public int PortalId { get; set; }
-
-        /// <summary>Gets or sets the Key ID.</summary>
-        /// <returns>An Integer.</returns>
-        [XmlIgnore]
-        [JsonIgnore]
-        public int KeyID
+        if (ReferenceEquals(this, other))
         {
-            get
-            {
-                return this.MenuPermissionId;
-            }
-
-            set
-            {
-                this.MenuPermissionId = value;
-            }
+            return true;
         }
 
-        /// <summary>Fills a MenuPermissionInfo from a Data Reader.</summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        public void Fill(IDataReader dr)
+        return (this.AllowAccess == other.AllowAccess) && (this.MenuId == other.MenuId) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
+    }
+
+    /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
+    /// <param name="obj">a ModulePermissionObject.</param>
+    /// <returns>true if the permissions being passed represents the same permission
+    /// in the current object.
+    /// </returns>
+    /// <remarks>
+    /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
+    /// ModulePermissionCollection.Contains will use this method to check if a given permission
+    /// is already included in the collection.
+    /// </remarks>
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(null, obj))
         {
-            this.FillInternal(dr);
-            this.MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
-            this.MenuId = Null.SetNullInteger(dr["MenuId"]);
-            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+            return false;
         }
 
-        /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
-        /// <param name="other">a ModulePermissionObject.</param>
-        /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object.
-        /// </returns>
-        /// <remarks>
-        /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
-        /// ModulePermissionCollection.Contains will use this method to check if a given permission
-        /// is already included in the collection.
-        /// </remarks>
-        public bool Equals(MenuPermissionInfo other)
+        if (ReferenceEquals(this, obj))
         {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return (this.AllowAccess == other.AllowAccess) && (this.MenuId == other.MenuId) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
+            return true;
         }
 
-        /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
-        /// <param name="obj">a ModulePermissionObject.</param>
-        /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object.
-        /// </returns>
-        /// <remarks>
-        /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
-        /// ModulePermissionCollection.Contains will use this method to check if a given permission
-        /// is already included in the collection.
-        /// </remarks>
-        public override bool Equals(object obj)
+        if (obj.GetType() != typeof(MenuPermissionInfo))
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != typeof(MenuPermissionInfo))
-            {
-                return false;
-            }
-
-            return this.Equals((MenuPermissionInfo)obj);
+            return false;
         }
 
-        /// <inheritdoc/>
-        public override int GetHashCode()
+        return this.Equals((MenuPermissionInfo)obj);
+    }
+
+    /// <inheritdoc/>
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            unchecked
-            {
-                return (this.menuId * 397) ^ this.menuPermissionId;
-            }
+            return (this.menuId * 397) ^ this.menuPermissionId;
         }
     }
 }

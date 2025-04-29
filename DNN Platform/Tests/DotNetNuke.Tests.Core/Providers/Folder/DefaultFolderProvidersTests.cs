@@ -2,24 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Core.Providers.Folder
+namespace DotNetNuke.Tests.Core.Providers.Folder;
+
+using System.Collections.Generic;
+
+using DotNetNuke.Services.FileSystem.Internal;
+using NUnit.Framework;
+
+[TestFixture]
+public class DefaultFolderProvidersTests
 {
-    using System.Collections.Generic;
-
-    using DotNetNuke.Services.FileSystem.Internal;
-    using NUnit.Framework;
-
-    [TestFixture]
-    public class DefaultFolderProvidersTests
+    [Test]
+    public void GetDefaultProviders_Should_Return_3_Valid_Providers()
     {
-        [Test]
-        public void GetDefaultProviders_Should_Return_3_Valid_Providers()
-        {
-            var expectedValues = new List<string> { "StandardFolderProvider", "SecureFolderProvider", "DatabaseFolderProvider" };
+        var expectedValues = new List<string> { "StandardFolderProvider", "SecureFolderProvider", "DatabaseFolderProvider" };
 
-            var defaultProviders = DefaultFolderProviders.GetDefaultProviders();
+        var defaultProviders = DefaultFolderProviders.GetDefaultProviders();
 
-            Assert.That(defaultProviders, Is.EqualTo(expectedValues).AsCollection);
-        }
+        Assert.That(defaultProviders, Is.EqualTo(expectedValues).AsCollection);
     }
 }

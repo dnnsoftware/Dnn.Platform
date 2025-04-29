@@ -1,782 +1,943 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.UserControls
+namespace DotNetNuke.UI.UserControls;
+
+using System;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Utilities;
+
+using Globals = DotNetNuke.Common.Globals;
+
+public abstract class UrlControl : UserControlBase
 {
-    using System;
-    using System.Collections;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
+    // ReSharper disable InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel ErrorRow;
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel FileRow;
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel ImagesRow;
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel TabRow;
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel TypeRow;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel URLRow;
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Panel UserRow;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
+    // ReSharper restore InconsistentNaming
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected DropDownList cboFiles;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected DropDownList cboFolders;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected DropDownList cboImages;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected DropDownList cboTabs;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected DropDownList cboUrls;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected CheckBox chkLog;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected CheckBox chkNewWindow;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected CheckBox chkTrack;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected LinkButton cmdAdd;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected LinkButton cmdCancel;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected LinkButton cmdDelete;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected LinkButton cmdSave;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected LinkButton cmdSelect;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected LinkButton cmdUpload;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Image imgStorageLocationType;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblFile;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblFolder;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblImages;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblMessage;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblTab;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblURL;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblURLType;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected Label lblUser;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected RadioButtonList optType;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected HtmlInputFile txtFile;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected TextBox txtUrl;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    protected TextBox txtUser;
+    private bool doChangeURL;
+    private bool doReloadFiles;
+    private bool doReloadFolders;
+    private bool doRenderTypeControls;
+    private bool doRenderTypes;
+    private string localResourceFile;
+    private PortalInfo objPortal;
 
-    using Globals = DotNetNuke.Common.Globals;
-
-    public abstract class UrlControl : UserControlBase
+    public bool Log
     {
-        // ReSharper disable InconsistentNaming
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel ErrorRow;
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel FileRow;
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel ImagesRow;
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel TabRow;
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel TypeRow;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel URLRow;
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Panel UserRow;
-
-        // ReSharper restore InconsistentNaming
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected DropDownList cboFiles;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected DropDownList cboFolders;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected DropDownList cboImages;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected DropDownList cboTabs;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected DropDownList cboUrls;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected CheckBox chkLog;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected CheckBox chkNewWindow;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected CheckBox chkTrack;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected LinkButton cmdAdd;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected LinkButton cmdCancel;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected LinkButton cmdDelete;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected LinkButton cmdSave;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected LinkButton cmdSelect;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected LinkButton cmdUpload;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Image imgStorageLocationType;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblFile;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblFolder;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblImages;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblMessage;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblTab;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblURL;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblURLType;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected Label lblUser;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected RadioButtonList optType;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected HtmlInputFile txtFile;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected TextBox txtUrl;
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        protected TextBox txtUser;
-        private bool doChangeURL;
-        private bool doReloadFiles;
-        private bool doReloadFolders;
-        private bool doRenderTypeControls;
-        private bool doRenderTypes;
-        private string localResourceFile;
-        private PortalInfo objPortal;
-
-        public bool Log
+        get
         {
-            get
+            if (this.chkLog.Visible)
             {
-                if (this.chkLog.Visible)
-                {
-                    return this.chkLog.Checked;
-                }
-                else
-                {
-                    return false;
-                }
+                return this.chkLog.Checked;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    public bool Track
+    {
+        get
+        {
+            if (this.chkTrack.Visible)
+            {
+                return this.chkTrack.Checked;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    public string FileFilter
+    {
+        get
+        {
+            if (this.ViewState["FileFilter"] != null)
+            {
+                return Convert.ToString(this.ViewState["FileFilter"]);
+            }
+            else
+            {
+                return string.Empty;
             }
         }
 
-        public bool Track
+        set
         {
-            get
+            this.ViewState["FileFilter"] = value;
+            if (this.IsTrackingViewState)
             {
-                if (this.chkTrack.Visible)
-                {
-                    return this.chkTrack.Checked;
-                }
-                else
-                {
-                    return false;
-                }
+                this.doReloadFiles = true;
+            }
+        }
+    }
+
+    public bool IncludeActiveTab
+    {
+        get
+        {
+            if (this.ViewState["IncludeActiveTab"] != null)
+            {
+                return Convert.ToBoolean(this.ViewState["IncludeActiveTab"]);
+            }
+            else
+            {
+                return false; // Set as default
             }
         }
 
-        public string FileFilter
+        set
         {
-            get
+            this.ViewState["IncludeActiveTab"] = value;
+            if (this.IsTrackingViewState)
             {
-                if (this.ViewState["FileFilter"] != null)
-                {
-                    return Convert.ToString(this.ViewState["FileFilter"]);
-                }
-                else
-                {
-                    return string.Empty;
-                }
+                this.doRenderTypeControls = true;
+            }
+        }
+    }
+
+    public string LocalResourceFile
+    {
+        get
+        {
+            string fileRoot;
+            if (string.IsNullOrEmpty(this.localResourceFile))
+            {
+                fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLControl.ascx";
+            }
+            else
+            {
+                fileRoot = this.localResourceFile;
             }
 
-            set
+            return fileRoot;
+        }
+
+        set
+        {
+            this.localResourceFile = value;
+        }
+    }
+
+    public int ModuleID
+    {
+        get
+        {
+            int myMid = -2;
+            if (this.ViewState["ModuleId"] != null)
             {
-                this.ViewState["FileFilter"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doReloadFiles = true;
-                }
+                myMid = Convert.ToInt32(this.ViewState["ModuleId"]);
+            }
+            else if (this.Request.QueryString["mid"] != null)
+            {
+                int.TryParse(this.Request.QueryString["mid"], out myMid);
+            }
+
+            return myMid;
+        }
+
+        set
+        {
+            this.ViewState["ModuleId"] = value;
+        }
+    }
+
+    public bool NewWindow
+    {
+        get
+        {
+            return this.chkNewWindow.Visible && this.chkNewWindow.Checked;
+        }
+
+        set
+        {
+            this.chkNewWindow.Checked = this.chkNewWindow.Visible && value;
+        }
+    }
+
+    public bool Required
+    {
+        get
+        {
+            if (this.ViewState["Required"] != null)
+            {
+                return Convert.ToBoolean(this.ViewState["Required"]);
+            }
+            else
+            {
+                return true; // Set as default in the old variable
             }
         }
 
-        public bool IncludeActiveTab
+        set
         {
-            get
+            this.ViewState["Required"] = value;
+            if (this.IsTrackingViewState)
             {
-                if (this.ViewState["IncludeActiveTab"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["IncludeActiveTab"]);
-                }
-                else
-                {
-                    return false; // Set as default
-                }
+                this.doRenderTypeControls = true;
             }
+        }
+    }
 
-            set
+    public bool ShowFiles
+    {
+        get
+        {
+            if (this.ViewState["ShowFiles"] != null)
             {
-                this.ViewState["IncludeActiveTab"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypeControls = true;
-                }
+                return Convert.ToBoolean(this.ViewState["ShowFiles"]);
+            }
+            else
+            {
+                return true; // Set as default in the old variable
             }
         }
 
-        public string LocalResourceFile
+        set
         {
-            get
+            this.ViewState["ShowFiles"] = value;
+            if (this.IsTrackingViewState)
             {
-                string fileRoot;
-                if (string.IsNullOrEmpty(this.localResourceFile))
-                {
-                    fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLControl.ascx";
-                }
-                else
-                {
-                    fileRoot = this.localResourceFile;
-                }
-
-                return fileRoot;
+                this.doRenderTypes = true;
             }
+        }
+    }
 
-            set
+    public bool ShowImages
+    {
+        get
+        {
+            if (this.ViewState["ShowImages"] != null)
             {
-                this.localResourceFile = value;
+                return Convert.ToBoolean(this.ViewState["ShowImages"]);
+            }
+            else
+            {
+                return false;
             }
         }
 
-        public int ModuleID
+        set
         {
-            get
+            this.ViewState["ShowImages"] = value;
+            if (this.IsTrackingViewState)
             {
-                int myMid = -2;
-                if (this.ViewState["ModuleId"] != null)
-                {
-                    myMid = Convert.ToInt32(this.ViewState["ModuleId"]);
-                }
-                else if (this.Request.QueryString["mid"] != null)
-                {
-                    int.TryParse(this.Request.QueryString["mid"], out myMid);
-                }
-
-                return myMid;
+                this.doRenderTypes = true;
             }
+        }
+    }
 
-            set
+    public bool ShowLog
+    {
+        get
+        {
+            return this.chkLog.Visible;
+        }
+
+        set
+        {
+            this.chkLog.Visible = value;
+        }
+    }
+
+    public bool ShowNewWindow
+    {
+        get
+        {
+            return this.chkNewWindow.Visible;
+        }
+
+        set
+        {
+            this.chkNewWindow.Visible = value;
+        }
+    }
+
+    public bool ShowNone
+    {
+        get
+        {
+            if (this.ViewState["ShowNone"] != null)
             {
-                this.ViewState["ModuleId"] = value;
+                return Convert.ToBoolean(this.ViewState["ShowNone"]);
+            }
+            else
+            {
+                return false; // Set as default in the old variable
             }
         }
 
-        public bool NewWindow
+        set
         {
-            get
+            this.ViewState["ShowNone"] = value;
+            if (this.IsTrackingViewState)
             {
-                return this.chkNewWindow.Visible && this.chkNewWindow.Checked;
+                this.doRenderTypes = true;
             }
+        }
+    }
 
-            set
+    public bool ShowTabs
+    {
+        get
+        {
+            if (this.ViewState["ShowTabs"] != null)
             {
-                this.chkNewWindow.Checked = this.chkNewWindow.Visible && value;
+                return Convert.ToBoolean(this.ViewState["ShowTabs"]);
+            }
+            else
+            {
+                return true; // Set as default in the old variable
             }
         }
 
-        public bool Required
+        set
         {
-            get
+            this.ViewState["ShowTabs"] = value;
+            if (this.IsTrackingViewState)
             {
-                if (this.ViewState["Required"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["Required"]);
-                }
-                else
-                {
-                    return true; // Set as default in the old variable
-                }
+                this.doRenderTypes = true;
             }
+        }
+    }
 
-            set
+    public bool ShowTrack
+    {
+        get
+        {
+            return this.chkTrack.Visible;
+        }
+
+        set
+        {
+            this.chkTrack.Visible = value;
+        }
+    }
+
+    public bool ShowUpLoad
+    {
+        get
+        {
+            if (this.ViewState["ShowUpLoad"] != null)
             {
-                this.ViewState["Required"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypeControls = true;
-                }
+                return Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
+            }
+            else
+            {
+                return true; // Set as default in the old variable
             }
         }
 
-        public bool ShowFiles
+        set
         {
-            get
+            this.ViewState["ShowUpLoad"] = value;
+            if (this.IsTrackingViewState)
             {
-                if (this.ViewState["ShowFiles"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["ShowFiles"]);
-                }
-                else
-                {
-                    return true; // Set as default in the old variable
-                }
+                this.doRenderTypeControls = true;
             }
+        }
+    }
 
-            set
+    public bool ShowUrls
+    {
+        get
+        {
+            if (this.ViewState["ShowUrls"] != null)
             {
-                this.ViewState["ShowFiles"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypes = true;
-                }
+                return Convert.ToBoolean(this.ViewState["ShowUrls"]);
+            }
+            else
+            {
+                return true; // Set as default in the old variable
             }
         }
 
-        public bool ShowImages
+        set
         {
-            get
+            this.ViewState["ShowUrls"] = value;
+            if (this.IsTrackingViewState)
             {
-                if (this.ViewState["ShowImages"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["ShowImages"]);
-                }
-                else
-                {
-                    return false;
-                }
+                this.doRenderTypes = true;
             }
+        }
+    }
 
-            set
+    public bool ShowUsers
+    {
+        get
+        {
+            if (this.ViewState["ShowUsers"] != null)
             {
-                this.ViewState["ShowImages"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypes = true;
-                }
+                return Convert.ToBoolean(this.ViewState["ShowUsers"]);
+            }
+            else
+            {
+                return false; // Set as default in the old variable
             }
         }
 
-        public bool ShowLog
+        set
         {
-            get
+            this.ViewState["ShowUsers"] = value;
+            if (this.IsTrackingViewState)
             {
-                return this.chkLog.Visible;
-            }
-
-            set
-            {
-                this.chkLog.Visible = value;
+                this.doRenderTypes = true;
             }
         }
+    }
 
-        public bool ShowNewWindow
+    public string Url
+    {
+        get
         {
-            get
+            string r = string.Empty;
+            string strCurrentType = string.Empty;
+            if (this.optType.Items.Count > 0 && this.optType.SelectedIndex >= 0)
             {
-                return this.chkNewWindow.Visible;
+                strCurrentType = this.optType.SelectedItem.Value;
             }
 
-            set
+            switch (strCurrentType)
             {
-                this.chkNewWindow.Visible = value;
-            }
-        }
+                case "I":
+                    if (this.cboImages.SelectedItem != null)
+                    {
+                        r = this.cboImages.SelectedItem.Value;
+                    }
 
-        public bool ShowNone
-        {
-            get
-            {
-                if (this.ViewState["ShowNone"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["ShowNone"]);
-                }
-                else
-                {
-                    return false; // Set as default in the old variable
-                }
-            }
-
-            set
-            {
-                this.ViewState["ShowNone"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypes = true;
-                }
-            }
-        }
-
-        public bool ShowTabs
-        {
-            get
-            {
-                if (this.ViewState["ShowTabs"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["ShowTabs"]);
-                }
-                else
-                {
-                    return true; // Set as default in the old variable
-                }
-            }
-
-            set
-            {
-                this.ViewState["ShowTabs"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypes = true;
-                }
-            }
-        }
-
-        public bool ShowTrack
-        {
-            get
-            {
-                return this.chkTrack.Visible;
-            }
-
-            set
-            {
-                this.chkTrack.Visible = value;
-            }
-        }
-
-        public bool ShowUpLoad
-        {
-            get
-            {
-                if (this.ViewState["ShowUpLoad"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
-                }
-                else
-                {
-                    return true; // Set as default in the old variable
-                }
-            }
-
-            set
-            {
-                this.ViewState["ShowUpLoad"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypeControls = true;
-                }
-            }
-        }
-
-        public bool ShowUrls
-        {
-            get
-            {
-                if (this.ViewState["ShowUrls"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["ShowUrls"]);
-                }
-                else
-                {
-                    return true; // Set as default in the old variable
-                }
-            }
-
-            set
-            {
-                this.ViewState["ShowUrls"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypes = true;
-                }
-            }
-        }
-
-        public bool ShowUsers
-        {
-            get
-            {
-                if (this.ViewState["ShowUsers"] != null)
-                {
-                    return Convert.ToBoolean(this.ViewState["ShowUsers"]);
-                }
-                else
-                {
-                    return false; // Set as default in the old variable
-                }
-            }
-
-            set
-            {
-                this.ViewState["ShowUsers"] = value;
-                if (this.IsTrackingViewState)
-                {
-                    this.doRenderTypes = true;
-                }
-            }
-        }
-
-        public string Url
-        {
-            get
-            {
-                string r = string.Empty;
-                string strCurrentType = string.Empty;
-                if (this.optType.Items.Count > 0 && this.optType.SelectedIndex >= 0)
-                {
-                    strCurrentType = this.optType.SelectedItem.Value;
-                }
-
-                switch (strCurrentType)
-                {
-                    case "I":
-                        if (this.cboImages.SelectedItem != null)
+                    break;
+                case "U":
+                    if (this.cboUrls.Visible)
+                    {
+                        if (this.cboUrls.SelectedItem != null)
                         {
-                            r = this.cboImages.SelectedItem.Value;
+                            r = this.cboUrls.SelectedItem.Value;
+                            this.txtUrl.Text = r;
                         }
-
-                        break;
-                    case "U":
-                        if (this.cboUrls.Visible)
+                    }
+                    else
+                    {
+                        string mCustomUrl = this.txtUrl.Text;
+                        if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            if (this.cboUrls.SelectedItem != null)
-                            {
-                                r = this.cboUrls.SelectedItem.Value;
-                                this.txtUrl.Text = r;
-                            }
+                            r = string.Empty;
                         }
                         else
                         {
-                            string mCustomUrl = this.txtUrl.Text;
-                            if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                r = string.Empty;
-                            }
-                            else
-                            {
-                                r = Globals.AddHTTP(mCustomUrl);
-                            }
+                            r = Globals.AddHTTP(mCustomUrl);
                         }
+                    }
 
-                        break;
-                    case "T":
-                        string strTab = string.Empty;
-                        if (this.cboTabs.SelectedItem != null)
+                    break;
+                case "T":
+                    string strTab = string.Empty;
+                    if (this.cboTabs.SelectedItem != null)
+                    {
+                        strTab = this.cboTabs.SelectedItem.Value;
+                        if (Globals.NumberMatchRegex.IsMatch(strTab) && (Convert.ToInt32(strTab) >= 0))
                         {
-                            strTab = this.cboTabs.SelectedItem.Value;
-                            if (Globals.NumberMatchRegex.IsMatch(strTab) && (Convert.ToInt32(strTab) >= 0))
-                            {
-                                r = strTab;
-                            }
+                            r = strTab;
                         }
+                    }
 
-                        break;
-                    case "F":
-                        if (this.cboFiles.SelectedItem != null)
+                    break;
+                case "F":
+                    if (this.cboFiles.SelectedItem != null)
+                    {
+                        if (!string.IsNullOrEmpty(this.cboFiles.SelectedItem.Value))
                         {
-                            if (!string.IsNullOrEmpty(this.cboFiles.SelectedItem.Value))
-                            {
-                                r = "FileID=" + this.cboFiles.SelectedItem.Value;
-                            }
-                            else
-                            {
-                                r = string.Empty;
-                            }
+                            r = "FileID=" + this.cboFiles.SelectedItem.Value;
                         }
-
-                        break;
-                    case "M":
-                        if (!string.IsNullOrEmpty(this.txtUser.Text))
+                        else
                         {
-                            UserInfo objUser = UserController.GetCachedUser(this.objPortal.PortalID, this.txtUser.Text);
-                            if (objUser != null)
-                            {
-                                r = "UserID=" + objUser.UserID;
-                            }
-                            else
-                            {
-                                this.lblMessage.Text = Localization.GetString("NoUser", this.LocalResourceFile);
-                                this.ErrorRow.Visible = true;
-                                this.txtUser.Text = string.Empty;
-                            }
+                            r = string.Empty;
                         }
+                    }
 
-                        break;
-                }
+                    break;
+                case "M":
+                    if (!string.IsNullOrEmpty(this.txtUser.Text))
+                    {
+                        UserInfo objUser = UserController.GetCachedUser(this.objPortal.PortalID, this.txtUser.Text);
+                        if (objUser != null)
+                        {
+                            r = "UserID=" + objUser.UserID;
+                        }
+                        else
+                        {
+                            this.lblMessage.Text = Localization.GetString("NoUser", this.LocalResourceFile);
+                            this.ErrorRow.Visible = true;
+                            this.txtUser.Text = string.Empty;
+                        }
+                    }
 
-                return r;
+                    break;
             }
 
-            set
-            {
-                this.ViewState["Url"] = value;
-                this.txtUrl.Text = string.Empty;
+            return r;
+        }
 
+        set
+        {
+            this.ViewState["Url"] = value;
+            this.txtUrl.Text = string.Empty;
+
+            if (this.IsTrackingViewState)
+            {
+                this.doChangeURL = true;
+                this.doReloadFiles = true;
+            }
+        }
+    }
+
+    public string UrlType
+    {
+        get
+        {
+            return Convert.ToString(this.ViewState["UrlType"]);
+        }
+
+        set
+        {
+            if (value != null && !string.IsNullOrEmpty(value.Trim()))
+            {
+                this.ViewState["UrlType"] = value;
                 if (this.IsTrackingViewState)
                 {
                     this.doChangeURL = true;
-                    this.doReloadFiles = true;
                 }
             }
         }
+    }
 
-        public string UrlType
+    public string Width
+    {
+        get
         {
-            get
+            return Convert.ToString(this.ViewState["SkinControlWidth"]);
+        }
+
+        set
+        {
+            if (!string.IsNullOrEmpty(value))
             {
-                return Convert.ToString(this.ViewState["UrlType"]);
+                this.cboUrls.Width = Unit.Parse(value);
+                this.txtUrl.Width = Unit.Parse(value);
+                this.cboImages.Width = Unit.Parse(value);
+                this.cboTabs.Width = Unit.Parse(value);
+                this.cboFolders.Width = Unit.Parse(value);
+                this.cboFiles.Width = Unit.Parse(value);
+                this.txtUser.Width = Unit.Parse(value);
+                this.ViewState["SkinControlWidth"] = value;
+            }
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnInit(EventArgs e)
+    {
+        base.OnInit(e);
+
+        AJAX.RegisterPostBackControl(this.FindControl("cmdSave"));
+
+        // prevent unauthorized access
+        if (this.Request.IsAuthenticated == false)
+        {
+            this.Visible = false;
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+
+        this.cboFolders.SelectedIndexChanged += this.cboFolders_SelectedIndexChanged;
+        this.optType.SelectedIndexChanged += this.optType_SelectedIndexChanged;
+        this.cmdAdd.Click += this.cmdAdd_Click;
+        this.cmdCancel.Click += this.cmdCancel_Click;
+        this.cmdDelete.Click += this.cmdDelete_Click;
+        this.cmdSave.Click += this.cmdSave_Click;
+        this.cmdSelect.Click += this.cmdSelect_Click;
+        this.cmdUpload.Click += this.cmdUpload_Click;
+
+        this.ErrorRow.Visible = false;
+
+        try
+        {
+            if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+            {
+                this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
+            }
+            else
+            {
+                this.objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
             }
 
-            set
+            if (this.ViewState["IsUrlControlLoaded"] == null)
             {
-                if (value != null && !string.IsNullOrEmpty(value.Trim()))
+                // If Not Page.IsPostBack Then
+                // let's make at least an initialization
+                // The type radio button must be initialized
+                // The url must be initialized no matter its value
+                this.doRenderTypes = true;
+                this.doChangeURL = true;
+                ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
+
+                // The following line was mover to the pre-render event to ensure render for the first time
+                // ViewState("IsUrlControlLoaded") = "Loaded"
+            }
+        }
+        catch (Exception exc)
+        {
+            Exceptions.ProcessModuleLoadException(this, exc);
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override void OnPreRender(EventArgs e)
+    {
+        base.OnPreRender(e);
+
+        try
+        {
+            if (this.doRenderTypes)
+            {
+                this.DoRenderTypes();
+            }
+
+            if (this.doChangeURL)
+            {
+                this.DoChangeURL();
+            }
+
+            if (this.doReloadFolders || this.doReloadFiles)
+            {
+                this.DoCorrectRadioButtonList();
+                this.doRenderTypeControls = true;
+            }
+
+            if (this.doRenderTypeControls)
+            {
+                if (!(this.doReloadFolders || this.doReloadFiles))
                 {
-                    this.ViewState["UrlType"] = value;
-                    if (this.IsTrackingViewState)
-                    {
-                        this.doChangeURL = true;
-                    }
+                    this.DoCorrectRadioButtonList();
                 }
+
+                this.DoRenderTypeControls();
             }
+
+            this.ViewState["Url"] = null;
+            this.ViewState["IsUrlControlLoaded"] = "Loaded";
+        }
+        catch (Exception exc)
+        {
+            // Let's detect possible problems
+            Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
+        }
+    }
+
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void cboFolders_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int portalId = Null.NullInteger;
+
+        if (!this.IsHostMenu || this.Request.QueryString["pid"] != null)
+        {
+            portalId = this.objPortal.PortalID;
         }
 
-        public string Width
+        var objFolder = FolderManager.Instance.GetFolder(portalId, this.cboFolders.SelectedValue);
+        if (FolderPermissionController.CanAddFolder((FolderInfo)objFolder))
         {
-            get
+            if (!this.txtFile.Visible)
             {
-                return Convert.ToString(this.ViewState["SkinControlWidth"]);
-            }
+                this.cmdSave.Visible = false;
 
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    this.cboUrls.Width = Unit.Parse(value);
-                    this.txtUrl.Width = Unit.Parse(value);
-                    this.cboImages.Width = Unit.Parse(value);
-                    this.cboTabs.Width = Unit.Parse(value);
-                    this.cboFolders.Width = Unit.Parse(value);
-                    this.cboFiles.Width = Unit.Parse(value);
-                    this.txtUser.Width = Unit.Parse(value);
-                    this.ViewState["SkinControlWidth"] = value;
-                }
+                // only show if not already in upload mode and not disabled
+                this.cmdUpload.Visible = this.ShowUpLoad;
             }
         }
-
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
+        else
         {
-            base.OnInit(e);
-
-            AJAX.RegisterPostBackControl(this.FindControl("cmdSave"));
-
-            // prevent unauthorized access
-            if (this.Request.IsAuthenticated == false)
-            {
-                this.Visible = false;
-            }
+            // reset controls
+            this.cboFiles.Visible = true;
+            this.cmdUpload.Visible = false;
+            this.txtFile.Visible = false;
+            this.cmdSave.Visible = false;
+            this.cmdCancel.Visible = false;
         }
 
-        /// <inheritdoc/>
-        protected override void OnLoad(EventArgs e)
+        this.cboFiles.Items.Clear();
+        this.cboFiles.DataSource = this.GetFileList(!this.Required);
+        this.cboFiles.DataBind();
+        this.SetStorageLocationType();
+        if (this.cboFolders.SelectedIndex >= 0)
         {
-            base.OnLoad(e);
+            this.ViewState["LastFolderPath"] = this.cboFolders.SelectedValue;
+        }
+        else
+        {
+            this.ViewState["LastFolderPath"] = string.Empty;
+        }
 
-            this.cboFolders.SelectedIndexChanged += this.cboFolders_SelectedIndexChanged;
-            this.optType.SelectedIndexChanged += this.optType_SelectedIndexChanged;
-            this.cmdAdd.Click += this.cmdAdd_Click;
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdDelete.Click += this.cmdDelete_Click;
-            this.cmdSave.Click += this.cmdSave_Click;
-            this.cmdSelect.Click += this.cmdSelect_Click;
-            this.cmdUpload.Click += this.cmdUpload_Click;
+        if (this.cboFiles.SelectedIndex >= 0)
+        {
+            this.ViewState["LastFileName"] = this.cboFiles.SelectedValue;
+        }
+        else
+        {
+            this.ViewState["LastFileName"] = string.Empty;
+        }
 
+        this.doRenderTypeControls = false; // Must not render on this postback
+        this.doRenderTypes = false;
+        this.doChangeURL = false;
+        this.doReloadFolders = false;
+        this.doReloadFiles = false;
+    }
+
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void cmdAdd_Click(object sender, EventArgs e)
+    {
+        this.cboUrls.Visible = false;
+        this.cmdSelect.Visible = true;
+        this.txtUrl.Visible = true;
+        this.cmdAdd.Visible = false;
+        this.cmdDelete.Visible = false;
+        this.doRenderTypeControls = false; // Must not render on this postback
+        this.doRenderTypes = false;
+        this.doChangeURL = false;
+        this.doReloadFolders = false;
+        this.doReloadFiles = false;
+    }
+
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void cmdCancel_Click(object sender, EventArgs e)
+    {
+        this.cboFiles.Visible = true;
+        this.cmdUpload.Visible = true;
+        this.txtFile.Visible = false;
+        this.cmdSave.Visible = false;
+        this.cmdCancel.Visible = false;
+        this.doRenderTypeControls = false; // Must not render on this postback
+        this.doRenderTypes = false;
+        this.doChangeURL = false;
+        this.doReloadFolders = false;
+        this.doReloadFiles = false;
+    }
+
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void cmdDelete_Click(object sender, EventArgs e)
+    {
+        if (this.cboUrls.SelectedItem != null)
+        {
+            var objUrls = new UrlController();
+            objUrls.DeleteUrl(this.objPortal.PortalID, this.cboUrls.SelectedItem.Value);
+            this.LoadUrls(); // we must reload the url list
+        }
+
+        this.doRenderTypeControls = false; // Must not render on this postback
+        this.doRenderTypes = false;
+        this.doChangeURL = false;
+        this.doReloadFolders = false;
+        this.doReloadFiles = false;
+    }
+
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void cmdSave_Click(object sender, EventArgs e)
+    {
+        this.cmdUpload.Visible = false;
+
+        // if no file is selected exit
+        if (string.IsNullOrEmpty(this.txtFile.PostedFile.FileName))
+        {
+            return;
+        }
+
+        string parentFolderName;
+        if (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID))
+        {
+            parentFolderName = Globals.HostMapPath;
+        }
+        else
+        {
+            parentFolderName = this.PortalSettings.HomeDirectoryMapPath;
+        }
+
+        parentFolderName += this.cboFolders.SelectedItem.Value;
+
+        string strExtension = Path.GetExtension(this.txtFile.PostedFile.FileName).Replace(".", string.Empty);
+        if (!string.IsNullOrEmpty(this.FileFilter) && ("," + this.FileFilter.ToLowerInvariant()).IndexOf("," + strExtension.ToLowerInvariant()) == -1)
+        {
+            // trying to upload a file not allowed for current filter
+            this.lblMessage.Text = string.Format(Localization.GetString("UploadError", this.LocalResourceFile), this.FileFilter, strExtension);
+            this.ErrorRow.Visible = true;
+        }
+        else
+        {
+            var fileManager = FileManager.Instance;
+            var folderManager = FolderManager.Instance;
+
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalID = (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
+
+            var fileName = Path.GetFileName(this.txtFile.PostedFile.FileName);
+            var folderPath = Globals.GetSubFolderPath(parentFolderName.Replace("/", "\\") + fileName, portalID);
+
+            var folder = folderManager.GetFolder(portalID, folderPath);
             this.ErrorRow.Visible = false;
 
             try
             {
-                if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
-                {
-                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
-                }
-                else
-                {
-                    this.objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
-                }
-
-                if (this.ViewState["IsUrlControlLoaded"] == null)
-                {
-                    // If Not Page.IsPostBack Then
-                    // let's make at least an initialization
-                    // The type radio button must be initialized
-                    // The url must be initialized no matter its value
-                    this.doRenderTypes = true;
-                    this.doChangeURL = true;
-                    ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
-
-                    // The following line was mover to the pre-render event to ensure render for the first time
-                    // ViewState("IsUrlControlLoaded") = "Loaded"
-                }
+                fileManager.AddFile(folder, fileName, this.txtFile.PostedFile.InputStream, true, true, ((FileManager)fileManager).GetContentType(Path.GetExtension(fileName)));
             }
-            catch (Exception exc)
+            catch (Services.FileSystem.PermissionsNotMetException)
             {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
+                this.ErrorRow.Visible = true;
+            }
+            catch (NoSpaceAvailableException)
+            {
+                this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+                this.ErrorRow.Visible = true;
+            }
+            catch (InvalidFileExtensionException)
+            {
+                this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+                this.ErrorRow.Visible = true;
+            }
+            catch (Exception)
+            {
+                this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
+                this.ErrorRow.Visible = true;
             }
         }
 
-        /// <inheritdoc/>
-        protected override void OnPreRender(EventArgs e)
+        if (this.lblMessage.Text == string.Empty)
         {
-            base.OnPreRender(e);
+            this.cboFiles.Visible = true;
+            this.cmdUpload.Visible = this.ShowUpLoad;
+            this.txtFile.Visible = false;
+            this.cmdSave.Visible = false;
+            this.cmdCancel.Visible = false;
+            this.ErrorRow.Visible = false;
 
-            try
-            {
-                if (this.doRenderTypes)
-                {
-                    this.DoRenderTypes();
-                }
-
-                if (this.doChangeURL)
-                {
-                    this.DoChangeURL();
-                }
-
-                if (this.doReloadFolders || this.doReloadFiles)
-                {
-                    this.DoCorrectRadioButtonList();
-                    this.doRenderTypeControls = true;
-                }
-
-                if (this.doRenderTypeControls)
-                {
-                    if (!(this.doReloadFolders || this.doReloadFiles))
-                    {
-                        this.DoCorrectRadioButtonList();
-                    }
-
-                    this.DoRenderTypeControls();
-                }
-
-                this.ViewState["Url"] = null;
-                this.ViewState["IsUrlControlLoaded"] = "Loaded";
-            }
-            catch (Exception exc)
-            {
-                // Let's detect possible problems
-                Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
-            }
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
-        protected void cboFolders_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int portalId = Null.NullInteger;
-
-            if (!this.IsHostMenu || this.Request.QueryString["pid"] != null)
-            {
-                portalId = this.objPortal.PortalID;
-            }
-
-            var objFolder = FolderManager.Instance.GetFolder(portalId, this.cboFolders.SelectedValue);
-            if (FolderPermissionController.CanAddFolder((FolderInfo)objFolder))
-            {
-                if (!this.txtFile.Visible)
-                {
-                    this.cmdSave.Visible = false;
-
-                    // only show if not already in upload mode and not disabled
-                    this.cmdUpload.Visible = this.ShowUpLoad;
-                }
-            }
-            else
-            {
-                // reset controls
-                this.cboFiles.Visible = true;
-                this.cmdUpload.Visible = false;
-                this.txtFile.Visible = false;
-                this.cmdSave.Visible = false;
-                this.cmdCancel.Visible = false;
-            }
-
+            var root = new DirectoryInfo(parentFolderName);
             this.cboFiles.Items.Clear();
-            this.cboFiles.DataSource = this.GetFileList(!this.Required);
+            this.cboFiles.DataSource = this.GetFileList(false);
             this.cboFiles.DataBind();
-            this.SetStorageLocationType();
-            if (this.cboFolders.SelectedIndex >= 0)
+
+            string fileName1 = this.txtFile.PostedFile.FileName.Substring(this.txtFile.PostedFile.FileName.LastIndexOf("\\") + 1);
+            if (this.cboFiles.Items.FindByText(fileName1) != null)
             {
-                this.ViewState["LastFolderPath"] = this.cboFolders.SelectedValue;
-            }
-            else
-            {
-                this.ViewState["LastFolderPath"] = string.Empty;
+                this.cboFiles.Items.FindByText(fileName1).Selected = true;
             }
 
             if (this.cboFiles.SelectedIndex >= 0)
@@ -787,210 +948,60 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.ViewState["LastFileName"] = string.Empty;
             }
-
-            this.doRenderTypeControls = false; // Must not render on this postback
-            this.doRenderTypes = false;
-            this.doChangeURL = false;
-            this.doReloadFolders = false;
-            this.doReloadFiles = false;
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        this.doRenderTypeControls = false; // Must not render on this postback
+        this.doRenderTypes = false;
+        this.doChangeURL = false;
+        this.doReloadFolders = false;
+        this.doReloadFiles = false;
+    }
 
-        // ReSharper disable once InconsistentNaming
-        protected void cmdAdd_Click(object sender, EventArgs e)
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void cmdSelect_Click(object sender, EventArgs e)
+    {
+        this.cboUrls.Visible = true;
+        this.cmdSelect.Visible = false;
+        this.txtUrl.Visible = false;
+        this.cmdAdd.Visible = true;
+        this.cmdDelete.Visible = PortalSecurity.IsInRole(this.objPortal.AdministratorRoleName);
+        this.LoadUrls();
+        if (this.cboUrls.Items.FindByValue(this.txtUrl.Text) != null)
         {
-            this.cboUrls.Visible = false;
-            this.cmdSelect.Visible = true;
-            this.txtUrl.Visible = true;
-            this.cmdAdd.Visible = false;
-            this.cmdDelete.Visible = false;
-            this.doRenderTypeControls = false; // Must not render on this postback
-            this.doRenderTypes = false;
-            this.doChangeURL = false;
-            this.doReloadFolders = false;
-            this.doReloadFiles = false;
+            this.cboUrls.ClearSelection();
+            this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        this.doRenderTypeControls = false; // Must not render on this postback
+        this.doRenderTypes = false;
+        this.doChangeURL = false;
+        this.doReloadFolders = false;
+        this.doReloadFiles = false;
+    }
 
-        // ReSharper disable once InconsistentNaming
-        protected void cmdCancel_Click(object sender, EventArgs e)
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void cmdUpload_Click(object sender, EventArgs e)
+    {
+        string strSaveFolder = this.cboFolders.SelectedValue;
+        this.LoadFolders("WRITE");
+        if (this.cboFolders.Items.FindByValue(strSaveFolder) != null)
         {
-            this.cboFiles.Visible = true;
-            this.cmdUpload.Visible = true;
-            this.txtFile.Visible = false;
-            this.cmdSave.Visible = false;
-            this.cmdCancel.Visible = false;
-            this.doRenderTypeControls = false; // Must not render on this postback
-            this.doRenderTypes = false;
-            this.doChangeURL = false;
-            this.doReloadFolders = false;
-            this.doReloadFiles = false;
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
-        protected void cmdDelete_Click(object sender, EventArgs e)
-        {
-            if (this.cboUrls.SelectedItem != null)
-            {
-                var objUrls = new UrlController();
-                objUrls.DeleteUrl(this.objPortal.PortalID, this.cboUrls.SelectedItem.Value);
-                this.LoadUrls(); // we must reload the url list
-            }
-
-            this.doRenderTypeControls = false; // Must not render on this postback
-            this.doRenderTypes = false;
-            this.doChangeURL = false;
-            this.doReloadFolders = false;
-            this.doReloadFiles = false;
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
-        protected void cmdSave_Click(object sender, EventArgs e)
-        {
+            this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
+            this.cboFiles.Visible = false;
             this.cmdUpload.Visible = false;
-
-            // if no file is selected exit
-            if (string.IsNullOrEmpty(this.txtFile.PostedFile.FileName))
-            {
-                return;
-            }
-
-            string parentFolderName;
-            if (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID))
-            {
-                parentFolderName = Globals.HostMapPath;
-            }
-            else
-            {
-                parentFolderName = this.PortalSettings.HomeDirectoryMapPath;
-            }
-
-            parentFolderName += this.cboFolders.SelectedItem.Value;
-
-            string strExtension = Path.GetExtension(this.txtFile.PostedFile.FileName).Replace(".", string.Empty);
-            if (!string.IsNullOrEmpty(this.FileFilter) && ("," + this.FileFilter.ToLowerInvariant()).IndexOf("," + strExtension.ToLowerInvariant()) == -1)
-            {
-                // trying to upload a file not allowed for current filter
-                this.lblMessage.Text = string.Format(Localization.GetString("UploadError", this.LocalResourceFile), this.FileFilter, strExtension);
-                this.ErrorRow.Visible = true;
-            }
-            else
-            {
-                var fileManager = FileManager.Instance;
-                var folderManager = FolderManager.Instance;
-
-                var settings = PortalController.Instance.GetCurrentPortalSettings();
-                var portalID = (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
-
-                var fileName = Path.GetFileName(this.txtFile.PostedFile.FileName);
-                var folderPath = Globals.GetSubFolderPath(parentFolderName.Replace("/", "\\") + fileName, portalID);
-
-                var folder = folderManager.GetFolder(portalID, folderPath);
-                this.ErrorRow.Visible = false;
-
-                try
-                {
-                    fileManager.AddFile(folder, fileName, this.txtFile.PostedFile.InputStream, true, true, ((FileManager)fileManager).GetContentType(Path.GetExtension(fileName)));
-                }
-                catch (Services.FileSystem.PermissionsNotMetException)
-                {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
-                    this.ErrorRow.Visible = true;
-                }
-                catch (NoSpaceAvailableException)
-                {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
-                    this.ErrorRow.Visible = true;
-                }
-                catch (InvalidFileExtensionException)
-                {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
-                    this.ErrorRow.Visible = true;
-                }
-                catch (Exception)
-                {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
-                    this.ErrorRow.Visible = true;
-                }
-            }
-
-            if (this.lblMessage.Text == string.Empty)
-            {
-                this.cboFiles.Visible = true;
-                this.cmdUpload.Visible = this.ShowUpLoad;
-                this.txtFile.Visible = false;
-                this.cmdSave.Visible = false;
-                this.cmdCancel.Visible = false;
-                this.ErrorRow.Visible = false;
-
-                var root = new DirectoryInfo(parentFolderName);
-                this.cboFiles.Items.Clear();
-                this.cboFiles.DataSource = this.GetFileList(false);
-                this.cboFiles.DataBind();
-
-                string fileName1 = this.txtFile.PostedFile.FileName.Substring(this.txtFile.PostedFile.FileName.LastIndexOf("\\") + 1);
-                if (this.cboFiles.Items.FindByText(fileName1) != null)
-                {
-                    this.cboFiles.Items.FindByText(fileName1).Selected = true;
-                }
-
-                if (this.cboFiles.SelectedIndex >= 0)
-                {
-                    this.ViewState["LastFileName"] = this.cboFiles.SelectedValue;
-                }
-                else
-                {
-                    this.ViewState["LastFileName"] = string.Empty;
-                }
-            }
-
-            this.doRenderTypeControls = false; // Must not render on this postback
-            this.doRenderTypes = false;
-            this.doChangeURL = false;
-            this.doReloadFolders = false;
-            this.doReloadFiles = false;
+            this.txtFile.Visible = true;
+            this.cmdSave.Visible = true;
+            this.cmdCancel.Visible = true;
         }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
-        protected void cmdSelect_Click(object sender, EventArgs e)
+        else
         {
-            this.cboUrls.Visible = true;
-            this.cmdSelect.Visible = false;
-            this.txtUrl.Visible = false;
-            this.cmdAdd.Visible = true;
-            this.cmdDelete.Visible = PortalSecurity.IsInRole(this.objPortal.AdministratorRoleName);
-            this.LoadUrls();
-            if (this.cboUrls.Items.FindByValue(this.txtUrl.Text) != null)
+            if (this.cboFolders.Items.Count > 0)
             {
-                this.cboUrls.ClearSelection();
-                this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
-            }
-
-            this.doRenderTypeControls = false; // Must not render on this postback
-            this.doRenderTypes = false;
-            this.doChangeURL = false;
-            this.doReloadFolders = false;
-            this.doReloadFiles = false;
-        }
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
-        protected void cmdUpload_Click(object sender, EventArgs e)
-        {
-            string strSaveFolder = this.cboFolders.SelectedValue;
-            this.LoadFolders("WRITE");
-            if (this.cboFolders.Items.FindByValue(strSaveFolder) != null)
-            {
-                this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
+                this.cboFolders.Items[0].Selected = true;
                 this.cboFiles.Visible = false;
                 this.cmdUpload.Visible = false;
                 this.txtFile.Visible = true;
@@ -999,375 +1010,357 @@ namespace DotNetNuke.UI.UserControls
             }
             else
             {
-                if (this.cboFolders.Items.Count > 0)
-                {
-                    this.cboFolders.Items[0].Selected = true;
-                    this.cboFiles.Visible = false;
-                    this.cmdUpload.Visible = false;
-                    this.txtFile.Visible = true;
-                    this.cmdSave.Visible = true;
-                    this.cmdCancel.Visible = true;
-                }
-                else
-                {
-                    // reset controls
-                    this.LoadFolders("BROWSE,WRITE");
-                    this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
-                    this.cboFiles.Visible = true;
-                    this.cmdUpload.Visible = false;
-                    this.txtFile.Visible = false;
-                    this.cmdSave.Visible = false;
-                    this.cmdCancel.Visible = false;
-                    this.lblMessage.Text = Localization.GetString("NoWritePermission", this.LocalResourceFile);
-                    this.ErrorRow.Visible = true;
-                }
+                // reset controls
+                this.LoadFolders("BROWSE,WRITE");
+                this.cboFolders.Items.FindByValue(strSaveFolder).Selected = true;
+                this.cboFiles.Visible = true;
+                this.cmdUpload.Visible = false;
+                this.txtFile.Visible = false;
+                this.cmdSave.Visible = false;
+                this.cmdCancel.Visible = false;
+                this.lblMessage.Text = Localization.GetString("NoWritePermission", this.LocalResourceFile);
+                this.ErrorRow.Visible = true;
             }
-
-            this.doRenderTypeControls = false; // Must not render on this postback
-            this.doRenderTypes = false;
-            this.doChangeURL = false;
-            this.doReloadFolders = false;
-            this.doReloadFiles = false;
         }
 
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+        this.doRenderTypeControls = false; // Must not render on this postback
+        this.doRenderTypes = false;
+        this.doChangeURL = false;
+        this.doReloadFolders = false;
+        this.doReloadFiles = false;
+    }
 
-        // ReSharper disable once InconsistentNaming
-        protected void optType_SelectedIndexChanged(object sender, EventArgs e)
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+
+    // ReSharper disable once InconsistentNaming
+    protected void optType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        // Type changed, render the correct control set
+        this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
+        this.doRenderTypeControls = true;
+    }
+
+    private ArrayList GetFileList(bool noneSpecified)
+    {
+        int portalId = Null.NullInteger;
+
+        if ((!this.IsHostMenu) || (this.Request.QueryString["pid"] != null))
         {
-            // Type changed, render the correct control set
-            this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
-            this.doRenderTypeControls = true;
+            portalId = this.objPortal.PortalID;
         }
 
-        private ArrayList GetFileList(bool noneSpecified)
+        return Globals.GetFileList(portalId, this.FileFilter, noneSpecified, this.cboFolders.SelectedItem.Value, false);
+    }
+
+    private void LoadFolders(string permissions)
+    {
+        int portalId = Null.NullInteger;
+        this.cboFolders.Items.Clear();
+
+        if ((!this.IsHostMenu) || (this.Request.QueryString["pid"] != null))
         {
-            int portalId = Null.NullInteger;
-
-            if ((!this.IsHostMenu) || (this.Request.QueryString["pid"] != null))
-            {
-                portalId = this.objPortal.PortalID;
-            }
-
-            return Globals.GetFileList(portalId, this.FileFilter, noneSpecified, this.cboFolders.SelectedItem.Value, false);
+            portalId = this.objPortal.PortalID;
         }
 
-        private void LoadFolders(string permissions)
+        var folders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo(), permissions);
+        foreach (FolderInfo folder in folders)
         {
-            int portalId = Null.NullInteger;
-            this.cboFolders.Items.Clear();
-
-            if ((!this.IsHostMenu) || (this.Request.QueryString["pid"] != null))
+            var folderItem = new ListItem();
+            if (folder.FolderPath == Null.NullString)
             {
-                portalId = this.objPortal.PortalID;
+                folderItem.Text = Localization.GetString("Root", this.LocalResourceFile);
+            }
+            else
+            {
+                folderItem.Text = folder.DisplayPath;
             }
 
-            var folders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo(), permissions);
-            foreach (FolderInfo folder in folders)
-            {
-                var folderItem = new ListItem();
-                if (folder.FolderPath == Null.NullString)
-                {
-                    folderItem.Text = Localization.GetString("Root", this.LocalResourceFile);
-                }
-                else
-                {
-                    folderItem.Text = folder.DisplayPath;
-                }
+            folderItem.Value = folder.FolderPath;
+            this.cboFolders.Items.Add(folderItem);
+        }
+    }
 
-                folderItem.Value = folder.FolderPath;
-                this.cboFolders.Items.Add(folderItem);
-            }
+    private void LoadUrls()
+    {
+        var objUrls = new UrlController();
+        this.cboUrls.Items.Clear();
+        this.cboUrls.DataSource = objUrls.GetUrls(this.objPortal.PortalID);
+        this.cboUrls.DataBind();
+    }
+
+    private void SetStorageLocationType()
+    {
+        string folderName = this.cboFolders.SelectedValue;
+
+        // Check to see if this is the 'Root' folder, if so we cannot rely on its text value because it is something and not an empty string that we need to lookup the 'root' folder
+        if (this.cboFolders.SelectedValue == string.Empty)
+        {
+            folderName = string.Empty;
         }
 
-        private void LoadUrls()
+        var objFolderInfo = FolderManager.Instance.GetFolder(this.PortalSettings.PortalId, folderName);
+        if (objFolderInfo != null)
+        {
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(objFolderInfo.PortalID, objFolderInfo.FolderMappingID);
+            if (folderMapping.MappingName == "Standard")
+            {
+                this.imgStorageLocationType.Visible = false;
+            }
+            else
+            {
+                this.imgStorageLocationType.Visible = true;
+                this.imgStorageLocationType.ImageUrl = FolderProvider.Instance(folderMapping.FolderProviderType).GetFolderProviderIconPath();
+            }
+        }
+    }
+
+    private void DoChangeURL()
+    {
+        string url = Convert.ToString(this.ViewState["Url"]);
+        string urltype = Convert.ToString(this.ViewState["UrlType"]);
+        if (!string.IsNullOrEmpty(url))
         {
             var objUrls = new UrlController();
-            this.cboUrls.Items.Clear();
-            this.cboUrls.DataSource = objUrls.GetUrls(this.objPortal.PortalID);
-            this.cboUrls.DataBind();
-        }
+            string trackingUrl = url;
 
-        private void SetStorageLocationType()
-        {
-            string folderName = this.cboFolders.SelectedValue;
-
-            // Check to see if this is the 'Root' folder, if so we cannot rely on its text value because it is something and not an empty string that we need to lookup the 'root' folder
-            if (this.cboFolders.SelectedValue == string.Empty)
+            urltype = Globals.GetURLType(url).ToString("g").Substring(0, 1);
+            if (urltype == "U" && url.StartsWith("~/" + this.PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase))
             {
-                folderName = string.Empty;
+                urltype = "I";
             }
 
-            var objFolderInfo = FolderManager.Instance.GetFolder(this.PortalSettings.PortalId, folderName);
-            if (objFolderInfo != null)
+            this.ViewState["UrlType"] = urltype;
+            if (urltype == "F")
             {
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(objFolderInfo.PortalID, objFolderInfo.FolderMappingID);
-                if (folderMapping.MappingName == "Standard")
+                if (url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this.imgStorageLocationType.Visible = false;
+                    trackingUrl = url;
+                    var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7)));
+                    if (objFile != null)
+                    {
+                        url = objFile.Folder + objFile.FileName;
+                    }
                 }
                 else
                 {
-                    this.imgStorageLocationType.Visible = true;
-                    this.imgStorageLocationType.ImageUrl = FolderProvider.Instance(folderMapping.FolderProviderType).GetFolderProviderIconPath();
+                    // to handle legacy scenarios before the introduction of the FileServerHandler
+                    var fileName = Path.GetFileName(url);
+                    var folderPath = url.Substring(0, url.LastIndexOf(fileName));
+                    var folder = FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
+                    var fileId = -1;
+                    if (folder != null)
+                    {
+                        var file = FileManager.Instance.GetFile(folder, fileName);
+                        if (file != null)
+                        {
+                            fileId = file.FileId;
+                        }
+                    }
+
+                    trackingUrl = "FileID=" + fileId.ToString();
                 }
             }
-        }
 
-        private void DoChangeURL()
-        {
-            string url = Convert.ToString(this.ViewState["Url"]);
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
-            if (!string.IsNullOrEmpty(url))
+            if (urltype == "M")
             {
-                var objUrls = new UrlController();
-                string trackingUrl = url;
-
-                urltype = Globals.GetURLType(url).ToString("g").Substring(0, 1);
-                if (urltype == "U" && url.StartsWith("~/" + this.PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase))
+                if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    urltype = "I";
-                }
-
-                this.ViewState["UrlType"] = urltype;
-                if (urltype == "F")
-                {
-                    if (url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
+                    UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7)));
+                    if (objUser != null)
                     {
-                        trackingUrl = url;
-                        var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7)));
-                        if (objFile != null)
-                        {
-                            url = objFile.Folder + objFile.FileName;
-                        }
-                    }
-                    else
-                    {
-                        // to handle legacy scenarios before the introduction of the FileServerHandler
-                        var fileName = Path.GetFileName(url);
-                        var folderPath = url.Substring(0, url.LastIndexOf(fileName));
-                        var folder = FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
-                        var fileId = -1;
-                        if (folder != null)
-                        {
-                            var file = FileManager.Instance.GetFile(folder, fileName);
-                            if (file != null)
-                            {
-                                fileId = file.FileId;
-                            }
-                        }
-
-                        trackingUrl = "FileID=" + fileId.ToString();
+                        url = objUser.Username;
                     }
                 }
+            }
 
-                if (urltype == "M")
-                {
-                    if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7)));
-                        if (objUser != null)
-                        {
-                            url = objUser.Username;
-                        }
-                    }
-                }
-
-                UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.objPortal.PortalID, trackingUrl, this.ModuleID);
-                if (objUrlTracking != null)
-                {
-                    this.chkNewWindow.Checked = objUrlTracking.NewWindow;
-                    this.chkTrack.Checked = objUrlTracking.TrackClicks;
-                    this.chkLog.Checked = objUrlTracking.LogActivity;
-                }
-                else
-                {
-                    // the url does not exist in the tracking table
-                    this.chkTrack.Checked = false;
-                    this.chkLog.Checked = false;
-                }
-
-                this.ViewState["Url"] = url;
+            UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.objPortal.PortalID, trackingUrl, this.ModuleID);
+            if (objUrlTracking != null)
+            {
+                this.chkNewWindow.Checked = objUrlTracking.NewWindow;
+                this.chkTrack.Checked = objUrlTracking.TrackClicks;
+                this.chkLog.Checked = objUrlTracking.LogActivity;
             }
             else
             {
-                if (!string.IsNullOrEmpty(urltype))
+                // the url does not exist in the tracking table
+                this.chkTrack.Checked = false;
+                this.chkLog.Checked = false;
+            }
+
+            this.ViewState["Url"] = url;
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(urltype))
+            {
+                this.optType.ClearSelection();
+                if (this.optType.Items.FindByValue(urltype) != null)
+                {
+                    this.optType.Items.FindByValue(urltype).Selected = true;
+                }
+                else
+                {
+                    this.optType.Items[0].Selected = true;
+                }
+            }
+            else
+            {
+                if (this.optType.Items.Count > 0)
                 {
                     this.optType.ClearSelection();
-                    if (this.optType.Items.FindByValue(urltype) != null)
-                    {
-                        this.optType.Items.FindByValue(urltype).Selected = true;
-                    }
-                    else
-                    {
-                        this.optType.Items[0].Selected = true;
-                    }
+                    this.optType.Items[0].Selected = true;
                 }
-                else
-                {
-                    if (this.optType.Items.Count > 0)
-                    {
-                        this.optType.ClearSelection();
-                        this.optType.Items[0].Selected = true;
-                    }
-                }
-
-                this.chkNewWindow.Checked = false; // Need check
-                this.chkTrack.Checked = false; // Need check
-                this.chkLog.Checked = false; // Need check
             }
 
-            // Url type changed, then we must draw the controlos for that type
-            this.doRenderTypeControls = true;
+            this.chkNewWindow.Checked = false; // Need check
+            this.chkTrack.Checked = false; // Need check
+            this.chkLog.Checked = false; // Need check
         }
 
-        private void DoRenderTypes()
+        // Url type changed, then we must draw the controlos for that type
+        this.doRenderTypeControls = true;
+    }
+
+    private void DoRenderTypes()
+    {
+        // We must clear the list to keep the same item order
+        string strCurrent = string.Empty;
+        if (this.optType.SelectedIndex >= 0)
         {
-            // We must clear the list to keep the same item order
-            string strCurrent = string.Empty;
-            if (this.optType.SelectedIndex >= 0)
-            {
-                strCurrent = this.optType.SelectedItem.Value; // Save current selected value
-            }
+            strCurrent = this.optType.SelectedItem.Value; // Save current selected value
+        }
 
-            this.optType.Items.Clear();
-            if (this.ShowNone)
+        this.optType.Items.Clear();
+        if (this.ShowNone)
+        {
+            if (this.optType.Items.FindByValue("N") == null)
             {
-                if (this.optType.Items.FindByValue("N") == null)
-                {
-                    this.optType.Items.Add(new ListItem(Localization.GetString("NoneType", this.LocalResourceFile), "N"));
-                }
+                this.optType.Items.Add(new ListItem(Localization.GetString("NoneType", this.LocalResourceFile), "N"));
             }
-            else
+        }
+        else
+        {
+            if (this.optType.Items.FindByValue("N") != null)
             {
-                if (this.optType.Items.FindByValue("N") != null)
-                {
-                    this.optType.Items.Remove(this.optType.Items.FindByValue("N"));
-                }
+                this.optType.Items.Remove(this.optType.Items.FindByValue("N"));
             }
+        }
 
-            if (this.ShowUrls)
+        if (this.ShowUrls)
+        {
+            if (this.optType.Items.FindByValue("U") == null)
             {
-                if (this.optType.Items.FindByValue("U") == null)
-                {
-                    this.optType.Items.Add(new ListItem(Localization.GetString("URLType", this.LocalResourceFile), "U"));
-                }
+                this.optType.Items.Add(new ListItem(Localization.GetString("URLType", this.LocalResourceFile), "U"));
             }
-            else
+        }
+        else
+        {
+            if (this.optType.Items.FindByValue("U") != null)
             {
-                if (this.optType.Items.FindByValue("U") != null)
-                {
-                    this.optType.Items.Remove(this.optType.Items.FindByValue("U"));
-                }
+                this.optType.Items.Remove(this.optType.Items.FindByValue("U"));
             }
+        }
 
-            if (this.ShowTabs)
+        if (this.ShowTabs)
+        {
+            if (this.optType.Items.FindByValue("T") == null)
             {
-                if (this.optType.Items.FindByValue("T") == null)
-                {
-                    this.optType.Items.Add(new ListItem(Localization.GetString("TabType", this.LocalResourceFile), "T"));
-                }
+                this.optType.Items.Add(new ListItem(Localization.GetString("TabType", this.LocalResourceFile), "T"));
             }
-            else
+        }
+        else
+        {
+            if (this.optType.Items.FindByValue("T") != null)
             {
-                if (this.optType.Items.FindByValue("T") != null)
-                {
-                    this.optType.Items.Remove(this.optType.Items.FindByValue("T"));
-                }
+                this.optType.Items.Remove(this.optType.Items.FindByValue("T"));
             }
+        }
 
-            if (this.ShowFiles)
+        if (this.ShowFiles)
+        {
+            if (this.optType.Items.FindByValue("F") == null)
             {
-                if (this.optType.Items.FindByValue("F") == null)
-                {
-                    this.optType.Items.Add(new ListItem(Localization.GetString("FileType", this.LocalResourceFile), "F"));
-                }
+                this.optType.Items.Add(new ListItem(Localization.GetString("FileType", this.LocalResourceFile), "F"));
             }
-            else
+        }
+        else
+        {
+            if (this.optType.Items.FindByValue("F") != null)
             {
-                if (this.optType.Items.FindByValue("F") != null)
-                {
-                    this.optType.Items.Remove(this.optType.Items.FindByValue("F"));
-                }
+                this.optType.Items.Remove(this.optType.Items.FindByValue("F"));
             }
+        }
 
-            if (this.ShowImages)
+        if (this.ShowImages)
+        {
+            if (this.optType.Items.FindByValue("I") == null)
             {
-                if (this.optType.Items.FindByValue("I") == null)
-                {
-                    this.optType.Items.Add(new ListItem(Localization.GetString("ImageType", this.LocalResourceFile), "I"));
-                }
+                this.optType.Items.Add(new ListItem(Localization.GetString("ImageType", this.LocalResourceFile), "I"));
             }
-            else
+        }
+        else
+        {
+            if (this.optType.Items.FindByValue("I") != null)
             {
-                if (this.optType.Items.FindByValue("I") != null)
-                {
-                    this.optType.Items.Remove(this.optType.Items.FindByValue("I"));
-                }
+                this.optType.Items.Remove(this.optType.Items.FindByValue("I"));
             }
+        }
 
-            if (this.ShowUsers)
+        if (this.ShowUsers)
+        {
+            if (this.optType.Items.FindByValue("M") == null)
             {
-                if (this.optType.Items.FindByValue("M") == null)
-                {
-                    this.optType.Items.Add(new ListItem(Localization.GetString("UserType", this.LocalResourceFile), "M"));
-                }
+                this.optType.Items.Add(new ListItem(Localization.GetString("UserType", this.LocalResourceFile), "M"));
             }
-            else
+        }
+        else
+        {
+            if (this.optType.Items.FindByValue("M") != null)
             {
-                if (this.optType.Items.FindByValue("M") != null)
-                {
-                    this.optType.Items.Remove(this.optType.Items.FindByValue("M"));
-                }
+                this.optType.Items.Remove(this.optType.Items.FindByValue("M"));
             }
+        }
 
-            if (this.optType.Items.Count > 0)
+        if (this.optType.Items.Count > 0)
+        {
+            if (!string.IsNullOrEmpty(strCurrent))
             {
-                if (!string.IsNullOrEmpty(strCurrent))
+                if (this.optType.Items.FindByValue(strCurrent) != null)
                 {
-                    if (this.optType.Items.FindByValue(strCurrent) != null)
-                    {
-                        this.optType.Items.FindByValue(strCurrent).Selected = true;
-                    }
-                    else
-                    {
-                        this.optType.Items[0].Selected = true;
-                        this.doRenderTypeControls = true; // Type changed, re-draw
-                    }
+                    this.optType.Items.FindByValue(strCurrent).Selected = true;
                 }
                 else
                 {
                     this.optType.Items[0].Selected = true;
                     this.doRenderTypeControls = true; // Type changed, re-draw
                 }
-
-                this.TypeRow.Visible = this.optType.Items.Count > 1;
             }
             else
             {
-                this.TypeRow.Visible = false;
+                this.optType.Items[0].Selected = true;
+                this.doRenderTypeControls = true; // Type changed, re-draw
             }
+
+            this.TypeRow.Visible = this.optType.Items.Count > 1;
         }
-
-        private void DoCorrectRadioButtonList()
+        else
         {
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            this.TypeRow.Visible = false;
+        }
+    }
 
-            if (this.optType.Items.Count > 0)
+    private void DoCorrectRadioButtonList()
+    {
+        string urltype = Convert.ToString(this.ViewState["UrlType"]);
+
+        if (this.optType.Items.Count > 0)
+        {
+            this.optType.ClearSelection();
+            if (!string.IsNullOrEmpty(urltype))
             {
-                this.optType.ClearSelection();
-                if (!string.IsNullOrEmpty(urltype))
+                if (this.optType.Items.FindByValue(urltype) != null)
                 {
-                    if (this.optType.Items.FindByValue(urltype) != null)
-                    {
-                        this.optType.Items.FindByValue(urltype).Selected = true;
-                    }
-                    else
-                    {
-                        this.optType.Items[0].Selected = true;
-                        urltype = this.optType.Items[0].Value;
-                        this.ViewState["UrlType"] = urltype;
-                    }
+                    this.optType.Items.FindByValue(urltype).Selected = true;
                 }
                 else
                 {
@@ -1376,247 +1369,253 @@ namespace DotNetNuke.UI.UserControls
                     this.ViewState["UrlType"] = urltype;
                 }
             }
-        }
-
-        private void DoRenderTypeControls()
-        {
-            string url = Convert.ToString(this.ViewState["Url"]);
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
-            var objUrls = new UrlController();
-            if (!string.IsNullOrEmpty(urltype))
+            else
             {
-                // load listitems
-                switch (this.optType.SelectedItem.Value)
-                {
-                    case "N": // None
-                        this.URLRow.Visible = false;
-                        this.TabRow.Visible = false;
+                this.optType.Items[0].Selected = true;
+                urltype = this.optType.Items[0].Value;
+                this.ViewState["UrlType"] = urltype;
+            }
+        }
+    }
+
+    private void DoRenderTypeControls()
+    {
+        string url = Convert.ToString(this.ViewState["Url"]);
+        string urltype = Convert.ToString(this.ViewState["UrlType"]);
+        var objUrls = new UrlController();
+        if (!string.IsNullOrEmpty(urltype))
+        {
+            // load listitems
+            switch (this.optType.SelectedItem.Value)
+            {
+                case "N": // None
+                    this.URLRow.Visible = false;
+                    this.TabRow.Visible = false;
+                    this.FileRow.Visible = false;
+                    this.UserRow.Visible = false;
+                    this.ImagesRow.Visible = false;
+                    break;
+                case "I": // System Image
+                    this.URLRow.Visible = false;
+                    this.TabRow.Visible = false;
+                    this.FileRow.Visible = false;
+                    this.UserRow.Visible = false;
+                    this.ImagesRow.Visible = true;
+
+                    this.cboImages.Items.Clear();
+
+                    string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, this.PortalSettings.DefaultIconLocation.Replace('/', '\\'));
+                    foreach (string strImage in Directory.GetFiles(strImagesFolder))
+                    {
+                        string img = strImage.Replace(strImagesFolder, string.Empty).Trim('/').Trim('\\');
+                        this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
+                    }
+
+                    ListItem selecteItem = this.cboImages.Items.FindByValue(url.ToLowerInvariant());
+                    if (selecteItem != null)
+                    {
+                        selecteItem.Selected = true;
+                    }
+
+                    break;
+
+                case "U": // Url
+                    this.URLRow.Visible = true;
+                    this.TabRow.Visible = false;
+                    this.FileRow.Visible = false;
+                    this.UserRow.Visible = false;
+                    this.ImagesRow.Visible = false;
+                    if (string.IsNullOrEmpty(this.txtUrl.Text))
+                    {
+                        this.txtUrl.Text = url;
+                    }
+
+                    if (string.IsNullOrEmpty(this.txtUrl.Text))
+                    {
+                        this.txtUrl.Text = "http://";
+                    }
+
+                    this.txtUrl.Visible = true;
+
+                    this.cmdSelect.Visible = true;
+
+                    this.cboUrls.Visible = false;
+                    this.cmdAdd.Visible = false;
+                    this.cmdDelete.Visible = false;
+                    break;
+                case "T": // tab
+                    this.URLRow.Visible = false;
+                    this.TabRow.Visible = true;
+                    this.FileRow.Visible = false;
+                    this.UserRow.Visible = false;
+                    this.ImagesRow.Visible = false;
+
+                    this.cboTabs.Items.Clear();
+
+                    PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+                    this.cboTabs.DataSource = TabController.GetPortalTabs(settings.PortalId, Null.NullInteger, !this.Required, "none available", true, false, false, true, false);
+                    this.cboTabs.DataBind();
+                    if (this.cboTabs.Items.FindByValue(url) != null)
+                    {
+                        this.cboTabs.Items.FindByValue(url).Selected = true;
+                    }
+
+                    if (!this.IncludeActiveTab && this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString()) != null)
+                    {
+                        this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString()).Attributes.Add("disabled", "disabled");
+                    }
+
+                    break;
+                case "F": // file
+                    this.URLRow.Visible = false;
+                    this.TabRow.Visible = false;
+                    this.FileRow.Visible = true;
+                    this.UserRow.Visible = false;
+                    this.ImagesRow.Visible = false;
+
+                    if (this.ViewState["FoldersLoaded"] == null || this.doReloadFolders)
+                    {
+                        this.LoadFolders("BROWSE,WRITE");
+                        this.ViewState["FoldersLoaded"] = "Y";
+                    }
+
+                    if (this.cboFolders.Items.Count == 0)
+                    {
+                        this.lblMessage.Text = Localization.GetString("NoPermission", this.LocalResourceFile);
+                        this.ErrorRow.Visible = true;
                         this.FileRow.Visible = false;
-                        this.UserRow.Visible = false;
-                        this.ImagesRow.Visible = false;
-                        break;
-                    case "I": // System Image
-                        this.URLRow.Visible = false;
-                        this.TabRow.Visible = false;
-                        this.FileRow.Visible = false;
-                        this.UserRow.Visible = false;
-                        this.ImagesRow.Visible = true;
+                        return;
+                    }
 
-                        this.cboImages.Items.Clear();
+                    // select folder
+                    // We Must check if selected folder has changed because of a property change (Secure, Database)
+                    string fileName = string.Empty;
+                    string folderPath = string.Empty;
+                    string lastFileName = string.Empty;
+                    string lastFolderPath = string.Empty;
+                    bool mustRedrawFiles = false;
 
-                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, this.PortalSettings.DefaultIconLocation.Replace('/', '\\'));
-                        foreach (string strImage in Directory.GetFiles(strImagesFolder))
+                    // Let's try to remember last selection
+                    if (this.ViewState["LastFolderPath"] != null)
+                    {
+                        lastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
+                    }
+
+                    if (this.ViewState["LastFileName"] != null)
+                    {
+                        lastFileName = Convert.ToString(this.ViewState["LastFileName"]);
+                    }
+
+                    if (url != string.Empty)
+                    {
+                        // Let's use the new URL
+                        fileName = url.Substring(url.LastIndexOf("/") + 1);
+                        folderPath = url.Replace(fileName, string.Empty);
+                    }
+                    else
+                    {
+                        // Use last settings
+                        fileName = lastFileName;
+                        folderPath = lastFolderPath;
+                    }
+
+                    if (this.cboFolders.Items.FindByValue(folderPath) != null)
+                    {
+                        this.cboFolders.ClearSelection();
+                        this.cboFolders.Items.FindByValue(folderPath).Selected = true;
+                    }
+                    else if (this.cboFolders.Items.Count > 0)
+                    {
+                        this.cboFolders.ClearSelection();
+                        this.cboFolders.Items[0].Selected = true;
+                        folderPath = this.cboFolders.Items[0].Value;
+                    }
+
+                    if (this.ViewState["FilesLoaded"] == null || folderPath != lastFolderPath || this.doReloadFiles)
+                    {
+                        // Reload files only if property change or not same folder
+                        mustRedrawFiles = true;
+                        this.ViewState["FilesLoaded"] = "Y";
+                    }
+                    else
+                    {
+                        if (this.cboFiles.Items.Count > 0)
                         {
-                            string img = strImage.Replace(strImagesFolder, string.Empty).Trim('/').Trim('\\');
-                            this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
-                        }
-
-                        ListItem selecteItem = this.cboImages.Items.FindByValue(url.ToLowerInvariant());
-                        if (selecteItem != null)
-                        {
-                            selecteItem.Selected = true;
-                        }
-
-                        break;
-
-                    case "U": // Url
-                        this.URLRow.Visible = true;
-                        this.TabRow.Visible = false;
-                        this.FileRow.Visible = false;
-                        this.UserRow.Visible = false;
-                        this.ImagesRow.Visible = false;
-                        if (string.IsNullOrEmpty(this.txtUrl.Text))
-                        {
-                            this.txtUrl.Text = url;
-                        }
-
-                        if (string.IsNullOrEmpty(this.txtUrl.Text))
-                        {
-                            this.txtUrl.Text = "http://";
-                        }
-
-                        this.txtUrl.Visible = true;
-
-                        this.cmdSelect.Visible = true;
-
-                        this.cboUrls.Visible = false;
-                        this.cmdAdd.Visible = false;
-                        this.cmdDelete.Visible = false;
-                        break;
-                    case "T": // tab
-                        this.URLRow.Visible = false;
-                        this.TabRow.Visible = true;
-                        this.FileRow.Visible = false;
-                        this.UserRow.Visible = false;
-                        this.ImagesRow.Visible = false;
-
-                        this.cboTabs.Items.Clear();
-
-                        PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-                        this.cboTabs.DataSource = TabController.GetPortalTabs(settings.PortalId, Null.NullInteger, !this.Required, "none available", true, false, false, true, false);
-                        this.cboTabs.DataBind();
-                        if (this.cboTabs.Items.FindByValue(url) != null)
-                        {
-                            this.cboTabs.Items.FindByValue(url).Selected = true;
-                        }
-
-                        if (!this.IncludeActiveTab && this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString()) != null)
-                        {
-                            this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString()).Attributes.Add("disabled", "disabled");
-                        }
-
-                        break;
-                    case "F": // file
-                        this.URLRow.Visible = false;
-                        this.TabRow.Visible = false;
-                        this.FileRow.Visible = true;
-                        this.UserRow.Visible = false;
-                        this.ImagesRow.Visible = false;
-
-                        if (this.ViewState["FoldersLoaded"] == null || this.doReloadFolders)
-                        {
-                            this.LoadFolders("BROWSE,WRITE");
-                            this.ViewState["FoldersLoaded"] = "Y";
-                        }
-
-                        if (this.cboFolders.Items.Count == 0)
-                        {
-                            this.lblMessage.Text = Localization.GetString("NoPermission", this.LocalResourceFile);
-                            this.ErrorRow.Visible = true;
-                            this.FileRow.Visible = false;
-                            return;
-                        }
-
-                        // select folder
-                        // We Must check if selected folder has changed because of a property change (Secure, Database)
-                        string fileName = string.Empty;
-                        string folderPath = string.Empty;
-                        string lastFileName = string.Empty;
-                        string lastFolderPath = string.Empty;
-                        bool mustRedrawFiles = false;
-
-                        // Let's try to remember last selection
-                        if (this.ViewState["LastFolderPath"] != null)
-                        {
-                            lastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
-                        }
-
-                        if (this.ViewState["LastFileName"] != null)
-                        {
-                            lastFileName = Convert.ToString(this.ViewState["LastFileName"]);
-                        }
-
-                        if (url != string.Empty)
-                        {
-                            // Let's use the new URL
-                            fileName = url.Substring(url.LastIndexOf("/") + 1);
-                            folderPath = url.Replace(fileName, string.Empty);
-                        }
-                        else
-                        {
-                            // Use last settings
-                            fileName = lastFileName;
-                            folderPath = lastFolderPath;
-                        }
-
-                        if (this.cboFolders.Items.FindByValue(folderPath) != null)
-                        {
-                            this.cboFolders.ClearSelection();
-                            this.cboFolders.Items.FindByValue(folderPath).Selected = true;
-                        }
-                        else if (this.cboFolders.Items.Count > 0)
-                        {
-                            this.cboFolders.ClearSelection();
-                            this.cboFolders.Items[0].Selected = true;
-                            folderPath = this.cboFolders.Items[0].Value;
-                        }
-
-                        if (this.ViewState["FilesLoaded"] == null || folderPath != lastFolderPath || this.doReloadFiles)
-                        {
-                            // Reload files only if property change or not same folder
-                            mustRedrawFiles = true;
-                            this.ViewState["FilesLoaded"] = "Y";
-                        }
-                        else
-                        {
-                            if (this.cboFiles.Items.Count > 0)
-                            {
-                                if ((this.Required && string.IsNullOrEmpty(this.cboFiles.Items[0].Value)) || (!this.Required && !string.IsNullOrEmpty(this.cboFiles.Items[0].Value)))
-                                {
-                                    // Required state has changed, so we need to reload files
-                                    mustRedrawFiles = true;
-                                }
-                            }
-                            else if (!this.Required)
+                            if ((this.Required && string.IsNullOrEmpty(this.cboFiles.Items[0].Value)) || (!this.Required && !string.IsNullOrEmpty(this.cboFiles.Items[0].Value)))
                             {
                                 // Required state has changed, so we need to reload files
                                 mustRedrawFiles = true;
                             }
                         }
-
-                        if (mustRedrawFiles)
+                        else if (!this.Required)
                         {
-                            this.cboFiles.DataSource = this.GetFileList(!this.Required);
-                            this.cboFiles.DataBind();
-                            if (this.cboFiles.Items.FindByText(fileName) != null)
-                            {
-                                this.cboFiles.ClearSelection();
-                                this.cboFiles.Items.FindByText(fileName).Selected = true;
-                            }
+                            // Required state has changed, so we need to reload files
+                            mustRedrawFiles = true;
                         }
+                    }
 
-                        this.cboFiles.Visible = true;
-                        this.txtFile.Visible = false;
-
-                        FolderInfo objFolder = (FolderInfo)FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
-                        this.cmdUpload.Visible = this.ShowUpLoad && FolderPermissionController.CanAddFolder(objFolder);
-
-                        this.SetStorageLocationType();
-                        this.txtUrl.Visible = false;
-                        this.cmdSave.Visible = false;
-                        this.cmdCancel.Visible = false;
-
-                        if (this.cboFolders.SelectedIndex >= 0)
+                    if (mustRedrawFiles)
+                    {
+                        this.cboFiles.DataSource = this.GetFileList(!this.Required);
+                        this.cboFiles.DataBind();
+                        if (this.cboFiles.Items.FindByText(fileName) != null)
                         {
-                            this.ViewState["LastFolderPath"] = this.cboFolders.SelectedValue;
+                            this.cboFiles.ClearSelection();
+                            this.cboFiles.Items.FindByText(fileName).Selected = true;
                         }
-                        else
-                        {
-                            this.ViewState["LastFolderPath"] = string.Empty;
-                        }
+                    }
 
-                        if (this.cboFiles.SelectedIndex >= 0)
-                        {
-                            this.ViewState["LastFileName"] = this.cboFiles.SelectedValue;
-                        }
-                        else
-                        {
-                            this.ViewState["LastFileName"] = string.Empty;
-                        }
+                    this.cboFiles.Visible = true;
+                    this.txtFile.Visible = false;
 
-                        break;
-                    case "M": // membership users
-                        this.URLRow.Visible = false;
-                        this.TabRow.Visible = false;
-                        this.FileRow.Visible = false;
-                        this.UserRow.Visible = true;
-                        this.ImagesRow.Visible = false;
-                        if (string.IsNullOrEmpty(this.txtUser.Text))
-                        {
-                            this.txtUser.Text = url;
-                        }
+                    FolderInfo objFolder = (FolderInfo)FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
+                    this.cmdUpload.Visible = this.ShowUpLoad && FolderPermissionController.CanAddFolder(objFolder);
 
-                        break;
-                }
+                    this.SetStorageLocationType();
+                    this.txtUrl.Visible = false;
+                    this.cmdSave.Visible = false;
+                    this.cmdCancel.Visible = false;
+
+                    if (this.cboFolders.SelectedIndex >= 0)
+                    {
+                        this.ViewState["LastFolderPath"] = this.cboFolders.SelectedValue;
+                    }
+                    else
+                    {
+                        this.ViewState["LastFolderPath"] = string.Empty;
+                    }
+
+                    if (this.cboFiles.SelectedIndex >= 0)
+                    {
+                        this.ViewState["LastFileName"] = this.cboFiles.SelectedValue;
+                    }
+                    else
+                    {
+                        this.ViewState["LastFileName"] = string.Empty;
+                    }
+
+                    break;
+                case "M": // membership users
+                    this.URLRow.Visible = false;
+                    this.TabRow.Visible = false;
+                    this.FileRow.Visible = false;
+                    this.UserRow.Visible = true;
+                    this.ImagesRow.Visible = false;
+                    if (string.IsNullOrEmpty(this.txtUser.Text))
+                    {
+                        this.txtUser.Text = url;
+                    }
+
+                    break;
             }
-            else
-            {
-                this.URLRow.Visible = false;
-                this.ImagesRow.Visible = false;
-                this.TabRow.Visible = false;
-                this.FileRow.Visible = false;
-                this.UserRow.Visible = false;
-            }
+        }
+        else
+        {
+            this.URLRow.Visible = false;
+            this.ImagesRow.Visible = false;
+            this.TabRow.Visible = false;
+            this.FileRow.Visible = false;
+            this.UserRow.Visible = false;
         }
     }
 }

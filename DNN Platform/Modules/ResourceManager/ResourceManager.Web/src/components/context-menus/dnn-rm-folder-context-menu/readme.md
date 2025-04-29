@@ -1,9 +1,6 @@
 # dnn-rm-folder-context-menu
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,15 +8,14 @@
 | ------------------- | --------- | ---------------------------------- | ------ | ----------- |
 | `item` _(required)_ | --        | The item that triggered this menu. | `Item` | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-folder-list](../../dnn-rm-folder-list)
- - [dnn-rm-folder-list-item](../../dnn-rm-folder-list-item)
- - [dnn-rm-items-cardview](../../dnn-rm-items-cardview)
- - [dnn-rm-items-listview](../../dnn-rm-items-listview)
+- [dnn-rm-folder-list](../../dnn-rm-folder-list)
+- [dnn-rm-folder-list-item](../../dnn-rm-folder-list-item)
+- [dnn-rm-items-cardview](../../dnn-rm-items-cardview)
+- [dnn-rm-items-listview](../../dnn-rm-items-listview)
 
 ### Depends on
 
@@ -30,6 +26,7 @@
 - [dnn-action-unlink-items](../../actions/dnn-action-unlink-items)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-folder-context-menu --> dnn-action-create-folder
@@ -85,6 +82,6 @@ graph TD;
   style dnn-rm-folder-context-menu fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

@@ -3,88 +3,86 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable CheckNamespace
-namespace DotNetNuke.Entities.Content.Workflow
+namespace DotNetNuke.Entities.Content.Workflow;
 
 // ReSharper enable CheckNamespace
+using System.Collections.Generic;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Internal.SourceGenerators;
+using DotNetNuke.Security.Roles;
+
+[DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
+public partial interface IContentWorkflowController
 {
-    using System.Collections.Generic;
+    void StartWorkflow(int workflowID, int itemID, int userID);
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Internal.SourceGenerators;
-    using DotNetNuke.Security.Roles;
+    void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID);
 
-    [DnnDeprecated(7, 4, 0, "Use IWorkflowEngine", RemovalVersion = 10)]
-    public partial interface IContentWorkflowController
-    {
-        void StartWorkflow(int workflowID, int itemID, int userID);
+    void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID, string source, params string[] parameters);
 
-        void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID);
+    void DiscardState(int itemID, string subject, string body, string comment, int portalID, int userID);
 
-        void CompleteState(int itemID, string subject, string body, string comment, int portalID, int userID, string source, params string[] parameters);
+    bool IsWorkflowCompleted(int itemID);
 
-        void DiscardState(int itemID, string subject, string body, string comment, int portalID, int userID);
+    bool IsWorkflowOnDraft(int itemID);
 
-        bool IsWorkflowCompleted(int itemID);
+    void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int userID);
 
-        bool IsWorkflowOnDraft(int itemID);
+    void DiscardWorkflow(int contentItemId, string comment, int portalId, int userId);
 
-        void SendWorkflowNotification(bool sendEmail, bool sendMessage, PortalSettings settings, IEnumerable<RoleInfo> roles, IEnumerable<UserInfo> users, string subject, string body, string comment, int userID);
+    void CompleteWorkflow(int contentItemId, string comment, int portalId, int userId);
 
-        void DiscardWorkflow(int contentItemId, string comment, int portalId, int userId);
+    string ReplaceNotificationTokens(string text, ContentWorkflow workflow, ContentItem item, ContentWorkflowState state, int portalID, int userID, string comment = "");
 
-        void CompleteWorkflow(int contentItemId, string comment, int portalId, int userId);
+    ContentWorkflowSource GetWorkflowSource(int workflowId, string sourceName);
 
-        string ReplaceNotificationTokens(string text, ContentWorkflow workflow, ContentItem item, ContentWorkflowState state, int portalID, int userID, string comment = "");
+    IEnumerable<ContentWorkflow> GetWorkflows(int portalID);
 
-        ContentWorkflowSource GetWorkflowSource(int workflowId, string sourceName);
+    ContentWorkflow GetDefaultWorkflow(int portalID);
 
-        IEnumerable<ContentWorkflow> GetWorkflows(int portalID);
+    ContentWorkflow GetWorkflowByID(int workflowID);
 
-        ContentWorkflow GetDefaultWorkflow(int portalID);
+    ContentWorkflow GetWorkflow(ContentItem item);
 
-        ContentWorkflow GetWorkflowByID(int workflowID);
+    void AddWorkflow(ContentWorkflow workflow);
 
-        ContentWorkflow GetWorkflow(ContentItem item);
+    void UpdateWorkflow(ContentWorkflow workflow);
 
-        void AddWorkflow(ContentWorkflow workflow);
+    IEnumerable<ContentWorkflowLog> GetWorkflowLogs(int workflowId, int contentItemId);
 
-        void UpdateWorkflow(ContentWorkflow workflow);
+    void DeleteWorkflowLogs(int workflowID, int contentItemID);
 
-        IEnumerable<ContentWorkflowLog> GetWorkflowLogs(int workflowId, int contentItemId);
+    IEnumerable<ContentWorkflowState> GetWorkflowStates(int workflowID);
 
-        void DeleteWorkflowLogs(int workflowID, int contentItemID);
+    ContentWorkflowState GetWorkflowStateByID(int stateID);
 
-        IEnumerable<ContentWorkflowState> GetWorkflowStates(int workflowID);
+    void AddWorkflowState(ContentWorkflowState state);
 
-        ContentWorkflowState GetWorkflowStateByID(int stateID);
+    void UpdateWorkflowState(ContentWorkflowState state);
 
-        void AddWorkflowState(ContentWorkflowState state);
+    IEnumerable<ContentWorkflowStatePermission> GetWorkflowStatePermissionByState(int stateID);
 
-        void UpdateWorkflowState(ContentWorkflowState state);
+    void AddWorkflowStatePermission(ContentWorkflowStatePermission permission, int lastModifiedByUserID);
 
-        IEnumerable<ContentWorkflowStatePermission> GetWorkflowStatePermissionByState(int stateID);
+    void UpdateWorkflowStatePermission(ContentWorkflowStatePermission permission, int lasModifiedByUserId);
 
-        void AddWorkflowStatePermission(ContentWorkflowStatePermission permission, int lastModifiedByUserID);
+    void DeleteWorkflowStatePermission(int workflowStatePermissionID);
 
-        void UpdateWorkflowStatePermission(ContentWorkflowStatePermission permission, int lasModifiedByUserId);
+    bool IsAnyReviewer(int portalID, int userID, int workflowID);
 
-        void DeleteWorkflowStatePermission(int workflowStatePermissionID);
+    bool IsAnyReviewer(int workflowID);
 
-        bool IsAnyReviewer(int portalID, int userID, int workflowID);
+    bool IsCurrentReviewer(int portalId, int userID, int itemID);
 
-        bool IsAnyReviewer(int workflowID);
+    bool IsCurrentReviewer(int itemID);
 
-        bool IsCurrentReviewer(int portalId, int userID, int itemID);
+    bool IsReviewer(int portalId, int userID, int stateID);
 
-        bool IsCurrentReviewer(int itemID);
+    bool IsReviewer(int stateID);
 
-        bool IsReviewer(int portalId, int userID, int stateID);
+    void AddWorkflowLog(ContentItem item, string action, string comment, int userID);
 
-        bool IsReviewer(int stateID);
-
-        void AddWorkflowLog(ContentItem item, string action, string comment, int userID);
-
-        void CreateDefaultWorkflows(int portalId);
-    }
+    void CreateDefaultWorkflows(int portalId);
 }

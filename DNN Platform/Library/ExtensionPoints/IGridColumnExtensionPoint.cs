@@ -2,26 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+using System.Web.UI.WebControls;
+
+public interface IGridColumnExtensionPoint : IExtensionPoint
 {
-    using System.Web.UI.WebControls;
+    int ColumnAt { get; }
 
-    public interface IGridColumnExtensionPoint : IExtensionPoint
-    {
-        int ColumnAt { get; }
+    string UniqueName { get; }
 
-        string UniqueName { get; }
+    string DataField { get; }
 
-        string DataField { get; }
+    string HeaderText { get; }
 
-        string HeaderText { get; }
+    Unit HeaderStyleWidth { get; }
 
-        Unit HeaderStyleWidth { get; }
+    bool ReadOnly { get; }
 
-        bool ReadOnly { get; }
+    bool Reorderable { get; }
 
-        bool Reorderable { get; }
-
-        string SortExpression { get; }
-    }
+    string SortExpression { get; }
 }

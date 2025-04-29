@@ -12,8 +12,8 @@ application.dispatch = store.dispatch;
 const appContainer = document.getElementById("sites-container");
 application.init("initSites");
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

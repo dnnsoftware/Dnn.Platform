@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Validators
+namespace DotNetNuke.Web.Validators;
+
+public abstract class ObjectValidator
 {
-    public abstract class ObjectValidator
-    {
-        public abstract ValidationResult ValidateObject(object target);
-    }
+    public abstract ValidationResult ValidateObject(object target);
 }

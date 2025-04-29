@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DNN.Integration.Test.Framework.Scripts
+namespace DNN.Integration.Test.Framework.Scripts;
+
+public static class SqlScripts
 {
-    public static class SqlScripts
-    {
-        public const string SingleUserCreation = @"
+    public const string SingleUserCreation = @"
             DECLARE @UserName nvarchar(100)
             DECLARE @Password nvarchar(1000)
             DECLARE @Email nvarchar(100)
@@ -396,7 +396,7 @@ namespace DNN.Integration.Test.Framework.Scripts
 	            END
             END";
 
-        public const string SingleRoleCreation = @"
+    public const string SingleRoleCreation = @"
             DECLARE @PortalID INT
             DECLARE @RoleName NVARCHAR(50)
             DECLARE @Description NVARCHAR(1000)
@@ -461,7 +461,7 @@ namespace DNN.Integration.Test.Framework.Scripts
 	        0
             )";
 
-        public const string AssignRoleToUser = @"
+    public const string AssignRoleToUser = @"
             DECLARE @CurrentDate DATETIME
             DECLARE @UserId INT
             DECLARE @RoleId INT
@@ -502,7 +502,7 @@ namespace DNN.Integration.Test.Framework.Scripts
 	            0
             )";
 
-        public const string UserDelete = @"
+    public const string UserDelete = @"
             DECLARE @userId INT
             DECLARE @username NVARCHAR(100)
             DECLARE @userGuid UNIQUEIDENTIFIER
@@ -521,7 +521,7 @@ namespace DNN.Integration.Test.Framework.Scripts
             DELETE FROM [dbo].[{objectQualifier}UserRelationships] WHERE [UserID] = @userId OR [RelatedUserID] =  @userId
             DELETE FROM [dbo].[{objectQualifier}Users] WHERE [UserID] = @userId";
 
-        public const string AddModulePermission = @"
+    public const string AddModulePermission = @"
             DECLARE @PortalId INT
             DECLARE @RoleId INT
             DECLARE @ModuleId INT
@@ -576,14 +576,14 @@ namespace DNN.Integration.Test.Framework.Scripts
 
             SELECT SCOPE_IDENTITY() AS ModulePermissionId";
 
-        public const string PortalGetTimeZone = @"
+    public const string PortalGetTimeZone = @"
             DECLARE @PortalID INT
             SET @PortalID = '$[portal_id]'
 
             SELECT SettingValue FROM [dbo].[{objectQualifier}PortalSettings]
             WHERE PortalID = @PortalID AND SettingName = 'TimeZone'";
 
-        public const string Modulenformation = @"
+    public const string Modulenformation = @"
             DECLARE @PortalID INT = 0
                 DECLARE @friendlyName NVARCHAR(100) = 'Scheduler'
                          
@@ -601,14 +601,14 @@ namespace DNN.Integration.Test.Framework.Scripts
                 AND   (dtm.FriendlyName = @friendlyName OR mdfn.FriendlyName = @friendlyName)
                 ORDER BY dtm.FriendlyName, mdfn.FriendlyName, dtm.DesktopModuleID, mdfn.ModuleDefID, mdl.ModuleID;";
 
-        public const string TableExist = @"
+    public const string TableExist = @"
             IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.[{objectQualifier}$[table_name]]') AND type in (N'U'))
                 SELECT 1
             ELSE
                 SELECT 0
             ;";
 
-        public static string UserGetPreferredTimeZone = @"
+    public static string UserGetPreferredTimeZone = @"
             DECLARE @UserId INT
             DECLARE @PortalID INT
             DECLARE @PropertyDefinitionId INT
@@ -622,5 +622,4 @@ namespace DNN.Integration.Test.Framework.Scripts
 
             SELECT PropertyValue FROM [dbo].[{objectQualifier}UserProfile]
             WHERE PropertyDefinitionID = @PropertyDefinitionId AND [UserId] = @UserId";
-    }
 }

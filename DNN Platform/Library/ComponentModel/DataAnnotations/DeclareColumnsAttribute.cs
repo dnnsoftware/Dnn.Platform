@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ComponentModel.DataAnnotations
-{
-    using System;
+namespace DotNetNuke.ComponentModel.DataAnnotations;
 
-    public class DeclareColumnsAttribute : Attribute
-    {
-    }
+using System;
+
+public class DeclareColumnsAttribute : Attribute
+{
 }

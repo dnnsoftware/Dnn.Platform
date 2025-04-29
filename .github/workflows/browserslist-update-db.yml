@@ -2,7 +2,7 @@ name: Update Browserslist database
 
 on:
   schedule:
-    - cron: '0 2 1,15 * *'
+    - cron: "0 2 1,15 * *"
 
 permissions:
   contents: write
@@ -20,7 +20,7 @@ jobs:
         run: |
           # Setup for commiting using built-in token. See https://github.com/actions/checkout#push-a-commit-using-the-built-in-token
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"         
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - run: corepack enable
       - name: Update Browserslist database and create PR if applies
         uses: c2corg/browserslist-update-action@v2
@@ -28,4 +28,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: browserslist-update
           base_branch: develop
-          labels: 'javascript, Type: Maintenance'
+          labels: "javascript, Type: Maintenance"

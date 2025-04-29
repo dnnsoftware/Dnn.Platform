@@ -1,80 +1,79 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.ClientCapability
+namespace DotNetNuke.Services.ClientCapability;
+
+using System;
+using System.Collections.Generic;
+
+/// <summary>Default Implementation of IClientCapability.</summary>
+public class ClientCapability : IClientCapability
 {
-    using System;
-    using System.Collections.Generic;
+    private IDictionary<string, string> capabilities;
 
-    /// <summary>Default Implementation of IClientCapability.</summary>
-    public class ClientCapability : IClientCapability
+    /// <summary>Initializes a new instance of the <see cref="ClientCapability"/> class.</summary>
+    public ClientCapability()
     {
-        private IDictionary<string, string> capabilities;
+        this.capabilities = new Dictionary<string, string>();
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="ClientCapability"/> class.</summary>
-        public ClientCapability()
+    /// <inheritdoc />
+    public string ID { get; set; }
+
+    /// <inheritdoc />
+    public string UserAgent { get; set; }
+
+    /// <inheritdoc />
+    public bool IsMobile { get; set; }
+
+    /// <inheritdoc />
+    public bool IsTablet { get; set; }
+
+    /// <inheritdoc />
+    public bool IsTouchScreen { get; set; }
+
+    /// <inheritdoc />
+    public FacebookRequest FacebookRequest { get; set; }
+
+    /// <inheritdoc />
+    public int ScreenResolutionWidthInPixels { get; set; }
+
+    /// <inheritdoc />
+    public int ScreenResolutionHeightInPixels { get; set; }
+
+    /// <inheritdoc />
+    public bool SupportsFlash { get; set; }
+
+    /// <inheritdoc />
+    [Obsolete("Deprecated in DotNetNuke 8.0.0. This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled for removal in v10.0.0.")]
+    public IDictionary<string, string> Capabilities
+    {
+        get
         {
-            this.capabilities = new Dictionary<string, string>();
+            return this.capabilities;
         }
 
-        /// <inheritdoc />
-        public string ID { get; set; }
-
-        /// <inheritdoc />
-        public string UserAgent { get; set; }
-
-        /// <inheritdoc />
-        public bool IsMobile { get; set; }
-
-        /// <inheritdoc />
-        public bool IsTablet { get; set; }
-
-        /// <inheritdoc />
-        public bool IsTouchScreen { get; set; }
-
-        /// <inheritdoc />
-        public FacebookRequest FacebookRequest { get; set; }
-
-        /// <inheritdoc />
-        public int ScreenResolutionWidthInPixels { get; set; }
-
-        /// <inheritdoc />
-        public int ScreenResolutionHeightInPixels { get; set; }
-
-        /// <inheritdoc />
-        public bool SupportsFlash { get; set; }
-
-        /// <inheritdoc />
-        [Obsolete("Deprecated in DotNetNuke 8.0.0. This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled for removal in v10.0.0.")]
-        public IDictionary<string, string> Capabilities
+        set
         {
-            get
-            {
-                return this.capabilities;
-            }
-
-            set
-            {
-                this.capabilities = value;
-            }
+            this.capabilities = value;
         }
+    }
 
-        /// <inheritdoc />
-        public string BrowserName { get; set; }
+    /// <inheritdoc />
+    public string BrowserName { get; set; }
 
-        /// <inheritdoc />
-        public string HtmlPreferedDTD { get; set; }
+    /// <inheritdoc />
+    public string HtmlPreferedDTD { get; set; }
 
-        /// <inheritdoc />
-        public string SSLOffload { get; set; }
+    /// <inheritdoc />
+    public string SSLOffload { get; set; }
 
-        /// <inheritdoc />
-        public virtual string this[string name]
+    /// <inheritdoc />
+    public virtual string this[string name]
+    {
+        get
         {
-            get
-            {
-                throw new NotImplementedException(string.Empty);
-            }
+            throw new NotImplementedException(string.Empty);
         }
     }
 }

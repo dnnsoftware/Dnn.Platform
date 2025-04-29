@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.ConfigSection
+namespace DotNetNuke.Web.ConfigSection;
+
+using System.Configuration;
+
+public class AuthServicesConfiguration : ConfigurationSection
 {
-    using System.Configuration;
+    [ConfigurationProperty("messageHandlers", IsRequired = true)]
+    public MessageHandlersCollection MessageHandlers => this["messageHandlers"] as MessageHandlersCollection;
 
-    public class AuthServicesConfiguration : ConfigurationSection
+    public static AuthServicesConfiguration GetConfig()
     {
-        [ConfigurationProperty("messageHandlers", IsRequired = true)]
-        public MessageHandlersCollection MessageHandlers => this["messageHandlers"] as MessageHandlersCollection;
-
-        public static AuthServicesConfiguration GetConfig()
-        {
-            return ConfigurationManager.GetSection("dotnetnuke/authServices") as AuthServicesConfiguration;
-        }
+        return ConfigurationManager.GetSection("dotnetnuke/authServices") as AuthServicesConfiguration;
     }
 }

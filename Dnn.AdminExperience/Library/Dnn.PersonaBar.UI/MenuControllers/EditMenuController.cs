@@ -2,70 +2,69 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.UI.MenuControllers
+namespace Dnn.PersonaBar.UI.MenuControllers;
+
+using System.Collections.Generic;
+
+using Dnn.PersonaBar.Library.Controllers;
+using Dnn.PersonaBar.Library.Model;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
+using DotNetNuke.Web.Api.Internal;
+
+[DnnPageEditor]
+public class EditMenuController : IMenuItemController
 {
-    using System.Collections.Generic;
-
-    using Dnn.PersonaBar.Library.Controllers;
-    using Dnn.PersonaBar.Library.Model;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Web.Api.Internal;
-
-    [DnnPageEditor]
-    public class EditMenuController : IMenuItemController
+    /// <inheritdoc/>
+    public void UpdateParameters(MenuItem menuItem)
     {
-        /// <inheritdoc/>
-        public void UpdateParameters(MenuItem menuItem)
-        {
-        }
+    }
 
-        /// <inheritdoc/>
-        public bool Visible(MenuItem menuItem)
-        {
-            return this.IsPageAdmin() || this.IsModuleAdmin();
-        }
+    /// <inheritdoc/>
+    public bool Visible(MenuItem menuItem)
+    {
+        return this.IsPageAdmin() || this.IsModuleAdmin();
+    }
 
-        /// <inheritdoc/>
-        public IDictionary<string, object> GetSettings(MenuItem menuItem)
-        {
-            return null;
-        }
+    /// <inheritdoc/>
+    public IDictionary<string, object> GetSettings(MenuItem menuItem)
+    {
+        return null;
+    }
 
-        private bool IsModuleAdmin()
+    private bool IsModuleAdmin()
+    {
+        bool moduleAdmin = Null.NullBoolean;
+        var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+        foreach (ModuleInfo module in TabController.CurrentPage.Modules)
         {
-            bool moduleAdmin = Null.NullBoolean;
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            foreach (ModuleInfo module in TabController.CurrentPage.Modules)
+            if (!module.IsDeleted)
             {
-                if (!module.IsDeleted)
+                bool hasEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, module);
+                if (hasEditPermissions)
                 {
-                    bool hasEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, module);
-                    if (hasEditPermissions)
-                    {
-                        moduleAdmin = true;
-                        break;
-                    }
+                    moduleAdmin = true;
+                    break;
                 }
             }
-
-            return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && moduleAdmin;
         }
 
-        private bool IsPageAdmin()
-        {
-            return TabPermissionController.CanAddContentToPage()
-                    || TabPermissionController.CanAddPage()
-                    || TabPermissionController.CanAdminPage()
-                    || TabPermissionController.CanCopyPage()
-                    || TabPermissionController.CanDeletePage()
-                    || TabPermissionController.CanExportPage()
-                    || TabPermissionController.CanImportPage()
-                    || TabPermissionController.CanManagePage();
-        }
+        return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && moduleAdmin;
+    }
+
+    private bool IsPageAdmin()
+    {
+        return TabPermissionController.CanAddContentToPage()
+               || TabPermissionController.CanAddPage()
+               || TabPermissionController.CanAdminPage()
+               || TabPermissionController.CanCopyPage()
+               || TabPermissionController.CanDeletePage()
+               || TabPermissionController.CanExportPage()
+               || TabPermissionController.CanImportPage()
+               || TabPermissionController.CanManagePage();
     }
 }

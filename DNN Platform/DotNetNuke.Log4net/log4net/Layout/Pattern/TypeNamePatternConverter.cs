@@ -24,38 +24,37 @@ using System.IO;
 
 using log4net.Core;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Layout.Pattern;
+
+/// <summary>Pattern converter for the class name</summary>
+/// <remarks>
+/// <para>
+/// Outputs the <see cref="LocationInfo.ClassName"/> of the event.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+internal sealed class TypeNamePatternConverter : NamedPatternConverter 
 {
-    /// <summary>Pattern converter for the class name</summary>
+    /// <summary>Gets the fully qualified name of the class</summary>
+    /// <param name="loggingEvent">the event being logged</param>
+    /// <returns>The fully qualified type name for the caller location</returns>
     /// <remarks>
     /// <para>
-    /// Outputs the <see cref="LocationInfo.ClassName"/> of the event.
+    /// Returns the <see cref="LocationInfo.ClassName"/> of the <paramref name="loggingEvent"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    internal sealed class TypeNamePatternConverter : NamedPatternConverter 
+    protected override string GetFullyQualifiedName(LoggingEvent loggingEvent) 
     {
-        /// <summary>Gets the fully qualified name of the class</summary>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <returns>The fully qualified type name for the caller location</returns>
-        /// <remarks>
-        /// <para>
-        /// Returns the <see cref="LocationInfo.ClassName"/> of the <paramref name="loggingEvent"/>.
-        /// </para>
-        /// </remarks>
-        protected override string GetFullyQualifiedName(LoggingEvent loggingEvent) 
+        if (loggingEvent == null)
         {
-            if (loggingEvent == null)
-            {
-                return string.Empty;
-            }
-            
-            if (loggingEvent.LocationInformation == null)
-            {
-                return string.Empty;
-            }
-            
-            return loggingEvent.LocationInformation.ClassName;
+            return string.Empty;
         }
+            
+        if (loggingEvent.LocationInformation == null)
+        {
+            return string.Empty;
+        }
+            
+        return loggingEvent.LocationInformation.ClassName;
     }
 }

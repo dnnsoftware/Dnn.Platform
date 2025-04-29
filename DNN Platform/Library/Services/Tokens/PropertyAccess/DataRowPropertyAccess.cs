@@ -1,72 +1,71 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Tokens
+namespace DotNetNuke.Services.Tokens;
+
+using System;
+using System.Data;
+using System.Globalization;
+
+using DotNetNuke.Entities.Users;
+
+public class DataRowPropertyAccess : IPropertyAccess
 {
-    using System;
-    using System.Data;
-    using System.Globalization;
+    private readonly DataRow dr;
 
-    using DotNetNuke.Entities.Users;
-
-    public class DataRowPropertyAccess : IPropertyAccess
+    /// <summary>Initializes a new instance of the <see cref="DataRowPropertyAccess"/> class.</summary>
+    /// <param name="row"></param>
+    public DataRowPropertyAccess(DataRow row)
     {
-        private readonly DataRow dr;
+        this.dr = row;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="DataRowPropertyAccess"/> class.</summary>
-        /// <param name="row"></param>
-        public DataRowPropertyAccess(DataRow row)
+    /// <inheritdoc/>
+    public CacheLevel Cacheability
+    {
+        get
         {
-            this.dr = row;
+            return CacheLevel.notCacheable;
+        }
+    }
+
+    /// <inheritdoc/>
+    public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+    {
+        if (this.dr == null)
+        {
+            return string.Empty;
         }
 
-        /// <inheritdoc/>
-        public CacheLevel Cacheability
+        object valueObject = this.dr[propertyName];
+        string outputFormat = format;
+        if (string.IsNullOrEmpty(format))
         {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
+            outputFormat = "g";
         }
 
-        /// <inheritdoc/>
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        if (valueObject != null)
         {
-            if (this.dr == null)
+            switch (valueObject.GetType().Name)
             {
-                return string.Empty;
+                case "String":
+                    return PropertyAccess.FormatString(Convert.ToString(valueObject), format);
+                case "Boolean":
+                    return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject), formatProvider);
+                case "DateTime":
+                case "Double":
+                case "Single":
+                case "Int32":
+                case "Int64":
+                    return ((IFormattable)valueObject).ToString(outputFormat, formatProvider);
+                default:
+                    return PropertyAccess.FormatString(valueObject.ToString(), format);
             }
-
-            object valueObject = this.dr[propertyName];
-            string outputFormat = format;
-            if (string.IsNullOrEmpty(format))
-            {
-                outputFormat = "g";
-            }
-
-            if (valueObject != null)
-            {
-                switch (valueObject.GetType().Name)
-                {
-                    case "String":
-                        return PropertyAccess.FormatString(Convert.ToString(valueObject), format);
-                    case "Boolean":
-                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject), formatProvider);
-                    case "DateTime":
-                    case "Double":
-                    case "Single":
-                    case "Int32":
-                    case "Int64":
-                        return ((IFormattable)valueObject).ToString(outputFormat, formatProvider);
-                    default:
-                        return PropertyAccess.FormatString(valueObject.ToString(), format);
-                }
-            }
-            else
-            {
-                propertyNotFound = true;
-                return string.Empty;
-            }
+        }
+        else
+        {
+            propertyNotFound = true;
+            return string.Empty;
         }
     }
 }

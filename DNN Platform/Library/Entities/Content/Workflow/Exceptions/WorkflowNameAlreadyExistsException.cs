@@ -2,16 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Content.Workflow.Exceptions
-{
-    using DotNetNuke.Services.Localization;
+namespace DotNetNuke.Entities.Content.Workflow.Exceptions;
 
-    public class WorkflowNameAlreadyExistsException : WorkflowException
+using DotNetNuke.Services.Localization;
+
+public class WorkflowNameAlreadyExistsException : WorkflowException
+{
+    /// <summary>Initializes a new instance of the <see cref="WorkflowNameAlreadyExistsException"/> class.</summary>
+    public WorkflowNameAlreadyExistsException()
+        : base(Localization.GetString("WorkflowNameAlreadyExistsException", Localization.ExceptionsResourceFile))
     {
-        /// <summary>Initializes a new instance of the <see cref="WorkflowNameAlreadyExistsException"/> class.</summary>
-        public WorkflowNameAlreadyExistsException()
-            : base(Localization.GetString("WorkflowNameAlreadyExistsException", Localization.ExceptionsResourceFile))
-        {
-        }
     }
 }

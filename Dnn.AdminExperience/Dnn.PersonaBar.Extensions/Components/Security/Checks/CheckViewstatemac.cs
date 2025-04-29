@@ -2,39 +2,38 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+using System.Web;
+using System.Web.UI;
+
+public class CheckViewstatemac : IAuditCheck
 {
-    using System;
-    using System.Web;
-    using System.Web.UI;
+    /// <inheritdoc/>
+    public string Id => "CheckViewstatemac";
 
-    public class CheckViewstatemac : IAuditCheck
+    /// <inheritdoc/>
+    public bool LazyLoad => false;
+
+    /// <inheritdoc/>
+    public CheckResult Execute()
     {
-        /// <inheritdoc/>
-        public string Id => "CheckViewstatemac";
+        var result = new CheckResult(SeverityEnum.Unverified, this.Id);
+        var page = HttpContext.Current.Handler as Page;
 
-        /// <inheritdoc/>
-        public bool LazyLoad => false;
-
-        /// <inheritdoc/>
-        public CheckResult Execute()
+        if (page != null)
         {
-            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            var page = HttpContext.Current.Handler as Page;
-
-            if (page != null)
+            if (page.EnableViewStateMac == false)
             {
-                if (page.EnableViewStateMac == false)
-                {
-                    result.Severity = SeverityEnum.Failure;
-                }
-                else
-                {
-                    result.Severity = SeverityEnum.Pass;
-                }
+                result.Severity = SeverityEnum.Failure;
             }
-
-            return result;
+            else
+            {
+                result.Severity = SeverityEnum.Pass;
+            }
         }
+
+        return result;
     }
 }

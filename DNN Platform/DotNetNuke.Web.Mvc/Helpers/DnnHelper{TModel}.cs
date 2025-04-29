@@ -3,26 +3,25 @@
 // See the LICENSE file in the project root for more information
 
 // ReSharper disable ConvertPropertyToExpressionBody
-namespace DotNetNuke.Web.Mvc.Helpers
+namespace DotNetNuke.Web.Mvc.Helpers;
+
+using System.Web.Mvc;
+using System.Web.Routing;
+
+public class DnnHelper<TModel> : DnnHelper
 {
-    using System.Web.Mvc;
-    using System.Web.Routing;
-
-    public class DnnHelper<TModel> : DnnHelper
+    public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
+        : this(viewContext, viewDataContainer, RouteTable.Routes)
     {
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
-            : this(viewContext, viewDataContainer, RouteTable.Routes)
-        {
-        }
+    }
 
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
-            : base(new HtmlHelper<TModel>(viewContext, viewDataContainer, routeCollection))
-        {
-        }
+    public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
+        : base(new HtmlHelper<TModel>(viewContext, viewDataContainer, routeCollection))
+    {
+    }
 
-        public new ViewDataDictionary<TModel> ViewData
-        {
-            get { return ((HtmlHelper<TModel>)this.HtmlHelper).ViewData; }
-        }
+    public new ViewDataDictionary<TModel> ViewData
+    {
+        get { return ((HtmlHelper<TModel>)this.HtmlHelper).ViewData; }
     }
 }

@@ -2,249 +2,248 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DNN.Connectors.GoogleTagManager
+namespace DNN.Connectors.GoogleTagManager;
+
+using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Xml;
+
+using DotNetNuke.Common;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Analytics.Config;
+using DotNetNuke.Services.Connections;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Localization;
+
+/// <summary>Connector to provide configuration for Google Tag Manager support.</summary>
+public class GoogleTagManagerConnector : IConnector
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Web;
-    using System.Xml;
+    private const string DefaultDisplayName = "Google Tag Manager";
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Services.Analytics.Config;
-    using DotNetNuke.Services.Connections;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
+    private string displayName;
 
-    /// <summary>Connector to provide configuration for Google Tag Manager support.</summary>
-    public class GoogleTagManagerConnector : IConnector
+    /// <inheritdoc/>
+    public string Name
     {
-        private const string DefaultDisplayName = "Google Tag Manager";
+        get { return "Core Google Tag Manager Connector"; }
+    }
 
-        private string displayName;
+    /// <inheritdoc/>
+    public string IconUrl
+    {
+        get { return "~/DesktopModules/Connectors/GoogleTagManager/Images/GoogleTagManager_32X32_Standard.png"; }
+    }
 
-        /// <inheritdoc/>
-        public string Name
+    /// <inheritdoc/>
+    public string PluginFolder
+    {
+        get { return "~/DesktopModules/Connectors/GoogleTagManager/"; }
+    }
+
+    /// <inheritdoc/>
+    public bool IsEngageConnector
+    {
+        get
         {
-            get { return "Core Google Tag Manager Connector"; }
+            return false;
         }
+    }
 
-        /// <inheritdoc/>
-        public string IconUrl
-        {
-            get { return "~/DesktopModules/Connectors/GoogleTagManager/Images/GoogleTagManager_32X32_Standard.png"; }
-        }
+    /// <inheritdoc/>
+    public ConnectorCategories Type => ConnectorCategories.Analytics;
 
-        /// <inheritdoc/>
-        public string PluginFolder
-        {
-            get { return "~/DesktopModules/Connectors/GoogleTagManager/"; }
-        }
+    /// <inheritdoc/>
+    // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
+    public bool SupportsMultiple => false;
 
-        /// <inheritdoc/>
-        public bool IsEngageConnector
+    /// <inheritdoc/>
+    public string DisplayName
+    {
+        get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
+        set => this.displayName = value;
+    }
+
+    /// <inheritdoc/>
+    public string Id { get; set; }
+
+    /// <inheritdoc/>
+    public IEnumerable<IConnector> GetConnectors(int portalId)
+    {
+        return new List<IConnector> { this };
+    }
+
+    /// <inheritdoc/>
+    public void DeleteConnector(int portalId)
+    {
+    }
+
+    /// <inheritdoc/>
+    public bool HasConfig(int portalId)
+    {
+        IDictionary<string, string> config = this.GetConfig(portalId);
+
+        return config.ContainsKey("GtmID") && !string.IsNullOrEmpty(config["GtmID"]);
+    }
+
+    /// <inheritdoc/>
+    public IDictionary<string, string> GetConfig(int portalId)
+    {
+        var gtmConfig = AnalyticsConfiguration.GetConfig("GoogleTagManager");
+        var portalSettings = new PortalSettings(portalId);
+
+        // Important, knockout handles empty strings as false and any other string as true
+        // so we need to pass empty strings when we mean false, however it passes us back the string "false"
+        // when saving the settings in the SaveConfig method, so we need to handle that case too
+        var gtmId = string.Empty;
+        var trackForAdmin = string.Empty;
+
+        if (gtmConfig != null)
         {
-            get
+            foreach (AnalyticsSetting setting in gtmConfig.Settings)
             {
-                return false;
+                switch (setting.SettingName.ToLower())
+                {
+                    case "gtmid":
+                        gtmId = setting.SettingValue;
+                        break;
+                    case "trackforadmin":
+                        trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
+                        break;
+                }
             }
         }
 
-        /// <inheritdoc/>
-        public ConnectorCategories Type => ConnectorCategories.Analytics;
+        var configItems = new Dictionary<string, string>
+        {
+            { "GtmID", gtmId },
+            { "TrackAdministrators", trackForAdmin },
+            { "isDeactivating", this.HandleCustomBoolean("false") },
+        };
 
-        /// <inheritdoc/>
+        return configItems;
+    }
+
+    /// <inheritdoc/>
+    public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
+    {
+        // Delete / Deactivation functionality added into SaveConfig because
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-        public bool SupportsMultiple => false;
+        customErrorMessage = string.Empty;
+        bool isValid;
 
-        /// <inheritdoc/>
-        public string DisplayName
+        try
         {
-            get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
-            set => this.displayName = value;
-        }
+            var isDeactivating = false;
 
-        /// <inheritdoc/>
-        public string Id { get; set; }
+            bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
 
-        /// <inheritdoc/>
-        public IEnumerable<IConnector> GetConnectors(int portalId)
-        {
-            return new List<IConnector> { this };
-        }
+            string gtmID;
+            string trackForAdmin;
 
-        /// <inheritdoc/>
-        public void DeleteConnector(int portalId)
-        {
-        }
+            isValid = true;
 
-        /// <inheritdoc/>
-        public bool HasConfig(int portalId)
-        {
-            IDictionary<string, string> config = this.GetConfig(portalId);
-
-            return config.ContainsKey("GtmID") && !string.IsNullOrEmpty(config["GtmID"]);
-        }
-
-        /// <inheritdoc/>
-        public IDictionary<string, string> GetConfig(int portalId)
-        {
-            var gtmConfig = AnalyticsConfiguration.GetConfig("GoogleTagManager");
-            var portalSettings = new PortalSettings(portalId);
-
-            // Important, knockout handles empty strings as false and any other string as true
-            // so we need to pass empty strings when we mean false, however it passes us back the string "false"
-            // when saving the settings in the SaveConfig method, so we need to handle that case too
-            var gtmId = string.Empty;
-            var trackForAdmin = string.Empty;
-
-            if (gtmConfig != null)
+            if (isDeactivating)
             {
-                foreach (AnalyticsSetting setting in gtmConfig.Settings)
+                gtmID = null;
+                trackForAdmin = null;
+            }
+            else
+            {
+                gtmID = values["GtmID"] != null ? values["GtmID"].ToUpperInvariant().Trim() : string.Empty;
+                trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
+
+                if (string.IsNullOrEmpty(gtmID))
                 {
-                    switch (setting.SettingName.ToLower())
-                    {
-                        case "gtmid":
-                            gtmId = setting.SettingValue;
-                            break;
-                        case "trackforadmin":
-                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
-                            break;
-                    }
+                    isValid = false;
+                    customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
                 }
             }
 
-            var configItems = new Dictionary<string, string>
+            if (isValid)
             {
-                { "GtmID", gtmId },
-                { "TrackAdministrators", trackForAdmin },
-                { "isDeactivating", this.HandleCustomBoolean("false") },
-            };
+                var config = new AnalyticsConfiguration
+                {
+                    Settings = new AnalyticsSettingCollection(),
+                };
 
-            return configItems;
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "GtmId",
+                    SettingValue = gtmID,
+                });
+
+                config.Settings.Add(new AnalyticsSetting
+                {
+                    SettingName = "TrackForAdmin",
+                    SettingValue = trackForAdmin,
+                });
+
+                AnalyticsConfiguration.SaveConfig("GoogleTagManager", config);
+
+                if (!isDeactivating)
+                {
+                    this.EnsureScriptInConfig();
+                }
+            }
+
+            return isValid;
         }
-
-        /// <inheritdoc/>
-        public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
+        catch (Exception ex)
         {
-            // Delete / Deactivation functionality added into SaveConfig because
-            // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
-            customErrorMessage = string.Empty;
-            bool isValid;
-
-            try
-            {
-                var isDeactivating = false;
-
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
-
-                string gtmID;
-                string trackForAdmin;
-
-                isValid = true;
-
-                if (isDeactivating)
-                {
-                    gtmID = null;
-                    trackForAdmin = null;
-                }
-                else
-                {
-                    gtmID = values["GtmID"] != null ? values["GtmID"].ToUpperInvariant().Trim() : string.Empty;
-                    trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
-
-                    if (string.IsNullOrEmpty(gtmID))
-                    {
-                        isValid = false;
-                        customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
-                    }
-                }
-
-                if (isValid)
-                {
-                    var config = new AnalyticsConfiguration
-                    {
-                        Settings = new AnalyticsSettingCollection(),
-                    };
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "GtmId",
-                        SettingValue = gtmID,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin,
-                    });
-
-                    AnalyticsConfiguration.SaveConfig("GoogleTagManager", config);
-
-                    if (!isDeactivating)
-                    {
-                        this.EnsureScriptInConfig();
-                    }
-                }
-
-                return isValid;
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-                return false;
-            }
+            Exceptions.LogException(ex);
+            return false;
         }
+    }
 
-        /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
-        private void EnsureScriptInConfig()
+    /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
+    private void EnsureScriptInConfig()
+    {
+        var applicationMappath = HttpContext.Current.Server.MapPath("\\");
+        var file = applicationMappath + "\\SiteAnalytics.config";
+        var xdoc = new XmlDocument();
+        xdoc.Load(file);
+        var found = false;
+        foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
         {
-            var applicationMappath = HttpContext.Current.Server.MapPath("\\");
-            var file = applicationMappath + "\\SiteAnalytics.config";
-            var xdoc = new XmlDocument();
-            xdoc.Load(file);
-            var found = false;
-            foreach (XmlNode engineTypeNode in xdoc.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine/EngineType"))
+            if (engineTypeNode.InnerText.Contains("DotNetNuke.Services.Analytics.GoogleTagManagerEngine"))
             {
-                if (engineTypeNode.InnerText.Contains("DotNetNuke.Services.Analytics.GoogleTagManagerEngine"))
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-            {
-                var fileGtm = applicationMappath + "\\DesktopModules\\Connectors\\GoogleTagManager\\GoogleTagManager.config";
-                var xdocGtm = new XmlDocument();
-                xdocGtm.Load(fileGtm);
-
-                var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
-                foreach (XmlNode engineNode in xdocGtm.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))
-                {
-                    var engineFrag = xdoc.CreateDocumentFragment();
-                    engineFrag.InnerXml = engineNode.OuterXml;
-                    enginesElement.AppendChild(engineFrag);
-                }
-
-                xdoc.Save(file);
+                found = true;
+                break;
             }
         }
 
-        /// <summary>
-        /// Handles custom conversion from "true" => "true"
-        /// Anything else to "" to support the strange knockout handling of string as booleans.
-        /// </summary>
-        /// <param name="value">The string representing a boolean.</param>
-        /// <returns>The string representing a boolean after the correction.</returns>
-        private string HandleCustomBoolean(string value)
+        if (!found)
         {
-            if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+            var fileGtm = applicationMappath + "\\DesktopModules\\Connectors\\GoogleTagManager\\GoogleTagManager.config";
+            var xdocGtm = new XmlDocument();
+            xdocGtm.Load(fileGtm);
+
+            var enginesElement = xdoc.SelectSingleNode("/AnalyticsEngineConfig/Engines");
+            foreach (XmlNode engineNode in xdocGtm.SelectNodes("/AnalyticsEngineConfig/Engines/AnalyticsEngine"))
             {
-                return "true";
+                var engineFrag = xdoc.CreateDocumentFragment();
+                engineFrag.InnerXml = engineNode.OuterXml;
+                enginesElement.AppendChild(engineFrag);
             }
 
-            return string.Empty;
+            xdoc.Save(file);
         }
+    }
+
+    /// <summary>
+    /// Handles custom conversion from "true" => "true"
+    /// Anything else to "" to support the strange knockout handling of string as booleans.
+    /// </summary>
+    /// <param name="value">The string representing a boolean.</param>
+    /// <returns>The string representing a boolean after the correction.</returns>
+    private string HandleCustomBoolean(string value)
+    {
+        if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+        {
+            return "true";
+        }
+
+        return string.Empty;
     }
 }

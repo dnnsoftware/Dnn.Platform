@@ -1,287 +1,286 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Installer.Installers
+namespace DotNetNuke.Services.Installer.Installers;
+
+using System;
+using System.IO;
+using System.Reflection;
+using System.Security;
+using System.Text.RegularExpressions;
+using System.Xml;
+
+using DotNetNuke.Common;
+using DotNetNuke.Data;
+
+/// <summary>The AssemblyInstaller installs Assembly Components to a DotNetNuke site.</summary>
+public class AssemblyInstaller : FileInstaller
 {
-    using System;
-    using System.IO;
-    using System.Reflection;
-    using System.Security;
-    using System.Text.RegularExpressions;
-    using System.Xml;
+    private static readonly Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Data;
+    private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
 
-    /// <summary>The AssemblyInstaller installs Assembly Components to a DotNetNuke site.</summary>
-    public class AssemblyInstaller : FileInstaller
+    /// <inheritdoc />
+    public override string AllowableFiles
     {
-        private static readonly Regex PublicKeyTokenRegex = new Regex(@"PublicKeyToken=(\w+)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
-
-        private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
-
-        /// <inheritdoc />
-        public override string AllowableFiles
+        get
         {
-            get
-            {
-                return "dll,pdb";
-            }
+            return "dll,pdb";
         }
+    }
 
-        /// <summary>Gets the name of the Collection Node (<c>assemblies</c>).</summary>
-        protected override string CollectionNodeName
+    /// <summary>Gets the name of the Collection Node (<c>assemblies</c>).</summary>
+    protected override string CollectionNodeName
+    {
+        get
         {
-            get
-            {
-                return "assemblies";
-            }
+            return "assemblies";
         }
+    }
 
-        /// <summary>Gets the default Path for the file - if not present in the manifest.</summary>
-        protected override string DefaultPath
+    /// <summary>Gets the default Path for the file - if not present in the manifest.</summary>
+    protected override string DefaultPath
+    {
+        get
         {
-            get
-            {
-                return "bin\\";
-            }
+            return "bin\\";
         }
+    }
 
-        /// <summary>Gets the name of the Item Node (<c>assembly</c>).</summary>
-        protected override string ItemNodeName
+    /// <summary>Gets the name of the Item Node (<c>assembly</c>).</summary>
+    protected override string ItemNodeName
+    {
+        get
         {
-            get
-            {
-                return "assembly";
-            }
+            return "assembly";
         }
+    }
 
-        /// <summary>Gets the PhysicalBasePath for the assemblies.</summary>
-        protected override string PhysicalBasePath
+    /// <summary>Gets the PhysicalBasePath for the assemblies.</summary>
+    protected override string PhysicalBasePath
+    {
+        get
         {
-            get
-            {
-                return this.PhysicalSitePath + "\\";
-            }
+            return this.PhysicalSitePath + "\\";
         }
+    }
 
-        /// <inheritdoc />
-        protected override void DeleteFile(InstallFile file)
+    /// <inheritdoc />
+    protected override void DeleteFile(InstallFile file)
+    {
+        // Attempt to unregister assembly this will return False if the assembly is used by another package and
+        // cannot be delete andtrue if it is not being used and can be deleted
+        if (DataProvider.Instance().UnRegisterAssembly(this.Package.PackageID, file.Name))
         {
-            // Attempt to unregister assembly this will return False if the assembly is used by another package and
-            // cannot be delete andtrue if it is not being used and can be deleted
-            if (DataProvider.Instance().UnRegisterAssembly(this.Package.PackageID, file.Name))
-            {
-                this.Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
+            this.Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
 
-                this.RemoveBindingRedirect(file);
+            this.RemoveBindingRedirect(file);
 
-                // Call base class version to deleteFile file from \bin
-                base.DeleteFile(file);
-            }
-            else
-            {
-                this.Log.AddInfo(Util.ASSEMBLY_InUse + " - " + file.FullName);
-            }
+            // Call base class version to deleteFile file from \bin
+            base.DeleteFile(file);
         }
-
-        /// <inheritdoc />
-        protected override bool IsCorrectType(InstallFileType type)
+        else
         {
-            return type == InstallFileType.Assembly;
+            this.Log.AddInfo(Util.ASSEMBLY_InUse + " - " + file.FullName);
         }
+    }
 
-        /// <inheritdoc />
-        protected override bool InstallFile(InstallFile file)
+    /// <inheritdoc />
+    protected override bool IsCorrectType(InstallFileType type)
+    {
+        return type == InstallFileType.Assembly;
+    }
+
+    /// <inheritdoc />
+    protected override bool InstallFile(InstallFile file)
+    {
+        bool bSuccess = true;
+        if (file.Action == "UnRegister")
         {
-            bool bSuccess = true;
-            if (file.Action == "UnRegister")
-            {
-                var prevDeleteFiles = this.DeleteFiles;
-                try
-                {
-                    this.DeleteFiles = true;
-                    this.DeleteFile(file);
-                }
-                finally
-                {
-                    this.DeleteFiles = prevDeleteFiles;
-                }
-            }
-            else
-            {
-                // Attempt to register assembly this will return False if the assembly exists and true if it does not or is older
-                int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, file.Version.ToString(3));
-                switch (returnCode)
-                {
-                    case 0:
-                        // Assembly Does Not Exist
-                        this.Log.AddInfo(Util.ASSEMBLY_Added + " - " + file.FullName);
-                        break;
-                    case 1:
-                        // Older version of Assembly Exists
-                        this.Log.AddInfo(Util.ASSEMBLY_Updated + " - " + file.FullName);
-                        break;
-                    case 2:
-                    case 3:
-                        // Assembly already Registered
-                        this.Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
-                        break;
-                }
-
-                // If assembly not registered, is newer (or is the same version and we are in repair mode)
-                if (returnCode < 2 || (returnCode == 2 && file.InstallerInfo.RepairInstall))
-                {
-                    // Call base class version to copy file to \bin
-                    bSuccess = base.InstallFile(file);
-                    this.AddOrUpdateBindingRedirect(file);
-                }
-            }
-
-            return bSuccess;
-        }
-
-        /// <summary>Reads the file's <see cref="AssemblyName"/>.</summary>
-        /// <param name="assemblyFile">The path for the assembly whose <see cref="AssemblyName"/> is to be returned.</param>
-        /// <returns>An <see cref="AssemblyName"/> or <c>null</c>.</returns>
-        private static AssemblyName ReadAssemblyName(string assemblyFile)
-        {
+            var prevDeleteFiles = this.DeleteFiles;
             try
             {
-                return AssemblyName.GetAssemblyName(assemblyFile);
+                this.DeleteFiles = true;
+                this.DeleteFile(file);
             }
-            catch (BadImageFormatException)
+            finally
             {
-                // assemblyFile is not a valid assembly.
-                return null;
+                this.DeleteFiles = prevDeleteFiles;
             }
-            catch (ArgumentException)
+        }
+        else
+        {
+            // Attempt to register assembly this will return False if the assembly exists and true if it does not or is older
+            int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, file.Version.ToString(3));
+            switch (returnCode)
             {
-                // assemblyFile is invalid, such as an assembly with an invalid culture.
-                return null;
+                case 0:
+                    // Assembly Does Not Exist
+                    this.Log.AddInfo(Util.ASSEMBLY_Added + " - " + file.FullName);
+                    break;
+                case 1:
+                    // Older version of Assembly Exists
+                    this.Log.AddInfo(Util.ASSEMBLY_Updated + " - " + file.FullName);
+                    break;
+                case 2:
+                case 3:
+                    // Assembly already Registered
+                    this.Log.AddInfo(Util.ASSEMBLY_Registered + " - " + file.FullName);
+                    break;
             }
-            catch (SecurityException)
+
+            // If assembly not registered, is newer (or is the same version and we are in repair mode)
+            if (returnCode < 2 || (returnCode == 2 && file.InstallerInfo.RepairInstall))
             {
-                // The caller does not have path discovery permission.
-                return null;
-            }
-            catch (FileLoadException)
-            {
-                // An assembly or module was loaded twice with two different sets of evidence.
-                return null;
+                // Call base class version to copy file to \bin
+                bSuccess = base.InstallFile(file);
+                this.AddOrUpdateBindingRedirect(file);
             }
         }
 
-        private static string ReadPublicKey(AssemblyName assemblyName)
-        {
-            if (assemblyName == null || !assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
-            {
-                return null;
-            }
+        return bSuccess;
+    }
 
-            return PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
+    /// <summary>Reads the file's <see cref="AssemblyName"/>.</summary>
+    /// <param name="assemblyFile">The path for the assembly whose <see cref="AssemblyName"/> is to be returned.</param>
+    /// <returns>An <see cref="AssemblyName"/> or <c>null</c>.</returns>
+    private static AssemblyName ReadAssemblyName(string assemblyFile)
+    {
+        try
+        {
+            return AssemblyName.GetAssemblyName(assemblyFile);
+        }
+        catch (BadImageFormatException)
+        {
+            // assemblyFile is not a valid assembly.
+            return null;
+        }
+        catch (ArgumentException)
+        {
+            // assemblyFile is invalid, such as an assembly with an invalid culture.
+            return null;
+        }
+        catch (SecurityException)
+        {
+            // The caller does not have path discovery permission.
+            return null;
+        }
+        catch (FileLoadException)
+        {
+            // An assembly or module was loaded twice with two different sets of evidence.
+            return null;
+        }
+    }
+
+    private static string ReadPublicKey(AssemblyName assemblyName)
+    {
+        if (assemblyName == null || !assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
+        {
+            return null;
         }
 
-        /// <summary>Gets the XML merge document to create the binding redirect.</summary>
-        /// <param name="xmlMergePath">The path to the template binding redirect XML Merge document.</param>
-        /// <param name="name">The assembly name.</param>
-        /// <param name="publicKeyToken">The assembly's public key token.</param>
-        /// <param name="oldVersion">The old version range.</param>
-        /// <param name="newVersion">The new version.</param>
-        /// <returns>An <see cref="XmlDocument"/> instance.</returns>
-        private static XmlDocument GetXmlMergeDoc(string xmlMergePath, string name, string publicKeyToken, string oldVersion, string newVersion)
+        return PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
+    }
+
+    /// <summary>Gets the XML merge document to create the binding redirect.</summary>
+    /// <param name="xmlMergePath">The path to the template binding redirect XML Merge document.</param>
+    /// <param name="name">The assembly name.</param>
+    /// <param name="publicKeyToken">The assembly's public key token.</param>
+    /// <param name="oldVersion">The old version range.</param>
+    /// <param name="newVersion">The new version.</param>
+    /// <returns>An <see cref="XmlDocument"/> instance.</returns>
+    private static XmlDocument GetXmlMergeDoc(string xmlMergePath, string name, string publicKeyToken, string oldVersion, string newVersion)
+    {
+        var xmlMergeDoc = new XmlDocument { XmlResolver = null };
+        xmlMergeDoc.Load(xmlMergePath);
+
+        var namespaceManager = new XmlNamespaceManager(xmlMergeDoc.NameTable);
+        namespaceManager.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
+
+        var node = xmlMergeDoc.SelectSingleNode("/configuration/nodes/node", namespaceManager);
+        ReplaceInAttributeValue(node, namespaceManager, "@path", "$$name$$", name);
+        ReplaceInAttributeValue(node, namespaceManager, "@path", "$$publicKeyToken$$", publicKeyToken);
+
+        var dependentAssembly = node.SelectSingleNode("ab:dependentAssembly", namespaceManager);
+        if (dependentAssembly == null)
         {
-            var xmlMergeDoc = new XmlDocument { XmlResolver = null };
-            xmlMergeDoc.Load(xmlMergePath);
-
-            var namespaceManager = new XmlNamespaceManager(xmlMergeDoc.NameTable);
-            namespaceManager.AddNamespace("ab", "urn:schemas-microsoft-com:asm.v1");
-
-            var node = xmlMergeDoc.SelectSingleNode("/configuration/nodes/node", namespaceManager);
-            ReplaceInAttributeValue(node, namespaceManager, "@path", "$$name$$", name);
-            ReplaceInAttributeValue(node, namespaceManager, "@path", "$$publicKeyToken$$", publicKeyToken);
-
-            var dependentAssembly = node.SelectSingleNode("ab:dependentAssembly", namespaceManager);
-            if (dependentAssembly == null)
-            {
-                return xmlMergeDoc;
-            }
-
-            ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$name$$", name);
-            ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$publicKeyToken$$", publicKeyToken);
-
-            var assemblyIdentity = dependentAssembly.SelectSingleNode("ab:assemblyIdentity", namespaceManager);
-            ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@name", "$$name$$", name);
-            ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@publicKeyToken", "$$publicKeyToken$$", publicKeyToken);
-
-            var bindingRedirect = dependentAssembly.SelectSingleNode("ab:bindingRedirect", namespaceManager);
-            ReplaceInAttributeValue(bindingRedirect, namespaceManager, "@oldVersion", "$$oldVersion$$", oldVersion);
-            ReplaceInAttributeValue(bindingRedirect, namespaceManager, "@newVersion", "$$newVersion$$", newVersion);
-
             return xmlMergeDoc;
         }
 
-        /// <summary>Replaces the given text in the value of the attribute matched by <paramref name="xpath"/>.</summary>
-        /// <param name="parentNode">The parent node in which to search via the <paramref name="xpath"/> expression.</param>
-        /// <param name="namespaceManager">The namespace manager.</param>
-        /// <param name="xpath">The xpath expression to get the attribute.</param>
-        /// <param name="oldValue">The placeholder value to replace.</param>
-        /// <param name="newValue">The real value with which to replace <paramref name="oldValue"/>.</param>
-        private static void ReplaceInAttributeValue(XmlNode parentNode, XmlNamespaceManager namespaceManager, string xpath, string oldValue, string newValue)
+        ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$name$$", name);
+        ReplaceInAttributeValue(node, namespaceManager, "@targetpath", "$$publicKeyToken$$", publicKeyToken);
+
+        var assemblyIdentity = dependentAssembly.SelectSingleNode("ab:assemblyIdentity", namespaceManager);
+        ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@name", "$$name$$", name);
+        ReplaceInAttributeValue(assemblyIdentity, namespaceManager, "@publicKeyToken", "$$publicKeyToken$$", publicKeyToken);
+
+        var bindingRedirect = dependentAssembly.SelectSingleNode("ab:bindingRedirect", namespaceManager);
+        ReplaceInAttributeValue(bindingRedirect, namespaceManager, "@oldVersion", "$$oldVersion$$", oldVersion);
+        ReplaceInAttributeValue(bindingRedirect, namespaceManager, "@newVersion", "$$newVersion$$", newVersion);
+
+        return xmlMergeDoc;
+    }
+
+    /// <summary>Replaces the given text in the value of the attribute matched by <paramref name="xpath"/>.</summary>
+    /// <param name="parentNode">The parent node in which to search via the <paramref name="xpath"/> expression.</param>
+    /// <param name="namespaceManager">The namespace manager.</param>
+    /// <param name="xpath">The xpath expression to get the attribute.</param>
+    /// <param name="oldValue">The placeholder value to replace.</param>
+    /// <param name="newValue">The real value with which to replace <paramref name="oldValue"/>.</param>
+    private static void ReplaceInAttributeValue(XmlNode parentNode, XmlNamespaceManager namespaceManager, string xpath, string oldValue, string newValue)
+    {
+        var attribute = parentNode.SelectSingleNode(xpath, namespaceManager);
+        attribute.Value = attribute.Value.Replace(oldValue, newValue);
+    }
+
+    /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
+    /// <param name="file">The assembly file.</param>
+    private void AddOrUpdateBindingRedirect(InstallFile file)
+    {
+        if (this.ApplyXmlMerge(file, "BindingRedirect.config"))
         {
-            var attribute = parentNode.SelectSingleNode(xpath, namespaceManager);
-            attribute.Value = attribute.Value.Replace(oldValue, newValue);
+            this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
+        }
+    }
+
+    /// <summary>Removes the binding redirect for the assembly file, if the assembly is strong-named.</summary>
+    /// <param name="file">The assembly file.</param>
+    private void RemoveBindingRedirect(InstallFile file)
+    {
+        if (this.ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
+        {
+            this.Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
+        }
+    }
+
+    /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
+    /// <param name="file">The assembly file.</param>
+    /// <param name="xmlMergeFile">The XML merge file name.</param>
+    /// <returns><see langword="true"/> if the XML Merge was applied successfully, <see langword="false"/> if the file was not a strong-named assembly or could not be read.</returns>
+    private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
+    {
+        var assemblyFileFullPath = Path.Combine(this.PhysicalBasePath, file.FullName);
+        if (!File.Exists(assemblyFileFullPath))
+        {
+            return false;
         }
 
-        /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
-        /// <param name="file">The assembly file.</param>
-        private void AddOrUpdateBindingRedirect(InstallFile file)
+        var assemblyName = ReadAssemblyName(assemblyFileFullPath);
+        var publicKeyToken = ReadPublicKey(assemblyName);
+        if (string.IsNullOrEmpty(publicKeyToken))
         {
-            if (this.ApplyXmlMerge(file, "BindingRedirect.config"))
-            {
-                this.Log.AddInfo(Util.ASSEMBLY_AddedBindingRedirect + " - " + file.FullName);
-            }
+            return false;
         }
 
-        /// <summary>Removes the binding redirect for the assembly file, if the assembly is strong-named.</summary>
-        /// <param name="file">The assembly file.</param>
-        private void RemoveBindingRedirect(InstallFile file)
-        {
-            if (this.ApplyXmlMerge(file, "RemoveBindingRedirect.config"))
-            {
-                this.Log.AddInfo(Util.ASSEMBLY_RemovedBindingRedirect + " - " + file.FullName);
-            }
-        }
+        var name = assemblyName.Name;
+        var assemblyVersion = assemblyName.Version;
+        var newVersion = assemblyVersion.ToString();
 
-        /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
-        /// <param name="file">The assembly file.</param>
-        /// <param name="xmlMergeFile">The XML merge file name.</param>
-        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
-        private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
-        {
-            var assemblyFileFullPath = Path.Combine(this.PhysicalBasePath, file.FullName);
-            if (!File.Exists(assemblyFileFullPath))
-            {
-                return false;
-            }
+        var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
+        var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
+        var xmlMerge = new XmlMerge(xmlMergeDoc, this.Package.Version.ToString(), this.Package.Name);
+        xmlMerge.UpdateConfigs();
 
-            var assemblyName = ReadAssemblyName(assemblyFileFullPath);
-            var publicKeyToken = ReadPublicKey(assemblyName);
-            if (string.IsNullOrEmpty(publicKeyToken))
-            {
-                return false;
-            }
-
-            var name = assemblyName.Name;
-            var assemblyVersion = assemblyName.Version;
-            var newVersion = assemblyVersion.ToString();
-
-            var xmlMergePath = Path.Combine(Globals.InstallMapPath, "Config", xmlMergeFile);
-            var xmlMergeDoc = GetXmlMergeDoc(xmlMergePath, name, publicKeyToken, OldVersion, newVersion);
-            var xmlMerge = new XmlMerge(xmlMergeDoc, this.Package.Version.ToString(), this.Package.Name);
-            xmlMerge.UpdateConfigs();
-
-            return true;
-        }
+        return true;
     }
 }

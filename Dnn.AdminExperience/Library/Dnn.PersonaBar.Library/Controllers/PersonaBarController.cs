@@ -2,205 +2,204 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Library.Controllers
+namespace Dnn.PersonaBar.Library.Controllers;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Dnn.PersonaBar.Library.Containers;
+using Dnn.PersonaBar.Library.Permissions;
+using Dnn.PersonaBar.Library.Repository;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
+using Newtonsoft.Json;
+
+using MenuItem = Dnn.PersonaBar.Library.Model.MenuItem;
+using PersonaBarMenu = Dnn.PersonaBar.Library.Model.PersonaBarMenu;
+
+public class PersonaBarController : ServiceLocator<IPersonaBarController, PersonaBarController>, IPersonaBarController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarController));
 
-    using Dnn.PersonaBar.Library.Containers;
-    using Dnn.PersonaBar.Library.Permissions;
-    using Dnn.PersonaBar.Library.Repository;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Instrumentation;
-    using Newtonsoft.Json;
+    private readonly IPersonaBarRepository personaBarRepository;
 
-    using MenuItem = Dnn.PersonaBar.Library.Model.MenuItem;
-    using PersonaBarMenu = Dnn.PersonaBar.Library.Model.PersonaBarMenu;
-
-    public class PersonaBarController : ServiceLocator<IPersonaBarController, PersonaBarController>, IPersonaBarController
+    public PersonaBarController()
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarController));
+        this.personaBarRepository = PersonaBarRepository.Instance;
+    }
 
-        private readonly IPersonaBarRepository personaBarRepository;
-
-        public PersonaBarController()
+    /// <inheritdoc/>
+    public PersonaBarMenu GetMenu(PortalSettings portalSettings, UserInfo user)
+    {
+        try
         {
-            this.personaBarRepository = PersonaBarRepository.Instance;
+            var personaBarMenu = this.personaBarRepository.GetMenu();
+            var filteredMenu = new PersonaBarMenu();
+            var rootItems = personaBarMenu.MenuItems.Where(m => PersonaBarContainer.Instance.RootItems.Contains(m.Identifier)).ToList();
+            this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
+
+            PersonaBarContainer.Instance.FilterMenu(filteredMenu);
+            return filteredMenu;
         }
-
-        /// <inheritdoc/>
-        public PersonaBarMenu GetMenu(PortalSettings portalSettings, UserInfo user)
+        catch (Exception e)
         {
-            try
-            {
-                var personaBarMenu = this.personaBarRepository.GetMenu();
-                var filteredMenu = new PersonaBarMenu();
-                var rootItems = personaBarMenu.MenuItems.Where(m => PersonaBarContainer.Instance.RootItems.Contains(m.Identifier)).ToList();
-                this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
-
-                PersonaBarContainer.Instance.FilterMenu(filteredMenu);
-                return filteredMenu;
-            }
-            catch (Exception e)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
-                return new PersonaBarMenu();
-            }
+            DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
+            return new PersonaBarMenu();
         }
+    }
 
-        /// <inheritdoc/>
-        public bool IsVisible(PortalSettings portalSettings, UserInfo user, MenuItem menuItem)
+    /// <inheritdoc/>
+    public bool IsVisible(PortalSettings portalSettings, UserInfo user, MenuItem menuItem)
+    {
+        var visible = menuItem.Enabled
+                      && !(user.IsSuperUser && !menuItem.AllowHost)
+                      && MenuPermissionController.CanView(portalSettings.PortalId, menuItem);
+
+        if (visible)
         {
-            var visible = menuItem.Enabled
-                   && !(user.IsSuperUser && !menuItem.AllowHost)
-                   && MenuPermissionController.CanView(portalSettings.PortalId, menuItem);
-
-            if (visible)
-            {
-                try
-                {
-                    var menuController = this.GetMenuItemController(menuItem);
-                    visible = menuController == null || menuController.Visible(menuItem);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                    visible = false;
-                }
-            }
-
-            return visible;
-        }
-
-        /// <inheritdoc/>
-        protected override Func<IPersonaBarController> GetFactory()
-        {
-            return () => new PersonaBarController();
-        }
-
-        private bool GetPersonaBarMenuWithPermissionCheck(PortalSettings portalSettings, UserInfo user, IList<MenuItem> filterItems, IList<MenuItem> menuItems)
-        {
-            var menuFiltered = false;
-            foreach (var menuItem in menuItems)
-            {
-                try
-                {
-                    if (!this.IsVisible(portalSettings, user, menuItem))
-                    {
-                        menuFiltered = true;
-                        continue;
-                    }
-
-                    var cloneItem = new MenuItem()
-                    {
-                        MenuId = menuItem.MenuId,
-                        Identifier = menuItem.Identifier,
-                        ModuleName = menuItem.ModuleName,
-                        FolderName = menuItem.FolderName,
-                        Controller = menuItem.Controller,
-                        ResourceKey = menuItem.ResourceKey,
-                        Path = menuItem.Path,
-                        Link = menuItem.Link,
-                        CssClass = menuItem.CssClass,
-                        IconFile = menuItem.IconFile,
-                        AllowHost = menuItem.AllowHost,
-                        Order = menuItem.Order,
-                        ParentId = menuItem.ParentId,
-                    };
-
-                    this.UpdateParamters(cloneItem);
-                    cloneItem.Settings = this.GetMenuSettings(menuItem);
-
-                    var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children, menuItem.Children);
-                    if (!filtered || cloneItem.Children.Count > 0)
-                    {
-                        filterItems.Add(cloneItem);
-                    }
-                }
-                catch (Exception e)
-                {
-                    // Ignore the failure and still load personaBar
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
-                }
-            }
-
-            return menuFiltered;
-        }
-
-        private void UpdateParamters(MenuItem menuItem)
-        {
-            var menuController = this.GetMenuItemController(menuItem);
-            try
-            {
-                menuController?.UpdateParameters(menuItem);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
-        private string GetMenuSettings(MenuItem menuItem)
-        {
-            IDictionary<string, object> settings;
             try
             {
                 var menuController = this.GetMenuItemController(menuItem);
-                settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
-                this.AddPermissions(menuItem, settings);
+                visible = menuController == null || menuController.Visible(menuItem);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                settings = new Dictionary<string, object>();
-            }
-
-            return JsonConvert.SerializeObject(settings);
-        }
-
-        private void AddPermissions(MenuItem menuItem, IDictionary<string, object> settings)
-        {
-            var portalSettings = PortalSettings.Current;
-            if (!settings.ContainsKey("permissions") && portalSettings != null)
-            {
-                var menuPermissions = MenuPermissionController.GetPermissions(menuItem.MenuId)
-                    .Where(p => p.PermissionKey != "VIEW");
-                var portalId = portalSettings.PortalId;
-                var permissions = new Dictionary<string, bool>();
-                foreach (var permission in menuPermissions)
-                {
-                    var key = permission.PermissionKey;
-                    var hasPermission = MenuPermissionController.HasMenuPermission(portalId, menuItem, key);
-                    permissions.Add(key, hasPermission);
-                }
-
-                settings.Add("permissions", permissions);
+                visible = false;
             }
         }
 
-        private IMenuItemController GetMenuItemController(MenuItem menuItem)
+        return visible;
+    }
+
+    /// <inheritdoc/>
+    protected override Func<IPersonaBarController> GetFactory()
+    {
+        return () => new PersonaBarController();
+    }
+
+    private bool GetPersonaBarMenuWithPermissionCheck(PortalSettings portalSettings, UserInfo user, IList<MenuItem> filterItems, IList<MenuItem> menuItems)
+    {
+        var menuFiltered = false;
+        foreach (var menuItem in menuItems)
         {
-            var identifier = menuItem.Identifier;
-            var controller = menuItem.Controller;
-
-            if (string.IsNullOrEmpty(controller))
-            {
-                return null;
-            }
-
             try
             {
-                var cacheKey = $"PersonaBarMenuController_{identifier}";
-                return Reflection.CreateObject(controller, cacheKey) as IMenuItemController;
+                if (!this.IsVisible(portalSettings, user, menuItem))
+                {
+                    menuFiltered = true;
+                    continue;
+                }
+
+                var cloneItem = new MenuItem()
+                {
+                    MenuId = menuItem.MenuId,
+                    Identifier = menuItem.Identifier,
+                    ModuleName = menuItem.ModuleName,
+                    FolderName = menuItem.FolderName,
+                    Controller = menuItem.Controller,
+                    ResourceKey = menuItem.ResourceKey,
+                    Path = menuItem.Path,
+                    Link = menuItem.Link,
+                    CssClass = menuItem.CssClass,
+                    IconFile = menuItem.IconFile,
+                    AllowHost = menuItem.AllowHost,
+                    Order = menuItem.Order,
+                    ParentId = menuItem.ParentId,
+                };
+
+                this.UpdateParamters(cloneItem);
+                cloneItem.Settings = this.GetMenuSettings(menuItem);
+
+                var filtered = this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, cloneItem.Children, menuItem.Children);
+                if (!filtered || cloneItem.Children.Count > 0)
+                {
+                    filterItems.Add(cloneItem);
+                }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Logger.Error(ex);
-                return null;
+                // Ignore the failure and still load personaBar
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
             }
+        }
+
+        return menuFiltered;
+    }
+
+    private void UpdateParamters(MenuItem menuItem)
+    {
+        var menuController = this.GetMenuItemController(menuItem);
+        try
+        {
+            menuController?.UpdateParameters(menuItem);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+        }
+    }
+
+    private string GetMenuSettings(MenuItem menuItem)
+    {
+        IDictionary<string, object> settings;
+        try
+        {
+            var menuController = this.GetMenuItemController(menuItem);
+            settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
+            this.AddPermissions(menuItem, settings);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            settings = new Dictionary<string, object>();
+        }
+
+        return JsonConvert.SerializeObject(settings);
+    }
+
+    private void AddPermissions(MenuItem menuItem, IDictionary<string, object> settings)
+    {
+        var portalSettings = PortalSettings.Current;
+        if (!settings.ContainsKey("permissions") && portalSettings != null)
+        {
+            var menuPermissions = MenuPermissionController.GetPermissions(menuItem.MenuId)
+                .Where(p => p.PermissionKey != "VIEW");
+            var portalId = portalSettings.PortalId;
+            var permissions = new Dictionary<string, bool>();
+            foreach (var permission in menuPermissions)
+            {
+                var key = permission.PermissionKey;
+                var hasPermission = MenuPermissionController.HasMenuPermission(portalId, menuItem, key);
+                permissions.Add(key, hasPermission);
+            }
+
+            settings.Add("permissions", permissions);
+        }
+    }
+
+    private IMenuItemController GetMenuItemController(MenuItem menuItem)
+    {
+        var identifier = menuItem.Identifier;
+        var controller = menuItem.Controller;
+
+        if (string.IsNullOrEmpty(controller))
+        {
+            return null;
+        }
+
+        try
+        {
+            var cacheKey = $"PersonaBarMenuController_{identifier}";
+            return Reflection.CreateObject(controller, cacheKey) as IMenuItemController;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex);
+            return null;
         }
     }
 }

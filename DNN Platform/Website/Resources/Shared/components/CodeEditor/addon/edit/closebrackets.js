@@ -1,23 +1,24 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
+(function (mod) {
+  if (typeof exports == "object" && typeof module == "object")
+    // CommonJS
     mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
+  else if (typeof define == "function" && define.amd)
+    // AMD
+    define(["../../lib/codemirror"], mod); // Plain browser env
+  else mod(CodeMirror);
+})(function (CodeMirror) {
   var defaults = {
     pairs: "()[]{}''\"\"",
     triples: "",
-    explode: "[]{}"
+    explode: "[]{}",
   };
 
   var Pos = CodeMirror.Pos;
 
-  CodeMirror.defineOption("autoCloseBrackets", false, function(cm, val, old) {
+  CodeMirror.defineOption("autoCloseBrackets", false, function (cm, val, old) {
     if (old && old != CodeMirror.Init) {
       cm.removeKeyMap(keyMap);
       cm.state.closeBrackets = null;
@@ -35,12 +36,14 @@
   }
 
   var bind = defaults.pairs + "`";
-  var keyMap = {Backspace: handleBackspace, Enter: handleEnter};
+  var keyMap = { Backspace: handleBackspace, Enter: handleEnter };
   for (var i = 0; i < bind.length; i++)
     keyMap["'" + bind.charAt(i) + "'"] = handler(bind.charAt(i));
 
   function handler(ch) {
-    return function(cm) { return handleChar(cm, ch); };
+    return function (cm) {
+      return handleChar(cm, ch);
+    };
   }
 
   function getConfig(cm) {
@@ -78,7 +81,7 @@
       var around = charsAround(cm, ranges[i].head);
       if (!around || explode.indexOf(around) % 2 != 0) return CodeMirror.Pass;
     }
-    cm.operation(function() {
+    cm.operation(function () {
       cm.replaceSelection("\n\n", null);
       cm.execCommand("goCharLeft");
       ranges = cm.listSelections();
@@ -105,25 +108,39 @@
 
     var type, next;
     for (var i = 0; i < ranges.length; i++) {
-      var range = ranges[i], cur = range.head, curType;
+      var range = ranges[i],
+        cur = range.head,
+        curType;
       var next = cm.getRange(cur, Pos(cur.line, cur.ch + 1));
       if (opening && !range.empty()) {
         curType = "surround";
       } else if ((identical || !opening) && next == ch) {
-        if (triples.indexOf(ch) >= 0 && cm.getRange(cur, Pos(cur.line, cur.ch + 3)) == ch + ch + ch)
+        if (
+          triples.indexOf(ch) >= 0 &&
+          cm.getRange(cur, Pos(cur.line, cur.ch + 3)) == ch + ch + ch
+        )
           curType = "skipThree";
-        else
-          curType = "skip";
-      } else if (identical && cur.ch > 1 && triples.indexOf(ch) >= 0 &&
-                 cm.getRange(Pos(cur.line, cur.ch - 2), cur) == ch + ch &&
-                 (cur.ch <= 2 || cm.getRange(Pos(cur.line, cur.ch - 3), Pos(cur.line, cur.ch - 2)) != ch)) {
+        else curType = "skip";
+      } else if (
+        identical &&
+        cur.ch > 1 &&
+        triples.indexOf(ch) >= 0 &&
+        cm.getRange(Pos(cur.line, cur.ch - 2), cur) == ch + ch &&
+        (cur.ch <= 2 ||
+          cm.getRange(Pos(cur.line, cur.ch - 3), Pos(cur.line, cur.ch - 2)) !=
+            ch)
+      ) {
         curType = "addFour";
       } else if (identical) {
-        if (!CodeMirror.isWordChar(next) && enteringString(cm, cur, ch)) curType = "both";
+        if (!CodeMirror.isWordChar(next) && enteringString(cm, cur, ch))
+          curType = "both";
         else return CodeMirror.Pass;
-      } else if (opening && (cm.getLine(cur.line).length == cur.ch ||
-                             isClosingBracket(next, pairs) ||
-                             /\s/.test(next))) {
+      } else if (
+        opening &&
+        (cm.getLine(cur.line).length == cur.ch ||
+          isClosingBracket(next, pairs) ||
+          /\s/.test(next))
+      ) {
         curType = "both";
       } else {
         return CodeMirror.Pass;
@@ -134,16 +151,14 @@
 
     var left = pos % 2 ? pairs.charAt(pos - 1) : ch;
     var right = pos % 2 ? ch : pairs.charAt(pos + 1);
-    cm.operation(function() {
+    cm.operation(function () {
       if (type == "skip") {
         cm.execCommand("goCharRight");
       } else if (type == "skipThree") {
-        for (var i = 0; i < 3; i++)
-          cm.execCommand("goCharRight");
+        for (var i = 0; i < 3; i++) cm.execCommand("goCharRight");
       } else if (type == "surround") {
         var sels = cm.getSelections();
-        for (var i = 0; i < sels.length; i++)
-          sels[i] = left + sels[i] + right;
+        for (var i = 0; i < sels.length; i++) sels[i] = left + sels[i] + right;
         cm.replaceSelections(sels, "around");
       } else if (type == "both") {
         cm.replaceSelection(left + right, null);
@@ -162,8 +177,7 @@
   }
 
   function charsAround(cm, pos) {
-    var str = cm.getRange(Pos(pos.line, pos.ch - 1),
-                          Pos(pos.line, pos.ch + 1));
+    var str = cm.getRange(Pos(pos.line, pos.ch - 1), Pos(pos.line, pos.ch + 1));
     return str.length == 2 ? str : null;
   }
 
@@ -174,7 +188,10 @@
     var line = cm.getLine(pos.line);
     var token = cm.getTokenAt(pos);
     if (/\bstring2?\b/.test(token.type)) return false;
-    var stream = new CodeMirror.StringStream(line.slice(0, pos.ch) + ch + line.slice(pos.ch), 4);
+    var stream = new CodeMirror.StringStream(
+      line.slice(0, pos.ch) + ch + line.slice(pos.ch),
+      4,
+    );
     stream.pos = stream.start = token.start;
     for (;;) {
       var type1 = cm.getMode().token(stream, token.state);

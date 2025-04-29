@@ -83,6 +83,7 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Compression\Config\Algorithms.cs" />
     <Compile Include="DependencyInjection\ServiceRequestScopeModule.cs" />
     <Compile Include="Localization\LocalizationModule.cs" />
     <Compile Include="MobileRedirect\MobileRedirectModule.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="Analytics\Config\AnalyticsEngine.cs" />
     <Compile Include="Analytics\Config\AnalyticsEngineCollection.cs" />
     <Compile Include="Compression\CompressionModule.cs" />
-    <Compile Include="Compression\Config\Enums.cs" />
     <Compile Include="Compression\Config\Settings.cs" />
     <Compile Include="Compression\Filters\CompressingFilter.cs" />
     <Compile Include="Compression\Filters\DeflateFilter.cs" />
@@ -144,8 +144,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

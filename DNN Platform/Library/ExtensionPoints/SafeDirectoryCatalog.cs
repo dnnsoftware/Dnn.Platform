@@ -2,60 +2,59 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+using System;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+public class SafeDirectoryCatalog : ComposablePartCatalog
 {
-    using System;
-    using System.ComponentModel.Composition.Hosting;
-    using System.ComponentModel.Composition.Primitives;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
+    private readonly AggregateCatalog catalog;
 
-    public class SafeDirectoryCatalog : ComposablePartCatalog
+    /// <summary>Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.</summary>
+    /// <param name="directory"></param>
+    public SafeDirectoryCatalog(string directory)
     {
-        private readonly AggregateCatalog catalog;
+        var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
 
-        /// <summary>Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.</summary>
-        /// <param name="directory"></param>
-        public SafeDirectoryCatalog(string directory)
+        this.catalog = new AggregateCatalog();
+
+        foreach (var file in files)
         {
-            var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
-
-            this.catalog = new AggregateCatalog();
-
-            foreach (var file in files)
+            try
             {
-                try
-                {
-                    var asmCat = new AssemblyCatalog(file);
+                var asmCat = new AssemblyCatalog(file);
 
-                    // Force MEF to load the plugin and figure out if there are any exports
-                    // good assemblies will not throw the RTLE exception and can be added to the catalog
-                    if (asmCat.Parts.ToList().Count > 0)
-                    {
-                        this.catalog.Catalogs.Add(asmCat);
-                    }
-                }
-                catch (ReflectionTypeLoadException)
+                // Force MEF to load the plugin and figure out if there are any exports
+                // good assemblies will not throw the RTLE exception and can be added to the catalog
+                if (asmCat.Parts.ToList().Count > 0)
                 {
+                    this.catalog.Catalogs.Add(asmCat);
                 }
-                catch (BadImageFormatException)
-                {
-                }
-                catch (FileLoadException)
-                {
-                    // ignore when the assembly load failed.
-                }
+            }
+            catch (ReflectionTypeLoadException)
+            {
+            }
+            catch (BadImageFormatException)
+            {
+            }
+            catch (FileLoadException)
+            {
+                // ignore when the assembly load failed.
             }
         }
+    }
 
-        /// <inheritdoc/>
-        public override IQueryable<ComposablePartDefinition> Parts
+    /// <inheritdoc/>
+    public override IQueryable<ComposablePartDefinition> Parts
+    {
+        get
         {
-            get
-            {
-                return this.catalog.Parts;
-            }
+            return this.catalog.Parts;
         }
     }
 }

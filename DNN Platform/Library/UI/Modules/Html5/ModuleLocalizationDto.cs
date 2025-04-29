@@ -1,16 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.Modules.Html5
+namespace DotNetNuke.UI.Modules.Html5;
+
+using Newtonsoft.Json;
+
+public class ModuleLocalizationDto
 {
-    using Newtonsoft.Json;
+    [JsonProperty("key")]
+    public string Key { get; set; }
 
-    public class ModuleLocalizationDto
-    {
-        [JsonProperty("key")]
-        public string Key { get; set; }
-
-        [JsonProperty("localresourcefile")]
-        public string LocalResourceFile { get; set; }
-    }
+    [JsonProperty("localresourcefile")]
+    public string LocalResourceFile { get; set; }
 }

@@ -2,126 +2,125 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+
+using DotNetNuke.Common;
+using DotNetNuke.Data;
+using DotNetNuke.Services.Localization;
+
+using Assembly = System.Reflection.Assembly;
+
+public class CheckSqlRisk : IAuditCheck
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Data.SqlClient;
-    using System.IO;
+    /// <inheritdoc/>
+    public string Id => "CheckSqlRisk";
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Data;
-    using DotNetNuke.Services.Localization;
+    /// <inheritdoc/>
+    public bool LazyLoad => false;
 
-    using Assembly = System.Reflection.Assembly;
-
-    public class CheckSqlRisk : IAuditCheck
+    private string LocalResourceFile
     {
-        /// <inheritdoc/>
-        public string Id => "CheckSqlRisk";
+        get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
+    }
 
-        /// <inheritdoc/>
-        public bool LazyLoad => false;
-
-        private string LocalResourceFile
+    public static string LoadScript(string name)
+    {
+        var resourceName = string.Format("Dnn.PersonaBar.Extensions.Components.Security.Resources.{0}.resources", name);
+        using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
         {
-            get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
-        }
-
-        public static string LoadScript(string name)
-        {
-            var resourceName = string.Format("Dnn.PersonaBar.Extensions.Components.Security.Resources.{0}.resources", name);
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            if (stream != null)
             {
-                if (stream != null)
-                {
-                    var script = new StreamReader(stream).ReadToEnd();
-                    return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
-                }
+                var script = new StreamReader(stream).ReadToEnd();
+                return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
+            }
 
-                return null;
+            return null;
+        }
+    }
+
+    /// <inheritdoc/>
+    public CheckResult Execute()
+    {
+        var result = new CheckResult(SeverityEnum.Unverified, this.Id);
+        IList<string> checkList = new List<string>()
+        {
+            "SysAdmin",
+            "ExecuteCommand",
+            "GetFolderTree",
+            "CheckFileExists",
+            "RegRead",
+        };
+
+        result.Severity = SeverityEnum.Pass;
+        foreach (var name in checkList)
+        {
+            if (!VerifyScript(name))
+            {
+                result.Severity = SeverityEnum.Warning;
+                result.Notes.Add(Localization.GetString(name + ".Error", this.LocalResourceFile));
             }
         }
 
-        /// <inheritdoc/>
-        public CheckResult Execute()
+        return result;
+    }
+
+    private static bool VerifyScript(string name)
+    {
+        try
         {
-            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            IList<string> checkList = new List<string>()
+            var script = LoadScript(name);
+            if (!string.IsNullOrEmpty(script))
             {
-                "SysAdmin",
-                "ExecuteCommand",
-                "GetFolderTree",
-                "CheckFileExists",
-                "RegRead",
-            };
-
-            result.Severity = SeverityEnum.Pass;
-            foreach (var name in checkList)
-            {
-                if (!VerifyScript(name))
+                if (name == "ExecuteCommand")
                 {
-                    result.Severity = SeverityEnum.Warning;
-                    result.Notes.Add(Localization.GetString(name + ".Error", this.LocalResourceFile));
-                }
-            }
-
-            return result;
-        }
-
-        private static bool VerifyScript(string name)
-        {
-            try
-            {
-                var script = LoadScript(name);
-                if (!string.IsNullOrEmpty(script))
-                {
-                    if (name == "ExecuteCommand")
+                    // since sql error is expected here, do not go through DataProvider so that no error will be logged
+                    using (var connection = new SqlConnection(DataProvider.Instance().ConnectionString))
                     {
-                        // since sql error is expected here, do not go through DataProvider so that no error will be logged
-                        using (var connection = new SqlConnection(DataProvider.Instance().ConnectionString))
+                        try
                         {
-                            try
+                            connection.Open();
+                            var command = new SqlCommand(script, connection) { CommandType = CommandType.Text };
+                            using (var reader = command.ExecuteReader())
                             {
-                                connection.Open();
-                                var command = new SqlCommand(script, connection) { CommandType = CommandType.Text };
-                                using (var reader = command.ExecuteReader())
+                                if (reader.Read())
                                 {
-                                    if (reader.Read())
-                                    {
-                                        int affectCount;
-                                        int.TryParse(reader[0].ToString(), out affectCount);
-                                        return affectCount == 0;
-                                    }
+                                    int affectCount;
+                                    int.TryParse(reader[0].ToString(), out affectCount);
+                                    return affectCount == 0;
                                 }
                             }
-                            catch (Exception)
-                            {
-                                // ignore;
-                            }
+                        }
+                        catch (Exception)
+                        {
+                            // ignore;
                         }
                     }
-                    else
+                }
+                else
+                {
+                    using (var reader = DataProvider.Instance().ExecuteSQL(script))
                     {
-                        using (var reader = DataProvider.Instance().ExecuteSQL(script))
+                        if (reader != null && reader.Read())
                         {
-                            if (reader != null && reader.Read())
-                            {
-                                int affectCount;
-                                int.TryParse(reader[0].ToString(), out affectCount);
-                                return affectCount == 0;
-                            }
+                            int affectCount;
+                            int.TryParse(reader[0].ToString(), out affectCount);
+                            return affectCount == 0;
                         }
                     }
                 }
             }
-            catch (SqlException)
-            {
-                // ignore; return no failure
-            }
-
-            return true;
         }
+        catch (SqlException)
+        {
+            // ignore; return no failure
+        }
+
+        return true;
     }
 }

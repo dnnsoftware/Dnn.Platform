@@ -2,96 +2,95 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem;
+
+using System;
+using System.IO;
+
+using DotNetNuke.Entities.Users;
+
+public interface IFileInfo
 {
-    using System;
-    using System.IO;
+    string PhysicalPath { get; }
 
-    using DotNetNuke.Entities.Users;
+    string RelativePath { get; }
 
-    public interface IFileInfo
-    {
-        string PhysicalPath { get; }
+    FileAttributes? FileAttributes { get; }
 
-        string RelativePath { get; }
+    bool SupportsFileAttributes { get; }
 
-        FileAttributes? FileAttributes { get; }
+    /// <summary>
+    /// Gets a value indicating whether the file is enabled,
+    /// considering if the publish period is active and if the current date is within the publish period.
+    /// </summary>
+    bool IsEnabled { get; }
 
-        bool SupportsFileAttributes { get; }
+    /// <summary>Gets a value indicating whether gets a flag which says whether the file has ever been published.</summary>
+    bool HasBeenPublished { get; }
 
-        /// <summary>
-        /// Gets a value indicating whether the file is enabled,
-        /// considering if the publish period is active and if the current date is within the publish period.
-        /// </summary>
-        bool IsEnabled { get; }
+    int CreatedByUserID { get; }
 
-        /// <summary>Gets a value indicating whether gets a flag which says whether the file has ever been published.</summary>
-        bool HasBeenPublished { get; }
+    DateTime CreatedOnDate { get; }
 
-        int CreatedByUserID { get; }
+    int LastModifiedByUserID { get; }
 
-        DateTime CreatedOnDate { get; }
+    DateTime LastModifiedOnDate { get; }
 
-        int LastModifiedByUserID { get; }
+    string ContentType { get; set; }
 
-        DateTime LastModifiedOnDate { get; }
+    string Extension { get; set; }
 
-        string ContentType { get; set; }
+    int FileId { get; set; }
 
-        string Extension { get; set; }
+    string FileName { get; set; }
 
-        int FileId { get; set; }
+    string Folder { get; set; }
 
-        string FileName { get; set; }
+    int FolderId { get; set; }
 
-        string Folder { get; set; }
+    int Height { get; set; }
 
-        int FolderId { get; set; }
+    bool IsCached { get; set; }
 
-        int Height { get; set; }
+    int PortalId { get; set; }
 
-        bool IsCached { get; set; }
+    string SHA1Hash { get; set; }
 
-        int PortalId { get; set; }
+    int Size { get; set; }
 
-        string SHA1Hash { get; set; }
+    int StorageLocation { get; set; }
 
-        int Size { get; set; }
+    Guid UniqueId { get; set; }
 
-        int StorageLocation { get; set; }
+    Guid VersionGuid { get; set; }
 
-        Guid UniqueId { get; set; }
+    int Width { get; set; }
 
-        Guid VersionGuid { get; set; }
+    DateTime LastModificationTime { get; set; }
 
-        int Width { get; set; }
+    int FolderMappingID { get; set; }
 
-        DateTime LastModificationTime { get; set; }
+    /// <summary>Gets or sets a metadata field with an optional title associated to the file.</summary>
+    string Title { get; set; }
 
-        int FolderMappingID { get; set; }
+    string Description { get; set; }
 
-        /// <summary>Gets or sets a metadata field with an optional title associated to the file.</summary>
-        string Title { get; set; }
+    /// <summary>Gets or sets a value indicating whether publish period is enabled for the file.</summary>
+    bool EnablePublishPeriod { get; set; }
 
-        string Description { get; set; }
+    /// <summary>Gets or sets the date on which the file starts to be published.</summary>
+    DateTime StartDate { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether publish period is enabled for the file.</summary>
-        bool EnablePublishPeriod { get; set; }
+    /// <summary>Gets or sets the date on which the file ends to be published.</summary>
+    DateTime EndDate { get; set; }
 
-        /// <summary>Gets or sets the date on which the file starts to be published.</summary>
-        DateTime StartDate { get; set; }
+    /// <summary>Gets or sets a reference to ContentItem, to use in Workflows.</summary>
+    int ContentItemID { get; set; }
 
-        /// <summary>Gets or sets the date on which the file ends to be published.</summary>
-        DateTime EndDate { get; set; }
+    /// <summary>Gets or sets the published version number of the file.</summary>
+    int PublishedVersion { get; set; }
 
-        /// <summary>Gets or sets a reference to ContentItem, to use in Workflows.</summary>
-        int ContentItemID { get; set; }
+    UserInfo CreatedByUser(int portalId);
 
-        /// <summary>Gets or sets the published version number of the file.</summary>
-        int PublishedVersion { get; set; }
-
-        UserInfo CreatedByUser(int portalId);
-
-        UserInfo LastModifiedByUser(int portalId);
-    }
+    UserInfo LastModifiedByUser(int portalId);
 }

@@ -2,22 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.EditBar.UI.Components
+namespace Dnn.EditBar.UI.Components;
+
+using DotNetNuke.Entities.Modules;
+
+public class BusinessController : IUpgradeable
 {
-    using DotNetNuke.Entities.Modules;
-
-    public class BusinessController : IUpgradeable
+    /// <inheritdoc/>
+    public string UpgradeModule(string version)
     {
-        /// <inheritdoc/>
-        public string UpgradeModule(string version)
+        switch (version)
         {
-            switch (version)
-            {
-                case "01.00.00":
-                    break;
-            }
-
-            return "Success";
+            case "01.00.00":
+                break;
         }
+
+        return "Success";
     }
 }

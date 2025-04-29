@@ -2,53 +2,52 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Urls
-{
-    /// <summary>Class used as a utility to help manage paging in database queries.</summary>
-    public class PagingInfo
-    {
-        /// <summary>Initializes a new instance of the <see cref="PagingInfo"/> class.</summary>
-        /// <param name="pageNumber"></param>
-        /// <param name="pageSize"></param>
-        public PagingInfo(int pageNumber, int pageSize)
-        {
-            this.PageNumber = pageNumber;
-            this.PageSize = pageSize;
-        }
+namespace DotNetNuke.Entities.Urls;
 
-        public bool IsLastPage
+/// <summary>Class used as a utility to help manage paging in database queries.</summary>
+public class PagingInfo
+{
+    /// <summary>Initializes a new instance of the <see cref="PagingInfo"/> class.</summary>
+    /// <param name="pageNumber"></param>
+    /// <param name="pageSize"></param>
+    public PagingInfo(int pageNumber, int pageSize)
+    {
+        this.PageNumber = pageNumber;
+        this.PageSize = pageSize;
+    }
+
+    public bool IsLastPage
+    {
+        get
         {
-            get
+            if (this.LastRow >= this.TotalRows)
             {
-                if (this.LastRow >= this.TotalRows)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
+    }
 
-        public int PageNumber { get; private set; }
+    public int PageNumber { get; private set; }
 
-        public int PageSize { get; private set; }
+    public int PageSize { get; private set; }
 
-        public int FirstRow { get; private set; }
+    public int FirstRow { get; private set; }
 
-        public int LastRow { get; private set; }
+    public int LastRow { get; private set; }
 
-        public int TotalRows { get; private set; }
+    public int TotalRows { get; private set; }
 
-        public int TotalPages { get; private set; }
+    public int TotalPages { get; private set; }
 
-        public void UpdatePageResults(int firstRow, int lastRow, int totalRows, int totalPages)
-        {
-            this.FirstRow = firstRow;
-            this.LastRow = lastRow;
-            this.TotalRows = totalRows;
-            this.TotalPages = totalPages;
-        }
+    public void UpdatePageResults(int firstRow, int lastRow, int totalRows, int totalPages)
+    {
+        this.FirstRow = firstRow;
+        this.LastRow = lastRow;
+        this.TotalRows = totalRows;
+        this.TotalPages = totalPages;
     }
 }

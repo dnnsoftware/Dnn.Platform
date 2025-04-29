@@ -2,56 +2,55 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
+namespace Dnn.PersonaBar.Prompt.Components.Commands.Client;
+
+using System;
+
+using Dnn.PersonaBar.Library.Prompt;
+using Dnn.PersonaBar.Library.Prompt.Attributes;
+using Dnn.PersonaBar.Library.Prompt.Models;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
+
+[ConsoleCommand("set-mode", Constants.GeneralCategory, "Prompt_SetMode_Description")]
+
+public class SetMode : IConsoleCommand
 {
-    using System;
+    [FlagParameter("mode", "Prompt_SetMode_FlagMode", "DNN View Mode", true)]
 
-    using Dnn.PersonaBar.Library.Prompt;
-    using Dnn.PersonaBar.Library.Prompt.Attributes;
-    using Dnn.PersonaBar.Library.Prompt.Models;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
+    private const string FlagMode = "mode";
 
-    [ConsoleCommand("set-mode", Constants.GeneralCategory, "Prompt_SetMode_Description")]
+    /// <inheritdoc/>
+    public string LocalResourceFile => Constants.LocalResourcesFile;
 
-    public class SetMode : IConsoleCommand
+    /// <inheritdoc/>
+    public string ResultHtml => Localization.GetString("Prompt_SetMode_ResultHtml", this.LocalResourceFile);
+
+    /// <inheritdoc/>
+    public string ValidationMessage
     {
-        [FlagParameter("mode", "Prompt_SetMode_FlagMode", "DNN View Mode", true)]
-
-        private const string FlagMode = "mode";
-
-        /// <inheritdoc/>
-        public string LocalResourceFile => Constants.LocalResourcesFile;
-
-        /// <inheritdoc/>
-        public string ResultHtml => Localization.GetString("Prompt_SetMode_ResultHtml", this.LocalResourceFile);
-
-        /// <inheritdoc/>
-        public string ValidationMessage
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        /// <inheritdoc/>
-        public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        get
         {
             throw new NotImplementedException();
         }
+    }
 
-        /// <inheritdoc/>
-        public bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
+    /// <inheritdoc/>
+    public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+    {
+        throw new NotImplementedException();
+    }
 
-        /// <inheritdoc/>
-        public ConsoleResultModel Run()
-        {
-            throw new NotImplementedException();
-        }
+    /// <inheritdoc/>
+    public bool IsValid()
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc/>
+    public ConsoleResultModel Run()
+    {
+        throw new NotImplementedException();
     }
 }

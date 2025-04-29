@@ -29,33 +29,32 @@ using log4net.Util;
 using log4net.Repository;
 using log4net.Repository.Hierarchy;
 
-namespace log4net.Config
+namespace log4net.Config;
+
+/// <summary>
+/// Assembly level attribute to configure the <see cref="XmlConfigurator"/>.
+/// </summary>
+/// <remarks>
+/// <para>
+/// <b>AliasDomainAttribute is obsolete. Use AliasRepositoryAttribute instead of AliasDomainAttribute.</b>
+/// </para>
+/// <para>
+/// This attribute may only be used at the assembly scope and can only
+/// be used once per assembly.
+/// </para>
+/// <para>
+/// Use this attribute to configure the <see cref="XmlConfigurator"/>
+/// without calling one of the <see cref="M:XmlConfigurator.Configure()"/>
+/// methods.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+/// <author>Gert Driesen</author>
+[AttributeUsage(AttributeTargets.Assembly)]
+[Serializable]
+[Obsolete("Use XmlConfiguratorAttribute instead of DOMConfiguratorAttribute")]
+public sealed class DOMConfiguratorAttribute : XmlConfiguratorAttribute
 {
-    /// <summary>
-    /// Assembly level attribute to configure the <see cref="XmlConfigurator"/>.
-    /// </summary>
-    /// <remarks>
-    /// <para>
-    /// <b>AliasDomainAttribute is obsolete. Use AliasRepositoryAttribute instead of AliasDomainAttribute.</b>
-    /// </para>
-    /// <para>
-    /// This attribute may only be used at the assembly scope and can only
-    /// be used once per assembly.
-    /// </para>
-    /// <para>
-    /// Use this attribute to configure the <see cref="XmlConfigurator"/>
-    /// without calling one of the <see cref="M:XmlConfigurator.Configure()"/>
-    /// methods.
-    /// </para>
-    /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    [AttributeUsage(AttributeTargets.Assembly)]
-    [Serializable]
-    [Obsolete("Use XmlConfiguratorAttribute instead of DOMConfiguratorAttribute")]
-    public sealed class DOMConfiguratorAttribute : XmlConfiguratorAttribute
-    {
-    }
 }
 
 #endif // !NETCF

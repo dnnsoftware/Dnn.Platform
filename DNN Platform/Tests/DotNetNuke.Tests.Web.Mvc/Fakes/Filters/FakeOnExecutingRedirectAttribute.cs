@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Web.Mvc.Fakes.Filters
-{
-    using System.Web.Mvc;
+namespace DotNetNuke.Tests.Web.Mvc.Fakes.Filters;
 
-    public class FakeOnExecutingRedirectAttribute : FakeRedirectAttribute
+using System.Web.Mvc;
+
+public class FakeOnExecutingRedirectAttribute : FakeRedirectAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            filterContext.Result = Result;
-        }
+        filterContext.Result = Result;
     }
 }

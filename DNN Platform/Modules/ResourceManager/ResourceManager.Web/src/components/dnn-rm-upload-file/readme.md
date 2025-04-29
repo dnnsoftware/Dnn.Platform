@@ -1,9 +1,6 @@
 # dnn-rm-upload-file
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Events
 
@@ -11,12 +8,11 @@
 | --------------------- | ------------------------------------------------------------------------------------------------------------------ | ------------------- |
 | `dnnRmFoldersChanged` | Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh. | `CustomEvent<void>` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-action-upload-file](../actions/dnn-action-upload-file)
+- [dnn-action-upload-file](../actions/dnn-action-upload-file)
 
 ### Depends on
 
@@ -25,6 +21,7 @@
 - [dnn-rm-queued-file](../dnn-rm-queued-file)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-upload-file --> dnn-checkbox
@@ -37,6 +34,6 @@ graph TD;
   style dnn-rm-upload-file fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

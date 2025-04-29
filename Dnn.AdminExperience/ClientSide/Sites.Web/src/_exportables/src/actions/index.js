@@ -4,8 +4,8 @@ import CommonVisiblePanelActions from "./visiblePanel";
 import CommonPaginationActions from "./pagination";
 
 export {
-    CommonPortalListActions,
-    CommonExportPortalActions,
-    CommonVisiblePanelActions,
-    CommonPaginationActions
+  CommonPortalListActions,
+  CommonExportPortalActions,
+  CommonVisiblePanelActions,
+  CommonPaginationActions,
 };

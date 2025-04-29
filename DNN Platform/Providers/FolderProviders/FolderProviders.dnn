@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Providers.FolderProviders" type="Provider" isSystem="true" version="09.13.09">
+    <package name="DotNetNuke.Providers.FolderProviders" type="Provider" isSystem="true" version="09.13.10">
       <friendlyName>DotNetNuke Folder Providers</friendlyName>
       <description>Azure Folder Providers for DotNetNuke.</description>
       <dependencies/>

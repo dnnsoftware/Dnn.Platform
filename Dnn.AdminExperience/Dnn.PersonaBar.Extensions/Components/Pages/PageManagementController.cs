@@ -2,100 +2,99 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Components
+namespace Dnn.PersonaBar.Pages.Components;
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Urls;
+using DotNetNuke.Framework;
+
+public class PageManagementController : ServiceLocator<IPageManagementController, PageManagementController>, IPageManagementController
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
+    [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
+    public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
+    private readonly ITabController tabController;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Entities.Urls;
-    using DotNetNuke.Framework;
-
-    public class PageManagementController : ServiceLocator<IPageManagementController, PageManagementController>, IPageManagementController
+    public PageManagementController()
     {
-        [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
-        private readonly ITabController tabController;
+        this.tabController = TabController.Instance;
+    }
 
-        public PageManagementController()
+    /// <inheritdoc/>
+    public string GetCreatedInfo(TabInfo tab)
+    {
+        var createdBy = tab.CreatedByUser(PortalSettings.Current.PortalId);
+        var displayName = Localization.GetString("System");
+        if (createdBy != null)
         {
-            this.tabController = TabController.Instance;
+            displayName = createdBy.DisplayName;
         }
 
-        /// <inheritdoc/>
-        public string GetCreatedInfo(TabInfo tab)
+        return displayName;
+    }
+
+    /// <inheritdoc/>
+    public bool TabHasChildren(TabInfo tabInfo)
+    {
+        var children = TabController.GetTabsByParent(tabInfo.TabID, tabInfo.PortalID);
+        return children != null && children.Count >= 1;
+    }
+
+    /// <inheritdoc/>
+    public string GetTabHierarchy(TabInfo tab)
+    {
+        this.tabController.PopulateBreadCrumbs(ref tab);
+        return tab.BreadCrumbs.Count == 1 ? string.Empty : string.Join(" > ", from t in tab.BreadCrumbs.Cast<TabInfo>().Take(tab.BreadCrumbs.Count - 1) select t.LocalizedTabName);
+    }
+
+    /// <inheritdoc/>
+    public string GetTabUrl(TabInfo tab)
+    {
+        var url = string.Empty;
+
+        if (tab.IsSuperTab || (Config.GetFriendlyUrlProvider() != "advanced"))
         {
-            var createdBy = tab.CreatedByUser(PortalSettings.Current.PortalId);
-            var displayName = Localization.GetString("System");
-            if (createdBy != null)
-            {
-                displayName = createdBy.DisplayName;
-            }
-
-            return displayName;
-        }
-
-        /// <inheritdoc/>
-        public bool TabHasChildren(TabInfo tabInfo)
-        {
-            var children = TabController.GetTabsByParent(tabInfo.TabID, tabInfo.PortalID);
-            return children != null && children.Count >= 1;
-        }
-
-        /// <inheritdoc/>
-        public string GetTabHierarchy(TabInfo tab)
-        {
-            this.tabController.PopulateBreadCrumbs(ref tab);
-            return tab.BreadCrumbs.Count == 1 ? string.Empty : string.Join(" > ", from t in tab.BreadCrumbs.Cast<TabInfo>().Take(tab.BreadCrumbs.Count - 1) select t.LocalizedTabName);
-        }
-
-        /// <inheritdoc/>
-        public string GetTabUrl(TabInfo tab)
-        {
-            var url = string.Empty;
-
-            if (tab.IsSuperTab || (Config.GetFriendlyUrlProvider() != "advanced"))
-            {
-                return url;
-            }
-
-            if (tab.TabUrls.Count > 0)
-            {
-                var tabUrl = tab.TabUrls.SingleOrDefault(t => t.IsSystem && t.HttpStatus == "200" && t.SeqNum == 0);
-
-                if (tabUrl != null)
-                {
-                    url = tabUrl.Url;
-                }
-            }
-
-            if (string.IsNullOrEmpty(url) && tab.TabID > -1 && !tab.IsSuperTab)
-            {
-                var friendlyUrlSettings = new FriendlyUrlSettings(PortalSettings.Current.PortalId);
-                var baseUrl = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
-                var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
-                    tab,
-                    baseUrl,
-                    Globals.glbDefaultPage,
-                    PortalSettings.Current.PortalAlias.HTTPAlias,
-                    false, // dnndev-27493 :we want any custom Urls that apply
-                    friendlyUrlSettings,
-                    Guid.Empty);
-
-                url = path.Replace(Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias), string.Empty);
-            }
-
             return url;
         }
 
-        /// <inheritdoc/>
-        protected override Func<IPageManagementController> GetFactory()
+        if (tab.TabUrls.Count > 0)
         {
-            return () => new PageManagementController();
+            var tabUrl = tab.TabUrls.SingleOrDefault(t => t.IsSystem && t.HttpStatus == "200" && t.SeqNum == 0);
+
+            if (tabUrl != null)
+            {
+                url = tabUrl.Url;
+            }
         }
+
+        if (string.IsNullOrEmpty(url) && tab.TabID > -1 && !tab.IsSuperTab)
+        {
+            var friendlyUrlSettings = new FriendlyUrlSettings(PortalSettings.Current.PortalId);
+            var baseUrl = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias) + "/Default.aspx?TabId=" + tab.TabID;
+            var path = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(
+                tab,
+                baseUrl,
+                Globals.glbDefaultPage,
+                PortalSettings.Current.PortalAlias.HTTPAlias,
+                false, // dnndev-27493 :we want any custom Urls that apply
+                friendlyUrlSettings,
+                Guid.Empty);
+
+            url = path.Replace(Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias), string.Empty);
+        }
+
+        return url;
+    }
+
+    /// <inheritdoc/>
+    protected override Func<IPageManagementController> GetFactory()
+    {
+        return () => new PageManagementController();
     }
 }

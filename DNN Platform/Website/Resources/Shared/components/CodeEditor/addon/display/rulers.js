@@ -1,17 +1,18 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
+(function (mod) {
+  if (typeof exports == "object" && typeof module == "object")
+    // CommonJS
     mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
+  else if (typeof define == "function" && define.amd)
+    // AMD
+    define(["../../lib/codemirror"], mod); // Plain browser env
+  else mod(CodeMirror);
+})(function (CodeMirror) {
   "use strict";
 
-  CodeMirror.defineOption("rulers", false, function(cm, val, old) {
+  CodeMirror.defineOption("rulers", false, function (cm, val, old) {
     if (old && old != CodeMirror.Init) {
       clearRulers(cm);
       cm.off("refresh", refreshRulers);
@@ -38,7 +39,8 @@
     for (var i = 0; i < val.length; i++) {
       var elt = document.createElement("div");
       elt.className = "CodeMirror-ruler";
-      var col, conf = val[i];
+      var col,
+        conf = val[i];
       if (typeof conf == "number") {
         col = conf;
       } else {
@@ -48,7 +50,7 @@
         if (conf.lineStyle) elt.style.borderLeftStyle = conf.lineStyle;
         if (conf.width) elt.style.borderLeftWidth = conf.width;
       }
-      elt.style.left = (left + col * cw) + "px";
+      elt.style.left = left + col * cw + "px";
       elt.style.top = "-50px";
       elt.style.bottom = "-20px";
       elt.style.minHeight = minH + "px";

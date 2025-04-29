@@ -1,1027 +1,1026 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Modules.NavigationProvider
+namespace DotNetNuke.Modules.NavigationProvider;
+
+using System.Collections.Generic;
+using System.Web.UI;
+
+using DotNetNuke.Framework;
+using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.WebControls;
+
+public abstract class NavigationProvider : UserControlBase
 {
-    using System.Collections.Generic;
-    using System.Web.UI;
+    public delegate void NodeClickEventHandler(NavigationEventArgs args);
 
-    using DotNetNuke.Framework;
-    using DotNetNuke.UI.Skins;
-    using DotNetNuke.UI.WebControls;
+    public delegate void PopulateOnDemandEventHandler(NavigationEventArgs args);
 
-    public abstract class NavigationProvider : UserControlBase
+    public event NodeClickEventHandler NodeClick;
+
+    public event PopulateOnDemandEventHandler PopulateOnDemand;
+
+    public enum Alignment
     {
-        public delegate void NodeClickEventHandler(NavigationEventArgs args);
+        Left = 0,
+        Right = 1,
+        Center = 2,
+        Justify = 3,
+    }
 
-        public delegate void PopulateOnDemandEventHandler(NavigationEventArgs args);
+    public enum HoverAction
+    {
+        Expand = 0,
+        None = 1,
+    }
 
-        public event NodeClickEventHandler NodeClick;
+    public enum HoverDisplay
+    {
+        Highlight = 0,
+        Outset = 1,
+        None = 2,
+    }
 
-        public event PopulateOnDemandEventHandler PopulateOnDemand;
+    public enum Orientation
+    {
+        Horizontal = 0,
+        Vertical = 1,
+    }
 
-        public enum Alignment
+    public abstract Control NavigationControl { get; }
+
+    public abstract bool SupportsPopulateOnDemand { get; }
+
+    public abstract string ControlID { get; set; }
+
+    public virtual string PathImage
+    {
+        get
         {
-            Left = 0,
-            Right = 1,
-            Center = 2,
-            Justify = 3,
+            return string.Empty;
         }
 
-        public enum HoverAction
+        set
         {
-            Expand = 0,
-            None = 1,
         }
+    }
 
-        public enum HoverDisplay
+    public virtual string PathSystemImage
+    {
+        get
         {
-            Highlight = 0,
-            Outset = 1,
-            None = 2,
+            return string.Empty;
         }
 
-        public enum Orientation
+        set
         {
-            Horizontal = 0,
-            Vertical = 1,
         }
-
-        public abstract Control NavigationControl { get; }
+    }
 
-        public abstract bool SupportsPopulateOnDemand { get; }
-
-        public abstract string ControlID { get; set; }
-
-        public virtual string PathImage
+    public virtual string PathSystemScript
+    {
+        get
         {
-            get
-            {
-                return string.Empty;
-            }
-
-            set
-            {
-            }
+            return string.Empty;
         }
 
-        public virtual string PathSystemImage
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
-
-            set
-            {
-            }
         }
+    }
 
-        public virtual string PathSystemScript
+    public virtual string WorkImage
+    {
+        get
         {
-            get
-            {
-                return string.Empty;
-            }
-
-            set
-            {
-            }
+            return string.Empty;
         }
 
-        public virtual string WorkImage
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
-
-            set
-            {
-            }
         }
+    }
 
-        public virtual string IndicateChildImageSub
+    public virtual string IndicateChildImageSub
+    {
+        get
         {
-            get
-            {
-                return string.Empty;
-            }
+            return string.Empty;
+        }
 
-            set
-            {
-            }
+        set
+        {
         }
+    }
 
-        public virtual string IndicateChildImageRoot
+    public virtual string IndicateChildImageRoot
+    {
+        get
         {
-            get
-            {
-                return string.Empty;
-            }
+            return string.Empty;
+        }
 
-            set
-            {
-            }
+        set
+        {
         }
+    }
 
-        public virtual string IndicateChildImageExpandedSub
+    public virtual string IndicateChildImageExpandedSub
+    {
+        get
         {
-            get
-            {
-                return string.Empty;
-            }
+            return string.Empty;
+        }
 
-            set
-            {
-            }
+        set
+        {
         }
+    }
 
-        public virtual string IndicateChildImageExpandedRoot
+    public virtual string IndicateChildImageExpandedRoot
+    {
+        get
         {
-            get
-            {
-                return string.Empty;
-            }
+            return string.Empty;
+        }
 
-            set
-            {
-            }
+        set
+        {
         }
+    }
 
-        public abstract string CSSControl { get; set; }
+    public abstract string CSSControl { get; set; }
 
-        public virtual string CSSContainerRoot
+    public virtual string CSSContainerRoot
+    {
+        get
         {
-            get
-            {
-                return string.Empty;
-            }
-
-            set
-            {
-            }
+            return string.Empty;
         }
 
-        public virtual string CSSContainerSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSContainerSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSNode
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSNode
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSNodeRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSNodeRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSIcon
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSIcon
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSNodeHover
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSNodeHover
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSNodeHoverSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSNodeHoverSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSNodeHoverRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSNodeHoverRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSBreak
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSBreak
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSIndicateChildSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSIndicateChildSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSIndicateChildRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSIndicateChildRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSBreadCrumbSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSBreadCrumbSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSBreadCrumbRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSBreadCrumbRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSNodeSelectedSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSNodeSelectedSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSNodeSelectedRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSNodeSelectedRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSSeparator
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSSeparator
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSLeftSeparator
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSLeftSeparator
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSRightSeparator
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSRightSeparator
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSLeftSeparatorSelection
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSLeftSeparatorSelection
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSRightSeparatorSelection
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSRightSeparatorSelection
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSLeftSeparatorBreadCrumb
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSLeftSeparatorBreadCrumb
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string CSSRightSeparatorBreadCrumb
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string CSSRightSeparatorBreadCrumb
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleBackColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleBackColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleForeColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleForeColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleHighlightColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleHighlightColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleIconBackColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleIconBackColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleSelectionBorderColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleSelectionBorderColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleSelectionColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleSelectionColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleSelectionForeColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleSelectionForeColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual decimal StyleControlHeight
+        set
         {
-            get
-            {
-                return 25;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual decimal StyleControlHeight
+    {
+        get
+        {
+            return 25;
         }
 
-        public virtual decimal StyleBorderWidth
+        set
         {
-            get
-            {
-                return 0;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual decimal StyleBorderWidth
+    {
+        get
+        {
+            return 0;
         }
 
-        public virtual decimal StyleNodeHeight
+        set
         {
-            get
-            {
-                return 25;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual decimal StyleNodeHeight
+    {
+        get
+        {
+            return 25;
         }
 
-        public virtual decimal StyleIconWidth
+        set
         {
-            get
-            {
-                return 0;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual decimal StyleIconWidth
+    {
+        get
+        {
+            return 0;
         }
 
-        public virtual string StyleFontNames
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleFontNames
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual decimal StyleFontSize
+        set
         {
-            get
-            {
-                return 0;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual decimal StyleFontSize
+    {
+        get
+        {
+            return 0;
         }
 
-        public virtual string StyleFontBold
+        set
         {
-            get
-            {
-                return "False";
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleFontBold
+    {
+        get
+        {
+            return "False";
         }
 
-        public virtual string StyleRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string StyleSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string StyleSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string EffectsStyle
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string EffectsStyle
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string EffectsTransition
+        set
         {
-            get
-            {
-                return "'";
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string EffectsTransition
+    {
+        get
+        {
+            return "'";
         }
 
-        public virtual double EffectsDuration
+        set
         {
-            get
-            {
-                return -1;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual double EffectsDuration
+    {
+        get
+        {
+            return -1;
         }
 
-        public virtual string EffectsShadowColor
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string EffectsShadowColor
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string EffectsShadowDirection
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string EffectsShadowDirection
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual int EffectsShadowStrength
+        set
         {
-            get
-            {
-                return -1;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual int EffectsShadowStrength
+    {
+        get
+        {
+            return -1;
         }
 
-        public virtual Orientation ControlOrientation
+        set
         {
-            get
-            {
-                return Orientation.Horizontal;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual Orientation ControlOrientation
+    {
+        get
+        {
+            return Orientation.Horizontal;
         }
 
-        public virtual Alignment ControlAlignment
+        set
         {
-            get
-            {
-                return Alignment.Left;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual Alignment ControlAlignment
+    {
+        get
+        {
+            return Alignment.Left;
         }
 
-        public virtual string ForceDownLevel
+        set
         {
-            get
-            {
-                return false.ToString();
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string ForceDownLevel
+    {
+        get
+        {
+            return false.ToString();
         }
 
-        public virtual decimal MouseOutHideDelay
+        set
         {
-            get
-            {
-                return -1;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual decimal MouseOutHideDelay
+    {
+        get
+        {
+            return -1;
         }
 
-        public virtual HoverDisplay MouseOverDisplay
+        set
         {
-            get
-            {
-                return HoverDisplay.Highlight;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual HoverDisplay MouseOverDisplay
+    {
+        get
+        {
+            return HoverDisplay.Highlight;
         }
 
-        public virtual HoverAction MouseOverAction
+        set
         {
-            get
-            {
-                return HoverAction.Expand;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual HoverAction MouseOverAction
+    {
+        get
+        {
+            return HoverAction.Expand;
         }
 
-        public virtual string ForceCrawlerDisplay
+        set
         {
-            get
-            {
-                return "False";
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string ForceCrawlerDisplay
+    {
+        get
+        {
+            return "False";
         }
 
-        public virtual bool IndicateChildren
+        set
         {
-            get
-            {
-                return true;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual bool IndicateChildren
+    {
+        get
+        {
+            return true;
         }
 
-        public virtual string SeparatorHTML
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string SeparatorHTML
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string SeparatorLeftHTML
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string SeparatorLeftHTML
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string SeparatorRightHTML
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string SeparatorRightHTML
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string SeparatorLeftHTMLActive
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string SeparatorLeftHTMLActive
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string SeparatorRightHTMLActive
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string SeparatorRightHTMLActive
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string SeparatorLeftHTMLBreadCrumb
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string SeparatorLeftHTMLBreadCrumb
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string SeparatorRightHTMLBreadCrumb
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string SeparatorRightHTMLBreadCrumb
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeLeftHTMLSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeLeftHTMLSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeLeftHTMLRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeLeftHTMLRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeRightHTMLSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeRightHTMLSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeRightHTMLRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeRightHTMLRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeLeftHTMLBreadCrumbSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeLeftHTMLBreadCrumbSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeRightHTMLBreadCrumbSub
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeRightHTMLBreadCrumbSub
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeLeftHTMLBreadCrumbRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeLeftHTMLBreadCrumbRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual string NodeRightHTMLBreadCrumbRoot
+        set
         {
-            get
-            {
-                return string.Empty;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual string NodeRightHTMLBreadCrumbRoot
+    {
+        get
+        {
+            return string.Empty;
         }
 
-        public virtual bool PopulateNodesFromClient
+        set
         {
-            get
-            {
-                return false;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual bool PopulateNodesFromClient
+    {
+        get
+        {
+            return false;
         }
 
-        public virtual List<CustomAttribute> CustomAttributes
+        set
         {
-            get
-            {
-                return null;
-            }
+        }
+    }
 
-            set
-            {
-            }
+    public virtual List<CustomAttribute> CustomAttributes
+    {
+        get
+        {
+            return null;
         }
 
-        public static NavigationProvider Instance(string friendlyName)
+        set
         {
-            return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
         }
+    }
 
-        public abstract void Initialize();
+    public static NavigationProvider Instance(string friendlyName)
+    {
+        return (NavigationProvider)Reflection.CreateObject("navigationControl", friendlyName, string.Empty, string.Empty);
+    }
 
-        public abstract void Bind(DNNNodeCollection objNodes);
+    public abstract void Initialize();
 
-        public virtual void ClearNodes()
-        {
-        }
+    public abstract void Bind(DNNNodeCollection objNodes);
+
+    public virtual void ClearNodes()
+    {
+    }
 
-        protected void RaiseEvent_NodeClick(DNNNode objNode)
+    protected void RaiseEvent_NodeClick(DNNNode objNode)
+    {
+        if (this.NodeClick != null)
         {
-            if (this.NodeClick != null)
-            {
-                this.NodeClick(new NavigationEventArgs(objNode.ID, objNode));
-            }
+            this.NodeClick(new NavigationEventArgs(objNode.ID, objNode));
         }
+    }
 
-        protected void RaiseEvent_NodeClick(string strID)
+    protected void RaiseEvent_NodeClick(string strID)
+    {
+        if (this.NodeClick != null)
         {
-            if (this.NodeClick != null)
-            {
-                this.NodeClick(new NavigationEventArgs(strID, null));
-            }
+            this.NodeClick(new NavigationEventArgs(strID, null));
         }
+    }
 
-        protected void RaiseEvent_PopulateOnDemand(DNNNode objNode)
+    protected void RaiseEvent_PopulateOnDemand(DNNNode objNode)
+    {
+        if (this.PopulateOnDemand != null)
         {
-            if (this.PopulateOnDemand != null)
-            {
-                this.PopulateOnDemand(new NavigationEventArgs(objNode.ID, objNode));
-            }
+            this.PopulateOnDemand(new NavigationEventArgs(objNode.ID, objNode));
         }
+    }
 
-        protected void RaiseEvent_PopulateOnDemand(string strID)
+    protected void RaiseEvent_PopulateOnDemand(string strID)
+    {
+        if (this.PopulateOnDemand != null)
         {
-            if (this.PopulateOnDemand != null)
-            {
-                this.PopulateOnDemand(new NavigationEventArgs(strID, null));
-            }
+            this.PopulateOnDemand(new NavigationEventArgs(strID, null));
         }
     }
 }

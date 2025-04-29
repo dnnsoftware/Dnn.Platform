@@ -2,13 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Components
-{
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Urls;
+namespace Dnn.PersonaBar.Pages.Components;
 
-    public interface IUrlRewriterUtilsWrapper
-    {
-        FriendlyUrlOptions GetExtendOptionsForURLs(int portalId);
-    }
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Urls;
+
+public interface IUrlRewriterUtilsWrapper
+{
+    FriendlyUrlOptions GetExtendOptionsForURLs(int portalId);
 }

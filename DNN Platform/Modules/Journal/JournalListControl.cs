@@ -2,97 +2,96 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Journal.Controls
+namespace DotNetNuke.Modules.Journal.Controls;
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.Journal.Components;
+using DotNetNuke.Services.Journal;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.Services.Tokens;
+
+[DefaultProperty("Text")]
+[ToolboxData("<{0}:JournalListControl runat=server></{0}:JournalListControl>")]
+public class JournalListControl : WebControl
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Diagnostics.CodeAnalysis;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.UI;
-    using System.Web.UI.WebControls;
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Modules.Journal.Components;
-    using DotNetNuke.Services.Journal;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Tokens;
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
-    [DefaultProperty("Text")]
-    [ToolboxData("<{0}:JournalListControl runat=server></{0}:JournalListControl>")]
-    public class JournalListControl : WebControl
+    // ReSharper disable once InconsistentNaming
+    public PortalSettings portalSettings
     {
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
-        public PortalSettings portalSettings
+        get
         {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
+            return PortalController.Instance.GetCurrentPortalSettings();
         }
+    }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
-        // ReSharper disable once InconsistentNaming
-        public UserInfo userInfo
+    // ReSharper disable once InconsistentNaming
+    public UserInfo userInfo
+    {
+        get
         {
-            get
-            {
-                return UserController.Instance.GetCurrentUserInfo();
-            }
+            return UserController.Instance.GetCurrentUserInfo();
         }
+    }
 
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int JournalId
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int JournalId
+    {
+        get
         {
-            get
+            if (HttpContext.Current != null && !string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["jid"]))
             {
-                if (HttpContext.Current != null && !string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["jid"]))
-                {
-                    return Convert.ToInt32(HttpContext.Current.Request.QueryString["jid"]);
-                }
-
-                return Null.NullInteger;
+                return Convert.ToInt32(HttpContext.Current.Request.QueryString["jid"]);
             }
+
+            return Null.NullInteger;
         }
+    }
 
-        public int ProfileId { get; set; }
+    public int ProfileId { get; set; }
 
-        public int ModuleId { get; set; }
+    public int ModuleId { get; set; }
 
-        public int SocialGroupId { get; set; }
+    public int SocialGroupId { get; set; }
 
-        public int PageSize { get; set; }
+    public int PageSize { get; set; }
 
-        public int CurrentIndex { get; set; }
+    public int CurrentIndex { get; set; }
 
-        /// <inheritdoc/>
-        protected override void Render(HtmlTextWriter output)
+    /// <inheritdoc/>
+    protected override void Render(HtmlTextWriter output)
+    {
+        if (this.Enabled)
         {
-            if (this.Enabled)
+            if (this.CurrentIndex < 0)
             {
-                if (this.CurrentIndex < 0)
-                {
-                    this.CurrentIndex = 0;
-                }
-
-                JournalParser jp = new JournalParser(this.portalSettings, this.ModuleId, this.ProfileId, this.SocialGroupId, this.userInfo) { JournalId = this.JournalId };
-                output.Write(jp.GetList(this.CurrentIndex, this.PageSize));
+                this.CurrentIndex = 0;
             }
+
+            JournalParser jp = new JournalParser(this.portalSettings, this.ModuleId, this.ProfileId, this.SocialGroupId, this.userInfo) { JournalId = this.JournalId };
+            output.Write(jp.GetList(this.CurrentIndex, this.PageSize));
         }
     }
 }

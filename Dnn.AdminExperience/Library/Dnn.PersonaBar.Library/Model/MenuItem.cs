@@ -2,151 +2,150 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Library.Model
+namespace Dnn.PersonaBar.Library.Model;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Runtime.Serialization;
+
+using Dnn.PersonaBar.Library.Repository;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Localization;
+
+[DataContract]
+[Serializable]
+public class MenuItem : IHydratable
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Runtime.Serialization;
+    private string parent;
 
-    using Dnn.PersonaBar.Library.Repository;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Services.Localization;
-
-    [DataContract]
-    [Serializable]
-    public class MenuItem : IHydratable
+    [DataMember]
+    public string Parent
     {
-        private string parent;
-
-        [DataMember]
-        public string Parent
+        get
         {
-            get
+            if (this.ParentId == Null.NullInteger)
             {
-                if (this.ParentId == Null.NullInteger)
-                {
-                    return string.Empty;
-                }
-
-                if (string.IsNullOrEmpty(this.parent))
-                {
-                    var parentItem = PersonaBarRepository.Instance.GetMenuItem(this.ParentId);
-                    if (parentItem != null)
-                    {
-                        this.parent = parentItem.Identifier;
-                    }
-                }
-
-                return this.parent;
+                return string.Empty;
             }
-        }
 
-        [DataMember]
-
-        public string DisplayName
-        {
-            get
+            if (string.IsNullOrEmpty(this.parent))
             {
-                var resourcesPath = System.IO.Path.Combine(Constants.PersonaBarModulesPath, this.Identifier, "App_LocalResources", this.ModuleName + ".resx");
-                var displayName = Localization.GetString(this.ResourceKey, resourcesPath, true);
-                if (Localization.ShowMissingKeys)
+                var parentItem = PersonaBarRepository.Instance.GetMenuItem(this.ParentId);
+                if (parentItem != null)
                 {
-                    if (string.IsNullOrEmpty(displayName))
-                    {
-                        resourcesPath = System.IO.Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources", "PersonaBar.resx");
-                    }
-
-                    displayName = Localization.GetString(this.ResourceKey, resourcesPath);
+                    this.parent = parentItem.Identifier;
                 }
-                else if (string.IsNullOrEmpty(displayName))
-                {
-                    resourcesPath = System.IO.Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources", "PersonaBar.resx");
-                    displayName = Localization.GetString(this.ResourceKey, resourcesPath);
-                }
+            }
 
+            return this.parent;
+        }
+    }
+
+    [DataMember]
+
+    public string DisplayName
+    {
+        get
+        {
+            var resourcesPath = System.IO.Path.Combine(Constants.PersonaBarModulesPath, this.Identifier, "App_LocalResources", this.ModuleName + ".resx");
+            var displayName = Localization.GetString(this.ResourceKey, resourcesPath, true);
+            if (Localization.ShowMissingKeys)
+            {
                 if (string.IsNullOrEmpty(displayName))
                 {
-                    displayName = this.ResourceKey;
+                    resourcesPath = System.IO.Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources", "PersonaBar.resx");
                 }
 
-                return displayName;
+                displayName = Localization.GetString(this.ResourceKey, resourcesPath);
             }
+            else if (string.IsNullOrEmpty(displayName))
+            {
+                resourcesPath = System.IO.Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources", "PersonaBar.resx");
+                displayName = Localization.GetString(this.ResourceKey, resourcesPath);
+            }
+
+            if (string.IsNullOrEmpty(displayName))
+            {
+                displayName = this.ResourceKey;
+            }
+
+            return displayName;
         }
+    }
 
-        [DataMember]
-        public int MenuId { get; set; }
+    [DataMember]
+    public int MenuId { get; set; }
 
-        [DataMember]
-        public string Identifier { get; set; }
+    [DataMember]
+    public string Identifier { get; set; }
 
-        [DataMember]
-        public string ModuleName { get; set; }
+    [DataMember]
+    public string ModuleName { get; set; }
 
-        [DataMember]
-        public string FolderName { get; set; }
+    [DataMember]
+    public string FolderName { get; set; }
 
-        [IgnoreDataMember]
-        public string Controller { get; set; }
+    [IgnoreDataMember]
+    public string Controller { get; set; }
 
-        [DataMember]
-        public string ResourceKey { get; set; }
+    [DataMember]
+    public string ResourceKey { get; set; }
 
-        [DataMember]
-        public string Path { get; set; }
+    [DataMember]
+    public string Path { get; set; }
 
-        [DataMember]
-        public string Link { get; set; }
+    [DataMember]
+    public string Link { get; set; }
 
-        [DataMember]
-        public string CssClass { get; set; }
+    [DataMember]
+    public string CssClass { get; set; }
 
-        [DataMember]
-        public string IconFile { get; set; }
+    [DataMember]
+    public string IconFile { get; set; }
 
-        [DataMember]
-        public int ParentId { get; set; }
+    [DataMember]
+    public int ParentId { get; set; }
 
-        [DataMember]
-        public int Order { get; set; }
+    [DataMember]
+    public int Order { get; set; }
 
-        [DataMember]
-        public bool AllowHost { get; set; }
+    [DataMember]
+    public bool AllowHost { get; set; }
 
-        [DataMember]
-        public bool Enabled { get; set; }
+    [DataMember]
+    public bool Enabled { get; set; }
 
-        [DataMember]
-        public string Settings { get; set; }
+    [DataMember]
+    public string Settings { get; set; }
 
-        [DataMember]
-        public IList<MenuItem> Children { get; set; } = new List<MenuItem>();
+    [DataMember]
+    public IList<MenuItem> Children { get; set; } = new List<MenuItem>();
 
-        /// <inheritdoc/>
-        public int KeyID
-        {
-            get { return this.MenuId; }
-            set { this.MenuId = value; }
-        }
+    /// <inheritdoc/>
+    public int KeyID
+    {
+        get { return this.MenuId; }
+        set { this.MenuId = value; }
+    }
 
-        /// <inheritdoc/>
-        public void Fill(IDataReader dr)
-        {
-            this.MenuId = Convert.ToInt32(dr["MenuId"]);
-            this.Identifier = dr["Identifier"].ToString();
-            this.ModuleName = dr["ModuleName"].ToString();
-            this.FolderName = Null.SetNullString(dr["FolderName"]);
-            this.Controller = dr["Controller"].ToString();
-            this.ResourceKey = dr["ResourceKey"].ToString();
-            this.Path = dr["Path"].ToString();
-            this.Link = dr["Link"].ToString();
-            this.CssClass = dr["CssClass"].ToString();
-            this.IconFile = dr["IconFile"].ToString();
-            this.AllowHost = Convert.ToBoolean(dr["AllowHost"]);
-            this.Enabled = Convert.ToBoolean(dr["Enabled"]);
-            this.ParentId = Null.SetNullInteger(dr["ParentId"]);
-            this.Order = Null.SetNullInteger(dr["Order"]);
-        }
+    /// <inheritdoc/>
+    public void Fill(IDataReader dr)
+    {
+        this.MenuId = Convert.ToInt32(dr["MenuId"]);
+        this.Identifier = dr["Identifier"].ToString();
+        this.ModuleName = dr["ModuleName"].ToString();
+        this.FolderName = Null.SetNullString(dr["FolderName"]);
+        this.Controller = dr["Controller"].ToString();
+        this.ResourceKey = dr["ResourceKey"].ToString();
+        this.Path = dr["Path"].ToString();
+        this.Link = dr["Link"].ToString();
+        this.CssClass = dr["CssClass"].ToString();
+        this.IconFile = dr["IconFile"].ToString();
+        this.AllowHost = Convert.ToBoolean(dr["AllowHost"]);
+        this.Enabled = Convert.ToBoolean(dr["Enabled"]);
+        this.ParentId = Null.SetNullInteger(dr["ParentId"]);
+        this.Order = Null.SetNullInteger(dr["Order"]);
     }
 }

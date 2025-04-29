@@ -5,16 +5,16 @@ mergeable:
       - do: milestone
         no_empty:
           enabled: true # Cannot be empty when true.
-          message: 'A milestone must be assigned to this pull request'
+          message: "A milestone must be assigned to this pull request"
         must_exclude:
-          regex: 'Future:'
-          regex_flag: 'none'
-          message: 'A milestone that does not contain `Future:` must be assigned to this pull request'
+          regex: "Future:"
+          regex_flag: "none"
+          message: "A milestone that does not contain `Future:` must be assigned to this pull request"
       - do: label
         begins_with:
-          match: 'Type:' # or array of strings
-          message: 'A `Type:` label must be assigned to this pull request'
+          match: "Type:" # or array of strings
+          message: "A `Type:` label must be assigned to this pull request"
         must_exclude:
-          regex: 'On Hold'
-          regex_flag: 'none' # Optional. Specify the flag for Regex. default is 'i', to disable default use 'none'
-          message: 'This PR is `On Hold`'
+          regex: "On Hold"
+          regex_flag: "none" # Optional. Specify the flag for Regex. default is 'i', to disable default use 'none'
+          message: "This PR is `On Hold`"

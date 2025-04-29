@@ -4,6 +4,6 @@ containing a copy of the below, called "EditBarTheme.css" and placing it in the
 "Portals/_default" directory. If the custom CSS file exists, it will be loaded 
 instead of this one.
 ---------------------------------------------------------------------------------*/
-:root{
-    --dnn-color-editbar-background: #0b1c24;
+:root {
+  --dnn-color-editbar-background: #0b1c24;
 }

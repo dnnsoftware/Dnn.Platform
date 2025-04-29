@@ -1,6 +1,6 @@
 @bender-tags: exportpdf, feature, 17
 @bender-ui: collapsed
-@bender-include: ../_helpers/tools.js
+@bender-include: ../\_helpers/tools.js
 @bender-ckeditor-plugins: basicstyles, bidi, blockquote, clipboard, colorbutton, colordialog, dialogadvtab, elementspath, enterkey, font, format, horizontalrule, htmlwriter, image, indentlist, indentblock, justify, link, list, liststyle, magicline, pagebreak, pastefromgdocs, pastefromlibreoffice, pastefromword, pastetext, specialchar, stylescombo, table, tableselection, tabletools, toolbar, undo, wysiwygarea, sourcearea, resize
 
 1. Click `Export to PDF` button (the one next to the `Source` button).

@@ -2,35 +2,34 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Mvc.Framework.Controllers
+namespace DotNetNuke.Web.Mvc.Framework.Controllers;
+
+using System.Web.Mvc;
+using System.Web.UI;
+
+using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Mvc.Helpers;
+
+public interface IDnnController : IController
 {
-    using System.Web.Mvc;
-    using System.Web.UI;
+    ControllerContext ControllerContext { get; }
 
-    using DotNetNuke.Entities.Modules.Actions;
-    using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Mvc.Helpers;
+    ActionResult ResultOfLastExecute { get; }
 
-    public interface IDnnController : IController
-    {
-        ControllerContext ControllerContext { get; }
+    Page DnnPage { get; set; }
 
-        ActionResult ResultOfLastExecute { get; }
+    string LocalResourceFile { get; set; }
 
-        Page DnnPage { get; set; }
+    ModuleActionCollection ModuleActions { get; set; }
 
-        string LocalResourceFile { get; set; }
+    ModuleInstanceContext ModuleContext { get; set; }
 
-        ModuleActionCollection ModuleActions { get; set; }
+    bool ValidateRequest { get; set; }
 
-        ModuleInstanceContext ModuleContext { get; set; }
+    ViewEngineCollection ViewEngineCollectionEx { get; set; }
 
-        bool ValidateRequest { get; set; }
+    DnnUrlHelper Url { get; set; }
 
-        ViewEngineCollection ViewEngineCollectionEx { get; set; }
-
-        DnnUrlHelper Url { get; set; }
-
-        string LocalizeString(string key);
-    }
+    string LocalizeString(string key);
 }

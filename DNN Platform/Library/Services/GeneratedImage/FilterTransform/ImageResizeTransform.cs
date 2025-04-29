@@ -2,256 +2,195 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.GeneratedImage.FilterTransform
+namespace DotNetNuke.Services.GeneratedImage.FilterTransform;
+
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+
+/// <summary>Resize ImageTransform class.</summary>
+public class ImageResizeTransform : ImageTransform
 {
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Drawing;
-    using System.Drawing.Drawing2D;
+    private int width;
+    private int height;
+    private int border;
+    private int maxWidth;
+    private int maxHeight;
 
-    /// <summary>Resize ImageTransform class.</summary>
-    public class ImageResizeTransform : ImageTransform
+    /// <summary>Initializes a new instance of the <see cref="ImageResizeTransform"/> class.</summary>
+    public ImageResizeTransform()
     {
-        private int width;
-        private int height;
-        private int border;
-        private int maxWidth;
-        private int maxHeight;
+        this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        this.SmoothingMode = SmoothingMode.HighQuality;
+        this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+        this.CompositingQuality = CompositingQuality.HighQuality;
+        this.Mode = ImageResizeMode.Fit;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="ImageResizeTransform"/> class.</summary>
-        public ImageResizeTransform()
+    /// <summary>Gets provides an Unique String for this transformation.</summary>
+    [Browsable(false)]
+    public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
+
+    /// <summary>Gets or sets the resize mode. The default value is Fit.</summary>
+    public ImageResizeMode Mode { get; set; }
+
+    /// <summary>Gets or sets the width of the resulting image.</summary>
+    public int Width
+    {
+        get
         {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-            this.Mode = ImageResizeMode.Fit;
+            return this.width;
         }
 
-        /// <summary>Gets provides an Unique String for this transformation.</summary>
-        [Browsable(false)]
-        public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
-
-        /// <summary>Gets or sets the resize mode. The default value is Fit.</summary>
-        public ImageResizeMode Mode { get; set; }
-
-        /// <summary>Gets or sets the width of the resulting image.</summary>
-        public int Width
+        set
         {
-            get
-            {
-                return this.width;
-            }
+            CheckValue(value);
+            this.width = value;
+        }
+    }
 
-            set
-            {
-                CheckValue(value);
-                this.width = value;
-            }
+    /// <summary>Gets or sets the Max width of the resulting image.</summary>
+    public int MaxWidth
+    {
+        get
+        {
+            return this.maxWidth;
         }
 
-        /// <summary>Gets or sets the Max width of the resulting image.</summary>
-        public int MaxWidth
+        set
         {
-            get
-            {
-                return this.maxWidth;
-            }
+            CheckValue(value);
+            this.maxWidth = value;
+        }
+    }
 
-            set
-            {
-                CheckValue(value);
-                this.maxWidth = value;
-            }
+    /// <summary>Gets or sets the height of the resulting image.</summary>
+    public int Height
+    {
+        get
+        {
+            return this.height;
         }
 
-        /// <summary>Gets or sets the height of the resulting image.</summary>
-        public int Height
+        set
         {
-            get
-            {
-                return this.height;
-            }
+            CheckValue(value);
+            this.height = value;
+        }
+    }
 
-            set
-            {
-                CheckValue(value);
-                this.height = value;
-            }
+    /// <summary>Gets or sets the max height of the resulting image.</summary>
+    public int MaxHeight
+    {
+        get
+        {
+            return this.maxHeight;
         }
 
-        /// <summary>Gets or sets the max height of the resulting image.</summary>
-        public int MaxHeight
+        set
         {
-            get
-            {
-                return this.maxHeight;
-            }
+            CheckValue(value);
+            this.maxHeight = value;
+        }
+    }
 
-            set
-            {
-                CheckValue(value);
-                this.maxHeight = value;
-            }
+    /// <summary>Gets or sets the border width of the resulting image.</summary>
+    public int Border
+    {
+        get
+        {
+            return this.border;
         }
 
-        /// <summary>Gets or sets the border width of the resulting image.</summary>
-        public int Border
+        set
         {
-            get
-            {
-                return this.border;
-            }
+            CheckValue(value);
+            this.border = value;
+        }
+    }
 
-            set
-            {
-                CheckValue(value);
-                this.border = value;
-            }
+    /// <summary>Gets or sets the Backcolor.</summary>
+    public Color BackColor { get; set; } = Color.White;
+
+    /// <summary>Processes an input image applying a resize image transformation.</summary>
+    /// <param name="image">Input image.</param>
+    /// <returns>Image result after image transformation.</returns>
+    public override Image ProcessImage(Image image)
+    {
+        if (image == null)
+        {
+            return null;
         }
 
-        /// <summary>Gets or sets the Backcolor.</summary>
-        public Color BackColor { get; set; } = Color.White;
-
-        /// <summary>Processes an input image applying a resize image transformation.</summary>
-        /// <param name="image">Input image.</param>
-        /// <returns>Image result after image transformation.</returns>
-        public override Image ProcessImage(Image image)
+        if (this.MaxWidth > 0)
         {
-            if (image == null)
-            {
+            this.Width = image.Width > this.MaxWidth ? this.MaxWidth : image.Width;
+        }
+
+        if (this.MaxHeight > 0)
+        {
+            this.Height = image.Height > this.MaxHeight ? this.MaxHeight : image.Height;
+        }
+
+        int scaledHeight = (int)(image.Height * ((float)this.Width / (float)image.Width));
+        int scaledWidth = (int)(image.Width * ((float)this.Height / (float)image.Height));
+
+        Image procImage;
+        switch (this.Mode)
+        {
+            case ImageResizeMode.Fit:
+                procImage = this.FitImage(image, scaledHeight, scaledWidth);
+                break;
+            case ImageResizeMode.Crop:
+                procImage = this.CropImage(image, scaledHeight, scaledWidth);
+                break;
+            case ImageResizeMode.FitSquare:
+                procImage = this.FitSquareImage(image);
+                break;
+            case ImageResizeMode.Fill:
+                procImage = this.FillImage(image);
+                break;
+            default:
+                Debug.Fail("Should not reach this");
                 return null;
-            }
-
-            if (this.MaxWidth > 0)
-            {
-                this.Width = image.Width > this.MaxWidth ? this.MaxWidth : image.Width;
-            }
-
-            if (this.MaxHeight > 0)
-            {
-                this.Height = image.Height > this.MaxHeight ? this.MaxHeight : image.Height;
-            }
-
-            int scaledHeight = (int)(image.Height * ((float)this.Width / (float)image.Width));
-            int scaledWidth = (int)(image.Width * ((float)this.Height / (float)image.Height));
-
-            Image procImage;
-            switch (this.Mode)
-            {
-                case ImageResizeMode.Fit:
-                    procImage = this.FitImage(image, scaledHeight, scaledWidth);
-                    break;
-                case ImageResizeMode.Crop:
-                    procImage = this.CropImage(image, scaledHeight, scaledWidth);
-                    break;
-                case ImageResizeMode.FitSquare:
-                    procImage = this.FitSquareImage(image);
-                    break;
-                case ImageResizeMode.Fill:
-                    procImage = this.FillImage(image);
-                    break;
-                default:
-                    Debug.Fail("Should not reach this");
-                    return null;
-            }
-
-            return procImage;
         }
 
-        /// <inheritdoc/>
-        public override string ToString()
+        return procImage;
+    }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return "ImageResizeTransform";
+    }
+
+    private static void CheckValue(int value)
+    {
+        if (value < 0)
         {
-            return "ImageResizeTransform";
+            throw new ArgumentOutOfRangeException(nameof(value));
         }
+    }
 
-        private static void CheckValue(int value)
+    private Image FitImage(Image img, int scaledHeight, int scaledWidth)
+    {
+        int resizeWidth;
+        int resizeHeight;
+        if (this.Height == 0)
         {
-            if (value < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(value));
-            }
+            resizeWidth = this.Width;
+            resizeHeight = scaledHeight;
         }
-
-        private Image FitImage(Image img, int scaledHeight, int scaledWidth)
+        else if (this.Width == 0)
         {
-            int resizeWidth;
-            int resizeHeight;
-            if (this.Height == 0)
-            {
-                resizeWidth = this.Width;
-                resizeHeight = scaledHeight;
-            }
-            else if (this.Width == 0)
-            {
-                resizeWidth = scaledWidth;
-                resizeHeight = this.Height;
-            }
-            else
-            {
-                if ((float)this.Width / (float)img.Width < this.Height / (float)img.Height)
-                {
-                    resizeWidth = this.Width;
-                    resizeHeight = scaledHeight;
-                }
-                else
-                {
-                    resizeWidth = scaledWidth;
-                    resizeHeight = this.Height;
-                }
-            }
-
-            var newimage = new Bitmap(resizeWidth + (2 * this.border), resizeHeight + (2 * this.border));
-            var graphics = Graphics.FromImage(newimage);
-
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = this.CompositingQuality;
-            graphics.InterpolationMode = this.InterpolationMode;
-            graphics.SmoothingMode = this.SmoothingMode;
-
-            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + (2 * this.border), resizeHeight + (2 * this.border)));
-            graphics.DrawImage(img, this.border, this.border, resizeWidth, resizeHeight);
-
-            return newimage;
+            resizeWidth = scaledWidth;
+            resizeHeight = this.Height;
         }
-
-        private Image FitSquareImage(Image img)
+        else
         {
-            int resizeWidth;
-            int resizeHeight;
-
-            int newDim = this.Width > 0 ? this.Width : this.Height;
-
-            if (img.Height > img.Width)
-            {
-                resizeWidth = Convert.ToInt32((float)img.Width / (float)img.Height * newDim);
-                resizeHeight = newDim;
-            }
-            else
-            {
-                resizeWidth = newDim;
-                resizeHeight = Convert.ToInt32((float)img.Height / (float)img.Width * newDim);
-            }
-
-            var newimage = new Bitmap(newDim + (2 * this.border), newDim + (2 * this.border));
-            var graphics = Graphics.FromImage(newimage);
-
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = this.CompositingQuality;
-            graphics.InterpolationMode = this.InterpolationMode;
-            graphics.SmoothingMode = this.SmoothingMode;
-
-            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + (2 * this.border), newDim + (2 * this.border)));
-            graphics.DrawImage(img, ((newDim - resizeWidth) / 2) + this.border, ((newDim - resizeHeight) / 2) + this.border, resizeWidth, resizeHeight);
-            return newimage;
-        }
-
-        private Image CropImage(Image img, int scaledHeight, int scaledWidth)
-        {
-            int resizeWidth;
-            int resizeHeight;
-            if ((float)this.Width / (float)img.Width > this.Height / (float)img.Height)
+            if ((float)this.Width / (float)img.Width < this.Height / (float)img.Height)
             {
                 resizeWidth = this.Width;
                 resizeHeight = scaledHeight;
@@ -261,36 +200,96 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 resizeWidth = scaledWidth;
                 resizeHeight = this.Height;
             }
-
-            var newImage = new Bitmap(this.Width, this.Height);
-            var graphics = Graphics.FromImage(newImage);
-
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = this.CompositingQuality;
-            graphics.InterpolationMode = this.InterpolationMode;
-            graphics.SmoothingMode = this.SmoothingMode;
-            graphics.PixelOffsetMode = this.PixelOffsetMode;
-
-            graphics.DrawImage(img, (this.Width - resizeWidth) / 2, (this.Height - resizeHeight) / 2, resizeWidth, resizeHeight);
-            return newImage;
         }
 
-        private Image FillImage(Image img)
+        var newimage = new Bitmap(resizeWidth + (2 * this.border), resizeHeight + (2 * this.border));
+        var graphics = Graphics.FromImage(newimage);
+
+        graphics.CompositingMode = CompositingMode.SourceCopy;
+        graphics.CompositingQuality = this.CompositingQuality;
+        graphics.InterpolationMode = this.InterpolationMode;
+        graphics.SmoothingMode = this.SmoothingMode;
+
+        graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + (2 * this.border), resizeHeight + (2 * this.border)));
+        graphics.DrawImage(img, this.border, this.border, resizeWidth, resizeHeight);
+
+        return newimage;
+    }
+
+    private Image FitSquareImage(Image img)
+    {
+        int resizeWidth;
+        int resizeHeight;
+
+        int newDim = this.Width > 0 ? this.Width : this.Height;
+
+        if (img.Height > img.Width)
         {
-            int resizeHeight = this.Height;
-            int resizeWidth = this.Width;
-
-            var newImage = new Bitmap(this.Width, this.Height);
-            var graphics = Graphics.FromImage(newImage);
-
-            graphics.CompositingMode = CompositingMode.SourceCopy;
-            graphics.CompositingQuality = this.CompositingQuality;
-            graphics.InterpolationMode = this.InterpolationMode;
-            graphics.SmoothingMode = this.SmoothingMode;
-            graphics.PixelOffsetMode = this.PixelOffsetMode;
-
-            graphics.DrawImage(img, (this.Width - resizeWidth) / 2, (this.Height - resizeHeight) / 2, resizeWidth, resizeHeight);
-            return newImage;
+            resizeWidth = Convert.ToInt32((float)img.Width / (float)img.Height * newDim);
+            resizeHeight = newDim;
         }
+        else
+        {
+            resizeWidth = newDim;
+            resizeHeight = Convert.ToInt32((float)img.Height / (float)img.Width * newDim);
+        }
+
+        var newimage = new Bitmap(newDim + (2 * this.border), newDim + (2 * this.border));
+        var graphics = Graphics.FromImage(newimage);
+
+        graphics.CompositingMode = CompositingMode.SourceCopy;
+        graphics.CompositingQuality = this.CompositingQuality;
+        graphics.InterpolationMode = this.InterpolationMode;
+        graphics.SmoothingMode = this.SmoothingMode;
+
+        graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + (2 * this.border), newDim + (2 * this.border)));
+        graphics.DrawImage(img, ((newDim - resizeWidth) / 2) + this.border, ((newDim - resizeHeight) / 2) + this.border, resizeWidth, resizeHeight);
+        return newimage;
+    }
+
+    private Image CropImage(Image img, int scaledHeight, int scaledWidth)
+    {
+        int resizeWidth;
+        int resizeHeight;
+        if ((float)this.Width / (float)img.Width > this.Height / (float)img.Height)
+        {
+            resizeWidth = this.Width;
+            resizeHeight = scaledHeight;
+        }
+        else
+        {
+            resizeWidth = scaledWidth;
+            resizeHeight = this.Height;
+        }
+
+        var newImage = new Bitmap(this.Width, this.Height);
+        var graphics = Graphics.FromImage(newImage);
+
+        graphics.CompositingMode = CompositingMode.SourceCopy;
+        graphics.CompositingQuality = this.CompositingQuality;
+        graphics.InterpolationMode = this.InterpolationMode;
+        graphics.SmoothingMode = this.SmoothingMode;
+        graphics.PixelOffsetMode = this.PixelOffsetMode;
+
+        graphics.DrawImage(img, (this.Width - resizeWidth) / 2, (this.Height - resizeHeight) / 2, resizeWidth, resizeHeight);
+        return newImage;
+    }
+
+    private Image FillImage(Image img)
+    {
+        int resizeHeight = this.Height;
+        int resizeWidth = this.Width;
+
+        var newImage = new Bitmap(this.Width, this.Height);
+        var graphics = Graphics.FromImage(newImage);
+
+        graphics.CompositingMode = CompositingMode.SourceCopy;
+        graphics.CompositingQuality = this.CompositingQuality;
+        graphics.InterpolationMode = this.InterpolationMode;
+        graphics.SmoothingMode = this.SmoothingMode;
+        graphics.PixelOffsetMode = this.PixelOffsetMode;
+
+        graphics.DrawImage(img, (this.Width - resizeWidth) / 2, (this.Height - resizeHeight) / 2, resizeWidth, resizeHeight);
+        return newImage;
     }
 }

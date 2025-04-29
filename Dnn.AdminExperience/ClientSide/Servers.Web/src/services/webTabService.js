@@ -1,11 +1,11 @@
 import serviceFramework from "./serviceFramework";
 
 const getWebServerInfo = function () {
-    return serviceFramework.get("SystemInfoWeb", "GetWebServerInfo");
+  return serviceFramework.get("SystemInfoWeb", "GetWebServerInfo");
 };
 
 const webTabService = {
-    getWebServerInfo: getWebServerInfo
+  getWebServerInfo: getWebServerInfo,
 };
 
-export default webTabService; 
+export default webTabService;

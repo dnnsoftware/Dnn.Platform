@@ -16,7 +16,6 @@ export default class EditPwdBlock extends Component {
   }
   render() {
     const { props, state } = this;
-    console.log(state);
 
     return (
       <InputGroup>

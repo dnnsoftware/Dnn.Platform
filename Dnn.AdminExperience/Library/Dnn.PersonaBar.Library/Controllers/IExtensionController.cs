@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Library.Controllers
+namespace Dnn.PersonaBar.Library.Controllers;
+
+using System.Collections.Generic;
+
+using Dnn.PersonaBar.Library.Model;
+
+public interface IExtensionController
 {
-    using System.Collections.Generic;
+    string GetPath(PersonaBarExtension extension);
 
-    using Dnn.PersonaBar.Library.Model;
+    bool Visible(PersonaBarExtension extension);
 
-    public interface IExtensionController
-    {
-        string GetPath(PersonaBarExtension extension);
-
-        bool Visible(PersonaBarExtension extension);
-
-        IDictionary<string, object> GetSettings(PersonaBarExtension extension);
-    }
+    IDictionary<string, object> GetSettings(PersonaBarExtension extension);
 }

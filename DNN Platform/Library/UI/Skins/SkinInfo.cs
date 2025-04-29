@@ -1,86 +1,85 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.Skins
+namespace DotNetNuke.UI.Skins;
+
+using System;
+
+/// Project  : DotNetNuke
+/// Class    : SkinInfo
+///
+/// <summary>    Handles the Business Object for Skins.</summary>
+[Serializable]
+public class SkinInfo
 {
-    using System;
+    private int portalId;
+    private int skinId;
+    private string skinRoot;
+    private string skinSrc;
+    private SkinType skinType;
 
-    /// Project  : DotNetNuke
-    /// Class    : SkinInfo
-    ///
-    /// <summary>    Handles the Business Object for Skins.</summary>
-    [Serializable]
-    public class SkinInfo
+    public int SkinId
     {
-        private int portalId;
-        private int skinId;
-        private string skinRoot;
-        private string skinSrc;
-        private SkinType skinType;
-
-        public int SkinId
+        get
         {
-            get
-            {
-                return this.skinId;
-            }
-
-            set
-            {
-                this.skinId = value;
-            }
+            return this.skinId;
         }
 
-        public int PortalId
+        set
         {
-            get
-            {
-                return this.portalId;
-            }
+            this.skinId = value;
+        }
+    }
 
-            set
-            {
-                this.portalId = value;
-            }
+    public int PortalId
+    {
+        get
+        {
+            return this.portalId;
         }
 
-        public string SkinRoot
+        set
         {
-            get
-            {
-                return this.skinRoot;
-            }
+            this.portalId = value;
+        }
+    }
 
-            set
-            {
-                this.skinRoot = value;
-            }
+    public string SkinRoot
+    {
+        get
+        {
+            return this.skinRoot;
         }
 
-        public SkinType SkinType
+        set
         {
-            get
-            {
-                return this.skinType;
-            }
+            this.skinRoot = value;
+        }
+    }
 
-            set
-            {
-                this.skinType = value;
-            }
+    public SkinType SkinType
+    {
+        get
+        {
+            return this.skinType;
         }
 
-        public string SkinSrc
+        set
         {
-            get
-            {
-                return this.skinSrc;
-            }
+            this.skinType = value;
+        }
+    }
 
-            set
-            {
-                this.skinSrc = value;
-            }
+    public string SkinSrc
+    {
+        get
+        {
+            return this.skinSrc;
+        }
+
+        set
+        {
+            this.skinSrc = value;
         }
     }
 }

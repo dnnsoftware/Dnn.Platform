@@ -12,8 +12,8 @@ application.init();
 
 const appContainer = document.getElementById("roles-container");
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

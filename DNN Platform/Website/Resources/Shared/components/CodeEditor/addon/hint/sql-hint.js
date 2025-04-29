@@ -1,14 +1,15 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
+(function (mod) {
+  if (typeof exports == "object" && typeof module == "object")
+    // CommonJS
     mod(require("../../lib/codemirror"), require("../../mode/sql/sql"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror", "../../mode/sql/sql"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
+  else if (typeof define == "function" && define.amd)
+    // AMD
+    define(["../../lib/codemirror", "../../mode/sql/sql"], mod); // Plain browser env
+  else mod(CodeMirror);
+})(function (CodeMirror) {
   "use strict";
 
   var tables;
@@ -16,7 +17,7 @@
   var keywords;
   var CONS = {
     QUERY_DIV: ";",
-    ALIAS_KEYWORD: "AS"
+    ALIAS_KEYWORD: "AS",
   };
   var Pos = CodeMirror.Pos;
 
@@ -32,14 +33,14 @@
 
   function getItem(list, item) {
     if (!list.slice) return list[item];
-    for (var i = list.length - 1; i >= 0; i--) if (getText(list[i]) == item)
-      return list[i];
+    for (var i = list.length - 1; i >= 0; i--)
+      if (getText(list[i]) == item) return list[i];
   }
 
   function shallowClone(object) {
     var result = {};
-    for (var key in object) if (object.hasOwnProperty(key))
-      result[key] = object[key];
+    for (var key in object)
+      if (object.hasOwnProperty(key)) result[key] = object[key];
     return result;
   }
 
@@ -84,8 +85,8 @@
     var start = token.start;
     var cont = true;
     while (cont) {
-      cont = (token.string.charAt(0) == ".");
-      useBacktick = useBacktick || (token.string.charAt(0) == "`");
+      cont = token.string.charAt(0) == ".";
+      useBacktick = useBacktick || token.string.charAt(0) == "`";
 
       start = token.start;
       nameParts.unshift(cleanName(token.string));
@@ -99,12 +100,12 @@
 
     // Try to complete table names
     var string = nameParts.join(".");
-    addMatches(result, string, tables, function(w) {
+    addMatches(result, string, tables, function (w) {
       return useBacktick ? insertBackticks(w) : w;
     });
 
     // Try to complete columns from defaultTable
-    addMatches(result, string, defaultTable, function(w) {
+    addMatches(result, string, defaultTable, function (w) {
       return useBacktick ? insertBackticks(w) : w;
     });
 
@@ -122,11 +123,10 @@
     }
 
     var columns = getItem(tables, table);
-    if (columns && columns.columns)
-      columns = columns.columns;
+    if (columns && columns.columns) columns = columns.columns;
 
     if (columns) {
-      addMatches(result, string, columns, function(w) {
+      addMatches(result, string, columns, function (w) {
         var tableInsert = table;
         if (alias == true) tableInsert = aliasTable;
         if (typeof w == "string") {
@@ -147,7 +147,7 @@
     var excepted = /[,;]/g;
     var words = lineText.split(" ");
     for (var i = 0; i < words.length; i++) {
-      f(words[i]?words[i].replace(excepted, '') : '');
+      f(words[i] ? words[i].replace(excepted, "") : "");
     }
   }
 
@@ -157,7 +157,7 @@
   }
 
   function convertNumberToCur(num) {
-    return Pos(Math.floor(num), +num.toString().split('.').pop());
+    return Pos(Math.floor(num), +num.toString().split(".").pop());
   }
 
   function findTableByAlias(alias, editor) {
@@ -169,25 +169,39 @@
     var separator = [];
     var validRange = {
       start: Pos(0, 0),
-      end: Pos(editor.lastLine(), editor.getLineHandle(editor.lastLine()).length)
+      end: Pos(
+        editor.lastLine(),
+        editor.getLineHandle(editor.lastLine()).length,
+      ),
     };
 
     //add separator
     var indexOfSeparator = fullQuery.indexOf(CONS.QUERY_DIV);
-    while(indexOfSeparator != -1) {
+    while (indexOfSeparator != -1) {
       separator.push(doc.posFromIndex(indexOfSeparator));
-      indexOfSeparator = fullQuery.indexOf(CONS.QUERY_DIV, indexOfSeparator+1);
+      indexOfSeparator = fullQuery.indexOf(
+        CONS.QUERY_DIV,
+        indexOfSeparator + 1,
+      );
     }
     separator.unshift(Pos(0, 0));
-    separator.push(Pos(editor.lastLine(), editor.getLineHandle(editor.lastLine()).text.length));
+    separator.push(
+      Pos(
+        editor.lastLine(),
+        editor.getLineHandle(editor.lastLine()).text.length,
+      ),
+    );
 
     //find valid range
     var prevItem = 0;
     var current = convertCurToNumber(editor.getCursor());
-    for (var i=0; i< separator.length; i++) {
+    for (var i = 0; i < separator.length; i++) {
       var _v = convertCurToNumber(separator[i]);
       if (current > prevItem && current <= _v) {
-        validRange = { start: convertNumberToCur(prevItem), end: convertNumberToCur(_v) };
+        validRange = {
+          start: convertNumberToCur(prevItem),
+          end: convertNumberToCur(_v),
+        };
         break;
       }
       prevItem = _v;
@@ -197,19 +211,18 @@
 
     for (var i = 0; i < query.length; i++) {
       var lineText = query[i];
-      eachWord(lineText, function(word) {
+      eachWord(lineText, function (word) {
         var wordUpperCase = word.toUpperCase();
         if (wordUpperCase === aliasUpperCase && getItem(tables, previousWord))
           table = previousWord;
-        if (wordUpperCase !== CONS.ALIAS_KEYWORD)
-          previousWord = word;
+        if (wordUpperCase !== CONS.ALIAS_KEYWORD) previousWord = word;
       });
       if (table) break;
     }
     return table;
   }
 
-  CodeMirror.registerHelper("hint", "sql", function(editor, options) {
+  CodeMirror.registerHelper("hint", "sql", function (editor, options) {
     tables = (options && options.tables) || {};
     var defaultTableName = options && options.defaultTable;
     var disableKeywords = options && options.disableKeywords;
@@ -221,12 +234,14 @@
 
     defaultTable = defaultTable || [];
 
-    if (defaultTable.columns)
-      defaultTable = defaultTable.columns;
+    if (defaultTable.columns) defaultTable = defaultTable.columns;
 
     var cur = editor.getCursor();
     var result = [];
-    var token = editor.getTokenAt(cur), start, end, search;
+    var token = editor.getTokenAt(cur),
+      start,
+      end,
+      search;
     if (token.end > cur.ch) {
       token.end = cur.ch;
       token.string = token.string.slice(0, cur.ch - token.start);
@@ -243,12 +258,18 @@
     if (search.charAt(0) == "." || search.charAt(0) == "`") {
       start = nameCompletion(cur, token, result, editor);
     } else {
-      addMatches(result, search, tables, function(w) {return w;});
-      addMatches(result, search, defaultTable, function(w) {return w;});
+      addMatches(result, search, tables, function (w) {
+        return w;
+      });
+      addMatches(result, search, defaultTable, function (w) {
+        return w;
+      });
       if (!disableKeywords)
-        addMatches(result, search, keywords, function(w) {return w.toUpperCase();});
+        addMatches(result, search, keywords, function (w) {
+          return w.toUpperCase();
+        });
     }
 
-    return {list: result, from: Pos(cur.line, start), to: Pos(cur.line, end)};
+    return { list: result, from: Pos(cur.line, start), to: Pos(cur.line, end) };
   });
 });

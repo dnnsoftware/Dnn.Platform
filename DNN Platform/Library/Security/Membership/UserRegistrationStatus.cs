@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Security.Membership
+namespace DotNetNuke.Security.Membership;
+
+public enum UserRegistrationStatus
 {
-    public enum UserRegistrationStatus
-    {
-        AddUser = 0,
-        AddUserRoles = -1,
-        UsernameAlreadyExists = -2,
-        UserAlreadyRegistered = -3,
-        UnexpectedError = -4,
-    }
+    AddUser = 0,
+    AddUserRoles = -1,
+    UsernameAlreadyExists = -2,
+    UserAlreadyRegistered = -3,
+    UnexpectedError = -4,
 }

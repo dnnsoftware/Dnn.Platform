@@ -7,43 +7,53 @@ import util from "utils";
 import styles from "./style.module.less";
 
 class HtmlEditorManagerPanelBody extends Component {
-    constructor() {
-        super();
-        this.state = {
-            url: undefined
-        };
-    }
+  constructor() {
+    super();
+    this.state = {
+      url: undefined,
+    };
+  }
 
-    componentDidMount() {
-        this.setState({
-            url: util.siteRoot + "Host/HTMLEditorManager?portalid=" + this.props.portalId + "&portpopUp=true"
-        });
-    }
+  componentDidMount() {
+    this.setState({
+      url:
+        util.siteRoot +
+        "Host/HTMLEditorManager?portalid=" +
+        this.props.portalId +
+        "&portpopUp=true",
+    });
+  }
 
-    /* eslint-disable react/no-danger */
-    render() {
-        return (
-            <div className="dnn-persona-bar-page-body">
-                <div className={styles.htmlEditorManager}>
-                    <BackToLink onClick={this.props.closeHtmlEditorManager} text={resx.get("BackToSiteBehavior") } />
-                    <iframe className="htmlEditorIframe" src={this.state.url} frameBorder="0" />
-                </div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="dnn-persona-bar-page-body">
+        <div className={styles.htmlEditorManager}>
+          <BackToLink
+            onClick={this.props.closeHtmlEditorManager}
+            text={resx.get("BackToSiteBehavior")}
+          />
+          <iframe
+            className="htmlEditorIframe"
+            src={this.state.url}
+            frameBorder="0"
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 HtmlEditorManagerPanelBody.propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    tabIndex: PropTypes.number,
-    portalId: PropTypes.number,
-    closeHtmlEditorManager: PropTypes.func
+  dispatch: PropTypes.func.isRequired,
+  tabIndex: PropTypes.number,
+  portalId: PropTypes.number,
+  closeHtmlEditorManager: PropTypes.func,
 };
 
 function mapStateToProps(state) {
-    return {
-        tabIndex: state.pagination.tabIndex
-    };
+  return {
+    tabIndex: state.pagination.tabIndex,
+  };
 }
 
 export default connect(mapStateToProps)(HtmlEditorManagerPanelBody);

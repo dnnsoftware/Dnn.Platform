@@ -1,259 +1,258 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Syndication
+namespace DotNetNuke.Services.Syndication;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Web;
+using System.Xml;
+
+using DotNetNuke.Instrumentation;
+
+/// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
+internal class RssDownloadManager
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Net;
-    using System.Web;
-    using System.Xml;
+    private const string RSSDir = "/RSS/";
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
+    private static readonly RssDownloadManager TheManager = new RssDownloadManager();
 
-    using DotNetNuke.Instrumentation;
+    private readonly Dictionary<string, RssChannelDom> cache;
+    private readonly int defaultTtlMinutes;
+    private readonly string directoryOnDisk;
 
-    /// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
-    internal class RssDownloadManager
+    private RssDownloadManager()
     {
-        private const string RSSDir = "/RSS/";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
-        private static readonly RssDownloadManager TheManager = new RssDownloadManager();
+        // create in-memory cache
+        this.cache = new Dictionary<string, RssChannelDom>();
 
-        private readonly Dictionary<string, RssChannelDom> cache;
-        private readonly int defaultTtlMinutes;
-        private readonly string directoryOnDisk;
+        this.defaultTtlMinutes = 2;
 
-        private RssDownloadManager()
+        // prepare disk directory
+        this.directoryOnDisk = PrepareTempDir();
+    }
+
+    /// <summary>Gets the RSS channel at the given <paramref name="url"/>.</summary>
+    /// <param name="url">The URL.</param>
+    /// <returns>The RSS feed, or an empty RSS feed if there's an error loading it.</returns>
+    public static RssChannelDom GetChannel(string url)
+    {
+        return TheManager.GetChannelDom(url);
+    }
+
+    private static int GetTtlFromString(string ttlString, int defaultTtlMinutes)
+    {
+        if (!string.IsNullOrEmpty(ttlString))
         {
-            // create in-memory cache
-            this.cache = new Dictionary<string, RssChannelDom>();
-
-            this.defaultTtlMinutes = 2;
-
-            // prepare disk directory
-            this.directoryOnDisk = PrepareTempDir();
-        }
-
-        /// <summary>Gets the RSS channel at the given <paramref name="url"/>.</summary>
-        /// <param name="url">The URL.</param>
-        /// <returns>The RSS feed, or an empty RSS feed if there's an error loading it.</returns>
-        public static RssChannelDom GetChannel(string url)
-        {
-            return TheManager.GetChannelDom(url);
-        }
-
-        private static int GetTtlFromString(string ttlString, int defaultTtlMinutes)
-        {
-            if (!string.IsNullOrEmpty(ttlString))
+            int ttlMinutes;
+            if (int.TryParse(ttlString, out ttlMinutes))
             {
-                int ttlMinutes;
-                if (int.TryParse(ttlString, out ttlMinutes))
+                if (ttlMinutes >= 0)
                 {
-                    if (ttlMinutes >= 0)
-                    {
-                        return ttlMinutes;
-                    }
+                    return ttlMinutes;
                 }
             }
-
-            return defaultTtlMinutes;
         }
 
-        private static string PrepareTempDir()
+        return defaultTtlMinutes;
+    }
+
+    private static string PrepareTempDir()
+    {
+        string tempDir = null;
+
+        try
         {
-            string tempDir = null;
+            string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + RSSDir);
 
-            try
+            if (!Directory.Exists(d))
             {
-                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + RSSDir);
-
-                if (!Directory.Exists(d))
-                {
-                    Directory.CreateDirectory(d);
-                }
-
-                tempDir = d;
-            }
-            catch
-            {
-                // don't cache on disk if can't do it
+                Directory.CreateDirectory(d);
             }
 
-            return tempDir;
+            tempDir = d;
+        }
+        catch
+        {
+            // don't cache on disk if can't do it
         }
 
-        private static string GetTempFileNamePrefixFromUrl(string url)
+        return tempDir;
+    }
+
+    private static string GetTempFileNamePrefixFromUrl(string url)
+    {
+        try
         {
-            try
-            {
-                var uri = new Uri(url);
-                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
-            }
-            catch
-            {
-                return "rss";
-            }
+            var uri = new Uri(url);
+            return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
         }
-
-        private RssChannelDom DownloadChannelDom(string url)
+        catch
         {
-            // look for disk cache first
-            RssChannelDom dom = this.TryLoadFromDisk(url);
+            return "rss";
+        }
+    }
 
-            if (dom != null)
-            {
-                return dom;
-            }
+    private RssChannelDom DownloadChannelDom(string url)
+    {
+        // look for disk cache first
+        RssChannelDom dom = this.TryLoadFromDisk(url);
 
-            // download the feed
-            byte[] feed = new WebClient().DownloadData(url);
-
-            // parse it as XML
-            var doc = new XmlDocument { XmlResolver = null };
-            doc.Load(new MemoryStream(feed));
-
-            // parse into DOM
-            dom = RssXmlHelper.ParseChannelXml(doc);
-
-            // set expiry
-            string ttlString = null;
-            dom.Channel.TryGetValue("ttl", out ttlString);
-            int ttlMinutes = GetTtlFromString(ttlString, this.defaultTtlMinutes);
-            DateTime utcExpiry = DateTime.UtcNow.AddMinutes(ttlMinutes);
-            dom.SetExpiry(utcExpiry);
-
-            // save to disk
-            this.TrySaveToDisk(doc, url, utcExpiry);
-
+        if (dom != null)
+        {
             return dom;
         }
 
-        private RssChannelDom TryLoadFromDisk(string url)
+        // download the feed
+        byte[] feed = new WebClient().DownloadData(url);
+
+        // parse it as XML
+        var doc = new XmlDocument { XmlResolver = null };
+        doc.Load(new MemoryStream(feed));
+
+        // parse into DOM
+        dom = RssXmlHelper.ParseChannelXml(doc);
+
+        // set expiry
+        string ttlString = null;
+        dom.Channel.TryGetValue("ttl", out ttlString);
+        int ttlMinutes = GetTtlFromString(ttlString, this.defaultTtlMinutes);
+        DateTime utcExpiry = DateTime.UtcNow.AddMinutes(ttlMinutes);
+        dom.SetExpiry(utcExpiry);
+
+        // save to disk
+        this.TrySaveToDisk(doc, url, utcExpiry);
+
+        return dom;
+    }
+
+    private RssChannelDom TryLoadFromDisk(string url)
+    {
+        if (this.directoryOnDisk == null)
         {
-            if (this.directoryOnDisk == null)
-            {
-                return null; // no place to cache
-            }
-
-            // look for all files matching the prefix
-            // looking for the one matching url that is not expired
-            // removing expired (or invalid) ones
-            string pattern = GetTempFileNamePrefixFromUrl(url) + "_*.rss.resources";
-            string[] files = Directory.GetFiles(this.directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
-
-            foreach (string rssFilename in files)
-            {
-                XmlDocument rssDoc = null;
-                bool isRssFileValid = false;
-                DateTime utcExpiryFromRssFile = DateTime.MinValue;
-                string urlFromRssFile = null;
-
-                try
-                {
-                    rssDoc = new XmlDocument { XmlResolver = null };
-                    rssDoc.Load(rssFilename);
-
-                    // look for special XML comment (before the root tag)'
-                    // containing expiration and url
-                    var comment = rssDoc.DocumentElement.PreviousSibling as XmlComment;
-
-                    if (comment != null)
-                    {
-                        string c = comment.Value;
-                        int i = c.IndexOf('@');
-                        long expiry;
-
-                        if (long.TryParse(c.Substring(0, i), out expiry))
-                        {
-                            utcExpiryFromRssFile = DateTime.FromBinary(expiry);
-                            urlFromRssFile = c.Substring(i + 1);
-                            isRssFileValid = true;
-                        }
-                    }
-                }
-                catch
-                {
-                    // error processing one file shouldn't stop processing other files
-                }
-
-                // remove invalid or expired file
-                if (!isRssFileValid || utcExpiryFromRssFile < DateTime.UtcNow)
-                {
-                    try
-                    {
-                        File.Delete(rssFilename);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
-
-                    // try next file
-                    continue;
-                }
-
-                // match url
-                if (urlFromRssFile == url)
-                {
-                    // found a good one - create DOM and set expiry (as found on disk)
-                    RssChannelDom dom = RssXmlHelper.ParseChannelXml(rssDoc);
-                    dom.SetExpiry(utcExpiryFromRssFile);
-                    return dom;
-                }
-            }
-
-            // not found
-            return null;
+            return null; // no place to cache
         }
 
-        private void TrySaveToDisk(XmlDocument doc, string url, DateTime utcExpiry)
+        // look for all files matching the prefix
+        // looking for the one matching url that is not expired
+        // removing expired (or invalid) ones
+        string pattern = GetTempFileNamePrefixFromUrl(url) + "_*.rss.resources";
+        string[] files = Directory.GetFiles(this.directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
+
+        foreach (string rssFilename in files)
         {
-            if (this.directoryOnDisk == null)
-            {
-                return;
-            }
-
-            doc.InsertBefore(doc.CreateComment(string.Format("{0}@{1}", utcExpiry.ToBinary(), url)), doc.DocumentElement);
-
-            string fileName = string.Format("{0}_{1:x8}.rss.resources", GetTempFileNamePrefixFromUrl(url), Guid.NewGuid().ToString().GetHashCode());
+            XmlDocument rssDoc = null;
+            bool isRssFileValid = false;
+            DateTime utcExpiryFromRssFile = DateTime.MinValue;
+            string urlFromRssFile = null;
 
             try
             {
-                doc.Save(Path.Combine(this.directoryOnDisk, fileName));
+                rssDoc = new XmlDocument { XmlResolver = null };
+                rssDoc.Load(rssFilename);
+
+                // look for special XML comment (before the root tag)'
+                // containing expiration and url
+                var comment = rssDoc.DocumentElement.PreviousSibling as XmlComment;
+
+                if (comment != null)
+                {
+                    string c = comment.Value;
+                    int i = c.IndexOf('@');
+                    long expiry;
+
+                    if (long.TryParse(c.Substring(0, i), out expiry))
+                    {
+                        utcExpiryFromRssFile = DateTime.FromBinary(expiry);
+                        urlFromRssFile = c.Substring(i + 1);
+                        isRssFileValid = true;
+                    }
+                }
             }
             catch
             {
-                // can't save to disk - not a problem
+                // error processing one file shouldn't stop processing other files
+            }
+
+            // remove invalid or expired file
+            if (!isRssFileValid || utcExpiryFromRssFile < DateTime.UtcNow)
+            {
+                try
+                {
+                    File.Delete(rssFilename);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+
+                // try next file
+                continue;
+            }
+
+            // match url
+            if (urlFromRssFile == url)
+            {
+                // found a good one - create DOM and set expiry (as found on disk)
+                RssChannelDom dom = RssXmlHelper.ParseChannelXml(rssDoc);
+                dom.SetExpiry(utcExpiryFromRssFile);
+                return dom;
             }
         }
 
-        private RssChannelDom GetChannelDom(string url)
+        // not found
+        return null;
+    }
+
+    private void TrySaveToDisk(XmlDocument doc, string url, DateTime utcExpiry)
+    {
+        if (this.directoryOnDisk == null)
         {
-            RssChannelDom dom = null;
+            return;
+        }
+
+        doc.InsertBefore(doc.CreateComment(string.Format("{0}@{1}", utcExpiry.ToBinary(), url)), doc.DocumentElement);
+
+        string fileName = string.Format("{0}_{1:x8}.rss.resources", GetTempFileNamePrefixFromUrl(url), Guid.NewGuid().ToString().GetHashCode());
+
+        try
+        {
+            doc.Save(Path.Combine(this.directoryOnDisk, fileName));
+        }
+        catch
+        {
+            // can't save to disk - not a problem
+        }
+    }
+
+    private RssChannelDom GetChannelDom(string url)
+    {
+        RssChannelDom dom = null;
+
+        lock (this.cache)
+        {
+            if (this.cache.TryGetValue(url, out dom))
+            {
+                if (DateTime.UtcNow > dom.UtcExpiry)
+                {
+                    this.cache.Remove(url);
+                    dom = null;
+                }
+            }
+        }
+
+        if (dom == null)
+        {
+            dom = this.DownloadChannelDom(url);
 
             lock (this.cache)
             {
-                if (this.cache.TryGetValue(url, out dom))
-                {
-                    if (DateTime.UtcNow > dom.UtcExpiry)
-                    {
-                        this.cache.Remove(url);
-                        dom = null;
-                    }
-                }
+                this.cache[url] = dom;
             }
-
-            if (dom == null)
-            {
-                dom = this.DownloadChannelDom(url);
-
-                lock (this.cache)
-                {
-                    this.cache[url] = dom;
-                }
-            }
-
-            return dom;
         }
+
+        return dom;
     }
 }

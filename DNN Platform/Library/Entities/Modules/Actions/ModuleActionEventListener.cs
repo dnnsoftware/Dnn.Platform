@@ -2,42 +2,41 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Modules.Actions
+namespace DotNetNuke.Entities.Modules.Actions;
+
+/// Project     : DotNetNuke
+/// Class       : ModuleActionEventListener
+///
+/// <summary>
+///
+/// </summary>
+public class ModuleActionEventListener
 {
-    /// Project     : DotNetNuke
-    /// Class       : ModuleActionEventListener
-    ///
-    /// <summary>
-    ///
-    /// </summary>
-    public class ModuleActionEventListener
+    private readonly ActionEventHandler actionEvent;
+    private readonly int moduleID;
+
+    /// <summary>Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.</summary>
+    /// <param name="modID"></param>
+    /// <param name="e"></param>
+    public ModuleActionEventListener(int modID, ActionEventHandler e)
     {
-        private readonly ActionEventHandler actionEvent;
-        private readonly int moduleID;
+        this.moduleID = modID;
+        this.actionEvent = e;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.</summary>
-        /// <param name="modID"></param>
-        /// <param name="e"></param>
-        public ModuleActionEventListener(int modID, ActionEventHandler e)
+    public int ModuleID
+    {
+        get
         {
-            this.moduleID = modID;
-            this.actionEvent = e;
+            return this.moduleID;
         }
+    }
 
-        public int ModuleID
+    public ActionEventHandler ActionEvent
+    {
+        get
         {
-            get
-            {
-                return this.moduleID;
-            }
-        }
-
-        public ActionEventHandler ActionEvent
-        {
-            get
-            {
-                return this.actionEvent;
-            }
+            return this.actionEvent;
         }
     }
 }

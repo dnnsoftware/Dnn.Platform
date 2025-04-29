@@ -10,7 +10,7 @@ storiesOf("DropdownWithError", module).add("with content", () => (
     options={[
       { label: "Opt 1", value: 1 },
       { label: "Opt 2", value: 2 },
-      { label: "Opt 3", value: 3 }
+      { label: "Opt 3", value: 3 },
     ]}
   />
 ));

@@ -2,22 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Pages.Services.Dto
+namespace Dnn.PersonaBar.Pages.Services.Dto;
+
+using System.Collections.Generic;
+
+using Dnn.PersonaBar.Library.DTO.Tabs;
+
+public class DnnPagesRequest
 {
-    using System.Collections.Generic;
+    public bool HasMissingLanguages { get; set; }
 
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    public bool ErrorExists { get; set; }
 
-    public class DnnPagesRequest
-    {
-        public bool HasMissingLanguages { get; set; }
+    public IList<LocaleInfoDto> Locales { get; set; }
 
-        public bool ErrorExists { get; set; }
+    public IList<DnnPageDto> Pages { get; set; }
 
-        public IList<LocaleInfoDto> Locales { get; set; }
-
-        public IList<DnnPageDto> Pages { get; set; }
-
-        public IList<DnnModulesRequest> Modules { get; set; }
-    }
+    public IList<DnnModulesRequest> Modules { get; set; }
 }

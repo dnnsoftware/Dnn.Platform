@@ -3,8 +3,8 @@ import roles from "./rolesReducer";
 import roleUsers from "./roleUsersReducer";
 
 const rootReducer = combineReducers({
-    roles,
-    roleUsers
+  roles,
+  roleUsers,
 });
 
 export default rootReducer;

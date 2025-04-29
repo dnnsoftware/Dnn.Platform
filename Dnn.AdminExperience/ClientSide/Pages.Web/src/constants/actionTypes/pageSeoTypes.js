@@ -1,4 +1,4 @@
-const pageSeoActionTypes =  {
+const pageSeoActionTypes = {
     SEO_OPEN_NEW_FORM: "SEO_OPEN_NEW_FORM",
     SEO_CLOSE_NEW_FORM: "SEO_CLOSE_NEW_FORM",
     SEO_CHANGE_URL: "SEO_CHANGE_URL",
@@ -12,7 +12,7 @@ const pageSeoActionTypes =  {
     ERROR_SEO_SAVING_URL: "ERROR_SEO_SAVING_URL",
     SEO_DELETE_URL: "SEO_DELETE_URL",
     SEO_DELETED_URL: "SEO_DELETED_URL",
-    ERROR_SEO_DELETING_URL: "ERROR_SEO_DELETING_URL"
+    ERROR_SEO_DELETING_URL: "ERROR_SEO_DELETING_URL",
 };
 
 export default pageSeoActionTypes;

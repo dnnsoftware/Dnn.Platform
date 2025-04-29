@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.SiteImportExport.Components
+namespace Dnn.PersonaBar.SiteImportExport.Components;
+
+public static class Constants
 {
-    public static class Constants
-    {
-        public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteImportExport/App_LocalResources/SiteImportExport.resx";
-    }
+    public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteImportExport/App_LocalResources/SiteImportExport.resx";
 }

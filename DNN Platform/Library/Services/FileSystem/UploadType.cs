@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem;
+
+public enum UploadType
 {
-    public enum UploadType
-    {
-        File = 0,
-        Container = 1,
-        Skin = 2,
-        Module = 3,
-        LanguagePack = 4,
-    }
+    File = 0,
+    Container = 1,
+    Skin = 2,
+    Module = 3,
+    LanguagePack = 4,
 }

@@ -24,36 +24,35 @@ using System.IO;
 
 using log4net.Core;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Layout.Pattern;
+
+/// <summary>Converter to include event NDC</summary>
+/// <remarks>
+/// <para>
+/// Outputs the value of the event property named <c>NDC</c>.
+/// </para>
+/// <para>
+/// The <see cref="PropertyPatternConverter"/> should be used instead.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+internal sealed class NdcPatternConverter : PatternLayoutConverter 
 {
-    /// <summary>Converter to include event NDC</summary>
+    /// <summary>Write the event NDC to the output</summary>
+    /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+    /// <param name="loggingEvent">the event being logged</param>
     /// <remarks>
     /// <para>
-    /// Outputs the value of the event property named <c>NDC</c>.
+    /// As the thread context stacks are now stored in named event properties
+    /// this converter simply looks up the value of the <c>NDC</c> property.
     /// </para>
     /// <para>
     /// The <see cref="PropertyPatternConverter"/> should be used instead.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    internal sealed class NdcPatternConverter : PatternLayoutConverter 
+    protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
     {
-        /// <summary>Write the event NDC to the output</summary>
-        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <remarks>
-        /// <para>
-        /// As the thread context stacks are now stored in named event properties
-        /// this converter simply looks up the value of the <c>NDC</c> property.
-        /// </para>
-        /// <para>
-        /// The <see cref="PropertyPatternConverter"/> should be used instead.
-        /// </para>
-        /// </remarks>
-        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
-        {
-            // Write the value for the specified key
-            WriteObject(writer, loggingEvent.Repository, loggingEvent.LookupProperty("NDC"));
-        }
+        // Write the value for the specified key
+        WriteObject(writer, loggingEvent.Repository, loggingEvent.LookupProperty("NDC"));
     }
 }

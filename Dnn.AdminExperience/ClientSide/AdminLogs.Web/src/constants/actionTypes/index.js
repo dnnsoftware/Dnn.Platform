@@ -3,9 +3,4 @@ import visiblePanel from "./visiblePanel";
 import logSettings from "./logSettings";
 import log from "./log";
 
-export {
-    pagination,
-    visiblePanel,
-    logSettings,
-    log
-};
+export { pagination, visiblePanel, logSettings, log };

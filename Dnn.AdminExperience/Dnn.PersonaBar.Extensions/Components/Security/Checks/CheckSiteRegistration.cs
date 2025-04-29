@@ -2,44 +2,43 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Security.Components.Checks
+namespace Dnn.PersonaBar.Security.Components.Checks;
+
+using System;
+
+using DotNetNuke.Entities.Portals;
+
+public class CheckSiteRegistration : IAuditCheck
 {
-    using System;
+    /// <inheritdoc/>
+    public string Id => "CheckSiteRegistration";
 
-    using DotNetNuke.Entities.Portals;
+    /// <inheritdoc/>
+    public bool LazyLoad => false;
 
-    public class CheckSiteRegistration : IAuditCheck
+    /// <inheritdoc/>
+    public CheckResult Execute()
     {
-        /// <inheritdoc/>
-        public string Id => "CheckSiteRegistration";
-
-        /// <inheritdoc/>
-        public bool LazyLoad => false;
-
-        /// <inheritdoc/>
-        public CheckResult Execute()
+        var result = new CheckResult(SeverityEnum.Unverified, this.Id);
+        try
         {
-            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
-            try
+            var portalController = new PortalController();
+            result.Severity = SeverityEnum.Pass;
+            foreach (PortalInfo portal in portalController.GetPortals())
             {
-                var portalController = new PortalController();
-                result.Severity = SeverityEnum.Pass;
-                foreach (PortalInfo portal in portalController.GetPortals())
+                // check for public registration
+                if (portal.UserRegistration == 2)
                 {
-                    // check for public registration
-                    if (portal.UserRegistration == 2)
-                    {
-                        result.Severity = SeverityEnum.Warning;
-                        result.Notes.Add("Portal:" + portal.PortalName);
-                    }
+                    result.Severity = SeverityEnum.Warning;
+                    result.Notes.Add("Portal:" + portal.PortalName);
                 }
             }
-            catch (Exception)
-            {
-                throw;
-            }
-
-            return result;
         }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return result;
     }
 }

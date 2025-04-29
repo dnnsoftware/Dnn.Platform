@@ -1,11 +1,11 @@
 import serviceFramework from "./serviceFramework";
 
 const getDataBaseServerInfo = function () {
-    return serviceFramework.get("SystemInfoDatabase", "GetDatabaseServerInfo");
+  return serviceFramework.get("SystemInfoDatabase", "GetDatabaseServerInfo");
 };
 
 const databaseTabService = {
-    getDataBaseServerInfo: getDataBaseServerInfo
+  getDataBaseServerInfo: getDataBaseServerInfo,
 };
 
-export default databaseTabService; 
+export default databaseTabService;

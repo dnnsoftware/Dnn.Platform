@@ -2,32 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Upgrade.Internals.Steps
+namespace DotNetNuke.Services.Upgrade.Internals.Steps;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
+
+using Localization = DotNetNuke.Services.Localization.Localization;
+
+/// <summary>AddFcnModeVerificationStep - Step that performs FcnMode verification checks prior to installation.</summary>
+public class AddFcnModeStep : BaseInstallationStep
 {
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Instrumentation;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddFcnModeStep));
 
-    using Localization = DotNetNuke.Services.Localization.Localization;
-
-    /// <summary>AddFcnModeVerificationStep - Step that performs FcnMode verification checks prior to installation.</summary>
-    public class AddFcnModeStep : BaseInstallationStep
+    /// <inheritdoc/>
+    public override void Execute()
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddFcnModeStep));
+        this.Percentage = 0;
+        this.Status = StepStatus.Running;
 
-        /// <inheritdoc/>
-        public override void Execute()
+        string strError = Config.AddFCNMode(Config.FcnMode.Single);
+        if (!string.IsNullOrEmpty(strError))
         {
-            this.Percentage = 0;
-            this.Status = StepStatus.Running;
-
-            string strError = Config.AddFCNMode(Config.FcnMode.Single);
-            if (!string.IsNullOrEmpty(strError))
-            {
-                this.Errors.Add(Localization.GetString("FcnMode", this.LocalInstallResourceFile) + ": " + strError);
-                Logger.TraceFormat("Adding FcnMode : {0}", strError);
-            }
-
-            this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
+            this.Errors.Add(Localization.GetString("FcnMode", this.LocalInstallResourceFile) + ": " + strError);
+            Logger.TraceFormat("Adding FcnMode : {0}", strError);
         }
+
+        this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
     }
 }

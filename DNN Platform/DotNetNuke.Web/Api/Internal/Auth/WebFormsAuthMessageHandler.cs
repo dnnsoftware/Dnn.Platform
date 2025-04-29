@@ -2,29 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.Api.Internal.Auth
+namespace DotNetNuke.Web.Api.Internal.Auth;
+
+using System.Net.Http;
+using System.Threading;
+
+using DotNetNuke.HttpModules.Membership;
+
+public class WebFormsAuthMessageHandler : MessageProcessingHandler
 {
-    using System.Net.Http;
-    using System.Threading;
+    public string AuthScheme => "Forms";
 
-    using DotNetNuke.HttpModules.Membership;
-
-    public class WebFormsAuthMessageHandler : MessageProcessingHandler
+    /// <inheritdoc/>
+    protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        public string AuthScheme => "Forms";
+        MembershipModule.AuthenticateRequest(request.GetHttpContext(), allowUnknownExtensions: true);
 
-        /// <inheritdoc/>
-        protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            MembershipModule.AuthenticateRequest(request.GetHttpContext(), allowUnknownExtensions: true);
+        return request;
+    }
 
-            return request;
-        }
-
-        /// <inheritdoc/>
-        protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            return response;
-        }
+    /// <inheritdoc/>
+    protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
+    {
+        return response;
     }
 }

@@ -3,23 +3,30 @@ import { storiesOf } from "@storybook/react";
 import ContentLoadWrapper from "./index";
 import { TableEmptyState } from "../SvgIcons";
 
-class MyContentLoadWrapper extends Component{
-  constructor(){
+class MyContentLoadWrapper extends Component {
+  constructor() {
     super();
-    this.state = { loaded: false };    
+    this.state = { loaded: false };
   }
 
-  componentDidMount(){
-    setTimeout(function(){
-      this.setState({ loaded: true });
-    }.bind(this), 2000);
+  componentDidMount() {
+    setTimeout(
+      function () {
+        this.setState({ loaded: true });
+      }.bind(this),
+      2000,
+    );
   }
 
-  render(){
+  render() {
     return (
       <ContentLoadWrapper
         loadComplete={this.state.loaded}
-        svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
+        svgSkeleton={
+          <div>
+            <TableEmptyState />
+          </div>
+        }
       >
         <div>
           <div className="auditCheckItems">
@@ -30,7 +37,7 @@ class MyContentLoadWrapper extends Component{
             </ul>
           </div>
         </div>
-      </ContentLoadWrapper>  
+      </ContentLoadWrapper>
     );
   }
 }
@@ -38,7 +45,11 @@ class MyContentLoadWrapper extends Component{
 storiesOf("ContentLoadWrapper", module).add("with loading", () => (
   <ContentLoadWrapper
     loadComplete={false}
-    svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
+    svgSkeleton={
+      <div>
+        <TableEmptyState />
+      </div>
+    }
   >
     <div>
       <div className="auditcheck-topbar">Loading...</div>
@@ -56,7 +67,11 @@ storiesOf("ContentLoadWrapper", module).add("with loading", () => (
 storiesOf("ContentLoadWrapper", module).add("with content", () => (
   <ContentLoadWrapper
     loadComplete={true}
-    svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
+    svgSkeleton={
+      <div>
+        <TableEmptyState />
+      </div>
+    }
   >
     <div>
       <div className="auditcheck-topbar">

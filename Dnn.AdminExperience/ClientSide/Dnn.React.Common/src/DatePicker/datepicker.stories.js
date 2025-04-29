@@ -10,7 +10,7 @@ storiesOf("DatePicker", module).add("with content", () => (
     <Label label="Start Date" />
     <DatePicker
       date={startDate}
-      updateDate={date => action("changed " + date.toString())}
+      updateDate={(date) => action("changed " + date.toString())}
       isDateRange={false}
       hasTimePicker={true}
       showClearDateButton={false}

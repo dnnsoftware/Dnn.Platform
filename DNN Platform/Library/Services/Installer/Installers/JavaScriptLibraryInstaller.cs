@@ -2,104 +2,103 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.Installer.Installers
+namespace DotNetNuke.Services.Installer.Installers;
+
+using System;
+using System.IO;
+using System.Xml.XPath;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework.JavaScriptLibraries;
+
+public class JavaScriptLibraryInstaller : ComponentInstallerBase
 {
-    using System;
-    using System.IO;
-    using System.Xml.XPath;
+    private JavaScriptLibrary library;
+    private JavaScriptLibrary installedLibrary;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-
-    public class JavaScriptLibraryInstaller : ComponentInstallerBase
+    /// <inheritdoc/>
+    public override void Commit()
     {
-        private JavaScriptLibrary library;
-        private JavaScriptLibrary installedLibrary;
+    }
 
-        /// <inheritdoc/>
-        public override void Commit()
+    /// <inheritdoc/>
+    public override void Install()
+    {
+        try
         {
+            // Attempt to get the JavaScript Library
+            this.installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == this.library.LibraryName && l.Version == this.library.Version);
+
+            if (this.installedLibrary != null)
+            {
+                this.library.JavaScriptLibraryID = this.installedLibrary.JavaScriptLibraryID;
+            }
+
+            // Save JavaScript Library  to database
+            this.library.PackageID = this.Package.PackageID;
+            JavaScriptLibraryController.Instance.SaveLibrary(this.library);
+
+            this.Completed = true;
+            this.Log.AddInfo(string.Format(Util.LIBRARY_Registered, this.library.LibraryName));
         }
-
-        /// <inheritdoc/>
-        public override void Install()
+        catch (Exception ex)
         {
-            try
-            {
-                // Attempt to get the JavaScript Library
-                this.installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == this.library.LibraryName && l.Version == this.library.Version);
-
-                if (this.installedLibrary != null)
-                {
-                    this.library.JavaScriptLibraryID = this.installedLibrary.JavaScriptLibraryID;
-                }
-
-                // Save JavaScript Library  to database
-                this.library.PackageID = this.Package.PackageID;
-                JavaScriptLibraryController.Instance.SaveLibrary(this.library);
-
-                this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.LIBRARY_Registered, this.library.LibraryName));
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
+            this.Log.AddFailure(ex);
         }
+    }
 
-        /// <inheritdoc/>
-        public override void ReadManifest(XPathNavigator manifestNav)
+    /// <inheritdoc/>
+    public override void ReadManifest(XPathNavigator manifestNav)
+    {
+        // Load the JavaScript Library from the manifest
+        this.library = CBO.DeserializeObject<JavaScriptLibrary>(new StringReader(manifestNav.InnerXml));
+        this.library.Version = this.Package.Version;
+
+        if (this.Log.Valid)
         {
-            // Load the JavaScript Library from the manifest
-            this.library = CBO.DeserializeObject<JavaScriptLibrary>(new StringReader(manifestNav.InnerXml));
-            this.library.Version = this.Package.Version;
-
-            if (this.Log.Valid)
-            {
-                this.Log.AddInfo(Util.LIBRARY_ReadSuccess);
-            }
+            this.Log.AddInfo(Util.LIBRARY_ReadSuccess);
         }
+    }
 
-        /// <inheritdoc/>
-        public override void Rollback()
+    /// <inheritdoc/>
+    public override void Rollback()
+    {
+        // If Temp Library exists then we need to update the DataStore with this
+        if (this.installedLibrary == null)
         {
-            // If Temp Library exists then we need to update the DataStore with this
-            if (this.installedLibrary == null)
-            {
-                // No Temp Library - Delete newly added library
-                this.DeleteLibrary();
-            }
-            else
-            {
-                // Temp Library - Rollback to Temp
-                JavaScriptLibraryController.Instance.SaveLibrary(this.installedLibrary);
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void UnInstall()
-        {
+            // No Temp Library - Delete newly added library
             this.DeleteLibrary();
         }
-
-        private void DeleteLibrary()
+        else
         {
-            try
-            {
-                // Attempt to get the Library
-                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
+            // Temp Library - Rollback to Temp
+            JavaScriptLibraryController.Instance.SaveLibrary(this.installedLibrary);
+        }
+    }
 
-                if (library != null)
-                {
-                    JavaScriptLibraryController.Instance.DeleteLibrary(library);
+    /// <inheritdoc/>
+    public override void UnInstall()
+    {
+        this.DeleteLibrary();
+    }
 
-                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
-                }
-            }
-            catch (Exception ex)
+    private void DeleteLibrary()
+    {
+        try
+        {
+            // Attempt to get the Library
+            var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
+
+            if (library != null)
             {
-                this.Log.AddFailure(ex);
+                JavaScriptLibraryController.Instance.DeleteLibrary(library);
+
+                this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
             }
+        }
+        catch (Exception ex)
+        {
+            this.Log.AddFailure(ex);
         }
     }
 }

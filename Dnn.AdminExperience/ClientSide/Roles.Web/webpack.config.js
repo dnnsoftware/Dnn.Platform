@@ -1,100 +1,105 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const settings = require("../../../settings.local.json");
 
 module.exports = (env, argv) => {
-    const isProduction = argv.mode === "production";
-    return {
-        entry: "./src/main.jsx",
-        optimization: {
-            minimize: isProduction,
+  const isProduction = argv.mode === "production";
+  return {
+    entry: "./src/main.jsx",
+    optimization: {
+      minimize: isProduction,
+    },
+    output: {
+      path:
+        isProduction || settings.WebsitePath === ""
+          ? path.resolve(
+              "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/",
+            )
+          : path.join(
+              settings.WebsitePath,
+              "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Roles\\scripts\\bundles\\",
+            ),
+      filename: "roles-bundle.js",
+      publicPath: isProduction ? "" : "http://localhost:8080/dist/",
+    },
+    devServer: {
+      disableHostCheck: !isProduction,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: ["babel-loader"],
         },
-        output: {
-            path:
-              isProduction || settings.WebsitePath === ""
-                  ? path.resolve(
-                      "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/"
-                  )
-                  : path.join(
-                      settings.WebsitePath,
-                      "DesktopModules\\Admin\\Dnn.PersonaBar\\Modules\\Dnn.Roles\\scripts\\bundles\\"
-                  ),
-            filename: "roles-bundle.js",
-            publicPath: isProduction ? "" : "http://localhost:8080/dist/",
-        },
-        devServer: {
-            disableHostCheck: !isProduction,
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.(js|jsx)$/,
-                    exclude: /node_modules/,
-                    use: ["babel-loader"],
+        {
+          test: /\.(less|css)$/,
+          use: [
+            { loader: "style-loader" },
+            {
+              loader: "css-loader",
+              options: {
+                importLoaders: 1,
+                sourceMap: true,
+                modules: {
+                  auto: true,
+                  mode: "global",
+                  localIdentName: "[name]__[local]___[hash:base64:5]",
                 },
-                {
-                    test: /\.(less|css)$/,
-                    use: [
-                        { loader: "style-loader" },
-                        {
-                            loader: "css-loader",
-                            options: {
-                                importLoaders: 1,
-                                sourceMap: true,
-                                modules: {
-                                    auto: true,
-                                    mode: "global",
-                                    localIdentName: "[name]__[local]___[hash:base64:5]",
-                                },
-                                esModule: false,
-                            },
-                        },
-                        { loader: "less-loader" },
-                    ],
-                },
-                { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
-                { test: /\.(gif|png)$/, use: ["url-loader?mimetype=image/png"] },
-                {
-                    test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
-                    use: ["url-loader?mimetype=application/font-woff"],
-                },
-                {
-                    test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
-                    use: ["file-loader?name=[name].[ext]"],
-                },
-            ],
+                esModule: false,
+              },
+            },
+            { loader: "less-loader" },
+          ],
         },
-        resolve: {
-            extensions: [".js", ".json", ".jsx"],
-            modules: [
-                path.resolve("./src"), // Look in src first
-                path.resolve("./node_modules"), // Try local node_modules
-                path.resolve("../../../node_modules"), // Last fallback to workspaces node_modules
-            ],
+        { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
+        { test: /\.(gif|png)$/, use: ["url-loader?mimetype=image/png"] },
+        {
+          test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
+          use: ["url-loader?mimetype=application/font-woff"],
         },
+        {
+          test: /\.(ttf|eot|)(\?v=[0-9].[0-9].[0-9])?$/,
+          use: ["file-loader?name=[name].[ext]"],
+        },
+        {
+          test: /\.svg$/i,
+          issuer: /\.[jt]sx?$/,
+          use: ["@svgr/webpack"],
+        },
+      ],
+    },
+    resolve: {
+      extensions: [".js", ".json", ".jsx"],
+      modules: [
+        path.resolve("./src"), // Look in src first
+        path.resolve("./node_modules"), // Try local node_modules
+        path.resolve("../../../node_modules"), // Last fallback to workspaces node_modules
+      ],
+    },
 
-        externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
+    externals: require("@dnnsoftware/dnn-react-common/WebpackExternals"),
 
-        plugins:
-            [
-                isProduction
-                    ? new webpack.DefinePlugin({
-                        VERSION: JSON.stringify(packageJson.version),
-                        "process.env": {
-                            NODE_ENV: JSON.stringify("production"),
-                        },
-                    })
-                    : new webpack.DefinePlugin({
-                        VERSION: JSON.stringify(packageJson.version),
-                    }),
-                new webpack.SourceMapDevToolPlugin({
-                    filename: "roles-bundle.js.map",
-                    append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Roles/scripts/bundles/roles-bundle.js.map",
-                }),
-                new ESLintPlugin({fix: true}),
-            ],
-        devtool: false,
-    };
+    plugins: [
+      isProduction
+        ? new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version),
+            "process.env": {
+              NODE_ENV: JSON.stringify("production"),
+            },
+          })
+        : new webpack.DefinePlugin({
+            VERSION: JSON.stringify(packageJson.version),
+          }),
+      new webpack.SourceMapDevToolPlugin({
+        filename: "roles-bundle.js.map",
+        append:
+          "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Roles/scripts/bundles/roles-bundle.js.map",
+      }),
+      new ESLintPlugin({ fix: true }),
+    ],
+    devtool: false,
+  };
 };

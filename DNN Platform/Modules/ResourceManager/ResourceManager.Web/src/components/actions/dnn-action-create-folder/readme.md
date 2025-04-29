@@ -1,9 +1,6 @@
 # dnn-action-create-folder
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,13 +8,12 @@
 | ---------------- | ------------------ | ----------- | -------- | ----------- |
 | `parentFolderId` | `parent-folder-id` |             | `number` | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
- - [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
+- [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
+- [dnn-rm-folder-context-menu](../../context-menus/dnn-rm-folder-context-menu)
 
 ### Depends on
 
@@ -25,6 +21,7 @@
 - [dnn-rm-create-folder](../../dnn-rm-create-folder)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-action-create-folder --> dnn-modal
@@ -41,6 +38,6 @@ graph TD;
   style dnn-action-create-folder fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

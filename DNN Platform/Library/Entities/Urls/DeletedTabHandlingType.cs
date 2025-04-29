@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Entities.Urls
+namespace DotNetNuke.Entities.Urls;
+
+public enum DeletedTabHandlingType
 {
-    public enum DeletedTabHandlingType
-    {
-        Do301RedirectToPortalHome = 0,
-        Do404Error = 1,
-    }
+    Do301RedirectToPortalHome = 0,
+    Do404Error = 1,
 }

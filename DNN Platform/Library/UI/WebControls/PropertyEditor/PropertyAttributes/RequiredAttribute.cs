@@ -1,27 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.WebControls
+namespace DotNetNuke.UI.WebControls;
+
+using System;
+
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class RequiredAttribute : Attribute
 {
-    using System;
+    private readonly bool required;
 
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class RequiredAttribute : Attribute
+    /// <summary>Initializes a new instance of the <see cref="RequiredAttribute"/> class.</summary>
+    public RequiredAttribute(bool required)
     {
-        private readonly bool required;
+        this.required = required;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="RequiredAttribute"/> class.</summary>
-        public RequiredAttribute(bool required)
+    public bool Required
+    {
+        get
         {
-            this.required = required;
-        }
-
-        public bool Required
-        {
-            get
-            {
-                return this.required;
-            }
+            return this.required;
         }
     }
 }

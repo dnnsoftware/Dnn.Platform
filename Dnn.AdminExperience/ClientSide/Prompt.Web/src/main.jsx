@@ -12,8 +12,8 @@ application.init();
 
 const appContainer = document.getElementById("dnnPrompt-container");
 render(
-    <Provider store={store}>
-        <Root />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <Root />
+  </Provider>,
+  appContainer,
 );

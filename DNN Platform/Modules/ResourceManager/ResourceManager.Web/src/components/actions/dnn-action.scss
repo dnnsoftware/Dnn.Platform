@@ -1,16 +1,16 @@
-:host{
-    display: inline-flex;
+:host {
+  display: inline-flex;
 }
 
-button{
-    cursor: pointer;
-    border: none;
-    background-color: transparent;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    svg{
-        fill: var(--dnn-color-primary);
-    }
+button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  svg {
+    fill: var(--dnn-color-primary);
+  }
 }

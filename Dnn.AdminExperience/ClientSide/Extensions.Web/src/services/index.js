@@ -5,9 +5,9 @@ import ModuleDefinitionService from "./moduleDefinitionService";
 import CreatePackageService from "./createPackage";
 
 export {
-    ExtensionService,
-    InstallationService,
-    FolderService,
-    ModuleDefinitionService,
-    CreatePackageService
+  ExtensionService,
+  InstallationService,
+  FolderService,
+  ModuleDefinitionService,
+  CreatePackageService,
 };

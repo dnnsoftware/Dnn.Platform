@@ -1,121 +1,120 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.WebControls
+namespace DotNetNuke.UI.WebControls;
+
+using System;
+using System.Web.UI;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Instrumentation;
+
+/// Project:    DotNetNuke
+/// Namespace:  DotNetNuke.UI.WebControls
+/// Class:      IntegerEditControl
+/// <summary>
+/// The IntegerEditControl control provides a standard UI component for editing
+/// integer properties.
+/// </summary>
+[ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
+public class IntegerEditControl : EditControl
 {
-    using System;
-    using System.Web.UI;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Instrumentation;
-
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      IntegerEditControl
     /// <summary>
-    /// The IntegerEditControl control provides a standard UI component for editing
-    /// integer properties.
+    /// Initializes a new instance of the <see cref="IntegerEditControl"/> class.
+    /// Constructs an IntegerEditControl.
     /// </summary>
-    [ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
-    public class IntegerEditControl : EditControl
+    public IntegerEditControl()
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
+        this.SystemType = "System.Int32";
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IntegerEditControl"/> class.
-        /// Constructs an IntegerEditControl.
-        /// </summary>
-        public IntegerEditControl()
+    /// <summary>Gets integerValue returns the Integer representation of the Value.</summary>
+    /// <value>An integer representing the Value.</value>
+    protected int IntegerValue
+    {
+        get
         {
-            this.SystemType = "System.Int32";
-        }
-
-        /// <summary>Gets integerValue returns the Integer representation of the Value.</summary>
-        /// <value>An integer representing the Value.</value>
-        protected int IntegerValue
-        {
-            get
+            int intValue = Null.NullInteger;
+            try
             {
-                int intValue = Null.NullInteger;
-                try
+                // Try and cast the value to an Integer
+                if (this.Value != null)
                 {
-                    // Try and cast the value to an Integer
-                    if (this.Value != null)
-                    {
-                        int.TryParse(this.Value.ToString(), out intValue);
-                    }
+                    int.TryParse(this.Value.ToString(), out intValue);
                 }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
-
-                return intValue;
             }
-        }
-
-        /// <summary>Gets oldIntegerValue returns the Integer representation of the OldValue.</summary>
-        /// <value>An integer representing the OldValue.</value>
-        protected int OldIntegerValue
-        {
-            get
+            catch (Exception exc)
             {
-                int intValue = Null.NullInteger;
-                try
-                {
-                    // Try and cast the value to an Integer
-                    int.TryParse(this.OldValue.ToString(), out intValue);
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                }
-
-                return intValue;
-            }
-        }
-
-        /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
-        /// <value>A string representing the Value.</value>
-        protected override string StringValue
-        {
-            get
-            {
-                return this.IntegerValue.ToString();
+                Logger.Error(exc);
             }
 
-            set
+            return intValue;
+        }
+    }
+
+    /// <summary>Gets oldIntegerValue returns the Integer representation of the OldValue.</summary>
+    /// <value>An integer representing the OldValue.</value>
+    protected int OldIntegerValue
+    {
+        get
+        {
+            int intValue = Null.NullInteger;
+            try
             {
-                int setValue = int.Parse(value);
-                this.Value = setValue;
+                // Try and cast the value to an Integer
+                int.TryParse(this.OldValue.ToString(), out intValue);
             }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+
+            return intValue;
+        }
+    }
+
+    /// <summary>Gets or sets stringValue is the value of the control expressed as a String.</summary>
+    /// <value>A string representing the Value.</value>
+    protected override string StringValue
+    {
+        get
+        {
+            return this.IntegerValue.ToString();
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
-        protected override void OnDataChanged(EventArgs e)
+        set
         {
-            var args = new PropertyEditorEventArgs(this.Name);
-            args.Value = this.IntegerValue;
-            args.OldValue = this.OldIntegerValue;
-            args.StringValue = this.StringValue;
-            this.OnValueChanged(args);
+            int setValue = int.Parse(value);
+            this.Value = setValue;
         }
+    }
 
-        /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
-        /// <param name="writer">A HtmlTextWriter.</param>
-        protected override void RenderEditMode(HtmlTextWriter writer)
-        {
-            this.ControlStyle.AddAttributesToRender(writer);
-            writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
-            writer.AddAttribute(HtmlTextWriterAttribute.Size, "5");
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
-            writer.RenderBeginTag(HtmlTextWriterTag.Input);
-            writer.RenderEndTag();
-        }
+    /// <summary>
+    /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
+    /// Event.
+    /// </summary>
+    protected override void OnDataChanged(EventArgs e)
+    {
+        var args = new PropertyEditorEventArgs(this.Name);
+        args.Value = this.IntegerValue;
+        args.OldValue = this.OldIntegerValue;
+        args.StringValue = this.StringValue;
+        this.OnValueChanged(args);
+    }
+
+    /// <summary>RenderEditMode renders the Edit mode of the control.</summary>
+    /// <param name="writer">A HtmlTextWriter.</param>
+    protected override void RenderEditMode(HtmlTextWriter writer)
+    {
+        this.ControlStyle.AddAttributesToRender(writer);
+        writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
+        writer.AddAttribute(HtmlTextWriterAttribute.Size, "5");
+        writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
+        writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+        writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
+        writer.RenderBeginTag(HtmlTextWriterTag.Input);
+        writer.RenderEndTag();
     }
 }

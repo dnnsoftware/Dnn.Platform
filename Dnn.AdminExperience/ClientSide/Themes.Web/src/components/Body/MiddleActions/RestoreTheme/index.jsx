@@ -8,34 +8,41 @@ import utils from "utils";
 import "./style.less";
 
 class RestoreTheme extends Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
+  constructor() {
+    super();
+    this.state = {};
+  }
 
-    restoreTheme() {
-        const {props} = this;
+  restoreTheme() {
+    const { props } = this;
 
-        utils.utilities.confirm(Localization.get("RestoreThemeConfirm"), Localization.get("Confirm"), Localization.get("Cancel"), function () {
-            props.dispatch(ThemeActions.restoreTheme());
-        });
-    }
+    utils.utilities.confirm(
+      Localization.get("RestoreThemeConfirm"),
+      Localization.get("Confirm"),
+      Localization.get("Cancel"),
+      function () {
+        props.dispatch(ThemeActions.restoreTheme());
+      },
+    );
+  }
 
-    render() {
-        return (
-            <GridCell className="restore-theme" columnSize={50}>
-                <Button onClick={this.restoreTheme.bind(this)}>{Localization.get("RestoreTheme")}</Button>
-            </GridCell>
-        );
-    }
+  render() {
+    return (
+      <GridCell className="restore-theme" columnSize={50}>
+        <Button onClick={this.restoreTheme.bind(this)}>
+          {Localization.get("RestoreTheme")}
+        </Button>
+      </GridCell>
+    );
+  }
 }
 
 RestoreTheme.propTypes = {
-    dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps() {
-    return {};
+  return {};
 }
 
 export default connect(mapStateToProps)(RestoreTheme);

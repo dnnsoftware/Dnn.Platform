@@ -2,213 +2,212 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Library.Controllers
+namespace Dnn.PersonaBar.Library.Controllers;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Web.Caching;
+using System.Xml;
+using System.Xml.XPath;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework;
+using DotNetNuke.Services.Cache;
+
+public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Threading;
-    using System.Web.Caching;
-    using System.Xml;
-    using System.Xml.XPath;
+    public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
+    public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Services.Cache;
-
-    public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
+    /// <inheritdoc/>
+    public string CultureName
     {
-        public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
-        public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
+        get { return Thread.CurrentThread.CurrentUICulture.Name; }
+    }
 
-        /// <inheritdoc/>
-        public string CultureName
+    /// <inheritdoc/>
+    public long GetResxTimeStamp(string resourceFile, Dto.Localization localization)
+    {
+        return this.GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
+    }
+
+    /// <inheritdoc/>
+    public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Dto.Localization localization)
+    {
+        Requires.NotNullOrEmpty("resourceFile", resourceFile);
+        Requires.NotNullOrEmpty("culture", culture);
+
+        var cacheKey = string.Format(localization.ResxDataCacheKey, culture, resourceFile);
+        var localizedDict = DataCache.GetCache(cacheKey) as Dictionary<string, string>;
+        if (localizedDict != null)
         {
-            get { return Thread.CurrentThread.CurrentUICulture.Name; }
+            return localizedDict;
         }
 
-        /// <inheritdoc/>
-        public long GetResxTimeStamp(string resourceFile, Dto.Localization localization)
+        var dictionary = new Dictionary<string, string>();
+
+        foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
         {
-            return this.GetLastModifiedTime(resourceFile, this.CultureName, localization).Ticks;
+            dictionary[kvp.Key] = kvp.Value;
         }
 
-        /// <inheritdoc/>
-        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture, Dto.Localization localization)
-        {
-            Requires.NotNullOrEmpty("resourceFile", resourceFile);
-            Requires.NotNullOrEmpty("culture", culture);
+        DataCache.SetCache(
+            cacheKey,
+            dictionary,
+            (DNNCacheDependency)null,
+            Cache.NoAbsoluteExpiration,
+            FiveMinutes,
+            CacheItemPriority.Normal,
+            null);
 
-            var cacheKey = string.Format(localization.ResxDataCacheKey, culture, resourceFile);
-            var localizedDict = DataCache.GetCache(cacheKey) as Dictionary<string, string>;
-            if (localizedDict != null)
+        return dictionary;
+    }
+
+    /// <inheritdoc/>
+    public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
+    {
+        Requires.NotNullOrEmpty("resourceFile", resourceFile);
+        Requires.NotNullOrEmpty("culture", culture);
+
+        var dictionary = new Dictionary<string, string>();
+        foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+        {
+            dictionary[kvp.Key] = kvp.Value;
+        }
+
+        return dictionary;
+    }
+
+    /// <inheritdoc/>
+    protected override Func<ILocalizationController> GetFactory()
+    {
+        return () => new LocalizationController();
+    }
+
+    private static string GetNameAttribute(XmlNode node)
+    {
+        if (node.Attributes != null)
+        {
+            var attribute = node.Attributes.GetNamedItem("name");
+            if (attribute != null)
             {
-                return localizedDict;
+                return attribute.Value;
             }
+        }
 
-            var dictionary = new Dictionary<string, string>();
+        return null;
+    }
 
-            foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+    private static string GetNameAttribute(XPathNavigator navigator)
+    {
+        return navigator.GetAttribute("name", string.Empty);
+    }
+
+    private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
+    {
+        var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
+        if (header != null)
+        {
+            if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
             {
-                dictionary[kvp.Key] = kvp.Value;
+                throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
             }
-
-            DataCache.SetCache(
-                cacheKey,
-                dictionary,
-                (DNNCacheDependency)null,
-                Cache.NoAbsoluteExpiration,
-                FiveMinutes,
-                CacheItemPriority.Normal,
-                null);
-
-            return dictionary;
         }
-
-        /// <inheritdoc/>
-        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
+        else
         {
-            Requires.NotNullOrEmpty("resourceFile", resourceFile);
-            Requires.NotNullOrEmpty("culture", culture);
+            throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
+        }
+    }
 
-            var dictionary = new Dictionary<string, string>();
-            foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+    private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
+    {
+        using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
+        {
+            var document = new XmlDocument { XmlResolver = null };
+            document.Load(stream);
+
+            // ReSharper disable once AssignNullToNotNullAttribute
+            var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
+
+            AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
+
+            // ReSharper disable once AssignNullToNotNullAttribute
+            foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
             {
-                dictionary[kvp.Key] = kvp.Value;
-            }
-
-            return dictionary;
-        }
-
-        /// <inheritdoc/>
-        protected override Func<ILocalizationController> GetFactory()
-        {
-            return () => new LocalizationController();
-        }
-
-        private static string GetNameAttribute(XmlNode node)
-        {
-            if (node.Attributes != null)
-            {
-                var attribute = node.Attributes.GetNamedItem("name");
-                if (attribute != null)
+                if (navigator.NodeType == XPathNodeType.Comment)
                 {
-                    return attribute.Value;
+                    continue;
                 }
-            }
 
-            return null;
-        }
+                var name = GetNameAttribute(navigator);
 
-        private static string GetNameAttribute(XPathNavigator navigator)
-        {
-            return navigator.GetAttribute("name", string.Empty);
-        }
-
-        private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
-        {
-            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
-            if (header != null)
-            {
-                if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                const string textPostFix = ".Text";
+                if (name.EndsWith(textPostFix))
                 {
-                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
+                    name = name.Substring(0, name.Length - textPostFix.Length);
                 }
-            }
-            else
-            {
-                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
-            }
-        }
 
-        private static IEnumerable<KeyValuePair<string, string>> GetLocalizationValues(string fullPath, string culture)
-        {
-            using (var stream = new FileStream(System.Web.HttpContext.Current.Server.MapPath(fullPath), FileMode.Open, FileAccess.Read))
-            {
-                var document = new XmlDocument { XmlResolver = null };
-                document.Load(stream);
-
-                // ReSharper disable once AssignNullToNotNullAttribute
-                var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
-
-                AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
-
-                // ReSharper disable once AssignNullToNotNullAttribute
-                foreach (XPathNavigator navigator in document.CreateNavigator().Select("/root/data"))
+                if (string.IsNullOrEmpty(name))
                 {
-                    if (navigator.NodeType == XPathNodeType.Comment)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var name = GetNameAttribute(navigator);
-
-                    const string textPostFix = ".Text";
-                    if (name.EndsWith(textPostFix))
-                    {
-                        name = name.Substring(0, name.Length - textPostFix.Length);
-                    }
-
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
-
-                    var valueNode = navigator.SelectSingleNode("value");
-                    if (valueNode != null)
-                    {
-                        yield return new KeyValuePair<string, string>(name, valueNode.Value);
-                    }
+                var valueNode = navigator.SelectSingleNode("value");
+                if (valueNode != null)
+                {
+                    yield return new KeyValuePair<string, string>(name, valueNode.Value);
                 }
             }
         }
+    }
 
-        private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
+    private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
+    {
+        Requires.NotNullOrEmpty("culture", culture);
+
+        var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
+        var cachedData = DataCache.GetCache(cacheKey);
+        if (cachedData is DateTime)
         {
-            Requires.NotNullOrEmpty("culture", culture);
-
-            var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
-            var cachedData = DataCache.GetCache(cacheKey);
-            if (cachedData is DateTime)
-            {
-                return (DateTime)DataCache.GetCache(cacheKey);
-            }
-
-            var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
-
-            DataCache.SetCache(
-                cacheKey,
-                lastModifiedDate,
-                (DNNCacheDependency)null,
-                Cache.NoAbsoluteExpiration,
-                OneHour,
-                CacheItemPriority.Normal,
-                null);
-
-            return lastModifiedDate;
+            return (DateTime)DataCache.GetCache(cacheKey);
         }
 
-        private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
+        var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
+
+        DataCache.SetCache(
+            cacheKey,
+            lastModifiedDate,
+            (DNNCacheDependency)null,
+            Cache.NoAbsoluteExpiration,
+            OneHour,
+            CacheItemPriority.Normal,
+            null);
+
+        return lastModifiedDate;
+    }
+
+    private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
+    {
+        var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
+        var lastModifiedDate = DateTime.MinValue;
+
+        if (File.Exists(cultureSpecificFile))
         {
-            var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
-            var lastModifiedDate = DateTime.MinValue;
-
-            if (File.Exists(cultureSpecificFile))
-            {
-                lastModifiedDate = File.GetLastWriteTime(cultureSpecificFile);
-            }
-            else
-            {
-                var cultureNeutralFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile);
-                if (File.Exists(cultureNeutralFile))
-                {
-                    lastModifiedDate = File.GetLastWriteTime(cultureNeutralFile);
-                }
-            }
-
-            return lastModifiedDate;
+            lastModifiedDate = File.GetLastWriteTime(cultureSpecificFile);
         }
+        else
+        {
+            var cultureNeutralFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile);
+            if (File.Exists(cultureNeutralFile))
+            {
+                lastModifiedDate = File.GetLastWriteTime(cultureNeutralFile);
+            }
+        }
+
+        return lastModifiedDate;
     }
 }

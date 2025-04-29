@@ -2,158 +2,157 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Users.Tests
+namespace Dnn.PersonaBar.Users.Tests;
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+
+using Dnn.PersonaBar.Library.Helper;
+using Dnn.PersonaBar.Users.Components;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using Moq;
+using NUnit.Framework;
+
+[TestFixture]
+public class UserValidatorUnitTests
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Net;
+    private Mock<IPortalController> _portalControllerMock;
+    private Mock<IUserControllerWrapper> _userControllerWrapperMock;
+    private Mock<IContentVerifier> _contentVerifierMock;
 
-    using Dnn.PersonaBar.Library.Helper;
-    using Dnn.PersonaBar.Users.Components;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using Moq;
-    using NUnit.Framework;
+    private UserValidator _userValidator;
 
-    [TestFixture]
-    public class UserValidatorUnitTests
+    [SetUp]
+    public void RunBeforeEachTest()
     {
-        private Mock<IPortalController> _portalControllerMock;
-        private Mock<IUserControllerWrapper> _userControllerWrapperMock;
-        private Mock<IContentVerifier> _contentVerifierMock;
+        this._portalControllerMock = new Mock<IPortalController>();
+        this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+        this._contentVerifierMock = new Mock<IContentVerifier>();
 
-        private UserValidator _userValidator;
+        this._userValidator = new UserValidator(
+            this._portalControllerMock.Object,
+            this._userControllerWrapperMock.Object,
+            this._contentVerifierMock.Object);
+    }
 
-        [SetUp]
-        public void RunBeforeEachTest()
-        {
-            this._portalControllerMock = new Mock<IPortalController>();
-            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
-            this._contentVerifierMock = new Mock<IContentVerifier>();
+    [Test]
 
-            this._userValidator = new UserValidator(
-                        this._portalControllerMock.Object,
-                        this._userControllerWrapperMock.Object,
-                        this._contentVerifierMock.Object);
-        }
+    public void ValidateUser_IfUserIdWithValidValue_ThenSuccessResponse()
+    {
+        // Arrange
+        int? userId = 1;
+        var userInfo = this.GetUserInfoWithProfile(userId.Value);
+        this.SetupUserControllerWrapperMock(userInfo);
 
-        [Test]
+        // Act
+        var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
-        public void ValidateUser_IfUserIdWithValidValue_ThenSuccessResponse()
-        {
-            // Arrange
-            int? userId = 1;
-            var userInfo = this.GetUserInfoWithProfile(userId.Value);
-            this.SetupUserControllerWrapperMock(userInfo);
+        // Assert
+        Assert.That(result, Is.Null);
+    }
 
-            // Act
-            var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
+    [Test]
 
-            // Assert
-            Assert.That(result, Is.Null);
-        }
+    public void ValidateUser_IfUserAllowedInSiteGroup_ThenSuccessResponse()
+    {
+        // Arrange
+        int? userId = 1;
+        this.SetupForSiteGroup(true, userId.Value);
+        UserInfo userInfo;
 
-        [Test]
+        // Act
+        var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
-        public void ValidateUser_IfUserAllowedInSiteGroup_ThenSuccessResponse()
-        {
-            // Arrange
-            int? userId = 1;
-            this.SetupForSiteGroup(true, userId.Value);
-            UserInfo userInfo;
+        // Assert
+        Assert.That(result, Is.Null);
+    }
 
-            // Act
-            var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
+    [Test]
 
-            // Assert
-            Assert.That(result, Is.Null);
-        }
+    public void ValidateUser_IfUserNotAllowedInSiteGroup_ThenErrorResponse()
+    {
+        // Arrange
+        int? userId = 1;
+        this.SetupForSiteGroup(false, userId.Value);
+        UserInfo userInfo;
 
-        [Test]
+        // Act
+        var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
-        public void ValidateUser_IfUserNotAllowedInSiteGroup_ThenErrorResponse()
-        {
-            // Arrange
-            int? userId = 1;
-            this.SetupForSiteGroup(false, userId.Value);
-            UserInfo userInfo;
+        // Assert
+        Assert.That(result.IsError, Is.True);
+    }
 
-            // Act
-            var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
+    [Test]
 
-            // Assert
-            Assert.That(result.IsError, Is.True);
-        }
+    public void ValidateUser_IfUserIdNotFound_ThenErrorResponse()
+    {
+        // Arrange
+        int? userId = 1;
+        UserInfo userInfo = null;
+        this.SetupUserControllerWrapperMock(userInfo);
 
-        [Test]
+        ArrayList portals = new ArrayList();
+        this._portalControllerMock.Setup(p => p.GetPortals()).Returns(portals);
 
-        public void ValidateUser_IfUserIdNotFound_ThenErrorResponse()
-        {
-            // Arrange
-            int? userId = 1;
-            UserInfo userInfo = null;
-            this.SetupUserControllerWrapperMock(userInfo);
+        // Act
+        var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
-            ArrayList portals = new ArrayList();
-            this._portalControllerMock.Setup(p => p.GetPortals()).Returns(portals);
+        // Assert
+        Assert.That(result.IsError, Is.True);
+    }
 
-            // Act
-            var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
+    [Test]
 
-            // Assert
-            Assert.That(result.IsError, Is.True);
-        }
+    public void ValidateUser_IfUserIdWithoutValue_ThenErrorResponse()
+    {
+        // Arrange
+        int? userId = null;
+        UserInfo userInfo;
 
-        [Test]
+        // Act
+        var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
 
-        public void ValidateUser_IfUserIdWithoutValue_ThenErrorResponse()
-        {
-            // Arrange
-            int? userId = null;
-            UserInfo userInfo;
+        // Assert
+        Assert.That(result.IsError, Is.True);
+    }
 
-            // Act
-            var result = this._userValidator.ValidateUser(userId, null, null, out userInfo);
+    private void SetupUserControllerWrapperMock(UserInfo userInfo)
+    {
+        KeyValuePair<HttpStatusCode, string> response;
 
-            // Assert
-            Assert.That(result.IsError, Is.True);
-        }
+        this._userControllerWrapperMock
+            .Setup(
+                u => u.GetUser(
+                    It.IsAny<int>(),
+                    It.IsAny<PortalSettings>(),
+                    It.IsAny<UserInfo>(),
+                    out response))
+            .Returns(userInfo);
+    }
 
-        private void SetupUserControllerWrapperMock(UserInfo userInfo)
-        {
-            KeyValuePair<HttpStatusCode, string> response;
+    private void SetupForSiteGroup(bool isAllowed, int userId)
+    {
+        var userInfo = this.GetUserInfoWithProfile(userId);
 
-            this._userControllerWrapperMock
-                .Setup(
-                    u => u.GetUser(
-                        It.IsAny<int>(),
-                        It.IsAny<PortalSettings>(),
-                        It.IsAny<UserInfo>(),
-                        out response))
-                .Returns(userInfo);
-        }
+        var otherPortalId = 2;
+        var portals = new ArrayList();
+        portals.Add(new PortalInfo() { PortalID = otherPortalId });
+        this._portalControllerMock.Setup(p => p.GetPortals()).Returns(portals);
 
-        private void SetupForSiteGroup(bool isAllowed, int userId)
-        {
-            var userInfo = this.GetUserInfoWithProfile(userId);
+        this._userControllerWrapperMock.Setup(u => u.GetUserById(It.IsAny<int>(), userId)).Returns(userInfo);
+        this._contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(It.IsAny<int>(), It.IsAny<PortalSettings>(), true)).Returns(isAllowed);
+    }
 
-            var otherPortalId = 2;
-            var portals = new ArrayList();
-            portals.Add(new PortalInfo() { PortalID = otherPortalId });
-            this._portalControllerMock.Setup(p => p.GetPortals()).Returns(portals);
-
-            this._userControllerWrapperMock.Setup(u => u.GetUserById(It.IsAny<int>(), userId)).Returns(userInfo);
-            this._contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(It.IsAny<int>(), It.IsAny<PortalSettings>(), true)).Returns(isAllowed);
-        }
-
-        private UserInfo GetUserInfoWithProfile(int userId)
-        {
-            var userInfo = new UserInfo();
-            var profile = new UserProfile();
-            profile.FirstName = "testUser";
-            userInfo.UserID = userId;
-            userInfo.Profile = profile;
-            return userInfo;
-        }
+    private UserInfo GetUserInfoWithProfile(int userId)
+    {
+        var userInfo = new UserInfo();
+        var profile = new UserProfile();
+        profile.FirstName = "testUser";
+        userInfo.UserID = userId;
+        userInfo.Profile = profile;
+        return userInfo;
     }
 }

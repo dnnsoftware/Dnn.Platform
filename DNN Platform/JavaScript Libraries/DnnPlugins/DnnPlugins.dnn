@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DnnPlugins" type="JavaScript_Library" version="09.13.09" isSystem="true">
+    <package name="DnnPlugins" type="JavaScript_Library" version="09.13.10" isSystem="true">
       <friendlyName>DNN jQuery Plugins</friendlyName>
       <description>A collection of jQuery plugins for DNN UI components (tabs, panels, tooltips, checkboxes, etc.)</description>
       <iconFile>Icons\Sigma\Extensions_32x32_Standard.png</iconFile>

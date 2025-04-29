@@ -1,342 +1,341 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Messaging.Data
+namespace DotNetNuke.Services.Messaging.Data;
+
+using System;
+using System.Data;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security;
+
+/// <summary>  The Info class for Messaging.</summary>
+[Serializable]
+public class Message : IHydratable
 {
-    using System;
-    using System.Data;
+    private string body;
+    private Guid conversation;
+    private bool emailSent;
+    private int fromUserID;
+    private string fromUserName;
+    private DateTime messageDate;
+    private int messageID;
+    private int portalID;
+    private int replyTo;
+    private MessageStatusType status;
+    private string subject;
+    private int toRoleId;
+    private int toUserID;
+    private string toUserName;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Security;
+    private bool allowReply;
+    private bool skipInbox;
 
-    /// <summary>  The Info class for Messaging.</summary>
-    [Serializable]
-    public class Message : IHydratable
+    private Guid emailSchedulerInstance;
+    private DateTime emailSentDate;
+
+    /// <summary>Initializes a new instance of the <see cref="Message"/> class.</summary>
+    public Message()
     {
-        private string body;
-        private Guid conversation;
-        private bool emailSent;
-        private int fromUserID;
-        private string fromUserName;
-        private DateTime messageDate;
-        private int messageID;
-        private int portalID;
-        private int replyTo;
-        private MessageStatusType status;
-        private string subject;
-        private int toRoleId;
-        private int toUserID;
-        private string toUserName;
+        this.Conversation = Guid.Empty;
+        this.Status = MessageStatusType.Draft;
+        this.MessageDate = DateTime.Now;
+    }
 
-        private bool allowReply;
-        private bool skipInbox;
-
-        private Guid emailSchedulerInstance;
-        private DateTime emailSentDate;
-
-        /// <summary>Initializes a new instance of the <see cref="Message"/> class.</summary>
-        public Message()
+    public string FromUserName
+    {
+        get
         {
-            this.Conversation = Guid.Empty;
-            this.Status = MessageStatusType.Draft;
-            this.MessageDate = DateTime.Now;
+            return this.fromUserName;
         }
 
-        public string FromUserName
+        private set
         {
-            get
-            {
-                return this.fromUserName;
-            }
+            this.fromUserName = value;
+        }
+    }
 
-            private set
-            {
-                this.fromUserName = value;
-            }
+    public int FromUserID
+    {
+        get
+        {
+            return this.fromUserID;
         }
 
-        public int FromUserID
+        set
         {
-            get
-            {
-                return this.fromUserID;
-            }
+            this.fromUserID = value;
+        }
+    }
 
-            set
-            {
-                this.fromUserID = value;
-            }
+    public int ToRoleID
+    {
+        get
+        {
+            return this.toRoleId;
         }
 
-        public int ToRoleID
+        set
         {
-            get
-            {
-                return this.toRoleId;
-            }
+            this.toRoleId = value;
+        }
+    }
 
-            set
-            {
-                this.toRoleId = value;
-            }
+    public bool AllowReply
+    {
+        get
+        {
+            return this.allowReply;
         }
 
-        public bool AllowReply
+        set
         {
-            get
-            {
-                return this.allowReply;
-            }
+            this.allowReply = value;
+        }
+    }
 
-            set
-            {
-                this.allowReply = value;
-            }
+    public bool SkipInbox
+    {
+        get
+        {
+            return this.skipInbox;
         }
 
-        public bool SkipInbox
+        set
         {
-            get
-            {
-                return this.skipInbox;
-            }
+            this.skipInbox = value;
+        }
+    }
 
-            set
-            {
-                this.skipInbox = value;
-            }
+    public bool EmailSent
+    {
+        get
+        {
+            return this.emailSent;
         }
 
-        public bool EmailSent
+        set
         {
-            get
-            {
-                return this.emailSent;
-            }
+            this.emailSent = value;
+        }
+    }
 
-            set
-            {
-                this.emailSent = value;
-            }
+    public string Body
+    {
+        get
+        {
+            return this.body;
         }
 
-        public string Body
+        set
         {
-            get
-            {
-                return this.body;
-            }
+            this.body = value;
+        }
+    }
 
-            set
-            {
-                this.body = value;
-            }
+    public DateTime MessageDate
+    {
+        get
+        {
+            return this.messageDate;
         }
 
-        public DateTime MessageDate
+        set
         {
-            get
-            {
-                return this.messageDate;
-            }
+            this.messageDate = value;
+        }
+    }
 
-            set
-            {
-                this.messageDate = value;
-            }
+    public Guid Conversation
+    {
+        get
+        {
+            return this.conversation;
         }
 
-        public Guid Conversation
+        set
         {
-            get
-            {
-                return this.conversation;
-            }
+            this.conversation = value;
+        }
+    }
 
-            set
-            {
-                this.conversation = value;
-            }
+    public int MessageID
+    {
+        get
+        {
+            return this.messageID;
         }
 
-        public int MessageID
+        private set
         {
-            get
-            {
-                return this.messageID;
-            }
+            this.messageID = value;
+        }
+    }
 
-            private set
-            {
-                this.messageID = value;
-            }
+    public int PortalID
+    {
+        get
+        {
+            return this.portalID;
         }
 
-        public int PortalID
+        set
         {
-            get
-            {
-                return this.portalID;
-            }
+            this.portalID = value;
+        }
+    }
 
-            set
-            {
-                this.portalID = value;
-            }
+    public int ReplyTo
+    {
+        get
+        {
+            return this.replyTo;
         }
 
-        public int ReplyTo
+        private set
         {
-            get
-            {
-                return this.replyTo;
-            }
+            this.replyTo = value;
+        }
+    }
 
-            private set
-            {
-                this.replyTo = value;
-            }
+    public MessageStatusType Status
+    {
+        get
+        {
+            return this.status;
         }
 
-        public MessageStatusType Status
+        set
         {
-            get
-            {
-                return this.status;
-            }
+            this.status = value;
+        }
+    }
 
-            set
-            {
-                this.status = value;
-            }
+    public string Subject
+    {
+        get
+        {
+            var ps = PortalSecurity.Instance;
+            return ps.InputFilter(this.subject, PortalSecurity.FilterFlag.NoMarkup);
         }
 
-        public string Subject
+        set
         {
-            get
-            {
-                var ps = PortalSecurity.Instance;
-                return ps.InputFilter(this.subject, PortalSecurity.FilterFlag.NoMarkup);
-            }
+            var ps = PortalSecurity.Instance;
+            ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+            this.subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+        }
+    }
 
-            set
-            {
-                var ps = PortalSecurity.Instance;
-                ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-                this.subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-            }
+    public int ToUserID
+    {
+        get
+        {
+            return this.toUserID;
         }
 
-        public int ToUserID
+        set
         {
-            get
-            {
-                return this.toUserID;
-            }
+            this.toUserID = value;
+        }
+    }
 
-            set
-            {
-                this.toUserID = value;
-            }
+    public string ToUserName
+    {
+        get
+        {
+            return this.toUserName;
         }
 
-        public string ToUserName
+        private set
         {
-            get
-            {
-                return this.toUserName;
-            }
+            this.toUserName = value;
+        }
+    }
 
-            private set
-            {
-                this.toUserName = value;
-            }
+    public DateTime EmailSentDate
+    {
+        get
+        {
+            return this.emailSentDate;
         }
 
-        public DateTime EmailSentDate
+        private set
         {
-            get
-            {
-                return this.emailSentDate;
-            }
+            this.emailSentDate = value;
+        }
+    }
 
-            private set
-            {
-                this.emailSentDate = value;
-            }
+    public Guid EmailSchedulerInstance
+    {
+        get
+        {
+            return this.emailSchedulerInstance;
         }
 
-        public Guid EmailSchedulerInstance
+        private set
         {
-            get
-            {
-                return this.emailSchedulerInstance;
-            }
+            this.emailSchedulerInstance = value;
+        }
+    }
 
-            private set
-            {
-                this.emailSchedulerInstance = value;
-            }
+    /// <inheritdoc/>
+    public int KeyID
+    {
+        get
+        {
+            return this.MessageID;
         }
 
-        /// <inheritdoc/>
-        public int KeyID
+        set
         {
-            get
-            {
-                return this.MessageID;
-            }
-
-            set
-            {
-                this.MessageID = value;
-            }
+            this.MessageID = value;
         }
+    }
 
-        public Message GetReplyMessage()
-        {
-            var message = new Message();
-            message.AllowReply = this.AllowReply;
-            message.Body = string.Format("<br><br><br>On {0} {1} wrote ", this.MessageDate, this.FromUserName) + this.Body;
-            message.Conversation = this.Conversation;
-            message.FromUserID = this.ToUserID;
-            message.ToUserID = this.FromUserID;
-            message.ToUserName = this.FromUserName;
-            message.PortalID = this.PortalID;
-            message.ReplyTo = this.MessageID;
-            message.SkipInbox = this.SkipInbox;
-            message.Subject = "RE:" + this.Subject;
+    public Message GetReplyMessage()
+    {
+        var message = new Message();
+        message.AllowReply = this.AllowReply;
+        message.Body = string.Format("<br><br><br>On {0} {1} wrote ", this.MessageDate, this.FromUserName) + this.Body;
+        message.Conversation = this.Conversation;
+        message.FromUserID = this.ToUserID;
+        message.ToUserID = this.FromUserID;
+        message.ToUserName = this.FromUserName;
+        message.PortalID = this.PortalID;
+        message.ReplyTo = this.MessageID;
+        message.SkipInbox = this.SkipInbox;
+        message.Subject = "RE:" + this.Subject;
 
-            return message;
-        }
+        return message;
+    }
 
-        /// <inheritdoc/>
-        public void Fill(IDataReader dr)
-        {
-            this.MessageID = Null.SetNullInteger(dr["MessageID"]);
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-            this.FromUserID = Null.SetNullInteger(dr["FromUserID"]);
-            this.FromUserName = Null.SetNullString(dr["FromUserName"]);
-            this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
+    /// <inheritdoc/>
+    public void Fill(IDataReader dr)
+    {
+        this.MessageID = Null.SetNullInteger(dr["MessageID"]);
+        this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+        this.FromUserID = Null.SetNullInteger(dr["FromUserID"]);
+        this.FromUserName = Null.SetNullString(dr["FromUserName"]);
+        this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
 
-            // '_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
-            this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
-            this.Status = (MessageStatusType)Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));
-            this.Body = Null.SetNullString(dr["Body"]);
-            this.Subject = Null.SetNullString(dr["Subject"]);
-            this.MessageDate = Null.SetNullDateTime(dr["Date"]);
-            this.ToRoleID = Null.SetNullInteger(dr["ToRoleID"]);
-            this.AllowReply = Null.SetNullBoolean(dr["AllowReply"]);
-            this.SkipInbox = Null.SetNullBoolean(dr["SkipPortal"]);
-            this.EmailSent = Null.SetNullBoolean(dr["EmailSent"]);
-            this.ToUserName = Null.SetNullString(dr["ToUserName"]);
-            string g = Null.SetNullString(dr["Conversation"]);
-            this.EmailSentDate = Null.SetNullDateTime(dr["EmailSentDate"]);
-            this.EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
-            this.Conversation = Null.SetNullGuid(dr["Conversation"]);
+        // '_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
+        this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
+        this.Status = (MessageStatusType)Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));
+        this.Body = Null.SetNullString(dr["Body"]);
+        this.Subject = Null.SetNullString(dr["Subject"]);
+        this.MessageDate = Null.SetNullDateTime(dr["Date"]);
+        this.ToRoleID = Null.SetNullInteger(dr["ToRoleID"]);
+        this.AllowReply = Null.SetNullBoolean(dr["AllowReply"]);
+        this.SkipInbox = Null.SetNullBoolean(dr["SkipPortal"]);
+        this.EmailSent = Null.SetNullBoolean(dr["EmailSent"]);
+        this.ToUserName = Null.SetNullString(dr["ToUserName"]);
+        string g = Null.SetNullString(dr["Conversation"]);
+        this.EmailSentDate = Null.SetNullDateTime(dr["EmailSentDate"]);
+        this.EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
+        this.Conversation = Null.SetNullGuid(dr["Conversation"]);
 
-            // 'Conversation = New Guid(g)
-        }
+        // 'Conversation = New Guid(g)
     }
 }

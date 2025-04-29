@@ -2,134 +2,265 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.GeneratedImage
+namespace DotNetNuke.Services.GeneratedImage;
+
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
+
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.GeneratedImage.ImageQuantization;
+using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.UserRequest;
+
+internal class ImageHandlerInternal
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Diagnostics;
-    using System.Drawing;
-    using System.Drawing.Imaging;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Web;
+    private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.GeneratedImage.ImageQuantization;
-    using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Services.UserRequest;
+    private TimeSpan clientCacheExpiration = defaultClientCacheExpiration;
+    private IImageStore imageStore;
+    private DateTime? now;
 
-    internal class ImageHandlerInternal
+    /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
+    public ImageHandlerInternal()
     {
-        private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
+        this.ContentType = ImageFormat.Jpeg;
+        this.ImageCompression = 95;
+        this.ImageTransforms = new List<ImageTransform>();
+        this.AllowStandalone = false;
+    }
 
-        private TimeSpan clientCacheExpiration = defaultClientCacheExpiration;
-        private IImageStore imageStore;
-        private DateTime? now;
+    /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
+    /// <param name="imageStore"></param>
+    /// <param name="now"></param>
+    internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
+        : this()
+    {
+        this.imageStore = imageStore;
+        this.now = now;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
-        public ImageHandlerInternal()
+    public TimeSpan ClientCacheExpiration
+    {
+        get
         {
-            this.ContentType = ImageFormat.Jpeg;
-            this.ImageCompression = 95;
-            this.ImageTransforms = new List<ImageTransform>();
-            this.AllowStandalone = false;
+            return this.clientCacheExpiration;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
-        /// <param name="imageStore"></param>
-        /// <param name="now"></param>
-        internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
-            : this()
+        set
         {
-            this.imageStore = imageStore;
-            this.now = now;
-        }
-
-        public TimeSpan ClientCacheExpiration
-        {
-            get
+            if (value.Ticks < 0)
             {
-                return this.clientCacheExpiration;
+                throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
             }
 
-            set
+            this.clientCacheExpiration = value;
+            this.EnableClientCache = true;
+        }
+    }
+
+    public ImageFormat ContentType { get; set; }
+
+    public long ImageCompression { get; set; }
+
+    public int IPCountMax
+    {
+        get { return IPCount.MaxCount; }
+        set { IPCount.MaxCount = value; }
+    }
+
+    public TimeSpan IpCountPurgeInterval
+    {
+        get { return IPCount.PurgeInterval; }
+        set { IPCount.PurgeInterval = value; }
+    }
+
+    public bool EnableClientCache { get; set; }
+
+    public bool EnableServerCache { get; set; }
+
+    public bool EnableIPCount { get; set; }
+
+    public bool AllowStandalone { get; set; }
+
+    public string[] AllowedDomains { get; set; }
+
+    public bool LogSecurity { get; set; }
+
+    public List<ImageTransform> ImageTransforms
+    {
+        get;
+        private set;
+    }
+
+    private DateTime DateTime_Now
+    {
+        get
+        {
+            return this.now ?? DateTime.Now;
+        }
+    }
+
+    private IImageStore ImageStore
+    {
+        get
+        {
+            return this.imageStore ?? DiskImageStore.Instance;
+        }
+    }
+
+    public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
+    {
+        context.Response.Clear();
+
+        string ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
+
+        // Check if allowed standalone
+        if (!this.AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
+        {
+            string message = "Not allowed to use standalone";
+            if (this.LogSecurity)
             {
-                if (value.Ticks < 0)
+                EventLogController logController = new EventLogController();
+                var logInfo = new LogInfo
                 {
-                    throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
+                    LogUserID = PortalSettings.Current.UserId,
+                    LogPortalID = PortalSettings.Current.PortalId,
+                    LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                };
+                logInfo.AddProperty("DnnImageHandler", message);
+                logInfo.AddProperty("IP", ipAddress);
+                logController.AddLog(logInfo);
+            }
+
+            context.Response.StatusCode = 403;
+            context.Response.StatusDescription = message;
+            context.Response.End();
+            return;
+        }
+
+        // Check if domain is allowed to embed image
+        if (!string.IsNullOrEmpty(this.AllowedDomains[0]) &&
+            context.Request.UrlReferrer != null &&
+            context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
+        {
+            bool allowed = false;
+            string allowedDomains = string.Empty;
+            foreach (string allowedDomain in this.AllowedDomains)
+            {
+                if (!string.IsNullOrEmpty(allowedDomain))
+                {
+                    allowedDomains += allowedDomain + ",";
+                    if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
+                    {
+                        allowed = true;
+                    }
+                }
+            }
+
+            if (!allowed)
+            {
+                string message = $"Not allowed to use from referrer '{context.Request.UrlReferrer.Host}'";
+                if (this.LogSecurity)
+                {
+                    EventLogController logController = new EventLogController();
+                    var logInfo = new LogInfo
+                    {
+                        LogUserID = PortalSettings.Current.UserId,
+                        LogPortalID = PortalSettings.Current.PortalId,
+                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                    };
+                    logInfo.AddProperty("DnnImageHandler", message);
+                    logInfo.AddProperty("IP", ipAddress);
+                    logInfo.AddProperty("AllowedDomains", allowedDomains);
+                    logController.AddLog(logInfo);
                 }
 
-                this.clientCacheExpiration = value;
-                this.EnableClientCache = true;
+                context.Response.StatusCode = 403;
+                context.Response.StatusDescription = "Forbidden";
+                context.Response.End();
+                return;
             }
         }
 
-        public ImageFormat ContentType { get; set; }
+        // Generate Image
+        var imageMethodData = imageGenCallback(context.Request.QueryString);
 
-        public long ImageCompression { get; set; }
-
-        public int IPCountMax
+        context.Response.ContentType = GetImageMimeType(this.ContentType);
+        if (imageMethodData == null)
         {
-            get { return IPCount.MaxCount; }
-            set { IPCount.MaxCount = value; }
+            throw new InvalidOperationException("The DnnImageHandler cannot return null.");
         }
 
-        public TimeSpan IpCountPurgeInterval
+        if (imageMethodData.IsEmptyImage)
         {
-            get { return IPCount.PurgeInterval; }
-            set { IPCount.PurgeInterval = value; }
-        }
-
-        public bool EnableClientCache { get; set; }
-
-        public bool EnableServerCache { get; set; }
-
-        public bool EnableIPCount { get; set; }
-
-        public bool AllowStandalone { get; set; }
-
-        public string[] AllowedDomains { get; set; }
-
-        public bool LogSecurity { get; set; }
-
-        public List<ImageTransform> ImageTransforms
-        {
-            get;
-            private set;
-        }
-
-        private DateTime DateTime_Now
-        {
-            get
+            using (var imageOutputBuffer = new MemoryStream())
             {
-                return this.now ?? DateTime.Now;
+                this.RenderImage(imageMethodData.Image, imageOutputBuffer);
+                var buffer = imageOutputBuffer.GetBuffer();
+                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                context.Response.End();
+                return;
             }
         }
 
-        private IImageStore ImageStore
+        string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
+
+        var userId = -1;
+        var cacheCleared = false;
+        var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.InvariantCultureIgnoreCase);
+        if (isProfilePic)
         {
-            get
+            if (int.TryParse(context.Request.QueryString["userId"], out userId))
             {
-                return this.imageStore ?? DiskImageStore.Instance;
+                cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
             }
         }
 
-        public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
+        // Handle client cache
+        var cachePolicy = context.Response.Cache;
+        cachePolicy.SetValidUntilExpires(true);
+        if (this.EnableClientCache)
         {
-            context.Response.Clear();
-
-            string ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
-
-            // Check if allowed standalone
-            if (!this.AllowStandalone && context.Request.UrlReferrer == null && !context.Request.IsLocal)
+            if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]) && !cacheCleared)
             {
-                string message = "Not allowed to use standalone";
+                var provider = CultureInfo.InvariantCulture;
+                var lastMod = DateTime.ParseExact(context.Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
+                var etag = context.Request.Headers["If-None-Match"];
+                if (lastMod + this.ClientCacheExpiration > this.DateTime_Now && etag == cacheId)
+                {
+                    context.Response.StatusCode = 304;
+                    context.Response.StatusDescription = "Not Modified";
+                    context.Response.End();
+                    return;
+                }
+            }
+
+            cachePolicy.SetCacheability(HttpCacheability.Public);
+            cachePolicy.SetLastModified(this.DateTime_Now);
+            cachePolicy.SetExpires(this.DateTime_Now + this.ClientCacheExpiration);
+            cachePolicy.SetETag(cacheId);
+        }
+
+        // Handle Server cache
+        if (this.EnableServerCache)
+        {
+            var isAnonymousUser = userId <= 0 ? true : false;
+            if (isProfilePic && !isAnonymousUser && !this.IsPicVisibleToCurrentUser(userId))
+            {
+                string message = "Not allowed to see profile picture";
+
                 if (this.LogSecurity)
                 {
                     EventLogController logController = new EventLogController();
@@ -145,381 +276,249 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
 
                 context.Response.StatusCode = 403;
+                context.Response.StatusDescription = "Forbidden";
+                context.Response.End();
+                return;
+            }
+
+            if (this.ImageStore.TryTransmitIfContains(cacheId, context.Response))
+            {
+                context.Response.Flush();
+                return;
+            }
+        }
+
+        // Check IP Cout boundaries
+        if (this.EnableIPCount)
+        {
+            if (!IPCount.CheckIp(ipAddress))
+            {
+                string message = "Too many requests";
+
+                if (this.LogSecurity)
+                {
+                    EventLogController logController = new EventLogController();
+                    var logInfo = new LogInfo
+                    {
+                        LogUserID = PortalSettings.Current.UserId,
+                        LogPortalID = PortalSettings.Current.PortalId,
+                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                    };
+                    logInfo.AddProperty("DnnImageHandler", message);
+                    logInfo.AddProperty("IP", ipAddress);
+                    logController.AddLog(logInfo);
+                }
+
+                context.Response.StatusCode = 429;
                 context.Response.StatusDescription = message;
                 context.Response.End();
                 return;
             }
+        }
 
-            // Check if domain is allowed to embed image
-            if (!string.IsNullOrEmpty(this.AllowedDomains[0]) &&
-                context.Request.UrlReferrer != null &&
-                context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
+        if (imageMethodData.HttpStatusCode != null)
+        {
+            context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;
+            context.Response.End();
+            return;
+        }
+
+        using (var imageOutputBuffer = new MemoryStream())
+        {
+            Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null), "Image or ImageByteByffer must have a value");
+            if (imageMethodData.Image != null)
             {
-                bool allowed = false;
-                string allowedDomains = string.Empty;
-                foreach (string allowedDomain in this.AllowedDomains)
-                {
-                    if (!string.IsNullOrEmpty(allowedDomain))
-                    {
-                        allowedDomains += allowedDomain + ",";
-                        if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
-                        {
-                            allowed = true;
-                        }
-                    }
-                }
-
-                if (!allowed)
-                {
-                    string message = $"Not allowed to use from referrer '{context.Request.UrlReferrer.Host}'";
-                    if (this.LogSecurity)
-                    {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
-                        {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
-                        };
-                        logInfo.AddProperty("DnnImageHandler", message);
-                        logInfo.AddProperty("IP", ipAddress);
-                        logInfo.AddProperty("AllowedDomains", allowedDomains);
-                        logController.AddLog(logInfo);
-                    }
-
-                    context.Response.StatusCode = 403;
-                    context.Response.StatusDescription = "Forbidden";
-                    context.Response.End();
-                    return;
-                }
+                this.RenderImage(this.GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
+            }
+            else if (imageMethodData.ImageByteBuffer != null)
+            {
+                this.RenderImage(this.GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
             }
 
-            // Generate Image
-            var imageMethodData = imageGenCallback(context.Request.QueryString);
+            byte[] buffer = imageOutputBuffer.GetBuffer();
 
-            context.Response.ContentType = GetImageMimeType(this.ContentType);
-            if (imageMethodData == null)
-            {
-                throw new InvalidOperationException("The DnnImageHandler cannot return null.");
-            }
+            context.Response.OutputStream.Write(buffer, 0, buffer.Length);
 
-            if (imageMethodData.IsEmptyImage)
-            {
-                using (var imageOutputBuffer = new MemoryStream())
-                {
-                    this.RenderImage(imageMethodData.Image, imageOutputBuffer);
-                    var buffer = imageOutputBuffer.GetBuffer();
-                    context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                    context.Response.End();
-                    return;
-                }
-            }
-
-            string cacheId = this.GetUniqueIDString(context, uniqueIdStringSeed);
-
-            var userId = -1;
-            var cacheCleared = false;
-            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.InvariantCultureIgnoreCase);
-            if (isProfilePic)
-            {
-                if (int.TryParse(context.Request.QueryString["userId"], out userId))
-                {
-                    cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
-                }
-            }
-
-            // Handle client cache
-            var cachePolicy = context.Response.Cache;
-            cachePolicy.SetValidUntilExpires(true);
-            if (this.EnableClientCache)
-            {
-                if (!string.IsNullOrEmpty(context.Request.Headers["If-Modified-Since"]) && !string.IsNullOrEmpty(context.Request.Headers["If-None-Match"]) && !cacheCleared)
-                {
-                    var provider = CultureInfo.InvariantCulture;
-                    var lastMod = DateTime.ParseExact(context.Request.Headers["If-Modified-Since"], "r", provider).ToLocalTime();
-                    var etag = context.Request.Headers["If-None-Match"];
-                    if (lastMod + this.ClientCacheExpiration > this.DateTime_Now && etag == cacheId)
-                    {
-                        context.Response.StatusCode = 304;
-                        context.Response.StatusDescription = "Not Modified";
-                        context.Response.End();
-                        return;
-                    }
-                }
-
-                cachePolicy.SetCacheability(HttpCacheability.Public);
-                cachePolicy.SetLastModified(this.DateTime_Now);
-                cachePolicy.SetExpires(this.DateTime_Now + this.ClientCacheExpiration);
-                cachePolicy.SetETag(cacheId);
-            }
-
-            // Handle Server cache
             if (this.EnableServerCache)
             {
-                var isAnonymousUser = userId <= 0 ? true : false;
-                if (isProfilePic && !isAnonymousUser && !this.IsPicVisibleToCurrentUser(userId))
-                {
-                    string message = "Not allowed to see profile picture";
-
-                    if (this.LogSecurity)
-                    {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
-                        {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
-                        };
-                        logInfo.AddProperty("DnnImageHandler", message);
-                        logInfo.AddProperty("IP", ipAddress);
-                        logController.AddLog(logInfo);
-                    }
-
-                    context.Response.StatusCode = 403;
-                    context.Response.StatusDescription = "Forbidden";
-                    context.Response.End();
-                    return;
-                }
-
-                if (this.ImageStore.TryTransmitIfContains(cacheId, context.Response))
-                {
-                    context.Response.Flush();
-                    return;
-                }
+                this.ImageStore.Add(cacheId, buffer);
             }
 
-            // Check IP Cout boundaries
-            if (this.EnableIPCount)
-            {
-                if (!IPCount.CheckIp(ipAddress))
-                {
-                    string message = "Too many requests";
+            context.Response.End();
+        }
+    }
 
-                    if (this.LogSecurity)
-                    {
-                        EventLogController logController = new EventLogController();
-                        var logInfo = new LogInfo
-                        {
-                            LogUserID = PortalSettings.Current.UserId,
-                            LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
-                        };
-                        logInfo.AddProperty("DnnImageHandler", message);
-                        logInfo.AddProperty("IP", ipAddress);
-                        logController.AddLog(logInfo);
-                    }
+    internal static string GetImageMimeType(ImageFormat format)
+    {
+        string mimeType = "image/x-unknown";
 
-                    context.Response.StatusCode = 429;
-                    context.Response.StatusDescription = message;
-                    context.Response.End();
-                    return;
-                }
-            }
-
-            if (imageMethodData.HttpStatusCode != null)
-            {
-                context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;
-                context.Response.End();
-                return;
-            }
-
-            using (var imageOutputBuffer = new MemoryStream())
-            {
-                Debug.Assert(!(imageMethodData.Image == null && imageMethodData.ImageByteBuffer == null), "Image or ImageByteByffer must have a value");
-                if (imageMethodData.Image != null)
-                {
-                    this.RenderImage(this.GetImageThroughTransforms(imageMethodData.Image), imageOutputBuffer);
-                }
-                else if (imageMethodData.ImageByteBuffer != null)
-                {
-                    this.RenderImage(this.GetImageThroughTransforms(imageMethodData.ImageByteBuffer), imageOutputBuffer);
-                }
-
-                byte[] buffer = imageOutputBuffer.GetBuffer();
-
-                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-
-                if (this.EnableServerCache)
-                {
-                    this.ImageStore.Add(cacheId, buffer);
-                }
-
-                context.Response.End();
-            }
+        if (format.Equals(ImageFormat.Gif))
+        {
+            mimeType = "image/gif";
+        }
+        else if (format.Equals(ImageFormat.Jpeg))
+        {
+            mimeType = "image/jpeg";
+        }
+        else if (format.Equals(ImageFormat.Png))
+        {
+            mimeType = "image/png";
+        }
+        else if (format.Equals(ImageFormat.Bmp) || format.Equals(ImageFormat.MemoryBmp))
+        {
+            mimeType = "image/bmp";
+        }
+        else if (format.Equals(ImageFormat.Tiff))
+        {
+            mimeType = "image/tiff";
+        }
+        else if (format.Equals(ImageFormat.Icon))
+        {
+            mimeType = "image/x-icon";
         }
 
-        internal static string GetImageMimeType(ImageFormat format)
+        return mimeType;
+    }
+
+    private static string GetIDFromBytes(byte[] buffer)
+    {
+        using (var hasher = SHA1.Create())
         {
-            string mimeType = "image/x-unknown";
-
-            if (format.Equals(ImageFormat.Gif))
+            byte[] result = hasher.ComputeHash(buffer);
+            var sb = new StringBuilder();
+            foreach (var b in result)
             {
-                mimeType = "image/gif";
-            }
-            else if (format.Equals(ImageFormat.Jpeg))
-            {
-                mimeType = "image/jpeg";
-            }
-            else if (format.Equals(ImageFormat.Png))
-            {
-                mimeType = "image/png";
-            }
-            else if (format.Equals(ImageFormat.Bmp) || format.Equals(ImageFormat.MemoryBmp))
-            {
-                mimeType = "image/bmp";
-            }
-            else if (format.Equals(ImageFormat.Tiff))
-            {
-                mimeType = "image/tiff";
-            }
-            else if (format.Equals(ImageFormat.Icon))
-            {
-                mimeType = "image/x-icon";
+                sb.Append(b.ToString("X2"));
             }
 
-            return mimeType;
+            return sb.ToString();
+        }
+    }
+
+    /// <summary>Returns the encoder for the specified mime type.</summary>
+    /// <param name="mimeType">The mime type of the content.</param>
+    /// <returns>ImageCodecInfo.</returns>
+    private static ImageCodecInfo GetEncoderInfo(string mimeType)
+    {
+        var encoders = ImageCodecInfo.GetImageEncoders();
+        var e = encoders.FirstOrDefault(x => x.MimeType == mimeType);
+        return e;
+    }
+
+    private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
+    {
+        var builder = new StringBuilder();
+        builder.Append(uniqueIdStringSeed);
+        foreach (var key in context.Request.QueryString.AllKeys.OrderBy(k => k))
+        {
+            builder.Append(key);
+            builder.Append(context.Request.QueryString.Get(key));
         }
 
-        private static string GetIDFromBytes(byte[] buffer)
+        foreach (var tran in this.ImageTransforms)
         {
-            using (var hasher = SHA1.Create())
-            {
-                byte[] result = hasher.ComputeHash(buffer);
-                var sb = new StringBuilder();
-                foreach (var b in result)
-                {
-                    sb.Append(b.ToString("X2"));
-                }
-
-                return sb.ToString();
-            }
+            builder.Append(tran.UniqueString);
         }
 
-        /// <summary>Returns the encoder for the specified mime type.</summary>
-        /// <param name="mimeType">The mime type of the content.</param>
-        /// <returns>ImageCodecInfo.</returns>
-        private static ImageCodecInfo GetEncoderInfo(string mimeType)
-        {
-            var encoders = ImageCodecInfo.GetImageEncoders();
-            var e = encoders.FirstOrDefault(x => x.MimeType == mimeType);
-            return e;
-        }
+        return GetIDFromBytes(ASCIIEncoding.ASCII.GetBytes(builder.ToString()));
+    }
 
-        private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
+    private Image GetImageThroughTransforms(Image image)
+    {
+        try
         {
-            var builder = new StringBuilder();
-            builder.Append(uniqueIdStringSeed);
-            foreach (var key in context.Request.QueryString.AllKeys.OrderBy(k => k))
-            {
-                builder.Append(key);
-                builder.Append(context.Request.QueryString.Get(key));
-            }
+            Image temp = image;
 
             foreach (var tran in this.ImageTransforms)
             {
-                builder.Append(tran.UniqueString);
+                temp = tran.ProcessImage(temp);
             }
 
-            return GetIDFromBytes(ASCIIEncoding.ASCII.GetBytes(builder.ToString()));
+            return temp;
+        }
+        finally
+        {
+            image?.Dispose();
+        }
+    }
+
+    // Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
+    private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
+    {
+        var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
+        Dictionary<int, DateTime> userIds;
+        if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId))
+        {
+            return false;
         }
 
-        private Image GetImageThroughTransforms(Image image)
+        this.ImageStore.ForcePurgeFromServerCache(cacheId);
+        DateTime expiry;
+
+        // The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
+        if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration))
         {
-            try
-            {
-                Image temp = image;
-
-                foreach (var tran in this.ImageTransforms)
-                {
-                    temp = tran.ProcessImage(temp);
-                }
-
-                return temp;
-            }
-            finally
-            {
-                image?.Dispose();
-            }
-        }
-
-        // Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
-        private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
-        {
-            var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
-            Dictionary<int, DateTime> userIds;
-            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId))
-            {
-                return false;
-            }
-
-            this.ImageStore.ForcePurgeFromServerCache(cacheId);
-            DateTime expiry;
-
-            // The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
-            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration))
-            {
-                return true;
-            }
-
-            // Remove the userId from the clear list when timespan is > ClientCacheExpiration.
-            userIds.Remove(userId);
-            DataCache.SetCache(cacheKey, userIds);
             return true;
         }
 
-        private Image GetImageThroughTransforms(byte[] buffer)
-        {
-            using (var memoryStream = new MemoryStream(buffer))
-            {
-                return this.GetImageThroughTransforms(Image.FromStream(memoryStream));
-            }
-        }
+        // Remove the userId from the clear list when timespan is > ClientCacheExpiration.
+        userIds.Remove(userId);
+        DataCache.SetCache(cacheKey, userIds);
+        return true;
+    }
 
-        private void RenderImage(Image image, Stream outStream)
+    private Image GetImageThroughTransforms(byte[] buffer)
+    {
+        using (var memoryStream = new MemoryStream(buffer))
         {
-            try
+            return this.GetImageThroughTransforms(Image.FromStream(memoryStream));
+        }
+    }
+
+    private void RenderImage(Image image, Stream outStream)
+    {
+        try
+        {
+            if (this.ContentType == ImageFormat.Gif)
             {
-                if (this.ContentType == ImageFormat.Gif)
+                var quantizer = new OctreeQuantizer(255, 8);
+                using (var quantized = quantizer.Quantize(image))
                 {
-                    var quantizer = new OctreeQuantizer(255, 8);
-                    using (var quantized = quantizer.Quantize(image))
-                    {
-                        quantized.Save(outStream, ImageFormat.Gif);
-                    }
-                }
-                else
-                {
-                    var eps = new EncoderParameters(1)
-                    {
-                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) },
-                    };
-                    var ici = GetEncoderInfo(GetImageMimeType(this.ContentType));
-                    image?.Save(outStream, ici, eps);
+                    quantized.Save(outStream, ImageFormat.Gif);
                 }
             }
-            finally
+            else
             {
-                image?.Dispose();
+                var eps = new EncoderParameters(1)
+                {
+                    Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) },
+                };
+                var ici = GetEncoderInfo(GetImageMimeType(this.ContentType));
+                image?.Save(outStream, ici, eps);
             }
         }
-
-        private bool IsPicVisibleToCurrentUser(int profileUserId)
+        finally
         {
-            var settings = PortalController.Instance.GetCurrentSettings();
-            var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
-            if (profileUser == null)
-            {
-                return false;
-            }
-
-            var photoProperty = profileUser.Profile.GetProperty("Photo");
-            if (photoProperty == null)
-            {
-                return false;
-            }
-
-            var currentUser = UserController.Instance.GetCurrentUserInfo();
-            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
+            image?.Dispose();
         }
+    }
+
+    private bool IsPicVisibleToCurrentUser(int profileUserId)
+    {
+        var settings = PortalController.Instance.GetCurrentSettings();
+        var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
+        if (profileUser == null)
+        {
+            return false;
+        }
+
+        var photoProperty = profileUser.Profile.GetProperty("Photo");
+        if (photoProperty == null)
+        {
+            return false;
+        }
+
+        var currentUser = UserController.Instance.GetCurrentUserInfo();
+        return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
     }
 }

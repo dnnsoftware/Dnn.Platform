@@ -24,28 +24,27 @@ using System.IO;
 
 using log4net.Core;
 
-namespace log4net.Layout.Pattern
+namespace log4net.Layout.Pattern;
+
+/// <summary>Converter to include event thread name</summary>
+/// <remarks>
+/// <para>
+/// Writes the <see cref="LoggingEvent.ThreadName"/> to the output.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+internal sealed class ThreadPatternConverter : PatternLayoutConverter 
 {
-    /// <summary>Converter to include event thread name</summary>
+    /// <summary>Write the ThreadName to the output</summary>
+    /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
+    /// <param name="loggingEvent">the event being logged</param>
     /// <remarks>
     /// <para>
-    /// Writes the <see cref="LoggingEvent.ThreadName"/> to the output.
+    /// Writes the <see cref="LoggingEvent.ThreadName"/> to the <paramref name="writer" />.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    internal sealed class ThreadPatternConverter : PatternLayoutConverter 
+    protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
     {
-        /// <summary>Write the ThreadName to the output</summary>
-        /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <remarks>
-        /// <para>
-        /// Writes the <see cref="LoggingEvent.ThreadName"/> to the <paramref name="writer" />.
-        /// </para>
-        /// </remarks>
-        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
-        {
-            writer.Write(loggingEvent.ThreadName);
-        }
+        writer.Write(loggingEvent.ThreadName);
     }
 }

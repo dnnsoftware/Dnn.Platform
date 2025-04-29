@@ -1,26 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Portals
+namespace DotNetNuke.Entities.Portals;
+
+using System.Collections.Generic;
+
+public interface IPortalGroupController
 {
-    using System.Collections.Generic;
+    int AddPortalGroup(PortalGroupInfo portalGroup);
 
-    public interface IPortalGroupController
-    {
-        int AddPortalGroup(PortalGroupInfo portalGroup);
+    void AddPortalToGroup(PortalInfo portal, PortalGroupInfo portalGroup, UserCopiedCallback callback);
 
-        void AddPortalToGroup(PortalInfo portal, PortalGroupInfo portalGroup, UserCopiedCallback callback);
+    void DeletePortalGroup(PortalGroupInfo portalGroup);
 
-        void DeletePortalGroup(PortalGroupInfo portalGroup);
+    IEnumerable<PortalGroupInfo> GetPortalGroups();
 
-        IEnumerable<PortalGroupInfo> GetPortalGroups();
+    IEnumerable<PortalInfo> GetPortalsByGroup(int portalGroupId);
 
-        IEnumerable<PortalInfo> GetPortalsByGroup(int portalGroupId);
+    void RemovePortalFromGroup(PortalInfo portal, PortalGroupInfo portalGroup, bool copyUsers, UserCopiedCallback callback);
 
-        void RemovePortalFromGroup(PortalInfo portal, PortalGroupInfo portalGroup, bool copyUsers, UserCopiedCallback callback);
+    void UpdatePortalGroup(PortalGroupInfo portalGroup);
 
-        void UpdatePortalGroup(PortalGroupInfo portalGroup);
-
-        bool IsModuleShared(int moduleId, PortalInfo portal);
-    }
+    bool IsModuleShared(int moduleId, PortalInfo portal);
 }

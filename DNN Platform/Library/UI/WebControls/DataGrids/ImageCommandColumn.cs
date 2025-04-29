@@ -1,151 +1,150 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.UI.WebControls
+namespace DotNetNuke.UI.WebControls;
+
+using System.Web;
+using System.Web.UI.WebControls;
+
+using DotNetNuke.Entities.Icons;
+
+/// <summary>
+/// The ImageCommandColumn control provides an Image Command (or Hyperlink) column
+/// for a Data Grid.
+/// </summary>
+public class ImageCommandColumn : TemplateColumn
 {
-    using System.Web;
-    using System.Web.UI.WebControls;
+    private ImageCommandColumnEditMode editMode = ImageCommandColumnEditMode.Command;
+    private bool showImage = true;
+    private string imageURL = string.Empty;
 
-    using DotNetNuke.Entities.Icons;
+    /// <summary>Gets or sets the CommandName for the Column.</summary>
+    /// <value>A String.</value>
+    public string CommandName { get; set; }
 
-    /// <summary>
-    /// The ImageCommandColumn control provides an Image Command (or Hyperlink) column
-    /// for a Data Grid.
-    /// </summary>
-    public class ImageCommandColumn : TemplateColumn
+    /// <summary>Gets or sets editMode for the Column.</summary>
+    /// <value>A String.</value>
+    public ImageCommandColumnEditMode EditMode
     {
-        private ImageCommandColumnEditMode editMode = ImageCommandColumnEditMode.Command;
-        private bool showImage = true;
-        private string imageURL = string.Empty;
+        get { return this.editMode; }
+        set { this.editMode = value; }
+    }
 
-        /// <summary>Gets or sets the CommandName for the Column.</summary>
-        /// <value>A String.</value>
-        public string CommandName { get; set; }
-
-        /// <summary>Gets or sets editMode for the Column.</summary>
-        /// <value>A String.</value>
-        public ImageCommandColumnEditMode EditMode
+    /// <summary>Gets or sets the URL of the Image.</summary>
+    /// <value>A String.</value>
+    public string ImageURL
+    {
+        get
         {
-            get { return this.editMode; }
-            set { this.editMode = value; }
-        }
-
-        /// <summary>Gets or sets the URL of the Image.</summary>
-        /// <value>A String.</value>
-        public string ImageURL
-        {
-            get
+            if (!string.IsNullOrEmpty(this.imageURL))
             {
-                if (!string.IsNullOrEmpty(this.imageURL))
-                {
-                    return this.imageURL;
-                }
-
-                return IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
+                return this.imageURL;
             }
 
-            set
-            {
-                this.imageURL = value;
-            }
+            return IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
         }
 
-        /// <summary>Gets or sets the Icon Key to obtain ImageURL.</summary>
-        /// <value>A String.</value>
-        public string IconKey { get; set; }
+        set
+        {
+            this.imageURL = value;
+        }
+    }
 
-        /// <summary>Gets or sets the Icon Siz to obtain ImageURL.</summary>
-        /// <value>A String.</value>
-        public string IconSize { get; set; }
+    /// <summary>Gets or sets the Icon Key to obtain ImageURL.</summary>
+    /// <value>A String.</value>
+    public string IconKey { get; set; }
 
-        /// <summary>Gets or sets the Icon Style to obtain ImageURL.</summary>
-        /// <value>A String.</value>
-        public string IconStyle { get; set; }
+    /// <summary>Gets or sets the Icon Siz to obtain ImageURL.</summary>
+    /// <value>A String.</value>
+    public string IconSize { get; set; }
 
-        /// <summary>Gets or sets the Key Field that provides a Unique key to the data Item.</summary>
-        /// <value>A String.</value>
-        public string KeyField { get; set; }
+    /// <summary>Gets or sets the Icon Style to obtain ImageURL.</summary>
+    /// <value>A String.</value>
+    public string IconStyle { get; set; }
 
-        /// <summary>Gets or sets the URL of the Link (unless DataBinding through KeyField).</summary>
-        /// <value>A String.</value>
-        public string NavigateURL { get; set; }
+    /// <summary>Gets or sets the Key Field that provides a Unique key to the data Item.</summary>
+    /// <value>A String.</value>
+    public string KeyField { get; set; }
 
-        /// <summary>Gets or sets the URL Formatting string.</summary>
-        /// <value>A String.</value>
-        public string NavigateURLFormatString { get; set; }
+    /// <summary>Gets or sets the URL of the Link (unless DataBinding through KeyField).</summary>
+    /// <value>A String.</value>
+    public string NavigateURL { get; set; }
 
-        /// <summary>Gets or sets javascript text to attach to the OnClick Event.</summary>
-        /// <value>A String.</value>
+    /// <summary>Gets or sets the URL Formatting string.</summary>
+    /// <value>A String.</value>
+    public string NavigateURLFormatString { get; set; }
+
+    /// <summary>Gets or sets javascript text to attach to the OnClick Event.</summary>
+    /// <value>A String.</value>
 // ReSharper disable InconsistentNaming
-        public string OnClickJS { get; set; }
+    public string OnClickJS { get; set; }
 
-        // ReSharper restore InconsistentNaming
+    // ReSharper restore InconsistentNaming
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether an Image is displayed.</summary>
-        /// <remarks>Defaults to True.</remarks>
-        /// <value>A Boolean.</value>
-        public bool ShowImage
+    /// <summary>Gets or sets a value indicating whether gets or sets whether an Image is displayed.</summary>
+    /// <remarks>Defaults to True.</remarks>
+    /// <value>A Boolean.</value>
+    public bool ShowImage
+    {
+        get { return this.showImage; }
+        set { this.showImage = value; }
+    }
+
+    /// <summary>Gets or sets the Text (for Header/Footer Templates).</summary>
+    /// <value>A String.</value>
+    public string Text { get; set; }
+
+    /// <summary>Gets or sets an flag that indicates whether the buttons are visible.</summary>
+    /// <value>A Boolean.</value>
+    public string VisibleField { get; set; }
+
+    /// <summary>Initialises the Column.</summary>
+    public override void Initialize()
+    {
+        this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+        this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+        this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
+
+        if (HttpContext.Current == null)
         {
-            get { return this.showImage; }
-            set { this.showImage = value; }
+            this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+            this.HeaderStyle.Font.Size = new FontUnit("10pt");
+            this.HeaderStyle.Font.Bold = true;
         }
 
-        /// <summary>Gets or sets the Text (for Header/Footer Templates).</summary>
-        /// <value>A String.</value>
-        public string Text { get; set; }
+        this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+        this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+    }
 
-        /// <summary>Gets or sets an flag that indicates whether the buttons are visible.</summary>
-        /// <value>A Boolean.</value>
-        public string VisibleField { get; set; }
-
-        /// <summary>Initialises the Column.</summary>
-        public override void Initialize()
+    /// <summary>Creates a ImageCommandColumnTemplate.</summary>
+    /// <returns>A ImageCommandColumnTemplate.</returns>
+    private ImageCommandColumnTemplate CreateTemplate(ListItemType type)
+    {
+        bool isDesignMode = HttpContext.Current == null;
+        var template = new ImageCommandColumnTemplate(type);
+        if (type != ListItemType.Header)
         {
-            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
-            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
-            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
-
-            if (HttpContext.Current == null)
+            template.ImageURL = this.ImageURL;
+            if (!isDesignMode)
             {
-                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.HeaderStyle.Font.Size = new FontUnit("10pt");
-                this.HeaderStyle.Font.Bold = true;
+                template.CommandName = this.CommandName;
+                template.VisibleField = this.VisibleField;
+                template.KeyField = this.KeyField;
             }
-
-            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
 
-        /// <summary>Creates a ImageCommandColumnTemplate.</summary>
-        /// <returns>A ImageCommandColumnTemplate.</returns>
-        private ImageCommandColumnTemplate CreateTemplate(ListItemType type)
-        {
-            bool isDesignMode = HttpContext.Current == null;
-            var template = new ImageCommandColumnTemplate(type);
-            if (type != ListItemType.Header)
-            {
-                template.ImageURL = this.ImageURL;
-                if (!isDesignMode)
-                {
-                    template.CommandName = this.CommandName;
-                    template.VisibleField = this.VisibleField;
-                    template.KeyField = this.KeyField;
-                }
-            }
+        template.EditMode = this.EditMode;
+        template.NavigateURL = this.NavigateURL;
+        template.NavigateURLFormatString = this.NavigateURLFormatString;
+        template.OnClickJS = this.OnClickJS;
+        template.ShowImage = this.ShowImage;
+        template.Visible = this.Visible;
 
-            template.EditMode = this.EditMode;
-            template.NavigateURL = this.NavigateURL;
-            template.NavigateURLFormatString = this.NavigateURLFormatString;
-            template.OnClickJS = this.OnClickJS;
-            template.ShowImage = this.ShowImage;
-            template.Visible = this.Visible;
+        template.Text = type == ListItemType.Header ? this.HeaderText : this.Text;
 
-            template.Text = type == ListItemType.Header ? this.HeaderText : this.Text;
+        // Set Design Mode to True
+        template.DesignMode = isDesignMode;
 
-            // Set Design Mode to True
-            template.DesignMode = isDesignMode;
-
-            return template;
-        }
+        return template;
     }
 }

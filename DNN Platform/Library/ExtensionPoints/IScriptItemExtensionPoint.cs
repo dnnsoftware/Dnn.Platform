@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.ExtensionPoints
+namespace DotNetNuke.ExtensionPoints;
+
+public interface IScriptItemExtensionPoint : IExtensionPoint
 {
-    public interface IScriptItemExtensionPoint : IExtensionPoint
-    {
-        string ScriptName { get; }
-    }
+    string ScriptName { get; }
 }

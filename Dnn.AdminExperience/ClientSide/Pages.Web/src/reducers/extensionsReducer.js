@@ -1,16 +1,18 @@
 import ActionTypes from "../constants/actionTypes/extensionsActionTypes";
 
-export default function extensionsReducer(state = {
-    toolbarComponents: [],
-    multiplePagesComponents: [],
-    pageSettingsComponents: [],
-    pageDetailsFooterComponents: [],
-    settingsButtonComponents: {},
-    pageTypeSelectorComponents: [],
-    additionalPanels: [],
-    pageInContextComponents: []
-}, action) {
-
+export default function extensionsReducer(
+    state = {
+        toolbarComponents: [],
+        multiplePagesComponents: [],
+        pageSettingsComponents: [],
+        pageDetailsFooterComponents: [],
+        settingsButtonComponents: {},
+        pageTypeSelectorComponents: [],
+        additionalPanels: [],
+        pageInContextComponents: [],
+    },
+    action,
+) {
     function addComponent(component) {
         const newSettingsButtonComponents = { ...state.settingsButtonComponents };
         newSettingsButtonComponents[component.id] = component.component;
@@ -18,7 +20,9 @@ export default function extensionsReducer(state = {
     }
     function addInContextComponent(component) {
         let newPageInContextComponents = [...state.pageInContextComponents];
-        newPageInContextComponents = newPageInContextComponents.concat(component.component);
+        newPageInContextComponents = newPageInContextComponents.concat(
+            component.component,
+        );
         return newPageInContextComponents;
     }
 
@@ -32,37 +36,46 @@ export default function extensionsReducer(state = {
         case ActionTypes.REGISTER_TOOLBAR_COMPONENT:
             return {
                 ...state,
-                toolbarComponents: [...state.toolbarComponents, action.data.component]
+                toolbarComponents: [...state.toolbarComponents, action.data.component],
             };
         case ActionTypes.REGISTER_MULTIPLE_PAGES_COMPONENT:
             return {
                 ...state,
-                multiplePagesComponents: [...state.multiplePagesComponents, action.data.component]
+                multiplePagesComponents: [
+                    ...state.multiplePagesComponents,
+                    action.data.component,
+                ],
             };
         case ActionTypes.REGISTER_PAGE_SETTINGS_COMPONENT:
             return {
                 ...state,
-                pageSettingsComponent : addPageSettingsComponent(action.data.component)
+                pageSettingsComponent: addPageSettingsComponent(action.data.component),
             };
         case ActionTypes.REGISTER_PAGE_DETAILS_FOOTER_COMPONENT:
             return {
                 ...state,
-                pageDetailsFooterComponents: [...state.pageDetailsFooterComponents, action.data.component]
+                pageDetailsFooterComponents: [
+                    ...state.pageDetailsFooterComponents,
+                    action.data.component,
+                ],
             };
         case ActionTypes.REGISTER_SETTINGS_BUTTON_COMPONENT:
             return {
                 ...state,
-                settingsButtonComponents: addComponent(action.data.component)
+                settingsButtonComponents: addComponent(action.data.component),
             };
         case ActionTypes.REGISTER_PAGE_TYPE_SELECTOR_COMPONENT:
             return {
                 ...state,
-                pageTypeSelectorComponents: [...state.pageTypeSelectorComponents, action.data.component]
+                pageTypeSelectorComponents: [
+                    ...state.pageTypeSelectorComponents,
+                    action.data.component,
+                ],
             };
         case ActionTypes.REGISTER_INCONTEXTMENU_COMPONENT:
             return {
                 ...state,
-                pageInContextComponents: addInContextComponent(action.data.component)
+                pageInContextComponents: addInContextComponent(action.data.component),
             };
         default:
             return state;

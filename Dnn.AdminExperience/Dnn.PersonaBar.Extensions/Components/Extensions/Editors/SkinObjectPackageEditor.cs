@@ -2,75 +2,74 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Extensions.Components.Editors
+namespace Dnn.PersonaBar.Extensions.Components.Editors;
+
+using System;
+
+using Dnn.PersonaBar.Extensions.Components.Dto;
+using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Packages;
+
+public class SkinObjectPackageEditor : IPackageEditor
 {
-    using System;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinObjectPackageEditor));
 
-    using Dnn.PersonaBar.Extensions.Components.Dto;
-    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Installer.Packages;
-
-    public class SkinObjectPackageEditor : IPackageEditor
+    /// <inheritdoc/>
+    public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinObjectPackageEditor));
+        var skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
+        var detail = new SkinObjectPackageDetailDto(portalId, package);
+        var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
-        /// <inheritdoc/>
-        public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
+        detail.ControlKey = skinControl.ControlKey;
+        detail.ControlSrc = skinControl.ControlSrc;
+        detail.SupportsPartialRendering = skinControl.SupportsPartialRendering;
+        detail.ReadOnly |= !isHostUser;
+
+        return detail;
+    }
+
+    /// <inheritdoc/>
+    public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
+    {
+        errorMessage = string.Empty;
+
+        try
         {
-            var skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
-            var detail = new SkinObjectPackageDetailDto(portalId, package);
-            var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
+            string value;
+            var skinControl = SkinControlController.GetSkinControlByPackageID(packageSettings.PackageId);
 
-            detail.ControlKey = skinControl.ControlKey;
-            detail.ControlSrc = skinControl.ControlSrc;
-            detail.SupportsPartialRendering = skinControl.SupportsPartialRendering;
-            detail.ReadOnly |= !isHostUser;
+            if (packageSettings.EditorActions.TryGetValue("controlKey", out value)
+                && !string.IsNullOrEmpty(value))
+            {
+                skinControl.ControlKey = value;
+            }
 
-            return detail;
+            if (packageSettings.EditorActions.TryGetValue("controlSrc", out value)
+                && !string.IsNullOrEmpty(value))
+            {
+                skinControl.ControlSrc = value;
+            }
+
+            if (packageSettings.EditorActions.TryGetValue("supportsPartialRendering", out value)
+                && !string.IsNullOrEmpty(value))
+            {
+                bool b;
+                bool.TryParse(value, out b);
+                skinControl.SupportsPartialRendering = b;
+            }
+
+            SkinControlController.SaveSkinControl(skinControl);
+            return true;
         }
-
-        /// <inheritdoc/>
-        public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
+        catch (Exception ex)
         {
-            errorMessage = string.Empty;
-
-            try
-            {
-                string value;
-                var skinControl = SkinControlController.GetSkinControlByPackageID(packageSettings.PackageId);
-
-                if (packageSettings.EditorActions.TryGetValue("controlKey", out value)
-                    && !string.IsNullOrEmpty(value))
-                {
-                    skinControl.ControlKey = value;
-                }
-
-                if (packageSettings.EditorActions.TryGetValue("controlSrc", out value)
-                    && !string.IsNullOrEmpty(value))
-                {
-                    skinControl.ControlSrc = value;
-                }
-
-                if (packageSettings.EditorActions.TryGetValue("supportsPartialRendering", out value)
-                    && !string.IsNullOrEmpty(value))
-                {
-                    bool b;
-                    bool.TryParse(value, out b);
-                    skinControl.SupportsPartialRendering = b;
-                }
-
-                SkinControlController.SaveSkinControl(skinControl);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                errorMessage = ex.Message;
-                return false;
-            }
+            Logger.Error(ex);
+            errorMessage = ex.Message;
+            return false;
         }
     }
 }

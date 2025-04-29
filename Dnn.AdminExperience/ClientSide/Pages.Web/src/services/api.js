@@ -12,27 +12,24 @@ function serializeQueryStringParameters(obj) {
 }
 
 function getErrorMessageFromXHRError(error) {
-    if (error && 
-        error.responseJSON && 
-        error.responseJSON.Message) {
+    if (error && error.responseJSON && error.responseJSON.Message) {
         return {
-            message: error.responseJSON.Message
+            message: error.responseJSON.Message,
         };
     }
     return {
-        message: null
+        message: null,
     };
 }
 
 class Api {
-
     constructor(controller) {
         this.controller = controller;
         this.moduleRoot = "PersonaBar";
     }
 
     getServiceFramework() {
-        const sf = utils.getServiceFramework(); 
+        const sf = utils.getServiceFramework();
         sf.moduleRoot = this.moduleRoot;
         sf.controller = this.controller;
         return sf;
@@ -41,9 +38,14 @@ class Api {
     get(method, searchParameters) {
         const sf = this.getServiceFramework();
         return new Promise((callback, errorCallback) => {
-            sf.get(method + "?" + serializeQueryStringParameters(searchParameters), {}, callback, function onError(error) {
-                errorCallback(getErrorMessageFromXHRError(error));
-            });
+            sf.get(
+                method + "?" + serializeQueryStringParameters(searchParameters),
+                {},
+                callback,
+                function onError(error) {
+                    errorCallback(getErrorMessageFromXHRError(error));
+                },
+            );
         });
     }
 

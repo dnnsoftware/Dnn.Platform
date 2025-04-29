@@ -12,14 +12,15 @@ application.dispatch = store.dispatch;
 application.init();
 
 if (!window.dnn.siteImportExport) {
-    window.dnn.siteImportExport = {};
+  window.dnn.siteImportExport = {};
 }
-window.dnn.siteImportExport.registerItemToExport = itemsToExportService.registerItemToExport;
+window.dnn.siteImportExport.registerItemToExport =
+  itemsToExportService.registerItemToExport;
 
 const appContainer = document.getElementById("siteimportexport-container");
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    appContainer
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  appContainer,
 );

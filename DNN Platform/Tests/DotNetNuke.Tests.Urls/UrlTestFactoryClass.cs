@@ -2,401 +2,400 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Tests.Urls
+namespace DotNetNuke.Tests.Urls;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+using DotNetNuke.Entities.Urls;
+using NUnit.Framework;
+
+internal static class UrlTestFactoryClass
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-
-    using DotNetNuke.Entities.Urls;
-    using NUnit.Framework;
-
-    internal static class UrlTestFactoryClass
+    internal static IEnumerable FriendlyUrl_BaseTestCases
     {
-        internal static IEnumerable FriendlyUrl_BaseTestCases
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                TestUtil.ReadStream("FriendlyUrl\\BaseTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
+            TestUtil.ReadStream("FriendlyUrl\\BaseTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_ForceLowerCaseTestCases
+    internal static IEnumerable FriendlyUrl_ForceLowerCaseTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("FriendlyUrl", "ForceLowerCase", testData);
+            GetTestsWithAliases("FriendlyUrl", "ForceLowerCase", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_ImprovedTestCases
+    internal static IEnumerable FriendlyUrl_ImprovedTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                TestUtil.ReadStream("FriendlyUrl\\ImprovedTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
+            TestUtil.ReadStream("FriendlyUrl\\ImprovedTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_PageExtensionTestCases
+    internal static IEnumerable FriendlyUrl_PageExtensionTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("FriendlyUrl", "PageExtension", testData);
+            GetTestsWithAliases("FriendlyUrl", "PageExtension", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_PrimaryPortalAliasTestCases
+    internal static IEnumerable FriendlyUrl_PrimaryPortalAliasTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("FriendlyUrl", "PrimaryPortalAlias", testData);
+            GetTestsWithAliases("FriendlyUrl", "PrimaryPortalAlias", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_RegexTestCases
+    internal static IEnumerable FriendlyUrl_RegexTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("FriendlyUrl", "Regex", testData);
+            GetTestsWithAliases("FriendlyUrl", "Regex", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_ReplaceCharsTestCases
+    internal static IEnumerable FriendlyUrl_ReplaceCharsTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                TestUtil.ReadStream("FriendlyUrl\\ReplaceCharsTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
+            TestUtil.ReadStream("FriendlyUrl\\ReplaceCharsTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_ReplaceSpaceTestCases
+    internal static IEnumerable FriendlyUrl_ReplaceSpaceTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("FriendlyUrl", "ReplaceSpace", testData);
+            GetTestsWithAliases("FriendlyUrl", "ReplaceSpace", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_SpaceEncodingTestCases
+    internal static IEnumerable FriendlyUrl_SpaceEncodingTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("FriendlyUrl", "SpaceEncoding", testData);
+            GetTestsWithAliases("FriendlyUrl", "SpaceEncoding", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable FriendlyUrl_VanityUrlTestCases
+    internal static IEnumerable FriendlyUrl_VanityUrlTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("FriendlyUrl", "VanityUrl", testData);
+            GetTestsWithAliases("FriendlyUrl", "VanityUrl", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_BasicTestCases
+    internal static IEnumerable UrlRewrite_BasicTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                TestUtil.ReadStream("UrlRewrite\\TestList", (line, header) => GetTestsWithAliases("UrlRewrite", line, testData));
+            TestUtil.ReadStream("UrlRewrite\\TestList", (line, header) => GetTestsWithAliases("UrlRewrite", line, testData));
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_DeletedTabHandlingTestCases
+    internal static IEnumerable UrlRewrite_DeletedTabHandlingTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "DeletedTabHandling", testData);
+            GetTestsWithAliases("UrlRewrite", "DeletedTabHandling", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_DoNotRedirect
+    internal static IEnumerable UrlRewrite_DoNotRedirect
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "DoNotRedirect", testData);
+            GetTestsWithAliases("UrlRewrite", "DoNotRedirect", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_ForceLowerCaseTestCases
+    internal static IEnumerable UrlRewrite_ForceLowerCaseTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "ForceLowerCase", testData);
+            GetTestsWithAliases("UrlRewrite", "ForceLowerCase", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_ForwardExternalUrlTestCases
+    internal static IEnumerable UrlRewrite_ForwardExternalUrlTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "ForwardExternalUrl", testData);
+            GetTestsWithAliases("UrlRewrite", "ForwardExternalUrl", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_JiraTests
+    internal static IEnumerable UrlRewrite_JiraTests
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "Jira_Tests", testData);
+            GetTestsWithAliases("UrlRewrite", "Jira_Tests", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_PrimaryPortalAliasTestCases
+    internal static IEnumerable UrlRewrite_PrimaryPortalAliasTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "PrimaryPortalAlias", testData);
-                GetTests(string.Empty, string.Empty, "UrlRewrite", "PrimaryPortalAlias_Default", testData);
+            GetTestsWithAliases("UrlRewrite", "PrimaryPortalAlias", testData);
+            GetTests(string.Empty, string.Empty, "UrlRewrite", "PrimaryPortalAlias_Default", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_RegexTestCases
+    internal static IEnumerable UrlRewrite_RegexTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "Regex", testData);
+            GetTestsWithAliases("UrlRewrite", "Regex", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_ReplaceCharsTestCases
+    internal static IEnumerable UrlRewrite_ReplaceCharsTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                TestUtil.ReadStream("UrlRewrite\\ReplaceCharsTestList", (line, header) => GetTestsWithAliases("UrlRewrite", line, testData));
+            TestUtil.ReadStream("UrlRewrite\\ReplaceCharsTestList", (line, header) => GetTestsWithAliases("UrlRewrite", line, testData));
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_ReplaceSpaceTestCases
+    internal static IEnumerable UrlRewrite_ReplaceSpaceTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "ReplaceSpace", testData);
+            GetTestsWithAliases("UrlRewrite", "ReplaceSpace", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_SecureRedirectTestCases
+    internal static IEnumerable UrlRewrite_SecureRedirectTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "SecureRedirect", testData);
+            GetTestsWithAliases("UrlRewrite", "SecureRedirect", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_SiteRootRedirectTestCases
+    internal static IEnumerable UrlRewrite_SiteRootRedirectTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "SiteRootRedirect", testData);
+            GetTestsWithAliases("UrlRewrite", "SiteRootRedirect", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static IEnumerable UrlRewrite_VanityUrlTestCases
+    internal static IEnumerable UrlRewrite_VanityUrlTestCases
+    {
+        get
         {
-            get
-            {
-                var testData = new ArrayList();
+            var testData = new ArrayList();
 
-                GetTestsWithAliases("UrlRewrite", "VanityUrl", testData);
+            GetTestsWithAliases("UrlRewrite", "VanityUrl", testData);
 
-                return testData;
-            }
+            return testData;
         }
+    }
 
-        internal static FriendlyUrlSettings GetSettings(string testType, string testName, int portalId)
+    internal static FriendlyUrlSettings GetSettings(string testType, string testName, int portalId)
+    {
+        return GetSettings(testType, testName, "Settings", portalId);
+    }
+
+    internal static FriendlyUrlSettings GetSettings(string testType, string testName, string settingsFile, int portalId)
+    {
+        var settings = new FriendlyUrlSettings(portalId);
+
+        // Read Test Settings
+        TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
         {
-            return GetSettings(testType, testName, "Settings", portalId);
-        }
+            string[] fields = line.Split(',');
+            string key = fields[0].Trim();
+            string value = fields[1].Trim();
 
-        internal static FriendlyUrlSettings GetSettings(string testType, string testName, string settingsFile, int portalId)
-        {
-            var settings = new FriendlyUrlSettings(portalId);
-
-            // Read Test Settings
-            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+            var type = typeof(FriendlyUrlSettings);
+            var property = type.GetProperty(key);
+            if (property != null)
             {
-                string[] fields = line.Split(',');
-                string key = fields[0].Trim();
-                string value = fields[1].Trim();
-
-                var type = typeof(FriendlyUrlSettings);
-                var property = type.GetProperty(key);
-                if (property != null)
+                if (property.PropertyType == typeof(bool))
                 {
-                    if (property.PropertyType == typeof(bool))
-                    {
-                        property.SetValue(settings, Convert.ToBoolean(value), null);
-                    }
-                    else if (property.PropertyType == typeof(int))
-                    {
-                        property.SetValue(settings, Convert.ToInt32(value), null);
-                    }
-                    else if (property.PropertyType.BaseType == typeof(Enum))
-                    {
-                        property.SetValue(settings, Enum.Parse(property.PropertyType, value), null);
-                    }
-                    else
-                    {
-                        property.SetValue(settings, value, null);
-                    }
+                    property.SetValue(settings, Convert.ToBoolean(value), null);
                 }
-            });
-            return settings;
-        }
-
-        internal static Dictionary<string, string> GetDictionary(string testType, string testName, string settingsFile)
-        {
-            var dictionary = new Dictionary<string, string>();
-
-            // Read Test Settings
-            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
-            {
-                string[] fields = line.Split(',');
-                string key = fields[0].Trim();
-                string value = fields[1].Trim();
-
-                dictionary.Add(key, value);
-            });
-            return dictionary;
-        }
-
-        private static void GetTestsWithAliases(string testType, string testName, ArrayList testData)
-        {
-            TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
-            {
-                string[] fields = line.Split(',');
-                GetTests(fields[1].Trim(), fields[0].Trim(), testType, testName, testData);
-            });
-        }
-
-        private static void GetTests(string testPrefix, string alias, string testType, string testName, ArrayList testData)
-        {
-            try
-            {
-                // Read Test File Data
-                TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, "TestFile"), (line, header) =>
-                            {
-                                var fieldList = new Dictionary<string, string>();
-                                fieldList["TestName"] = testName;
-                                fieldList["Alias"] = alias;
-                                string[] headers = header.Split(',');
-                                string[] fields = line.Split(',');
-                                for (int i = 0; i < fields.Length; i++)
-                                {
-                                    string key = headers[i].Trim(new[] { '\t', '"' });
-                                    string val = fields[i].Trim(new[] { '\t', '"' });
-
-                                    fieldList[key] = val;
-                                }
-
-                                string name = testName + "_";
-                                if (!string.IsNullOrEmpty(testPrefix))
-                                {
-                                    name += testPrefix + "_";
-                                }
-
-                                name += fields[0];
-
-                                testData.Add(new TestCaseData(fieldList).SetName(name));
-                            });
+                else if (property.PropertyType == typeof(int))
+                {
+                    property.SetValue(settings, Convert.ToInt32(value), null);
+                }
+                else if (property.PropertyType.BaseType == typeof(Enum))
+                {
+                    property.SetValue(settings, Enum.Parse(property.PropertyType, value), null);
+                }
+                else
+                {
+                    property.SetValue(settings, value, null);
+                }
             }
+        });
+        return settings;
+    }
 
-            // ReSharper disable RedundantCatchClause
+    internal static Dictionary<string, string> GetDictionary(string testType, string testName, string settingsFile)
+    {
+        var dictionary = new Dictionary<string, string>();
+
+        // Read Test Settings
+        TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+        {
+            string[] fields = line.Split(',');
+            string key = fields[0].Trim();
+            string value = fields[1].Trim();
+
+            dictionary.Add(key, value);
+        });
+        return dictionary;
+    }
+
+    private static void GetTestsWithAliases(string testType, string testName, ArrayList testData)
+    {
+        TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
+        {
+            string[] fields = line.Split(',');
+            GetTests(fields[1].Trim(), fields[0].Trim(), testType, testName, testData);
+        });
+    }
+
+    private static void GetTests(string testPrefix, string alias, string testType, string testName, ArrayList testData)
+    {
+        try
+        {
+            // Read Test File Data
+            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, "TestFile"), (line, header) =>
+            {
+                var fieldList = new Dictionary<string, string>();
+                fieldList["TestName"] = testName;
+                fieldList["Alias"] = alias;
+                string[] headers = header.Split(',');
+                string[] fields = line.Split(',');
+                for (int i = 0; i < fields.Length; i++)
+                {
+                    string key = headers[i].Trim(new[] { '\t', '"' });
+                    string val = fields[i].Trim(new[] { '\t', '"' });
+
+                    fieldList[key] = val;
+                }
+
+                string name = testName + "_";
+                if (!string.IsNullOrEmpty(testPrefix))
+                {
+                    name += testPrefix + "_";
+                }
+
+                name += fields[0];
+
+                testData.Add(new TestCaseData(fieldList).SetName(name));
+            });
+        }
+
+        // ReSharper disable RedundantCatchClause
 #pragma warning disable 168
-            catch (Exception exc)
+        catch (Exception exc)
 #pragma warning restore 168
-            {
-                throw;
-            }
-
-            // ReSharper restore RedundantCatchClause
+        {
+            throw;
         }
+
+        // ReSharper restore RedundantCatchClause
     }
 }

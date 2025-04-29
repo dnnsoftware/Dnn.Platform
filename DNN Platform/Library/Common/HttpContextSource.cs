@@ -2,39 +2,38 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Common
+namespace DotNetNuke.Common;
+
+using System.Web;
+
+/// <summary>A unit testable alternative to HttpContext.Current.</summary>
+public class HttpContextSource
 {
-    using System.Web;
+    private static HttpContextBase fakeContext;
 
-    /// <summary>A unit testable alternative to HttpContext.Current.</summary>
-    public class HttpContextSource
+    /// <summary>Gets the current HttpContext.</summary>
+    public static HttpContextBase Current
     {
-        private static HttpContextBase fakeContext;
-
-        /// <summary>Gets the current HttpContext.</summary>
-        public static HttpContextBase Current
+        get
         {
-            get
+            if (fakeContext != null)
             {
-                if (fakeContext != null)
-                {
-                    return fakeContext;
-                }
-
-                if (HttpContext.Current != null)
-                {
-                    return new HttpContextWrapper(HttpContext.Current);
-                }
-
-                return null;
+                return fakeContext;
             }
-        }
 
-        /// <summary>Injects a fake/mock context for unit testing.</summary>
-        /// <param name="instance">The fake context to inject.</param>
-        public static void RegisterInstance(HttpContextBase instance)
-        {
-            fakeContext = instance;
+            if (HttpContext.Current != null)
+            {
+                return new HttpContextWrapper(HttpContext.Current);
+            }
+
+            return null;
         }
+    }
+
+    /// <summary>Injects a fake/mock context for unit testing.</summary>
+    /// <param name="instance">The fake context to inject.</param>
+    public static void RegisterInstance(HttpContextBase instance)
+    {
+        fakeContext = instance;
     }
 }

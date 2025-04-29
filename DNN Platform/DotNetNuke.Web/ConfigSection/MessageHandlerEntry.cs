@@ -2,96 +2,95 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.ConfigSection
+namespace DotNetNuke.Web.ConfigSection;
+
+using System.Configuration;
+
+using DotNetNuke.Web.Api;
+
+public class MessageHandlerEntry : ConfigurationElement
 {
-    using System.Configuration;
+    private const string NameTag = "name";
+    private const string ClassNameTag = "type";
+    private const string EnabledNameTag = "enabled";
+    private const string DefaultIncludeTag = "defaultInclude";
+    private const string ForceSslTag = "forceSSL";
 
-    using DotNetNuke.Web.Api;
+    [ConfigurationProperty(NameTag, DefaultValue = "", IsRequired = true)]
 
-    public class MessageHandlerEntry : ConfigurationElement
+    // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
+    public string Name
     {
-        private const string NameTag = "name";
-        private const string ClassNameTag = "type";
-        private const string EnabledNameTag = "enabled";
-        private const string DefaultIncludeTag = "defaultInclude";
-        private const string ForceSslTag = "forceSSL";
-
-        [ConfigurationProperty(NameTag, DefaultValue = "", IsRequired = true)]
-
-        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
-        public string Name
+        get
         {
-            get
-            {
-                return (string)this[NameTag];
-            }
-
-            set
-            {
-                this[NameTag] = value;
-            }
+            return (string)this[NameTag];
         }
 
-        [ConfigurationProperty(ClassNameTag, DefaultValue = "", IsRequired = true)]
-
-        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
-        public string ClassName
+        set
         {
-            get
-            {
-                return (string)this[ClassNameTag];
-            }
+            this[NameTag] = value;
+        }
+    }
 
-            set
-            {
-                this[ClassNameTag] = value;
-            }
+    [ConfigurationProperty(ClassNameTag, DefaultValue = "", IsRequired = true)]
+
+    // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
+    public string ClassName
+    {
+        get
+        {
+            return (string)this[ClassNameTag];
         }
 
-        [ConfigurationProperty(EnabledNameTag, DefaultValue = false, IsRequired = true)]
-        public bool Enabled
+        set
         {
-            get
-            {
-                var b = (bool?)this[EnabledNameTag];
-                return b.Value;
-            }
+            this[ClassNameTag] = value;
+        }
+    }
 
-            set
-            {
-                this[EnabledNameTag] = value;
-            }
+    [ConfigurationProperty(EnabledNameTag, DefaultValue = false, IsRequired = true)]
+    public bool Enabled
+    {
+        get
+        {
+            var b = (bool?)this[EnabledNameTag];
+            return b.Value;
         }
 
-        /// <summary>Gets or sets a value indicating whether this property specifies whether this is automatically included when the <see cref="DnnAuthorizeAttribute"/>.</summary>
-        [ConfigurationProperty(DefaultIncludeTag, DefaultValue = false, IsRequired = true)]
-        public bool DefaultInclude
+        set
         {
-            get
-            {
-                var b = (bool?)this[DefaultIncludeTag];
-                return b.Value;
-            }
+            this[EnabledNameTag] = value;
+        }
+    }
 
-            set
-            {
-                this[DefaultIncludeTag] = value;
-            }
+    /// <summary>Gets or sets a value indicating whether this property specifies whether this is automatically included when the <see cref="DnnAuthorizeAttribute"/>.</summary>
+    [ConfigurationProperty(DefaultIncludeTag, DefaultValue = false, IsRequired = true)]
+    public bool DefaultInclude
+    {
+        get
+        {
+            var b = (bool?)this[DefaultIncludeTag];
+            return b.Value;
         }
 
-        [ConfigurationProperty(ForceSslTag, DefaultValue = true, IsRequired = true)]
-        public bool ForceSsl
+        set
         {
-            get
-            {
-                var b = (bool?)this[ForceSslTag];
-                return b.Value;
-            }
+            this[DefaultIncludeTag] = value;
+        }
+    }
 
-            set
-            {
-                this[ForceSslTag] = value;
-            }
+    [ConfigurationProperty(ForceSslTag, DefaultValue = true, IsRequired = true)]
+    public bool ForceSsl
+    {
+        get
+        {
+            var b = (bool?)this[ForceSslTag];
+            return b.Value;
+        }
+
+        set
+        {
+            this[ForceSslTag] = value;
         }
     }
 }

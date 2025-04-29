@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.PersonaBar.Prompt.Components
+namespace Dnn.PersonaBar.Prompt.Components;
+
+public class Constants
 {
-    public class Constants
-    {
-        internal const string LocalResourcesFile = DotNetNuke.Prompt.Constants.DefaultPromptResourceFile;
-        internal const string ModulesCategory = "Prompt_ModulesCategory";
-        internal const string GeneralCategory = "Prompt_GeneralCategory";
-        internal const string HostCategory = "Prompt_HostCategory";
-        internal const string PortalCategory = "Prompt_PortalCategory";
-    }
+    internal const string LocalResourcesFile = DotNetNuke.Prompt.Constants.DefaultPromptResourceFile;
+    internal const string ModulesCategory = "Prompt_ModulesCategory";
+    internal const string GeneralCategory = "Prompt_GeneralCategory";
+    internal const string HostCategory = "Prompt_HostCategory";
+    internal const string PortalCategory = "Prompt_PortalCategory";
 }

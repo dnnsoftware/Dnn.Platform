@@ -4,14 +4,15 @@ containing a copy of the below, called "PersonaBarTheme.css" and placing it in
 the "Portals/_default" directory. If the custom CSS file exists, it will be loaded 
 instead of this one.
 ---------------------------------------------------------------------------------*/
-:root{
-    --dnn-color-pb-menu-background: #0e2936;
-    --dnn-color-pb-menu-background-hover: #0b1c24;
-    --dnn-color-pb-menu-icon: #3c7a9a;
-    --dnn-color-pb-menu-icon-background: #0b1c24;
-    --dnn-color-pb-menu-divider: #1e485e;
-    --dnn-color-pb-menu-text-highlight: #3c7a9a;
-    
-    --dnn-pb-menu-brand-background: url('../images/Logo.svg') no-repeat center center;
-    --dnn-pb-menu-brand-background-size: 32px auto;
+:root {
+  --dnn-color-pb-menu-background: #0e2936;
+  --dnn-color-pb-menu-background-hover: #0b1c24;
+  --dnn-color-pb-menu-icon: #3c7a9a;
+  --dnn-color-pb-menu-icon-background: #0b1c24;
+  --dnn-color-pb-menu-divider: #1e485e;
+  --dnn-color-pb-menu-text-highlight: #3c7a9a;
+
+  --dnn-pb-menu-brand-background: url("../images/Logo.svg") no-repeat center
+    center;
+  --dnn-pb-menu-brand-background-size: 32px auto;
 }

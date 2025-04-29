@@ -1,553 +1,552 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Services.Installer.Installers
+namespace DotNetNuke.Services.Installer.Installers;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml.XPath;
+
+using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.EventQueue;
+using DotNetNuke.Services.Installer.Dependencies;
+using DotNetNuke.Services.Installer.Packages;
+
+using SchwabenCode.QuickIO;
+
+/// <summary>The PackageInstaller class is an Installer for Packages.</summary>
+public class PackageInstaller : ComponentInstallerBase
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Xml.XPath;
+    private readonly SortedList<int, ComponentInstallerBase> componentInstallers = new SortedList<int, ComponentInstallerBase>();
+    private PackageInfo installedPackage;
+    private EventMessage eventMessage;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Services.EventQueue;
-    using DotNetNuke.Services.Installer.Dependencies;
-    using DotNetNuke.Services.Installer.Packages;
-
-    using SchwabenCode.QuickIO;
-
-    /// <summary>The PackageInstaller class is an Installer for Packages.</summary>
-    public class PackageInstaller : ComponentInstallerBase
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
+    /// This Constructor creates a new PackageInstaller instance.
+    /// </summary>
+    /// <param name="package">A PackageInfo instance.</param>
+    public PackageInstaller(PackageInfo package)
     {
-        private readonly SortedList<int, ComponentInstallerBase> componentInstallers = new SortedList<int, ComponentInstallerBase>();
-        private PackageInfo installedPackage;
-        private EventMessage eventMessage;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
-        /// This Constructor creates a new PackageInstaller instance.
-        /// </summary>
-        /// <param name="package">A PackageInfo instance.</param>
-        public PackageInstaller(PackageInfo package)
+        this.IsValid = true;
+        this.DeleteFiles = Null.NullBoolean;
+        this.Package = package;
+        if (!string.IsNullOrEmpty(package.Manifest))
         {
-            this.IsValid = true;
-            this.DeleteFiles = Null.NullBoolean;
-            this.Package = package;
-            if (!string.IsNullOrEmpty(package.Manifest))
+            // Create an XPathDocument from the Xml
+            var doc = new XPathDocument(new StringReader(package.Manifest));
+            XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
+            this.ReadComponents(nav);
+        }
+        else
+        {
+            ComponentInstallerBase installer = InstallerFactory.GetInstaller(package.PackageType);
+            if (installer != null)
             {
-                // Create an XPathDocument from the Xml
-                var doc = new XPathDocument(new StringReader(package.Manifest));
-                XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
-                this.ReadComponents(nav);
-            }
-            else
-            {
-                ComponentInstallerBase installer = InstallerFactory.GetInstaller(package.PackageType);
-                if (installer != null)
-                {
-                    // Set package
-                    installer.Package = package;
+                // Set package
+                installer.Package = package;
 
-                    // Set type
-                    installer.Type = package.PackageType;
-                    this.componentInstallers.Add(0, installer);
-                }
+                // Set type
+                installer.Type = package.PackageType;
+                this.componentInstallers.Add(0, installer);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
+    /// This Constructor creates a new PackageInstaller instance.
+    /// </summary>
+    /// <param name="info">An InstallerInfo instance.</param>
+    /// <param name="packageManifest">The manifest as a string.</param>
+    public PackageInstaller(string packageManifest, InstallerInfo info)
+    {
+        this.IsValid = true;
+        this.DeleteFiles = Null.NullBoolean;
+        this.Package = new PackageInfo(info) { Manifest = packageManifest, };
+
+        if (!string.IsNullOrEmpty(packageManifest))
+        {
+            // Create an XPathDocument from the Xml
+            var doc = new XPathDocument(new StringReader(packageManifest));
+            XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
+            this.ReadManifest(nav);
+        }
+    }
+
+    /// <summary>Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the package.</summary>
+    /// <value>A Boolean value.</value>
+    public bool DeleteFiles { get; set; }
+
+    /// <summary>Gets a value indicating whether the Package is Valid.</summary>
+    /// <value>A Boolean value.</value>
+    public bool IsValid { get; private set; }
+
+    /// <summary>The Commit method commits the package installation.</summary>
+    public override void Commit()
+    {
+        for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
+        {
+            ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
+            if (compInstaller.Version >= this.Package.InstalledVersion && compInstaller.Completed)
+            {
+                compInstaller.Commit();
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
-        /// This Constructor creates a new PackageInstaller instance.
-        /// </summary>
-        /// <param name="info">An InstallerInfo instance.</param>
-        /// <param name="packageManifest">The manifest as a string.</param>
-        public PackageInstaller(string packageManifest, InstallerInfo info)
+        // Add Event Message
+        if (this.eventMessage != null && !string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
         {
-            this.IsValid = true;
-            this.DeleteFiles = Null.NullBoolean;
-            this.Package = new PackageInfo(info) { Manifest = packageManifest, };
-
-            if (!string.IsNullOrEmpty(packageManifest))
-            {
-                // Create an XPathDocument from the Xml
-                var doc = new XPathDocument(new StringReader(packageManifest));
-                XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
-                this.ReadManifest(nav);
-            }
+            this.eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
+            EventQueueController.SendMessage(this.eventMessage, "Application_Start");
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the package.</summary>
-        /// <value>A Boolean value.</value>
-        public bool DeleteFiles { get; set; }
-
-        /// <summary>Gets a value indicating whether the Package is Valid.</summary>
-        /// <value>A Boolean value.</value>
-        public bool IsValid { get; private set; }
-
-        /// <summary>The Commit method commits the package installation.</summary>
-        public override void Commit()
+        if (this.Log.Valid)
         {
-            for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
-            {
-                ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
-                if (compInstaller.Version >= this.Package.InstalledVersion && compInstaller.Completed)
-                {
-                    compInstaller.Commit();
-                }
-            }
-
-            // Add Event Message
-            if (this.eventMessage != null && !string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
-            {
-                this.eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
-                EventQueueController.SendMessage(this.eventMessage, "Application_Start");
-            }
-
-            if (this.Log.Valid)
-            {
-                this.Log.AddInfo(Util.INSTALL_Committed);
-            }
-            else
-            {
-                this.Log.AddFailure(Util.INSTALL_Aborted);
-            }
-
-            this.Package.InstallerInfo.PackageID = this.Package.PackageID;
+            this.Log.AddInfo(Util.INSTALL_Committed);
+        }
+        else
+        {
+            this.Log.AddFailure(Util.INSTALL_Aborted);
         }
 
-        /// <summary>The Install method installs the components of the package.</summary>
-        public override void Install()
+        this.Package.InstallerInfo.PackageID = this.Package.PackageID;
+    }
+
+    /// <summary>The Install method installs the components of the package.</summary>
+    public override void Install()
+    {
+        bool isCompleted = true;
+        try
         {
-            bool isCompleted = true;
-            try
-            {
-                // Save the Package Information
-                if (this.installedPackage != null)
-                {
-                    this.Package.PackageID = this.installedPackage.PackageID;
-                }
-
-                // Save Package
-                PackageController.Instance.SaveExtensionPackage(this.Package);
-
-                // Iterate through all the Components
-                for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
-                {
-                    ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
-                    if ((this.installedPackage == null) || (compInstaller.Version > this.Package.InstalledVersion) || this.Package.InstallerInfo.RepairInstall)
-                    {
-                        this.Log.AddInfo(Util.INSTALL_Start + " - " + compInstaller.Type);
-                        compInstaller.Install();
-                        if (compInstaller.Completed)
-                        {
-                            if (compInstaller.Skipped)
-                            {
-                                this.Log.AddInfo(Util.COMPONENT_Skipped + " - " + compInstaller.Type);
-                            }
-                            else
-                            {
-                                this.Log.AddInfo(Util.COMPONENT_Installed + " - " + compInstaller.Type);
-                            }
-                        }
-                        else
-                        {
-                            this.Log.AddFailure(Util.INSTALL_Failed + " - " + compInstaller.Type);
-                            isCompleted = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(Util.INSTALL_Aborted + " - " + this.Package.Name + ":" + ex.Message);
-            }
-
-            if (isCompleted)
-            {
-                // All components successfully installed so Commit any pending changes
-                this.Commit();
-            }
-            else
-            {
-                // There has been a failure so Rollback
-                this.Rollback();
-            }
-        }
-
-        /// <summary>The ReadManifest method reads the manifest file and parses it into components.</summary>
-        public override void ReadManifest(XPathNavigator manifestNav)
-        {
-            // Get Name Property
-            this.Package.Name = Util.ReadAttribute(manifestNav, "name", this.Log, Util.EXCEPTION_NameMissing);
-
-            // Get Type
-            this.Package.PackageType = Util.ReadAttribute(manifestNav, "type", this.Log, Util.EXCEPTION_TypeMissing);
-
-            // If Skin or Container then set PortalID
-            if (this.Package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) || this.Package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase))
-            {
-                this.Package.PortalID = this.Package.InstallerInfo.PortalID;
-            }
-
-            this.CheckSecurity();
-            if (!this.IsValid)
-            {
-                return;
-            }
-
-            // Get IsSystem
-            this.Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, this.Log, string.Empty, bool.FalseString));
-
-            // Get Version
-            string strVersion = Util.ReadAttribute(manifestNav, "version", this.Log, Util.EXCEPTION_VersionMissing);
-            if (string.IsNullOrEmpty(strVersion))
-            {
-                this.IsValid = false;
-            }
-
-            if (this.IsValid)
-            {
-                this.Package.Version = new Version(strVersion);
-            }
-            else
-            {
-                return;
-            }
-
-            // Attempt to get the Package from the Data Store (see if its installed)
-            var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
-
-            if (packageType.SupportsSideBySideInstallation)
-            {
-                this.installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
-                                                                                                            && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase)
-                                                                                                            && p.Version == this.Package.Version);
-            }
-            else
-            {
-                this.installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
-                                                                                                            && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
-            }
-
+            // Save the Package Information
             if (this.installedPackage != null)
             {
-                this.Package.InstalledVersion = this.installedPackage.Version;
-                this.Package.InstallerInfo.PackageID = this.installedPackage.PackageID;
-
-                if (this.Package.InstalledVersion > this.Package.Version)
-                {
-                    this.Log.AddFailure(Util.INSTALL_Version + " - " + this.Package.InstalledVersion.ToString(3));
-                    this.IsValid = false;
-                }
-                else if (this.Package.InstalledVersion == this.Package.Version)
-                {
-                    this.Package.InstallerInfo.Installed = true;
-                    this.Package.InstallerInfo.PortalID = this.installedPackage.PortalID;
-                }
+                this.Package.PackageID = this.installedPackage.PackageID;
             }
 
-            this.Log.AddInfo(Util.DNN_ReadingPackage + " - " + this.Package.PackageType + " - " + this.Package.Name);
-            this.Package.FriendlyName = Util.ReadElement(manifestNav, "friendlyName", this.Package.Name);
-            this.Package.Description = Util.ReadElement(manifestNav, "description");
+            // Save Package
+            PackageController.Instance.SaveExtensionPackage(this.Package);
 
-            XPathNavigator folderNameNav = null;
-            this.Package.FolderName = string.Empty;
-            switch (this.Package.PackageType)
-            {
-                case "Module":
-                    // In Dynamics modules, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
-                    // To ensure that FolderName is DesktopModules...
-                    var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
-                    if (!string.IsNullOrEmpty(folderNameValue))
-                    {
-                        this.Package.FolderName = folderNameValue.Replace('\\', '/');
-                    }
-
-                    break;
-                case "Auth_System":
-                    folderNameNav = manifestNav.SelectSingleNode("components/component/files");
-                    if (folderNameNav != null)
-                    {
-                        this.Package.FolderName = Util.ReadElement(folderNameNav, "basePath").Replace('\\', '/');
-                    }
-
-                    break;
-                case "Container":
-                    folderNameNav = manifestNav.SelectSingleNode("components/component/containerFiles");
-                    if (folderNameNav != null)
-                    {
-                        this.Package.FolderName = Globals.glbContainersPath + Util.ReadElement(folderNameNav, "containerName").Replace('\\', '/');
-                    }
-
-                    break;
-                case "Skin":
-                    folderNameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
-                    if (folderNameNav != null)
-                    {
-                        this.Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(folderNameNav, "skinName").Replace('\\', '/');
-                    }
-
-                    break;
-                default:
-                    // copied from "Module" without the extra OR condition
-                    folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/resourceFiles", "basePath", "DesktopModules");
-                    if (!string.IsNullOrEmpty(folderNameValue))
-                    {
-                        this.Package.FolderName = folderNameValue.Replace('\\', '/');
-                    }
-
-                    break;
-            }
-
-            this.eventMessage = this.ReadEventMessageNode(manifestNav);
-
-            // Get Icon
-            XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");
-            if (iconFileNav != null)
-            {
-                if (iconFileNav.Value != string.Empty)
-                {
-                    if (iconFileNav.Value.StartsWith("~/"))
-                    {
-                        this.Package.IconFile = iconFileNav.Value;
-                    }
-                    else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        this.Package.IconFile = string.Format("~/{0}", iconFileNav.Value);
-                    }
-                    else
-                    {
-                        this.Package.IconFile = (string.IsNullOrEmpty(this.Package.FolderName) ? string.Empty : this.Package.FolderName + "/") + iconFileNav.Value;
-                        this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/")) ? "~/" + this.Package.IconFile : this.Package.IconFile;
-                    }
-                }
-            }
-
-            // Get Author
-            XPathNavigator authorNav = manifestNav.SelectSingleNode("owner");
-            if (authorNav != null)
-            {
-                this.Package.Owner = Util.ReadElement(authorNav, "name");
-                this.Package.Organization = Util.ReadElement(authorNav, "organization");
-                this.Package.Url = Util.ReadElement(authorNav, "url");
-                this.Package.Email = Util.ReadElement(authorNav, "email");
-            }
-
-            // Get License
-            XPathNavigator licenseNav = manifestNav.SelectSingleNode("license");
-            if (licenseNav != null)
-            {
-                string licenseSrc = Util.ReadAttribute(licenseNav, "src");
-                if (string.IsNullOrEmpty(licenseSrc))
-                {
-                    // Load from element
-                    this.Package.License = licenseNav.Value;
-                }
-                else
-                {
-                    this.Package.License = this.ReadTextFromFile(licenseSrc);
-                    if (this.Package.License == null)
-                    {
-                        // failure reading file
-                        return;
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(this.Package.License))
-            {
-                // Legacy Packages have no license
-                this.Package.License = Util.PACKAGE_NoLicense;
-            }
-
-            // Get Release Notes
-            XPathNavigator relNotesNav = manifestNav.SelectSingleNode("releaseNotes");
-            if (relNotesNav != null)
-            {
-                string relNotesSrc = Util.ReadAttribute(relNotesNav, "src");
-                if (string.IsNullOrEmpty(relNotesSrc))
-                {
-                    // Load from element
-                    this.Package.ReleaseNotes = relNotesNav.Value;
-                }
-                else
-                {
-                    this.Package.ReleaseNotes = this.ReadTextFromFile(relNotesSrc);
-                    if (this.Package.ReleaseNotes == null)
-                    {
-                        // failure reading file
-                        return;
-                    }
-                }
-            }
-
-            if (string.IsNullOrEmpty(this.Package.ReleaseNotes))
-            {
-                // Legacy Packages have no Release Notes
-                this.Package.ReleaseNotes = Util.PACKAGE_NoReleaseNotes;
-            }
-
-            // Parse the Dependencies
-            var packageDependencies = this.Package.Dependencies;
-            foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
-            {
-                var dependency = DependencyFactory.GetDependency(dependencyNav);
-                if (dependency is IManagedPackageDependency packageDependency)
-                {
-                    packageDependencies.Add(packageDependency.PackageDependency);
-                }
-
-                if (!dependency.IsValid)
-                {
-                    this.Log.AddFailure(dependency.ErrorMessage);
-                    return;
-                }
-            }
-
-            // Read Components
-            this.ReadComponents(manifestNav);
-        }
-
-        /// <summary>The Rollback method rolls back the package installation.</summary>
-        public override void Rollback()
-        {
-            for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
-            {
-                ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
-                if (compInstaller.Version > this.Package.InstalledVersion && compInstaller.Completed)
-                {
-                    this.Log.AddInfo(Util.COMPONENT_RollingBack + " - " + compInstaller.Type);
-                    compInstaller.Rollback();
-                    this.Log.AddInfo(Util.COMPONENT_RolledBack + " - " + compInstaller.Type);
-                }
-            }
-
-            // If Previously Installed Package exists then we need to update the DataStore with this
-            if (this.installedPackage == null)
-            {
-                // No Previously Installed Package - Delete newly added Package
-                PackageController.Instance.DeleteExtensionPackage(this.Package);
-            }
-            else
-            {
-                // Previously Installed Package - Rollback to Previously Installed
-                PackageController.Instance.SaveExtensionPackage(this.installedPackage);
-            }
-        }
-
-        /// <summary>The Uninstall method uninstalls the components of the package.</summary>
-        public override void UnInstall()
-        {
             // Iterate through all the Components
             for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
             {
                 ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
-                if (compInstaller is FileInstaller fileInstaller)
+                if ((this.installedPackage == null) || (compInstaller.Version > this.Package.InstalledVersion) || this.Package.InstallerInfo.RepairInstall)
                 {
-                    fileInstaller.DeleteFiles = this.DeleteFiles;
+                    this.Log.AddInfo(Util.INSTALL_Start + " - " + compInstaller.Type);
+                    compInstaller.Install();
+                    if (compInstaller.Completed)
+                    {
+                        if (compInstaller.Skipped)
+                        {
+                            this.Log.AddInfo(Util.COMPONENT_Skipped + " - " + compInstaller.Type);
+                        }
+                        else
+                        {
+                            this.Log.AddInfo(Util.COMPONENT_Installed + " - " + compInstaller.Type);
+                        }
+                    }
+                    else
+                    {
+                        this.Log.AddFailure(Util.INSTALL_Failed + " - " + compInstaller.Type);
+                        isCompleted = false;
+                        break;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            this.Log.AddFailure(Util.INSTALL_Aborted + " - " + this.Package.Name + ":" + ex.Message);
+        }
+
+        if (isCompleted)
+        {
+            // All components successfully installed so Commit any pending changes
+            this.Commit();
+        }
+        else
+        {
+            // There has been a failure so Rollback
+            this.Rollback();
+        }
+    }
+
+    /// <summary>The ReadManifest method reads the manifest file and parses it into components.</summary>
+    public override void ReadManifest(XPathNavigator manifestNav)
+    {
+        // Get Name Property
+        this.Package.Name = Util.ReadAttribute(manifestNav, "name", this.Log, Util.EXCEPTION_NameMissing);
+
+        // Get Type
+        this.Package.PackageType = Util.ReadAttribute(manifestNav, "type", this.Log, Util.EXCEPTION_TypeMissing);
+
+        // If Skin or Container then set PortalID
+        if (this.Package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) || this.Package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase))
+        {
+            this.Package.PortalID = this.Package.InstallerInfo.PortalID;
+        }
+
+        this.CheckSecurity();
+        if (!this.IsValid)
+        {
+            return;
+        }
+
+        // Get IsSystem
+        this.Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, this.Log, string.Empty, bool.FalseString));
+
+        // Get Version
+        string strVersion = Util.ReadAttribute(manifestNav, "version", this.Log, Util.EXCEPTION_VersionMissing);
+        if (string.IsNullOrEmpty(strVersion))
+        {
+            this.IsValid = false;
+        }
+
+        if (this.IsValid)
+        {
+            this.Package.Version = new Version(strVersion);
+        }
+        else
+        {
+            return;
+        }
+
+        // Attempt to get the Package from the Data Store (see if its installed)
+        var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
+
+        if (packageType.SupportsSideBySideInstallation)
+        {
+            this.installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
+                && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase)
+                && p.Version == this.Package.Version);
+        }
+        else
+        {
+            this.installedPackage = PackageController.Instance.GetExtensionPackage(this.Package.PortalID, p => p.Name.Equals(this.Package.Name, StringComparison.OrdinalIgnoreCase)
+                && p.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (this.installedPackage != null)
+        {
+            this.Package.InstalledVersion = this.installedPackage.Version;
+            this.Package.InstallerInfo.PackageID = this.installedPackage.PackageID;
+
+            if (this.Package.InstalledVersion > this.Package.Version)
+            {
+                this.Log.AddFailure(Util.INSTALL_Version + " - " + this.Package.InstalledVersion.ToString(3));
+                this.IsValid = false;
+            }
+            else if (this.Package.InstalledVersion == this.Package.Version)
+            {
+                this.Package.InstallerInfo.Installed = true;
+                this.Package.InstallerInfo.PortalID = this.installedPackage.PortalID;
+            }
+        }
+
+        this.Log.AddInfo(Util.DNN_ReadingPackage + " - " + this.Package.PackageType + " - " + this.Package.Name);
+        this.Package.FriendlyName = Util.ReadElement(manifestNav, "friendlyName", this.Package.Name);
+        this.Package.Description = Util.ReadElement(manifestNav, "description");
+
+        XPathNavigator folderNameNav = null;
+        this.Package.FolderName = string.Empty;
+        switch (this.Package.PackageType)
+        {
+            case "Module":
+                // In Dynamics modules, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                // To ensure that FolderName is DesktopModules...
+                var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
+                if (!string.IsNullOrEmpty(folderNameValue))
+                {
+                    this.Package.FolderName = folderNameValue.Replace('\\', '/');
                 }
 
-                this.Log.ResetFlags();
-                this.Log.AddInfo(Util.UNINSTALL_StartComp + " - " + compInstaller.Type);
-                compInstaller.UnInstall();
-                this.Log.AddInfo(Util.COMPONENT_UnInstalled + " - " + compInstaller.Type);
-                if (this.Log.Valid)
+                break;
+            case "Auth_System":
+                folderNameNav = manifestNav.SelectSingleNode("components/component/files");
+                if (folderNameNav != null)
                 {
-                    this.Log.AddInfo(Util.UNINSTALL_SuccessComp + " - " + compInstaller.Type);
+                    this.Package.FolderName = Util.ReadElement(folderNameNav, "basePath").Replace('\\', '/');
+                }
+
+                break;
+            case "Container":
+                folderNameNav = manifestNav.SelectSingleNode("components/component/containerFiles");
+                if (folderNameNav != null)
+                {
+                    this.Package.FolderName = Globals.glbContainersPath + Util.ReadElement(folderNameNav, "containerName").Replace('\\', '/');
+                }
+
+                break;
+            case "Skin":
+                folderNameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
+                if (folderNameNav != null)
+                {
+                    this.Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(folderNameNav, "skinName").Replace('\\', '/');
+                }
+
+                break;
+            default:
+                // copied from "Module" without the extra OR condition
+                folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/resourceFiles", "basePath", "DesktopModules");
+                if (!string.IsNullOrEmpty(folderNameValue))
+                {
+                    this.Package.FolderName = folderNameValue.Replace('\\', '/');
+                }
+
+                break;
+        }
+
+        this.eventMessage = this.ReadEventMessageNode(manifestNav);
+
+        // Get Icon
+        XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");
+        if (iconFileNav != null)
+        {
+            if (iconFileNav.Value != string.Empty)
+            {
+                if (iconFileNav.Value.StartsWith("~/"))
+                {
+                    this.Package.IconFile = iconFileNav.Value;
+                }
+                else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.Package.IconFile = string.Format("~/{0}", iconFileNav.Value);
                 }
                 else
                 {
-                    this.Log.AddWarning(Util.UNINSTALL_WarningsComp + " - " + compInstaller.Type);
+                    this.Package.IconFile = (string.IsNullOrEmpty(this.Package.FolderName) ? string.Empty : this.Package.FolderName + "/") + iconFileNav.Value;
+                    this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/")) ? "~/" + this.Package.IconFile : this.Package.IconFile;
                 }
             }
-
-            // Remove the Package information from the Data Store
-            PackageController.Instance.DeleteExtensionPackage(this.Package);
         }
 
-        /// <summary>The CheckSecurity method checks whether the user has the appropriate security.</summary>
-        private void CheckSecurity()
+        // Get Author
+        XPathNavigator authorNav = manifestNav.SelectSingleNode("owner");
+        if (authorNav != null)
         {
-            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
-            if (type == null)
+            this.Package.Owner = Util.ReadElement(authorNav, "name");
+            this.Package.Organization = Util.ReadElement(authorNav, "organization");
+            this.Package.Url = Util.ReadElement(authorNav, "url");
+            this.Package.Email = Util.ReadElement(authorNav, "email");
+        }
+
+        // Get License
+        XPathNavigator licenseNav = manifestNav.SelectSingleNode("license");
+        if (licenseNav != null)
+        {
+            string licenseSrc = Util.ReadAttribute(licenseNav, "src");
+            if (string.IsNullOrEmpty(licenseSrc))
             {
-                // This package type not registered
-                this.Log.Logs.Clear();
-                this.Log.AddFailure(Util.SECURITY_NotRegistered + " - " + this.Package.PackageType);
-                this.IsValid = false;
+                // Load from element
+                this.Package.License = licenseNav.Value;
             }
             else
             {
-                if (type.SecurityAccessLevel > this.Package.InstallerInfo.SecurityAccessLevel)
+                this.Package.License = this.ReadTextFromFile(licenseSrc);
+                if (this.Package.License == null)
                 {
-                    this.Log.Logs.Clear();
-                    this.Log.AddFailure(Util.SECURITY_Installer);
-                    this.IsValid = false;
+                    // failure reading file
+                    return;
                 }
             }
         }
 
-        /// <summary>The ReadComponents method reads the components node of the manifest file.</summary>
-        private void ReadComponents(XPathNavigator manifestNav)
+        if (string.IsNullOrEmpty(this.Package.License))
         {
-            foreach (XPathNavigator componentNav in manifestNav.CreateNavigator().Select("components/component"))
+            // Legacy Packages have no license
+            this.Package.License = Util.PACKAGE_NoLicense;
+        }
+
+        // Get Release Notes
+        XPathNavigator relNotesNav = manifestNav.SelectSingleNode("releaseNotes");
+        if (relNotesNav != null)
+        {
+            string relNotesSrc = Util.ReadAttribute(relNotesNav, "src");
+            if (string.IsNullOrEmpty(relNotesSrc))
             {
-                // Set default order to next value (ie the same as the size of the collection)
-                int order = this.componentInstallers.Count;
-
-                string type = componentNav.GetAttribute("type", string.Empty);
-                if (this.InstallMode == InstallMode.Install)
+                // Load from element
+                this.Package.ReleaseNotes = relNotesNav.Value;
+            }
+            else
+            {
+                this.Package.ReleaseNotes = this.ReadTextFromFile(relNotesSrc);
+                if (this.Package.ReleaseNotes == null)
                 {
-                    string installOrder = componentNav.GetAttribute("installOrder", string.Empty);
-                    if (!string.IsNullOrEmpty(installOrder))
-                    {
-                        order = int.Parse(installOrder);
-                    }
-                }
-                else
-                {
-                    string unInstallOrder = componentNav.GetAttribute("unInstallOrder", string.Empty);
-                    if (!string.IsNullOrEmpty(unInstallOrder))
-                    {
-                        order = int.Parse(unInstallOrder);
-                    }
-                }
-
-                if (this.Package.InstallerInfo != null)
-                {
-                    this.Log.AddInfo(Util.DNN_ReadingComponent + " - " + type);
-                }
-
-                ComponentInstallerBase installer = InstallerFactory.GetInstaller(componentNav, this.Package);
-                if (installer == null)
-                {
-                    this.Log.AddFailure(Util.EXCEPTION_InstallerCreate);
-                }
-                else
-                {
-                    this.componentInstallers.Add(order, installer);
-                    this.Package.InstallerInfo.AllowableFiles += ", " + installer.AllowableFiles;
+                    // failure reading file
+                    return;
                 }
             }
         }
 
-        private string ReadTextFromFile(string source)
+        if (string.IsNullOrEmpty(this.Package.ReleaseNotes))
         {
-            if (this.Package.InstallerInfo.InstallMode == InstallMode.ManifestOnly)
+            // Legacy Packages have no Release Notes
+            this.Package.ReleaseNotes = Util.PACKAGE_NoReleaseNotes;
+        }
+
+        // Parse the Dependencies
+        var packageDependencies = this.Package.Dependencies;
+        foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
+        {
+            var dependency = DependencyFactory.GetDependency(dependencyNav);
+            if (dependency is IManagedPackageDependency packageDependency)
             {
-                return Null.NullString;
+                packageDependencies.Add(packageDependency.PackageDependency);
             }
 
-            try
+            if (!dependency.IsValid)
             {
-                return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+                this.Log.AddFailure(dependency.ErrorMessage);
+                return;
             }
-            catch (PathNotFoundException)
+        }
+
+        // Read Components
+        this.ReadComponents(manifestNav);
+    }
+
+    /// <summary>The Rollback method rolls back the package installation.</summary>
+    public override void Rollback()
+    {
+        for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
+        {
+            ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
+            if (compInstaller.Version > this.Package.InstalledVersion && compInstaller.Completed)
             {
-                this.Log.AddFailure($"Unable to read {source}, file not found");
-                return null;
+                this.Log.AddInfo(Util.COMPONENT_RollingBack + " - " + compInstaller.Type);
+                compInstaller.Rollback();
+                this.Log.AddInfo(Util.COMPONENT_RolledBack + " - " + compInstaller.Type);
             }
+        }
+
+        // If Previously Installed Package exists then we need to update the DataStore with this
+        if (this.installedPackage == null)
+        {
+            // No Previously Installed Package - Delete newly added Package
+            PackageController.Instance.DeleteExtensionPackage(this.Package);
+        }
+        else
+        {
+            // Previously Installed Package - Rollback to Previously Installed
+            PackageController.Instance.SaveExtensionPackage(this.installedPackage);
+        }
+    }
+
+    /// <summary>The Uninstall method uninstalls the components of the package.</summary>
+    public override void UnInstall()
+    {
+        // Iterate through all the Components
+        for (int index = 0; index <= this.componentInstallers.Count - 1; index++)
+        {
+            ComponentInstallerBase compInstaller = this.componentInstallers.Values[index];
+            if (compInstaller is FileInstaller fileInstaller)
+            {
+                fileInstaller.DeleteFiles = this.DeleteFiles;
+            }
+
+            this.Log.ResetFlags();
+            this.Log.AddInfo(Util.UNINSTALL_StartComp + " - " + compInstaller.Type);
+            compInstaller.UnInstall();
+            this.Log.AddInfo(Util.COMPONENT_UnInstalled + " - " + compInstaller.Type);
+            if (this.Log.Valid)
+            {
+                this.Log.AddInfo(Util.UNINSTALL_SuccessComp + " - " + compInstaller.Type);
+            }
+            else
+            {
+                this.Log.AddWarning(Util.UNINSTALL_WarningsComp + " - " + compInstaller.Type);
+            }
+        }
+
+        // Remove the Package information from the Data Store
+        PackageController.Instance.DeleteExtensionPackage(this.Package);
+    }
+
+    /// <summary>The CheckSecurity method checks whether the user has the appropriate security.</summary>
+    private void CheckSecurity()
+    {
+        PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
+        if (type == null)
+        {
+            // This package type not registered
+            this.Log.Logs.Clear();
+            this.Log.AddFailure(Util.SECURITY_NotRegistered + " - " + this.Package.PackageType);
+            this.IsValid = false;
+        }
+        else
+        {
+            if (type.SecurityAccessLevel > this.Package.InstallerInfo.SecurityAccessLevel)
+            {
+                this.Log.Logs.Clear();
+                this.Log.AddFailure(Util.SECURITY_Installer);
+                this.IsValid = false;
+            }
+        }
+    }
+
+    /// <summary>The ReadComponents method reads the components node of the manifest file.</summary>
+    private void ReadComponents(XPathNavigator manifestNav)
+    {
+        foreach (XPathNavigator componentNav in manifestNav.CreateNavigator().Select("components/component"))
+        {
+            // Set default order to next value (ie the same as the size of the collection)
+            int order = this.componentInstallers.Count;
+
+            string type = componentNav.GetAttribute("type", string.Empty);
+            if (this.InstallMode == InstallMode.Install)
+            {
+                string installOrder = componentNav.GetAttribute("installOrder", string.Empty);
+                if (!string.IsNullOrEmpty(installOrder))
+                {
+                    order = int.Parse(installOrder);
+                }
+            }
+            else
+            {
+                string unInstallOrder = componentNav.GetAttribute("unInstallOrder", string.Empty);
+                if (!string.IsNullOrEmpty(unInstallOrder))
+                {
+                    order = int.Parse(unInstallOrder);
+                }
+            }
+
+            if (this.Package.InstallerInfo != null)
+            {
+                this.Log.AddInfo(Util.DNN_ReadingComponent + " - " + type);
+            }
+
+            ComponentInstallerBase installer = InstallerFactory.GetInstaller(componentNav, this.Package);
+            if (installer == null)
+            {
+                this.Log.AddFailure(Util.EXCEPTION_InstallerCreate);
+            }
+            else
+            {
+                this.componentInstallers.Add(order, installer);
+                this.Package.InstallerInfo.AllowableFiles += ", " + installer.AllowableFiles;
+            }
+        }
+    }
+
+    private string ReadTextFromFile(string source)
+    {
+        if (this.Package.InstallerInfo.InstallMode == InstallMode.ManifestOnly)
+        {
+            return Null.NullString;
+        }
+
+        try
+        {
+            return FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+        }
+        catch (PathNotFoundException)
+        {
+            this.Log.AddFailure($"Unable to read {source}, file not found");
+            return null;
         }
     }
 }

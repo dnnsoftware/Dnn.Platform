@@ -2,36 +2,35 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.UI.Containers.EventListeners
+namespace DotNetNuke.UI.Containers.EventListeners;
+
+public class ContainerEventListener
 {
-    public class ContainerEventListener
+    private readonly ContainerEventHandler containerEvent;
+    private readonly ContainerEventType type;
+
+    /// <summary>Initializes a new instance of the <see cref="ContainerEventListener"/> class.</summary>
+    /// <param name="type"></param>
+    /// <param name="e"></param>
+    public ContainerEventListener(ContainerEventType type, ContainerEventHandler e)
     {
-        private readonly ContainerEventHandler containerEvent;
-        private readonly ContainerEventType type;
+        this.type = type;
+        this.containerEvent = e;
+    }
 
-        /// <summary>Initializes a new instance of the <see cref="ContainerEventListener"/> class.</summary>
-        /// <param name="type"></param>
-        /// <param name="e"></param>
-        public ContainerEventListener(ContainerEventType type, ContainerEventHandler e)
+    public ContainerEventType EventType
+    {
+        get
         {
-            this.type = type;
-            this.containerEvent = e;
+            return this.type;
         }
+    }
 
-        public ContainerEventType EventType
+    public ContainerEventHandler ContainerEvent
+    {
+        get
         {
-            get
-            {
-                return this.type;
-            }
-        }
-
-        public ContainerEventHandler ContainerEvent
-        {
-            get
-            {
-                return this.containerEvent;
-            }
+            return this.containerEvent;
         }
     }
 }

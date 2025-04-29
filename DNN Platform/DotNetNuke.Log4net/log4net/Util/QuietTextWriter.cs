@@ -23,150 +23,149 @@ using System.IO;
 
 using log4net.Core;
 
-namespace log4net.Util
+namespace log4net.Util;
+
+/// <summary><see cref="TextWriter"/> that does not leak exceptions</summary>
+/// <remarks>
+/// <para>
+/// <see cref="QuietTextWriter"/> does not throw exceptions when things go wrong. 
+/// Instead, it delegates error handling to its <see cref="IErrorHandler"/>.
+/// </para>
+/// </remarks>
+/// <author>Nicko Cadell</author>
+/// <author>Gert Driesen</author>
+public class QuietTextWriter : TextWriterAdapter
 {
-    /// <summary><see cref="TextWriter"/> that does not leak exceptions</summary>
+    /// <summary>Constructor</summary>
+    /// <param name="writer">the writer to actually write to</param>
+    /// <param name="errorHandler">the error handler to report error to</param>
     /// <remarks>
     /// <para>
-    /// <see cref="QuietTextWriter"/> does not throw exceptions when things go wrong. 
-    /// Instead, it delegates error handling to its <see cref="IErrorHandler"/>.
+    /// Create a new QuietTextWriter using a writer and error handler
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    public class QuietTextWriter : TextWriterAdapter
+    public QuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer)
     {
-        /// <summary>Constructor</summary>
-        /// <param name="writer">the writer to actually write to</param>
-        /// <param name="errorHandler">the error handler to report error to</param>
-        /// <remarks>
-        /// <para>
-        /// Create a new QuietTextWriter using a writer and error handler
-        /// </para>
-        /// </remarks>
-        public QuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer)
+        if (errorHandler == null)
         {
-            if (errorHandler == null)
-            {
-                throw new ArgumentNullException("errorHandler");
-            }
-
-            this.ErrorHandler = errorHandler;
+            throw new ArgumentNullException("errorHandler");
         }
 
-        /// <summary>Gets or sets the error handler that all errors are passed to.</summary>
-        /// <value>
-        /// The error handler that all errors are passed to.
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Gets or sets the error handler that all errors are passed to.
-        /// </para>
-        /// </remarks>
-        public IErrorHandler ErrorHandler
-        {
-            get { return this.m_errorHandler; }
-            set
-            {
-                if (value == null)
-                {
-                    // This is a programming error on the part of the enclosing appender.
-                    throw new ArgumentNullException("value");
-                }
-
-                this.m_errorHandler = value;
-            }
-        }	
-
-        /// <summary>Gets a value indicating whether this writer is closed.</summary>
-        /// <value>
-        /// <c>true</c> if this writer is closed, otherwise <c>false</c>.
-        /// </value>
-        /// <remarks>
-        /// <para>
-        /// Gets a value indicating whether this writer is closed.
-        /// </para>
-        /// </remarks>
-        public bool Closed
-        {
-            get { return this.m_closed; }
-        }
-
-        /// <summary>Writes a character to the underlying writer</summary>
-        /// <param name="value">the char to write</param>
-        /// <remarks>
-        /// <para>
-        /// Writes a character to the underlying writer
-        /// </para>
-        /// </remarks>
-        public override void Write(char value) 
-        {
-            try 
-            {
-                base.Write(value);
-            } 
-            catch(Exception e) 
-            {
-                this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
-            }
-        }
-    
-        /// <summary>Writes a buffer to the underlying writer</summary>
-        /// <param name="buffer">the buffer to write</param>
-        /// <param name="index">the start index to write from</param>
-        /// <param name="count">the number of characters to write</param>
-        /// <remarks>
-        /// <para>
-        /// Writes a buffer to the underlying writer
-        /// </para>
-        /// </remarks>
-        public override void Write(char[] buffer, int index, int count) 
-        {
-            try 
-            {
-                base.Write(buffer, index, count);
-            } 
-            catch(Exception e) 
-            {
-                this.m_errorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
-            }
-        }
-    
-        /// <summary>Writes a string to the output.</summary>
-        /// <param name="value">The string data to write to the output.</param>
-        /// <remarks>
-        /// <para>
-        /// Writes a string to the output.
-        /// </para>
-        /// </remarks>
-        public override void Write(string value) 
-        {
-            try 
-            {
-                base.Write(value);
-            } 
-            catch(Exception e) 
-            {
-                this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
-            }
-        }
-
-        /// <summary>Closes the underlying output writer.</summary>
-        /// <remarks>
-        /// <para>
-        /// Closes the underlying output writer.
-        /// </para>
-        /// </remarks>
-        public override void Close()
-        {
-            this.m_closed = true;
-            base.Close();
-        }
-
-        /// <summary>The error handler instance to pass all errors to</summary>
-        private IErrorHandler m_errorHandler;
-
-        /// <summary>Flag to indicate if this writer is closed</summary>
-        private bool m_closed = false;
+        this.ErrorHandler = errorHandler;
     }
+
+    /// <summary>Gets or sets the error handler that all errors are passed to.</summary>
+    /// <value>
+    /// The error handler that all errors are passed to.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Gets or sets the error handler that all errors are passed to.
+    /// </para>
+    /// </remarks>
+    public IErrorHandler ErrorHandler
+    {
+        get { return this.m_errorHandler; }
+        set
+        {
+            if (value == null)
+            {
+                // This is a programming error on the part of the enclosing appender.
+                throw new ArgumentNullException("value");
+            }
+
+            this.m_errorHandler = value;
+        }
+    }	
+
+    /// <summary>Gets a value indicating whether this writer is closed.</summary>
+    /// <value>
+    /// <c>true</c> if this writer is closed, otherwise <c>false</c>.
+    /// </value>
+    /// <remarks>
+    /// <para>
+    /// Gets a value indicating whether this writer is closed.
+    /// </para>
+    /// </remarks>
+    public bool Closed
+    {
+        get { return this.m_closed; }
+    }
+
+    /// <summary>Writes a character to the underlying writer</summary>
+    /// <param name="value">the char to write</param>
+    /// <remarks>
+    /// <para>
+    /// Writes a character to the underlying writer
+    /// </para>
+    /// </remarks>
+    public override void Write(char value) 
+    {
+        try 
+        {
+            base.Write(value);
+        } 
+        catch(Exception e) 
+        {
+            this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
+        }
+    }
+    
+    /// <summary>Writes a buffer to the underlying writer</summary>
+    /// <param name="buffer">the buffer to write</param>
+    /// <param name="index">the start index to write from</param>
+    /// <param name="count">the number of characters to write</param>
+    /// <remarks>
+    /// <para>
+    /// Writes a buffer to the underlying writer
+    /// </para>
+    /// </remarks>
+    public override void Write(char[] buffer, int index, int count) 
+    {
+        try 
+        {
+            base.Write(buffer, index, count);
+        } 
+        catch(Exception e) 
+        {
+            this.m_errorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
+        }
+    }
+    
+    /// <summary>Writes a string to the output.</summary>
+    /// <param name="value">The string data to write to the output.</param>
+    /// <remarks>
+    /// <para>
+    /// Writes a string to the output.
+    /// </para>
+    /// </remarks>
+    public override void Write(string value) 
+    {
+        try 
+        {
+            base.Write(value);
+        } 
+        catch(Exception e) 
+        {
+            this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
+        }
+    }
+
+    /// <summary>Closes the underlying output writer.</summary>
+    /// <remarks>
+    /// <para>
+    /// Closes the underlying output writer.
+    /// </para>
+    /// </remarks>
+    public override void Close()
+    {
+        this.m_closed = true;
+        base.Close();
+    }
+
+    /// <summary>The error handler instance to pass all errors to</summary>
+    private IErrorHandler m_errorHandler;
+
+    /// <summary>Flag to indicate if this writer is closed</summary>
+    private bool m_closed = false;
 }

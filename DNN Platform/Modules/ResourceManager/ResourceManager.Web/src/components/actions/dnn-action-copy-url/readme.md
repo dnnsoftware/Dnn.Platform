@@ -1,9 +1,6 @@
 # dnn-action-move-items
 
-
-
 <!-- Auto Generated Below -->
-
 
 ## Properties
 
@@ -11,15 +8,15 @@
 | -------------------- | --------- | ----------- | -------- | ----------- |
 | `items` _(required)_ | --        |             | `Item[]` | `undefined` |
 
-
 ## Dependencies
 
 ### Used by
 
- - [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
- - [dnn-rm-file-context-menu](../../context-menus/dnn-rm-file-context-menu)
+- [dnn-rm-actions-bar](../../dnn-rm-actions-bar)
+- [dnn-rm-file-context-menu](../../context-menus/dnn-rm-file-context-menu)
 
 ### Graph
+
 ```mermaid
 graph TD;
   dnn-rm-actions-bar --> dnn-action-copy-url
@@ -27,6 +24,6 @@ graph TD;
   style dnn-action-copy-url fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
-----------------------------------------------
+---
 
-*Built with [StencilJS](https://stenciljs.com/)*
+_Built with [StencilJS](https://stenciljs.com/)_

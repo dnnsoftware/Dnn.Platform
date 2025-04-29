@@ -10,42 +10,50 @@ import "./style.less";
 let canEdit = false;
 
 class ThemeSettings extends Component {
-    constructor() {
-        super();
-        this.state = {
-            parseType: "0"
-        };
-        canEdit = utils.params.settings.isHost || utils.params.settings.isAdmin || (utils.params.settings.permissions && utils.params.settings.permissions.EDIT === true);
-    }
+  constructor() {
+    super();
+    this.state = {
+      parseType: "0",
+    };
+    canEdit =
+      utils.params.settings.isHost ||
+      utils.params.settings.isAdmin ||
+      (utils.params.settings.permissions &&
+        utils.params.settings.permissions.EDIT === true);
+  }
 
-    renderLeftColumn() {
-        return <div className="left-column">
-            {canEdit && <EditThemeAttributes />}
-        </div>;
-    }
+  renderLeftColumn() {
+    return (
+      <div className="left-column">{canEdit && <EditThemeAttributes />}</div>
+    );
+  }
 
-    renderRightColumn() {
-        let isHost = utils.params.settings.isHost;
-        return isHost && <div className="right-column">
-            <ParseThemePackage />
-        </div>;
-    }
+  renderRightColumn() {
+    let isHost = utils.params.settings.isHost;
+    return (
+      isHost && (
+        <div className="right-column">
+          <ParseThemePackage />
+        </div>
+      )
+    );
+  }
 
-    render() {
-        return (
-            <GridSystem className="theme-settings">
-                {[this.renderLeftColumn(), this.renderRightColumn()]}
-            </GridSystem>
-        );
-    }
+  render() {
+    return (
+      <GridSystem className="theme-settings">
+        {[this.renderLeftColumn(), this.renderRightColumn()]}
+      </GridSystem>
+    );
+  }
 }
 
 ThemeSettings.propTypes = {
-    dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps() {
-    return {};
+  return {};
 }
 
 export default connect(mapStateToProps)(ThemeSettings);

@@ -1,31 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Web.UI.WebControls
+namespace DotNetNuke.Web.UI.WebControls;
+
+using System.ComponentModel;
+using System.Web.UI;
+
+[ParseChildren(true)]
+public class DnnFormTemplateItem : DnnFormItemBase
 {
-    using System.ComponentModel;
-    using System.Web.UI;
+    [Browsable(false)]
+    [DefaultValue(null)]
+    [Description("The Item Template.")]
+    [TemplateInstance(TemplateInstance.Single)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [TemplateContainer(typeof(DnnFormEmptyTemplate))]
+    public ITemplate ItemTemplate { get; set; }
 
-    [ParseChildren(true)]
-    public class DnnFormTemplateItem : DnnFormItemBase
+    /// <inheritdoc/>
+    protected override void CreateControlHierarchy()
     {
-        [Browsable(false)]
-        [DefaultValue(null)]
-        [Description("The Item Template.")]
-        [TemplateInstance(TemplateInstance.Single)]
-        [PersistenceMode(PersistenceMode.InnerProperty)]
-        [TemplateContainer(typeof(DnnFormEmptyTemplate))]
-        public ITemplate ItemTemplate { get; set; }
+        this.CssClass += " dnnFormItem";
+        this.CssClass += (this.FormMode == DnnFormMode.Long) ? " dnnFormLong" : " dnnFormShort";
 
-        /// <inheritdoc/>
-        protected override void CreateControlHierarchy()
-        {
-            this.CssClass += " dnnFormItem";
-            this.CssClass += (this.FormMode == DnnFormMode.Long) ? " dnnFormLong" : " dnnFormShort";
-
-            var template = new DnnFormEmptyTemplate();
-            this.ItemTemplate.InstantiateIn(template);
-            this.Controls.Add(template);
-        }
+        var template = new DnnFormEmptyTemplate();
+        this.ItemTemplate.InstantiateIn(template);
+        this.Controls.Add(template);
     }
 }

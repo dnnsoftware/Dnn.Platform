@@ -1,13 +1,13 @@
 :host {
   display: block;
-  padding-right: 2em
+  padding-right: 2em;
 }
-.container{
+.container {
   display: flex;
   gap: 1em;
   margin-top: 1em;
   flex-wrap: wrap;
-  .card{
+  .card {
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -19,33 +19,34 @@
     width: calc(110px + 2em);
     justify-content: flex-end;
     position: relative;
-    &:hover, &:focus{
+    &:hover,
+    &:focus {
       transform: scale3d(1.1, 1.1, 1.1);
-      .radio{
+      .radio {
         opacity: 1;
       }
     }
-    .radio{
+    .radio {
       position: absolute;
-      top:0;
-      left:-16px;
+      top: 0;
+      left: -16px;
       opacity: 0;
       transition: all 100ms ease-in-out;
-      &.selected{
+      &.selected {
         opacity: 1;
       }
     }
-    img{
+    img {
       width: 110px;
       max-height: 110px;
       margin: auto;
     }
-    .item-name{
+    .item-name {
       line-break: anywhere;
     }
   }
 }
-dnn-collapsible{
+dnn-collapsible {
   position: fixed;
   display: none;
   border: 1px solid lightgray;

@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  GridCell,
-  TextOverflowWrapper as OverflowText,
-} from "@dnnsoftware/dnn-react-common";
+import { GridCell } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import ServerRow from "./ServerRow";
 
@@ -39,7 +36,7 @@ export default class ServerList extends Component {
 
   getServerGridRows() {
     if (this.props.servers && this.props.servers.length > 0) {
-      const rows = this.props.servers.map((field, i) => {
+      const rows = this.props.servers.map((field) => {
         return (
           <ServerRow
             server={field}

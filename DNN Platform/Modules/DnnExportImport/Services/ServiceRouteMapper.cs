@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace Dnn.ExportImport.Services
-{
-    using DotNetNuke.Web.Api;
+namespace Dnn.ExportImport.Services;
 
-    public class ServiceRouteMapper : IServiceRouteMapper
+using DotNetNuke.Web.Api;
+
+public class ServiceRouteMapper : IServiceRouteMapper
+{
+    /// <inheritdoc/>
+    public void RegisterRoutes(IMapRoute routeManager)
     {
-        /// <inheritdoc/>
-        public void RegisterRoutes(IMapRoute routeManager)
-        {
-            routeManager.MapHttpRoute(
-                "SiteExportImport",
-                "default",
-                "{controller}/{action}",
-                new[] { typeof(ServiceRouteMapper).Namespace });
-        }
+        routeManager.MapHttpRoute(
+            "SiteExportImport",
+            "default",
+            "{controller}/{action}",
+            new[] { typeof(ServiceRouteMapper).Namespace });
     }
 }

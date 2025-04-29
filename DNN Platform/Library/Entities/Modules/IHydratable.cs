@@ -1,14 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Modules
+namespace DotNetNuke.Entities.Modules;
+
+using System.Data;
+
+public interface IHydratable
 {
-    using System.Data;
+    int KeyID { get; set; }
 
-    public interface IHydratable
-    {
-        int KeyID { get; set; }
-
-        void Fill(IDataReader dr);
-    }
+    void Fill(IDataReader dr);
 }

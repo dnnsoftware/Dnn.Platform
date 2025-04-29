@@ -1,323 +1,322 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-namespace DotNetNuke.Entities.Tabs
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
+namespace DotNetNuke.Entities.Tabs;
 
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Localization;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Services.Localization;
+
+/// <summary>
+/// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
+/// There is no guarantee that this interface will not change.
+/// </summary>
+public interface ITabController
+{
+    /// <summary>Adds localized copies of the page in all missing languages.</summary>
+    /// <param name="portalId"></param>
+    /// <param name="tabId"></param>
+    [Obsolete("Deprecated in DotNetNuke 9.11.1. Use AddMissingLanguagesWithWarnings. Scheduled removal in v11.0.0.")]
+    void AddMissingLanguages(int portalId, int tabId);
+
+    /// <summary>Adds localized copies of the page in all missing languages.</summary>
+    /// <param name="portalId"></param>
+    /// <param name="tabId"></param>
+    /// <returns>Whether all missing languages were added.</returns>
+    bool AddMissingLanguagesWithWarnings(int portalId, int tabId);
+
+    /// <summary>Adds a tab.</summary>
+    /// <param name="tab">The tab to be added.</param>
+    /// <remarks>The tab is added to the end of the current Level.</remarks>
+    /// <returns>The new tab ID.</returns>
+    int AddTab(TabInfo tab);
+
+    /// <summary>Adds a tab.</summary>
+    /// <param name="tab">The tab to be added.</param>
+    /// <param name="includeAllTabsModules">Flag that indicates whether to add the "AllTabs" Modules.</param>
+    /// <remarks>The tab is added to the end of the current Level.</remarks>
+    /// <returns>The new tab ID.</returns>
+    int AddTab(TabInfo tab, bool includeAllTabsModules);
+
+    /// <summary>Adds a tab after the specified tab.</summary>
+    /// <param name="tab">The tab to be added.</param>
+    /// <param name="afterTabId">Id of the tab after which this tab is added.</param>
+    /// <returns>The new tab ID.</returns>
+    int AddTabAfter(TabInfo tab, int afterTabId);
+
+    /// <summary>Adds a tab before the specified tab.</summary>
+    /// <param name="objTab">The tab to be added.</param>
+    /// <param name="beforeTabId">Id of the tab before which this tab is added.</param>
+    /// <returns>The new tab ID.</returns>
+    int AddTabBefore(TabInfo objTab, int beforeTabId);
+
+    /// <summary>Clears tabs and portal cache for the specific portal.</summary>
+    /// <param name="portalId">The portal id.</param>
+    void ClearCache(int portalId);
+
+    /// <summary>Converts one single tab to a neutral culture clears the tab cache optionally.</summary>
+    /// <param name="portalId"></param>
+    /// <param name="tabId"></param>
+    /// <param name="cultureCode"></param>
+    /// <param name="clearCache"></param>
+    void ConvertTabToNeutralLanguage(int portalId, int tabId, string cultureCode, bool clearCache);
+
+    /// <summary>Creates content item for the tab..</summary>
+    /// <param name="tab">The updated tab.</param>
+    void CreateContentItem(TabInfo tab);
+
+    /// <summary>Creates the localized copies.</summary>
+    /// <param name="originalTab">The original tab.</param>
+    void CreateLocalizedCopies(TabInfo originalTab);
+
+    /// <summary>Creates the localized copy.</summary>
+    /// <param name="originalTab">The original tab.</param>
+    /// <param name="locale">The locale.</param>
+    /// <param name="clearCache">Clear the cache?.</param>
+    void CreateLocalizedCopy(TabInfo originalTab, Locale locale, bool clearCache);
+
+    /// <summary>Deletes a tab permanently from the database.</summary>
+    /// <param name="tabId">TabId of the tab to be deleted.</param>
+    /// <param name="portalId">PortalId of the portal.</param>
+    /// <remarks>The tab will not delete if it has child tab(s).</remarks>
+    void DeleteTab(int tabId, int portalId);
+
+    /// <summary>Deletes a tab permanently from the database.</summary>
+    /// <param name="tabId">The tab id.</param>
+    /// <param name="portalId">The portal id.</param>
+    /// <param name="deleteDescendants">if set to <see langword="true"/> will delete all child tabs.</param>
+    void DeleteTab(int tabId, int portalId, bool deleteDescendants);
+
+    /// <summary>Delete a Setting of a tab instance.</summary>
+    /// <param name="tabId">ID of the affected tab.</param>
+    /// <param name="settingName">Name of the setting to be deleted.</param>
+    void DeleteTabSetting(int tabId, string settingName);
+
+    /// <summary>Delete all Settings of a tab instance.</summary>
+    /// <param name="tabId">ID of the affected tab.</param>
+    void DeleteTabSettings(int tabId);
+
+    /// <summary>Delete a taburl.</summary>
+    /// <param name="tabUrl">the taburl.</param>
+    /// <param name="portalId">the portal.</param>
+    /// <param name="clearCache">whether to clear the cache.</param>
+    void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 
     /// <summary>
-    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
-    /// There is no guarantee that this interface will not change.
+    /// Deletes all tabs for a specific language. Double checks if we are not deleting pages for the default language
+    /// Clears the tab cache optionally.
     /// </summary>
-    public interface ITabController
-    {
-        /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        [Obsolete("Deprecated in DotNetNuke 9.11.1. Use AddMissingLanguagesWithWarnings. Scheduled removal in v11.0.0.")]
-        void AddMissingLanguages(int portalId, int tabId);
+    /// <param name="portalId"></param>
+    /// <param name="cultureCode"></param>
+    /// <param name="clearCache"></param>
+    /// <returns><see langword="true"/> if the deletion completes.</returns>
+    bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache);
 
-        /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <returns>Whether all missing languages were added.</returns>
-        bool AddMissingLanguagesWithWarnings(int portalId, int tabId);
+    /// <summary>
+    /// Reverts page culture back to Neutral (Null), to ensure a non localized site
+    /// clears the tab cache optionally.
+    /// </summary>
+    /// <param name="portalId"></param>
+    /// <param name="cultureCode"></param>
+    /// <param name="clearCache"></param>
+    void EnsureNeutralLanguage(int portalId, string cultureCode, bool clearCache);
 
-        /// <summary>Adds a tab.</summary>
-        /// <param name="tab">The tab to be added.</param>
-        /// <remarks>The tab is added to the end of the current Level.</remarks>
-        /// <returns>The new tab ID.</returns>
-        int AddTab(TabInfo tab);
+    /// <summary>Get the list of skins per alias at tab level.</summary>
+    /// <param name="tabId">the tab id.</param>
+    /// <param name="portalId">the portal id.</param>
+    /// <returns>list of TabAliasSkinInfo.</returns>
+    List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
 
-        /// <summary>Adds a tab.</summary>
-        /// <param name="tab">The tab to be added.</param>
-        /// <param name="includeAllTabsModules">Flag that indicates whether to add the "AllTabs" Modules.</param>
-        /// <remarks>The tab is added to the end of the current Level.</remarks>
-        /// <returns>The new tab ID.</returns>
-        int AddTab(TabInfo tab, bool includeAllTabsModules);
+    /// <summary>Get the list of custom aliases associated with a page (tab).</summary>
+    /// <param name="tabId">the tab id.</param>
+    /// <param name="portalId">the portal id.</param>
+    /// <returns>dictionary of tabid and aliases.</returns>
+    Dictionary<string, string> GetCustomAliases(int tabId, int portalId);
 
-        /// <summary>Adds a tab after the specified tab.</summary>
-        /// <param name="tab">The tab to be added.</param>
-        /// <param name="afterTabId">Id of the tab after which this tab is added.</param>
-        /// <returns>The new tab ID.</returns>
-        int AddTabAfter(TabInfo tab, int afterTabId);
+    /// <summary>Gets the tab.</summary>
+    /// <param name="tabId">The tab id.</param>
+    /// <param name="portalId">The portal id.</param>
+    /// <returns>tab info.</returns>
+    TabInfo GetTab(int tabId, int portalId);
 
-        /// <summary>Adds a tab before the specified tab.</summary>
-        /// <param name="objTab">The tab to be added.</param>
-        /// <param name="beforeTabId">Id of the tab before which this tab is added.</param>
-        /// <returns>The new tab ID.</returns>
-        int AddTabBefore(TabInfo objTab, int beforeTabId);
+    /// <summary>Gets the tab.</summary>
+    /// <param name="tabId">The tab id.</param>
+    /// <param name="portalId">The portal id.</param>
+    /// <param name="ignoreCache">if set to <see langword="true"/> will get tab info directly from database.</param>
+    /// <returns>tab info.</returns>
+    TabInfo GetTab(int tabId, int portalId, bool ignoreCache);
 
-        /// <summary>Clears tabs and portal cache for the specific portal.</summary>
-        /// <param name="portalId">The portal id.</param>
-        void ClearCache(int portalId);
+    /// <summary>Gets the tab by culture.</summary>
+    /// <param name="tabId">The tab id.</param>
+    /// <param name="portalId">The portal id.</param>
+    /// <param name="locale">The locale.</param>
+    /// <returns>tab info.</returns>
+    TabInfo GetTabByCulture(int tabId, int portalId, Locale locale);
 
-        /// <summary>Converts one single tab to a neutral culture clears the tab cache optionally.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
-        void ConvertTabToNeutralLanguage(int portalId, int tabId, string cultureCode, bool clearCache);
+    /// <summary>Gets the name of the tab by name.</summary>
+    /// <param name="tabName">Name of the tab.</param>
+    /// <param name="portalId">The portal id.</param>
+    /// <returns>tab info.</returns>
+    TabInfo GetTabByName(string tabName, int portalId);
 
-        /// <summary>Creates content item for the tab..</summary>
-        /// <param name="tab">The updated tab.</param>
-        void CreateContentItem(TabInfo tab);
+    /// <summary>Gets the name of the tab by name and parent id.</summary>
+    /// <param name="tabName">Name of the tab.</param>
+    /// <param name="portalId">The portal id.</param>
+    /// <param name="parentId">The parent id.</param>
+    /// <returns>tab info.</returns>
+    TabInfo GetTabByName(string tabName, int portalId, int parentId);
 
-        /// <summary>Creates the localized copies.</summary>
-        /// <param name="originalTab">The original tab.</param>
-        void CreateLocalizedCopies(TabInfo originalTab);
+    /// <summary>Gets the tabs which use the module.</summary>
+    /// <param name="moduleID">The module ID.</param>
+    /// <returns>tab collection.</returns>
+    IDictionary<int, TabInfo> GetTabsByModuleID(int moduleID);
 
-        /// <summary>Creates the localized copy.</summary>
-        /// <param name="originalTab">The original tab.</param>
-        /// <param name="locale">The locale.</param>
-        /// <param name="clearCache">Clear the cache?.</param>
-        void CreateLocalizedCopy(TabInfo originalTab, Locale locale, bool clearCache);
+    /// <summary>Gets the tabs which use the package.</summary>
+    /// <param name="portalID">The portal ID.</param>
+    /// <param name="packageID">The package ID.</param>
+    /// <param name="forHost">if set to <see langword="true"/> [for host].</param>
+    /// <returns>tab collection.</returns>
+    IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost);
 
-        /// <summary>Deletes a tab permanently from the database.</summary>
-        /// <param name="tabId">TabId of the tab to be deleted.</param>
-        /// <param name="portalId">PortalId of the portal.</param>
-        /// <remarks>The tab will not delete if it has child tab(s).</remarks>
-        void DeleteTab(int tabId, int portalId);
+    /// <summary>Gets the tabs by portal.</summary>
+    /// <param name="portalId">The portal id.</param>
+    /// <returns>tab collection.</returns>
+    TabCollection GetUserTabsByPortal(int portalId);
 
-        /// <summary>Deletes a tab permanently from the database.</summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="deleteDescendants">if set to <c>true</c> will delete all child tabs.</param>
-        void DeleteTab(int tabId, int portalId, bool deleteDescendants);
+    /// <summary>
+    /// Get the actual visible tabs for a given portal id.
+    /// System Tabs and Admin Tabs are excluded from the result set.
+    /// </summary>
+    /// <param name="portalId"></param>
+    /// <returns>tab collection.</returns>
+    TabCollection GetTabsByPortal(int portalId);
 
-        /// <summary>Delete a Setting of a tab instance.</summary>
-        /// <param name="tabId">ID of the affected tab.</param>
-        /// <param name="settingName">Name of the setting to be deleted.</param>
-        void DeleteTabSetting(int tabId, string settingName);
+    /// <summary>Gets the tabs which use the module.</summary>
+    /// <param name="tabModuleId">The tabmodule ID.</param>
+    /// <returns>tab collection.</returns>
+    IDictionary<int, TabInfo> GetTabsByTabModuleID(int tabModuleId);
 
-        /// <summary>Delete all Settings of a tab instance.</summary>
-        /// <param name="tabId">ID of the affected tab.</param>
-        void DeleteTabSettings(int tabId);
+    /// <summary>read all settings for a tab from TabSettings table.</summary>
+    /// <param name="tabId">ID of the Tab to query.</param>
+    /// <returns>
+    /// (cached) hashtable containing all settings.
+    /// </returns>
+    Hashtable GetTabSettings(int tabId);
 
-        /// <summary>Delete a taburl.</summary>
-        /// <param name="tabUrl">the taburl.</param>
-        /// <param name="portalId">the portal.</param>
-        /// <param name="clearCache">whether to clear the cache.</param>
-        void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
+    /// <summary>Get the list of url's associated with a page (tab).</summary>
+    /// <param name="tabId">the tab id.</param>
+    /// <param name="portalId">the portal id.</param>
+    /// <returns>list of urls associated with a tab.</returns>
+    List<TabUrlInfo> GetTabUrls(int tabId, int portalId);
 
-        /// <summary>
-        /// Deletes all tabs for a specific language. Double checks if we are not deleting pages for the default language
-        /// Clears the tab cache optionally.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
-        /// <returns><see langword="true"/> if the deletion completes.</returns>
-        bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache);
+    /// <summary>Gives the translator role edit rights.</summary>
+    /// <param name="localizedTab">The localized tab.</param>
+    /// <param name="users">The users.</param>
+    void GiveTranslatorRoleEditRights(TabInfo localizedTab, Dictionary<int, UserInfo> users);
 
-        /// <summary>
-        /// Reverts page culture back to Neutral (Null), to ensure a non localized site
-        /// clears the tab cache optionally.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
-        void EnsureNeutralLanguage(int portalId, string cultureCode, bool clearCache);
+    /// <summary>Returns True if a page is missing a translated version in at least one other language.</summary>
+    /// <param name="portalId"></param>
+    /// <param name="tabId"></param>
+    /// <returns><see langword="true"/> if the page has missing languages, otherwise <see langword="false"/>.</returns>
+    bool HasMissingLanguages(int portalId, int tabId);
 
-        /// <summary>Get the list of skins per alias at tab level.</summary>
-        /// <param name="tabId">the tab id.</param>
-        /// <param name="portalId">the portal id.</param>
-        /// <returns>list of TabAliasSkinInfo.</returns>
-        List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId);
+    /// <summary>Checks whether the tab is published. Published means: view permissions of tab are identical to the DefaultLanguageTab.</summary>
+    /// <param name="publishTab">The tab that is checked.</param>
+    /// <returns>true if tab is published.</returns>
+    bool IsTabPublished(TabInfo publishTab);
 
-        /// <summary>Get the list of custom aliases associated with a page (tab).</summary>
-        /// <param name="tabId">the tab id.</param>
-        /// <param name="portalId">the portal id.</param>
-        /// <returns>dictionary of tabid and aliases.</returns>
-        Dictionary<string, string> GetCustomAliases(int tabId, int portalId);
+    /// <summary>Determines whether is host or admin tab.</summary>
+    /// <param name="tab">The tab info.</param>
+    /// <returns><see langword="true"/> if the page is a host or admin page, otherwise <see langword="false"/>.</returns>
+    bool IsHostOrAdminPage(TabInfo tab);
 
-        /// <summary>Gets the tab.</summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>tab info.</returns>
-        TabInfo GetTab(int tabId, int portalId);
+    /// <summary>Localizes the tab.</summary>
+    /// <param name="originalTab">The original tab.</param>
+    /// <param name="locale">The locale.</param>
+    void LocalizeTab(TabInfo originalTab, Locale locale);
 
-        /// <summary>Gets the tab.</summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="ignoreCache">if set to <c>true</c> will get tab info directly from database.</param>
-        /// <returns>tab info.</returns>
-        TabInfo GetTab(int tabId, int portalId, bool ignoreCache);
+    /// <summary>Localizes the tab, with optional clear cache.</summary>
+    /// <param name="originalTab"></param>
+    /// <param name="locale"></param>
+    /// <param name="clearCache"></param>
+    void LocalizeTab(TabInfo originalTab, Locale locale, bool clearCache);
 
-        /// <summary>Gets the tab by culture.</summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="locale">The locale.</param>
-        /// <returns>tab info.</returns>
-        TabInfo GetTabByCulture(int tabId, int portalId, Locale locale);
+    /// <summary>Moves the tab after a specific tab.</summary>
+    /// <param name="tab">The tab want to move.</param>
+    /// <param name="afterTabId">will move objTab after this tab.</param>
+    void MoveTabAfter(TabInfo tab, int afterTabId);
 
-        /// <summary>Gets the name of the tab by name.</summary>
-        /// <param name="tabName">Name of the tab.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>tab info.</returns>
-        TabInfo GetTabByName(string tabName, int portalId);
+    /// <summary>Moves the tab before a specific tab.</summary>
+    /// <param name="tab">The tab want to move.</param>
+    /// <param name="beforeTabId">will move objTab before this tab.</param>
+    void MoveTabBefore(TabInfo tab, int beforeTabId);
 
-        /// <summary>Gets the name of the tab by name and parent id.</summary>
-        /// <param name="tabName">Name of the tab.</param>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="parentId">The parent id.</param>
-        /// <returns>tab info.</returns>
-        TabInfo GetTabByName(string tabName, int portalId, int parentId);
+    /// <summary>Moves the tab to a new parent.</summary>
+    /// <param name="tab">The tab want to move.</param>
+    /// <param name="parentId">will move tab to this parent.</param>
+    void MoveTabToParent(TabInfo tab, int parentId);
 
-        /// <summary>Gets the tabs which use the module.</summary>
-        /// <param name="moduleID">The module ID.</param>
-        /// <returns>tab collection.</returns>
-        IDictionary<int, TabInfo> GetTabsByModuleID(int moduleID);
+    /// <summary>Populates the bread crumbs.</summary>
+    /// <param name="tab">The tab.</param>
+    void PopulateBreadCrumbs(ref TabInfo tab);
 
-        /// <summary>Gets the tabs which use the package.</summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="packageID">The package ID.</param>
-        /// <param name="forHost">if set to <c>true</c> [for host].</param>
-        /// <returns>tab collection.</returns>
-        IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost);
+    /// <summary>Populates the bread crumbs.</summary>
+    /// <param name="portalID">The portal ID.</param>
+    /// <param name="breadCrumbs">The bread crumbs.</param>
+    /// <param name="tabID">The tab ID.</param>
+    void PopulateBreadCrumbs(int portalID, ref ArrayList breadCrumbs, int tabID);
 
-        /// <summary>Gets the tabs by portal.</summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <returns>tab collection.</returns>
-        TabCollection GetUserTabsByPortal(int portalId);
+    /// <summary>Publishes the tab. Set the VIEW permissions to All Users.</summary>
+    /// <param name="publishTab">The publish tab.</param>
+    void PublishTab(TabInfo publishTab);
 
-        /// <summary>
-        /// Get the actual visible tabs for a given portal id.
-        /// System Tabs and Admin Tabs are excluded from the result set.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns>tab collection.</returns>
-        TabCollection GetTabsByPortal(int portalId);
+    /// <summary>Publishes the tab. Set the VIEW permissions to All Users.</summary>
+    /// <param name="tabs">The tabs.</param>
+    void PublishTabs(List<TabInfo> tabs);
 
-        /// <summary>Gets the tabs which use the module.</summary>
-        /// <param name="tabModuleId">The tabmodule ID.</param>
-        /// <returns>tab collection.</returns>
-        IDictionary<int, TabInfo> GetTabsByTabModuleID(int tabModuleId);
+    /// <summary>It marks a page as published at least once.</summary>
+    /// <param name="tab">The Tab to be marked.</param>
+    void MarkAsPublished(TabInfo tab);
 
-        /// <summary>read all settings for a tab from TabSettings table.</summary>
-        /// <param name="tabId">ID of the Tab to query.</param>
-        /// <returns>
-        /// (cached) hashtable containing all settings.
-        /// </returns>
-        Hashtable GetTabSettings(int tabId);
+    /// <summary>Restores the tab.</summary>
+    /// <param name="tab">The obj tab.</param>
+    /// <param name="portalSettings">The portal settings.</param>
+    void RestoreTab(TabInfo tab, PortalSettings portalSettings);
 
-        /// <summary>Get the list of url's associated with a page (tab).</summary>
-        /// <param name="tabId">the tab id.</param>
-        /// <param name="portalId">the portal id.</param>
-        /// <returns>list of urls associated with a tab.</returns>
-        List<TabUrlInfo> GetTabUrls(int tabId, int portalId);
+    /// <summary>Save url information for a page (tab).</summary>
+    /// <param name="tabUrl">the tab url.</param>
+    /// <param name="portalId">the portal id.</param>
+    /// <param name="clearCache">whether to clear the cache.</param>
+    void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
 
-        /// <summary>Gives the translator role edit rights.</summary>
-        /// <param name="localizedTab">The localized tab.</param>
-        /// <param name="users">The users.</param>
-        void GiveTranslatorRoleEditRights(TabInfo localizedTab, Dictionary<int, UserInfo> users);
+    /// <summary>Soft Deletes the tab by setting the IsDeleted property to true.</summary>
+    /// <param name="tabId">The tab id.</param>
+    /// <param name="portalSettings">The portal settings.</param>
+    /// <returns><see langword="true"/> if the page was successfully deleted, otherwise <see langword="false"/>.</returns>
+    bool SoftDeleteTab(int tabId, PortalSettings portalSettings);
 
-        /// <summary>Returns True if a page is missing a translated version in at least one other language.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <returns><see langword="true"/> if the page has missing languages, otherwise <see langword="false"/>.</returns>
-        bool HasMissingLanguages(int portalId, int tabId);
+    /// <summary>Updates the tab to database.</summary>
+    /// <param name="updatedTab">The updated tab.</param>
+    void UpdateTab(TabInfo updatedTab);
 
-        /// <summary>Checks whether the tab is published. Published means: view permissions of tab are identical to the DefaultLanguageTab.</summary>
-        /// <param name="publishTab">The tab that is checked.</param>
-        /// <returns>true if tab is published.</returns>
-        bool IsTabPublished(TabInfo publishTab);
+    /// <summary>Adds or updates a tab's setting value.</summary>
+    /// <param name="tabId">ID of the tab to update.</param>
+    /// <param name="settingName">name of the setting property.</param>
+    /// <param name="settingValue">value of the setting (String).</param>
+    /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true.</remarks>
+    void UpdateTabSetting(int tabId, string settingName, string settingValue);
 
-        /// <summary>Determines whether is host or admin tab.</summary>
-        /// <param name="tab">The tab info.</param>
-        /// <returns><see langword="true"/> if the page is a host or admin page, otherwise <see langword="false"/>.</returns>
-        bool IsHostOrAdminPage(TabInfo tab);
+    /// <summary>Updates the translation status.</summary>
+    /// <param name="localizedTab">The localized tab.</param>
+    /// <param name="isTranslated">if set to <see langword="true"/> means the tab has already been translated.</param>
+    void UpdateTranslationStatus(TabInfo localizedTab, bool isTranslated);
 
-        /// <summary>Localizes the tab.</summary>
-        /// <param name="originalTab">The original tab.</param>
-        /// <param name="locale">The locale.</param>
-        void LocalizeTab(TabInfo originalTab, Locale locale);
-
-        /// <summary>Localizes the tab, with optional clear cache.</summary>
-        /// <param name="originalTab"></param>
-        /// <param name="locale"></param>
-        /// <param name="clearCache"></param>
-        void LocalizeTab(TabInfo originalTab, Locale locale, bool clearCache);
-
-        /// <summary>Moves the tab after a specific tab.</summary>
-        /// <param name="tab">The tab want to move.</param>
-        /// <param name="afterTabId">will move objTab after this tab.</param>
-        void MoveTabAfter(TabInfo tab, int afterTabId);
-
-        /// <summary>Moves the tab before a specific tab.</summary>
-        /// <param name="tab">The tab want to move.</param>
-        /// <param name="beforeTabId">will move objTab before this tab.</param>
-        void MoveTabBefore(TabInfo tab, int beforeTabId);
-
-        /// <summary>Moves the tab to a new parent.</summary>
-        /// <param name="tab">The tab want to move.</param>
-        /// <param name="parentId">will move tab to this parent.</param>
-        void MoveTabToParent(TabInfo tab, int parentId);
-
-        /// <summary>Populates the bread crumbs.</summary>
-        /// <param name="tab">The tab.</param>
-        void PopulateBreadCrumbs(ref TabInfo tab);
-
-        /// <summary>Populates the bread crumbs.</summary>
-        /// <param name="portalID">The portal ID.</param>
-        /// <param name="breadCrumbs">The bread crumbs.</param>
-        /// <param name="tabID">The tab ID.</param>
-        void PopulateBreadCrumbs(int portalID, ref ArrayList breadCrumbs, int tabID);
-
-        /// <summary>Publishes the tab. Set the VIEW permissions to All Users.</summary>
-        /// <param name="publishTab">The publish tab.</param>
-        void PublishTab(TabInfo publishTab);
-
-        /// <summary>Publishes the tab. Set the VIEW permissions to All Users.</summary>
-        /// <param name="tabs">The tabs.</param>
-        void PublishTabs(List<TabInfo> tabs);
-
-        /// <summary>It marks a page as published at least once.</summary>
-        /// <param name="tab">The Tab to be marked.</param>
-        void MarkAsPublished(TabInfo tab);
-
-        /// <summary>Restores the tab.</summary>
-        /// <param name="tab">The obj tab.</param>
-        /// <param name="portalSettings">The portal settings.</param>
-        void RestoreTab(TabInfo tab, PortalSettings portalSettings);
-
-        /// <summary>Save url information for a page (tab).</summary>
-        /// <param name="tabUrl">the tab url.</param>
-        /// <param name="portalId">the portal id.</param>
-        /// <param name="clearCache">whether to clear the cache.</param>
-        void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache);
-
-        /// <summary>Soft Deletes the tab by setting the IsDeleted property to true.</summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalSettings">The portal settings.</param>
-        /// <returns><see langword="true"/> if the page was successfully deleted, otherwise <see langword="false"/>.</returns>
-        bool SoftDeleteTab(int tabId, PortalSettings portalSettings);
-
-        /// <summary>Updates the tab to database.</summary>
-        /// <param name="updatedTab">The updated tab.</param>
-        void UpdateTab(TabInfo updatedTab);
-
-        /// <summary>Adds or updates a tab's setting value.</summary>
-        /// <param name="tabId">ID of the tab to update.</param>
-        /// <param name="settingName">name of the setting property.</param>
-        /// <param name="settingValue">value of the setting (String).</param>
-        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true.</remarks>
-        void UpdateTabSetting(int tabId, string settingName, string settingValue);
-
-        /// <summary>Updates the translation status.</summary>
-        /// <param name="localizedTab">The localized tab.</param>
-        /// <param name="isTranslated">if set to <c>true</c> means the tab has already been translated.</param>
-        void UpdateTranslationStatus(TabInfo localizedTab, bool isTranslated);
-
-        /// <summary>Refresh the tabinfo in cache object of portal tabs collection, use this instead of clear the whole cache to improve performance.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        void RefreshCache(int portalId, int tabId);
-    }
+    /// <summary>Refresh the tabinfo in cache object of portal tabs collection, use this instead of clear the whole cache to improve performance.</summary>
+    /// <param name="portalId"></param>
+    /// <param name="tabId"></param>
+    void RefreshCache(int portalId, int tabId);
 }
