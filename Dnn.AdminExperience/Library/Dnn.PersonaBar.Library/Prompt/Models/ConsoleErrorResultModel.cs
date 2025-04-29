@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
+    /// <summary>A console result that represents an error.</summary>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
     public partial class ConsoleErrorResultModel : ConsoleResultModel
     {

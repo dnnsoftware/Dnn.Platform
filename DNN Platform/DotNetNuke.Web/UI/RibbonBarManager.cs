@@ -74,6 +74,7 @@ namespace DotNetNuke.Web.UI
         CHILD = 3,
     }
 
+    /// <summary>Manages the old ribbon bar.</summary>
     public partial class RibbonBarManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
@@ -245,6 +246,7 @@ namespace DotNetNuke.Web.UI
             return true;
         }
 
+        /// <inheritdoc cref="SaveTabInfoObject(DotNetNuke.Abstractions.Modules.IBusinessControllerProvider,DotNetNuke.Entities.Tabs.TabInfo,DotNetNuke.Entities.Tabs.TabInfo,DotNetNuke.Web.UI.TabRelativeLocation,string)"/>
         [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
         public static partial int SaveTabInfoObject(
             TabInfo tab,

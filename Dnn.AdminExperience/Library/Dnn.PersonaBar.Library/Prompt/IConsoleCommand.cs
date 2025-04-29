@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.Library.Prompt
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>A Prompt console command.</summary>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Abstractions.Prompt in the core abstractions project")]
     public partial interface IConsoleCommand
     {

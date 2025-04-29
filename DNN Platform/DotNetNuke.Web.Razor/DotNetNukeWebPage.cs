@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Razor
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Web.Razor.Helpers;
 
+    /// <summary>A razor web page model.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public abstract partial class DotNetNukeWebPage : WebPageBase
     {

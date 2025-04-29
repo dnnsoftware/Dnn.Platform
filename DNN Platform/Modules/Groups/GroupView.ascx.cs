@@ -20,6 +20,7 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.WebControls;
 
+    /// <summary>Display the group view.</summary>
     public partial class GroupView : GroupsModuleBase
     {
         protected void Page_Load(object sender, EventArgs e)

@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.UrlManagement
     using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A control which displays the settings of a URL provider.</summary>
     public partial class ProviderSettings : ModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;

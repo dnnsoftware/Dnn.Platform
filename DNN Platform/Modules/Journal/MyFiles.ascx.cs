@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>Display the My Files view.</summary>
     public partial class MyFiles : PortalModuleBase
     {
         /// <inheritdoc/>

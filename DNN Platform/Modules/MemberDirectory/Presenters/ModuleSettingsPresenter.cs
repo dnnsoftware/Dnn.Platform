@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Web.Mvp;
 
+    /// <summary>The presenter for <see cref="Settings"/>.</summary>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public partial class ModuleSettingsPresenter : ModuleSettingsPresenter<ISettingsView<MemberDirectorySettingsModel>, MemberDirectorySettingsModel>
     {

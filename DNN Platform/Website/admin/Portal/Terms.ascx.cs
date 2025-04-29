@@ -9,6 +9,7 @@ namespace DotNetNuke.Common.Controls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A control which displays the terms of the website.</summary>
     public partial class Terms : PortalModuleBase
     {
         /// <inheritdoc/>

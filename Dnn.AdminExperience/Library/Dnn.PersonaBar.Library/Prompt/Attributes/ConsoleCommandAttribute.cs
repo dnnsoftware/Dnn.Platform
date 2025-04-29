@@ -8,6 +8,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>An attribute to mark Prompt console commands.</summary>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
     [AttributeUsage(AttributeTargets.Class)]
 #pragma warning disable CS3015 // Type has no accessible constructors which use only CLS-compliant types

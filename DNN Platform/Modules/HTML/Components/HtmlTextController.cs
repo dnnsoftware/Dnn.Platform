@@ -95,6 +95,7 @@ namespace DotNetNuke.Modules.Html
             return content;
         }
 
+        /// <inheritdoc cref="ManageRelativePaths(string,string,string)"/>
         [DnnDeprecated(9, 11, 0, "Use overload without int")]
         public static partial string ManageRelativePaths(string htmlContent, string strUploadDirectory, string strToken, int intPortalID)
         {

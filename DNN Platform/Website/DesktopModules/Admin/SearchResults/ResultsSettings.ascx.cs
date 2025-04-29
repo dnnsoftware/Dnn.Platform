@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.SearchResults
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search.Internals;
 
+    /// <summary>A settings control for the search results module.</summary>
     public partial class ResultsSettings : ModuleSettingsBase
     {
         /// <inheritdoc/>

@@ -20,6 +20,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
     using Host = DotNetNuke.Entities.Host.Host;
 
+    /// <summary>A control which allows a user to purchase access to a role.</summary>
     public partial class Purchase : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;
