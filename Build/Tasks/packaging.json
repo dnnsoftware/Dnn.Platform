@@ -50,7 +50,6 @@
     "/bin/Microsoft.Web.Infrastructure.dll",
     "/bin/Newtonsoft.Json.Bson.dll",
     "/bin/System.Memory.dll",
-    "/bin/System.Runtime.CompilerServices.Unsafe.dll",
     "/bin/BouncyCastle.Cryptography.dll",
     "/bin/Microsoft.Bcl.Memory.dll",
     "/bin/Microsoft.Bcl.TimeProvider.dll",
