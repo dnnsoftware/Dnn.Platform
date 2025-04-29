@@ -17,8 +17,8 @@ namespace DotNetNuke.Services.GeneratedImage
     public class ProfileEventHandler : IProfileEventHandlers
     {
         /// <summary>This method add the updated user id into cache to clear image from disk before returning to UI.</summary>
-        /// <param name="sender"></param>
-        /// <param name="profileArgs"></param>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="profileArgs">The event arguments.</param>
         public void ProfileUpdated(object sender, ProfileEventArgs profileArgs)
         {
             if (profileArgs?.User == null || profileArgs.OldProfile == null)

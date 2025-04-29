@@ -4,9 +4,6 @@
 
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    /// Project     : DotNetNuke
-    /// Class       : ModuleActionEventListener
-    ///
     /// <summary>
     ///
     /// </summary>
@@ -16,8 +13,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         private readonly int moduleID;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.</summary>
-        /// <param name="modID"></param>
-        /// <param name="e"></param>
+        /// <param name="modID">The module ID.</param>
+        /// <param name="e">The event handler.</param>
         public ModuleActionEventListener(int modID, ActionEventHandler e)
         {
             this.moduleID = modID;

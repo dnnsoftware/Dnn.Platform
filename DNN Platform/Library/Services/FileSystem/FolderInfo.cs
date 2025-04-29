@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderInfo"/> class.</summary>
-        /// <param name="initialiseEmptyPermissions"></param>
+        /// <param name="initialiseEmptyPermissions">Whether to initialize the permissions to an empty collection.</param>
         internal FolderInfo(bool initialiseEmptyPermissions)
         {
             this.FolderID = Null.NullInteger;

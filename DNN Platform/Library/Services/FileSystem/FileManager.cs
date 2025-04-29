@@ -1695,7 +1695,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Rotate/Flip the image as per the metadata and reset the metadata.</summary>
-        /// <param name="content"></param>
+        /// <param name="content">The image contents.</param>
         private void RotateFlipImage(ref Stream content)
         {
             try

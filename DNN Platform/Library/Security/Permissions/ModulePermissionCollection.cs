@@ -11,13 +11,7 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : ModulePermissionCollection
-    /// <summary>
-    /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo
-    /// objects.
-    /// </summary>
+    /// <summary>ModulePermissionCollection provides a custom collection for <see cref="ModulePermissionInfo"/> objects.</summary>
     [Serializable]
     public class ModulePermissionCollection : CollectionBase
     {
@@ -27,22 +21,22 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="modulePermissions"></param>
+        /// <param name="modulePermissions">An <see cref="ArrayList"/> of <see cref="ModulePermissionInfo"/> instances.</param>
         public ModulePermissionCollection(ArrayList modulePermissions)
         {
             this.AddRange(modulePermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="modulePermissions"></param>
+        /// <param name="modulePermissions">A collection of <see cref="ModulePermissionInfo"/> instances.</param>
         public ModulePermissionCollection(ModulePermissionCollection modulePermissions)
         {
             this.AddRange(modulePermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="modulePermissions"></param>
-        /// <param name="moduleID"></param>
+        /// <param name="modulePermissions">An <see cref="ArrayList"/> of <see cref="ModulePermissionInfo"/> instances.</param>
+        /// <param name="moduleID">The ID of the module by which to filter <paramref name="modulePermissions"/>.</param>
         public ModulePermissionCollection(ArrayList modulePermissions, int moduleID)
         {
             foreach (ModulePermissionInfo permission in modulePermissions)
@@ -55,7 +49,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePermissionCollection"/> class.</summary>
-        /// <param name="objModule"></param>
+        /// <param name="objModule">A module from which to copy <see cref="ModuleInfo.ModulePermissions"/>.</param>
         public ModulePermissionCollection(ModuleInfo objModule)
         {
             foreach (ModulePermissionInfo permission in objModule.ModulePermissions)

@@ -31,8 +31,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalGroupController"/> class.</summary>
-        /// <param name="dataService"></param>
-        /// <param name="portalController"></param>
+        /// <param name="dataService">The data service.</param>
+        /// <param name="portalController">The portal controller.</param>
         public PortalGroupController(IDataService dataService, IPortalController portalController)
         {
             // Argument Contract

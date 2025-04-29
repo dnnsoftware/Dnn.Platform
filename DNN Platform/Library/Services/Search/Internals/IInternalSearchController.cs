@@ -32,22 +32,22 @@ namespace DotNetNuke.Services.Search.Internals
 
         /// <summary>Adds the collection of search documents to the search index.</summary>
         /// <remarks>The controller auto-commits at the end of this method.</remarks>
-        /// <param name="searchDocumentList"></param>
+        /// <param name="searchDocumentList">The search documents to all.</param>
         void AddSearchDocuments(IEnumerable<SearchDocument> searchDocumentList);
 
         /// <summary>Delete a Search Document from the Search Index. REQUIRES: searchDocument to have PortalId, UniqueKey, SearchTypeId properties set.</summary>
-        /// <param name="searchDocument"></param>
+        /// <param name="searchDocument">The search document to delete.</param>
         void DeleteSearchDocument(SearchDocument searchDocument);
 
         /// <summary>Delete all search documents related to a particular module.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="moduleId"></param>
-        /// <param name="moduleDefId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="moduleId">The module ID.</param>
+        /// <param name="moduleDefId">The module definition ID.</param>
         void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId);
 
         /// <summary>Deletes all documents of a specified portal and search type (used for re-index operation).</summary>
-        /// <param name="portalId"></param>
-        /// <param name="searchTypeId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="searchTypeId">The search type ID.</param>
         void DeleteAllDocuments(int portalId, int searchTypeId);
 
         /// <summary>Commits individually added/deleted documents to the search index.</summary>

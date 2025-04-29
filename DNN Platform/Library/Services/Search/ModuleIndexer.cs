@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
-        /// <param name="needSearchModules"></param>
+        /// <param name="needSearchModules">Whether to pre-populate the collection of search modules.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public ModuleIndexer(bool needSearchModules)
             : this(needSearchModules, null)
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
-        /// <param name="needSearchModules"></param>
+        /// <param name="needSearchModules">Whether to pre-populate the collection of search modules.</param>
         /// <param name="businessControllerProvider">The business controller provider.</param>
         public ModuleIndexer(bool needSearchModules, IBusinessControllerProvider businessControllerProvider)
         {
@@ -134,8 +134,8 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Returns a collection of SearchDocuments containing module metadata (title, header, footer...) of Searchable Modules.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="startDate"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="startDate">The date after which to look for changes.</param>
         /// <returns>A <see cref="List{T}"/> of <see cref="SearchDocument"/> instances.</returns>
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Gets a list of modules that are listed as "Searchable" from the module definition and check if they implement <see cref="ModuleSearchBase"/> -- which is a newer implementation of search that replaces <see cref="ISearchable"/>.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>A sequence of <see cref="ModuleInfo"/> instances.</returns>
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId)
         {

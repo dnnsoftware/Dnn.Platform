@@ -694,7 +694,7 @@ namespace DotNetNuke.Entities.Portals
         ///   function provides the language for portalinfo requests
         ///   in case where language has not been installed yet, will return the core install default of en-us.
         /// </summary>
-        /// <param name="portalID"></param>
+        /// <param name="portalID">The portal ID.</param>
         /// <returns>The language identifier.</returns>
         public static string GetActivePortalLanguage(int portalID)
         {
@@ -754,8 +754,8 @@ namespace DotNetNuke.Entities.Portals
             return language;
         }
 
-        /// <summary>return the current DefaultLanguage value from the Portals table for the requested Portalid.</summary>
-        /// <param name="portalID"></param>
+        /// <summary>return the current DefaultLanguage value from the Portals table for the requested <paramref name="portalID"/>.</summary>
+        /// <param name="portalID">The portal ID.</param>
         /// <returns>The language identifier.</returns>
         public static string GetPortalDefaultLanguage(int portalID)
         {
@@ -767,8 +767,8 @@ namespace DotNetNuke.Entities.Portals
         ///   set the required DefaultLanguage in the Portals table for a particular portal
         ///   saves having to update an entire PortalInfo object.
         /// </summary>
-        /// <param name="portalID"></param>
-        /// <param name="cultureCode"></param>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         public static void UpdatePortalDefaultLanguage(int portalID, string cultureCode)
         {
             DataProvider.Instance().UpdatePortalDefaultLanguage(portalID, cultureCode);
@@ -849,7 +849,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="adminUserId">The obj admin user.</param>
         /// <param name="description">The description.</param>
         /// <param name="keyWords">The key words.</param>
-        /// <param name="template"> </param>
+        /// <param name="template">The portal template.</param>
         /// <param name="homeDirectory">The home directory.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
@@ -922,7 +922,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="adminUser">The obj admin user.</param>
         /// <param name="description">The description.</param>
         /// <param name="keyWords">The key words.</param>
-        /// <param name="template"> </param>
+        /// <param name="template">The portal template.</param>
         /// <param name="homeDirectory">The home directory.</param>
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
@@ -1327,10 +1327,7 @@ namespace DotNetNuke.Entities.Portals
             this.UpdatePortalInternal(targetPortal, false);
         }
 
-        /// <summary>Removes the related PortalLocalization record from the database, adds optional clear cache.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void RemovePortalLocalization(int portalId, string cultureCode, bool clearCache = true)
         {
             DataProvider.Instance().RemovePortalLocalization(portalId, cultureCode);
@@ -1340,7 +1337,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        /// <summary>Processess a template file for the new portal.</summary>
+        /// <summary>Processes a template file for the new portal.</summary>
         /// <param name="portalId">PortalId of the new portal.</param>
         /// <param name="template">The template.</param>
         /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
@@ -1394,8 +1391,7 @@ namespace DotNetNuke.Entities.Portals
             this.UpdatePortalInfo(portal);
         }
 
-        /// <summary>Updates basic portal information.</summary>
-        /// <param name="portal"></param>
+        /// <inheritdoc />
         public void UpdatePortalInfo(PortalInfo portal)
         {
             this.UpdatePortalInternal(portal, true);
@@ -2319,8 +2315,8 @@ namespace DotNetNuke.Entities.Portals
             private string originalCultureCode;
 
             /// <summary>Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.</summary>
-            /// <param name="templateFilePath"></param>
-            /// <param name="cultureCode"></param>
+            /// <param name="templateFilePath">The path to the template file.</param>
+            /// <param name="cultureCode">The culture code.</param>
             public PortalTemplateInfo(string templateFilePath, string cultureCode)
             {
                 this.TemplateFilePath = templateFilePath;

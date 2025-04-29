@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>Creates the content text.</summary>
-        /// <param name="objJournalItem"></param>
+        /// <param name="objJournalItem">The journal item.</param>
         /// <returns>The content body or <see langword="null"/>.</returns>
         private static string GetContentBody(JournalItem objJournalItem)
         {

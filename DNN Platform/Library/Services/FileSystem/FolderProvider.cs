@@ -166,7 +166,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Moves a file to a new folder.</summary>
-        /// <param name="file"></param>
+        /// <param name="file">The file to move.</param>
+        /// <param name="destinationFolder">The folder to which <paramref name="file"/> is to be moved.</param>
         public virtual void MoveFile(IFileInfo file, IFolderInfo destinationFolder)
         {
             throw new NotImplementedException("This provider does not implement MoveFile");

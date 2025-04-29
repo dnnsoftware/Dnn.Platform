@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.</summary>
-        /// <param name="itemType"></param>
+        /// <param name="itemType">The list item type.</param>
         public ImageCommandColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;

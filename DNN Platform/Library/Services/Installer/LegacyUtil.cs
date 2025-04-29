@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.Installer
             var skinWriter = new SkinPackageWriter(skin, package, tempInstallFolder, subFolder);
             skinWriter.GetFiles(false);
 
-            // We need to reset the BasePath so it using the correct basePath rather than the Temp InstallFolder
+            // We need to reset the BasePath so it's using the correct basePath rather than the Temp InstallFolder
             skinWriter.SetBasePath();
 
             // Writer package manifest fragment to writer

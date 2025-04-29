@@ -2798,8 +2798,8 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
-        /// <summary>Get a User Authentication record from slq database. DNN-4016.</summary>
-        /// <param name="userID"></param>
+        /// <summary>Get a User Authentication record from SQL database. DNN-4016.</summary>
+        /// <param name="userID">The ID of the user.</param>
         /// <returns>UserAuthentication record.</returns>
         public virtual IDataReader GetUserAuthentication(int userID)
         {

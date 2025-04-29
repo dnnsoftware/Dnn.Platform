@@ -975,10 +975,7 @@ namespace DotNetNuke.Entities.Tabs
             return true;
         }
 
-        /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <returns>Whether all missing languages were added.</returns>
+        /// <inheritdoc />
         public bool AddMissingLanguagesWithWarnings(int portalId, int tabId)
         {
             var addedAllMissingLanguages = true;
@@ -1111,14 +1108,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        /// <summary>
-        /// Converts one single tab to a neutral culture
-        /// clears the tab cache optionally.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void ConvertTabToNeutralLanguage(int portalId, int tabId, string cultureCode, bool clearCache)
         {
             // parent tabs can not be deleted
@@ -1294,13 +1284,7 @@ namespace DotNetNuke.Entities.Tabs
             return true;
         }
 
-        /// <summary>
-        /// Reverts page culture back to Neutral (Null), to ensure a non localized site
-        /// clears the tab cache optionally.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void EnsureNeutralLanguage(int portalId, string cultureCode, bool clearCache)
         {
             this.dataProvider.EnsureNeutralLanguage(portalId, cultureCode);
@@ -1526,12 +1510,7 @@ namespace DotNetNuke.Entities.Tabs
                                                             });
         }
 
-        /// <summary>
-        /// Get the actual visible tabs for a given portal id.
-        /// System Tabs and Admin Tabs are excluded from the result set.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns>A new <see cref="TabCollection"/> instance.</returns>
+        /// <inheritdoc />
         public TabCollection GetUserTabsByPortal(int portalId)
         {
             var tabs = this.GetTabsByPortal(portalId);
@@ -1690,10 +1669,7 @@ namespace DotNetNuke.Entities.Tabs
             this.LocalizeTab(originalTab, locale, true);
         }
 
-        /// <summary>Localizes the tab, with optional clear cache.</summary>
-        /// <param name="originalTab"></param>
-        /// <param name="locale"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void LocalizeTab(TabInfo originalTab, Locale locale, bool clearCache)
         {
             this.dataProvider.LocalizeTab(originalTab.TabID, locale.Code, UserController.Instance.GetCurrentUserInfo().UserID);
@@ -2572,8 +2548,8 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>If a parent tab is localized, its localized children need to be updated to point at their corresponding localized parents.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="parentTabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="parentTabId">The parent tab ID.</param>
         private void UpdateChildTabLocalizedParents(int portalId, int parentTabId)
         {
             var childTabs = GetTabsByParent(parentTabId, portalId);

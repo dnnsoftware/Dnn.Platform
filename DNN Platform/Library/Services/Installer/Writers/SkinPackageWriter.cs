@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Writers
         private readonly string subFolder;
 
         /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public SkinPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
-        /// <param name="skinPackage"></param>
-        /// <param name="package"></param>
+        /// <param name="skinPackage">The skin package info.</param>
+        /// <param name="package">The package info.</param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
             : base(package)
         {
@@ -36,9 +36,9 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
-        /// <param name="skinPackage"></param>
-        /// <param name="package"></param>
-        /// <param name="basePath"></param>
+        /// <param name="skinPackage">The skin package info.</param>
+        /// <param name="package">The package info.</param>
+        /// <param name="basePath">The base path for the skin.</param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath)
             : base(package)
         {
@@ -47,10 +47,10 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinPackageWriter"/> class.</summary>
-        /// <param name="skinPackage"></param>
-        /// <param name="package"></param>
-        /// <param name="basePath"></param>
-        /// <param name="subFolder"></param>
+        /// <param name="skinPackage">The skin package info.</param>
+        /// <param name="package">The package info.</param>
+        /// <param name="basePath">The base path for the skin.</param>
+        /// <param name="subFolder">The folder under <paramref name="basePath"/> for this skin.</param>
         public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath, string subFolder)
             : base(package)
         {

@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProfilePropertyDefinition"/> class.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public ProfilePropertyDefinition(int portalId)
         {
             this.PropertyDefinitionId = Null.NullInteger;

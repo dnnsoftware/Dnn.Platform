@@ -9,9 +9,6 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      SettingsEditorInfoAdapter
     /// <summary>
     /// The SettingsEditorInfoAdapter control provides a factory for creating the
     /// appropriate EditInfo object.
@@ -23,9 +20,9 @@ namespace DotNetNuke.UI.WebControls
         private string fieldName;
 
         /// <summary>Initializes a new instance of the <see cref="SettingsEditorInfoAdapter"/> class.</summary>
-        /// <param name="dataSource"></param>
-        /// <param name="dataMember"></param>
-        /// <param name="fieldName"></param>
+        /// <param name="dataSource">The data source <see cref="Hashtable"/>.</param>
+        /// <param name="dataMember">The <see cref="SettingInfo"/> instance.</param>
+        /// <param name="fieldName">The field name.</param>
         public SettingsEditorInfoAdapter(object dataSource, object dataMember, string fieldName)
         {
             this.dataMember = dataMember;

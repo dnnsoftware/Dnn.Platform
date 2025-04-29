@@ -121,8 +121,8 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
         [DnnDeprecated(9, 11, 1, "Use AddMissingLanguagesWithWarnings")]
         public partial void AddMissingLanguages(int portalId, int tabId)
         {

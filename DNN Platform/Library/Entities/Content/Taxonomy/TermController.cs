@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         }
 
         /// <summary>Initializes a new instance of the <see cref="TermController"/> class.</summary>
-        /// <param name="dataService"></param>
+        /// <param name="dataService">The data service.</param>
         public TermController(IDataService dataService)
         {
             this.dataService = dataService;

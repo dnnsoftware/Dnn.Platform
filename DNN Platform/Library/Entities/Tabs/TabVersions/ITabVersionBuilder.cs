@@ -48,13 +48,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         TabVersion GetCurrentVersion(int tabId, bool ignoreCache = false);
 
         /// <summary>Get the unpublished version or Null if Tab has not any unpublished version.</summary>
-        /// <param name="tabId"></param>
+        /// <param name="tabId">The tab ID.</param>
         /// <returns>TabVersion filled with the unpublished version data.</returns>
         /// <remarks>If Tab has not an unpublished version yet, it will return null.</remarks>
         TabVersion GetUnPublishedVersion(int tabId);
 
         /// <summary>Get all ModuleInfo objects associated with the unpublished version of a page.</summary>
-        /// <param name="tabId"></param>
+        /// <param name="tabId">The tab ID.</param>
         /// <returns>List of ModuleInfo objects.</returns>
         IEnumerable<ModuleInfo> GetUnPublishedVersionModules(int tabId);
 

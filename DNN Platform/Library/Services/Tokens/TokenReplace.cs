@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Tokens
 
         /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
-        /// <param name="row"></param>
+        /// <param name="row">The data row to use as the source.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText, DataRow row)
         {
@@ -156,8 +156,8 @@ namespace DotNetNuke.Services.Tokens
 
         /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
         /// <param name="sourceText">String with [Object:Property] tokens.</param>
-        /// <param name="custom"></param>
-        /// <param name="customCaption"></param>
+        /// <param name="custom">A list of custom properties.</param>
+        /// <param name="customCaption">The prefix for the custom properties.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText, ArrayList custom, string customCaption)
         {
@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>Load the module for the Module Token Provider.</summary>
-        /// <param name="moduleId"></param>
+        /// <param name="moduleId">The module ID.</param>
         /// <returns>The populated ModuleInfo or null.</returns>
         /// <remarks>
         /// This method is called by the Setter of ModuleId.

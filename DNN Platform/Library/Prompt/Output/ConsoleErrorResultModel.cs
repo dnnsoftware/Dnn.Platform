@@ -15,7 +15,7 @@ namespace DotNetNuke.Prompt
         }
 
         /// <summary>Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.</summary>
-        /// <param name="errMessage"></param>
+        /// <param name="errMessage">The error message.</param>
         public ConsoleErrorResultModel(string errMessage)
         {
             this.IsError = true;

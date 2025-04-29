@@ -152,17 +152,17 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>Arraylist of ModuleInfo for modules supporting search.</returns>
         ArrayList GetSearchModules(int portalID);
 
-        /// <summary>  get a Module object.</summary>
+        /// <summary>Get a Module object.</summary>
         /// <param name="tabModuleID">ID of the tabmodule.</param>
         /// <returns>An ModuleInfo object.</returns>
         ModuleInfo GetTabModule(int tabModuleID);
 
         /// <summary>Get all Module references on a tab.</summary>
-        /// <param name="tabId"></param>
+        /// <param name="tabId">The tab ID.</param>
         /// <returns>Dictionary of ModuleID and ModuleInfo.</returns>
         Dictionary<int, ModuleInfo> GetTabModules(int tabId);
 
-        /// <summary>  Get a list of all TabModule references of a module instance.</summary>
+        /// <summary>Get a list of all TabModule references of a module instance.</summary>
         /// <param name="moduleID">ID of the Module.</param>
         /// <returns>ArrayList of ModuleInfo.</returns>
         IList<ModuleInfo> GetTabModulesByModule(int moduleID);
@@ -171,13 +171,10 @@ namespace DotNetNuke.Entities.Modules
 
         void LocalizeModule(ModuleInfo sourceModule, Locale locale);
 
-        /// <summary>
-        /// MoveModule moes a Module from one Tab to another including all the
-        ///     TabModule settings.
-        /// </summary>
-        /// <param name="moduleId">The Id of the module to move.</param>
-        /// <param name="fromTabId">The Id of the source tab.</param>
-        /// <param name="toTabId">The Id of the destination tab.</param>
+        /// <summary>MoveModule moves a Module from one Tab to another including all the TabModule settings.</summary>
+        /// <param name="moduleId">The ID of the module to move.</param>
+        /// <param name="fromTabId">The ID of the source tab.</param>
+        /// <param name="toTabId">The ID of the destination tab.</param>
         /// <param name="toPaneName">The name of the Pane on the destination tab where the module will end up.</param>
         void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName);
 

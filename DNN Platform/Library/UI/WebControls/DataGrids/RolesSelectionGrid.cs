@@ -307,7 +307,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Updates a Selection.</summary>
         /// <param name="roleName">The name of the role.</param>
-        /// <param name="selected"></param>
+        /// <param name="selected">Whether it's selected.</param>
         protected virtual void UpdateSelection(string roleName, bool selected)
         {
             var isMatch = false;

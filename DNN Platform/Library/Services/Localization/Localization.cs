@@ -1114,10 +1114,10 @@ namespace DotNetNuke.Services.Localization
         /// <para>This overload allows us to filter a language from the dropdown. To do so pass a language code to the Filter parameter.</para>
         /// <para>This overload allows us to display all installed languages. To do so, pass the value True to the Host parameter.</para>
         /// </summary>
-        /// <param name="displayType"></param>
-        /// <param name="selectedValue"></param>
-        /// <param name="filter"></param>
-        /// <param name="host"></param>
+        /// <param name="displayType">The <see cref="CultureDropDownTypes"/>.</param>
+        /// <param name="selectedValue">The selected value.</param>
+        /// <param name="filter">The value to exclude from the list.</param>
+        /// <param name="host">Whether to get host-level locales or the locales for the current portal.</param>
         /// <returns>A sequence of new <see cref="ListItem"/> instances.</returns>
         public static IEnumerable<ListItem> LoadCultureInListItems(CultureDropDownTypes displayType, string selectedValue, string filter, bool host)
         {
@@ -1259,8 +1259,8 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        /// <summary>Localizes headers and fields on a DetailsView control.</summary>
-        /// <param name="detailsView"></param>
+        /// <summary>Localizes headers and fields on a <see cref="DetailsView"/> control.</summary>
+        /// <param name="detailsView">The <see cref="DetailsView"/> to localize.</param>
         /// <param name="resourceFile">The root name of the resource file where the localized texts can be found.</param>
         public static void LocalizeDetailsView(ref DetailsView detailsView, string resourceFile)
         {

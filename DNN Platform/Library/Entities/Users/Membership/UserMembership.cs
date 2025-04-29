@@ -5,9 +5,6 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      UserMembership
     /// <summary>
     /// The UserMembership class provides Business Layer model for the Users Membership
     /// related properties.
@@ -25,7 +22,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Initializes a new instance of the <see cref="UserMembership"/> class.</summary>
-        /// <param name="user"></param>
+        /// <param name="user">The user info.</param>
         public UserMembership(UserInfo user)
         {
             this.approved = true;

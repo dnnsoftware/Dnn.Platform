@@ -48,15 +48,15 @@ namespace DotNetNuke.Entities.Urls
             out bool useDnnPagePath,
             ref List<string> messages);
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="tabId"></param>
-        /// <param name="portalid"></param>
-        /// <param name="requestUri"></param>
-        /// <param name="queryStringCol"></param>
-        /// <param name="options"></param>
-        /// <param name="messages"></param>
+        /// <summary>Determines whether the request should be redirected.</summary>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="portalid">The portal ID.</param>
+        /// <param name="httpAlias">The portal's HTTP alias for the request.</param>
+        /// <param name="requestUri">The request URI.</param>
+        /// <param name="queryStringCol">The parsed query string.</param>
+        /// <param name="options">The friendly URL options.</param>
+        /// <param name="redirectLocation">The URL to which the request should be redirected.</param>
+        /// <param name="messages">A list to which debugging messages should be added.</param>
         /// <returns><see langword="true"/> if there should be a redirect, otherwise <see langword="false"/>.</returns>
         public abstract bool CheckForRedirect(
             int tabId,

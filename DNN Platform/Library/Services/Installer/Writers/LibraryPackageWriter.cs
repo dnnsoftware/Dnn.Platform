@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class LibraryPackageWriter : PackageWriterBase
     {
         /// <summary>Initializes a new instance of the <see cref="LibraryPackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public LibraryPackageWriter(PackageInfo package)
             : base(package)
         {

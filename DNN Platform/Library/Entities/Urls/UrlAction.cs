@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Urls
         // 829 add in constructor that works around physical path length restriction
 
         /// <summary>Initializes a new instance of the <see cref="UrlAction"/> class.</summary>
-        /// <param name="request"></param>
+        /// <param name="request">An HTTP request.</param>
         public UrlAction(HttpRequest request)
         {
             this.BrowserType = BrowserTypes.Normal;
@@ -52,9 +52,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Initializes a new instance of the <see cref="UrlAction"/> class.</summary>
-        /// <param name="scheme"></param>
-        /// <param name="applicationPath"></param>
-        /// <param name="physicalPath"></param>
+        /// <param name="scheme">The scheme of a URL.</param>
+        /// <param name="applicationPath">The application path of a URL.</param>
+        /// <param name="physicalPath">The corresponding physical path.</param>
         public UrlAction(string scheme, string applicationPath, string physicalPath)
         {
             this.BrowserType = BrowserTypes.Normal;
@@ -170,7 +170,7 @@ namespace DotNetNuke.Entities.Urls
         /// Sets the action value, but checks to ensure that the action is
         /// not being 'downgraded' (example: cannot set 'Redirect301' to 'CheckFor301').
         /// </summary>
-        /// <param name="newAction"></param>
+        /// <param name="newAction">The new action type.</param>
         public void SetActionWithNoDowngrade(ActionType newAction)
         {
             switch (newAction)
@@ -230,9 +230,9 @@ namespace DotNetNuke.Entities.Urls
             return this.licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 
-        /// <summary>Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias).</summary>
-        /// <param name="path"></param>
-        /// <param name="settings"></param>
+        /// <summary>Copies the original request path to the OriginalPath variables (originalPath, originalPathNoAlias).</summary>
+        /// <param name="path">The original path.</param>
+        /// <param name="settings">The URL settings.</param>
         public void SetOriginalPath(string path, FriendlyUrlSettings settings)
         {
             this.OriginalPath = path;
