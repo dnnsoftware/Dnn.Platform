@@ -69,6 +69,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         /// <summary>Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.</summary>
         /// <param name="filterContext">The context.</param>
+        /// <returns>Whether the <see cref="AllowAnonymousAttribute"/> is present.</returns>
         protected virtual bool SkipAuthorization(AuthorizationContext filterContext)
         {
             return IsAnonymousAttributePresent(filterContext);
