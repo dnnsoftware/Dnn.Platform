@@ -8,7 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Application;
     using DotNetNuke.Entities.Host;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to the DNN website.</summary>
     public partial class DotNetNukeControl : SkinObjectBase
     {
         public string CssClass { get; set; }

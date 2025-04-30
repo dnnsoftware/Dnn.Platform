@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Entities.Icons;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A skin/theme object which displays the tabs of a page or module.</summary>
     public partial class Tags : SkinObjectBase
     {
         private const string MyFileName = "Tags.ascx";

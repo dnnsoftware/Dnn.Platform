@@ -8,6 +8,9 @@ namespace Dnn.PersonaBar.Library.Controllers
     public interface IPersonaBarUserSettingsController
     {
         /// <summary>Updates the PersonaBar user settings.</summary>
+        /// <param name="settings">The user settings.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="portalId">The portal ID.</param>
         void UpdatePersonaBarUserSettings(UserSettings settings, int userId, int portalId);
 
         /// <summary>Gets the PersonaBar user settings.</summary>

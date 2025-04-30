@@ -22,8 +22,13 @@ namespace DotNetNuke.Modules.Groups
 
         public enum GroupMode
         {
+            /// <summary>Setup group.</summary>
             Setup = 0,
+
+            /// <summary>List groups.</summary>
             List = 1,
+
+            /// <summary>View group.</summary>
             View = 2,
         }
 

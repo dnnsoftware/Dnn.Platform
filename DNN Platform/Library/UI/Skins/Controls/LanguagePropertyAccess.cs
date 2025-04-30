@@ -35,8 +35,8 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly PortalSettings objPortal;
 
         /// <summary>Initializes a new instance of the <see cref="LanguagePropertyAccess"/> class.</summary>
-        /// <param name="parent"></param>
-        /// <param name="settings"></param>
+        /// <param name="parent">The <see cref="LanguageTokenReplace"/> for the parent language.</param>
+        /// <param name="settings">The portal settings.</param>
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
         {
             this.objPortal = settings;
@@ -88,7 +88,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// (because NavigateUrl adds the portalId param to the qs).
         /// </summary>
         /// <param name="newLanguage">Language to switch into.</param>
-        /// <param name="isLocalized"></param>
+        /// <param name="isLocalized">Whether it's a localized tab.</param>
         /// <returns>A collection of query string segments, in <c>"key=value"</c> format.</returns>
         private string[] GetQsParams(string newLanguage, bool isLocalized)
         {
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// newUrl returns the new URL based on the new language.
         /// Basically it is just a call to NavigateUrl, with stripped qs parameters.
         /// </summary>
-        /// <param name="newLanguage"></param>
+        /// <param name="newLanguage">The language for the URL.</param>
         private string NewUrl(string newLanguage)
         {
             var newLocale = LocaleController.Instance.GetLocale(newLanguage);

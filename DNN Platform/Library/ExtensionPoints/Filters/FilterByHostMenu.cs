@@ -9,7 +9,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
         private readonly bool isHostMenu;
 
         /// <summary>Initializes a new instance of the <see cref="FilterByHostMenu"/> class.</summary>
-        /// <param name="isHostMenu"></param>
+        /// <param name="isHostMenu">Whether this filter is for the host menu.</param>
         public FilterByHostMenu(bool isHostMenu)
         {
             this.isHostMenu = isHostMenu;

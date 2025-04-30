@@ -4,16 +4,13 @@
 
 namespace DotNetNuke.UI.WebControls
 {
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Project:    DotNetNuke
-    /// Enum:       PagingControlMode
-    /// <summary>
-    /// The PagingControlMode Enum provides an enumeration of the modes of the Paging
-    /// Control.
-    /// </summary>
+    /// <summary>The PagingControlMode Enum provides an enumeration of the modes of the Paging Control.</summary>
     public enum PagingControlMode
     {
+        /// <summary>Manage paging events by processing a post request.</summary>
         PostBack = 0,
+
+        /// <summary>Manage paging event by redirecting to a new URL.</summary>
         URL = 1,
     }
 }

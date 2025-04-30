@@ -8,6 +8,8 @@ namespace DotNetNuke.Web.Mvp
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>Represents a class that is a view for a settings control with a strongly typed view model in a Web Forms Model-View-Presenter application.</summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public abstract partial class SettingsView<TModel> : SettingsViewBase, ISettingsView<TModel>
         where TModel : SettingsModel, new()

@@ -13,6 +13,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
 
+    /// <summary>A control which renders module actions as link buttons.</summary>
     public partial class LinkActions : ActionBase
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1309:FieldNamesMustNotBeginWithUnderscore", Justification = "Breaking Change")]

@@ -17,14 +17,19 @@ namespace DotNetNuke.Common.Utilities
         string FormatFolderPath(string folderPath);
 
         /// <summary>Gets the physical path for the specified relative path.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="relativePath">The relative path.</param>
         /// <returns>The path.</returns>
         string GetPhysicalPath(int portalID, string relativePath);
 
         /// <summary>Gets the relative path for the specified physical path.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="physicalPath">The physical path.</param>
         /// <returns>The path.</returns>
         string GetRelativePath(int portalID, string physicalPath);
 
         /// <summary>Gets the physical root folder path for the specified portal.</summary>
+        /// <param name="portalID">The portal ID.</param>
         /// <returns>The path.</returns>
         string GetRootFolderMapPath(int portalID);
 

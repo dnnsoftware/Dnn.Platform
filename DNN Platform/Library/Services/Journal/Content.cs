@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Journal
     public class Content
     {
         /// <summary>This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.</summary>
+        /// <param name="contentTypeName">The name of the content type.</param>
         /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
         internal static int GetContentTypeID(string contentTypeName)
         {
@@ -33,6 +34,9 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>This should only run after the Post exists in the data store.</summary>
+        /// <param name="objJournalItem">The journal item.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="moduleId">The module ID.</param>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
         internal ContentItem CreateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
@@ -76,6 +80,9 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>This is used to update the content in the ContentItems table. Should be called when a question is updated.</summary>
+        /// <param name="objJournalItem">The journal item.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="moduleId">The module ID.</param>
         internal void UpdateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
         {
             var objContent = Util.GetContentController().GetContentItem(objJournalItem.ContentItemId);
@@ -134,7 +141,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>Creates the content text.</summary>
-        /// <param name="objJournalItem"></param>
+        /// <param name="objJournalItem">The journal item.</param>
         /// <returns>The content body or <see langword="null"/>.</returns>
         private static string GetContentBody(JournalItem objJournalItem)
         {

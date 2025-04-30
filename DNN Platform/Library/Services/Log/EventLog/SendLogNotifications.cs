@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Log.EventLog
     public class SendLogNotifications : SchedulerClient
     {
         /// <summary>Initializes a new instance of the <see cref="SendLogNotifications"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public SendLogNotifications(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;

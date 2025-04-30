@@ -169,9 +169,9 @@ namespace DotNetNuke.Entities.Profile
             return this.List.IndexOf(value);
         }
 
-        /// <summary>Inserts a property Definition into the collectio.</summary>
-        /// <param name="value">A ProfilePropertyDefinition object.</param>
+        /// <summary>Inserts a property Definition into the collection.</summary>
         /// <param name="index">The index to insert the item at.</param>
+        /// <param name="value">A ProfilePropertyDefinition object.</param>
         public void Insert(int index, ProfilePropertyDefinition value)
         {
             this.List.Insert(index, value);

@@ -415,7 +415,8 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
-        /// <summary>  OnPreRender runs just before the control is rendered.</summary>
+        /// <summary>OnPreRender runs just before the control is rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -585,9 +586,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LoadFolders();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <summary>Adds an empty preview image to the <see cref="pnlRightDiv"/> control.</summary>
         private void GeneratePreviewImage()
         {
             this.imgPreview = new Image();

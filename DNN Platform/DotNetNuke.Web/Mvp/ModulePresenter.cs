@@ -6,6 +6,8 @@ namespace DotNetNuke.Web.Mvp
 {
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>Represents a class that is a presenter for a module in a Web Forms Model-View-Presenter application.</summary>
+    /// <typeparam name="TView">The type of the view.</typeparam>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public abstract partial class ModulePresenter<TView> : ModulePresenterBase<TView>
         where TView : class, IModuleView

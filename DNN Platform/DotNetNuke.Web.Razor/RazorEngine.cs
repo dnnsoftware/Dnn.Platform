@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.Razor
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Razor.Helpers;
 
+    /// <summary>Renders a razor file.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorEngine
     {
@@ -57,6 +58,8 @@ namespace DotNetNuke.Web.Razor
 
         protected string LocalResourceFile { get; set; }
 
+        /// <summary>Get the type of the model.</summary>
+        /// <returns>A type or <see langword="null"/>.</returns>
         [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
         public partial Type RequestedModelType()
         {
@@ -72,6 +75,10 @@ namespace DotNetNuke.Web.Razor
             return null;
         }
 
+        /// <summary>Renders a razor file into a <see cref="TextWriter"/>.</summary>
+        /// <param name="writer">The writer into which to render the HTML.</param>
+        /// <param name="model">The model.</param>
+        /// <typeparam name="T">The type of the model.</typeparam>
         [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
         public partial void Render<T>(TextWriter writer, T model)
         {
@@ -85,6 +92,8 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
+        /// <summary>Renders a razor file into a <see cref="TextWriter"/>.</summary>
+        /// <param name="writer">The writer into which to render the HTML.</param>
         [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
         public partial void Render(TextWriter writer)
         {
@@ -98,6 +107,9 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
+        /// <summary>Renders a razor file into a <see cref="TextWriter"/>.</summary>
+        /// <param name="writer">The writer into which to render the HTML.</param>
+        /// <param name="context">The web page context.</param>
         [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
         public partial void Render(TextWriter writer, WebPageContext context)
         {

@@ -585,6 +585,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetCategory gets the Category of an object.</summary>
+        /// <param name="obj">The <see cref="PropertyInfo"/>.</param>
         /// <returns>The category name, or <see cref="Null.NullString"/>.</returns>
         protected virtual string GetCategory(object obj)
         {
@@ -603,6 +604,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetGroups gets an array of Groups/Categories from the DataSource.</summary>
+        /// <param name="arrObjects">The <see cref="PropertyInfo"/> instances.</param>
         /// <returns>An array of group/category names.</returns>
         protected virtual string[] GetGroups(IEnumerable arrObjects)
         {
@@ -667,6 +669,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
             if (this.ItemAdded != null)
@@ -676,6 +679,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an Editor is Created.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
         {
             if (this.ItemCreated != null)
@@ -685,6 +689,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an item is removed from a collection type property.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
             if (this.ItemDeleted != null)
@@ -694,6 +699,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs just before the control is rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             if (this.itemChanged)
@@ -723,24 +729,32 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemAdded(e);
         }
 
         /// <summary>Runs when an item is removed from a collection type property.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
         {
             this.OnItemDeleted(e);
         }
 
         /// <summary>Runs when an Editor Is Created.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void EditorItemCreated(object sender, PropertyEditorItemEventArgs e)
         {
             this.OnItemCreated(e);
         }
 
         /// <summary>Runs when an Item in the List Is Changed.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)
         {
             this.itemChanged = true;

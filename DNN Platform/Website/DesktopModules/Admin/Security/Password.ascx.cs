@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the PasswordUpdated Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnPasswordUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -79,6 +80,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the PasswordQuestionAnswerUpdated Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnPasswordQuestionAnswerUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)

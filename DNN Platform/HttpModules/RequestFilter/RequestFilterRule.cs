@@ -18,11 +18,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         private List<string> values = new List<string>();
 
         /// <summary>Initializes a new instance of the <see cref="RequestFilterRule"/> class.</summary>
-        /// <param name="serverVariable"></param>
-        /// <param name="values"></param>
-        /// <param name="op"></param>
-        /// <param name="action"></param>
-        /// <param name="location"></param>
+        /// <param name="serverVariable">The server variable name.</param>
+        /// <param name="values">The values to filter.</param>
+        /// <param name="op">The filter operator.</param>
+        /// <param name="action">The filter action.</param>
+        /// <param name="location">The redirect location.</param>
         public RequestFilterRule(string serverVariable, string values, RequestFilterOperatorType op, RequestFilterRuleType action, string location)
         {
             this.serverVariable = serverVariable;

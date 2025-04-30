@@ -130,10 +130,8 @@ namespace DotNetNuke.UI.WebControls
             this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "visibleChange", "$(document).ready(function(){$('.dnnFormVisibility').on('click', 'input[type=radio]', function(){$(this).parent().parent().find('ul').hide();$(this).parent().next('ul').show();});});", true);
         }
 
-        /// <summary>
-        /// OnVisibilityChanged runs when the Visibility has changed.  It raises the VisibilityChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnVisibilityChanged runs when the Visibility has changed.  It raises the <see cref="VisibilityChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnVisibilityChanged(PropertyEditorEventArgs e)
         {
             if (this.VisibilityChanged != null)

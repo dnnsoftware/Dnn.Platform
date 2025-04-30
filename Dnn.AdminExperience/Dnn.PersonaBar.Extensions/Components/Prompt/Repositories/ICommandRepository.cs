@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <inheritdoc cref="DotNetNuke.Abstractions.Prompt.ICommandRepository"/>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Abstractions.Prompt in the core abstractions project")]
     public partial interface ICommandRepository
     {

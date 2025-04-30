@@ -32,15 +32,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public PortalSettings(int portalId)
             : this(Null.NullInteger, portalId)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="portalId"></param>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
         public PortalSettings(int tabId, int portalId)
         {
             this.PortalId = portalId;
@@ -68,15 +68,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="portal"></param>
+        /// <param name="portal">The portal info.</param>
         public PortalSettings(PortalInfo portal)
             : this(Null.NullInteger, portal)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="portal"></param>
+        /// <param name="tabId">The active tab ID.</param>
+        /// <param name="portal">The portal info.</param>
         public PortalSettings(int tabId, PortalInfo portal)
         {
             this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;
@@ -85,7 +85,10 @@ namespace DotNetNuke.Entities.Portals
 
         public enum ControlPanelPermission
         {
+            /// <summary>A page editor.</summary>
             TabEditor = 0,
+
+            /// <summary>A module editor.</summary>
             ModuleEditor = 1,
         }
 
@@ -104,16 +107,28 @@ namespace DotNetNuke.Entities.Portals
 
         public enum PortalAliasMapping
         {
+            /// <summary>No mapping.</summary>
             None = 0,
+
+            /// <summary>Add a <c>rel="canonical"</c> link for the primary alias.</summary>
             CanonicalUrl = 1,
+
+            /// <summary>Redirect to the primary alias.</summary>
             Redirect = 2,
         }
 
         public enum UserDeleteAction
         {
+            /// <summary>Soft delete without an option to hard delete.</summary>
             Off = 0,
+
+            /// <summary>Soft delete with the option to manually hard delete.</summary>
             Manual = 1,
+
+            /// <summary>Hard delete after a delay.</summary>
             DelayedHardDelete = 2,
+
+            /// <summary>Always hard delete.</summary>
             HardDelete = 3,
         }
 

@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Urls
         private readonly string regexMatch;
 
         /// <summary>Initializes a new instance of the <see cref="BasicFriendlyUrlProvider"/> class.</summary>
-        /// <param name="attributes"></param>
+        /// <param name="attributes">The provider attributes.</param>
         internal BasicFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {

@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Tabs;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a list of page links.</summary>
     public partial class Links : SkinObjectBase
     {
         private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);

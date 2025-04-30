@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly ModuleInstanceContext moduleContext;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleContextPropertyAccess"/> class.</summary>
-        /// <param name="moduleContext"></param>
+        /// <param name="moduleContext">The module context.</param>
         public ModuleContextPropertyAccess(ModuleInstanceContext moduleContext)
         {
             this.moduleContext = moduleContext;

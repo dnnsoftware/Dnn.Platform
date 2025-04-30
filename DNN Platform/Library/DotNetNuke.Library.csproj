@@ -53,7 +53,7 @@
     <NoWarn>1591, 3001, 3002, 1574, 1573</NoWarn>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,CS0809,CS3005,CS3008,SA1600,SA1601,SA1602,SA1604,SA1605,SA1606,SA1608,SA1611,SA1612,SA1614</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,CS0809,CS3005,CS3008,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -70,7 +70,7 @@
     <LangVersion>latest</LangVersion>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,CS0809,CS3005,CS3008,SA1600,SA1601,SA1602,SA1604,SA1605,SA1606,SA1608,SA1611,SA1612,SA1614</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,CS0809,CS3005,CS3008,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
@@ -172,8 +172,8 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -624,7 +624,6 @@
     <Compile Include="Entities\Users\Users Online\AnonymousUserInfo.cs" />
     <Compile Include="Entities\Users\Users Online\BaseUserInfo.cs" />
     <Compile Include="Entities\Users\Users Online\OnlineUserInfo.cs" />
-    <Compile Include="Entities\Users\Users Online\PurgeUsersOnline.cs" />
     <Compile Include="Entities\Users\Users Online\UserOnlineController.cs" />
     <Compile Include="Entities\Users\UserVisibilityMode.cs" />
     <Compile Include="ExtensionPoints\ContextMenuItemExtensionControl.cs" />

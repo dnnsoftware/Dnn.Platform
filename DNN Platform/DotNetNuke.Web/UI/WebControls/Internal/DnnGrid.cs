@@ -4,13 +4,12 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework.JavaScriptLibraries;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnGrid : GridView
     {
         public TableItemStyle ItemStyle => this.RowStyle;
@@ -43,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnInit(e);
             this.CssClass = "dnn-grid";
-            Utilities.ApplySkin(this);
+            Utilities.ApplyControlSkin(this, string.Empty, string.Empty);
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }

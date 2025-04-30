@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Search
 
         /// <summary>This method must save search documents in batches to minimize memory usage instead of returning all documents at once.</summary>
         /// <param name="portalId">ID of the portal for which to index items.</param>
+        /// <param name="schedule">The schedule history item.</param>
         /// <param name="startDateLocal">Minimum modification date of items that need to be indexed.</param>
         /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing.</param>
         /// <returns>The number of documents indexed.</returns>

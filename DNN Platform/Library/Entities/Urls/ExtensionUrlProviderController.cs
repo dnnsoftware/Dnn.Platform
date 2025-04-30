@@ -157,11 +157,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>logs an exception related to a module provider once per cache-lifetime.</summary>
-        /// <param name="ex"></param>
-        /// <param name="status"></param>
-        /// <param name="result"></param>
-        /// <param name="messages"></param>
-        /// <param name="provider"></param>
+        /// <param name="ex">The exception.</param>
+        /// <param name="status">The HTTP status.</param>
+        /// <param name="provider">The extension URL provider.</param>
+        /// <param name="result">The URL action.</param>
+        /// <param name="messages">The list of messages to log.</param>
         public static void LogModuleProviderExceptionInRequest(Exception ex, string status, ExtensionUrlProvider provider, UrlAction result, List<string> messages)
         {
             if (ex != null)
@@ -279,10 +279,10 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Checks to see if any providers are marked as 'always call for rewrites'.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <param name="settings"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns><see langword="true"/> if the there are providers that need to always be called, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForAlwaysCallProviders(int portalId, int tabId, FriendlyUrlSettings settings, Guid parentTraceId)
         {
@@ -394,6 +394,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns boolean value is any loaded providers require checking of rewrite / redirect values from the site root (ie, not dnn tab path).</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns><see langword="true"/> if there is a provider that requires checks for a site root rewrite/redirect, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForSiteRootRewrite(int portalId, FriendlyUrlSettings settings, Guid parentTraceId)
         {
@@ -655,10 +658,10 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns the providers to call. Returns tab ID matches first, and any portal ID matches after that.</summary>
-        /// <param name="tabId"></param>
-        /// <param name="portalId"></param>
-        /// <param name="settings"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>A <see cref="List{T}"/> of <see cref="ExtensionUrlProvider"/> instances.</returns>
         private static List<ExtensionUrlProvider> GetProvidersToCall(
             int tabId,

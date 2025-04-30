@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Library
         ///
         /// If you need to pull a few single values use GetQueryString instead.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">The HTTP request.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> of query string keys to values.</returns>
         public static Dictionary<string, string> GetQueryStrings(this HttpRequestMessage request)
         {
@@ -27,8 +27,8 @@ namespace Dnn.PersonaBar.Library
         }
 
         /// <summary>Returns an individual querystring value.</summary>
-        /// <param name="request"></param>
-        /// <param name="key"></param>
+        /// <param name="request">The HTTP request.</param>
+        /// <param name="key">The query string key.</param>
         /// <returns>The query string value or <see langword="null"/>.</returns>
         public static string GetQueryString(this HttpRequestMessage request, string key)
         {
@@ -49,8 +49,8 @@ namespace Dnn.PersonaBar.Library
         }
 
         /// <summary>Returns an individual querystring value as integer.</summary>
-        /// <param name="request"></param>
-        /// <param name="key"></param>
+        /// <param name="request">The HTTP request.</param>
+        /// <param name="key">The query string key.</param>
         /// <returns>The query string value or <c>-1</c>.</returns>
         public static int GetQueryStringAsInteger(this HttpRequestMessage request, string key)
         {
@@ -66,8 +66,8 @@ namespace Dnn.PersonaBar.Library
         }
 
         /// <summary>Returns an individual HTTP Header value.</summary>
-        /// <param name="request"></param>
-        /// <param name="key"></param>
+        /// <param name="request">The HTTP request.</param>
+        /// <param name="key">The header name.</param>
         /// <returns>The header value or <see langword="null"/>.</returns>
         public static string GetHeader(this HttpRequestMessage request, string key)
         {
@@ -81,8 +81,8 @@ namespace Dnn.PersonaBar.Library
         }
 
         /// <summary>Retrieves an individual cookie from the cookies collection.</summary>
-        /// <param name="request"></param>
-        /// <param name="cookieName"></param>
+        /// <param name="request">The HTTP request.</param>
+        /// <param name="cookieName">The cookie name.</param>
         /// <returns>The cookie value or <see langword="null"/>.</returns>
         public static string GetCookie(this HttpRequestMessage request, string cookieName)
         {

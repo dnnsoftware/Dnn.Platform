@@ -32,6 +32,7 @@ namespace DotNetNuke.Services.Search
         /// Gets the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> at the specified index in the collection.
         /// <para>In VB.Net, this property is the indexer for the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class.</para>
         /// </summary>
+        /// <param name="index">The zero-based index of the element to get or set.</param>
         public SearchContentModuleInfo this[int index]
         {
             get

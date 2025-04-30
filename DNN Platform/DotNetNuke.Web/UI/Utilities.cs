@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.UI
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
+    /// <summary>Provides utility methods for UI elements within DNN.</summary>
     public partial class Utilities
     {
         /// <summary>Applies a custom CSS file for a control using a consistent naming pattern.</summary>
@@ -28,33 +29,7 @@ namespace DotNetNuke.Web.UI
         /// <param name="controlName">An optional control name that might differ from the type.</param>
         public static void ApplyControlSkin(Control targetControl, string controlSubSkinName = "", string controlName = "")
         {
-            ApplySkin(targetControl, string.Empty, controlName, controlSubSkinName);
-        }
-
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl)
-        {
-            ApplySkin(targetControl, string.Empty, string.Empty, string.Empty);
-        }
-
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName)
-        {
-            ApplySkin(targetControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
-        }
-
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName)
-        {
-            ApplySkin(targetControl, string.Empty, controlName, fallBackEmbeddedSkinName);
-        }
-
-        // Use selected skin's webcontrol skin if one exists
-        // or use _default skin's webcontrol skin if one exists
-        // or use embedded skin
-        [DnnDeprecated(9, 8, 0, "Telerik support will be removed in DNN Platform 10.0.0.  Please use one of the ApplyControlSkin overloads if applicable to your implementation.", RemovalVersion = 10)]
-        public static partial void ApplySkin(Control targetControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
-        {
+            string fallBackEmbeddedSkinName = string.Empty;
             PropertyInfo skinProperty = null;
             PropertyInfo enableEmbeddedSkinsProperty = null;
             bool skinApplied = false;
@@ -116,7 +91,7 @@ namespace DotNetNuke.Web.UI
                     systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
-                    systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);
+                    systemWebControlSkin = Path.Combine(systemWebControlSkin, controlSubSkinName);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
 
                     // Check if the selected skin has the webcontrol skin
@@ -141,7 +116,7 @@ namespace DotNetNuke.Web.UI
                             systemWebControlSkin = HttpContext.Current.Server.MapPath(skinVirtualFolder);
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, "WebControlSkin");
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, skinName);
-                            systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);
+                            systemWebControlSkin = Path.Combine(systemWebControlSkin, controlSubSkinName);
                             systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
 
                             if (!File.Exists(systemWebControlSkin))
@@ -156,7 +131,7 @@ namespace DotNetNuke.Web.UI
                 {
                     string filePath = Path.Combine(skinVirtualFolder, "WebControlSkin");
                     filePath = Path.Combine(filePath, skinName);
-                    filePath = Path.Combine(filePath, webControlSkinSubFolderName);
+                    filePath = Path.Combine(filePath, controlSubSkinName);
                     filePath = Path.Combine(filePath, string.Format("{0}.{1}.css", controlName, webControlSkinName));
                     filePath = filePath.Replace('\\', '/').Replace("//", "/").TrimEnd('/');
 

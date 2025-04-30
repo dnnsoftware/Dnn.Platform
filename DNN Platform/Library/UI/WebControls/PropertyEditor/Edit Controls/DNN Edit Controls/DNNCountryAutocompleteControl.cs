@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
-        /// <param name="type"></param>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
         public DnnCountryAutocompleteControl(string type)
         {
             this.Init += this.DnnCountryRegionControl_Init;

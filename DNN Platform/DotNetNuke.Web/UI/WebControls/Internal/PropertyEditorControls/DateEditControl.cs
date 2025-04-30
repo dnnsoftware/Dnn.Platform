@@ -236,15 +236,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             }
         }
 
-        /// <summary>RenderEditMode is called by the base control to render the control in Edit Mode.</summary>
-        /// <param name="writer"></param>
+        /// <inheritdoc cref="EditControl.RenderEditMode"/>
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
         }
 
-        /// <summary>RenderViewMode renders the View (readonly) mode of the control.</summary>
-        /// <param name="writer">A HtmlTextWriter.</param>
+        /// <inheritdoc cref="EditControl.RenderViewMode"/>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             this.ControlStyle.AddAttributesToRender(writer);

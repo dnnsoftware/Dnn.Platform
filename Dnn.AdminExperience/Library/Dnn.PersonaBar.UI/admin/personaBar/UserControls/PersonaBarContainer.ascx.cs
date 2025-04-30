@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.UI.UserControls
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>The control containing the Persona Bar.</summary>
     public partial class PersonaBarContainer : ControlPanelBase
     {
         private readonly IPersonaBarContainer personaBarContainer = Library.Containers.PersonaBarContainer.Instance;

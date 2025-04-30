@@ -20,8 +20,8 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>Initializes a new instance of the <see cref="ServerInfo"/> class.</summary>
-        /// <param name="created"></param>
-        /// <param name="lastactivity"></param>
+        /// <param name="created">The created date for the server.</param>
+        /// <param name="lastactivity">The last activity date for the server.</param>
         public ServerInfo(DateTime created, DateTime lastactivity)
         {
             this.IISAppName = Globals.IISAppName;

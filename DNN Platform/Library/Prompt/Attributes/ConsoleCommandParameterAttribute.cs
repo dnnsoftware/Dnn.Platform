@@ -9,10 +9,10 @@ namespace DotNetNuke.Prompt
     public class ConsoleCommandParameterAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="descriptionKey"></param>
-        /// <param name="required"></param>
-        /// <param name="defaultValue"></param>
+        /// <param name="name">The parameter name.</param>
+        /// <param name="descriptionKey">The resource key for the parameter description.</param>
+        /// <param name="required">Whether the parameter is required.</param>
+        /// <param name="defaultValue">The default value for the parameter.</param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required, string defaultValue)
         {
             this.Name = name;
@@ -22,26 +22,26 @@ namespace DotNetNuke.Prompt
         }
 
         /// <summary>Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="descriptionKey"></param>
-        /// <param name="required"></param>
+        /// <param name="name">The parameter name.</param>
+        /// <param name="descriptionKey">The resource key for the parameter description.</param>
+        /// <param name="required">Whether the parameter is required.</param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, bool required)
             : this(name, descriptionKey, required, string.Empty)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="descriptionKey"></param>
-        /// <param name="defaultValue"></param>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class for an optional parameter.</summary>
+        /// <param name="name">The parameter name.</param>
+        /// <param name="descriptionKey">The resource key for the parameter description.</param>
+        /// <param name="defaultValue">The default value for the parameter.</param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey, string defaultValue)
             : this(name, descriptionKey, false, defaultValue)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="descriptionKey"></param>
+        /// <summary>Initializes a new instance of the <see cref="ConsoleCommandParameterAttribute"/> class for an optional parameter.</summary>
+        /// <param name="name">The parameter name.</param>
+        /// <param name="descriptionKey">The resource key for the parameter description.</param>
         public ConsoleCommandParameterAttribute(string name, string descriptionKey)
             : this(name, descriptionKey, false, string.Empty)
         {

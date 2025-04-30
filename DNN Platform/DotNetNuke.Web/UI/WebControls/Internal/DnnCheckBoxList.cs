@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
@@ -11,9 +12,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnCheckBoxList : CheckBoxList
     {
         private string initValue;
@@ -117,7 +116,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            Utilities.ApplySkin(this);
+            Utilities.ApplyControlSkin(this, string.Empty, string.Empty);
             this.RegisterRequestResources();
 
             base.OnPreRender(e);

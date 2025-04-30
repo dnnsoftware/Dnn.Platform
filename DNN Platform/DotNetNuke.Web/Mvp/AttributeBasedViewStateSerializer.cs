@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Mvp
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>A view state serializer based on <see cref="ViewStateAttribute"/>.</summary>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public partial class AttributeBasedViewStateSerializer
     {

@@ -283,7 +283,8 @@ namespace DotNetNuke.Security.Permissions.Controls
             return allStates;
         }
 
-        /// <summary>returns whether or not the derived grid supports Deny permissions.</summary>
+        /// <summary>returns whether the derived grid supports Deny permissions.</summary>
+        /// <param name="permissionInfo">The permission info.</param>
         /// <returns><see langword="true"/> if this grid supports deny permissions, otherwise <see langword="false"/>.</returns>
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {

@@ -27,14 +27,14 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalAliasInfo"/> class.</summary>
-        /// <param name="alias"></param>
+        /// <param name="alias">The alias to clone.</param>
         public PortalAliasInfo(PortalAliasInfo alias)
             : this((IPortalAliasInfo)alias)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalAliasInfo"/> class.</summary>
-        /// <param name="alias"></param>
+        /// <param name="alias">The alias to clone.</param>
         public PortalAliasInfo(IPortalAliasInfo alias)
         {
             this.ThisAsInterface.HttpAlias = alias.HttpAlias;

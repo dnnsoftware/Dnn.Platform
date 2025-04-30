@@ -227,7 +227,9 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <summary>FormatExpiryDate formats the expiry/effective date and filters out nulls.</summary>
+        /// <summary>Generates HTML to link to a user.</summary>
+        /// <param name="userID">The user ID.</param>
+        /// <param name="displayName">The display name for the link.</param>
         /// <returns>A string with an HTML link to edit the user.</returns>
         public string FormatUser(int userID, string displayName)
         {

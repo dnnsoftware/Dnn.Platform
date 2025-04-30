@@ -250,6 +250,7 @@ namespace DotNetNuke.UI.WebControls
         /// OnDataBinding runs when the Control is being Data Bound (It is triggered by
         /// a call to Control.DataBind().
         /// </summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataBinding(EventArgs e)
         {
             // If there is a DataSource bind the relevent Properties
@@ -287,6 +288,7 @@ namespace DotNetNuke.UI.WebControls
         /// OnLoad runs just before the Control is rendered, and makes sure that any
         /// properties are set properly before the control is rendered.
         /// </summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             // Make sure the Child Controls are created before assigning any properties

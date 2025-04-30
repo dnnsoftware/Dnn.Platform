@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Razor
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
 
+    /// <summary>A control factory for razor modules.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorModuleControlFactory : BaseModuleControlFactory
     {

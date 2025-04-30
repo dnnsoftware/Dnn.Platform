@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to email a site administrator for help.</summary>
     public partial class Help : SkinObjectBase
     {
         public string CssClass { get; set; }

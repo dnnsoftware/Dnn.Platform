@@ -58,7 +58,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>The ReadManifest method reads the manifest file for the SkinControl compoent.</summary>
+        /// <summary>The ReadManifest method reads the manifest file for the SkinControl component.</summary>
+        /// <param name="manifestNav">The XPath navigator for the Skin Control section of the manifest.</param>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the SkinControl from the manifest

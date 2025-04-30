@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Web.UI.WebControls.Extensions;
     using Newtonsoft.Json;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnComboBox : DropDownList
     {
         private string initValue;
@@ -178,7 +176,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            Utilities.ApplySkin(this);
+            Utilities.ApplyControlSkin(this, string.Empty, string.Empty);
 
             if (this.TagKey == HtmlTextWriterTag.Input)
             {

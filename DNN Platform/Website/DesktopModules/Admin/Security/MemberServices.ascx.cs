@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>Raises the SubscriptionUpdated Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -247,6 +248,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

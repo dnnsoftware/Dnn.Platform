@@ -18,8 +18,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         }
 
         /// <summary>Initializes a new instance of the <see cref="PackageInfoSlimDto"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="package"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="package">The package info.</param>
         public PackageInfoSlimDto(int portalId, PackageInfo package)
         {
             this.PackageId = package.PackageID;

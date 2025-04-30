@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using Host = DotNetNuke.Entities.Host.Host;
 
+    /// <summary>A control for allowing users to register for the site.</summary>
     public partial class Register : UserUserControlBase
     {
         protected const string PasswordStrengthTextBoxCssClass = "password-strength";

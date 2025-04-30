@@ -23,18 +23,34 @@ namespace DotNetNuke.UI
     {
         public enum NavNodeOptions
         {
+            /// <summary>Include the node.</summary>
             IncludeSelf = 1,
+
+            /// <summary>Include the node's parent.</summary>
             IncludeParent = 2,
+
+            /// <summary>Include the node's siblings.</summary>
             IncludeSiblings = 4,
+
+            /// <summary>Mark pending nodes.</summary>
             MarkPendingNodes = 8,
+
+            /// <summary>Include hidden nodes.</summary>
             IncludeHiddenNodes = 16,
         }
 
         public enum ToolTipSource
         {
+            /// <summary>The name of the tab.</summary>
             TabName = 0,
+
+            /// <summary>The title of the tab.</summary>
             Title = 1,
+
+            /// <summary>The description of the tab.</summary>
             Description = 2,
+
+            /// <summary>No tooltip.</summary>
             None = 3,
         }
 
@@ -319,7 +335,7 @@ namespace DotNetNuke.UI
         /// <param name="objNodes">Node collection to append new node to.</param>
         /// <param name="objBreadCrumbs">Hashtable of breadcrumb IDs to efficiently determine node's BreadCrumb property.</param>
         /// <param name="objPortalSettings">Portal settings object to determine if node is selected.</param>
-        /// <param name="eToolTips"></param>
+        /// <param name="eToolTips">The tool-tip source.</param>
         /// <remarks>Logic moved to separate sub to make GetNavigationNodes cleaner.</remarks>
         private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, IDictionary<string, DNNNode> nodesLookup)
         {

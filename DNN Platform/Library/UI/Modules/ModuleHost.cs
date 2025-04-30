@@ -52,10 +52,10 @@ namespace DotNetNuke.UI.Modules
         private Control control;
         private bool isCached;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ModuleHost"/> class.
-        /// Creates a Module Host control using the ModuleConfiguration for the Module.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="ModuleHost"/> class using the ModuleConfiguration for the Module.</summary>
+        /// <param name="moduleConfiguration">The module info.</param>
+        /// <param name="skin">The skin for the page.</param>
+        /// <param name="container">The container for the module.</param>
         public ModuleHost(ModuleInfo moduleConfiguration, Skins.Skin skin, Containers.Container container)
         {
             this.ID = "ModuleContent";
@@ -90,6 +90,8 @@ namespace DotNetNuke.UI.Modules
         public Skins.Skin Skin { get; private set; }
 
         /// <summary>Gets a flag that indicates whether the Module is in View Mode.</summary>
+        /// <param name="moduleInfo">The module information.</param>
+        /// <param name="settings">The portal settings.</param>
         /// <returns>A Boolean.</returns>
         internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
         {
@@ -153,7 +155,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>RenderContents renders the contents of the control to the output stream.</summary>
+        /// <inheritdoc />
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (this.isCached)

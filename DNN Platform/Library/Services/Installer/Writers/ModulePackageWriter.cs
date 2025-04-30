@@ -24,8 +24,8 @@ namespace DotNetNuke.Services.Installer.Writers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
 
         /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
-        /// <param name="manifestNav"></param>
-        /// <param name="installer"></param>
+        /// <param name="manifestNav">The legacy manifest XPath navigator.</param>
+        /// <param name="installer">The installer info.</param>
         public ModulePackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
             this.DesktopModule = new DesktopModuleInfo();
@@ -51,9 +51,9 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
-        /// <param name="desktopModule"></param>
-        /// <param name="manifestNav"></param>
-        /// <param name="package"></param>
+        /// <param name="desktopModule">The desktop module info.</param>
+        /// <param name="manifestNav">The legacy manifest XPath navigator or <see langword="null"/>.</param>
+        /// <param name="package">The package info.</param>
         public ModulePackageWriter(DesktopModuleInfo desktopModule, XPathNavigator manifestNav, PackageInfo package)
             : base(package)
         {
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public ModulePackageWriter(PackageInfo package)
             : base(package)
         {
@@ -79,8 +79,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
-        /// <param name="desktopModule"></param>
-        /// <param name="package"></param>
+        /// <param name="desktopModule">The desktop module info.</param>
+        /// <param name="package">The package info.</param>
         public ModulePackageWriter(DesktopModuleInfo desktopModule, PackageInfo package)
             : base(package)
         {

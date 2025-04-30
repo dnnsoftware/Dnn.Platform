@@ -331,8 +331,8 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>Binds data to repeater. a template is used to render the items.</summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming

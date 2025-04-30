@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.DDRMenu
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A module view to display a menu.</summary>
     public partial class MenuView : ModuleBase
     {
         private readonly ILocaliser localiser;

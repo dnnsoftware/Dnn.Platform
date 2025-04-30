@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Admin.Sales
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
 
+    /// <summary>A page which receives subscription messages from PayPal.</summary>
     public partial class PayPalSubscription : PageBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PayPalSubscription));

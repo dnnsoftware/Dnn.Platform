@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Groups
         }
 
         /// <summary>Initializes a new instance of the <see cref="GroupInfo"/> class.</summary>
-        /// <param name="roleInfo"></param>
+        /// <param name="roleInfo">The role info.</param>
         public GroupInfo(RoleInfo roleInfo)
         {
             this.RoleID = roleInfo.RoleID;

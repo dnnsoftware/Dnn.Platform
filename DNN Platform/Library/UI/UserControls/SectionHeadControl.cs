@@ -130,7 +130,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>Assign resource key to label for localization.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>Renders the SectionHeadControl.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The event args.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

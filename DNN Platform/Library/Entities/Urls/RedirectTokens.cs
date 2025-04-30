@@ -26,9 +26,9 @@ namespace DotNetNuke.Entities.Urls
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         /// <summary>Adds on a redirect reason to the rewrite path.</summary>
-        /// <param name="existingRewritePath"></param>
-        /// <param name="action"></param>
-        /// <param name="reason"></param>
+        /// <param name="existingRewritePath">The existing rewrite path.</param>
+        /// <param name="action">The action type.</param>
+        /// <param name="reason">The redirect reason.</param>
         /// <returns>The <paramref name="existingRewritePath"/> with the <paramref name="reason"/> added.</returns>
         internal static string AddRedirectReasonToRewritePath(string existingRewritePath, ActionType action, RedirectReason reason)
         {
@@ -309,8 +309,8 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Removes any redirect tokens from the rewrite path.</summary>
-        /// <param name="path"></param>
-        /// <param name="queryStringCol"></param>
+        /// <param name="path">The path from which to remove tokens.</param>
+        /// <param name="queryStringCol">The query string.</param>
         /// <returns>The <paramref name="path"/> without any tokens.</returns>
         internal static string RemoveAnyRedirectTokens(string path, NameValueCollection queryStringCol)
         {
@@ -395,8 +395,8 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Sets the Action and Reason values in the UrlAction parameter.</summary>
-        /// <param name="result"></param>
-        /// <param name="settings"></param>
+        /// <param name="result">The result to update.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         internal static void SetRedirectReasonAndAction(ref UrlAction result, FriendlyUrlSettings settings)
         {
             RedirectReason reason;

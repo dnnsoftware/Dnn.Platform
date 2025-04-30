@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using ClientDependency.Core;
     using ClientDependency.Core.Controls;
 
+    /// <summary>A control which causes JavaScript to be included on the page.</summary>
     public partial class DnnJsInclude : SkinObjectBase
     {
         public string FilePath { get; set; }

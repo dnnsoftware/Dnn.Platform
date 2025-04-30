@@ -31,8 +31,8 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="RestoreUser"/> class.</summary>
-        /// <param name="userValidator"></param>
-        /// <param name="instance"></param>
+        /// <param name="userValidator">The user validator.</param>
+        /// <param name="instance">The recycle bin controller.</param>
         public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)
         {
             this.userValidator = userValidator;

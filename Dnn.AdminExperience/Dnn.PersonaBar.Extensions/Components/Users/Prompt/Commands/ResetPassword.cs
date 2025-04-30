@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="ResetPassword"/> class.</summary>
-        /// <param name="userValidator"></param>
+        /// <param name="userValidator">The user validator.</param>
         public ResetPassword(IUserValidator userValidator)
         {
             this.userValidator = userValidator;

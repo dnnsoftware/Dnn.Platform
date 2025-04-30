@@ -136,6 +136,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <summary>The ReadManifest method reads the manifest file for the config component.</summary>
+        /// <param name="manifestNav">The XPath navigator for the Config section of the manifest.</param>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.fileName = Util.ReadAttribute(manifestNav, "fileName");

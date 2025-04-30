@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.Containers.Controls
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.UI.Skins;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays an <c>h2</c> with content that can be toggled.</summary>
     [ParseChildren(false)]
     [PersistChildren(true)]
     public partial class Toggle : SkinObjectBase

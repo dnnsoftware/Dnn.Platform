@@ -96,6 +96,7 @@ namespace Dnn.PersonaBar.Security.Components
         }
 
         /// <summary>search all website files for files with a potential dangerous extension.</summary>
+        /// <param name="invalidFolders">A list to which invalid folders will be added.</param>
         /// <returns>A sequence of file paths.</returns>
         public static IEnumerable<string> FindUnexpectedExtensions(IList<string> invalidFolders)
         {

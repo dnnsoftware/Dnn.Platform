@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
+    /// <inheritdoc cref="Dnn.PersonaBar.Library.Controllers.ModulesController"/>
     [DnnDeprecated(9, 2, 1, "Moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency.")]
     public partial class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {

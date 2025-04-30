@@ -118,7 +118,8 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>OnAction raises the Action Event.</summary>
+        /// <summary>OnAction raises the <see cref="Action"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -128,6 +129,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnLoad runs when the control is loaded into the Control Tree.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

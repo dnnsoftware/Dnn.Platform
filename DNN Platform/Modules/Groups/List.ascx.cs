@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Framework;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Display the group list.</summary>
     public partial class List : GroupsModuleBase
     {
         /// <summary>Initializes a new instance of the <see cref="List"/> class.</summary>

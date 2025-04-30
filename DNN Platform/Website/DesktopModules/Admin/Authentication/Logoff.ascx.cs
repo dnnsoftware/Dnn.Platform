@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     public partial class Logoff : UserModuleBase
     {
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

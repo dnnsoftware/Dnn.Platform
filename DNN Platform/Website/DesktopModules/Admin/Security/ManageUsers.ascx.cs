@@ -217,6 +217,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -287,6 +288,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -321,6 +323,8 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>cmdRegister_Click runs when the Register button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -345,6 +349,8 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
         {
             if (this.IsAdmin == false)
