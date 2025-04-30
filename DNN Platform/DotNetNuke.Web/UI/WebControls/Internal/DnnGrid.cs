@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework.JavaScriptLibraries;
@@ -43,7 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnInit(e);
             this.CssClass = "dnn-grid";
-            Utilities.ApplySkin(this);
+            Utilities.ApplyControlSkin(this, string.Empty, string.Empty);
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }

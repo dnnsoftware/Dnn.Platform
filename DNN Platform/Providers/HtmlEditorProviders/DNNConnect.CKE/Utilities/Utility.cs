@@ -167,7 +167,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return FileNameCleaner.Replace(fileName, string.Empty);
         }
 
-        /// <summary>Converts the Unicode chars to its to its ASCII equivalent.</summary>
+        /// <summary>Converts the Unicode chars to its ASCII equivalent.</summary>
         /// <param name="input">The <paramref name="input"/>.</param>
         /// <returns>The ASCII equivalent output.</returns>
         public static string ConvertUnicodeChars(string input)
