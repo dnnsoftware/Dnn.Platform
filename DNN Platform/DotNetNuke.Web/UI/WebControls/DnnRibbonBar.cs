@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this.CssClass = "dnnRibbon";
             Control control = this;
-            Utilities.ApplySkin(control, string.Empty, "RibbonBar", "RibbonBar");
+            Utilities.ApplyControlSkin(control, "RibbonBar", "RibbonBar");
         }
 
         [Category("Behavior")]
@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
             if (this.Visible)
             {
-                Utilities.ApplySkin(this, string.Empty, "RibbonBar", "RibbonBar");
+                Utilities.ApplyControlSkin(this, "RibbonBar", "RibbonBar");
             }
         }
 

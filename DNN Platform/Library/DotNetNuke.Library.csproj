@@ -624,7 +624,6 @@
     <Compile Include="Entities\Users\Users Online\AnonymousUserInfo.cs" />
     <Compile Include="Entities\Users\Users Online\BaseUserInfo.cs" />
     <Compile Include="Entities\Users\Users Online\OnlineUserInfo.cs" />
-    <Compile Include="Entities\Users\Users Online\PurgeUsersOnline.cs" />
     <Compile Include="Entities\Users\Users Online\UserOnlineController.cs" />
     <Compile Include="Entities\Users\UserVisibilityMode.cs" />
     <Compile Include="ExtensionPoints\ContextMenuItemExtensionControl.cs" />
