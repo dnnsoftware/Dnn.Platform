@@ -14,6 +14,8 @@ namespace DotNetNuke.Services.UserRequest
     using DotNetNuke.Common;
     using DotNetNuke.Framework;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// Utilities to handle IP address of user making request to application.
     /// </summary>
