@@ -137,7 +137,8 @@ namespace DotNetNuke.UI.Containers
             this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, this.ExpandDepth));
         }
 
-        /// <summary>OnAction raises the Action Event.</summary>
+        /// <summary>OnAction raises the <see cref="Action"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -147,6 +148,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnInit runs during the controls initialisation phase.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             this.providerControl = NavigationProvider.Instance(this.serviceProvider, this.ProviderName);
@@ -158,6 +160,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnLoad runs during the controls load phase.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -170,6 +173,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnPreRender runs during the controls pre-render phase.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

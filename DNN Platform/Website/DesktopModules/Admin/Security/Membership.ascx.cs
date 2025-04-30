@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the MembershipPromoteToSuperuser Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnMembershipPromoteToSuperuser(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -80,6 +81,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the MembershipPromoteToSuperuser Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnMembershipDemoteFromSuperuser(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -95,6 +97,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the MembershipAuthorized Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnMembershipAuthorized(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -109,6 +112,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the MembershipPasswordUpdateChanged Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnMembershipPasswordUpdateChanged(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -123,6 +127,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the MembershipUnAuthorized Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnMembershipUnAuthorized(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -137,6 +142,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the MembershipUnLocked Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnMembershipUnLocked(EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -212,6 +218,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -314,8 +321,8 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>cmdToggleSuperuser_Click runs when the toggle superuser button is clicked.</summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void CmdToggleSuperuser_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)

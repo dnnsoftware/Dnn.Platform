@@ -12,7 +12,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to the site's terms page.</summary>
     public partial class Terms : SkinObjectBase
     {
         private const string MyFileName = "Terms.ascx";

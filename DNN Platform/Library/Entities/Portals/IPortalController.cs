@@ -157,6 +157,8 @@ namespace DotNetNuke.Entities.Portals
         ///   Remaps the Special Pages such as Home, Profile, Search
         ///   to their localized versions.
         /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         void MapLocalizedSpecialPages(int portalId, string cultureCode);
 
         /// <summary>Removes the related PortalLocalization record from the database, adds optional clear cache.</summary>
@@ -200,6 +202,12 @@ namespace DotNetNuke.Entities.Portals
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
 
         /// <summary>Adds or Updates or Deletes a portal setting value.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">The setting name.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">Whether to clear the cache.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="isSecure">Whether the value should be encrypted.</param>
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
     }
 }

@@ -15,6 +15,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A control which displays the source code for a module.</summary>
     public partial class ViewSource : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;

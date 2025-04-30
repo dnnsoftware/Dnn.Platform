@@ -11,9 +11,16 @@ namespace DotNetNuke.UI.WebControls
     /// </remarks>
     public enum PropertySortType
     {
+        /// <summary>Not sorted.</summary>
         None = 0,
+
+        /// <summary>Sorted alphabetically.</summary>
         Alphabetical = 1,
+
+        /// <summary>Sorted by category.</summary>
         Category = 2,
+
+        /// <summary>Sorted by <see cref="DotNetNuke.UI.WebControls.SortOrderAttribute"/>.</summary>
         SortOrderAttribute = 3,
     }
 }

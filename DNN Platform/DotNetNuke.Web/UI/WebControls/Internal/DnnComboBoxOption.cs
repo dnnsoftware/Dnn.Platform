@@ -10,9 +10,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
-    /// <remarks>
-    /// This class is added only for internal use, please don't reference it in any other places as it may removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     [DataContract]
     public class DnnComboBoxOption
     {

@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Razor
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
 
+    /// <summary>The host for a razor module control.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorHostControl : ModuleControlBase, IActionable
     {

@@ -316,8 +316,7 @@ namespace DotNetNuke.Services.Search.Internals
             HostController.Instance.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
         }
 
-        /// <summary>Determines whether there was a request to re-index the site since a specific date/time.</summary>
-        /// <returns><see langword="true"/> if a reindex has been requested since <paramref name="startDate"/>, otherwise <see langword="false"/>.</returns>
+        /// <inheritdoc />
         public bool IsReindexRequested(int portalId, DateTime startDate)
         {
             var reindexDateTime = this.GetSearchReindexRequestTime(portalId);
@@ -342,12 +341,7 @@ namespace DotNetNuke.Services.Search.Internals
             return portals2Reindex.ToArray();
         }
 
-        /// <summary>
-        /// Returns the last time search indexing was completed successfully.
-        /// The returned value in local server time (not UTC).
-        /// Beware that the value stored in the database is converted to UTC time.
-        /// </summary>
-        /// <returns>A local <see cref="DateTime"/>.</returns>
+        /// <inheritdoc />
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
@@ -379,11 +373,7 @@ namespace DotNetNuke.Services.Search.Internals
             return lastTime;
         }
 
-        /// <summary>
-        /// Stores the last successful time of the system search indexer.
-        /// The passed value should be in local system time; not UTC time.
-        /// Beware that the value stored in the database is converted to UTC time.
-        /// </summary>
+        /// <inheritdoc />
         public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
             SchedulingProvider.Instance()

@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Journal
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    /// <summary>The default <see cref="IJournalController"/> implementation.</summary>
     internal partial class JournalControllerImpl : IJournalController
     {
         private const string AllowResizePhotosSetting = "Journal_AllowResizePhotos";

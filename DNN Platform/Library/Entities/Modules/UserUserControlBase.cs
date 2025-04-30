@@ -8,9 +8,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
 
-    /// Project  :  DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class    :  UserUserControlBase
     /// <summary>The UserUserControlBase class defines a custom base class for the User Control.</summary>
     public class UserUserControlBase : UserModuleBase
     {
@@ -49,7 +46,8 @@ namespace DotNetNuke.Entities.Modules
         /// <inheritdoc/>
         protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
-        /// <summary>Raises the UserCreateCompleted Event.</summary>
+        /// <summary>Raises the <see cref="UserCreateCompleted"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserCreateCompleted(UserCreatedEventArgs e)
         {
             if (this.UserCreateCompleted != null)
@@ -58,7 +56,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserCreated Event.</summary>
+        /// <summary>Raises the <see cref="UserCreated"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserCreated(UserCreatedEventArgs e)
         {
             if (this.UserCreated != null)
@@ -67,7 +66,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserDeleted Event.</summary>
+        /// <summary>Raises the <see cref="UserDeleted"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserDeleted(UserDeletedEventArgs e)
         {
             if (this.UserDeleted != null)
@@ -76,7 +76,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserDeleteError Event.</summary>
+        /// <summary>Raises the <see cref="UserDeleteError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserDeleteError(UserUpdateErrorArgs e)
         {
             if (this.UserDeleteError != null)
@@ -85,6 +86,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRestored"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRestored(UserRestoredEventArgs e)
         {
             if (this.UserRestored != null)
@@ -93,6 +96,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRestoreError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRestoreError(UserUpdateErrorArgs e)
         {
             if (this.UserRestoreError != null)
@@ -101,6 +106,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRemoved"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRemoved(UserRemovedEventArgs e)
         {
             if (this.UserRemoved != null)
@@ -109,6 +116,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Raises the <see cref="UserRemoveError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserRemoveError(UserUpdateErrorArgs e)
         {
             if (this.UserRemoveError != null)
@@ -117,7 +126,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserUpdated Event.</summary>
+        /// <summary>Raises the <see cref="UserUpdated"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserUpdated(EventArgs e)
         {
             if (this.UserUpdated != null)
@@ -126,7 +136,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserUpdated Event.</summary>
+        /// <summary>Raises the <see cref="UserUpdateCompleted"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserUpdateCompleted(EventArgs e)
         {
             if (this.UserUpdateCompleted != null)
@@ -135,7 +146,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>Raises the UserUpdateError Event.</summary>
+        /// <summary>Raises the <see cref="UserUpdateError"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnUserUpdateError(UserUpdateErrorArgs e)
         {
             if (this.UserUpdateError != null)

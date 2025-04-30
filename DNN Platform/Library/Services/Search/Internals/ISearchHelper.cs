@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.Search.Internals
         IEnumerable<SearchType> GetSearchTypes();
 
         /// <summary>Gets a SearchType Item for the given name.</summary>
+        /// <param name="searchTypeName">The name of the <see cref="SearchType"/>.</param>
         /// <returns>A <see cref="SearchType"/> instance.</returns>
         SearchType GetSearchTypeByName(string searchTypeName);
 
@@ -34,6 +35,8 @@ namespace DotNetNuke.Services.Search.Internals
         IEnumerable<string> GetSynonyms(int portalId, string cultureCode, string term);
 
         /// <summary>Returns a list of SynonymsGroup defined in the system.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <returns>A sequence of <see cref="SynonymsGroup"/> instances.</returns>
         IEnumerable<SynonymsGroup> GetSynonymsGroups(int portalId, string cultureCode);
 
@@ -41,6 +44,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="synonymsTags">synonyms tags separated by comma, like this: <c>"dnn,dotnetnuke"</c>.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="cultureCode">culture code.</param>
+        /// <param name="duplicateWord">The duplicate word which caused the group not to be added.</param>
         /// <returns>The new synonyms group ID, or <c>0</c> if the input was invalid.</returns>
         int AddSynonymsGroup(string synonymsTags, int portalId, string cultureCode, out string duplicateWord);
 
@@ -49,6 +53,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="synonymsTags">synonyms tags separated by comma, like this: <c>"dnn,dotnetnuke"</c>.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="cultureCode">culture code.</param>
+        /// <param name="duplicateWord">The duplicate word which caused the group not to be updated.</param>
         /// <returns><paramref name="synonymsGroupId"/> or <c>0</c> if the input was invalid.</returns>
         int UpdateSynonymsGroup(int synonymsGroupId, string synonymsTags, int portalId, string cultureCode, out string duplicateWord);
 

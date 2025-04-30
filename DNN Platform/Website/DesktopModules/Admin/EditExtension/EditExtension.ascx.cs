@@ -126,6 +126,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

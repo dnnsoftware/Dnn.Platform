@@ -11,6 +11,7 @@ namespace DotNetNuke.Framework
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>Provides the ability to get information about CLR permissions.</summary>
     public partial class SecurityPolicy
     {
         public const string ReflectionPermission = "ReflectionPermission";

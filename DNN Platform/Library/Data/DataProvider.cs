@@ -29,6 +29,7 @@ namespace DotNetNuke.Data
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.ApplicationBlocks.Data;
 
+    /// <summary>Base implementation of a provider of core database activities.</summary>
     public abstract partial class DataProvider
     {
         private const int DuplicateKey = 2601;
@@ -276,6 +277,9 @@ namespace DotNetNuke.Data
         }
 
         /// <summary>Tests the Database Connection using the database connection config.</summary>
+        /// <param name="builder">The <see cref="SqlConnectionStringBuilder"/>.</param>
+        /// <param name="owner">The database owner/schema.</param>
+        /// <param name="qualifier">The object qualifier.</param>
         /// <returns>The connection string, or an error message (prefixed with <c>"ERROR:"</c>), or <see cref="Null.NullString"/> if <paramref name="builder"/> is <see langword="null"/>.</returns>
         public virtual string TestDatabaseConnection(DbConnectionStringBuilder builder, string owner, string qualifier)
         {
@@ -483,8 +487,8 @@ namespace DotNetNuke.Data
         }
 
         /// <summary>Updates the portal information.Saving basic portal settings at Admin - Site settings / Host - Portals - Edit Portal.</summary>
-        /// <param name="portalId">The portal identifier.</param>
-        /// <param name="portalGroupId">The portal group identifier.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="portalGroupId">The portal group ID or <see cref="Null.NullInteger"/>.</param>
         /// <param name="portalName">Name of the portal.</param>
         /// <param name="logoFile">The logo file.</param>
         /// <param name="footerText">The footer text.</param>
@@ -492,29 +496,31 @@ namespace DotNetNuke.Data
         /// <param name="userRegistration">The user registration.</param>
         /// <param name="bannerAdvertising">The banner advertising.</param>
         /// <param name="currency">The currency.</param>
-        /// <param name="administratorId">The administrator identifier.</param>
+        /// <param name="administratorId">The ID of the administrator user.</param>
         /// <param name="hostFee">The host fee.</param>
         /// <param name="hostSpace">The host space.</param>
         /// <param name="pageQuota">The page quota.</param>
         /// <param name="userQuota">The user quota.</param>
         /// <param name="paymentProcessor">The payment processor.</param>
-        /// <param name="processorUserId">The processor user identifier.</param>
+        /// <param name="processorUserId">The processor user ID.</param>
         /// <param name="processorPassword">The processor password.</param>
         /// <param name="description">The description.</param>
         /// <param name="keyWords">The key words.</param>
         /// <param name="backgroundFile">The background file.</param>
         /// <param name="siteLogHistory">The site log history.</param>
-        /// <param name="splashTabId">The splash tab identifier.</param>
-        /// <param name="homeTabId">The home tab identifier.</param>
-        /// <param name="loginTabId">The login tab identifier.</param>
-        /// <param name="registerTabId">The register tab identifier.</param>
-        /// <param name="userTabId">The user tab identifier.</param>
-        /// <param name="searchTabId">The search tab identifier.</param>
-        /// <param name="custom404TabId">The custom404 tab identifier.</param>
-        /// <param name="custom500TabId">The custom500 tab identifier.</param>
+        /// <param name="splashTabId">The ID of the splash tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="homeTabId">The ID of the home tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="loginTabId">The ID of the login tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="registerTabId">The ID of the register tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="userTabId">The ID of the user tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="searchTabId">The ID of the search tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="custom404TabId">The ID of the 404 error tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="custom500TabId">The ID of the 500 error tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="termsTabId">The ID of the terms tab, or <see cref="Null.NullInteger"/>.</param>
+        /// <param name="privacyTabId">The ID of the privacy tab, or <see cref="Null.NullInteger"/>.</param>
         /// <param name="defaultLanguage">The default language.</param>
         /// <param name="homeDirectory">The home directory.</param>
-        /// <param name="lastModifiedByUserID">The last modified by user identifier.</param>
+        /// <param name="lastModifiedByUserID">The ID of the user that last modified the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
         public virtual void UpdatePortalInfo(int portalId, int portalGroupId, string portalName, string logoFile, string footerText, DateTime expiryDate, int userRegistration, int bannerAdvertising, string currency, int administratorId, double hostFee, double hostSpace, int pageQuota, int userQuota, string paymentProcessor, string processorUserId, string processorPassword, string description, string keyWords, string backgroundFile, int siteLogHistory, int splashTabId, int homeTabId, int loginTabId, int registerTabId, int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, string defaultLanguage, string homeDirectory, int lastModifiedByUserID, string cultureCode)
         {
@@ -2277,24 +2283,34 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery("UpdateUserRole", userRoleId, status, isOwner, this.GetNull(effectiveDate), this.GetNull(expiryDate), lastModifiedByUserID);
         }
 
+        /// <summary>Delete outdated users online.</summary>
+        /// <param name="timeWindow">The time window in which to delete.</param>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial void DeleteUsersOnline(int timeWindow)
         {
             this.ExecuteNonQuery("DeleteUsersOnline", timeWindow);
         }
 
+        /// <summary>Get the online user record.</summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <returns>A data reader.</returns>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial IDataReader GetOnlineUser(int userId)
         {
             return this.ExecuteReader("GetOnlineUser", userId);
         }
 
+        /// <summary>Get the online user records for a portal.</summary>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>A data reader.</returns>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial IDataReader GetOnlineUsers(int portalId)
         {
             return this.ExecuteReader("GetOnlineUsers", portalId);
         }
 
+        /// <summary>Update the online user records.</summary>
+        /// <param name="userList">The users.</param>
         [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
         public virtual partial void UpdateUsersOnline(Hashtable userList)
         {
@@ -3103,6 +3119,7 @@ namespace DotNetNuke.Data
                 lastModifiedByUserID);
         }
 
+        /// <inheritdoc cref="GetPasswordHistory(int,int,int)" />
         [DnnDeprecated(9, 2, 0, "Please use the overload that takes passwordsRetained and daysRetained")]
         public virtual partial IDataReader GetPasswordHistory(int userId)
         {
@@ -3114,6 +3131,7 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPasswordHistory", this.GetNull(userId), passwordsRetained, daysRetained);
         }
 
+        /// <inheritdoc cref="AddPasswordHistory(int,string,string,int,int)" />
         [DnnDeprecated(9, 2, 0, "Please use the overload that takes daysRetained")]
         public virtual partial void AddPasswordHistory(int userId, string password, string passwordHistory, int retained)
         {
@@ -4012,6 +4030,7 @@ namespace DotNetNuke.Data
             }
         }
 
+        /// <inheritdoc cref="GetFiles(int,bool,bool)" />
         [DnnDeprecated(9, 3, 0, "Please use GetFiles(int, bool, bool) instead")]
 #pragma warning disable CS1066
         public virtual partial IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)

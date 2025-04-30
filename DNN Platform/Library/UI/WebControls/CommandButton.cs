@@ -324,7 +324,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>OnButtonClick raises the CommandButton control's Click event.</summary>
+        /// <summary>OnButtonClick raises the CommandButton control's <see cref="Click"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnButtonClick(EventArgs e)
         {
             if (this.Click != null)
@@ -333,7 +334,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>OnCommand raises the CommandButton control's Command event.</summary>
+        /// <summary>OnCommand raises the CommandButton control's <see cref="Command"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnCommand(CommandEventArgs e)
         {
             if (this.Command != null)
@@ -343,6 +345,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>OnPreRender runs just before the Render phase of the Page Life Cycle.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

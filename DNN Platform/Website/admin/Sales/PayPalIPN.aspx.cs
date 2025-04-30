@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
     using Host = DotNetNuke.Entities.Host.Host;
 
+    /// <summary>A page which received messages from PayPal.</summary>
     public partial class PayPalIPN : PageBase
     {
         /// <inheritdoc/>

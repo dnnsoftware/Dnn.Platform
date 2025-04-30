@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.Journal.Components
         private readonly int userId;
 
         /// <summary>Initializes a new instance of the <see cref="ProfilePicPropertyAccess"/> class.</summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">The user ID.</param>
         public ProfilePicPropertyAccess(int userId)
         {
             this.userId = userId;

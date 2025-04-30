@@ -31,6 +31,7 @@ namespace DotNetNuke.Admin.Containers
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    /// <summary>A control which renders module actions.</summary>
     public partial class ModuleActions : ActionBase
     {
         private readonly List<int> validIDs = new List<int>();

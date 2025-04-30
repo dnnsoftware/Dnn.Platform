@@ -34,6 +34,7 @@ namespace DotNetNuke.UI.UserControls
         private string key;
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -118,6 +119,8 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>cmdCancel_Click runs when the cancel Button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming

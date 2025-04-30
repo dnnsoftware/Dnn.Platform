@@ -4,9 +4,7 @@
 
 namespace DotNetNuke.Entities.Modules.Actions
 {
-    /// <summary>
-    ///
-    /// </summary>
+    /// <summary>An event listener for module actions.</summary>
     public class ModuleActionEventListener
     {
         private readonly ActionEventHandler actionEvent;

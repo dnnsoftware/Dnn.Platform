@@ -15,6 +15,7 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.FileSystem;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Display the group editor.</summary>
     public partial class GroupEdit : GroupsModuleBase
     {
         private readonly INavigationManager navigationManager;

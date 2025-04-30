@@ -92,6 +92,7 @@ namespace DotNetNuke.Entities.Icons
             return IconURL("ExtFile", "32x32", "Standard");
         }
 
+        /// <inheritdoc cref="GetIconSets(DotNetNuke.Abstractions.Application.IApplicationStatusInfo)"/>
         [DnnDeprecated(9, 11, 1, "Use overload taking an IApplicationStatusInfo")]
         public static partial string[] GetIconSets()
         {

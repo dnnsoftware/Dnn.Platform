@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Scheduling
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>Provides the ability to manage scheduled tasks.</summary>
     public partial class SchedulingController
     {
         public static int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, string friendlyName, DateTime scheduleStartDate)

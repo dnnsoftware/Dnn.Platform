@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>Co-ordinates check of authorization and handles Auth failure.  Should rarely be overridden.</summary>
-        /// <param name="actionContext"></param>
+        /// <param name="actionContext">The action context.</param>
         protected virtual void OnAuthorization(HttpActionContext actionContext)
         {
             Requires.NotNull("actionContext", actionContext);

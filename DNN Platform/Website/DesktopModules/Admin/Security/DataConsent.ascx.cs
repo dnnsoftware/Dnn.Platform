@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Security;
     using DotNetNuke.Services.Log.EventLog;
 
+    /// <summary>A control which handles a user's consent to the site's usage of their data.</summary>
     public partial class DataConsent : UserModuleBase
     {
         public delegate void DataConsentEventHandler(object sender, DataConsentEventArgs e);
@@ -21,9 +22,16 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public enum DataConsentStatus
         {
+            /// <summary>Consented.</summary>
             Consented = 0,
+
+            /// <summary>Cancelled.</summary>
             Cancelled = 1,
+
+            /// <summary>Removed account.</summary>
             RemovedAccount = 2,
+
+            /// <summary>Failed to remove account.</summary>
             FailedToRemoveAccount = 3,
         }
 

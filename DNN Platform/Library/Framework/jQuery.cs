@@ -22,6 +22,7 @@ namespace DotNetNuke.Framework
     using Globals = DotNetNuke.Common.Globals;
 
 #pragma warning disable 618
+    /// <summary>Manages requests to add jQuery to a page.</summary>
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
     // ReSharper disable once InconsistentNaming

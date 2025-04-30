@@ -17,13 +17,13 @@ namespace DotNetNuke.UI.Skins
 
     public enum SkinParser
     {
+        /// <summary>Localized parser.</summary>
         Localized = 0,
+
+        /// <summary>Portable parser.</summary>
         Portable = 1,
     }
 
-    /// Project  : DotNetNuke
-    /// Class    : SkinFileProcessor
-    ///
     /// <summary>    Handles processing of a list of uploaded skin files into a working skin.</summary>
     public class SkinFileProcessor
     {
@@ -47,13 +47,10 @@ namespace DotNetNuke.UI.Skins
         private readonly string skinRoot;
         private string message = string.Empty;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinFileProcessor"/> class.
-        ///     SkinFileProcessor class constructor.
-        /// </summary>
-        /// <remarks>
-        ///     This constructor parses a memory based skin.
-        /// </remarks>
+        /// <summary>Initializes a new instance of the <see cref="SkinFileProcessor"/> class.</summary>
+        /// <remarks>This constructor parses a memory based skin.</remarks>
+        /// <param name="controlKey">The control key.</param>
+        /// <param name="controlSrc">The control source path.</param>
         public SkinFileProcessor(string controlKey, string controlSrc)
         {
             this.controlList.Add(controlKey, controlSrc);

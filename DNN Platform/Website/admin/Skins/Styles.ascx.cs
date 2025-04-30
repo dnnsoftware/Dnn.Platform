@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Common;
 
+    /// <summary>A skin/theme object which allows affecting the styles of the page.</summary>
     public partial class Styles : SkinObjectBase
     {
         private bool useSkinPath = true;

@@ -39,9 +39,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="RestorePage"/> class.</summary>
-        /// <param name="tabController"></param>
-        /// <param name="recyclebinController"></param>
-        /// <param name="contentVerifier"></param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="recyclebinController">The recycle bin controller.</param>
+        /// <param name="contentVerifier">The content verifier.</param>
         public RestorePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
             this.tabController = tabController;

@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Portals
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>A collection of <see cref="PortalAliasInfo"/> instances, indexed by <see cref="PortalAliasInfo.HttpAlias"/>.</summary>
     [Serializable]
     [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
     public partial class PortalAliasCollection : DictionaryBase
@@ -39,6 +40,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Gets or sets the value associated with the specified key.</summary>
+        /// <param name="key">The HTTP alias.</param>
         public PortalAliasInfo this[string key]
         {
             get
@@ -52,6 +54,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        /// <inheritdoc cref="IDictionary.Contains"/>
         [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
         public partial bool Contains(string key)
         {
@@ -59,6 +62,8 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Adds an entry to the collection.</summary>
+        /// <param name="key">The <see cref="string"/> to use as the key of the element to add.</param>
+        /// <param name="value">The <see cref="PortalAliasInfo"/> to use as the value of the element to add.</param>
         [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
         public partial void Add(string key, PortalAliasInfo value)
         {

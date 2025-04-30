@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
+    /// <summary>A console result that represents an error.</summary>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
     public partial class ConsoleErrorResultModel : ConsoleResultModel
     {
@@ -20,7 +21,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.</summary>
-        /// <param name="errMessage"></param>
+        /// <param name="errMessage">The error message.</param>
         public ConsoleErrorResultModel(string errMessage)
         {
             this.IsError = true;

@@ -14,6 +14,7 @@ namespace DotNetNuke.UI.Containers
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>A control which renders module actions as a drop-down list.</summary>
     public partial class DropDownActions : ActionBase
     {
         private readonly IServiceProvider serviceProvider;

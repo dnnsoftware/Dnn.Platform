@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.Mail
 
     using Localize = DotNetNuke.Services.Localization.Localization;
 
+    /// <summary>Email utility class.</summary>
     public partial class Mail
     {
         public static string ConvertToText(string sHTML)
@@ -73,6 +74,14 @@ namespace DotNetNuke.Services.Mail
             MailProvider.Instance().SendMail(mailInfo);
         }
 
+        /// <summary>Send a simple email.</summary>
+        /// <param name="fromAddress">From email address.</param>
+        /// <param name="senderAddress">Sender email address.</param>
+        /// <param name="toAddress">Recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="subject">Subject of email.</param>
+        /// <param name="body">Body of email.</param>
+        /// <param name="attachments">A list of attachments.</param>
+        /// <returns>Returns an empty string on success mail sending. Otherwise returns an error description.</returns>
         [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
         public static partial string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
@@ -227,11 +236,12 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>Send a simple email.</summary>
         /// <param name="mailFrom">Email sender.</param>
-        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="mailTo">Recipients, can be more than one separated by semicolons.</param>
+        /// <param name="bcc">BCC-recipients, can be more than one separated by semicolons.</param>
         /// <param name="subject">Subject of email.</param>
         /// <param name="body">Body of email.</param>
         /// <param name="attachment">A filename to attach to the email (or <see cref="string.Empty"/> for no attachment).</param>
+        /// <param name="bodyType"><c>"HTML"</c> if the body should be represented as HTML rather than text.</param>
         /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>
@@ -258,9 +268,9 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>Send a simple email.</summary>
         /// <param name="mailFrom">Email sender.</param>
-        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="cc">CC-recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="mailTo">Recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="cc">CC-recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="bcc">BCC-recipients, can be more than one separated by semi-colons.</param>
         /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/>.</param>
         /// <param name="subject">Subject of email.</param>
         /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/>.</param>
@@ -279,9 +289,9 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>Send a simple email.</summary>
         /// <param name="mailFrom">Email sender.</param>
-        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="cc">CC-recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="mailTo">Recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="cc">CC-recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="bcc">BCC-recipients, can be more than one separated by semi-colons.</param>
         /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/>.</param>
         /// <param name="subject">Subject of email.</param>
         /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/>.</param>
@@ -384,9 +394,9 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>Sends an email based on params.</summary>
         /// <param name="mailFrom">Email sender.</param>
-        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="cc">CC-recipients, can be more then one separated by semi-colons.</param>
-        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="mailTo">Recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="cc">CC-recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="bcc">BCC-recipients, can be more than one separated by semi-colons.</param>
         /// <param name="replyTo">Reply-to email to be displayed for recipients.</param>
         /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/>.</param>
         /// <param name="subject">Subject of email.</param>
@@ -471,6 +481,24 @@ namespace DotNetNuke.Services.Mail
                 authProvider);
         }
 
+        /// <summary>Send a simple email.</summary>
+        /// <param name="mailFrom">Email sender.</param>
+        /// <param name="mailTo">Recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="cc">CC-recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="bcc">BCC-recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="replyTo">Reply-to email address.</param>
+        /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/>.</param>
+        /// <param name="subject">Subject of email.</param>
+        /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/>.</param>
+        /// <param name="bodyEncoding">Email Encoding from System.Text.Encoding.</param>
+        /// <param name="body">Body of email.</param>
+        /// <param name="attachments">A list of attachments.</param>
+        /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpPassword">SMTP authentication Password. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpEnableSSL">Enable or disable SSL.</param>
+        /// <returns>Returns an empty string on success mail sending. Otherwise returns an error description.</returns>
         [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
         public static partial string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
@@ -565,6 +593,25 @@ namespace DotNetNuke.Services.Mail
                 authProvider);
         }
 
+        /// <summary>Send a simple email.</summary>
+        /// <param name="mailFrom">From email address.</param>
+        /// <param name="mailSender">Sender email address.</param>
+        /// <param name="mailTo">Recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="cc">CC-recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="bcc">BCC-recipients, can be more than one separated by semi-colons.</param>
+        /// <param name="replyTo">Reply-to email address.</param>
+        /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/>.</param>
+        /// <param name="subject">Subject of email.</param>
+        /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/>.</param>
+        /// <param name="bodyEncoding">Email Encoding from System.Text.Encoding.</param>
+        /// <param name="body">Body of email.</param>
+        /// <param name="attachments">A list of attachments.</param>
+        /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpPassword">SMTP authentication Password. When empty or null, then it takes from the HostSettings.</param>
+        /// <param name="smtpEnableSSL">Enable or disable SSL.</param>
+        /// <returns>Returns an empty string on success mail sending. Otherwise returns an error description.</returns>
         [DnnDeprecated(9, 8, 0, "Please use SendEmail() with ICollection<MailAttachment>")]
         public static partial string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {

@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.UI
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
+    /// <summary>Provides utility methods for UI elements within DNN.</summary>
     public partial class Utilities
     {
         /// <summary>Applies a custom CSS file for a control using a consistent naming pattern.</summary>

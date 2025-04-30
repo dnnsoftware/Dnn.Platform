@@ -19,6 +19,7 @@ namespace DotNetNuke.Modules.SearchResults
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    /// <summary>A control which displays search results.</summary>
     public partial class SearchResults : PortalModuleBase
     {
         private const int DefaultPageIndex = 1;

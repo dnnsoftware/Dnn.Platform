@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.MemberDirectory
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    /// <summary>Display member directory.</summary>
     public partial class View : ProfileModuleUserControlBase
     {
         /// <inheritdoc/>

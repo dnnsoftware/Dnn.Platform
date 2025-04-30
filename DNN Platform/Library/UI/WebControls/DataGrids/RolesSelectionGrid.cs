@@ -300,6 +300,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Overrides the base OnPreRender method to Bind the Grid to the Permissions.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             this.BindData();

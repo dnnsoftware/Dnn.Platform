@@ -22,6 +22,7 @@ namespace DotNetNuke.Entities.Portals
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <content>The obsolete methods for <see cref="PortalAliasController"/>.</content>
     public partial class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>, IPortalAliasController
     {
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead. Scheduled removal in v11.0.0.")]

@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A web control for editing a form.</summary>
     [ParseChildren(true)]
     public partial class DnnFormEditor : WebControl, INamingContainer
     {

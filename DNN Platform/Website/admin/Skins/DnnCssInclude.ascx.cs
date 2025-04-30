@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using ClientDependency.Core;
     using ClientDependency.Core.Controls;
 
+    /// <summary>A control which causes CSS to be included on the page.</summary>
     public partial class DnnCssInclude : SkinObjectBase
     {
         public CssMediaType CssMedia { get; set; }

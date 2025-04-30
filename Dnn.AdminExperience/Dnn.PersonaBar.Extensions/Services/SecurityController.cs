@@ -832,7 +832,7 @@ namespace Dnn.PersonaBar.Security.Services
 
         /// GET: api/Security/GetAuditCheckResults
         /// <summary>Gets audit check results.</summary>
-        /// <param name="checkAll">A value indicating whether to perform all checks.</param>
+        /// <param name="checkAll">Whether to run all checks, or only the checks not marked to be lazy loaded.</param>
         /// <returns>audit check results.</returns>
         [HttpGet]
         [RequireHost]

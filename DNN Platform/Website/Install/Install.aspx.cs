@@ -33,6 +33,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A page which installs or upgrades DNN.</summary>
     public partial class Install : Page
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]

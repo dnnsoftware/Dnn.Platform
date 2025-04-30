@@ -543,6 +543,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// <summary>Install a package that is already included under one of the installation folders.</summary>
+        /// <param name="package">The package info.</param>
         /// <returns>An <see cref="InstallResultDto"/> response.</returns>
         [HttpPost]
         [RequireHost]
@@ -574,6 +575,8 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// <summary>Download install package.</summary>
+        /// <param name="packageType">The package type.</param>
+        /// <param name="fileName">The file name.</param>
         /// <returns>A response that streams the package zip file.</returns>
         [HttpGet]
         [RequireHost]

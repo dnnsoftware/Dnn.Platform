@@ -14,6 +14,10 @@ namespace DotNetNuke.Web.Mvc.Common
     internal static class DictionaryExtensions
     {
         /// <summary>Remove entries from dictionary that match the removeCondition.</summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="removeCondition">A function determining whether to remove the <see cref="KeyValuePair{TKey,TValue}"/>.</param>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
         public static void RemoveFromDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, bool> removeCondition)
         {
             // Pass the delegate as the state to avoid a delegate and closure
@@ -26,6 +30,12 @@ namespace DotNetNuke.Web.Mvc.Common
         }
 
         /// <summary>Remove entries from dictionary that match the removeCondition.</summary>
+        /// <param name="dictionary">The dictionary.</param>
+        /// <param name="removeCondition">A function determining whether to remove the <see cref="KeyValuePair{TKey,TValue}"/>.</param>
+        /// <param name="state">State to pass to <paramref name="removeCondition"/> to avoid closures.</param>
+        /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
+        /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
+        /// <typeparam name="TState">The type of state passed to <paramref name="removeCondition"/>.</typeparam>
         public static void RemoveFromDictionary<TKey, TValue, TState>(this IDictionary<TKey, TValue> dictionary, Func<KeyValuePair<TKey, TValue>, TState, bool> removeCondition, TState state)
         {
             Contract.Assert(dictionary != null);

@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
     using Host = DotNetNuke.Entities.Host.Host;
 
+    /// <summary>A control which allows a user to request a password reset.</summary>
     public partial class PasswordReset : UserModuleBase
     {
         private const int RedirectTimeout = 3000;

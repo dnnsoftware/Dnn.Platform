@@ -1066,6 +1066,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="file">The file.</param>
+        /// <param name="destinationFolder">The destination folder.</param>
+        /// <param name="sourceFolderProvider">The folder provider of the source folder.</param>
+        /// <param name="destinationFolderProvider">The folder provider of the destination folder.</param>
         internal virtual void MoveVersions(IFileInfo file, IFolderInfo destinationFolder, FolderProvider sourceFolderProvider, FolderProvider destinationFolderProvider)
         {
             var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
@@ -1103,6 +1107,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="file">The file.</param>
         internal virtual void AutoSyncFile(IFileInfo file)
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -1128,6 +1133,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="file">The zip file to extract.</param>
+        /// <param name="destinationFolder">The destination folder.</param>
+        /// <param name="invalidFiles">A list into which the names of invalid files will be added.</param>
         /// <returns>The number of files extracted.</returns>
         internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
@@ -1202,6 +1210,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="fileName">The file path of the zip file.</param>
+        /// <param name="destinationFolder">The destination folder.</param>
         internal void EnsureZipFolder(string fileName, IFolderInfo destinationFolder)
         {
             var folderManager = FolderManager.Instance;
@@ -1246,6 +1256,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="filePath">The path to the file.</param>
         /// <returns>A <see cref="Stream"/> which will delete the file on close.</returns>
         internal virtual Stream GetAutoDeleteFileStream(string filePath)
         {
@@ -1260,6 +1271,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="stream">The stream containing the file contents.</param>
         /// <returns>SHA1 hash of the file.</returns>
         internal virtual string GetHash(Stream stream)
         {
@@ -1293,6 +1305,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="stream">A stream with the file contents.</param>
         /// <returns>An <see cref="Image"/> instance.</returns>
         internal virtual Image GetImageFromStream(Stream stream)
         {
@@ -1307,12 +1320,13 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="fileName">The file name.</param>
         /// <returns><see langword="true"/> if the <paramref name="fileName"/> has an allowed extension, otherwise <see langword="false"/>.</returns>
         internal virtual bool IsAllowedExtension(string fileName)
         {
             var extension = Path.GetExtension(fileName);
 
-            // regex matches a dot followed by 1 or more chars followed by a semi-colon
+            // regex matches a dot followed by 1 or more chars followed by a semicolon
             // regex is meant to block files like "foo.asp;.png" which can take advantage
             // of a vulnerability in IIS6 which treats such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
@@ -1321,7 +1335,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns><see langword="true"/> if the file name is valie, otherwise <see langword="false"/>.</returns>
+        /// <param name="fileName">The file name.</param>
+        /// <returns><see langword="true"/> if the file name is valid, otherwise <see langword="false"/>.</returns>
         internal virtual bool IsValidFilename(string fileName)
         {
             // regex ensures the file is a valid filename and doesn't include illegal characters
@@ -1336,6 +1351,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="file">The file.</param>
+        /// <param name="contentDisposition">The type of the content-disposition header.</param>
         internal virtual void WriteFileToHttpContext(IFileInfo file, ContentDisposition contentDisposition)
         {
             var scriptTimeOut = HttpContext.Current.Server.ScriptTimeout;
@@ -1387,6 +1404,8 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="objResponse">The HTTP response.</param>
+        /// <param name="objStream">The stream to write to the response stream.</param>
         internal virtual void WriteStream(HttpResponse objResponse, Stream objStream)
         {
             var bytBuffer = new byte[10000];
@@ -1472,6 +1491,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+        /// <param name="portalId">The portal ID.</param>
         internal virtual void ClearFolderCache(int portalId)
         {
             DataCache.ClearFolderCache(portalId);

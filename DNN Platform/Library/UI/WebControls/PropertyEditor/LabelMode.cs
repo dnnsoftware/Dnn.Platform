@@ -11,10 +11,19 @@ namespace DotNetNuke.UI.WebControls
     /// </remarks>
     public enum LabelMode
     {
+        /// <summary>No label.</summary>
         None = 0,
+
+        /// <summary>Label on the left.</summary>
         Left = 1,
+
+        /// <summary>Label on the right.</summary>
         Right = 2,
+
+        /// <summary>Label on the top.</summary>
         Top = 3,
+
+        /// <summary>Label on the bottom.</summary>
         Bottom = 4,
     }
 }

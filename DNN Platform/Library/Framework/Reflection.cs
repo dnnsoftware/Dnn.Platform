@@ -492,7 +492,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-        // dynamically create a default Provider from a ProviderType - this method was used by the CachingProvider to avoid a circular dependency
+        /// <summary>Dynamically create a default Provider from a ProviderType.</summary>
+        /// <param name="objectProviderType">The name of the <see cref="Type"/>.</param>
+        /// <returns>The provider instance.</returns>
         [DnnDeprecated(7, 0, 0, "Please use CreateObject(string objectProviderType, bool useCache)", RemovalVersion = 11)]
         internal static partial object CreateObjectNotCached(string objectProviderType)
         {

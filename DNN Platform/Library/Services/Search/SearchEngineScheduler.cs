@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Search
 
         /// <summary>Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.</summary>
         /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem, IBusinessControllerProvider businessControllerProvider)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();

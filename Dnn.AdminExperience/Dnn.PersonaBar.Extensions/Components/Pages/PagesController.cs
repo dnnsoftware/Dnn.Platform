@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <inheritdoc cref="IPagesController"/>
     [DnnDeprecated(10, 0, 0, "Please resolve IPagesController via dependency injection.")]
     public partial class PagesController : ServiceLocator<IPagesController, PagesController>
     {

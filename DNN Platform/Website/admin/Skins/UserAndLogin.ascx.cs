@@ -22,6 +22,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Social.Notifications;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A skin/theme object which displays a login link to unauthenticated users and a profile link to authenticated users.</summary>
     public partial class UserAndLogin : SkinObjectBase
     {
         private const string MyFileName = "UserAndLogin.ascx";

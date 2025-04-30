@@ -119,13 +119,14 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <summary>RaisePostDataChangedEvent runs when the PostBackData has changed.  It triggers a ValueChanged Event.</summary>
+        /// <summary>RaisePostDataChangedEvent runs when the PostBackData has changed.  It triggers a <see cref="ValueChanged"/> Event.</summary>
         public void RaisePostDataChangedEvent()
         {
             this.OnDataChanged(EventArgs.Empty);
         }
 
-        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged Event.</summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected abstract void OnDataChanged(EventArgs e);
 
         /// <summary>OnAttributesChanged runs when the CustomAttributes property has changed.</summary>
@@ -133,7 +134,8 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-        /// <summary>Runs when an item is added to a collection type property.</summary>
+        /// <summary>Runs when an item is added to a collection type property. It raises the <see cref="ItemAdded"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
         {
             if (this.ItemAdded != null)
@@ -142,7 +144,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Runs when an item is deleted from a collection type property.</summary>
+        /// <summary>Runs when an item is deleted from a collection type property. It raises the <see cref="ItemDeleted"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
         {
             if (this.ItemDeleted != null)
@@ -151,7 +154,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>OnValueChanged runs when the Value has changed.  It raises the ValueChanged Event.</summary>
+        /// <summary>OnValueChanged runs when the Value has changed.  It raises the <see cref="ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnValueChanged(PropertyEditorEventArgs e)
         {
             if (this.ValueChanged != null)

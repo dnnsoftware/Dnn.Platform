@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="RoleModel"/> class.</summary>
-        /// <param name="role"></param>
+        /// <param name="role">The role info.</param>
         public RoleModel(RoleInfo role)
             : base(role)
         {

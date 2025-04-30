@@ -12,6 +12,7 @@ namespace DotNetNuke.HttpModules.Compression
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>An HTTP module which compresses responses.</summary>
     [DnnDeprecated(9, 2, 0, "No replacement")]
     public partial class CompressionModule : IHttpModule
     {

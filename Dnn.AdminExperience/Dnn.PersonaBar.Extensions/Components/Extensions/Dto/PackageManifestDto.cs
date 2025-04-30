@@ -17,8 +17,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         }
 
         /// <summary>Initializes a new instance of the <see cref="PackageManifestDto"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="package"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="package">The package info.</param>
         public PackageManifestDto(int portalId, PackageInfo package)
             : base(portalId, package)
         {

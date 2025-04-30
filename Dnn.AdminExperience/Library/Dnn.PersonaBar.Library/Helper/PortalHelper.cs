@@ -6,10 +6,12 @@ namespace Dnn.PersonaBar.Library.Helper
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>A helper for portals.</summary>
     public partial class PortalHelper
     {
         private static readonly IContentVerifier ContentVerifier = new ContentVerifier();
 
+        /// <inheritdoc cref="IContentVerifier.IsContentExistsForRequestedPortal"/>
 #pragma warning disable CS1066
         [DnnDeprecated(9, 2, 1, "Use IContentVerifier.IsContentExistsForRequestedPortal")]
         public static partial bool IsContentExistsForRequestedPortal(int contentPortalId, PortalSettings portalSettings, bool checkForSiteGroup = false)

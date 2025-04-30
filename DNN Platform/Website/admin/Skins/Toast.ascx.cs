@@ -21,6 +21,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A skin/theme object which allows the display of toast messages.</summary>
     public partial class Toast : SkinObjectBase
     {
         private const string MyFileName = "Toast.ascx";

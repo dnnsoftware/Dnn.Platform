@@ -33,34 +33,65 @@ namespace DotNetNuke.Services.Scheduling
     {
         // do not add APPLICATION_END
         // it will not reliably complete
+
+        /// <summary>The application starting.</summary>
         APPLICATION_START = 0,
     }
 
     public enum ScheduleSource
     {
+        /// <summary>The source is not known.</summary>
         NOT_SET = 0,
+
+        /// <summary>The schedule changed.</summary>
         STARTED_FROM_SCHEDULE_CHANGE = 1,
+
+        /// <summary>An event triggered the scheduled task.</summary>
         STARTED_FROM_EVENT = 2,
+
+        /// <summary>The timer triggered the scheduled task.</summary>
         STARTED_FROM_TIMER = 3,
+
+        /// <summary>The beginning of a request triggered the scheduled task.</summary>
         STARTED_FROM_BEGIN_REQUEST = 4,
     }
 
     public enum ScheduleStatus
     {
+        /// <summary>The status is not set.</summary>
         NOT_SET = 0,
+
+        /// <summary>The task is waiting for an open thread.</summary>
         WAITING_FOR_OPEN_THREAD = 1,
+
+        /// <summary>The task is running from an event trigger.</summary>
         RUNNING_EVENT_SCHEDULE = 2,
+
+        /// <summary>The task is running from a timer trigger.</summary>
         RUNNING_TIMER_SCHEDULE = 3,
+
+        /// <summary>The task is running from a request trigger.</summary>
         RUNNING_REQUEST_SCHEDULE = 4,
+
+        /// <summary>The task is waiting for a request.</summary>
         WAITING_FOR_REQUEST = 5,
+
+        /// <summary>The scheduler is shutting down.</summary>
         SHUTTING_DOWN = 6,
+
+        /// <summary>The scheduler is stopped.</summary>
         STOPPED = 7,
     }
 
     public enum SchedulerMode
     {
+        /// <summary>The scheduler is disabled.</summary>
         DISABLED = 0,
+
+        /// <summary>The scheduler is running based on a timer.</summary>
         TIMER_METHOD = 1,
+
+        /// <summary>The scheduler is running when triggered by HTTP requests.</summary>
         REQUEST_METHOD = 2,
     }
 

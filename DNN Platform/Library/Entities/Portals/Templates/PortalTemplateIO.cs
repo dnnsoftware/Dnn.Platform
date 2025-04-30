@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     using DotNetNuke.Framework;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <inheritdoc cref="IPortalTemplateIO" />
     [DnnDeprecated(9, 11, 1, "No replacement")]
     public partial class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {

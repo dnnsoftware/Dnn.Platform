@@ -19,12 +19,12 @@ namespace Dnn.PersonaBar.Roles.Components
     public class RolesController : ServiceLocator<IRolesController, RolesController>, IRolesController
     {
         /// <summary>Gets a paginated list of Roles matching given search criteria.</summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="groupId"></param>
-        /// <param name="keyword"></param>
-        /// <param name="total"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="pageSize"></param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="groupId">The group ID.</param>
+        /// <param name="keyword">The keyword.</param>
+        /// <param name="total">The total count.</param>
+        /// <param name="startIndex">The index to start the page on.</param>
+        /// <param name="pageSize">The page size.</param>
         /// <returns>A sequence of <see cref="RoleInfo"/> instances.</returns>
         public IEnumerable<RoleInfo> GetRoles(PortalSettings portalSettings, int groupId, string keyword, out int total, int startIndex, int pageSize)
         {
@@ -44,9 +44,9 @@ namespace Dnn.PersonaBar.Roles.Components
         }
 
         /// <summary>Gets a list (not paginated) of Roles given a comma separated list of Roles' names.</summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="groupId"></param>
-        /// <param name="rolesFilter"></param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="groupId">The group ID.</param>
+        /// <param name="rolesFilter">A list of roles to include in the result.</param>
         /// <returns>List of found Roles.</returns>
         public IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter)
         {

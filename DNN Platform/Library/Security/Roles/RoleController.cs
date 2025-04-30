@@ -125,6 +125,8 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>Deletes a Role Group.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="roleGroupId">The role group ID.</param>
         public static void DeleteRoleGroup(int portalID, int roleGroupId)
         {
             DeleteRoleGroup(GetRoleGroup(portalID, roleGroupId));

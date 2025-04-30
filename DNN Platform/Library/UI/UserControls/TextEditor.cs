@@ -294,6 +294,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -347,6 +348,8 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>optRender_SelectedIndexChanged runs when Basic Text Box mode is changed.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void OptRenderSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptRender.SelectedIndex != -1)
@@ -363,6 +366,8 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>optView_SelectedIndexChanged runs when Editor Mode is changed.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void OptViewSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptView.SelectedIndex != -1)
