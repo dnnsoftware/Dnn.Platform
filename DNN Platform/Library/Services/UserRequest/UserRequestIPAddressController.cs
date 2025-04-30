@@ -10,11 +10,34 @@ namespace DotNetNuke.Services.UserRequest
     using System.Net.Sockets;
     using System.Web;
 
-    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
 
+    /// <summary>
+    /// Utilities to handle IP address of user making request to application.
+    /// </summary>
     public class UserRequestIPAddressController : ServiceLocator<IUserRequestIPAddressController, UserRequestIPAddressController>, IUserRequestIPAddressController
     {
+        private readonly IHostSettingsService hostSettingsService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRequestIPAddressController"/> class.
+        /// </summary>
+        public UserRequestIPAddressController()
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserRequestIPAddressController"/> class.
+        /// </summary>
+        /// <param name="hostSettingsService">Provides access to host settings.</param>
+        public UserRequestIPAddressController(IHostSettingsService hostSettingsService)
+        {
+            this.hostSettingsService = hostSettingsService;
+        }
+
         /// <inheritdoc/>
         public string GetUserRequestIPAddress(HttpRequestBase request)
         {
@@ -24,10 +47,10 @@ namespace DotNetNuke.Services.UserRequest
         /// <inheritdoc/>
         public string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily)
         {
-            var userRequestIPHeader = HostController.Instance.GetString("UserRequestIPHeader", "X-Forwarded-For");
+            var userRequestIPHeader = this.hostSettingsService.GetString("UserRequestIPHeader");
             var userIPAddress = string.Empty;
 
-            if (request.Headers.AllKeys.Contains(userRequestIPHeader))
+            if (!string.IsNullOrEmpty(userRequestIPHeader) && request.Headers.AllKeys.Contains(userRequestIPHeader))
             {
                 userIPAddress = request.Headers[userRequestIPHeader];
                 userIPAddress = userIPAddress.Split(',')[0];
