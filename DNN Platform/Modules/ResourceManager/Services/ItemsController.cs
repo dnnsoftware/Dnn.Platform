@@ -75,7 +75,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             return this.GetFolderContent(folderId, startIndex, numItems, sorting, "Ascending");
         }
- 
+
         /// <summary>Gets the content for a specific folder.</summary>
         /// <param name="folderId">The id of the folder.</param>
         /// <param name="startIndex">The page number to get.</param>
