@@ -22,7 +22,8 @@ export class DnnRmLeftPane {
       Number.parseInt(e.detail.data.key),
       0,
       state.pageSize,
-      state.sortField)
+      state.sortField,
+      state.sortOrder)
     .then(data => state.currentItems = data)
     .catch(error => console.error(error));
   }
