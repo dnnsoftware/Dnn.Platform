@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.UserRequest
         /// Initializes a new instance of the <see cref="UserRequestIPAddressController"/> class.
         /// </summary>
         public UserRequestIPAddressController()
-            : this(Globals.DependencyProvider.GetService(typeof(IHostSettingsService)) as IHostSettingsService)
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>())
         {
         }
 
