@@ -153,13 +153,7 @@
     <Compile Include="NewDDRMenuNavigationProvider.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="INodeManipulator.cs" />
-    <Compile Include="Localisation\Generic.cs" />
-    <Compile Include="Localisation\ILocalisation.cs" />
-    <Compile Include="Localisation\ILocaliser.cs" />
-    <Compile Include="Localisation\Localiser.cs" />
     <Compile Include="MenuBase.cs" />
-    <Compile Include="MenuNode.cs" />
     <Compile Include="MenuSettings.ascx.cs">
       <DependentUpon>MenuSettings.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -174,7 +168,6 @@
     <Compile Include="MenuView.ascx.designer.cs">
       <DependentUpon>MenuView.ascx</DependentUpon>
     </Compile>
-    <Compile Include="MenuXml.cs" />
     <Compile Include="ModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -234,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BuildScripts\" />
+    <Folder Include="Localisation\" />
     <Folder Include="Packages\" />
   </ItemGroup>
   <ItemGroup>
@@ -260,6 +254,10 @@
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDRMenu\DotNetNuke.Modules.DDRMenu.csproj">
+      <Project>{a86ebc44-2bc8-4c4a-997b-2708e4aac345}</Project>
+      <Name>DotNetNuke.Modules.DDRMenu</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

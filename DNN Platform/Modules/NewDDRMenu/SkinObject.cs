@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.NewDDRMenu
@@ -13,8 +13,9 @@ namespace DotNetNuke.Web.NewDDRMenu
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI;
     using DotNetNuke.UI.Skins;
+    using DotNetNuke.Web.DDRMenu;
+    using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.NewDDRMenu.DNNCommon;
-    using DotNetNuke.Web.NewDDRMenu.Localisation;
     using DotNetNuke.Web.NewDDRMenu.TemplateEngine;
 
     using Microsoft.Extensions.DependencyInjection;

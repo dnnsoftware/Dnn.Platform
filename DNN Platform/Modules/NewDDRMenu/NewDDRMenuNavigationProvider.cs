@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.NewDDRMenu
@@ -13,7 +13,7 @@ namespace DotNetNuke.Web.NewDDRMenu
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
-    using DotNetNuke.Web.NewDDRMenu.Localisation;
+    using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.NewDDRMenu.TemplateEngine;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -367,7 +367,7 @@ namespace DotNetNuke.Web.NewDDRMenu
                 objNodes = this.localiser.LocaliseDNNNodeCollection(objNodes);
             }
 
-            this.menuControl.RootNode = new MenuNode(objNodes);
+            this.menuControl.RootNode = new DDRMenu.MenuNode(objNodes);
             this.menuControl.SkipLocalisation = !localise;
             this.menuControl.MenuSettings = new Settings
             {

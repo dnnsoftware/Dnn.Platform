@@ -21,8 +21,9 @@ namespace DotNetNuke.Web.NewDDRMenu
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Web.DDRMenu;
+    using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.NewDDRMenu.DNNCommon;
-    using DotNetNuke.Web.NewDDRMenu.Localisation;
     using DotNetNuke.Web.NewDDRMenu.TemplateEngine;
 
     /// <summary>Base class for multiple DDR Menu classes.</summary>
