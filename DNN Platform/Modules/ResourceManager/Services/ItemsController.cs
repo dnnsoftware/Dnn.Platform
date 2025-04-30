@@ -71,8 +71,22 @@ namespace Dnn.Modules.ResourceManager.Services
         /// An object containing the folder information, a list of the folder contents and the permissions relating to that folder.
         /// </returns>
         [HttpGet]
-
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting)
+        {
+            return this.GetFolderContent(folderId, startIndex, numItems, sorting, "Ascending");
+        }
+ 
+        /// <summary>Gets the content for a specific folder.</summary>
+        /// <param name="folderId">The id of the folder.</param>
+        /// <param name="startIndex">The page number to get.</param>
+        /// <param name="numItems">How many items to get per page.</param>
+        /// <param name="sorting">How to sort the list.</param>
+        /// <param name="sortingOrder">The order to sort the list.</param>
+        /// <returns>
+        /// An object containing the folder information, a list of the folder contents and the permissions relating to that folder.
+        /// </returns>
+        [HttpGet]
+        public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, string sortingOrder)
         {
             ContentPage p;
             var groupId = this.FindGroupId(this.Request);
@@ -80,7 +94,7 @@ namespace Dnn.Modules.ResourceManager.Services
             var moduleMode = new SettingsManager(moduleId, groupId).Mode;
             var permissionsManager = PermissionsManager.Instance;
 
-            p = ItemsManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting, moduleMode);
+            p = ItemsManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting, sortingOrder, moduleMode);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
