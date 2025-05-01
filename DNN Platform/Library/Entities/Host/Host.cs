@@ -279,7 +279,7 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        /// <summary>  Gets a value indicating whether gets whether to dislpay the copyright.</summary>
+        /// <summary>Gets a value indicating whether to display the copyright.</summary>
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>

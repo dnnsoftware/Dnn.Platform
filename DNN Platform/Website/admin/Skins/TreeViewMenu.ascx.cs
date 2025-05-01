@@ -11,8 +11,6 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.WebControls;
 
-    /// Project  : DotNetNuke
-    /// Class    : TreeViewMenu
     /// <summary>
     /// TreeViewMenu is a Skin Object that creates a Menu using the DNN Treeview Control
     /// to provide a Windows Explore like Menu.
@@ -40,6 +38,20 @@ namespace DotNetNuke.UI.Skins.Controls
         private string treeGoUpImage = "~/images/folderup.gif";
         private int treeIndentWidth = 10;
         private string width = "100%";
+
+        /// <summary>Initializes a new instance of the <see cref="TreeViewMenu"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public TreeViewMenu()
+            : base()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TreeViewMenu"/> class.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        public TreeViewMenu(IServiceProvider serviceProvider)
+            : base(serviceProvider)
+        {
+        }
 
         private enum EImageType
         {

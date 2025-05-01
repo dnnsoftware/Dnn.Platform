@@ -84,9 +84,24 @@ namespace DotNetNuke.Services.Install
                 { new InstallVersionStep(), 1 },
             };
 
+        private readonly IApplicationStatusInfo applicationStatus;
+
         static UpgradeWizard()
         {
             IsAuthenticated = false;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        public UpgradeWizard()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        /// <param name="applicationStatus">The application status info.</param>
+        public UpgradeWizard(IApplicationStatusInfo applicationStatus)
+        {
+            this.applicationStatus = applicationStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>
@@ -212,7 +227,8 @@ namespace DotNetNuke.Services.Install
                 LaunchUpgrade();
 
                 // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
-                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
+                var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+                hostSettingsService.Update("InstallerFilesRemoved", "False", true);
             }
         }
 
@@ -306,7 +322,7 @@ namespace DotNetNuke.Services.Install
             }
 
             this.SslRequiredCheck();
-            GetInstallerLocales();
+            GetInstallerLocales(this.applicationStatus);
         }
 
         /// <inheritdoc />
@@ -595,9 +611,9 @@ namespace DotNetNuke.Services.Install
                 .Update(setting);
         }
 
-        private static void GetInstallerLocales()
+        private static void GetInstallerLocales(IApplicationStatusInfo applicationStatus)
         {
-            var filePath = Globals.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
 
             if (File.Exists(filePath))
             {
@@ -793,7 +809,7 @@ namespace DotNetNuke.Services.Install
                 this.versionLabel.Visible = false;
                 this.currentVersionLabel.Visible = false;
                 this.versionsMatch.Text = this.LocalizeString("VersionsMatch");
-                if (Globals.IncrementalVersionExists(this.CurrentVersion))
+                if (this.applicationStatus.IncrementalVersionExists(this.CurrentVersion))
                 {
                     this.versionsMatch.Text = this.LocalizeString("VersionsMatchButIncrementalExists");
                 }
@@ -842,7 +858,7 @@ namespace DotNetNuke.Services.Install
             // remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
-            Config.Touch();
+            Config.Touch(this.applicationStatus);
             this.Response.Redirect("../Default.aspx", true);
         }
 

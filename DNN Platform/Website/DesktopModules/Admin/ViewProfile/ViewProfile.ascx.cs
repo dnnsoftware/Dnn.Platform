@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     using System.Threading;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -58,6 +59,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         }
 
         public string ProfileProperties { get; set; }
+
+        private IPortalAliasInfo CurrentPortalAlias => PortalSettings.Current.PortalAlias;
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -233,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             }
             else
             {
-                redirectUrl = Globals.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
+                redirectUrl = Globals.GetPortalDomainName(this.CurrentPortalAlias.HttpAlias, this.Request, true) +
                               "/" + Globals.glbDefaultPage;
             }
 

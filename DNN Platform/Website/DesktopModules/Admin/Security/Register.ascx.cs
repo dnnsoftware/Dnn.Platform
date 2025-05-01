@@ -573,7 +573,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (isValid)
             {
+#pragma warning disable CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                 var filterFlags = PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup;
+#pragma warning restore CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                 var name = this.User.Username ?? this.User.Email;
                 var cleanUsername = PortalSecurity.Instance.InputFilter(name, filterFlags);
                 if (!cleanUsername.Equals(name))
