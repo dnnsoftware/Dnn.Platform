@@ -38,7 +38,8 @@ export class DnnRmTopBar {
         state.currentItems.folder.folderId,
         0,
         state.pageSize,
-        state.sortField)
+        state.sortField,
+        state.sortOrder)
       .then(data => {
         state.lastSearchRequestedPage = 1;
         state.itemsSearchTerm = undefined;

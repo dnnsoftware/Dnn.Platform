@@ -4,6 +4,7 @@ import { IRoleGroup } from "@dnncommunity/dnn-elements/dist/types/components/dnn
 import { IRole } from "@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/role-interface";
 import { ISearchedUser } from "@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/searched-user-interface";
 import { SortFieldInfo } from "../enums/SortField";
+import { SortOrderInfo } from "../enums/SortOrder";
 
 export class ItemsClient{
     private sf: DnnServicesFramework;
@@ -54,9 +55,10 @@ export class ItemsClient{
         folderId: number,
         startIndex = 0,
         numItems = 20,
-        sorting: SortFieldInfo = new SortFieldInfo("ItemName")){
+        sortingField: SortFieldInfo = new SortFieldInfo("ItemName"),
+        sortingOrder: SortOrderInfo = new SortOrderInfo()){
         return new Promise<GetFolderContentResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sorting.sortKey}`;
+            const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sortingField.sortKey}&sortingOrder=${sortingOrder.sortOrderKey}`;
             const headers = this.sf.getModuleHeaders();
             headers.append("groupId", this.getGroupId());
             this.abortController?.abort();
