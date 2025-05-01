@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.Razor
 {
-    using System;
     using System.Web.WebPages;
 
     using DotNetNuke.Internal.SourceGenerators;
@@ -28,8 +27,7 @@ namespace DotNetNuke.Web.Razor
         protected internal UrlHelper Url { get; internal set; }
 
         /// <inheritdoc/>
-        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
-        protected override partial void ConfigurePage(WebPageBase parentPage)
+        protected override void ConfigurePage(WebPageBase parentPage)
         {
             base.ConfigurePage(parentPage);
 
