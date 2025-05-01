@@ -16,15 +16,15 @@ namespace DotNetNuke.Services.Tokens
     public class TokenContext
     {
         /// <summary>Gets or sets the user object representing the currently accessing user (permission).</summary>
-        /// <value>UserInfo oject.</value>
+        /// <value>UserInfo object.</value>
         public UserInfo AccessingUser { get; set; }
 
         /// <summary>Gets or sets the user object to use for 'User:' token replacement.</summary>
-        /// <value>UserInfo oject.</value>
+        /// <value>UserInfo object.</value>
         public UserInfo User { get; set; }
 
         /// <summary>Gets or sets the portal settings object to use for 'Portal:' token replacement.</summary>
-        /// <value>PortalSettings oject.</value>
+        /// <value>PortalSettings object.</value>
         public PortalSettings Portal { get; set; }
 
         /// <summary>Gets or sets the tab settings object to use for 'Tab:' token replacement.</summary>

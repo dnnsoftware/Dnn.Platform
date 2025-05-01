@@ -10,17 +10,17 @@ namespace DotNetNuke.Modules.Journal.Components
     {
         public JournalItemTokenReplace(JournalItem journalItem, JournalControl journalControl)
         {
-            this.PropertySource["journalitem"] = journalItem;
-            this.PropertySource["journalcontrol"] = journalControl;
+            this.AddPropertySource("journalitem", journalItem);
+            this.AddPropertySource("journalcontrol", journalControl);
             if (journalItem.ItemData != null)
             {
-                this.PropertySource["journaldata"] = journalItem.ItemData;
+                this.AddPropertySource("journaldata", journalItem.ItemData);
             }
 
             if (journalItem.JournalAuthor != null)
             {
-                this.PropertySource["journalauthor"] = journalItem.JournalAuthor;
-                this.PropertySource["journalprofile"] = new ProfilePicPropertyAccess(journalItem.JournalAuthor.Id);
+                this.AddPropertySource("journalauthor", journalItem.JournalAuthor);
+                this.AddPropertySource("journalprofile", new ProfilePicPropertyAccess(journalItem.JournalAuthor.Id));
             }
         }
 
