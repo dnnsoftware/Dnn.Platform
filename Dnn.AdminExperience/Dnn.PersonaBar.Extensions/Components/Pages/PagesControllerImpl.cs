@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using System.Text.RegularExpressions;
     using System.Web;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Library.Helper;
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Components.Exceptions;

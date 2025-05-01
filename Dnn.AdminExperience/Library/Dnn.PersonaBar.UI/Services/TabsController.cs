@@ -12,7 +12,7 @@ namespace Dnn.PersonaBar.UI.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Dto.Tabs;
 
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;

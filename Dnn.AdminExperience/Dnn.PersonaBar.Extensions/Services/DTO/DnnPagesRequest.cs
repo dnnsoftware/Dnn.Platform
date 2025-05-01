@@ -6,7 +6,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 {
     using System.Collections.Generic;
 
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Dto.Tabs;
 
     public class DnnPagesRequest
     {

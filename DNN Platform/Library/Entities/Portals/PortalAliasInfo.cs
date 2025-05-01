@@ -51,31 +51,37 @@ namespace DotNetNuke.Entities.Portals
         string IPortalAliasInfo.HttpAlias { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.HttpAlias instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public string HTTPAlias
         {
             get => this.ThisAsInterface.HttpAlias;
             set => this.ThisAsInterface.HttpAlias = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         int IPortalAliasInfo.PortalAliasId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalAliasId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalAliasID
         {
             get => this.ThisAsInterface.PortalAliasId;
             set => this.ThisAsInterface.PortalAliasId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         int IPortalAliasInfo.PortalId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasInfo.PortalId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalID
         {
             get => this.ThisAsInterface.PortalId;
             set => this.ThisAsInterface.PortalId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         public bool IsPrimary { get; set; }
