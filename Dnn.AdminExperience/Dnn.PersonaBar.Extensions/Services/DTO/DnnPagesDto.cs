@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     using System.Collections.Generic;
     using System.Linq;
 
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Dto.Tabs;
     using Newtonsoft.Json;
 
     [JsonObject]

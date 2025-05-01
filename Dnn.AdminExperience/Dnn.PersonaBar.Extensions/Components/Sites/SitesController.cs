@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Sites.Components
     using System.Xml;
 
     using Dnn.PersonaBar.Library.Controllers;
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Dto.Tabs;
     using Dnn.PersonaBar.Sites.Components.Dto;
     using Dnn.PersonaBar.Sites.Services.Dto;
     using DotNetNuke.Abstractions.Portals;

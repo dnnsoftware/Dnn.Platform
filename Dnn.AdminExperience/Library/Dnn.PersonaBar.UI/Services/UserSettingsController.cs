@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.UI.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Library.Controllers;
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using DotNetNuke.Collections;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;

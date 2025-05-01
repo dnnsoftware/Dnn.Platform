@@ -79,6 +79,7 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc cref="IPermissionInfo.RoleId" />
         [XmlElement("roleid")]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.RoleId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int RoleID
         {
             get
@@ -91,6 +92,7 @@ namespace DotNetNuke.Security.Permissions
                 ((IPermissionInfo)this).RoleId = value;
             }
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("rolename")]
@@ -110,6 +112,7 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc cref="IPermissionInfo.UserId" />
         [XmlElement("userid")]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionInfo)}.{nameof(IPermissionInfo.UserId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int UserID
         {
             get
@@ -122,6 +125,7 @@ namespace DotNetNuke.Security.Permissions
                 ((IPermissionInfo)this).UserId = value;
             }
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("username")]

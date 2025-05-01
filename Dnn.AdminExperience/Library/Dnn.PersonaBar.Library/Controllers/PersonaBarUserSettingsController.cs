@@ -6,7 +6,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 {
     using System;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Personalization;
 

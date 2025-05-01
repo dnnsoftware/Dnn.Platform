@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Library.Controllers
 {
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
 
     public interface IPersonaBarUserSettingsController
     {
