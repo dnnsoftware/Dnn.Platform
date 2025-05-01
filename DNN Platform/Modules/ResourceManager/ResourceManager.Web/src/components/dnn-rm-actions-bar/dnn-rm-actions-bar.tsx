@@ -1,6 +1,7 @@
 import { Component, Host, h, State } from '@stencil/core';
 import state from '../../store/store';
 import { sortField, SortFieldInfo } from "../../enums/SortField";
+import { sortOrder } from "../../enums/SortOrder";
 import { InternalServicesClient } from '../../services/InternalServicesClient';
 import { ItemsClient } from '../../services/ItemsClient';
 @Component({
@@ -55,6 +56,15 @@ export class DnnRmActionsBar {
     }
   }
 
+  private renderSortOrderButtonIcon(){
+    if (state.sortOrder.sortOrderKey == sortOrder.ascending.sortOrderKey) {
+      return <path d="M10 6h4v2h-4v-2zm-2 5h8v2h-8v-2zm-2 5h12v2h-12v-2z"/>
+    }
+    else {
+      return <path d="M6 6h12v2h-12v-2zm2 5h8v2h-8v-2zm2 5h4v2h-4v-2z"/>
+    }
+  }
+
   private syncFolderContent(recursive: boolean = false): void {
     this.itemsClient.syncFolderContent(
       state.currentItems.folder.folderId,
@@ -75,7 +85,8 @@ export class DnnRmActionsBar {
         state.currentItems.folder.folderId,
         0,
         state.pageSize,
-        state.sortField)
+        state.sortField,
+        state.sortOrder)
       .then(data => state.currentItems = data)
       .catch(error => console.error(error));
     })
@@ -91,6 +102,10 @@ export class DnnRmActionsBar {
       })
       .catch(reason => reject(reason));
     });
+  }
+
+  private toggleSortOrder() {
+    state.sortOrder = (state.sortOrder.sortOrderKey == sortOrder.ascending.sortOrderKey) ? sortOrder.descending : sortOrder.ascending;
   }
 
   render() {
@@ -151,6 +166,20 @@ export class DnnRmActionsBar {
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h6v-2H3v2zM3 6v2h18V6H3zm0 7h12v-2H3v2z"/></svg>
               <span>{state.localization.Sort}</span>
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <button id="sort-order-button"
+              title={`Order: ${state.sortOrder.localizedName}`}
+              onClick={() =>
+                {
+                     this.toggleSortOrder();
+                     this.getFolderContent();
+                }
+              }
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                  <path d="M0 0h24v24H0z" fill="none"/>
+                  {this.renderSortOrderButtonIcon()}
+              </svg>
             </button>
             <dnn-collapsible expanded={this.sortDropdownExpanded}>
               <div class="dropdown">
