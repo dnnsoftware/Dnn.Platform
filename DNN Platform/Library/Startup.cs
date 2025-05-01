@@ -36,6 +36,7 @@ namespace DotNetNuke
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail.OAuth;
+    using DotNetNuke.Services.Mobile;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -90,6 +91,7 @@ namespace DotNetNuke
             services.AddTransient<IModuleController, ModuleController>();
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
+            services.AddTransient<IRedirectionController, RedirectionController>();
 
             services.AddTransient<IDataContext>(x =>
             {

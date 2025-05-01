@@ -31,10 +31,26 @@ namespace DotNetNuke.Admin.Containers
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A control which renders module actions.</summary>
     public partial class ModuleActions : ActionBase
     {
         private readonly List<int> validIDs = new List<int>();
+        private readonly IModuleControlPipeline moduleControlPipeline;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        public ModuleActions()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        public ModuleActions(IModuleControlPipeline moduleControlPipeline)
+        {
+            this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+        }
 
         protected string AdminText
         {
@@ -109,7 +125,7 @@ namespace DotNetNuke.Admin.Containers
                 if (quickSettingsControl != null)
                 {
                     this.SupportsQuickSettings = true;
-                    var control = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    var control = this.moduleControlPipeline.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
                     control.ID += this.ModuleContext.ModuleId;
                     this.quickSettings.Controls.Add(control);
 

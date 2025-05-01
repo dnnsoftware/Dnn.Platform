@@ -153,12 +153,6 @@
   <data name="LastLockoutDate.Help" xml:space="preserve">
     <value>The date this user was last locked out of the site due to repetitive failed logins.</value>
   </data>
-  <data name="IsOnLine.Text" xml:space="preserve">
-    <value>User Is Online:</value>
-  </data>
-  <data name="IsOnLine.Help" xml:space="preserve">
-    <value>Indicates whether the user is currently online.</value>
-  </data>
   <data name="LockedOut.Text" xml:space="preserve">
     <value>Locked Out:</value>
   </data>

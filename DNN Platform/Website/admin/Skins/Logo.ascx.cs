@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Xml.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Exceptions;
@@ -24,8 +25,15 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>Initializes a new instance of the <see cref="Logo"/> class.</summary>
         public Logo()
+            : this(null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Logo"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Logo(INavigationManager navigationManager)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         /// <summary>Gets or sets the width of the border around the image.</summary>
@@ -39,6 +47,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>Gets or sets a value indicating whether to inject the SVG content inline instead of wrapping it in an img tag.</summary>
         public bool InjectSvg { get; set; }
+
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
@@ -96,7 +106,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-                    this.hypLogo.NavigateUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
+                    this.hypLogo.NavigateUrl = Globals.AddHTTP(this.CurrentPortalAlias.HttpAlias);
                 }
             }
             catch (Exception exc)
