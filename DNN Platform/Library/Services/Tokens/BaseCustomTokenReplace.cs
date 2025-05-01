@@ -211,5 +211,13 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource[name + "_url"] = new UrlEncodingPropertyAccess(properties);
             this.PropertySource[name + "_js"] = new JavaScriptEncodingPropertyAccess(properties);
         }
+
+        /// <summary>Adds the <paramref name="properties"/> with the given <paramref name="name"/> as a source for the token replace.</summary>
+        /// <param name="name">The name of the source.</param>
+        /// <param name="properties">The <see cref="IPropertyAccess"/> implementation.</param>
+        protected void AddRawPropertySource(string name, IPropertyAccess properties)
+        {
+            this.PropertySource[name] = properties;
+        }
     }
 }

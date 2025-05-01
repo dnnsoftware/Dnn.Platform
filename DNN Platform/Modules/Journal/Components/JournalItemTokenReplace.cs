@@ -11,7 +11,7 @@ namespace DotNetNuke.Modules.Journal.Components
         public JournalItemTokenReplace(JournalItem journalItem, JournalControl journalControl)
         {
             this.AddPropertySource("journalitem", journalItem);
-            this.AddPropertySource("journalcontrol", journalControl);
+            this.AddRawPropertySource("journalcontrol", journalControl);
             if (journalItem.ItemData != null)
             {
                 this.AddPropertySource("journaldata", journalItem.ItemData);
