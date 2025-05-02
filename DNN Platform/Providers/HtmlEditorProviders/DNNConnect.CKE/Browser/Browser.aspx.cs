@@ -27,7 +27,12 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DNNConnect.CKEditorProvider.Helper;
     using DNNConnect.CKEditorProvider.Objects;
     using DNNConnect.CKEditorProvider.Utilities;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -42,6 +47,8 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.JScript;
 
     using Convert = System.Convert;
@@ -68,20 +75,35 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>  The request.</summary>
         private readonly HttpRequest request = HttpContext.Current.Request;
 
+        private readonly IHostSettings hostSettings;
+
         /// <summary>Current Settings Base.</summary>
         private EditorProviderSettings currentSettings = new EditorProviderSettings();
 
         /// <summary>Settings Base for All Portals.</summary>
         private EditorProviderSettings allPortalsSettings = new EditorProviderSettings();
 
-        /// <summary>  The portal settings.</summary>
+        /// <summary>The portal settings.</summary>
         private IPortalSettings portalSettings;
 
-        /// <summary>  The extension white list.</summary>
-        private FileExtensionWhitelist extensionWhiteList;
+        /// <summary>The extension white list.</summary>
+        private IFileExtensionAllowList extensionWhiteList;
 
         /// <summary>The browser modus.</summary>
         private string browserModus;
+
+        /// <summary>Initializes a new instance of the <see cref="Browser"/> class.</summary>
+        public Browser()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Browser"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public Browser(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        }
 
         /// <summary>Gets or sets the accept file types.</summary>
         /// <value>
@@ -771,7 +793,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             this.SetSortButtonClasses();
 
-            this.extensionWhiteList = Host.AllowedExtensionWhitelist;
+            this.extensionWhiteList = this.hostSettings.AllowedExtensionAllowList;
 
             if (!string.IsNullOrEmpty(this.request.QueryString["mode"]))
             {
@@ -1704,7 +1726,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>Load Favicon from Current Portal Home Directory.</summary>
         private void LoadFavIcon()
         {
-            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.portalSettings.PortalId)));
+            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.hostSettings, this.portalSettings.PortalId)));
         }
 
         /// <summary>Render all Directories and sub directories recursive.</summary>

@@ -6,6 +6,8 @@
     using System.IO;
     using System.Reflection;
     using System.Web;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
@@ -56,7 +58,7 @@
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
-            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>()));
             Host.PerformanceSetting = Globals.PerformanceSettings.ModerateCaching;
             var uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));

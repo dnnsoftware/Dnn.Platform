@@ -26,7 +26,7 @@ namespace Dnn.AuthServices.Jwt.Auth
         private readonly IJwtController jwtController = JwtController.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="JwtAuthMessageHandler"/> class.</summary>
-        /// <param name="includeByDefault">A value indicating whether this handler should be inlcuded by default on all API endpoints.</param>
+        /// <param name="includeByDefault">A value indicating whether this handler should be included by default on all API endpoints.</param>
         /// <param name="forceSsl">A value indicating whether this handler should enforce SSL usage.</param>
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)

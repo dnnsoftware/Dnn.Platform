@@ -159,7 +159,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.SetupLocaleController();
             this.mockHostController = new Mock<IHostController>();
             this.SetupHostController();
-            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>()));
 
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>

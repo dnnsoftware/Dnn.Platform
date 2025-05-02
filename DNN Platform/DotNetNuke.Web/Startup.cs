@@ -10,6 +10,7 @@ namespace DotNetNuke.Web
     using DotNetNuke.Web.Api.Auth.ApiTokens;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Repositories;
     using DotNetNuke.Web.Api.Internal;
+    using DotNetNuke.Web.Components.Controllers;
     using DotNetNuke.Web.Extensions;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ namespace DotNetNuke.Web
 
             services.AddTransient<IApiTokenController, ApiTokenController>();
             services.AddTransient<IApiTokenRepository, ApiTokenRepository>();
+            services.AddTransient<IControlBarController, ControlBarController>();
         }
     }
 }

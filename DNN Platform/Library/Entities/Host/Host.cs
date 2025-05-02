@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.Client;
 
@@ -19,7 +20,8 @@ namespace DotNetNuke.Entities.Host
 
     /// <summary>Contains most of the host settings.</summary>
     [Serializable]
-    public class Host : BaseEntityInfo
+    [DnnDeprecated(10, 0, 2, "Use DotNetNuke.Abstractions.Application.IHostSettings via dependency injection")]
+    public partial class Host : BaseEntityInfo
     {
         private static Globals.PerformanceSettings? performanceSetting;
 

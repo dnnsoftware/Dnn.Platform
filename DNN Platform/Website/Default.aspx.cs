@@ -55,10 +55,11 @@ namespace DotNetNuke.Framework
 
         private readonly IApplicationInfo appInfo;
         private readonly IModuleControlPipeline moduleControlPipeline;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         public DefaultPage()
-            : this(null, null, null)
+            : this(null, null, null, null)
         {
         }
 
@@ -66,11 +67,13 @@ namespace DotNetNuke.Framework
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="appInfo">The application info.</param>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IModuleControlPipeline moduleControlPipeline)
+        /// <param name="hostSettings">The host settings.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
             this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         public string CurrentSkinPath
@@ -298,7 +301,7 @@ namespace DotNetNuke.Framework
             // set the async postback timeout.
             if (AJAX.IsEnabled())
             {
-                AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
+                AJAX.GetScriptManager(this).AsyncPostBackTimeout = (int)this.hostSettings.AsyncTimeout.TotalSeconds;
             }
         }
 
@@ -427,8 +430,7 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            string cacheability = this.Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
-
+            string cacheability = this.Request.IsAuthenticated ? this.hostSettings.AuthenticatedCacheability : this.hostSettings.UnauthenticatedCacheability;
             switch (cacheability)
             {
                 case "0":
@@ -606,7 +608,7 @@ namespace DotNetNuke.Framework
             }
 
             // NonProduction Label Injection
-            if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
+            if (this.NonProductionVersion() && this.hostSettings.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
                 string versionString = $" ({this.appInfo.Status} Version: {this.appInfo.Version})";
                 this.Title += versionString;
@@ -708,7 +710,7 @@ namespace DotNetNuke.Framework
 
         private void ManageFavicon()
         {
-            string headerLink = FavIcon.GetHeaderLink(this.PortalSettings.PortalId);
+            string headerLink = FavIcon.GetHeaderLink(this.hostSettings, this.PortalSettings.PortalId);
 
             if (!string.IsNullOrEmpty(headerLink))
             {
@@ -748,6 +750,7 @@ namespace DotNetNuke.Framework
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
                 this.GetBackgroundFileInfoCallBack);
 
@@ -763,6 +766,7 @@ namespace DotNetNuke.Framework
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "PageStylesheet" + styleSheet);
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority, styleSheet),
                 this.GetPageStylesheetInfoCallBack);
 
@@ -783,7 +787,7 @@ namespace DotNetNuke.Framework
                 DataCache.PortalCacheTimeOut,
                 DataCache.PortalCachePriority,
                 this.PortalSettings.GetStyles());
-            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            string filePath = CBO.GetCachedObject<string>(this.hostSettings, cacheArgs, this.GetCssVariablesStylesheetCallback);
             return filePath;
         }
 

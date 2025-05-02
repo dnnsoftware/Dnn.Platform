@@ -8,13 +8,31 @@ namespace DotNetNuke.Services.Personalization
     using System.Data;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Security;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class PersonalizationController
     {
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="PersonalizationController"/> class.</summary>
+        public PersonalizationController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PersonalizationController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public PersonalizationController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         // default implementation relies on HTTPContext
         public void LoadProfile(HttpContext httpContext, int userId, int portalId)
         {
@@ -50,9 +68,9 @@ namespace DotNetNuke.Services.Personalization
             {
                 // Anon User - so try and use cookie.
                 HttpContext context = HttpContext.Current;
-                if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
+                if (context?.Request.Cookies["DNNPersonalization"] != null)
                 {
-                    profileData = DecryptData(context.Request.Cookies["DNNPersonalization"].Value);
+                    profileData = this.DecryptData(context.Request.Cookies["DNNPersonalization"].Value);
 
                     if (string.IsNullOrEmpty(profileData))
                     {
@@ -109,7 +127,7 @@ namespace DotNetNuke.Services.Personalization
                     var context = HttpContext.Current;
                     if (context != null)
                     {
-                        var personalizationCookie = new HttpCookie("DNNPersonalization", EncryptData(profileData))
+                        var personalizationCookie = new HttpCookie("DNNPersonalization", this.EncryptData(profileData))
                         {
                             Expires = DateTime.Now.AddDays(30),
                             Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
@@ -151,14 +169,14 @@ namespace DotNetNuke.Services.Personalization
             return returnValue;
         }
 
-        private static string EncryptData(string profileData)
+        private string EncryptData(string profileData)
         {
-            return PortalSecurity.Instance.Encrypt(ValidationUtils.GetDecryptionKey(), profileData);
+            return PortalSecurity.Instance.Encrypt(ValidationUtils.GetDecryptionKey(this.hostSettings), profileData);
         }
 
-        private static string DecryptData(string profileData)
+        private string DecryptData(string profileData)
         {
-            return PortalSecurity.Instance.Decrypt(ValidationUtils.GetDecryptionKey(), profileData);
+            return PortalSecurity.Instance.Decrypt(ValidationUtils.GetDecryptionKey(this.hostSettings), profileData);
         }
     }
 }

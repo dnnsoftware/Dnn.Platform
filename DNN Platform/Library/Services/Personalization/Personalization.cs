@@ -12,6 +12,8 @@ namespace DotNetNuke.Services.Personalization
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using static DotNetNuke.Entities.Portals.PortalSettings;
 
     /// <summary>Provides access to user personalization.</summary>
@@ -23,7 +25,17 @@ namespace DotNetNuke.Services.Personalization
         /// <returns>The profile as an object.</returns>
         public static object GetProfile(string namingContainer, string key)
         {
-            return GetProfile(LoadProfile(), namingContainer, key);
+            return GetProfile(personalizationController: null, namingContainer, key);
+        }
+
+        /// <summary>load users profile and extract value base on naming container and key.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <returns>The profile as an object.</returns>
+        public static object GetProfile(PersonalizationController personalizationController, string namingContainer, string key)
+        {
+            return GetProfile(LoadProfile(personalizationController), namingContainer, key);
         }
 
         /// <summary>extract value base on naming container and key from PersonalizationInfo object.</summary>
@@ -42,7 +54,17 @@ namespace DotNetNuke.Services.Personalization
         /// <returns>The profile as an object.</returns>
         public static object GetSecureProfile(string namingContainer, string key)
         {
-            return GetSecureProfile(LoadProfile(), namingContainer, key);
+            return GetSecureProfile(personalizationController: null, namingContainer, key);
+        }
+
+        /// <summary>load users profile and extract secure value base on naming container and key.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <returns>The profile as an object.</returns>
+        public static object GetSecureProfile(PersonalizationController personalizationController, string namingContainer, string key)
+        {
+            return GetSecureProfile(LoadProfile(personalizationController), namingContainer, key);
         }
 
         /// <summary>
@@ -66,13 +88,25 @@ namespace DotNetNuke.Services.Personalization
 
         /// <summary>
         /// remove value from profile
-        /// uses namingcontainer and key to locate approriate value.
+        /// uses <paramref name="namingContainer"/> and <paramref name="key"/> to locate appropriate value.
         /// </summary>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
         public static void RemoveProfile(string namingContainer, string key)
         {
-            RemoveProfile(LoadProfile(), namingContainer, key);
+            RemoveProfile(personalizationController: null, namingContainer, key);
+        }
+
+        /// <summary>
+        /// remove value from profile
+        /// uses <paramref name="namingContainer"/> and <paramref name="key"/> to locate appropriate value.
+        /// </summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        public static void RemoveProfile(PersonalizationController personalizationController, string namingContainer, string key)
+        {
+            RemoveProfile(LoadProfile(personalizationController), namingContainer, key);
         }
 
         /// <summary>
@@ -91,13 +125,23 @@ namespace DotNetNuke.Services.Personalization
             }
         }
 
-        /// <summary>persist profile value -use naming container and key to orgainize.</summary>
+        /// <summary>persist profile value -use naming container and key to organize.</summary>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
         /// <param name="value">Individual profile value.</param>
         public static void SetProfile(string namingContainer, string key, object value)
         {
-            SetProfile(LoadProfile(), namingContainer, key, value);
+            SetProfile(personalizationController: null, namingContainer, key, value);
+        }
+
+        /// <summary>persist profile value -use naming container and key to organize.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <param name="value">Individual profile value.</param>
+        public static void SetProfile(PersonalizationController personalizationController, string namingContainer, string key, object value)
+        {
+            SetProfile(LoadProfile(personalizationController), namingContainer, key, value);
         }
 
         /// <summary>persist value stored in PersonalizationInfo obhect - use naming container and key to organize.</summary>
@@ -115,7 +159,7 @@ namespace DotNetNuke.Services.Personalization
         }
 
         /// <summary>
-        /// persist profile value -use naming container and key to orgainize
+        /// persist profile value -use naming container and key to organize
         /// function calls an overload which automatically encrypts the value.
         /// </summary>
         /// <param name="namingContainer">Object containing user personalization info.</param>
@@ -123,7 +167,20 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="value">Individual profile value.</param>
         public static void SetSecureProfile(string namingContainer, string key, object value)
         {
-            SetSecureProfile(LoadProfile(), namingContainer, key, value);
+            SetSecureProfile(personalizationController: null, namingContainer, key, value);
+        }
+
+        /// <summary>
+        /// persist profile value -use naming container and key to organize
+        /// function calls an overload which automatically encrypts the value.
+        /// </summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="namingContainer">Object containing user personalization info.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <param name="value">Individual profile value.</param>
+        public static void SetSecureProfile(PersonalizationController personalizationController, string namingContainer, string key, object value)
+        {
+            SetSecureProfile(LoadProfile(personalizationController), namingContainer, key, value);
         }
 
         /// <summary>
@@ -174,7 +231,7 @@ namespace DotNetNuke.Services.Personalization
             return mode;
         }
 
-        private static PersonalizationInfo LoadProfile()
+        private static PersonalizationInfo LoadProfile(PersonalizationController personalizationController)
         {
             HttpContext context = HttpContext.Current;
 
@@ -190,7 +247,7 @@ namespace DotNetNuke.Services.Personalization
                 UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
 
                 // get the personalization object
-                var personalizationController = new PersonalizationController();
+                personalizationController ??= Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
                 personalization = personalizationController.LoadProfile(userInfo.UserID, portalSettings.PortalId);
 
                 // store it in the context

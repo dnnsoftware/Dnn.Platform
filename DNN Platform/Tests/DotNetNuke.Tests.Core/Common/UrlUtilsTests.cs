@@ -13,6 +13,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Tests.Utilities.Fakes;
@@ -31,11 +32,13 @@ public class UrlUtilsTests
     {
         ComponentFactory.RegisterComponent<CryptographyProvider, CoreCryptographyProvider>();
         MockComponentProvider.CreateDataCacheProvider();
+        var hostController = new FakeHostController(HostSettings);
 
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
         serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
-        serviceCollection.AddSingleton<IHostSettingsService>(new FakeHostController(HostSettings));
+        serviceCollection.AddSingleton<IHostSettingsService>(hostController);
+        serviceCollection.AddSingleton<IHostSettings>(new HostSettings(hostController));
         Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
     }
 
