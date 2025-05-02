@@ -296,7 +296,6 @@ async function packageFiles(): Promise<void> {
           `${skinDist}/fonts/**/*`,
           `${skinDist}/js/**/*`,
           `${skinDist}/menus/**/*`,
-          `${skinDist}/mvcmenus/**/*`,
           `${skinDist}/patials/**/*`,
           `${skinDist}/Views/**/*`,
           `${skinDist}/**/*.ascx`,
