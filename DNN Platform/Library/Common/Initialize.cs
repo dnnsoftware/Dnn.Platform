@@ -24,9 +24,10 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Upgrade;
-    using DotNetNuke.UI.Modules;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Win32;
+
+    using SchedulerMode = DotNetNuke.Abstractions.Application.SchedulerMode;
 
     /// <summary>The Object to initialize application.</summary>
     public class Initialize
@@ -218,7 +219,7 @@ namespace DotNetNuke.Common
             return !checkOmitFromRewriteProcessing || !RewriterUtils.OmitFromRewriteProcessing(request.Url.LocalPath);
         }
 
-        /// <summary>Attemps to run scheduled tasks when "Request Method" is used in the scheduler.</summary>
+        /// <summary>Attempts to run scheduled tasks when "Request Method" is used in the scheduler.</summary>
         /// <param name="request">The http request.</param>
         public static void RunSchedule(HttpRequest request)
         {
@@ -226,9 +227,12 @@ namespace DotNetNuke.Common
             {
                 try
                 {
-                    if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD && SchedulingProvider.ReadyForPoll)
+                    using var scope = Globals.GetOrCreateServiceScope();
+                    var hostSettings = scope.ServiceProvider.GetRequiredService<IHostSettings>();
+
+                    if (hostSettings.SchedulerMode == SchedulerMode.RequestMethod && SchedulingProvider.ReadyForPoll)
                     {
-                        Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                        Logger.Trace("Running Schedule " + hostSettings.SchedulerMode);
                         var scheduler = SchedulingProvider.Instance();
                         var requestScheduleThread = new Thread(scheduler.ExecuteTasks) { IsBackground = true };
                         requestScheduleThread.Start();
@@ -254,10 +258,13 @@ namespace DotNetNuke.Common
             var scheduler = SchedulingProvider.Instance();
             scheduler.RunEventSchedule(EventName.APPLICATION_START);
 
+            using var scope = Globals.GetOrCreateServiceScope();
+            var hostSettings = scope.ServiceProvider.GetRequiredService<IHostSettings>();
+
             // instantiate APPLICATION_START scheduled jobs
-            if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
+            if (hostSettings.SchedulerMode == SchedulerMode.TimerMethod)
             {
-                Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
+                Logger.Trace("Running Schedule " + hostSettings.SchedulerMode);
                 var newThread = new Thread(scheduler.Start)
                 {
                     IsBackground = true,
