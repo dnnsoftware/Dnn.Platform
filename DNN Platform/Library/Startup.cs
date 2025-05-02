@@ -17,6 +17,7 @@ namespace DotNetNuke
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
@@ -38,6 +39,7 @@ namespace DotNetNuke
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Services.Mobile;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -57,6 +59,7 @@ namespace DotNetNuke
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
+            services.AddSingleton<IHostSettings, HostSettings>();
 
 #pragma warning disable CS0618
             services.AddScoped<IEventLogger, EventLogController>();
@@ -93,9 +96,9 @@ namespace DotNetNuke
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
             services.AddTransient<IRedirectionController, RedirectionController>();
-            services.AddTransient<IHostSettings, HostSettings>();
+            services.AddTransient<ICBO, CBO>();
 
-            services.AddTransient<IDataContext>(x =>
+            services.AddTransient<IDataContext>(_ =>
             {
                 var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
 
@@ -103,6 +106,7 @@ namespace DotNetNuke
             });
 
             services.AddTransient<ModuleInjectionManager>();
+            services.AddTransient<PersonalizationController>();
             RegisterModuleInjectionFilters(services);
         }
 

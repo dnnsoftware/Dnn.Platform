@@ -20,6 +20,8 @@ using SchedulerMode = DotNetNuke.Abstractions.Application.SchedulerMode;
 /// <param name="hostSettingsService">The host settings service.</param>
 public class HostSettings(IHostSettingsService hostSettingsService) : IHostSettings
 {
+    private PerformanceSettings? performanceSettings;
+
     /// <inheritdoc />
     public TimeSpan AutoAccountUnlockDuration => TimeSpan.FromMinutes(hostSettingsService.GetInteger("AutoAccountUnlockDuration", 10));
 
@@ -338,8 +340,21 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     /// <inheritdoc />
     public PerformanceSettings PerformanceSetting
     {
-        get => !Enum.TryParse<PerformanceSettings>(hostSettingsService.GetString("PerformanceSetting"), out var performanceSetting) ? PerformanceSettings.ModerateCaching : performanceSetting;
-        set => hostSettingsService.Update("PerformanceSetting", value.ToString());
+        get
+        {
+            this.performanceSettings ??= !Enum.TryParse<PerformanceSettings>(
+                hostSettingsService.GetString("PerformanceSetting"),
+                out var performanceSetting)
+                ? PerformanceSettings.ModerateCaching
+                : performanceSetting;
+
+            return this.performanceSettings.Value;
+        }
+
+        set
+        {
+            hostSettingsService.Update("PerformanceSetting", value.ToString());
+        }
     }
 
     /// <summary>Gets the Client Resource Management version number.</summary>

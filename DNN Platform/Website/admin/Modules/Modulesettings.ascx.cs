@@ -14,6 +14,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -42,6 +43,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private readonly INavigationManager navigationManager;
         private readonly IPortalAliasService portalAliasService;
         private readonly IModuleControlPipeline moduleControlPipeline;
+        private readonly IHostSettings hostSettings;
 
         private int moduleId = -1;
         private Control control;
@@ -49,7 +51,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
         public ModuleSettingsPage()
-            : this(null, null, null)
+            : this(null, null, null, null)
         {
         }
 
@@ -57,11 +59,13 @@ namespace DotNetNuke.Modules.Admin.Modules
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
-        public ModuleSettingsPage(INavigationManager navigationManager, IPortalAliasService portalAliasService, IModuleControlPipeline moduleControlPipeline)
+        /// <param name="hostSettings">The host settings.</param>
+        public ModuleSettingsPage(INavigationManager navigationManager, IPortalAliasService portalAliasService, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.portalAliasService = portalAliasService ?? this.DependencyProvider.GetRequiredService<IPortalAliasService>();
             this.moduleControlPipeline = moduleControlPipeline ?? this.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         private bool HideDeleteButton => this.Request.QueryString["HideDelete"] == "true";
@@ -99,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 var index = 0;
                 TabController.Instance.PopulateBreadCrumbs(ref tab);
-                var defaultAlias = this.portalAliasService.GetPortalAliasesByPortalId(tab.IsSuperTab ? Host.HostPortalID : tab.PortalID)
+                var defaultAlias = this.portalAliasService.GetPortalAliasesByPortalId(tab.IsSuperTab ? this.hostSettings.HostPortalId : tab.PortalID)
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
                 var portalSettings = new PortalSettings(tab.PortalID)

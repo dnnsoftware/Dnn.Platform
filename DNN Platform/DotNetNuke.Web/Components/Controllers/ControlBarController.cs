@@ -10,23 +10,36 @@ namespace DotNetNuke.Web.Components.Controllers
     using System.IO;
     using System.Linq;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.ExtensionPoints;
     using DotNetNuke.Framework;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Upgrade;
     using DotNetNuke.Web.Components.Controllers.Models;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class ControlBarController : ServiceLocator<IControlBarController, ControlBarController>, IControlBarController
     {
         private const string BookmarkModulesTitle = "module";
         private const string BookmarkCategoryProperty = "ControlBar_BookmarkCategory";
-        private readonly ExtensionPointManager mef;
+        private readonly ExtensionPointManager mef = new ExtensionPointManager();
+        private readonly PersonalizationController personalizationController;
 
+        /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
         public ControlBarController()
+            : this(null)
         {
-            this.mef = new ExtensionPointManager();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        public ControlBarController(PersonalizationController personalizationController)
+        {
+            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
         }
 
         /// <inheritdoc/>
@@ -62,11 +75,10 @@ namespace DotNetNuke.Web.Components.Controllers
                 ensuredBookmarkValue = this.EnsureBookmarkValue(portalId, ensuredBookmarkValue);
             }
 
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(userId, portalId);
+            var personalization = this.personalizationController.LoadProfile(userId, portalId);
             personalization.Profile["ControlBar:" + bookmarkTitle + portalId] = ensuredBookmarkValue;
             personalization.IsModified = true;
-            personalizationController.SaveProfile(personalization);
+            this.personalizationController.SaveProfile(personalization);
         }
 
         /// <inheritdoc/>
@@ -105,7 +117,7 @@ namespace DotNetNuke.Web.Components.Controllers
         /// <inheritdoc/>
         protected override Func<IControlBarController> GetFactory()
         {
-            return () => new ControlBarController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IControlBarController>();
         }
 
         private UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
@@ -145,8 +157,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
         private IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedModules(int portalId, int userId)
         {
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(userId, portalId);
+            var personalization = this.personalizationController.LoadProfile(userId, portalId);
             var bookmarkItems = personalization.Profile["ControlBar:" + BookmarkModulesTitle + portalId];
             if (bookmarkItems == null)
             {

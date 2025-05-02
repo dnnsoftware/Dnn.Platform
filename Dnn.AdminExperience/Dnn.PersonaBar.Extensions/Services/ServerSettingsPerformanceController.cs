@@ -14,14 +14,16 @@ namespace Dnn.PersonaBar.Servers.Services
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Servers.Components.PerformanceSettings;
     using Dnn.PersonaBar.Servers.Services.Dto;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Client;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using static System.Boolean;
 
@@ -31,6 +33,26 @@ namespace Dnn.PersonaBar.Servers.Services
         private const string UseSSLKey = "UseSSLForCacheSync";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformanceController));
         private readonly PerformanceController performanceController = new PerformanceController();
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="ServerSettingsPerformanceController"/> class.</summary>
+        public ServerSettingsPerformanceController()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ServerSettingsPerformanceController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="appStatus">The application status.</param>
+        public ServerSettingsPerformanceController(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         /// GET: api/Servers/GetPerformanceSettings
         /// <summary>Gets performance settings.</summary>
@@ -43,22 +65,22 @@ namespace Dnn.PersonaBar.Servers.Services
                 var portalId = PortalSettings.Current.PortalId;
                 var perfSettings = new
                 {
-                    PortalName = PortalSettings.Current.PortalName,
+                    PortalSettings.Current.PortalName,
 
                     CachingProvider = this.performanceController.GetCachingProvider(),
-                    PageStatePersistence = Host.PageStatePersister,
-                    ModuleCacheProvider = Host.ModuleCachingMethod,
-                    PageCacheProvider = Host.PageCachingMethod,
-                    CacheSetting = Host.PerformanceSetting,
-                    AuthCacheability = Host.AuthenticatedCacheability,
-                    UnauthCacheability = Host.UnauthenticatedCacheability,
-                    SslForCacheSynchronization = HostController.Instance.GetBoolean(UseSSLKey, false),
+                    PageStatePersistence = this.hostSettings.PageStatePersister,
+                    ModuleCacheProvider = this.hostSettings.ModuleCachingMethod,
+                    PageCacheProvider = this.hostSettings.PageCachingMethod,
+                    CacheSetting = this.hostSettings.PerformanceSetting,
+                    AuthCacheability = this.hostSettings.AuthenticatedCacheability,
+                    UnauthCacheability = this.hostSettings.UnauthenticatedCacheability,
+                    SslForCacheSynchronization = this.hostSettingsService.GetBoolean(UseSSLKey, false),
                     ClientResourcesManagementMode = PortalController.GetPortalSetting("ClientResourcesManagementMode", portalId, "h"),
 
-                    CurrentHostVersion = Host.CrmVersion.ToString(CultureInfo.InvariantCulture),
-                    HostEnableCompositeFiles = Host.CrmEnableCompositeFiles,
-                    HostMinifyCss = Host.CrmMinifyCss,
-                    HostMinifyJs = Host.CrmMinifyJs,
+                    CurrentHostVersion = this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture),
+                    HostEnableCompositeFiles = this.hostSettings.CrmEnableCompositeFiles,
+                    HostMinifyCss = this.hostSettings.CrmMinifyCss,
+                    HostMinifyJs = this.hostSettings.CrmMinifyJs,
                     CurrentPortalVersion = this.GetPortalVersion(portalId),
                     PortalEnableCompositeFiles = Parse(PortalController.GetPortalSetting(ClientResourceSettings.EnableCompositeFilesKey, portalId, "false")),
                     PortalMinifyCss = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyCssKey, portalId, "false")),
@@ -115,7 +137,7 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var portalId = PortalSettings.Current.PortalId;
-                HostController.Instance.IncrementCrmVersion(false);
+                this.hostSettingsService.IncrementCrmVersion(false);
                 PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
                 PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "h", false);
                 DataCache.ClearCache();
@@ -140,32 +162,31 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var portalId = PortalSettings.Current.PortalId;
                 this.SaveCachingProvider(request.CachingProvider);
-                HostController.Instance.Update("PageStatePersister", request.PageStatePersistence);
-                HostController.Instance.Update("ModuleCaching", request.ModuleCacheProvider, false);
+                this.hostSettingsService.Update("PageStatePersister", request.PageStatePersistence);
+                this.hostSettingsService.Update("ModuleCaching", request.ModuleCacheProvider, false);
                 if (this.performanceController.GetPageCacheProviders().Any())
                 {
-                    HostController.Instance.Update("PageCaching", request.PageCacheProvider, false);
+                    this.hostSettingsService.Update("PageCaching", request.PageCacheProvider, false);
                 }
 
-                HostController.Instance.Update("PerformanceSetting", request.CacheSetting, false);
+                this.hostSettingsService.Update("PerformanceSetting", request.CacheSetting, false);
 
-                Globals.PerformanceSettings perfSetting;
-                Enum.TryParse(request.CacheSetting, false, out perfSetting);
-                Host.PerformanceSetting = perfSetting;
+                Enum.TryParse(request.CacheSetting, false, out PerformanceSettings perfSetting);
+                this.hostSettings.PerformanceSetting = perfSetting;
 
-                HostController.Instance.Update("AuthenticatedCacheability", request.AuthCacheability, false);
-                HostController.Instance.Update("UnauthenticatedCacheability", request.UnauthCacheability, false);
+                this.hostSettingsService.Update("AuthenticatedCacheability", request.AuthCacheability, false);
+                this.hostSettingsService.Update("UnauthenticatedCacheability", request.UnauthCacheability, false);
 
-                HostController.Instance.Update(UseSSLKey, request.SslForCacheSynchronization.ToString(), true);
+                this.hostSettingsService.Update(UseSSLKey, request.SslForCacheSynchronization.ToString(), true);
 
                 PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", request.ClientResourcesManagementMode, false);
 
                 if (request.ClientResourcesManagementMode == "h")
                 {
                     PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
-                    HostController.Instance.Update(ClientResourceSettings.EnableCompositeFilesKey, request.HostEnableCompositeFiles.ToString(CultureInfo.InvariantCulture));
-                    HostController.Instance.Update(ClientResourceSettings.MinifyCssKey, request.HostMinifyCss.ToString(CultureInfo.InvariantCulture));
-                    HostController.Instance.Update(ClientResourceSettings.MinifyJsKey, request.HostMinifyJs.ToString(CultureInfo.InvariantCulture));
+                    this.hostSettingsService.Update(ClientResourceSettings.EnableCompositeFilesKey, request.HostEnableCompositeFiles.ToString(CultureInfo.InvariantCulture));
+                    this.hostSettingsService.Update(ClientResourceSettings.MinifyCssKey, request.HostMinifyCss.ToString(CultureInfo.InvariantCulture));
+                    this.hostSettingsService.Update(ClientResourceSettings.MinifyJsKey, request.HostMinifyJs.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -206,12 +227,12 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             if (!string.IsNullOrEmpty(cachingProvider))
             {
-                var xmlConfig = Config.Load();
+                var xmlConfig = Config.Load(this.appStatus);
 
                 var xmlCaching = xmlConfig.SelectSingleNode("configuration/dotnetnuke/caching");
                 XmlUtils.UpdateAttribute(xmlCaching, "defaultProvider", cachingProvider);
 
-                Config.Save(xmlConfig);
+                Config.Save(this.appStatus, xmlConfig);
             }
         }
     }
