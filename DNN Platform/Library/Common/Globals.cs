@@ -218,33 +218,19 @@ namespace DotNetNuke.Common
 
         // global constants for the life of the application ( set in Application_Start )
 
-        /// <summary>Enumeration of site performance setting, say by another way that means how to set the cache.</summary>
-        /// <remarks>
-        /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
-        /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
-        /// such as if a data has already been deleted but the cache arn't clear, it will cause un expected errors.
-        /// so you should choose a correct performance setting type when you trying to cache some stuff, and always remember
-        /// update cache immediately after the data changed.</para>
-        /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
-        /// <list type="bullet">
-        ///     <item>HostSettingsCacheTimeOut: 20</item>
-        /// <item>PortalAliasCacheTimeOut: 200</item>
-        /// <item>PortalSettingsCacheTimeOut: 20</item>
-        /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
-        /// </list>
-        /// </remarks>
+        /// <inheritdoc cref="DotNetNuke.Abstractions.Application.PerformanceSettings"/>
         public enum PerformanceSettings
         {
-            /// <summary>No Caching.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.NoCaching"/>
             NoCaching = 0,
 
-            /// <summary>Caching for a short time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.LightCaching"/>
             LightCaching = 1,
 
-            /// <summary>Caching for moderate time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.ModerateCaching"/>
             ModerateCaching = 3,
 
-            /// <summary>Caching for a long time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.HeavyCaching"/>
             HeavyCaching = 6,
         }
 

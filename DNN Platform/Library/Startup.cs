@@ -21,6 +21,7 @@ namespace DotNetNuke
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
@@ -92,6 +93,7 @@ namespace DotNetNuke
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
             services.AddTransient<IRedirectionController, RedirectionController>();
+            services.AddTransient<IHostSettings, HostSettings>();
 
             services.AddTransient<IDataContext>(x =>
             {
