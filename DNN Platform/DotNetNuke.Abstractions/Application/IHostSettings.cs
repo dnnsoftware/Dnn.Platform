@@ -252,6 +252,9 @@ public interface IHostSettings
     /// <summary>Gets a value indicating whether to put the entire instance into maintenance mode.</summary>
     public bool IsLocked { get; }
 
+    /// <summary>Gets a value indicating whether module titles should be allowed to include HTML.</summary>
+    public bool AllowRichTextModuleTitle { get; }
+
     /// <summary>Gets or sets the PerformanceSettings.</summary>
     public PerformanceSettings PerformanceSetting { get; set; }
 }
