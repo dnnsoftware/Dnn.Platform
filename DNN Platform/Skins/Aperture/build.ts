@@ -54,20 +54,17 @@ const transpiledFiles: TranspiledFileConfig[] = [
 ];
 
 const copyFiles: StaticFileConfig[] = [
-  { src: "containers/*.ascx", dest: containersDist },
-  { src: "containers/Views/*", dest: containersDist + "/Views" },
-  { src: "menus/desktop/*", dest: skinDist + "/menus/desktop" },
-  { src: "menus/footer/*", dest: skinDist + "/menus/footer" },
-  { src: "menus/mobile/*", dest: skinDist + "/menus/mobile" },
-  { src: "mvcmenus/desktop/*", dest: skinDist + "/mvcmenus/desktop" },
-  { src: "mvcmenus/footer/*", dest: skinDist + "/mvcmenus/footer" },
-  { src: "mvcmenus/mobile/*", dest: skinDist + "/mvcmenus/mobile" },
-  { src: "partials/*", dest: skinDist + "/partials" },
-  { src: "src/fonts/*", dest: skinDist + "/fonts" },
-  { src: "src/images/*", dest: skinDist + "/images" },
-  { src: "Views/*.cshtml", dest: skinDist + "/Views" },
-  { src: "Views/partials/*", dest: skinDist + "/Views/partials" },
-  { src: "*.{ascx,png,dnn,xml,txt}", dest: skinDist },
+    { src: "containers/*.ascx", dest: containersDist },
+    { src: "containers/Views/*", dest: containersDist + "/Views" },
+    { src: "menus/desktop/*", dest: skinDist + "/menus/desktop" },
+    { src: "menus/footer/*", dest: skinDist + "/menus/footer" },
+    { src: "menus/mobile/*", dest: skinDist + "/menus/mobile" },
+    { src: "partials/*", dest: skinDist + "/partials" },
+    { src: "src/fonts/*", dest: skinDist + "/fonts" },
+    { src: "src/images/*", dest: skinDist + "/images" },
+    { src: "Views/*.{cshtml,config}", dest: skinDist + "/Views" },
+    { src: "Views/partials/*.cshtml", dest: skinDist + "/Views/partials" },
+    { src: "*.{ascx,png,dnn,xml,txt}", dest: skinDist },
 ];
 
 /** Normalizes a path (windows vs linux, etc.) */
@@ -299,7 +296,6 @@ async function packageFiles(): Promise<void> {
           `${skinDist}/fonts/**/*`,
           `${skinDist}/js/**/*`,
           `${skinDist}/menus/**/*`,
-          `${skinDist}/mvcmenus/**/*`,
           `${skinDist}/patials/**/*`,
           `${skinDist}/Views/**/*`,
           `${skinDist}/**/*.ascx`,

@@ -11,8 +11,8 @@ namespace DotNetNuke.Web.NewDDRMenu
     using System.Web.UI;
 
     using DotNetNuke.UI;
+    using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.MvcPipeline.Models;
-    using DotNetNuke.Web.NewDDRMenu.Localisation;
     using DotNetNuke.Web.NewDDRMenu.TemplateEngine;
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.NewDDRMenu
             if (string.IsNullOrEmpty(nodeXmlPath))
             {
                 menu.RootNode =
-                    new MenuNode(
+                    new DDRMenu.MenuNode(
                         localiser.LocaliseDNNNodeCollection(
                             Navigation.GetNavigationNodes(
                                 clientID,
