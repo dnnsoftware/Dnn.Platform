@@ -6,9 +6,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 {
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class HostModel
     {
@@ -48,17 +52,24 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int PortalCount { get; set; }
 
         public static HostModel Current()
+            => Current(null, null, null);
+
+        public static HostModel Current(IHostSettings hostSettings, IPortalController portalController, IUserController userController)
         {
+            hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            portalController ??= Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            userController ??= Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+
             var application = DotNetNuke.Application.DotNetNukeContext.Current.Application;
             var controlBarController = DotNetNuke.Web.Components.Controllers.ControlBarController.Instance;
-            var request = HttpContext.Current.Request;
+            var request = HttpContextSource.Current.Request;
             var upgradeIndicator = controlBarController.GetUpgradeIndicator(application.Version, request.IsLocal, request.IsSecureConnection);
             var hostName = System.Net.Dns.GetHostName();
-            var hostPortal = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortal(Host.HostPortalID);
-            var portalCount = DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals().Count;
-            var isHost = UserController.Instance.GetCurrentUserInfo()?.IsSuperUser ?? false;
+            var hostPortal = portalController.GetPortal(hostSettings.HostPortalId);
+            var portalCount = portalController.GetPortals().Count;
+            var isHost = userController.GetCurrentUserInfo()?.IsSuperUser ?? false;
 
-            var hostModel = new HostModel
+            return new HostModel
             {
                 Version = "v." + Globals.FormatVersion(application.Version, true),
                 Product = application.Description,
@@ -67,16 +78,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
                 IpAddress = System.Net.Dns.GetHostEntry(hostName).AddressList[0].ToString(),
                 Permissions = DotNetNuke.Framework.SecurityPolicy.Permissions,
                 Site = hostPortal.PortalName,
-                Title = Host.HostTitle,
-                Url = Host.HostURL,
-                Email = Host.HostEmail,
-                Theme = Utilities.FormatSkinName(Host.DefaultPortalSkin),
-                EditTheme = Utilities.FormatSkinName(Host.DefaultAdminSkin),
-                Container = Utilities.FormatContainerName(Host.DefaultPortalContainer),
-                EditContainer = Utilities.FormatContainerName(Host.DefaultAdminContainer),
+                Title = hostSettings.HostTitle,
+                Url = hostSettings.HostUrl,
+                Email = hostSettings.HostEmail,
+                Theme = Utilities.FormatSkinName(hostSettings.DefaultPortalSkin),
+                EditTheme = Utilities.FormatSkinName(hostSettings.DefaultAdminSkin),
+                Container = Utilities.FormatContainerName(hostSettings.DefaultPortalContainer),
+                EditContainer = Utilities.FormatContainerName(hostSettings.DefaultAdminContainer),
                 PortalCount = portalCount,
             };
-            return hostModel;
         }
     }
 }
