@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Extensions;
 
 using Dnn.PersonaBar.Pages.Components;
 using Dnn.PersonaBar.Prompt.Components.Repositories;
+using Dnn.PersonaBar.Themes.Components;
 
 using DotNetNuke.DependencyInjection;
 
@@ -23,5 +24,6 @@ public class Startup : IDnnStartup
         services.AddTransient<ITemplateController, TemplateController>();
         services.AddTransient<IPagesController, PagesControllerImpl>();
         services.AddTransient<IBulkPagesController, BulkPagesController>();
+        services.AddTransient<IThemesController, ThemesController>();
     }
 }
