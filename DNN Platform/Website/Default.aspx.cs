@@ -701,7 +701,7 @@ namespace DotNetNuke.Framework
                 return Skin.GetPopUpSkin(this);
             }
 
-            return Skin.GetSkin(this);
+            return Skin.GetSkin(this.hostSettings, this);
         }
 
         private void LoadPopupScriptsIfNeeded()
