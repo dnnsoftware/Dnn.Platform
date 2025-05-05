@@ -4,31 +4,55 @@
 
 namespace Dnn.EditBar.UI.HttpModules
 {
-    using System;
-    using System.Threading;
     using System.Web;
-    using System.Web.UI;
 
     using Dnn.EditBar.UI.Controllers;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Common.Extensions;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.UI.Skins.EventListeners;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using Newtonsoft.Json;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class EditBarModule : IHttpModule
     {
         private static readonly object LockAppStarted = new object();
         private static bool hasAppStarted = false;
+
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="EditBarModule"/> class.</summary>
+        public EditBarModule()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditBarModule"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public EditBarModule(IHostSettings hostSettings)
+        {
+            if (hostSettings is not null)
+            {
+                this.hostSettings = hostSettings;
+            }
+            else
+            {
+                var scope = HttpContextSource.Current?.GetScope();
+                if (scope is not null)
+                {
+                    this.hostSettings = scope.ServiceProvider.GetRequiredService<IHostSettings>();
+                }
+                else
+                {
+                    this.hostSettings = new HostSettings(new HostController());
+                }
+            }
+        }
 
         public void Init(HttpApplication application)
         {
@@ -60,15 +84,14 @@ namespace Dnn.EditBar.UI.HttpModules
 
         private void OnSkinInit(object sender, SkinEventArgs e)
         {
-            if (Host.DisableEditBar)
+            if (this.hostSettings.DisableEditBar)
             {
                 return;
             }
 
             var request = e.Skin.Page.Request;
             var isSpecialPageMode = request.QueryString["dnnprintmode"] == "true" || request.QueryString["popUp"] == "true";
-            if (isSpecialPageMode
-                    || Globals.IsAdminControl())
+            if (isSpecialPageMode || Globals.IsAdminControl())
             {
                 return;
             }
