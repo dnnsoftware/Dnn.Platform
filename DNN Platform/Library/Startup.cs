@@ -100,6 +100,9 @@ namespace DotNetNuke
             services.AddTransient<ICBO, CBO>();
             services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
             services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
+            services.AddTransient<IPortalSettingsController, PortalSettingsController>();
+            services.AddTransient<IPortalAliasController, PortalAliasController>();
+            services.AddTransient<ILocaleController, LocaleController>();
 
             services.AddTransient<IDataContext>(_ =>
             {
