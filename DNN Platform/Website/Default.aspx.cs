@@ -16,10 +16,9 @@ namespace DotNetNuke.Framework
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
@@ -56,24 +55,33 @@ namespace DotNetNuke.Framework
         private readonly IApplicationInfo appInfo;
         private readonly IModuleControlPipeline moduleControlPipeline;
         private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         public DefaultPage()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="appInfo">The application info.</param>
+        /// <param name="appStatus">The application status.</param>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings)
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         public string CurrentSkinPath
@@ -208,7 +216,7 @@ namespace DotNetNuke.Framework
 
             // DataBind common paths for the client resource loader
             this.ClientResourceLoader.DataBind();
-            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.hostSettings, this.hostSettingsService, this.appStatus, this.eventLogger, this.PortalSettings, this.Page);
 
             // check for and read skin package level doctype
             this.SetSkinDoctype();
@@ -700,7 +708,7 @@ namespace DotNetNuke.Framework
         {
             if (this.PortalSettings.EnablePopUps)
             {
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryUI);
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
                                    : "~/js/dnn.modalpopup.js";

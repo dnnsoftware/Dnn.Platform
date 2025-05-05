@@ -29,6 +29,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
@@ -97,6 +98,8 @@ namespace DotNetNuke
             services.AddTransient<ITabController, TabController>();
             services.AddTransient<IRedirectionController, RedirectionController>();
             services.AddTransient<ICBO, CBO>();
+            services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
+            services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
 
             services.AddTransient<IDataContext>(_ =>
             {

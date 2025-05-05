@@ -29,10 +29,17 @@ namespace DotNetNuke.UI.Skins.Controls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         public Toast()
+            : this(null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         protected string ServiceModuleName { get; private set; }
@@ -70,7 +77,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
 
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            this.javaScript.RequestRegistration(CommonJs.jQueryUI);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);

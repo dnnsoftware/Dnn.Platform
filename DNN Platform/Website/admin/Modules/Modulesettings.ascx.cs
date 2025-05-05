@@ -44,6 +44,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private readonly IPortalAliasService portalAliasService;
         private readonly IModuleControlPipeline moduleControlPipeline;
         private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         private int moduleId = -1;
         private Control control;
@@ -51,7 +52,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
         public ModuleSettingsPage()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -60,12 +61,14 @@ namespace DotNetNuke.Modules.Admin.Modules
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public ModuleSettingsPage(INavigationManager navigationManager, IPortalAliasService portalAliasService, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings)
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public ModuleSettingsPage(INavigationManager navigationManager, IPortalAliasService portalAliasService, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.portalAliasService = portalAliasService ?? this.DependencyProvider.GetRequiredService<IPortalAliasService>();
             this.moduleControlPipeline = moduleControlPipeline ?? this.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         private bool HideDeleteButton => this.Request.QueryString["HideDelete"] == "true";
@@ -169,7 +172,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.cmdDelete.Click += this.OnDeleteClick;
                 this.cmdUpdate.Click += this.OnUpdateClick;
 
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 // get ModuleId
                 if (this.Request.QueryString["ModuleId"] != null)

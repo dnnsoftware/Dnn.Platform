@@ -28,23 +28,26 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     {
         private readonly INavigationManager navigationManager;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         private Control control;
         private PackageInfo package;
 
         /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
         public EditExtension()
-        : this(null, null)
+        : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="appStatus">The application status.</param>
-        public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus)
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         public string Mode
@@ -131,7 +134,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
