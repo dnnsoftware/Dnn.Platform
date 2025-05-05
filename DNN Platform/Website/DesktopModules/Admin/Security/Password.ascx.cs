@@ -33,20 +33,23 @@ namespace DotNetNuke.Modules.Admin.Users
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
         private readonly IEventLogger eventLogger;
         private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
         public Password()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public Password(IEventLogger eventLogger, IHostSettings hostSettings)
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public Password(IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
         {
             this.eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.hostSettings = hostSettings ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         /// <summary>A function which handles an event with <see cref="PasswordUpdatedEventArgs"/>.</summary>
@@ -256,7 +259,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
 

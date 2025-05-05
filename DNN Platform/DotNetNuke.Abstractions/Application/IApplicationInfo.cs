@@ -16,7 +16,7 @@ namespace DotNetNuke.Abstractions.Application
         /// Gets the version of the currently installed DotNetNuke framework/application
         /// Can be prior to Version, if the application is pending to be upgraded.
         /// </summary>
-        /// <value>The version as retreieved from the database version table.</value>
+        /// <value>The version as retrieved from the database version table.</value>
         Version CurrentVersion { get; }
 
         /// <summary>Gets the description of the application.</summary>
@@ -69,7 +69,7 @@ namespace DotNetNuke.Abstractions.Application
         string Url { get; }
 
         /// <summary>Gets the version of the DotNetNuke framework/application.</summary>
-        /// <value>The version as retreieved from the Executing assembly.</value>
+        /// <value>The version as retrieved from the Executing assembly.</value>
         Version Version { get; }
 
         /// <summary>  Determine whether a product specific change is to be applied.</summary>

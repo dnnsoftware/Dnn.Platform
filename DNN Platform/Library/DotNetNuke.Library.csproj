@@ -307,6 +307,7 @@
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
     <Compile Include="ExtensionPoints\PanelEditPagePanelExtensionControl.cs" />
     <Compile Include="ExtensionPoints\PanelTabExtensionControl.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryHelper.cs" />
     <Compile Include="Modules\NavigationEventArgs.cs" />
     <Compile Include="Obsolete\EventLogController.cs" />
     <Compile Include="Obsolete\HostController.cs" />
