@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     using System.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -29,6 +30,17 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         /// <param name="portalId">The portal ID.</param>
         /// <param name="package">The package info.</param>
         public PackageInfoDto(int portalId, PackageInfo package)
+            : this(null, null, null, portalId, package)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PackageInfoDto"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="package">The package info.</param>
+        public PackageInfoDto(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, int portalId, PackageInfo package)
         {
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
@@ -40,7 +52,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             this.IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
             this.Version = package.Version.ToString(3);
             this.UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
-            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
+            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(hostSettings, hostSettingsService, portalController, package.Version, package.PackageType, package.Name);
             this.PackageIcon = ExtensionsController.GetPackageIcon(package);
             this.License = package.License;
             this.ReleaseNotes = package.ReleaseNotes;
