@@ -25,5 +25,6 @@ public class Startup : IDnnStartup
         services.AddTransient<IPagesController, PagesControllerImpl>();
         services.AddTransient<IBulkPagesController, BulkPagesController>();
         services.AddTransient<IThemesController, ThemesController>();
+        services.AddTransient<IDefaultPortalThemeController, DefaultPortalThemeController>();
     }
 }
