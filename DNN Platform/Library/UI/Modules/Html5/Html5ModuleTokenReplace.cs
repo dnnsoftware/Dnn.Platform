@@ -50,10 +50,10 @@ namespace DotNetNuke.UI.Modules.Html5
             this.ModuleId = moduleContext.ModuleId;
             this.PortalSettings = moduleContext.PortalSettings;
 
-            this.PropertySource["moduleaction"] = new ModuleActionsPropertyAccess(moduleContext, moduleActions);
-            this.PropertySource["resx"] = new ModuleLocalizationPropertyAccess(moduleContext, html5File);
-            this.PropertySource["modulecontext"] = new ModuleContextPropertyAccess(moduleContext);
-            this.PropertySource["request"] = new RequestPropertyAccess(page.Request);
+            this.AddPropertySource("moduleaction", new ModuleActionsPropertyAccess(moduleContext, moduleActions));
+            this.AddPropertySource("resx", new ModuleLocalizationPropertyAccess(moduleContext, html5File));
+            this.AddPropertySource("modulecontext", new ModuleContextPropertyAccess(moduleContext));
+            this.AddPropertySource("request", new RequestPropertyAccess(page.Request));
 
             // DNN-7750
             businessControllerProvider ??= Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
@@ -63,7 +63,7 @@ namespace DotNetNuke.UI.Modules.Html5
                 var tokens = customTokenProvider.GetTokens(page, moduleContext);
                 foreach (var token in tokens)
                 {
-                    this.PropertySource.Add(token.Key, token.Value);
+                    this.AddPropertySource(token.Key, token.Value);
                 }
             }
         }
