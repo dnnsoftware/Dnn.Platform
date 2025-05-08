@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.MvcPipeline
             string actionName = string.Empty;
             try
             {
-                var area = Path.GetFileName(module.DesktopModule.FolderName);
+                var area = module.DesktopModule.FolderName;
                 if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
                 {
                     var controlKey = module.ModuleControl.ControlKey;
@@ -79,11 +79,9 @@ namespace DotNetNuke.Web.MvcPipeline
                         { "PanaName", module.PaneName },
                         { "ContainerSrc", module.ContainerSrc },
                         { "ContainerPath", module.ContainerPath },
-                        { "IconFile", module.IconFile }
+                        { "IconFile", module.IconFile },
+                        { "area", area }
                     };
-                    
-                    // controllerName = area + controllerName;
-                    values.Add("area", area);
 
                     var queryString = htmlHelper.ViewContext.HttpContext.Request.QueryString;
 
