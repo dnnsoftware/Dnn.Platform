@@ -16,6 +16,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -30,6 +31,9 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Tokens;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     /// <summary>Information about a page within a DNN site.</summary>
@@ -681,24 +685,8 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("skindoctype")]
         public string SkinDoctype
         {
-            get
-            {
-                if (string.IsNullOrEmpty(this.SkinSrc) == false && string.IsNullOrEmpty(this.skinDoctype))
-                {
-                    this.skinDoctype = this.CheckIfDoctypeConfigExists();
-                    if (string.IsNullOrEmpty(this.skinDoctype))
-                    {
-                        this.skinDoctype = Host.Host.DefaultDocType;
-                    }
-                }
-
-                return this.skinDoctype;
-            }
-
-            set
-            {
-                this.skinDoctype = value;
-            }
+            get => this.GetSkinDoctype(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+            set => this.skinDoctype = value;
         }
 
         /// <summary>Gets or sets the URL for this page if it is a redirect.</summary>
@@ -874,6 +862,23 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return result;
+        }
+
+        /// <summary>Gets the doctype statement to use when rendering this page.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>The doctype statement (e.g. <c>&lt;!DOCTYPE html&gt;</c>).</returns>
+        public string GetSkinDoctype(IHostSettings hostSettings)
+        {
+            if (string.IsNullOrEmpty(this.SkinSrc) == false && string.IsNullOrEmpty(this.skinDoctype))
+            {
+                this.skinDoctype = this.CheckIfDoctypeConfigExists();
+                if (string.IsNullOrEmpty(this.skinDoctype))
+                {
+                    this.skinDoctype = hostSettings.DefaultDocType;
+                }
+            }
+
+            return this.skinDoctype;
         }
 
         /// <summary>Clones this instance.</summary>

@@ -27,10 +27,7 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IRolesController> rolesControllerMock;
         private FakeServiceProvider serviceProvider;
 
-        protected override string CommandName
-        {
-            get { return "Add-roles"; }
-        }
+        protected override string CommandName => "Add-roles";
 
         [TestCase]
         public void Run_AddRolesWithValidArguments_ReturnSuccessResponse()
@@ -163,7 +160,7 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [TearDown]
-        protected void TearDown()
+        protected override void ChildTearDown()
         {
             this.serviceProvider.Dispose();
         }

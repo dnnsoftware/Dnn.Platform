@@ -14,19 +14,36 @@ namespace DotNetNuke.Common.Utilities
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The CBO class generates objects.</summary>
     public partial class CBO : ServiceLocator<ICBO, CBO>, ICBO
     {
         private const string DefaultPrimaryKey = "ItemID";
-
         private const string ObjectMapCacheKey = "ObjectMap_";
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="CBO"/> class.</summary>
+        public CBO()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CBO"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public CBO(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <summary>CloneObject clones an object.</summary>
         /// <param name="objObject">The Object to Clone.</param>
@@ -401,14 +418,47 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
         /// the cache if the item has expired.</param>
         /// <returns>The cached object.</returns>
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+            => GetCachedObject<TObject>(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), cacheItemArgs, cacheItemExpired);
+
+        /// <summary>GetCachedObject gets an object from the Cache.</summary>
+        /// <typeparam name="TObject">The type of the object to fetch.</typeparam>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
+        /// cache AND to fetch the item if the cache has expired.</param>
+        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
+        /// the cache if the item has expired.</param>
+        /// <returns>The cached object.</returns>
+        public static TObject GetCachedObject<TObject>(IHostSettings hostSettings, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired);
+            return DataCache.GetCachedData<TObject>(hostSettings, cacheItemArgs, cacheItemExpired);
         }
 
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+        /// <summary>GetCachedObject gets an object from the Cache.</summary>
+        /// <typeparam name="TObject">The type of the object to fetch.</typeparam>
+        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
+        /// cache AND to fetch the item if the cache has expired.</param>
+        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
+        /// the cache if the item has expired.</param>
+        /// <param name="saveInDictionary">Whether to bypass the caching provider and use an in-memory dictionary as the cache.</param>
+        /// <returns>The cached object.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+            => GetCachedObject<TObject>(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), cacheItemArgs, cacheItemExpired, saveInDictionary);
+
+        /// <summary>GetCachedObject gets an object from the Cache.</summary>
+        /// <typeparam name="TObject">The type of the object to fetch.</typeparam>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
+        /// cache AND to fetch the item if the cache has expired.</param>
+        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
+        /// the cache if the item has expired.</param>
+        /// <param name="saveInDictionary">Whether to bypass the caching provider and use an in-memory dictionary as the cache.</param>
+        /// <returns>The cached object.</returns>
+        public static TObject GetCachedObject<TObject>(IHostSettings hostSettings, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
+            return DataCache.GetCachedData<TObject>(hostSettings.PerformanceSetting, cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
         /// <summary>GetProperties gets a Dictionary of the Properties for an object.</summary>
@@ -548,13 +598,13 @@ namespace DotNetNuke.Common.Utilities
         /// <inheritdoc/>
         TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
+            return DataCache.GetCachedData<TObject>(this.hostSettings.PerformanceSetting, cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
         /// <inheritdoc/>
         protected override Func<ICBO> GetFactory()
         {
-            return () => new CBO();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<ICBO>();
         }
 
         private static object CreateObjectInternal(Type objType, bool initialise)

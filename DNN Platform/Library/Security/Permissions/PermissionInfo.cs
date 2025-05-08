@@ -12,9 +12,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities;
     using Newtonsoft.Json;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : PermissionInfo
     /// <summary>PermissionInfo provides the Entity Layer for Permissions.</summary>
     [Serializable]
     public class PermissionInfo : BaseEntityInfo, IPermissionDefinitionInfo

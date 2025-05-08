@@ -26,6 +26,10 @@ namespace Dnn.PersonaBar.Users.Tests
 
         protected abstract void ChildSetup();
 
+        protected virtual void ChildTearDown()
+        {
+        }
+
         [SetUp]
         protected void Setup()
         {
@@ -34,6 +38,12 @@ namespace Dnn.PersonaBar.Users.Tests
             this.portalSettings = new PortalSettings();
             this.portalSettings.PortalId = this.testPortalId;
             this.testPortalId = 0;
+        }
+
+        [TearDown]
+        protected void TearDown()
+        {
+            this.ChildTearDown();
         }
 
         protected UserInfo GetUser(int userId, bool isDeleted)

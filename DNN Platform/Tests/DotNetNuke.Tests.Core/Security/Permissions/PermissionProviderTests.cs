@@ -5,6 +5,8 @@
 namespace DotNetNuke.Tests.Core.Security.Permissions;
 
 using System.Collections.Generic;
+
+using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Data;
@@ -12,6 +14,9 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Tests.Utilities.Fakes;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Moq;
 using NUnit.Framework;
 
@@ -27,6 +32,7 @@ public class PermissionProviderTests
         ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
 
         ComponentFactory.RegisterComponentInstance<DataProvider>(Mock.Of<DataProvider>());
+        using var serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
 
         var permissionProvider = new PermissionProvider();
 
@@ -44,6 +50,7 @@ public class PermissionProviderTests
         ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
 
         ComponentFactory.RegisterComponentInstance<DataProvider>(Mock.Of<DataProvider>());
+        using var serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
 
         var permissionProvider = new PermissionProvider();
 

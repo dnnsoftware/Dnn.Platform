@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Controllers
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
@@ -22,23 +23,19 @@ namespace DotNetNuke.Entities.Controllers
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Client;
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IHostSettingsService" />
     public partial class HostController : IHostSettingsService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
+        private static PerformanceSettings performanceSettings = PerformanceSettings.ModerateCaching;
 
-        /// <summary>Initializes a new instance of the <see cref="HostController"/> class.</summary>
-        public HostController()
-        {
-        }
-
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetBoolean(string)" />
         public bool GetBoolean(string key)
         {
             return this.GetBoolean(key, Null.NullBoolean);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetBoolean(string,bool)" />
         public bool GetBoolean(string key, bool defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
@@ -46,19 +43,20 @@ namespace DotNetNuke.Entities.Controllers
             bool retValue = false;
             try
             {
-                string setting = string.Empty;
-                if (this.GetSettings().ContainsKey(key))
+                string settingValue = string.Empty;
+                var settings = ((IHostSettingsService)this).GetSettings();
+                if (settings.TryGetValue(key, out var setting))
                 {
-                    setting = this.GetSettings()[key].Value;
+                    settingValue = setting.Value;
                 }
 
-                if (string.IsNullOrEmpty(setting))
+                if (string.IsNullOrEmpty(settingValue))
                 {
                     retValue = defaultValue;
                 }
                 else
                 {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
+                    retValue = settingValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || settingValue.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -71,20 +69,21 @@ namespace DotNetNuke.Entities.Controllers
             return retValue;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetDouble(string)" />
         public double GetDouble(string key)
         {
             return this.GetDouble(key, Null.NullDouble);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetDouble(string,double)" />
         public double GetDouble(string key, double defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
 
             double retValue;
 
-            if (!this.GetSettings().ContainsKey(key) || !double.TryParse(this.GetSettings()[key].Value, out retValue))
+            var settings = ((IHostSettingsService)this).GetSettings();
+            if (!settings.ContainsKey(key) || !double.TryParse(settings[key].Value, out retValue))
             {
                 retValue = defaultValue;
             }
@@ -92,20 +91,21 @@ namespace DotNetNuke.Entities.Controllers
             return retValue;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetInteger(string)" />
         public int GetInteger(string key)
         {
             return this.GetInteger(key, Null.NullInteger);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetInteger(string,int)" />
         public int GetInteger(string key, int defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
 
             int retValue;
 
-            if (!this.GetSettings().ContainsKey(key) || !int.TryParse(this.GetSettings()[key].Value, out retValue))
+            var settings = ((IHostSettingsService)this).GetSettings();
+            if (!settings.ContainsKey(key) || !int.TryParse(settings[key].Value, out retValue))
             {
                 retValue = defaultValue;
             }
@@ -116,13 +116,14 @@ namespace DotNetNuke.Entities.Controllers
         /// <inheritdoc/>
         IDictionary<string, IConfigurationSetting> IHostSettingsService.GetSettings()
         {
-            return CBO.GetCachedObject<Dictionary<string, IConfigurationSetting>>(
-                                            new CacheItemArgs(
-                                                DataCache.HostSettingsCacheKey,
-                                                DataCache.HostSettingsCacheTimeOut,
-                                                DataCache.HostSettingsCachePriority),
-                                            this.GetSettingsDictionaryCallBack,
-                                            true);
+            return DataCache.GetCachedData<Dictionary<string, IConfigurationSetting>>(
+                performanceSettings,
+                new CacheItemArgs(
+                    DataCache.HostSettingsCacheKey,
+                    DataCache.HostSettingsCacheTimeOut,
+                    DataCache.HostSettingsCachePriority),
+                GetSettingsDictionaryCallBack,
+                true);
         }
 
         /// <inheritdoc/>
@@ -132,38 +133,39 @@ namespace DotNetNuke.Entities.Controllers
                 .ToDictionary(c => c.Key, c => c.Value.Value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetEncryptedString" />
         public string GetEncryptedString(string key, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", key);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
             var cipherText = this.GetString(key);
-            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Entities.Host.Host.GUID);
+            return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, HostSettings.GetHostGuid(this));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetString(string)" />
         public string GetString(string key)
         {
             return this.GetString(key, string.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.GetString(string,string)" />
         public string GetString(string key, string defaultValue)
         {
             Requires.NotNullOrEmpty("key", key);
 
-            if (!this.GetSettings().ContainsKey(key) || this.GetSettings()[key].Value == null)
+            var settings = ((IHostSettingsService)this).GetSettings();
+            if (!settings.ContainsKey(key) || settings[key].Value == null)
             {
                 return defaultValue;
             }
 
-            return this.GetSettings()[key].Value;
+            return settings[key].Value;
         }
 
         /// <inheritdoc/>
         void IHostSettingsService.Update(IDictionary<string, string> settings)
         {
-            foreach (KeyValuePair<string, string> settingKvp in settings)
+            foreach (var settingKvp in settings)
             {
                 this.Update(settingKvp.Key, settingKvp.Value, false);
             }
@@ -185,12 +187,10 @@ namespace DotNetNuke.Entities.Controllers
                 var dbProvider = DataProvider.Instance();
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
                 var portalSettings = PortalController.Instance.GetCurrentSettings();
-                var settings = this.GetSettingsFromDatabase();
+                var settings = GetSettingsFromDatabase();
                 if (settings.ContainsKey(config.Key))
                 {
-                    IConfigurationSetting currentconfig;
-                    settings.TryGetValue(config.Key, out currentconfig);
-                    if (currentconfig != null && currentconfig.Value != config.Value)
+                    if (settings.TryGetValue(config.Key, out var currentConfig) && currentConfig?.Value != config.Value)
                     {
                         dbProvider.UpdateHostSetting(config.Key, config.Value, config.IsSecure, userId);
                         EventLogController.Instance.AddLog(
@@ -223,32 +223,32 @@ namespace DotNetNuke.Entities.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.Update(string,string,bool)" />
         public void Update(string key, string value, bool clearCache)
         {
-            this.Update(new ConfigurationSetting { Key = key, Value = value }, clearCache);
+            ((IHostSettingsService)this).Update(new ConfigurationSetting { Key = key, Value = value }, clearCache);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.Update(string,string)" />
         public void Update(string key, string value)
         {
             this.Update(key, value, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.UpdateEncryptedString" />
         public void UpdateEncryptedString(string key, string value, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", key);
             Requires.PropertyNotNull("value", value);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
-            var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, Entities.Host.Host.GUID);
+            var cipherText = Security.FIPSCompliant.EncryptAES(value, passPhrase, HostSettings.GetHostGuid(this));
             this.Update(key, cipherText);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IHostSettingsService.IncrementCrmVersion" />
         public void IncrementCrmVersion(bool includeOverridingPortals)
         {
-            var currentVersion = Host.Host.CrmVersion;
+            var currentVersion = HostSettings.GetCrmVersion(this);
             var newVersion = currentVersion + 1;
             this.Update(ClientResourceSettings.VersionKey, newVersion.ToString(CultureInfo.InvariantCulture), true);
 
@@ -258,9 +258,9 @@ namespace DotNetNuke.Entities.Controllers
             }
         }
 
-        /// <summary>Gets all settings from the databse.</summary>
+        /// <summary>Gets all settings from the database.</summary>
         /// <returns><see cref="Dictionary{TKey, TValue}"/>.</returns>
-        private Dictionary<string, IConfigurationSetting> GetSettingsFromDatabase()
+        private static Dictionary<string, IConfigurationSetting> GetSettingsFromDatabase()
         {
             var dicSettings = new Dictionary<string, IConfigurationSetting>();
             IDataReader dr = null;
@@ -269,7 +269,7 @@ namespace DotNetNuke.Entities.Controllers
                 dr = DataProvider.Instance().GetHostSettings();
                 while (dr.Read())
                 {
-                    string key = dr.GetString(0);
+                    var key = dr.GetString(0);
                     var config = new ConfigurationSetting
                     {
                         Key = key,
@@ -289,12 +289,17 @@ namespace DotNetNuke.Entities.Controllers
                 CBO.CloseDataReader(dr, true);
             }
 
+            if (!dicSettings.TryGetValue("PerformanceSetting", out var setting) || !Enum.TryParse(setting.Value, ignoreCase: true, out performanceSettings))
+            {
+                performanceSettings = PerformanceSettings.ModerateCaching;
+            }
+
             return dicSettings;
         }
 
-        private object GetSettingsDictionaryCallBack(CacheItemArgs cacheItemArgs)
+        private static object GetSettingsDictionaryCallBack(CacheItemArgs cacheItemArgs)
         {
-            return this.GetSettingsFromDatabase();
+            return GetSettingsFromDatabase();
         }
     }
 }

@@ -22,6 +22,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web.Http;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
@@ -36,6 +37,8 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using ContentDisposition = System.Net.Mime.ContentDisposition;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
@@ -44,8 +47,21 @@ namespace DotNetNuke.Web.InternalServices
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
         private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly List<string> ImageExtensions = Globals.ImageFileTypes.Split(',').ToList();
+        private readonly IHostSettings hostSettings;
 
-        private static readonly List<string> ImageExtensions = Globals.glbImageFileTypes.Split(',').ToList();
+        /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
+        public FileUploadController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public FileUploadController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         public static string GetUrl(int fileId)
         {
@@ -322,7 +338,7 @@ namespace DotNetNuke.Web.InternalServices
                         currentSynchronizationContext.Send(
                             state =>
                             {
-                                result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
+                                result = UploadFile(this.hostSettings, stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
                             },
                             null);
                     }
@@ -463,6 +479,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         private static FileUploadDto UploadFile(
+                IHostSettings hostSettings,
                 Stream stream,
                 int portalId,
                 UserInfo userInfo,
@@ -491,7 +508,7 @@ namespace DotNetNuke.Web.InternalServices
                     validateParams.Add(portalId);
                 }
 
-                if (!ValidationUtils.ValidationCodeMatched(validateParams, validationCode))
+                if (!ValidationUtils.ValidationCodeMatched(hostSettings, validateParams, validationCode))
                 {
                     throw new InvalidOperationException("Bad Request");
                 }

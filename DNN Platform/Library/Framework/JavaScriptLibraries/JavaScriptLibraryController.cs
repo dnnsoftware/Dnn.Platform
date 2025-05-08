@@ -7,8 +7,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class JavaScriptLibraryController
                         : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>,
@@ -76,7 +80,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <inheritdoc/>
         protected override Func<IJavaScriptLibraryController> GetFactory()
         {
-            return () => new JavaScriptLibraryController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryController>();
         }
 
         private void ClearCache()
