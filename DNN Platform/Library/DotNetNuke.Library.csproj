@@ -240,6 +240,7 @@
     <Compile Include="Entities\Content\Taxonomy\ScopeTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
     <Compile Include="Entities\Host\HostSettings.cs" />
+    <Compile Include="Entities\Host\MailSettings.cs" />
     <Compile Include="Entities\Modules\BusinessControllerProvider.cs" />
     <Compile Include="Entities\Modules\BusinessControllerProviderExtensions.cs" />
     <Compile Include="Entities\Content\Workflow\Actions\TabActions\CompleteState.cs" />
