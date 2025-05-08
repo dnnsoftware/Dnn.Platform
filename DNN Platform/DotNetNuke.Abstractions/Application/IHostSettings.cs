@@ -15,30 +15,10 @@ public interface IHostSettings
     public TimeSpan AutoAccountUnlockDuration { get; }
 
     /// <summary>Gets the <c>HttpCacheability</c> value for authenticated requests.</summary>
-    /// <remarks>The following mapping is used:
-    /// <list type="bullet">
-    /// <item><c>"0"</c> - <c>HttpCacheability.NoCache</c></item>
-    /// <item><c>"1"</c> - <c>HttpCacheability.Private</c></item>
-    /// <item><c>"2"</c> - <c>HttpCacheability.Public</c></item>
-    /// <item><c>"3"</c> - <c>HttpCacheability.Server</c></item>
-    /// <item><c>"4"</c> - <c>HttpCacheability.ServerAndNoCache</c></item>
-    /// <item><c>"5"</c> - <c>HttpCacheability.ServerAndPrivate</c></item>
-    /// </list>
-    /// </remarks>
-    public string AuthenticatedCacheability { get; }
+    public CacheControlHeader AuthenticatedCacheability { get; }
 
     /// <summary>Gets the <c>HttpCacheability</c> value for authenticated requests.</summary>
-    /// <remarks>The following mapping is used:
-    /// <list type="bullet">
-    /// <item><c>"0"</c> - <c>HttpCacheability.NoCache</c></item>
-    /// <item><c>"1"</c> - <c>HttpCacheability.Private</c></item>
-    /// <item><c>"2"</c> - <c>HttpCacheability.Public</c></item>
-    /// <item><c>"3"</c> - <c>HttpCacheability.Server</c></item>
-    /// <item><c>"4"</c> - <c>HttpCacheability.ServerAndNoCache</c></item>
-    /// <item><c>"5"</c> - <c>HttpCacheability.ServerAndPrivate</c></item>
-    /// </list>
-    /// </remarks>
-    public string UnauthenticatedCacheability { get; }
+    public CacheControlHeader UnauthenticatedCacheability { get; }
 
     /// <summary>Gets a value indicating whether CDN has been enabled for all registered javascript libraries.</summary>
     public bool CdnEnabled { get; }
