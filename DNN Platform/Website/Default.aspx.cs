@@ -438,25 +438,22 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            string cacheability = this.Request.IsAuthenticated ? this.hostSettings.AuthenticatedCacheability : this.hostSettings.UnauthenticatedCacheability;
+            var cacheability = this.Request.IsAuthenticated ? this.hostSettings.AuthenticatedCacheability : this.hostSettings.UnauthenticatedCacheability;
             switch (cacheability)
             {
-                case "0":
+                case CacheControlHeader.NoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                     break;
-                case "1":
+                case CacheControlHeader.Private:
                     this.Response.Cache.SetCacheability(HttpCacheability.Private);
                     break;
-                case "2":
+                case CacheControlHeader.Public:
                     this.Response.Cache.SetCacheability(HttpCacheability.Public);
                     break;
-                case "3":
-                    this.Response.Cache.SetCacheability(HttpCacheability.Server);
-                    break;
-                case "4":
+                case CacheControlHeader.ServerAndNoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     break;
-                case "5":
+                case CacheControlHeader.ServerAndPrivate:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
                     break;
             }
