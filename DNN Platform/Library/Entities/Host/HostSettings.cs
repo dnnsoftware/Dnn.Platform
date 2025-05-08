@@ -26,10 +26,10 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public TimeSpan AutoAccountUnlockDuration => TimeSpan.FromMinutes(hostSettingsService.GetInteger("AutoAccountUnlockDuration", 10));
 
     /// <inheritdoc />
-    public string AuthenticatedCacheability => hostSettingsService.GetString("AuthenticatedCacheability", "4");
+    public CacheControlHeader AuthenticatedCacheability => ToCacheControlHeader(hostSettingsService.GetString("AuthenticatedCacheability", "4"));
 
     /// <inheritdoc />
-    public string UnauthenticatedCacheability => hostSettingsService.GetString("UnauthenticatedCacheability", "4");
+    public CacheControlHeader UnauthenticatedCacheability => ToCacheControlHeader(hostSettingsService.GetString("UnauthenticatedCacheability", "4"));
 
     /// <inheritdoc />
     public bool CdnEnabled => hostSettingsService.GetBoolean("CDNEnabled", false);
@@ -461,6 +461,18 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
         var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalId, Null.NullString);
         return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
     }
+
+    private static CacheControlHeader ToCacheControlHeader(string headerId)
+        => headerId switch
+        {
+            "0" => CacheControlHeader.NoCache,
+            "1" => CacheControlHeader.Private,
+            "2" => CacheControlHeader.Public,
+            "3" => CacheControlHeader.Server,
+            "4" => CacheControlHeader.ServerAndNoCache,
+            "5" => CacheControlHeader.ServerAndPrivate,
+            _ => CacheControlHeader.Unknown,
+        };
 
     /// <summary>Gets the SMTP setting, if portal SMTP is configured, it will return items from the portal settings collection.</summary>
     private string GetSmtpSetting(int portalId, string settingName)
