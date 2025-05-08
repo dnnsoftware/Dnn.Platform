@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Host
 
     /// <summary>Contains most of the host settings.</summary>
     [Serializable]
-    [DnnDeprecated(10, 0, 2, "Use DotNetNuke.Abstractions.Application.IHostSettings via dependency injection")]
+    [DnnDeprecated(10, 0, 2, "Use DotNetNuke.Abstractions.Application.IHostSettings or DotNetNuke.Abstractions.Application.IMailSettings via dependency injection")]
     public partial class Host : BaseEntityInfo
     {
         private static Globals.PerformanceSettings? performanceSetting;
