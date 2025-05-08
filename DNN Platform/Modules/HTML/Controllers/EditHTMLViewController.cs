@@ -31,14 +31,14 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
-    public partial class HTMLEditHTMLViewController : ModuleViewControllerBase
+    public partial class EditHTMLViewController : ModuleViewControllerBase
     {
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly IContentSecurityPolicy contentSecurityPolicy;
 
-        public HTMLEditHTMLViewController(IContentSecurityPolicy csp)
+        public EditHTMLViewController(IContentSecurityPolicy csp)
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = new HtmlTextController(this.navigationManager);
