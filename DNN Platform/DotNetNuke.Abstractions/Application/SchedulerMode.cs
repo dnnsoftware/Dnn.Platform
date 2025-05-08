@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Abstractions.Application;
 
+using System.ComponentModel;
+
 /// <summary>The method for triggering scheduled tasks.</summary>
 public enum SchedulerMode
 {
@@ -14,11 +16,13 @@ public enum SchedulerMode
     TimerMethod = 1,
 
     /// <inheritdoc cref="TimerMethod"/>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     TIMER_METHOD = TimerMethod,
 
     /// <summary>The scheduler is running when triggered by HTTP requests.</summary>
     RequestMethod = 2,
 
     /// <inheritdoc cref="RequestMethod"/>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     REQUEST_METHOD = RequestMethod,
 }
