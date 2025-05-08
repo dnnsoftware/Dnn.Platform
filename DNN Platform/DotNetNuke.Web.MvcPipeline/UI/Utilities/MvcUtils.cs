@@ -25,11 +25,12 @@
         {
             if (controlSrc.StartsWith("DesktopModules"))
             {
-                return controlSrc.Replace("DesktopModules/", string.Empty).Replace("/", string.Empty).Replace(".ascx", string.Empty) + "View";
+                // return controlSrc.Replace("DesktopModules/", string.Empty).Replace("/", string.Empty).Replace(".ascx", string.Empty) + "View";
+                return Path.GetFileNameWithoutExtension(controlSrc) + "View";
             }
             else
             {
-                return Path.GetFileNameWithoutExtension(controlSrc).Replace("/", string.Empty).Replace(".ascx", string.Empty) + "View";
+                return Path.GetFileNameWithoutExtension(controlSrc) + "View";
             }
         }
     }

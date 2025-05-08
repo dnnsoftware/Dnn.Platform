@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Modules.Html;
@@ -23,44 +24,41 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+    using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.Mvc;
     using DotNetNuke.Web.MvcPipeline.Controllers;
-    using DotNetNuke.Website.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class HTMLMyWorkViewController : ModuleViewControllerBase
+    public class HtmlModuleViewController : ModuleViewControllerBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly HtmlTextController htmlTextController;
 
-        public HTMLMyWorkViewController()
+        public HtmlModuleViewController()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.htmlTextController = new HtmlTextController(this.navigationManager);
         }
 
         public override string ControlPath => "~/DesktopModules/Html/";
 
-        public override string ID => "MyWork";
+        public override string ID => "HtmlModule";
 
         protected override object ViewModel()
         {
-            var objHtmlTextUsers = new HtmlTextUserController();
-            var lst = objHtmlTextUsers.GetHtmlTextUser(this.UserInfo.UserID).Cast<HtmlTextUserInfo>();
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/DesktopModules/HTML/edit.css");
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css");
-            return new MyWorkModel()
+            int workflowID = this.htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+            HtmlTextInfo content = this.htmlTextController.GetTopHtmlText(this.ModuleId, true, workflowID);
+
+            var html = string.Empty;
+            if (content != null)
             {
-                LocalResourceFile = this.LocalResourceFile,
-                ModuleId = this.ModuleId,
-                TabId = this.TabId,
-                RedirectUrl = this.navigationManager.NavigateURL(),
-                HtmlTextUsers = lst.Select(u => new HtmlTextUserModel()
-                {
-                    Url = this.navigationManager.NavigateURL(u.TabID),
-                    ModuleID = u.ModuleID,
-                    ModuleTitle = u.ModuleTitle,
-                    StateName = u.StateName,
-                }).ToList(),
+                html = System.Web.HttpUtility.HtmlDecode(content.Content);
+            }
+
+            return new HtmlModuleModel()
+            {
+                Html = html,
             };
         }
     }

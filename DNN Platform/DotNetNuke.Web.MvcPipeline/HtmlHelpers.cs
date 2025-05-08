@@ -24,6 +24,7 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using System.Linq;
     using System.Reflection;
+    using System.IO;
 
     public static partial class HtmlHelpers
     {
@@ -57,6 +58,7 @@ namespace DotNetNuke.Web.MvcPipeline
             string actionName = string.Empty;
             try
             {
+                var area = Path.GetFileName(module.DesktopModule.FolderName);
                 if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
                 {
                     var controlKey = module.ModuleControl.ControlKey;
@@ -79,9 +81,9 @@ namespace DotNetNuke.Web.MvcPipeline
                         { "ContainerPath", module.ContainerPath },
                         { "IconFile", module.IconFile }
                     };
-                    var area = module.DesktopModule.FolderName.Replace("/", "");
+                    
                     // controllerName = area + controllerName;
-                    //values.Add("area", module.DesktopModule.FolderName);
+                    values.Add("area", area);
 
                     var queryString = htmlHelper.ViewContext.HttpContext.Request.QueryString;
 
@@ -163,7 +165,7 @@ namespace DotNetNuke.Web.MvcPipeline
                     return htmlHelper.Action(
                         actionName,
                         controllerName,
-                        new ControlViewModel()
+                        new 
                         {
                             ModuleId = module.ModuleID,
                             TabId = module.TabID,
@@ -172,6 +174,7 @@ namespace DotNetNuke.Web.MvcPipeline
                             ContainerSrc = module.ContainerSrc,
                             ContainerPath = module.ContainerPath,
                             IconFile = module.IconFile,
+                            area= area,
                         });
                 }
             }
