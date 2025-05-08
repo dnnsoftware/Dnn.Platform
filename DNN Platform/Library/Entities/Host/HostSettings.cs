@@ -10,7 +10,6 @@ using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Abstractions.Security;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.Web.Client;
 
@@ -23,13 +22,16 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     private PerformanceSettings? performanceSettings;
 
     /// <inheritdoc />
-    public TimeSpan AutoAccountUnlockDuration => TimeSpan.FromMinutes(hostSettingsService.GetInteger("AutoAccountUnlockDuration", 10));
+    public TimeSpan AutoAccountUnlockDuration =>
+        TimeSpan.FromMinutes(hostSettingsService.GetInteger("AutoAccountUnlockDuration", 10));
 
     /// <inheritdoc />
-    public CacheControlHeader AuthenticatedCacheability => ToCacheControlHeader(hostSettingsService.GetString("AuthenticatedCacheability", "4"));
+    public CacheControlHeader AuthenticatedCacheability =>
+        ToCacheControlHeader(hostSettingsService.GetString("AuthenticatedCacheability", "4"));
 
     /// <inheritdoc />
-    public CacheControlHeader UnauthenticatedCacheability => ToCacheControlHeader(hostSettingsService.GetString("UnauthenticatedCacheability", "4"));
+    public CacheControlHeader UnauthenticatedCacheability =>
+        ToCacheControlHeader(hostSettingsService.GetString("UnauthenticatedCacheability", "4"));
 
     /// <inheritdoc />
     public bool CdnEnabled => hostSettingsService.GetBoolean("CDNEnabled", false);
@@ -44,10 +46,13 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public bool DisableEditBar => hostSettingsService.GetBoolean("DisableEditBar", false);
 
     /// <inheritdoc />
-    public bool AllowControlPanelToDetermineVisibility => hostSettingsService.GetBoolean("AllowControlPanelToDetermineVisibility", Globals.glbAllowControlPanelToDetermineVisibility);
+    public bool AllowControlPanelToDetermineVisibility => hostSettingsService.GetBoolean(
+        "AllowControlPanelToDetermineVisibility",
+        Globals.glbAllowControlPanelToDetermineVisibility);
 
     /// <inheritdoc />
-    public bool CrmEnableCompositeFiles => hostSettingsService.GetBoolean(ClientResourceSettings.EnableCompositeFilesKey, false);
+    public bool CrmEnableCompositeFiles =>
+        hostSettingsService.GetBoolean(ClientResourceSettings.EnableCompositeFilesKey, false);
 
     /// <inheritdoc />
     public bool CrmMinifyCss => hostSettingsService.GetBoolean(ClientResourceSettings.MinifyCssKey);
@@ -103,10 +108,12 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
                         doctype = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">";
                         break;
                     case "1":
-                        doctype = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">";
+                        doctype =
+                            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">";
                         break;
                     case "2":
-                        doctype = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
+                        doctype =
+                            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
                         break;
                     case "3":
                         doctype = "<!DOCTYPE html>";
@@ -197,10 +204,12 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public bool EventLogBuffer => hostSettingsService.GetBoolean("EventLogBuffer", false);
 
     /// <inheritdoc />
-    public IFileExtensionAllowList AllowedExtensionAllowList => new FileExtensionWhitelist(hostSettingsService.GetString("FileExtensions"));
+    public IFileExtensionAllowList AllowedExtensionAllowList =>
+        new FileExtensionWhitelist(hostSettingsService.GetString("FileExtensions"));
 
     /// <inheritdoc />
-    public IFileExtensionAllowList DefaultEndUserExtensionAllowList => new FileExtensionWhitelist(hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
+    public IFileExtensionAllowList DefaultEndUserExtensionAllowList =>
+        new FileExtensionWhitelist(hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
 
     /// <inheritdoc />
     public string Guid => GetHostGuid(hostSettingsService);
@@ -230,16 +239,19 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public int MessageSchedulerBatchSize => hostSettingsService.GetInteger("MessageSchedulerBatchSize", 50);
 
     /// <inheritdoc />
-    public TimeSpan MembershipResetLinkValidity => TimeSpan.FromMinutes(hostSettingsService.GetInteger("MembershipResetLinkValidity", 60));
+    public TimeSpan MembershipResetLinkValidity =>
+        TimeSpan.FromMinutes(hostSettingsService.GetInteger("MembershipResetLinkValidity", 60));
 
     /// <inheritdoc />
-    public TimeSpan AdminMembershipResetLinkValidity => TimeSpan.FromMinutes(hostSettingsService.GetInteger("AdminMembershipResetLinkValidity", 1440));
+    public TimeSpan AdminMembershipResetLinkValidity =>
+        TimeSpan.FromMinutes(hostSettingsService.GetInteger("AdminMembershipResetLinkValidity", 1440));
 
     /// <inheritdoc />
     public int MembershipNumberPasswords => hostSettingsService.GetInteger("MembershipNumberPasswords", 5);
 
     /// <inheritdoc />
-    public int MembershipDaysBeforePasswordReuse => hostSettingsService.GetInteger("MembershipDaysBeforePasswordReuse", 0);
+    public int MembershipDaysBeforePasswordReuse =>
+        hostSettingsService.GetInteger("MembershipDaysBeforePasswordReuse", 0);
 
     /// <inheritdoc />
     public string MembershipFailedIPException => hostSettingsService.GetString("MembershipFailedIPException", "403");
@@ -272,7 +284,8 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public TimeSpan PasswordExpiry => TimeSpan.FromDays(hostSettingsService.GetInteger("PasswordExpiry", 0));
 
     /// <inheritdoc />
-    public TimeSpan PasswordExpiryReminder => TimeSpan.FromDays(hostSettingsService.GetInteger("PasswordExpiryReminder", 7));
+    public TimeSpan PasswordExpiryReminder =>
+        TimeSpan.FromDays(hostSettingsService.GetInteger("PasswordExpiryReminder", 7));
 
     /// <inheritdoc />
     public string ProxyPassword => hostSettingsService.GetString("ProxyPassword");
@@ -290,10 +303,16 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public bool RememberCheckbox => hostSettingsService.GetBoolean("RememberCheckbox", true);
 
     /// <inheritdoc />
-    public SchedulerMode SchedulerMode => !Enum.TryParse<SchedulerMode>(hostSettingsService.GetString("SchedulerMode"), ignoreCase: true, out var schedulerMode) ? SchedulerMode.TimerMethod : schedulerMode;
+    public SchedulerMode SchedulerMode => !Enum.TryParse<SchedulerMode>(
+        hostSettingsService.GetString("SchedulerMode"),
+        ignoreCase: true,
+        out var schedulerMode)
+        ? SchedulerMode.TimerMethod
+        : schedulerMode;
 
     /// <inheritdoc />
-    public TimeSpan SchedulerDelayAtAppStart => TimeSpan.FromSeconds(hostSettingsService.GetInteger("SchedulerdelayAtAppStart", 1));
+    public TimeSpan SchedulerDelayAtAppStart =>
+        TimeSpan.FromSeconds(hostSettingsService.GetInteger("SchedulerdelayAtAppStart", 1));
 
     /// <inheritdoc />
     public bool SearchIncludeCommon => hostSettingsService.GetBoolean("SearchIncludeCommon", false);
@@ -308,7 +327,8 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public int SearchMinWordLength => hostSettingsService.GetInteger("MinSearchWordLength", 4);
 
     /// <inheritdoc />
-    public string SearchIncludedTagInfoFilter => hostSettingsService.GetString("SearchIncludedTagInfoFilter", string.Empty);
+    public string SearchIncludedTagInfoFilter =>
+        hostSettingsService.GetString("SearchIncludedTagInfoFilter", string.Empty);
 
     /// <inheritdoc />
     public bool ShowCriticalErrors => hostSettingsService.GetBoolean("ShowCriticalErrors", true);
@@ -326,13 +346,15 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public int UserQuota => hostSettingsService.GetInteger("UserQuota", 0);
 
     /// <inheritdoc />
-    public TimeSpan WebRequestTimeout => TimeSpan.FromMilliseconds(hostSettingsService.GetInteger("WebRequestTimeout", 10000));
+    public TimeSpan WebRequestTimeout =>
+        TimeSpan.FromMilliseconds(hostSettingsService.GetInteger("WebRequestTimeout", 10000));
 
     /// <inheritdoc />
     public bool EnableMsAjaxCdn => hostSettingsService.GetBoolean("EnableMsAjaxCDN", false);
 
     /// <inheritdoc />
-    public TimeSpan AsyncTimeout => TimeSpan.FromMinutes(Math.Max(90, hostSettingsService.GetInteger("AsyncTimeout", 90)));
+    public TimeSpan AsyncTimeout =>
+        TimeSpan.FromMinutes(Math.Max(90, hostSettingsService.GetInteger("AsyncTimeout", 90)));
 
     /// <inheritdoc />
     public bool IsLocked => hostSettingsService.GetBoolean("IsLocked", false);
@@ -373,95 +395,6 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
         return hostSettingsService.GetString("GUID");
     }
 
-    /// <inheritdoc />
-    public string SmtpAuthentication(int portalId) => this.GetSmtpSetting(portalId, "SMTPAuthentication");
-
-    /// <inheritdoc />
-    public string SmtpPassword(int portalId)
-    {
-        if (this.SmtpPortalEnabled(portalId))
-        {
-            return PortalController.GetEncryptedString(this, "SMTPPassword", portalId, Config.GetDecryptionkey());
-        }
-
-        string decryptedText;
-        try
-        {
-            decryptedText = hostSettingsService.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
-        }
-        catch (Exception)
-        {
-            // fixes case where SMTP Password failed to encrypt due to failing upgrade
-            var current = hostSettingsService.GetString("SMTPPassword");
-            if (!string.IsNullOrEmpty(current))
-            {
-                hostSettingsService.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
-                decryptedText = current;
-            }
-            else
-            {
-                decryptedText = string.Empty;
-            }
-        }
-
-        return decryptedText;
-    }
-
-    /// <inheritdoc />
-    public string SmtpServer(int portalId) => this.GetSmtpSetting(portalId, "SMTPServer");
-
-    /// <inheritdoc />
-    public string SmtpUsername(int portalId) => this.GetSmtpSetting(portalId, "SMTPUsername");
-
-    /// <inheritdoc />
-    public int SmtpConnectionLimit(int portalId)
-    {
-        if (this.SmtpPortalEnabled(portalId))
-        {
-            return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", portalId, 2);
-        }
-
-        return hostSettingsService.GetInteger("SMTPConnectionLimit", 2);
-    }
-
-    /// <inheritdoc />
-    public TimeSpan SmtpMaxIdleTime(int portalId)
-    {
-        var idleMilliseconds = this.SmtpPortalEnabled(portalId)
-            ? PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", portalId, 100000)
-            : hostSettingsService.GetInteger("SMTPMaxIdleTime", 100000);
-        return TimeSpan.FromMilliseconds(idleMilliseconds);
-    }
-
-    /// <inheritdoc />
-    public bool EnableSmtpSsl(int portalId)
-    {
-        if (this.SmtpPortalEnabled(portalId))
-        {
-            return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", portalId, false);
-        }
-
-        return hostSettingsService.GetBoolean("SMTPEnableSSL", false);
-    }
-
-    /// <inheritdoc />
-    public string SmtpAuthProvider(int portalId)
-    {
-        if (this.SmtpPortalEnabled(portalId))
-        {
-            return PortalController.GetPortalSetting("SMTPAuthProvider", portalId, string.Empty);
-        }
-
-        return hostSettingsService.GetString("SMTPAuthProvider", string.Empty);
-    }
-
-    /// <inheritdoc />
-    public bool SmtpPortalEnabled(int portalId)
-    {
-        var currentSmtpMode = PortalController.GetPortalSetting("SMTPmode", portalId, Null.NullString);
-        return currentSmtpMode.Equals("P", StringComparison.OrdinalIgnoreCase);
-    }
-
     private static CacheControlHeader ToCacheControlHeader(string headerId)
         => headerId switch
         {
@@ -473,15 +406,4 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
             "5" => CacheControlHeader.ServerAndPrivate,
             _ => CacheControlHeader.Unknown,
         };
-
-    /// <summary>Gets the SMTP setting, if portal SMTP is configured, it will return items from the portal settings collection.</summary>
-    private string GetSmtpSetting(int portalId, string settingName)
-    {
-        if (this.SmtpPortalEnabled(portalId))
-        {
-            return PortalController.GetPortalSetting(settingName, portalId, Null.NullString);
-        }
-
-        return hostSettingsService.GetString(settingName);
-    }
 }

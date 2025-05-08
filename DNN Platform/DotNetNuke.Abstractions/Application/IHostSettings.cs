@@ -253,49 +253,4 @@ public interface IHostSettings
 
     /// <summary>Gets or sets the PerformanceSettings.</summary>
     public PerformanceSettings PerformanceSetting { get; set; }
-
-    /// <summary>Gets a value indicating whether SSL is Enabled for SMTP.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>Whether SSL is enabled for SMTP in the given portal.</returns>
-    public bool EnableSmtpSsl(int portalId);
-
-    /// <summary>Gets the currently configured SMTP OAuth provider if existing, for the current portal if portal SMTP enabled, otherwise for the installation.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>The name of the SMTP OAuth provider.</returns>
-    public string SmtpAuthProvider(int portalId);
-
-    /// <summary>Gets the SMTP Authentication type.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>The authentication type indicator, <c>"1"</c> for basic auth, <c>"2"</c> for NTLM auth, <c>"3"</c> for OAuth, any other value for anonymous auth.</returns>
-    public string SmtpAuthentication(int portalId);
-
-    /// <summary>Gets the SMTP Password.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>The SMTP password.</returns>
-    public string SmtpPassword(int portalId);
-
-    /// <summary>Gets the SMTP Server.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>The SMTP server.</returns>
-    public string SmtpServer(int portalId);
-
-    /// <summary>Gets the SMTP Username.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>The SMTP username.</returns>
-    public string SmtpUsername(int portalId);
-
-    /// <summary>Gets the SMTP Connection Limit.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>The SMTP connection limit.</returns>
-    public int SmtpConnectionLimit(int portalId);
-
-    /// <summary>Gets the SMTP MaxIdleTime.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>The SMTP maximum idle time.</returns>
-    public TimeSpan SmtpMaxIdleTime(int portalId);
-
-    /// <summary>Gets a value indicating whether SMTP information is stored at the portal level.</summary>
-    /// <param name="portalId">The portal ID.</param>
-    /// <returns>Whether SMTP information is stored per portal.</returns>
-    public bool SmtpPortalEnabled(int portalId);
 }

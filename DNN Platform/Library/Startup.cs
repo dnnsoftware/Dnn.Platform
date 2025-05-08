@@ -61,6 +61,7 @@ namespace DotNetNuke
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
             services.AddSingleton<IHostSettings, HostSettings>();
+            services.AddTransient<IMailSettings, MailSettings>();
 
 #pragma warning disable CS0618
             services.AddScoped<IEventLogger, EventLogController>();
