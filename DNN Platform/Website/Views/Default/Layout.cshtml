@@ -12,10 +12,13 @@
 <!DOCTYPE html>
 <html lang="@Model.Language">
 <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    @if (!string.IsNullOrEmpty(Model.PortalHeadText))
+    {
+        @Html.Raw(Model.PortalHeadText)
+    }
     @if (!string.IsNullOrEmpty(Model.MetaRefresh))
     {
-        <meta id="MetaRefresh" http-equiv="Refresh" name="Refresh" content="Model.MetaRefresh" />
+        <meta id="MetaRefresh" http-equiv="Refresh" name="Refresh" content="@Model.MetaRefresh" />
     }
     @if (!string.IsNullOrEmpty(Model.Description))
     {
@@ -47,6 +50,10 @@
         @Html.Raw(Model.FavIconLink)
     }
     <title>[MVC] @Model.Title</title>
+    @if (!string.IsNullOrEmpty(Model.PageHeadText))
+    {
+        @Html.Raw(Model.PageHeadText)
+    }
     @Html.RegisterAjaxScriptIfRequired()
     @RenderSection("head", required: false)
     @Html.RenderCssHere(new BasicPath("SkinPath", SkinPath), new BasicPath("SharedScripts", "~/Resources/Shared/Scripts/"))
