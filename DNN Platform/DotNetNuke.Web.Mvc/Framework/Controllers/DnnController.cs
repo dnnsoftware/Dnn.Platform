@@ -149,6 +149,58 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);
+
+            if (requestContext.RouteData.Values.ContainsKey("mvcpage"))
+            {
+                var values = requestContext.RouteData.Values;
+                var moduleContext = new ModuleInstanceContext();
+                var moduleInfo = ModuleController.Instance.GetModule((int)values["ModuleId"], (int)values["TabId"], false);
+
+                if (moduleInfo.ModuleControlId != (int)values["ModuleControlId"])
+                {
+                    moduleInfo = moduleInfo.Clone();
+                    moduleInfo.ContainerPath = (string)values["ContainerPath"];
+                    moduleInfo.ContainerSrc = (string)values["ContainerSrc"];
+                    moduleInfo.ModuleControlId = (int)values["ModuleControlId"];
+                    moduleInfo.PaneName = (string)values["PanaName"];
+                    moduleInfo.IconFile = (string)values["IconFile"];
+                }
+
+                moduleContext.Configuration = moduleInfo;
+
+                /*
+                var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(moduleInfo.DesktopModuleID, moduleInfo.PortalID);
+                var moduleRequestContext = new ModuleRequestContext
+                {
+                    HttpContext = httpContext,
+                    ModuleContext = moduleContext,
+                    ModuleApplication = new ModuleApplication(this.RequestContext, DisableMvcResponseHeader)
+                    {
+                        ModuleName = desktopModule.ModuleName,
+                        FolderPath = desktopModule.FolderName,
+                    },
+                };
+                */
+
+                this.ModuleContext = new ModuleInstanceContext() { Configuration = moduleInfo };
+                this.LocalResourceFile = string.Format(
+                        "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                        moduleInfo.DesktopModule.FolderName,
+                        Localization.LocalResourceDirectory,
+                        this.RouteData.Values["ControllerName"]);
+
+                var moduleApplication = new ModuleApplication(requestContext, true)
+                {
+                    ModuleName = moduleInfo.DesktopModule.ModuleName,
+                    FolderPath = moduleInfo.DesktopModule.FolderName,
+                };
+                moduleApplication.Init();
+
+                // var viewEngines = new ViewEngineCollection();
+                // viewEngines.Add(new ModuleDelegatingViewEngine());
+                this.ViewEngineCollectionEx = moduleApplication.ViewEngines;
+            }
+
             this.Url = new DnnUrlHelper(requestContext, this);
         }
     }
