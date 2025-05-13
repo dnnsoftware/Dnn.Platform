@@ -18,10 +18,6 @@ import ReactWidgets from "react-widgets";
 import Promise from "es6-promise";
 import PersonaBarComponents from "./components/persona-bar-components";
 
-/** Polyfills */
-require("es6-object-assign").polyfill();
-require("array.prototype.find").shim();
-require("array.prototype.findindex").shim();
 if (!window.dnn) {
     window.dnn = {};
 }

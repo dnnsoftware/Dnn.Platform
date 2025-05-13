@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./style.module.less";
 import { ArrowBack } from "@dnnsoftware/dnn-react-common";
 
-/* eslint-disable react/no-danger */
+ 
 const BackToMain = ({onClick, label}) => {
     return (
         <div         
