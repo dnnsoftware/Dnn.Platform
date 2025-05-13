@@ -20,7 +20,7 @@ class LogItemRow extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    componentWillReceiveProps() {
+    UNSAFE_componentWillReceiveProps() {
         this.setState({});
     }
 
@@ -141,6 +141,7 @@ LogItemRow.propTypes = {
     selectedRowIds: PropTypes.array.isRequired,
     excludedRowIds: PropTypes.array.isRequired,
     cssClass: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
     logId: PropTypes.string,
     typeName: PropTypes.string,
     createDate: PropTypes.string,
