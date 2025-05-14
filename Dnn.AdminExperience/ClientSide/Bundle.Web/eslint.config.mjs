@@ -1,6 +1,7 @@
 // @ts-check
 import eslintPluginReact from "eslint-plugin-react";
 import js from "@eslint/js";
+import globals from "globals";
 
 /** @type {import("eslint").Linter.Config[]} */
 const config = [
@@ -29,12 +30,13 @@ const config = [
                 },
                 ecmaVersion: 2018,
                 sourceType: "module",
-                globals: {
-                    __: false,
-                    Promise: false,
-                    VERSION: false,
-                }
-            }, 
+            },
+            globals: {
+                __: false,
+                Promise: false,
+                VERSION: false,
+                ...globals.browser,
+            }
         }
     },
     {
