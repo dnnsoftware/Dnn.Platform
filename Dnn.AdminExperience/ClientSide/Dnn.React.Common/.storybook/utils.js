@@ -166,9 +166,9 @@ function getProductSKU() {
     checkInit();
     return settings.productSKU;
 }
-function isPlatform(){
+function isPlatform() {
     checkInit();
-    return settings.productSKU.toLowerCase() === 'dnn';
+    return settings.productSKU.toLowerCase() === "dnn";
 }
 function getIsAdminHostSystemPage() {
     checkInit();
@@ -184,19 +184,19 @@ function formatDate(dateValue, longformat) {
         return "-";
     }
 
-    const localizedFormat = require('dayjs/plugin/localizedFormat');
+    const localizedFormat = require("dayjs/plugin/localizedFormat");
     dayjs.extend(localizedFormat);
-    require('dayjs/locale/' + utilities.getCulture().substring(0,2));
+    require("dayjs/locale/" + utilities.getCulture().substring(0,2));
     return dayjs(dateValue).locale(utilities.getCulture().substring(0,2)).format(longformat === true ? "LLL" : "L");
 }
-function getUserMode(){
+function getUserMode() {
     return config.userMode;
 }
 const url = {
-    appendQueryString: function(url, params){
+    appendQueryString: function (url, params) {
         let urlParse = new UrlParse(url, true);
         let newParams = Object.assign({}, urlParse.query, params);
-        urlParse.set('query', newParams);
+        urlParse.set("query", newParams);
         return urlParse.href;
     }
 };
