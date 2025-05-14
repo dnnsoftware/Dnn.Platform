@@ -18,8 +18,8 @@ storiesOf("Sortable", module).add("in rows", () => (
         onSort={action("Sorted")}
         items={testProperties}
         sortOnDrag={true}>
-            {renderRows()}
-        </Sortable>
+        {renderRows()}
+    </Sortable>
 
 ));
 
@@ -68,9 +68,9 @@ function renderRows() {
     });
 }
 
-export default class MyComponent extends Component{
-    render(){
-        return(
+export default class MyComponent extends Component {
+    render() {
+        return (
             <div className="my-component">
                 <span>{this.props.name}</span>
             </div>

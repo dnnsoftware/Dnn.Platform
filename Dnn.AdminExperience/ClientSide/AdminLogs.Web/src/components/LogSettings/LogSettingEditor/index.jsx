@@ -34,7 +34,7 @@ class LogSettingEditor extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (props.logTypeSettingId !== "") {
             props.dispatch(LogSettingActions.getLogSettingById({
@@ -187,7 +187,7 @@ class LogSettingEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const portalList = this.props.portalList !== undefined && this.props.portalList.map(log => {
             return {
@@ -270,7 +270,7 @@ class LogSettingEditor extends Component {
         let children = [];
         children.push(columnOne);
         children.push(columnTwo);
-        /* eslint-disable react/no-danger */
+         
         return (
             <div className="log-setting-editor">
                 <Grid numberOfColumns={2}>{children}</Grid>

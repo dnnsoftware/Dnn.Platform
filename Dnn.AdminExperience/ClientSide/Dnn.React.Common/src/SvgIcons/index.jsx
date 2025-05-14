@@ -1,4 +1,4 @@
-/* eslint-disable quotes */
+ 
 const ActivityIcon = require("./svg/activity.svg").default;
 const AddIcon = require("./svg/add.svg").default;
 const AddCircleIcon = require("./svg/add_circle.svg").default;

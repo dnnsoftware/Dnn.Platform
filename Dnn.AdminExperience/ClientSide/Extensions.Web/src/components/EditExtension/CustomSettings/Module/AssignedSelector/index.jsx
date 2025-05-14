@@ -18,7 +18,7 @@ class AssignedSelector extends Component {
             </li>;
         });
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         const assignedPortals = this.getPortalList(props.assignedPortals, "assignedPortals");

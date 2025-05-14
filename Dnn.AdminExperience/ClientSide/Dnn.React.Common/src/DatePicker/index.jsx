@@ -365,7 +365,7 @@ class DatePicker extends Component {
         const showClearDates = !!this.props.isDateRange && this.props.showClearDates;
         const clearButtonStyle = (this.state.Date.FirstDate || this.state.Date.SecondDate) ? clearButtonStyleVisible : clearButtonStyleInvisible;            
 
-        /* eslint-disable react/no-danger */
+         
         return <div className="dnn-day-picker" ref={this.dayPickerRef}>
             {showInput && <div className={inputClassName} style={style} onClick={this.showCalendar.bind(this) }>
                 {this.props.prependWith && <span>{this.props.prependWith}</span>}

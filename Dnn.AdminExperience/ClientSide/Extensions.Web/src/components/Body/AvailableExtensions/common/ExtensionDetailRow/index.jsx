@@ -6,7 +6,7 @@ import Localization from "localization";
 import ColumnSizes from "../ExtensionColumnSizes";
 import util from "utils";
 
-/* eslint-disable react/no-danger */
+ 
 const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation}) => (
     <GridCell className={styles.extensionDetailRow} columnSize={100} style={{ padding: "20px 0 20px 20px" }}>
         <GridCell columnSize={ColumnSizes[0]} style={{ padding: 0 }}>
