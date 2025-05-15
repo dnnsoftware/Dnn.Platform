@@ -6,6 +6,8 @@
     using System.IO;
     using System.Reflection;
     using System.Web;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
@@ -29,7 +31,6 @@
         private const string GenericHost = "dnn";
 
         [Test]
-
         public void CheckForRedirects_WithUmlautUrls_DontRedirectInfinitely()
         {
             // Arrange
@@ -56,7 +57,8 @@
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
-            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
+            using var serviceProvider = FakeServiceProvider.Setup();
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>()));
             Host.PerformanceSetting = Globals.PerformanceSettings.ModerateCaching;
             var uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
@@ -120,8 +122,6 @@
                 .Setup(s => s.GetPortalAliases())
                 .Returns(() => portalAliasTable.CreateDataReader());
 
-            using var serviceProvider = FakeServiceProvider.Setup();
-
             var urlRewriter = new AdvancedUrlRewriter();
             var checkForRedirectsMethod = typeof(AdvancedUrlRewriter)
                 .GetMethod(
@@ -153,24 +153,23 @@
             // Act
             var isRedirected = checkForRedirectsMethod.Invoke(
                 urlRewriter,
-                new object[]
-                {
+                [
                     requestUri,
                     FullUrl,
                     queryStringCollection,
                     urlAction,
                     requestType,
                     friendlyUrlSettings,
-                    portalHomeTabId,
-                });
+                    portalHomeTabId
+                ]);
 
             // Assert
             Assert.That(isRedirected, Is.EqualTo(false));
         }
 
-        private void FillTabsTable(DataTable tabsTable)
+        private static void FillTabsTable(DataTable tabsTable)
         {
-            var tabColumns = new string[]
+            var tabColumns = new[]
             {
                 "TabID",
                 "UniqueId",
@@ -270,7 +269,7 @@
 
         }
 
-        private void FillPortalsTable(DataTable portalsTable)
+        private static void FillPortalsTable(DataTable portalsTable)
         {
             var portalColumns = new[]
             {
@@ -373,7 +372,7 @@
                 "en-US");
         }
 
-        private void FillPortalAliasTable(DataTable portalAliasTable)
+        private static void FillPortalAliasTable(DataTable portalAliasTable)
         {
             var portalAliasColumns = new[]
             {

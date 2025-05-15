@@ -24,10 +24,11 @@ public abstract class Authorize : Page
 {
     private readonly ISmtpOAuthController smtpOAuthController;
     private readonly IHostSettingsService hostSettingsService;
+    private readonly IHostSettings hostSettings;
 
     /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
     protected Authorize()
-        : this(null, null)
+        : this(null, null, null)
     {
     }
 
@@ -35,23 +36,22 @@ public abstract class Authorize : Page
     /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
     protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService)
+        : this(smtpOAuthController, hostSettingsService, null)
     {
-        if (smtpOAuthController != null)
-        {
-            this.smtpOAuthController = smtpOAuthController;
-            this.hostSettingsService = hostSettingsService;
-        }
-        else
-        {
-            var serviceProvider = HttpContextSource.Current.GetScope().ServiceProvider;
-            this.smtpOAuthController = serviceProvider.GetRequiredService<ISmtpOAuthController>();
-            this.hostSettingsService = hostSettingsService ?? serviceProvider.GetRequiredService<IHostSettingsService>();
-        }
     }
 
-    /// <summary>
-    /// OnLoad event.
-    /// </summary>
+    /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
+    /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings)
+    {
+        this.smtpOAuthController = smtpOAuthController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ISmtpOAuthController>();
+        this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
+        this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+    }
+
+    /// <summary>OnLoad event.</summary>
     /// <param name="e">Event.</param>
     protected override void OnLoad(EventArgs e)
     {
@@ -72,7 +72,7 @@ public abstract class Authorize : Page
         }
 
         var authProvider = this.smtpOAuthController.GetOAuthProvider(Constants.Name);
-        var clientApplication = ExchangeOnlineOAuthProvider.CreateClientApplication(this.smtpOAuthController, this.hostSettingsService, portalId);
+        var clientApplication = ExchangeOnlineOAuthProvider.CreateClientApplication(this.smtpOAuthController, this.hostSettingsService, this.hostSettings, portalId);
 
         if (clientApplication == null || await authProvider.IsAuthorizedAsync(portalId, cancellationToken))
         {

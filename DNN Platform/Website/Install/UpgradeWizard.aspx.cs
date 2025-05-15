@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
@@ -85,6 +84,7 @@ namespace DotNetNuke.Services.Install
             };
 
         private readonly IApplicationStatusInfo applicationStatus;
+        private readonly IHostSettings hostSettings;
 
         static UpgradeWizard()
         {
@@ -93,15 +93,17 @@ namespace DotNetNuke.Services.Install
 
         /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
         public UpgradeWizard()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
         /// <param name="applicationStatus">The application status info.</param>
-        public UpgradeWizard(IApplicationStatusInfo applicationStatus)
+        /// <param name="hostSettings">The host settings.</param>
+        public UpgradeWizard(IApplicationStatusInfo applicationStatus, IHostSettings hostSettings)
         {
             this.applicationStatus = applicationStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>
@@ -864,9 +866,9 @@ namespace DotNetNuke.Services.Install
 
         private void SslRequiredCheck()
         {
-            if (Entities.Host.Host.UpgradeForceSsl && !this.Request.IsSecureConnection)
+            if (this.hostSettings.UpgradeForceSsl && !this.Request.IsSecureConnection)
             {
-                var sslDomain = Entities.Host.Host.SslDomain;
+                var sslDomain = this.hostSettings.SslDomain;
                 if (string.IsNullOrEmpty(sslDomain))
                 {
                     sslDomain = this.Request.Url.Host;

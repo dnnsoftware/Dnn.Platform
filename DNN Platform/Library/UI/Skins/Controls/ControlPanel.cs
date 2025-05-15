@@ -7,14 +7,31 @@ namespace DotNetNuke.UI.Skins.Controls
     using System;
     using System.Web.UI.HtmlControls;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class ControlPanel : SkinObjectBase
     {
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="ControlPanel"/> class.</summary>
+        public ControlPanel()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ControlPanel"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public ControlPanel(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         public bool IsDockable { get; set; }
 
         /// <inheritdoc/>
@@ -24,13 +41,13 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp())
             {
-                var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
+                var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, this.hostSettings.ControlPanel);
                 var objForm = (HtmlForm)this.Page.FindControl("Form");
 
                 if (objControlPanel.IncludeInControlHierarchy)
                 {
                     objControlPanel.IsDockable = this.IsDockable;
-                    if (!Host.ControlPanel.EndsWith("controlbar.ascx", StringComparison.InvariantCultureIgnoreCase))
+                    if (!this.hostSettings.ControlPanel.EndsWith("controlbar.ascx", StringComparison.InvariantCultureIgnoreCase))
                     {
                         this.Controls.Add(objControlPanel);
                     }

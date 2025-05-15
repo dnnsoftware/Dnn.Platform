@@ -13,10 +13,10 @@ namespace DotNetNuke.Security.Membership
     using System.Web;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
@@ -30,6 +30,8 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The AspNetMembershipProvider overrides the default MembershipProvider to provide an AspNet Membership Component (MemberRole) implementation.</summary>
     public partial class AspNetMembershipProvider : MembershipProvider
     {
@@ -38,6 +40,20 @@ namespace DotNetNuke.Security.Membership
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
         private readonly IEnumerable<string> socialAuthProviders = new List<string>() { "Facebook", "Google", "Twitter", "LiveID" };
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="AspNetMembershipProvider"/> class.</summary>
+        public AspNetMembershipProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AspNetMembershipProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public AspNetMembershipProvider(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <inheritdoc/>
         public override bool CanEditProviderProperties
@@ -405,7 +421,7 @@ namespace DotNetNuke.Security.Membership
                     // If new user - add to aspnet membership
                     if (createStatus == UserCreateStatus.AddUser)
                     {
-                        createStatus = CreateMemberhipUser(user);
+                        createStatus = CreateMembershipUser(user);
                     }
 
                     // If asp user has been successfully created or we are adding a existing user
@@ -488,7 +504,7 @@ namespace DotNetNuke.Security.Membership
             MembershipUser aspnetUser = GetMembershipUser(user);
             if (aspnetUser.IsLockedOut)
             {
-                AutoUnlockUser(aspnetUser);
+                AutoUnlockUser(this.hostSettings, aspnetUser);
             }
 
             return this.RequiresQuestionAndAnswer ? aspnetUser.GetPassword(passwordAnswer) : aspnetUser.GetPassword();
@@ -1016,7 +1032,7 @@ namespace DotNetNuke.Security.Membership
                 // Check if the User is Locked Out (and unlock if AutoUnlock has expired)
                 if (aspnetUser.IsLockedOut)
                 {
-                    if (AutoUnlockUser(aspnetUser))
+                    if (AutoUnlockUser(this.hostSettings, aspnetUser))
                     {
                         // Unlock User
                         user.Membership.LockedOut = false;
@@ -1090,11 +1106,11 @@ namespace DotNetNuke.Security.Membership
             return user;
         }
 
-        private static bool AutoUnlockUser(MembershipUser aspNetUser)
+        private static bool AutoUnlockUser(IHostSettings hostSettings, MembershipUser aspNetUser)
         {
-            if (Host.AutoAccountUnlockDuration != 0)
+            if (hostSettings.AutoAccountUnlockDuration > TimeSpan.Zero)
             {
-                if (aspNetUser.LastLockoutDate < DateTime.Now.AddMinutes(-1 * Host.AutoAccountUnlockDuration))
+                if (aspNetUser.LastLockoutDate < DateTime.Now.Subtract(hostSettings.AutoAccountUnlockDuration))
                 {
                     // Unlock user in Data Store
                     if (aspNetUser.UnlockUser())
@@ -1107,7 +1123,7 @@ namespace DotNetNuke.Security.Membership
             return false;
         }
 
-        private static UserCreateStatus CreateMemberhipUser(UserInfo user)
+        private static UserCreateStatus CreateMembershipUser(UserInfo user)
         {
             var portalSecurity = PortalSecurity.Instance;
             string userName = portalSecurity.InputFilter(

@@ -5,18 +5,33 @@ namespace DotNetNuke.UI.Containers.Controls
 {
     using System;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
 
-    using DotNetNuke.Framework;
+    using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.UI.Skins;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A skin/theme object which displays an <c>h2</c> with content that can be toggled.</summary>
     [ParseChildren(false)]
     [PersistChildren(true)]
     public partial class Toggle : SkinObjectBase
     {
+        private readonly IJavaScriptLibraryHelper javaScript;
         private string target;
+
+        /// <summary>Initializes a new instance of the <see cref="Toggle"/> class.</summary>
+        public Toggle()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Toggle"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public Toggle(IJavaScriptLibraryHelper javaScript)
+        {
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        }
 
         public string Class { get; set; }
 
@@ -49,8 +64,8 @@ namespace DotNetNuke.UI.Containers.Controls
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            this.javaScript.RequestRegistration(CommonJs.jQuery);
+            this.javaScript.RequestRegistration(CommonJs.jQueryMigrate);
 
             var toggleScript = string.Format(
                 "<script type=\"text/javascript\">(function($){{$(\"#{0}\").find(\"a.toggleHandler\").click(function(e){{$(\"#{1}\").slideToggle();$(this).toggleClass('collapsed');e.preventDefault();}});}})(jQuery);</script>",

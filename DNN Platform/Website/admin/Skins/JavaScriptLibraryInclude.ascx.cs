@@ -6,11 +6,31 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control which requests the inclusion of a JavaScript library on the page.</summary>
     public partial class JavaScriptLibraryInclude : SkinObjectBase
     {
+        private readonly IJavaScriptLibraryHelper javaScript;
+
+        /// <summary>Initializes a new instance of the <see cref="JavaScriptLibraryInclude"/> class.</summary>
+        public JavaScriptLibraryInclude()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="JavaScriptLibraryInclude"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public JavaScriptLibraryInclude(IJavaScriptLibraryHelper javaScript)
+        {
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        }
+
         public string Name { get; set; }
 
         public Version Version { get; set; }
@@ -22,15 +42,15 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             if (this.Version == null)
             {
-                JavaScript.RequestRegistration(this.Name);
+                this.javaScript.RequestRegistration(this.Name);
             }
             else if (this.SpecificVersion == null)
             {
-                JavaScript.RequestRegistration(this.Name, this.Version);
+                this.javaScript.RequestRegistration(this.Name, this.Version);
             }
             else
             {
-                JavaScript.RequestRegistration(this.Name, this.Version, this.SpecificVersion.Value);
+                this.javaScript.RequestRegistration(this.Name, this.Version, this.SpecificVersion.Value);
             }
         }
     }
