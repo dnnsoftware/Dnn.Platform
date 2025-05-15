@@ -416,7 +416,10 @@ ALTER TABLE {databaseOwner}{objectQualifier}ApiTokenKeys ADD CONSTRAINT [FK_{obj
 END
 GO
 
-DROP VIEW IF EXISTS {databaseOwner}[{objectQualifier}vw_ApiTokens]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}vw_ApiTokens]') AND OBJECTPROPERTY(id, N'IsView') = 1)
+BEGIN
+    DROP VIEW {databaseOwner}[{objectQualifier}vw_ApiTokens]
+END
 GO
 
 CREATE VIEW {databaseOwner}[{objectQualifier}vw_ApiTokens]
