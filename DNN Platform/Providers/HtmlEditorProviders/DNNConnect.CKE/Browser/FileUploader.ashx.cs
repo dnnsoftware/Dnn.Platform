@@ -259,6 +259,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                     fileName = fileName.Substring(fileName.Length - 220);
                 }
 
+                // file names starting with '\\' may be used for manipulating the filepath and explore vulnerabilities
+                fileName = Regex.Replace(fileName, @"^\\+", string.Empty);
+
                 var fileNameNoExtenstion = Path.GetFileNameWithoutExtension(fileName);
 
                 // Rename File if Exists
