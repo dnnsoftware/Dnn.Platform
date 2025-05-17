@@ -12,13 +12,13 @@ class DropdownDayPicker extends Component  {
     }
 
     componentDidMount() {
-        document.addEventListener('click', this.handleClick.bind(this), false);
+        document.addEventListener("click", this.handleClick.bind(this), false);
         this._isMounted = true;
     }
 
 
     componentWillUnmount() {
-        document.removeEventListener('click', this.handleClick.bind(this), false);
+        document.removeEventListener("click", this.handleClick.bind(this), false);
         this._isMounted = false;
     }
 
@@ -30,7 +30,7 @@ class DropdownDayPicker extends Component  {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {dropdownIsActive, onDayClick, applyChanges, clearChanges, startDate, endDate, CalendarIcon, toggleDropdownCalendar} = this.props;
 
@@ -48,7 +48,7 @@ class DropdownDayPicker extends Component  {
                     </GridCell>
                     <div
                         id="calendar-dropdown"
-                        className={dropdownIsActive ? "calendar-dropdown expand-down" : `calendar-dropdown ${dropdownIsActive !== null ? 'expand-up' : ''} ` } >
+                        className={dropdownIsActive ? "calendar-dropdown expand-down" : `calendar-dropdown ${dropdownIsActive !== null ? "expand-up" : ""} ` } >
                         <GridCell columnSize={100} style={{padding:"20px"}}>
                             <GridCell columnSize={50}  className="calendar">
                                 <DayPicker

@@ -78,6 +78,7 @@ class EditUrl extends Component {
         if (
             !this.state.hasChanges &&
             url.siteAlias.Key !== primaryAliasId &&
+            // eslint-disable-next-line eqeqeq -- Could break as we have any for a type
             url.id == null) 
         {
             this.props.onChange("siteAlias", primaryAliasId); 
