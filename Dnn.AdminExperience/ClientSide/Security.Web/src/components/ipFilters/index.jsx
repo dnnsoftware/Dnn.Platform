@@ -8,9 +8,8 @@ import util from "../../utils";
 import resx from "../../resources";
 import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.module.less";
-
-/*eslint-disable quotes*/
-const warningIcon = require(`!raw-loader!./../svg/error.svg`).default;
+import warningIcon from "./../svg/error.svg?raw";
+ 
 
 let tableFields = [];
 
@@ -85,7 +84,7 @@ class IpFiltersPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedIpFilters() {
         let i = 0;
         return this.props.ipFilters.map((item, index) => {

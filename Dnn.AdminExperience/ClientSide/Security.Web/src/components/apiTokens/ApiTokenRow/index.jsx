@@ -19,7 +19,7 @@ class ApiTokenRow extends Component {
         // this.handleClick = this.handleClick.bind(this);
     }
 
-    componentWillReceiveProps() {
+    UNSAFE_componentWillReceiveProps() {
         this.setState({});
     }
 
@@ -39,7 +39,7 @@ class ApiTokenRow extends Component {
         // the "findDOMNode was called on an unmounted component." error we need to check if the component is mounted before execute this code
         if (!this._isMounted) { return; }
 
-        if (!this.node.contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") == -1)) {
+        if (!this.node.contains(event.target) && (typeof event.target.className === "string" && event.target.className.indexOf("do-not-close") === -1)) {
 
             this.timeout = 475;
             this.collapse();
@@ -73,7 +73,6 @@ class ApiTokenRow extends Component {
 
     render() {
         const { props, state } = this;
-        let dateFormatter = new Intl.DateTimeFormat(window.dnn.utility.getCulture(), { dateStyle: "short" });
         let status = "";
         let statusClass = "inactive";
         if (utils.dateInPast(new Date(props.apiToken.ExpiresOn), new Date())) {
@@ -103,7 +102,7 @@ class ApiTokenRow extends Component {
                         </div>
                         <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "8%" }}>
                             <div className="term-label-wrapper">
-                                <span>{props.scopes.filter((item) => item.value == this.props.apiToken.Scope)[0].label}</span>
+                                <span>{props.scopes.filter((item) => item.value === this.props.apiToken.Scope)[0].label}</span>
                             </div>
                         </div>
                         <div className="term-label" onClick={this.toggle.bind(this)} style={{ width: "10%" }}>
@@ -142,7 +141,7 @@ class ApiTokenRow extends Component {
                             type="danger"
                             onClick={() => {
                                 utils.utilities.confirm(resx.get("DeleteApiKey.Confirm"), resx.get("Yes"), resx.get("No"), () => {
-                                    this.props.dispatch(SecurityActions.revokeOrDeleteApiToken(this.props.apiToken.ApiTokenId, true, (data) => {
+                                    this.props.dispatch(SecurityActions.revokeOrDeleteApiToken(this.props.apiToken.ApiTokenId, true, () => {
                                         this.collapse();
                                         this.props.onClose();
                                     }));
@@ -155,7 +154,7 @@ class ApiTokenRow extends Component {
                                 type="secondary"
                                 onClick={() => {
                                     utils.utilities.confirm(resx.get("Revoke.Confirm"), resx.get("Yes"), resx.get("No"), () => {
-                                        this.props.dispatch(SecurityActions.revokeOrDeleteApiToken(this.props.apiToken.ApiTokenId, false, (data) => {
+                                        this.props.dispatch(SecurityActions.revokeOrDeleteApiToken(this.props.apiToken.ApiTokenId, false, () => {
                                             this.props.onClose();
                                         }));
                                     });
@@ -175,10 +174,11 @@ ApiTokenRow.propTypes = {
     apiToken: PropTypes.object.isRequired,
     scopes: PropTypes.array.isRequired,
     onClose: PropTypes.func.isRequired,
-    className: PropTypes.string
+    className: PropTypes.string,
+    children: PropTypes.node,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {};
 }
 
