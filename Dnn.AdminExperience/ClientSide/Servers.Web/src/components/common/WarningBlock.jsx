@@ -6,7 +6,7 @@ import "./style.less";
 export default class WarningBlock extends Component {
     
     render() {
-        /* eslint-disable react/no-danger */
+         
         const {props} = this;
 
         return <GridCell className="serversTabWarningInfo">
