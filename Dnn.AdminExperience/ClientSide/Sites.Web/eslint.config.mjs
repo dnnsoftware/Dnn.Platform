@@ -36,6 +36,7 @@ const config = [
                 Promise: false,
                 VERSION: false,
                 process: false,
+                ...globals.browser,
                 ...globals.jest,
             }
         }
