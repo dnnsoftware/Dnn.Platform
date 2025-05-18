@@ -15,6 +15,7 @@ namespace DotNetNuke.Modules.Admin.Sales
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
@@ -22,6 +23,7 @@ namespace DotNetNuke.Modules.Admin.Sales
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>A page which received messages from PayPal.</summary>
+    [DnnDeprecated(10, 0, 2, "No replacement")]
     public partial class PayPalIPN : PageBase
     {
         /// <inheritdoc/>

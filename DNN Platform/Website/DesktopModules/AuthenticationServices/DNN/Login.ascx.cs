@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -50,6 +51,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 return AuthenticationConfig.GetConfig(this.PortalId).UseCaptcha;
             }
         }
+
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
@@ -144,7 +147,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                             if (redirectTabId > 0)
                             {
                                 var redirectUrl = this.navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
-                                redirectUrl = redirectUrl.Replace(Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias), string.Empty);
+                                redirectUrl = redirectUrl.Replace(Globals.AddHTTP(this.CurrentPortalAlias.HttpAlias), string.Empty);
                                 this.Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
 
@@ -178,9 +181,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                     {
                         if (this.Request.QueryString["username"] != null)
                         {
+#pragma warning disable CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                             string userName = PortalSecurity.Instance.InputFilter(
                                 this.Request.QueryString["username"],
                                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup | PortalSecurity.FilterFlag.NoControlCharacters);
+#pragma warning restore CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
 
                             this.txtUsername.Text = userName;
                         }
@@ -267,9 +272,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
             {
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
+#pragma warning disable CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                 string userName = PortalSecurity.Instance.InputFilter(
                     this.txtUsername.Text,
                     PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup | PortalSecurity.FilterFlag.NoControlCharacters);
+#pragma warning restore CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
 
                 // DNN-6093
                 // check if we use email address here rather than username

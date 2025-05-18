@@ -23,11 +23,13 @@ namespace DotNetNuke.Security.Permissions
         [XmlIgnore]
         [JsonIgnore]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionDefinitionInfo)}.{nameof(IPermissionDefinitionInfo.ModuleDefId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int ModuleDefID
         {
             get => ((IPermissionDefinitionInfo)this).ModuleDefId;
             set => ((IPermissionDefinitionInfo)this).ModuleDefId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("permissioncode")]
@@ -36,11 +38,13 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc cref="IPermissionDefinitionInfo.PermissionID" />
         [XmlElement("permissionid")]
         [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IPermissionDefinitionInfo)}.{nameof(IPermissionDefinitionInfo.PermissionId)} instead. Scheduled for removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PermissionID
         {
             get => ((IPermissionDefinitionInfo)this).PermissionId;
             set => ((IPermissionDefinitionInfo)this).PermissionId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("permissionkey")]

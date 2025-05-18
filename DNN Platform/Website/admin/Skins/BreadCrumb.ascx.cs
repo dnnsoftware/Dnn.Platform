@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Tabs;
@@ -94,6 +95,8 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets a value indicating whether to take advantage of the enhanced markup (remove extra wrapping elements).</summary>
         public bool CleanerMarkup { get; set; }
 
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
+
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
         {
@@ -114,8 +117,8 @@ namespace DotNetNuke.UI.Skins.Controls
             // Without checking if the current tab is the home tab, we would duplicate the root tab
             if (this.showRoot && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.HomeTabId)
             {
-                // Add the current protocal to the current URL
-                this.homeUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
+                // Add the current protocol to the current URL
+                this.homeUrl = Globals.AddHTTP(this.CurrentPortalAlias.HttpAlias);
 
                 // Make sure we have a home tab ID set
                 if (this.PortalSettings.HomeTabId != -1)

@@ -40,8 +40,7 @@ namespace DotNetNuke.Web.Razor
         }
 
         /// <inheritdoc/>
-        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
-        protected override partial void OnPreRender(EventArgs e)
+        protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
             try
