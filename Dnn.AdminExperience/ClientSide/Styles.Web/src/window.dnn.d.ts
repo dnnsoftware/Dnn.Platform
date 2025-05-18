@@ -42,8 +42,8 @@ interface IResx {
 
 interface IStylesResx {
     ActionColors: string;
-    AllowAdminEdits: any;
-    AllowAdminEditsHelp: any;
+    AllowAdminEdits: string;
+    AllowAdminEditsHelp: string;
     BackgroundColor: string;
     BackgroundColorHelp: string;
     BaseFontSize: string;
@@ -71,15 +71,15 @@ interface IStylesResx {
     NeutralColor: string;
     NeutralColorHelp: string;
     No: string;
-    Permissions: any;
+    Permissions: string;
     PrimaryColor: string;
     PrimaryColorHelp: string;
-    Reset: any;
+    Reset: string;
     RestoreDefault: string;
     RestoreDefaultMessage: string;
     Save: string;
-    SaveError: any;
-    SaveSuccess: any;
+    SaveError: string;
+    SaveSuccess: string;
     SecondaryColor: string;
     SecondaryColorHelp: string;
     SuccessColor: string;
