@@ -142,7 +142,7 @@ class ListView extends Component {
     getPortalMapping(portal) {
         dayjs.extend(localizedFormat);
         dayjs.extend(relativeTime);
-        // eslint-disable-next-line no-undef
+         
         require("dayjs/locale/" + this.props.culture.substring(0,2));
 
         return [

@@ -35,9 +35,10 @@ const config = [
                 __: false,
                 Promise: false,
                 VERSION: false,
-                ...globals.browser,
                 process: false,
+                ...globals.browser,
                 ...globals.jest,
+                ...globals.node,
             }
         }
     },
