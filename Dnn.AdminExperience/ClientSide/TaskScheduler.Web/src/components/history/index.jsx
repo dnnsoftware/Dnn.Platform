@@ -8,9 +8,7 @@ import TaskHistoryItemRow from "./taskHistoryItemRow";
 import "./style.less";
 import { Pager } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
-
-/*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../svg/history.svg`).default;
+import historyIcon from "./../svg/history.svg?raw";
 
 let pageSizeOptions = [];
 let tableFields = [];
@@ -95,7 +93,7 @@ class HistoryPanelBody extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedHistoryList() {
         const {props} = this;
         if (props.taskHistoryList) {
@@ -118,12 +116,12 @@ class HistoryPanelBody extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         return (
             <div>
-                <div className="historyIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>
+                <div className="historyIcon" dangerouslySetInnerHTML={{ __html: historyIcon }}></div>
                 <div className="taskHistoryList-title">{props.title}</div>
                 <div className="taskHistoryList-grid">
                     {this.renderedHistoryListHeader()}
