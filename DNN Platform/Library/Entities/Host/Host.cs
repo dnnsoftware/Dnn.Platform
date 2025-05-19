@@ -952,7 +952,7 @@ namespace DotNetNuke.Entities.Host
         /// <remarks>
         ///   Defaults to -1.
         /// </remarks>
-        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in vremoval.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 8.0.0. No replacement. Scheduled removal in v11.0.0.")]
         public static int SiteLogHistory
         {
             get

@@ -178,7 +178,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            Utilities.ApplySkin(this);
+            Utilities.ApplyControlSkin(this, string.Empty, string.Empty);
 
             if (this.TagKey == HtmlTextWriterTag.Input)
             {

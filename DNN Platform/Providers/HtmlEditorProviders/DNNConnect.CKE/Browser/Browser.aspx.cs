@@ -2198,6 +2198,9 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             if (!string.IsNullOrEmpty(fileName))
             {
+                // Convert Unicode Chars
+                fileName = Utility.ConvertUnicodeChars(fileName);
+
                 // Replace dots in the name with underscores (only one dot can be there... security issue).
                 fileName = Regex.Replace(fileName, @"\.(?![^.]*$)", "_", RegexOptions.None);
 
@@ -2206,16 +2209,13 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     fileName = Utility.CleanFileName(fileName);
                 }
-
-                // Convert Unicode Chars
-                fileName = Utility.ConvertUnicodeChars(fileName);
             }
             else
             {
                 return;
             }
 
-            // Check if file is to big for that user
+            // Check if file is too big for that user
             if (this.currentSettings.UploadFileSizeLimit > 0
                 && file.ContentLength > this.currentSettings.UploadFileSizeLimit)
             {
