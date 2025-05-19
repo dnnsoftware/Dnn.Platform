@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Groups.Components
         /// <param name="groupInfo"></param>
         public GroupItemTokenReplace(RoleInfo groupInfo)
         {
-            this.PropertySource["groupitem"] = groupInfo;
+            this.AddPropertySource("groupitem", groupInfo);
         }
 
         public string ReplaceGroupItemTokens(string source)
