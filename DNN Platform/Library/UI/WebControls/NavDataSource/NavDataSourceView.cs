@@ -12,7 +12,7 @@ namespace DotNetNuke.UI.WebControls
         private string sNamespace = "MyNS";
 
         /// <summary>Initializes a new instance of the <see cref="NavDataSourceView"/> class.</summary>
-        /// <param name="viewPath"></param>
+        /// <param name="viewPath">The view path by which to filter nav nodes.</param>
         public NavDataSourceView(string viewPath)
         {
             if (string.IsNullOrEmpty(viewPath))

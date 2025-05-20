@@ -144,6 +144,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetCategory gets the Category of an object.</summary>
+        /// <param name="obj">The object from which to get the category.</param>
         /// <returns>The category name or <see cref="Null.NullString"/>.</returns>
         protected override string GetCategory(object obj)
         {
@@ -164,6 +165,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>GetGroups gets an array of Groups/Categories from the DataSource.</summary>
+        /// <param name="arrObjects">The objects from which to get the categories.</param>
         /// <returns>An array of group/category names.</returns>
         protected override string[] GetGroups(IEnumerable arrObjects)
         {

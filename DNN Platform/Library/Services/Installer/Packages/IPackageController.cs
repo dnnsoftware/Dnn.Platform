@@ -57,8 +57,7 @@ namespace DotNetNuke.Services.Installer.Packages
         void SaveExtensionPackage(PackageInfo package);
 
         /// <summary>GetExtensionPackage is used to retrieve a specific package type from the data store.</summary>
-        /// <param name="predicate">The "search criteria" to use to identify the package type to
-        /// retrieve.  In most cases this will be a simple lambda method e.g. t => t.PackageType == "Modules".</param>
+        /// <param name="predicate">The "search criteria" to use to identify the package type to retrieve.  In most cases this will be a simple lambda method e.g. t => t.PackageType == "Modules".</param>
         /// <returns>A package type.</returns>
         PackageType GetExtensionPackageType(Func<PackageType, bool> predicate);
 
@@ -67,6 +66,7 @@ namespace DotNetNuke.Services.Installer.Packages
         IList<PackageType> GetExtensionPackageTypes();
 
         /// <summary>Get the dependencies for a package.</summary>
+        /// <param name="predicate">The "search criteria" to use to identify the dependencies to retrieve.  In most cases this will be a simple lambda method e.g. <c>d =&gt; d.PackageId == packageId</c>.</param>
         /// <returns>A List of PackageDependencyInfo objects.</returns>
         IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate);
     }

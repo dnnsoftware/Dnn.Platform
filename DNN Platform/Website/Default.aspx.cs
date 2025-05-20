@@ -15,6 +15,7 @@ namespace DotNetNuke.Framework
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
@@ -42,10 +43,9 @@ namespace DotNetNuke.Framework
 
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
+    using ReleaseMode = DotNetNuke.Abstractions.Application.ReleaseMode;
 
-    /// <summary>
-    /// The DNN default page.
-    /// </summary>
+    /// <summary>The DNN default page.</summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
@@ -53,12 +53,24 @@ namespace DotNetNuke.Framework
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultPage"/> class.
-        /// </summary>
+        private readonly IApplicationInfo appInfo;
+        private readonly IModuleControlPipeline moduleControlPipeline;
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         public DefaultPage()
+            : this(null, null, null)
         {
-            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appInfo">The application info.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IModuleControlPipeline moduleControlPipeline)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
+            this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
         }
 
         public string CurrentSkinPath
@@ -135,6 +147,10 @@ namespace DotNetNuke.Framework
             }
         }
 
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
+
+        private IPortalAliasInfo PrimaryPortalAlias => this.PortalSettings.PrimaryAlias;
+
         /// <inheritdoc/>
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
@@ -167,7 +183,7 @@ namespace DotNetNuke.Framework
         /// <returns>A value indicating whether the current version is not a production version.</returns>
         protected bool NonProductionVersion()
         {
-            return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
+            return this.appInfo.Status != ReleaseMode.Stable;
         }
 
         /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
@@ -215,7 +231,7 @@ namespace DotNetNuke.Framework
                     }
                     else
                     {
-                        this.Response.Redirect(Globals.GetPortalDomainName(this.PortalSettings.PortalAlias.HTTPAlias, this.Request, true), true);
+                        this.Response.Redirect(Globals.GetPortalDomainName(this.CurrentPortalAlias.HttpAlias, this.Request, true), true);
                     }
                 }
             }
@@ -227,18 +243,18 @@ namespace DotNetNuke.Framework
                 if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
                     // advanced mode compares on the primary alias as set during alias identification
-                    if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
+                    if (this.PrimaryPortalAlias != null && this.PortalSettings.PortalAlias != null)
                     {
-                        if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
+                        if (string.Compare(this.PrimaryPortalAlias.HttpAlias, this.CurrentPortalAlias.HttpAlias, StringComparison.InvariantCulture) != 0)
                         {
-                            primaryHttpAlias = this.PortalSettings.PrimaryAlias.HTTPAlias;
+                            primaryHttpAlias = this.PrimaryPortalAlias.HttpAlias;
                         }
                     }
                 }
                 else
                 {
                     // other modes just depend on the default alias
-                    if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
+                    if (string.Compare(this.CurrentPortalAlias.HttpAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
                     {
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
                     }
@@ -248,7 +264,7 @@ namespace DotNetNuke.Framework
                 {
                     // a primary http alias was identified
                     var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
-                    this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
+                    this.CanonicalLinkUrl = originalurl.Replace(this.CurrentPortalAlias.HttpAlias, primaryHttpAlias);
 
                     if (UrlUtils.IsSecureConnectionOrSslOffload(this.Request))
                     {
@@ -460,27 +476,20 @@ namespace DotNetNuke.Framework
                 // Skip is popup is just a tab (no slave module)
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
-                    var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
+                    var control = (IModuleControl)this.moduleControlPipeline.CreateModuleControl(slaveModule);
                     string extension = Path.GetExtension(slaveModule.ModuleControl.ControlSrc.ToLowerInvariant());
                     switch (extension)
                     {
                         case ".mvc":
                             var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
-
-                            control.LocalResourceFile = string.Format(
-                                "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                slaveModule.DesktopModule.FolderName,
-                                Localization.LocalResourceDirectory,
-                                segments[0]);
+                            control.LocalResourceFile =
+                                $"~/DesktopModules/MVC/{slaveModule.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
                             break;
                         default:
-                            control.LocalResourceFile = string.Concat(
-                                slaveModule.ModuleControl.ControlSrc.Replace(
-                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc),
-                                    string.Empty),
-                                Localization.LocalResourceDirectory,
-                                "/",
-                                Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
+                            var controlFileName = Path.GetFileName(slaveModule.ModuleControl.ControlSrc);
+                            var controlSrcPath = slaveModule.ModuleControl.ControlSrc.Replace(controlFileName, string.Empty);
+                            control.LocalResourceFile =
+                                $"{controlSrcPath}{Localization.LocalResourceDirectory}/{controlFileName}";
                             break;
                     }
 
@@ -599,8 +608,7 @@ namespace DotNetNuke.Framework
             // NonProduction Label Injection
             if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
-                string versionString =
-                    $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
+                string versionString = $" ({this.appInfo.Status} Version: {this.appInfo.Version})";
                 this.Title += versionString;
             }
 

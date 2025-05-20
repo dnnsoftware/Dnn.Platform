@@ -6,7 +6,10 @@ namespace DotNetNuke.ComponentModel
 {
     public enum ComponentLifeStyleType
     {
+        /// <summary>A single instance is created for the lifetime of the application.</summary>
         Singleton = 0,
+
+        /// <summary>A new instance is created each time it is requested.</summary>
         Transient = 1,
     }
 }

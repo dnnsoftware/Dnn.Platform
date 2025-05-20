@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class WidgetPackageWriter : PackageWriterBase
     {
         /// <summary>Initializes a new instance of the <see cref="WidgetPackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public WidgetPackageWriter(PackageInfo package)
             : base(package)
         {

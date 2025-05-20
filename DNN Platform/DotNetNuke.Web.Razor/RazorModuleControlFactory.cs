@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Razor
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
 
+    /// <summary>A control factory for razor modules.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class RazorModuleControlFactory : BaseModuleControlFactory
     {
@@ -24,22 +25,19 @@ namespace DotNetNuke.Web.Razor
         }
 
         /// <inheritdoc/>
-        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
-        public override partial Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
+        public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new RazorHostControl("~/" + controlSrc);
         }
 
         /// <inheritdoc/>
-        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
-        public override partial Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
+        public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return this.CreateControl(containerControl, string.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         /// <inheritdoc/>
-        [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
-        public override partial Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
+        public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return this.CreateControl(containerControl, string.Empty, controlSrc);
         }

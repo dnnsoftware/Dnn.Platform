@@ -3,9 +3,14 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Themes.Components
 {
+    using DotNetNuke.UI.Skins;
+
     public enum ParseType
     {
+        /// <summary><see cref="SkinParser.Localized"/>.</summary>
         Localized = 0,
+
+        /// <summary><see cref="SkinParser.Portable"/>.</summary>
         Portable = 1,
     }
 }

@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         }
 
         /// <summary>Initializes a new instance of the <see cref="UserBasicDto"/> class.</summary>
-        /// <param name="user"></param>
+        /// <param name="user">The user info.</param>
         public UserBasicDto(UserInfo user)
         {
             this.UserId = user.UserID;

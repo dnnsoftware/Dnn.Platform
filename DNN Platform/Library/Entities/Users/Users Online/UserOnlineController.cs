@@ -67,6 +67,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Determines whether a User is online.</summary>
+        /// <param name="user">The user.</param>
         /// <returns><see langword="true"/> if the user is online, otherwise <see langword="false"/>.</returns>
         public bool IsUserOnline(UserInfo user)
         {
@@ -80,6 +81,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Sets the cached Users Online Information.</summary>
+        /// <param name="userList">A <see cref="Hashtable"/> with <see cref="string"/> keys for the user ID (a GUID for anonymous users) and <see cref="BaseUserInfo"/> instances for the values.</param>
         public void SetUserList(Hashtable userList)
         {
             DataCache.SetCache(CacheKey, userList);

@@ -171,7 +171,7 @@ namespace Dnn.PersonaBar.Seo.Services
 
         /// POST: api/SEO/UpdateRegexSettings
         /// <summary>Updates SEO regex settings.</summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request body.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [RequireHost]
@@ -514,6 +514,9 @@ namespace Dnn.PersonaBar.Seo.Services
         }
 
         /// <summary>Tests the internal URL.</summary>
+        /// <param name="pageId">The tab ID.</param>
+        /// <param name="queryString">The query string.</param>
+        /// <param name="customPageName">The custom page name.</param>
         /// <returns>Various forms of the URL and any messages when they exist.</returns>
         /// <example>
         /// <code>
@@ -541,6 +544,7 @@ namespace Dnn.PersonaBar.Seo.Services
 
         /// GET: api/SEO/TestUrlRewrite
         /// <summary>Tests the rewritten URL.</summary>
+        /// <param name="uri">The URL to rewrite.</param>
         /// <returns>Rewritten URL and few other information about the URL ( language, redirection result and reason, messages).</returns>
         /// <example>
         /// <code>

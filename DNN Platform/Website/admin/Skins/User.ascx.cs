@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Social.Notifications;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to the user's profile.</summary>
     public partial class User : SkinObjectBase
     {
         private const string MyFileName = "User.ascx";

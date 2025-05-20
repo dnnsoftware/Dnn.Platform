@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Localization
         private readonly string compare;
 
         /// <summary>Initializes a new instance of the <see cref="CultureInfoComparer"/> class.</summary>
-        /// <param name="compareBy"></param>
+        /// <param name="compareBy"><c>"ENGLISH"</c> to compare by <see cref="CultureInfo.EnglishName"/>, <c>"NATIVE"</c> to compare by <see cref="CultureInfo.NativeName"/>, or anything else to compare by <see cref="CultureInfo.Name"/>.</param>
         public CultureInfoComparer(string compareBy)
         {
             this.compare = compareBy;

@@ -4,9 +4,8 @@
 
 namespace DotNetNuke.UI.Skins.EventListeners
 {
-    /// <summary>
-    /// The SkinEventHandler delegate defines a custom event handler for a Skin
-    /// Event.
-    /// </summary>
+    /// <summary>The SkinEventHandler delegate defines a custom event handler for a Skin Event.</summary>
+    /// <param name="sender">The event sender.</param>
+    /// <param name="e">The event arguments.</param>
     public delegate void SkinEventHandler(object sender, SkinEventArgs e);
 }

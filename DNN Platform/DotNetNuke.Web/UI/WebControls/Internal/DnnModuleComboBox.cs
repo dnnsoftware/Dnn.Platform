@@ -15,9 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Installer.Packages;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnModuleComboBox : DnnComboBox
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";

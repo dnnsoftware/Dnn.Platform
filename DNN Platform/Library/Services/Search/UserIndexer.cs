@@ -24,13 +24,7 @@ namespace DotNetNuke.Services.Search
     using Lucene.Net.QueryParsers;
     using Lucene.Net.Search;
 
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke.Search.Index
-    /// Class:      TabIndexer
-    /// <summary>
-    /// The TabIndexer is an implementation of the abstract IndexingProvider
-    /// class.
-    /// </summary>
+    /// <summary>The UserIndexer is an implementation of the abstract <see cref="IndexingProviderBase"/> class.</summary>
     public class UserIndexer : IndexingProviderBase
     {
         internal const string UserIndexResetFlag = "UserIndexer_ReIndex";
@@ -42,6 +36,10 @@ namespace DotNetNuke.Services.Search
         private static readonly int UserSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
 
         /// <summary>Searches for and indexes modified users for the given portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="schedule">The schedule history item.</param>
+        /// <param name="startDateLocal">The local date to start indexing from.</param>
+        /// <param name="indexer">The index action.</param>
         /// <returns>Count of indexed records.</returns>
         public override int IndexSearchDocuments(int portalId, ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {

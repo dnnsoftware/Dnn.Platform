@@ -25,24 +25,24 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         /// <summary>Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.</summary>
-        /// <param name="connectionStringName"></param>
+        /// <param name="connectionStringName">The connection string name.</param>
         public PetaPocoDataContext(string connectionStringName)
             : this(connectionStringName, string.Empty, new Dictionary<Type, IMapper>())
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.</summary>
-        /// <param name="connectionStringName"></param>
-        /// <param name="tablePrefix"></param>
+        /// <param name="connectionStringName">The connection string name.</param>
+        /// <param name="tablePrefix">The table prefix.</param>
         public PetaPocoDataContext(string connectionStringName, string tablePrefix)
             : this(connectionStringName, tablePrefix, new Dictionary<Type, IMapper>())
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PetaPocoDataContext"/> class.</summary>
-        /// <param name="connectionStringName"></param>
-        /// <param name="tablePrefix"></param>
-        /// <param name="mappers"></param>
+        /// <param name="connectionStringName">The connection string name.</param>
+        /// <param name="tablePrefix">The table prefix.</param>
+        /// <param name="mappers">A <see cref="Dictionary{TKey,TValue}"/> with <see cref="FluentMapper{TModel}"/> instances for types.</param>
         public PetaPocoDataContext(string connectionStringName, string tablePrefix, Dictionary<Type, IMapper> mappers)
         {
             Requires.NotNullOrEmpty("connectionStringName", connectionStringName);

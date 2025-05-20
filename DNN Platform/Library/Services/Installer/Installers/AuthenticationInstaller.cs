@@ -73,7 +73,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>The ReadManifest method reads the manifest file for the Authentication compoent.</summary>
+        /// <summary>The ReadManifest method reads the manifest file for the Authentication component.</summary>
+        /// <param name="manifestNav">The XPath navigator for the Auth System section of the manifest.</param>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.authSystem = new AuthenticationInfo();

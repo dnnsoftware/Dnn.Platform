@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using System.Text.RegularExpressions;
     using System.Web;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Library.Helper;
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Components.Exceptions;
@@ -1485,7 +1485,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// If the tab description is equal to the portal description
         /// we store null so the system will serve the portal description instead.
         /// </summary>
-        /// <param name="pageSettings"></param>
+        /// <param name="pageSettings">The page settings.</param>
         /// <returns>Tab Description value to be stored.</returns>
         private string GetTabDescription(PageSettings pageSettings)
         {
@@ -1498,7 +1498,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// If the tab keywords is equal to the portal keywords
         /// we store null so the system will serve the portal keywords instead.
         /// </summary>
-        /// <param name="pageSettings"></param>
+        /// <param name="pageSettings">The page settings.</param>
         /// <returns>Tab Keywords value to be stored.</returns>
         private string GetKeyWords(PageSettings pageSettings)
         {

@@ -28,26 +28,53 @@ namespace DotNetNuke.Web.UI
 
     public enum DotNetNukeErrorCode
     {
+        /// <summary>Not set.</summary>
         NotSet = 0,
+
+        /// <summary>The page already exists.</summary>
         PageExists = 1,
+
+        /// <summary>THe page name is missing.</summary>
         PageNameRequired = 2,
+
+        /// <summary>The page name is invalid.</summary>
         PageNameInvalid = 3,
+
+        /// <summary>Failed deserializing the page's modules.</summary>
         DeserializePanesFailed = 4,
+
+        /// <summary>The page's parent would also be a descendant of the page.</summary>
         PageCircularReference = 5,
+
+        /// <summary>The parent page is invalid.</summary>
         ParentTabInvalid = 6,
+
+        /// <summary>The user does not have permission to edit the page.</summary>
         PageEditorPermissionError = 7,
+
+        /// <summary>Cannot move a tab before or after the host tab.</summary>
         HostBeforeAfterError = 8,
+
+        /// <summary>The page's URL would conflict with a portal alias.</summary>
         DuplicateWithAlias = 9,
     }
 
     public enum TabRelativeLocation
     {
+        /// <summary>Location not set.</summary>
         NOTSET = 0,
+
+        /// <summary>This tab is before the other tab.</summary>
         BEFORE = 1,
+
+        /// <summary>THis tab is after the other tab.</summary>
         AFTER = 2,
+
+        /// <summary>This tab is a child of the other tab.</summary>
         CHILD = 3,
     }
 
+    /// <summary>Manages the old ribbon bar.</summary>
     public partial class RibbonBarManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
@@ -219,6 +246,7 @@ namespace DotNetNuke.Web.UI
             return true;
         }
 
+        /// <inheritdoc cref="SaveTabInfoObject(DotNetNuke.Abstractions.Modules.IBusinessControllerProvider,DotNetNuke.Entities.Tabs.TabInfo,DotNetNuke.Entities.Tabs.TabInfo,DotNetNuke.Web.UI.TabRelativeLocation,string)"/>
         [DnnDeprecated(10, 0, 0, "Please use overload with IServiceProvider")]
         public static partial int SaveTabInfoObject(
             TabInfo tab,

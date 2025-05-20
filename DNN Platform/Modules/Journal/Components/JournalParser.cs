@@ -38,11 +38,11 @@ namespace DotNetNuke.Modules.Journal.Components
         private bool isUnverifiedUser;
 
         /// <summary>Initializes a new instance of the <see cref="JournalParser"/> class.</summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="moduleId"></param>
-        /// <param name="profileId"></param>
-        /// <param name="socialGroupId"></param>
-        /// <param name="userInfo"></param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="moduleId">The module ID.</param>
+        /// <param name="profileId">The profile ID.</param>
+        /// <param name="socialGroupId">The social group ID.</param>
+        /// <param name="userInfo">The user info.</param>
         public JournalParser(
             PortalSettings portalSettings,
             int moduleId,
@@ -54,12 +54,12 @@ namespace DotNetNuke.Modules.Journal.Components
         }
 
         /// <summary>Initializes a new instance of the <see cref="JournalParser"/> class.</summary>
-        /// <param name="navigationManager"></param>
-        /// <param name="portalSettings"></param>
-        /// <param name="moduleId"></param>
-        /// <param name="profileId"></param>
-        /// <param name="socialGroupId"></param>
-        /// <param name="userInfo"></param>
+        /// <param name="navigationManager">A navigation manager.</param>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="moduleId">The module ID.</param>
+        /// <param name="profileId">The profile ID.</param>
+        /// <param name="socialGroupId">The social group ID.</param>
+        /// <param name="userInfo">The user info.</param>
         public JournalParser(INavigationManager navigationManager, PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();

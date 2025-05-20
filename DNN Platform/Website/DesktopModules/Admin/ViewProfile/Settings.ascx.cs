@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
 
+    /// <summary>A settings control for the profile module.</summary>
     public partial class ViewProfileSettings : ModuleSettingsBase
     {
         /// <inheritdoc/>

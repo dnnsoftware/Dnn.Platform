@@ -26,8 +26,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         }
 
         /// <summary>Initializes a new instance of the <see cref="PackageInfoDto"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="package"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="package">The package info.</param>
         public PackageInfoDto(int portalId, PackageInfo package)
         {
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();

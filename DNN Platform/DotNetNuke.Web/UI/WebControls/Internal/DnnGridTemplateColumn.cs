@@ -5,9 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 {
     using System.Web.UI.WebControls;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnGridTemplateColumn : TemplateField
     {
     }

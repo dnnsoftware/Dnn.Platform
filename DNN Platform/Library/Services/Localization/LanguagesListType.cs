@@ -7,8 +7,13 @@ namespace DotNetNuke.Services.Localization
     /// <summary>Enumeration that determines the type of Languages List.</summary>
     public enum LanguagesListType
     {
+        /// <summary>All languages.</summary>
         All = 0,
+
+        /// <summary>All supported languages.</summary>
         Supported = 1,
+
+        /// <summary>All enabled languages.</summary>
         Enabled = 2,
     }
 }

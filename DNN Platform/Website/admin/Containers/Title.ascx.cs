@@ -11,13 +11,12 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary></summary>
+    /// <summary>A container object which displays the module's title.</summary>
     public partial class Title : SkinObjectBase
     {
         private const string MyFileName = "Title.ascx";
@@ -82,9 +81,11 @@ namespace DotNetNuke.UI.Containers
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(this.ModuleControl.ModuleContext.ModuleId, this.ModuleControl.ModuleContext.TabId, false);
 
+#pragma warning disable CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                 var ps = PortalSecurity.Instance;
                 var mt = ps.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting);
                 moduleInfo.ModuleTitle = mt;
+#pragma warning restore CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
 
                 ModuleController.Instance.UpdateModule(moduleInfo);
             }

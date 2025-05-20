@@ -12,10 +12,7 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      CollectionEditorInfoFactory
-    /// <summary>The CollectionEditorInfoAdapter control provides an Adapter for Collection Onjects.</summary>
+    /// <summary>The CollectionEditorInfoAdapter control provides an Adapter for Collection Objects.</summary>
     public class CollectionEditorInfoAdapter : IEditorInfoAdapter
     {
         private readonly object dataSource;
@@ -23,10 +20,10 @@ namespace DotNetNuke.UI.WebControls
         private readonly string name;
 
         /// <summary>Initializes a new instance of the <see cref="CollectionEditorInfoAdapter"/> class.</summary>
-        /// <param name="dataSource"></param>
-        /// <param name="name"></param>
-        /// <param name="fieldName"></param>
-        /// <param name="fieldNames"></param>
+        /// <param name="dataSource">The data source object.</param>
+        /// <param name="name">The resource key name prefix.</param>
+        /// <param name="fieldName">The field name.</param>
+        /// <param name="fieldNames">The field names.</param>
         public CollectionEditorInfoAdapter(object dataSource, string name, string fieldName, Hashtable fieldNames)
         {
             this.dataSource = dataSource;

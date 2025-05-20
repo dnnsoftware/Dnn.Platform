@@ -50,9 +50,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="AddRoles"/> class.</summary>
-        /// <param name="userValidator"></param>
-        /// <param name="userController"></param>
-        /// <param name="rolesController"></param>
+        /// <param name="userValidator">The user validator.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="rolesController">The roles controller.</param>
         public AddRoles(IUserValidator userValidator, IUsersController userController, IRolesController rolesController)
         {
             this.userValidator = userValidator;

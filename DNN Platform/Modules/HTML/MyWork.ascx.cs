@@ -28,7 +28,8 @@ namespace DotNetNuke.Modules.Html
             return "<a href=\"" + this.navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
-        /// <summary>  Page_Load runs when the control is loaded.</summary>
+        /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -11,18 +11,13 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Cache;
 
-    /// Namespace:  DotNetNuke.Framework
-    /// Project:    DotNetNuke
-    /// Class:      CachePageStatePersister
-    /// <summary>CachePageStatePersister provides a cache based page state peristence mechanism.</summary>
+    /// <summary>CachePageStatePersister provides a cache based page state persistence mechanism.</summary>
     public class CachePageStatePersister : PageStatePersister
     {
         private const string ViewStateCacheKey = "__VIEWSTATE_CACHEKEY";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CachePageStatePersister"/> class.
-        /// Creates the CachePageStatePersister.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="CachePageStatePersister"/> class.</summary>
+        /// <param name="page">The <see cref="Page"/> that the view state persistence mechanism is created for.</param>
         public CachePageStatePersister(Page page)
             : base(page)
         {

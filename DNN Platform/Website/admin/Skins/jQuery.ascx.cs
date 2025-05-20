@@ -9,6 +9,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Framework.JavaScriptLibraries;
 
+    /// <summary>A control which requests the inclusion of jQuery on the page.</summary>
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
     // ReSharper disable once InconsistentNaming

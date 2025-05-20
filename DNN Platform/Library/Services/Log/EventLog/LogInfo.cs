@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <summary>Initializes a new instance of the <see cref="LogInfo"/> class.</summary>
-        /// <param name="content"></param>
+        /// <param name="content">XML serialized log info.</param>
         public LogInfo(string content)
             : this()
         {

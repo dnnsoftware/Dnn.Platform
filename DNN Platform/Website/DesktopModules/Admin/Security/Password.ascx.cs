@@ -8,25 +8,23 @@ namespace DotNetNuke.Modules.Admin.Users
     using System.Web.Security;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Membership;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Skins.Controls;
-    using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Host = DotNetNuke.Entities.Host.Host;
 
@@ -34,6 +32,20 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class Password : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
+        public Password()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public Password(IEventLogger eventLogger)
+        {
+            this.eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
 
         public delegate void PasswordUpdatedEventHandler(object sender, PasswordUpdatedEventArgs e);
 
@@ -65,6 +77,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the PasswordUpdated Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnPasswordUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -79,6 +92,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the PasswordQuestionAnswerUpdated Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnPasswordQuestionAnswerUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -382,15 +396,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void LogResult(string message)
         {
-            var portalSecurity = PortalSecurity.Instance;
-
-            var log = new LogInfo
+            ILogInfo log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
-                LogUserName = portalSecurity.InputFilter(this.User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+                LogUserName = this.User.Username,
             };
+            log.LogUserId = this.UserId;
+            log.LogPortalId = this.PortalSettings.PortalId;
 
             if (string.IsNullOrEmpty(message))
             {
@@ -402,7 +414,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-            LogController.Instance.AddLog(log);
+            this.eventLogger.AddLog(log);
         }
 
         private void CmdUpdate_Click(object sender, EventArgs e)

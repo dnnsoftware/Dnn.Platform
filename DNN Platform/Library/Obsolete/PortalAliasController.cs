@@ -22,6 +22,7 @@ namespace DotNetNuke.Entities.Portals
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <content>The obsolete methods for <see cref="PortalAliasController"/>.</content>
     public partial class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>, IPortalAliasController
     {
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead. Scheduled removal in v11.0.0.")]
@@ -86,8 +87,10 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAliasId">The portal alias ID.</param>
         /// <returns>Portal alias info.</returns>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public partial PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId) =>
             (PortalAliasInfo)((IPortalAliasService)this).GetPortalAliasByPortalAliasId(portalAliasId);
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc cref="IPortalAliasService.GetPortalAliases"/>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
@@ -112,8 +115,10 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAliasId">The portal alias id.</param>
         /// <returns>Portal info.</returns>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public partial PortalInfo GetPortalByPortalAliasID(int portalAliasId) =>
             (PortalInfo)((IPortalAliasService)this).GetPortalByPortalAliasId(portalAliasId);
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc cref="IPortalAliasService.UpdatePortalAlias"/>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]

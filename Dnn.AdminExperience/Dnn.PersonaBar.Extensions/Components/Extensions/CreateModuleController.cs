@@ -34,9 +34,9 @@ namespace Dnn.PersonaBar.Extensions.Components
         protected INavigationManager NavigationManager { get; }
 
         /// <summary>create new module.</summary>
-        /// <param name="createModuleDto"></param>
-        /// <param name="newPageUrl"></param>
-        /// <param name="errorMessage"></param>
+        /// <param name="createModuleDto">Information about the module to create.</param>
+        /// <param name="newPageUrl">The new page URL or <see cref="string.Empty"/>.</param>
+        /// <param name="errorMessage">The error message or <see cref="string.Empty"/>.</param>
         /// <returns>return the new package id.</returns>
         public int CreateModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
         {

@@ -17,7 +17,7 @@ namespace DotNetNuke.Data.PetaPoco
         private readonly string tablePrefix;
 
         /// <summary>Initializes a new instance of the <see cref="PetaPocoMapper"/> class.</summary>
-        /// <param name="tablePrefix"></param>
+        /// <param name="tablePrefix">The table prefix.</param>
         public PetaPocoMapper(string tablePrefix)
         {
             this.tablePrefix = tablePrefix;

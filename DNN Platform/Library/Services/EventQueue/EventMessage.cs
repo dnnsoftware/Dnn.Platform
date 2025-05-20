@@ -13,8 +13,13 @@ namespace DotNetNuke.Services.EventQueue
 
     public enum MessagePriority
     {
+        /// <summary>High priority.</summary>
         High = 0,
+
+        /// <summary>Medium priority.</summary>
         Medium = 1,
+
+        /// <summary>Low priority.</summary>
         Low = 2,
     }
 

@@ -798,8 +798,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         }
 
         /// <summary>Ensures that the path starts with the leading character.</summary>
-        /// <param name="leading"></param>
-        /// <param name="path"></param>
+        /// <param name="leading">The content to ensure is at the beginning of the <paramref name="path"/>.</param>
+        /// <param name="path">The path to ensure starts with <paramref name="leading"/>.</param>
         /// <returns>The <paramref name="path"/> with <paramref name="leading"/> at the start.</returns>
         public static string EnsureLeadingChar(string leading, string path)
         {
@@ -961,8 +961,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         }
 
         /// <summary>Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.</summary>
-        /// <param name="tabPath">The path of the tab //admin//someothername.</param>
-        /// <param name="settings"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabPath">The path of the tab, e.g. <c>"//admin//someothername"</c>.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         /// <returns><see langword="true"/> if the page is an admin page, otherwise <see langword="false"/>.</returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {

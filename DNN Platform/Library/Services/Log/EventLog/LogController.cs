@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
 
+    /// <inheritdoc cref="ILogController" />
     public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
         private const int WriterLockTimeout = 10000; // milliseconds

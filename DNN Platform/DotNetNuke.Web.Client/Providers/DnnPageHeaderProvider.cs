@@ -109,9 +109,9 @@ namespace DotNetNuke.Web.Client.Providers
         }
 
         /// <summary>Registers the dependencies in the body of default.aspx.</summary>
-        /// <param name="http"></param>
-        /// <param name="js"></param>
-        /// <param name="css"></param>
+        /// <param name="http">The HTTP context.</param>
+        /// <param name="js">The HTML markup to request JavaScript dependencies.</param>
+        /// <param name="css">The HTML markup to request CSS dependencies.</param>
         /// <remarks>
         /// For some reason ampersands that aren't html escaped are not compliant to HTML standards when they exist in 'link' or 'script' tags in URLs,
         /// we need to replace the ampersands with &amp; . This is only required for this one w3c compliancy, the URL itself is a valid URL.

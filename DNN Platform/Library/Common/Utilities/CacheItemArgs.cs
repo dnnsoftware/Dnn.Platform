@@ -8,9 +8,6 @@ namespace DotNetNuke.Common.Utilities
 
     using DotNetNuke.Services.Cache;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Common.Utilities
-    /// Class:      CacheItemArgs
     /// <summary>
     /// The CacheItemArgs class provides an EventArgs implementation for the
     /// CacheItemExpiredCallback delegate.
@@ -23,7 +20,7 @@ namespace DotNetNuke.Common.Utilities
         /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">The cache item key.</param>
         public CacheItemArgs(string key)
             : this(key, 20, CacheItemPriority.Default, null)
         {
@@ -33,8 +30,8 @@ namespace DotNetNuke.Common.Utilities
         /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="timeout"></param>
+        /// <param name="key">The cache item key.</param>
+        /// <param name="timeout">The cache timeout. This value will be multiplied be <see cref="Host.PerformanceSetting"/> to determine the number of minutes.</param>
         public CacheItemArgs(string key, int timeout)
             : this(key, timeout, CacheItemPriority.Default, null)
         {
@@ -44,8 +41,8 @@ namespace DotNetNuke.Common.Utilities
         /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="priority"></param>
+        /// <param name="key">The cache item key.</param>
+        /// <param name="priority">The cache item priority.</param>
         public CacheItemArgs(string key, CacheItemPriority priority)
             : this(key, 20, priority, null)
         {
@@ -55,9 +52,9 @@ namespace DotNetNuke.Common.Utilities
         /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="timeout"></param>
-        /// <param name="priority"></param>
+        /// <param name="key">The cache item key.</param>
+        /// <param name="timeout">The cache timeout. This value will be multiplied be <see cref="Host.PerformanceSetting"/> to determine the number of minutes.</param>
+        /// <param name="priority">The cache item priority.</param>
         public CacheItemArgs(string key, int timeout, CacheItemPriority priority)
             : this(key, timeout, priority, null)
         {
@@ -67,10 +64,10 @@ namespace DotNetNuke.Common.Utilities
         /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="timeout"></param>
-        /// <param name="priority"></param>
-        /// <param name="parameters"></param>
+        /// <param name="key">The cache item key.</param>
+        /// <param name="timeout">The cache timeout. This value will be multiplied be <see cref="Host.PerformanceSetting"/> to determine the number of minutes.</param>
+        /// <param name="priority">The cache item priority.</param>
+        /// <param name="parameters">The parameters to pass to the callback.</param>
         public CacheItemArgs(string key, int timeout, CacheItemPriority priority, params object[] parameters)
         {
             this.CacheKey = key;

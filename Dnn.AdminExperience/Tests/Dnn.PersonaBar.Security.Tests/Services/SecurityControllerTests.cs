@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Security.Tests.Services
 {
     using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Security.Services;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Web.Api.Auth.ApiTokens;
@@ -29,7 +30,9 @@ namespace Dnn.PersonaBar.Security.Tests.Services
                 Mock.Of<Components.SecurityController>(),
                 Mock.Of<IPagesController>(),
                 Mock.Of<IPortalAliasService>(),
-                Mock.Of<IApiTokenController>());
+                Mock.Of<IApiTokenController>(),
+                Mock.Of<IHostSettingsService>(),
+                Mock.Of<IApplicationStatusInfo>());
 
             // act
             var alias = sut.AddPortalAlias(SslUrl, PortalId);
@@ -56,7 +59,9 @@ namespace Dnn.PersonaBar.Security.Tests.Services
                 Mock.Of<Components.SecurityController>(),
                 Mock.Of<IPagesController>(),
                 portalAliasControllerMock.Object,
-                Mock.Of<IApiTokenController>());
+                Mock.Of<IApiTokenController>(),
+                Mock.Of<IHostSettingsService>(),
+                Mock.Of<IApplicationStatusInfo>());
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);
@@ -81,7 +86,9 @@ namespace Dnn.PersonaBar.Security.Tests.Services
                 Mock.Of<Components.SecurityController>(),
                 Mock.Of<IPagesController>(),
                 portalAliasControllerMock.Object,
-                Mock.Of<IApiTokenController>());
+                Mock.Of<IApiTokenController>(),
+                Mock.Of<IHostSettingsService>(),
+                Mock.Of<IApplicationStatusInfo>());
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);

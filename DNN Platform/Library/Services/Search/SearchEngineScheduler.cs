@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Search
         private readonly IBusinessControllerProvider businessControllerProvider;
 
         /// <summary>Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem)
             : this(objScheduleHistoryItem, null)
@@ -28,7 +28,8 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         public SearchEngineScheduler(ScheduleHistoryItem objScheduleHistoryItem, IBusinessControllerProvider businessControllerProvider)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();

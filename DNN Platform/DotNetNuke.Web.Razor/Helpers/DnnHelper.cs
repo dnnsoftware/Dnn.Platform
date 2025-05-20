@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.Razor.Helpers
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI.Modules;
 
+    /// <summary>A razor helper for DNN context.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class DnnHelper
     {

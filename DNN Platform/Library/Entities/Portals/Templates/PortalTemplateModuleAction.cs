@@ -4,10 +4,16 @@
 
 namespace DotNetNuke.Entities.Portals
 {
+    /// <inheritdoc cref="DotNetNuke.Abstractions.Portals.Templates.PortalTemplateModuleAction"/>
     public enum PortalTemplateModuleAction
     {
+        /// <inheritdoc cref="Abstractions.Portals.Templates.PortalTemplateModuleAction.Ignore"/>
         Ignore = 0,
+
+        /// <inheritdoc cref="Abstractions.Portals.Templates.PortalTemplateModuleAction.Merge"/>
         Merge = 1,
+
+        /// <inheritdoc cref="Abstractions.Portals.Templates.PortalTemplateModuleAction.Replace"/>
         Replace = 2,
     }
 }

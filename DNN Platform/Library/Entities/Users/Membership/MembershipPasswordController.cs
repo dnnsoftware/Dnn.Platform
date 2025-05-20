@@ -21,6 +21,7 @@ namespace DotNetNuke.Entities.Users.Membership
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
         /// <summary>returns the password history of the supplied user.</summary>
+        /// <param name="userId">The user ID.</param>
         /// <returns>list of PasswordHistory objects.</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId)
         {
@@ -28,6 +29,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>returns the password history of the supplied user.</summary>
+        /// <param name="userId">The user ID.</param>
         /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
         /// <returns>list of PasswordHistory objects.</returns>
         public List<PasswordHistory> GetPasswordHistory(int userId, int portalId)
@@ -39,6 +41,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>checks to see if the password is in history and adds it if it is not.</summary>
+        /// <param name="userId">The user ID.</param>
         /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
         /// <param name="newPassword">users new password suggestion.</param>
         /// <returns>true if password has not been used in users history, false otherwise.</returns>
@@ -48,6 +51,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>checks to see if the password is in history and adds it if it is not.</summary>
+        /// <param name="userId">The user ID.</param>
         /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
         /// <param name="newPassword">users new password suggestion.</param>
         /// <param name="autoAdd">If set true then add the password into history if its not used yet.</param>
@@ -76,6 +80,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>checks if the new password matches a previously used password when hashed with the same salt.</summary>
+        /// <param name="userId">The user ID.</param>
         /// <param name="password">users entered new password.</param>
         /// <returns>true if previously used, false otherwise.</returns>
         public bool IsPasswordPreviouslyUsed(int userId, string password)

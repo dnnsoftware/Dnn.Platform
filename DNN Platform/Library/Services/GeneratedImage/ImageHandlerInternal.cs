@@ -42,8 +42,8 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>Initializes a new instance of the <see cref="ImageHandlerInternal"/> class.</summary>
-        /// <param name="imageStore"></param>
-        /// <param name="now"></param>
+        /// <param name="imageStore">The image store.</param>
+        /// <param name="now">The current <see cref="DateTime"/>.</param>
         internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
             : this()
         {

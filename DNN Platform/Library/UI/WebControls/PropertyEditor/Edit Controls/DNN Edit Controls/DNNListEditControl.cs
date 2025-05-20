@@ -16,13 +16,7 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNListEditControl
-    /// <summary>
-    /// The DNNListEditControl control provides a standard UI component for selecting
-    /// from Lists.
-    /// </summary>
+    /// <summary>The DNNListEditControl control provides a standard UI component for selecting from Lists.</summary>
     [ToolboxData("<{0}:DNNListEditControl runat=server></{0}:DNNListEditControl>")]
     public class DNNListEditControl : EditControl, IPostBackEventHandler
     {
@@ -220,16 +214,15 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             this.OnValueChanged(this.GetEventArgs());
         }
 
-        /// <summary>OnItemChanged runs when the Item has changed.</summary>
+        /// <summary>OnItemChanged runs when the Item has changed. It raises the <see cref="ItemChanged"/> event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnItemChanged(PropertyEditorEventArgs e)
         {
             if (this.ItemChanged != null)

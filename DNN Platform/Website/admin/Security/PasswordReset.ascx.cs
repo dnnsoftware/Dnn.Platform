@@ -8,15 +8,13 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Membership;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
@@ -29,17 +27,28 @@ namespace DotNetNuke.Modules.Admin.Security
 
     using Host = DotNetNuke.Entities.Host.Host;
 
+    /// <summary>A control which allows a user to request a password reset.</summary>
     public partial class PasswordReset : UserModuleBase
     {
         private const int RedirectTimeout = 3000;
 
         private readonly INavigationManager navigationManager;
+        private readonly IEventLogger eventLogger;
         private string ipAddress;
 
         /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
         public PasswordReset()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         private string ResetToken
@@ -331,12 +340,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void LogResult(string message)
         {
-            var log = new LogInfo
+            ILogInfo log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
             };
+            log.LogUserId = this.UserId;
+            log.LogPortalId = this.PortalSettings.PortalId;
 
             if (string.IsNullOrEmpty(message))
             {
@@ -350,7 +359,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             log.AddProperty("IP", this.ipAddress);
 
-            LogController.Instance.AddLog(log);
+            this.eventLogger.AddLog(log);
         }
     }
 }

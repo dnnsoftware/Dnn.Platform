@@ -11,7 +11,10 @@ namespace DotNetNuke.UI.WebControls
     /// </remarks>
     public enum PropertyEditorMode
     {
+        /// <summary>Edit property.</summary>
         Edit = 0,
+
+        /// <summary>View property.</summary>
         View = 1,
     }
 }

@@ -25,9 +25,6 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// Namespace:  DotNetNuke.Framework
-    /// Project:    DotNetNuke
-    /// Class:      PageBase
     /// <summary>PageBase provides a custom DotNetNuke base class for pages.</summary>
     public abstract class PageBase : Page
     {
@@ -43,10 +40,7 @@ namespace DotNetNuke.Framework
         private CultureInfo pageCulture;
         private string localResourceFile;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PageBase"/> class.
-        /// Creates the Page.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PageBase"/> class.</summary>
         protected PageBase()
         {
             this.localizedControls = new ArrayList();

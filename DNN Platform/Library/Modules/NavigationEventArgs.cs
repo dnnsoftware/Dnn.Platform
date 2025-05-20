@@ -16,8 +16,8 @@ namespace DotNetNuke.Modules.NavigationProvider
         public DNNNode Node;
 
         /// <summary>Initializes a new instance of the <see cref="NavigationEventArgs"/> class.</summary>
-        /// <param name="strID"></param>
-        /// <param name="objNode"></param>
+        /// <param name="strID">The ID.</param>
+        /// <param name="objNode">The node.</param>
         public NavigationEventArgs(string strID, DNNNode objNode)
         {
             this.ID = strID;

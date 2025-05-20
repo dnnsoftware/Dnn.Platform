@@ -100,7 +100,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>To avoid fetching data from the database in constructor, the OnSerializing method is consumed.</summary>
-        /// <param name="context"></param>
+        /// <param name="context">The serialization streaming context.</param>
         [OnSerializing]
         public void OnSerializing(StreamingContext context)
         {

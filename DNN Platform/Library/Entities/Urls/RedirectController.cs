@@ -17,10 +17,10 @@ namespace DotNetNuke.Entities.Urls
     internal class RedirectController
     {
         /// <summary>Cancels a redirect.</summary>
-        /// <param name="result"></param>
-        /// <param name="context"></param>
-        /// <param name="settings"></param>
-        /// <param name="message"></param>
+        /// <param name="result">The URL action to update.</param>
+        /// <param name="context">The HTTP context.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="message">The message to add to <see cref="UrlAction.DebugMessages"/>.</param>
         internal static void CancelRedirect(ref UrlAction result, HttpContext context, FriendlyUrlSettings settings, string message)
         {
             result.Action = ActionType.Continue;
@@ -48,11 +48,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Checks for a redirect based on a module friendly url provider rule.</summary>
-        /// <param name="requestUri"></param>
-        /// <param name="result"></param>
-        /// <param name="queryStringCol"></param>
-        /// <param name="settings"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="requestUri">The request URI.</param>
+        /// <param name="result">The URL action to update.</param>
+        /// <param name="queryStringCol">The query string.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns><see langword="true"/> if the <paramref name="result"/> is a redirect, otherwise <see langword="false"/>.</returns>
         internal static bool CheckForModuleProviderRedirect(
             Uri requestUri,
@@ -390,12 +390,12 @@ namespace DotNetNuke.Entities.Urls
         /// Gets a redirect Url for when the tab has a specified external Url that is of type 'TabType.Tab'.  This covers both
         /// 'PermanentRedirect' and 'ExternalUrl' scenarios, where the settings are to redirect the value.
         /// </summary>
-        /// <param name="tab"></param>
-        /// <param name="settings"></param>
-        /// <param name="cleanPath"></param>
-        /// <param name="result"></param>
-        /// <param name="permRedirect"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="cleanPath">The cleaned path.</param>
+        /// <param name="result">The URL action.</param>
+        /// <param name="permRedirect">Whether it's a permanent redirect.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>The friendly URL or <see langword="null"/>.</returns>
         /// <remarks>823 : Moved from CheckForRedirects to allow call earlier in pipeline.</remarks>
         internal static string GetTabRedirectUrl(

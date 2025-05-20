@@ -15,12 +15,14 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules.Html5;
 
-    [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+    /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline" />
+    [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
     public partial class ModuleControlFactory
     {
         private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.LoadModuleControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -58,7 +60,8 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.LoadModuleControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -96,7 +99,8 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.LoadSettingsControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             if (TracelLogger.IsDebugEnabled)
@@ -138,7 +142,8 @@ namespace DotNetNuke.UI.Modules
             return control;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.CreateCachedControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control CreateCachedControl(string cachedContent, ModuleInfo moduleConfiguration)
         {
             var moduleControl = new CachedModuleControl(cachedContent);
@@ -146,7 +151,8 @@ namespace DotNetNuke.UI.Modules
             return moduleControl;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        /// <inheritdoc cref="DotNetNuke.ModulePipeline.ModuleControlPipeline.CreateModuleControl" />
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         public static partial Control CreateModuleControl(ModuleInfo moduleConfiguration)
         {
             string extension = Path.GetExtension(moduleConfiguration.ModuleControl.ControlSrc.ToLowerInvariant());
@@ -174,7 +180,7 @@ namespace DotNetNuke.UI.Modules
             return moduleControl;
         }
 
-        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory")]
+        [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
         private static partial IModuleControlFactory GetModuleControlFactory(string controlSrc)
         {
             string extension = Path.GetExtension(controlSrc.ToLowerInvariant());

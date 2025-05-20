@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays a link to the login page.</summary>
     public partial class Login : SkinObjectBase
     {
         private const string MyFileName = "Login.ascx";

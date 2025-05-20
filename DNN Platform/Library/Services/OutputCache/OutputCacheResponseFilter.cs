@@ -13,10 +13,10 @@ namespace DotNetNuke.Services.OutputCache
         private Stream captureStream;
 
         /// <summary>Initializes a new instance of the <see cref="OutputCacheResponseFilter"/> class.</summary>
-        /// <param name="filterChain"></param>
-        /// <param name="cacheKey"></param>
-        /// <param name="cacheDuration"></param>
-        /// <param name="maxVaryByCount"></param>
+        /// <param name="filterChain">The stream to write into <see cref="CaptureStream"/>.</param>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="cacheDuration">The duration for which the response should be cached.</param>
+        /// <param name="maxVaryByCount">The maximum number of values by which the cached response can vary.</param>
         public OutputCacheResponseFilter(Stream filterChain, string cacheKey, TimeSpan cacheDuration, int maxVaryByCount)
         {
             this.ChainedStream = filterChain;

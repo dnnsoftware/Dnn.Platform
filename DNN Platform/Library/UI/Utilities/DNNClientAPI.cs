@@ -17,9 +17,6 @@ namespace DotNetNuke.UI.Utilities
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
-    /// Project  : DotNetNuke
-    /// Class    : ClientAPI
-    ///
     /// <summary>Library responsible for interacting with DNN Client API.</summary>
     public partial class DNNClientAPI
     {
@@ -27,15 +24,25 @@ namespace DotNetNuke.UI.Utilities
 
         public enum MinMaxPersistanceType
         {
+            /// <summary>No min-max persistence.</summary>
             None = 0,
+
+            /// <summary>Store min-max via page state.</summary>
             Page = 1,
+
+            /// <summary>Store min-max via cookie.</summary>
             Cookie = 2,
+
+            /// <summary>Store min-max via personalization.</summary>
             Personalization = 3,
         }
 
         public enum PageCallBackType
         {
+            /// <summary>Get personalization.</summary>
             GetPersonalization = 0,
+
+            /// <summary>Set personalization.</summary>
             SetPersonalization = 1,
         }
 

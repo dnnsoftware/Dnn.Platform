@@ -9,9 +9,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
     using DotNetNuke.Web.UI.WebControls;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnFormToggleButtonItem : DnnFormItemBase
     {
         // private DnnRadButton _checkBox;
@@ -25,8 +23,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public enum CheckBoxMode
         {
+            /// <summary>True and False.</summary>
             TrueFalse = 0,
+
+            /// <summary>Y and N.</summary>
             YN = 1,
+
+            /// <summary>Yes and No.</summary>
             YesNo = 2,
         }
 

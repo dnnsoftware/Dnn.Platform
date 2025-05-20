@@ -67,31 +67,31 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="vocabularyId"></param>
+        /// <param name="vocabularyId">The vocabulary ID.</param>
         public Term(int vocabularyId)
             : this(Null.NullString, Null.NullString, vocabularyId)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="name"></param>
+        /// <param name="name">The term name.</param>
         public Term(string name)
             : this(name, Null.NullString, Null.NullInteger)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
+        /// <param name="name">The term name.</param>
+        /// <param name="description">The term description.</param>
         public Term(string name, string description)
             : this(name, description, Null.NullInteger)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Term"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="vocabularyId"></param>
+        /// <param name="name">The term name.</param>
+        /// <param name="description">The term description.</param>
+        /// <param name="vocabularyId">The vocabulary ID.</param>
         public Term(string name, string description, int vocabularyId)
         {
             this.Description = description;

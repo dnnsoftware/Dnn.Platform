@@ -21,6 +21,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>A skin/theme object which provides a search input.</summary>
     public partial class Search : SkinObjectBase
     {
         private const string MyFileName = "Search.ascx";

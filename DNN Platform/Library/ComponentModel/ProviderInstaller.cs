@@ -20,8 +20,8 @@ namespace DotNetNuke.ComponentModel
         private Type defaultProvider;
 
         /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
-        /// <param name="providerType"></param>
-        /// <param name="providerInterface"></param>
+        /// <param name="providerType">The type name of the provider implementation.</param>
+        /// <param name="providerInterface">The <see cref="Type"/> of the provider interface.</param>
         public ProviderInstaller(string providerType, Type providerInterface)
         {
             this.componentLifeStyle = ComponentLifeStyleType.Singleton;
@@ -30,9 +30,9 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
-        /// <param name="providerType"></param>
-        /// <param name="providerInterface"></param>
-        /// <param name="defaultProvider"></param>
+        /// <param name="providerType">The type name of the provider implementation.</param>
+        /// <param name="providerInterface">The <see cref="Type"/> of the provider interface.</param>
+        /// <param name="defaultProvider">The default <see cref="Type"/> for the implementation.</param>
         public ProviderInstaller(string providerType, Type providerInterface, Type defaultProvider)
         {
             this.componentLifeStyle = ComponentLifeStyleType.Singleton;
@@ -42,9 +42,9 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProviderInstaller"/> class.</summary>
-        /// <param name="providerType"></param>
-        /// <param name="providerInterface"></param>
-        /// <param name="lifeStyle"></param>
+        /// <param name="providerType">The type name of the provider implementation.</param>
+        /// <param name="providerInterface">The <see cref="Type"/> of the provider interface.</param>
+        /// <param name="lifeStyle">The <see cref="ComponentLifeStyleType"/> of the instance.</param>
         public ProviderInstaller(string providerType, Type providerInterface, ComponentLifeStyleType lifeStyle)
         {
             this.componentLifeStyle = lifeStyle;

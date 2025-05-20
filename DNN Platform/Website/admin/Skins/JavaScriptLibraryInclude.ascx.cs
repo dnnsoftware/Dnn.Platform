@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Framework.JavaScriptLibraries;
 
+    /// <summary>A control which requests the inclusion of a JavaScript library on the page.</summary>
     public partial class JavaScriptLibraryInclude : SkinObjectBase
     {
         public string Name { get; set; }

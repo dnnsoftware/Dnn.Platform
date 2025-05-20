@@ -38,10 +38,12 @@ namespace DotNetNuke.Entities.Portals
             return aliasCultures;
         }
 
-        /// <summary>Returns the chosen portal alias for a specific portal Id and culture Code.</summary>
-        /// <param name="aliases"></param>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
+        /// <summary>Returns the chosen portal alias for a specific portal ID and culture Code.</summary>
+        /// <param name="aliases">The aliases.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="result">The URL action.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         /// <remarks>Detects the current browser type if possible.  If can't be detected 'normal' is used. If a specific browser type is required, use overload with browser type.</remarks>
         /// <returns>The closest <see cref="PortalAliasInfo"/> match.</returns>
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, FriendlyUrlSettings settings)
@@ -88,11 +90,11 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Returns a ChosenPortalAlias object where the portalId, culture code and isMobile matches.</summary>
-        /// <param name="aliases"></param>
-        /// <param name="portalId"></param>
-        /// <param name="result"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="browserType"></param>
+        /// <param name="aliases">The aliases.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="result">The URL action.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="browserType">The browser type.</param>
         /// <returns>The closest <see cref="PortalAliasInfo"/> match.</returns>
         /// <remarks>Note will return a best-match by portal if no specific culture Code match found.</remarks>
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, BrowserTypes browserType)

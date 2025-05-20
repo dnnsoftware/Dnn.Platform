@@ -6,7 +6,10 @@ namespace DotNetNuke.UI.Skins
 {
     public enum SkinType
     {
+        /// <summary>The primary skin layout for a site.</summary>
         Portal = 0,
+
+        /// <summary>The skin layout used for admin or edit pages/views.</summary>
         Admin = 1,
     }
 }

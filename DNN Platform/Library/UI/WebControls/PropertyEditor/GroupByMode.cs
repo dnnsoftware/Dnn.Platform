@@ -11,7 +11,10 @@ namespace DotNetNuke.UI.WebControls
     /// </remarks>
     public enum GroupByMode
     {
+        /// <summary>No grouping.</summary>
         None = 0,
+
+        /// <summary>Group by section.</summary>
         Section = 1,
     }
 }

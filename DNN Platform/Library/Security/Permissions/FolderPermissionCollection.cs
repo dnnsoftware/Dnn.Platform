@@ -18,22 +18,22 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
-        /// <param name="folderPermissions"></param>
+        /// <param name="folderPermissions">An <see cref="ArrayList"/> of <see cref="FolderPermissionInfo"/> instances.</param>
         public FolderPermissionCollection(ArrayList folderPermissions)
         {
             this.AddRange(folderPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
-        /// <param name="folderPermissions"></param>
+        /// <param name="folderPermissions">A collection of <see cref="FolderPermissionInfo"/> instances.</param>
         public FolderPermissionCollection(FolderPermissionCollection folderPermissions)
         {
             this.AddRange(folderPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="FolderPermissionCollection"/> class.</summary>
-        /// <param name="folderPermissions"></param>
-        /// <param name="folderPath"></param>
+        /// <param name="folderPermissions">An <see cref="ArrayList"/> of <see cref="FolderPermissionInfo"/> instances.</param>
+        /// <param name="folderPath">The path of the folder by which to filter <paramref name="folderPermissions"/>.</param>
         public FolderPermissionCollection(ArrayList folderPermissions, string folderPath)
         {
             foreach (FolderPermissionInfo permission in folderPermissions)

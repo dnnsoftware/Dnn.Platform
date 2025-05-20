@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.Mvc.Routing
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>Gets MVC routes.</summary>
     internal partial class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
     {
         private List<int> prefixCounts;

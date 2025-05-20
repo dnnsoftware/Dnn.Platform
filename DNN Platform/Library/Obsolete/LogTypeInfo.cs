@@ -7,13 +7,16 @@ namespace DotNetNuke.Services.Log.EventLog
 
     using DotNetNuke.Abstractions.Logging;
 
+    /// <content>The obsolete properties for <see cref="LogTypeInfo"/>.</content>
     public partial class LogTypeInfo
     {
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use 'DotNetNuke.Abstractions.Logging.ILogTypeInfo.LogTypeCssClass' instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public string LogTypeCSSClass
         {
             get => ((ILogTypeInfo)this).LogTypeCssClass;
             set => ((ILogTypeInfo)this).LogTypeCssClass = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
     }
 }

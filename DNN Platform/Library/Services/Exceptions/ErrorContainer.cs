@@ -16,25 +16,16 @@ namespace DotNetNuke.Services.Exceptions
     public class ErrorContainer : Control
     {
         /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
-        /// <param name="strError"></param>
+        /// <param name="strError">The error message.</param>
         public ErrorContainer(string strError)
         {
             this.Container = this.FormatException(strError);
         }
 
         /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
-        /// <param name="strError"></param>
-        /// <param name="exc"></param>
+        /// <param name="strError">The error message.</param>
+        /// <param name="exc">The exception.</param>
         public ErrorContainer(string strError, Exception exc)
-        {
-            this.Container = this.FormatException(strError, exc);
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
-        /// <param name="portalSettings"></param>
-        /// <param name="strError"></param>
-        /// <param name="exc"></param>
-        public ErrorContainer(PortalSettings portalSettings, string strError, Exception exc)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
             if (objUserInfo.IsSuperUser)
@@ -45,6 +36,15 @@ namespace DotNetNuke.Services.Exceptions
             {
                 this.Container = this.FormatException(strError);
             }
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ErrorContainer"/> class.</summary>
+        /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="strError">The error message.</param>
+        /// <param name="exc">The exception.</param>
+        public ErrorContainer(PortalSettings portalSettings, string strError, Exception exc)
+            : this(strError, exc)
+        {
         }
 
         public ModuleMessage Container { get; set; }

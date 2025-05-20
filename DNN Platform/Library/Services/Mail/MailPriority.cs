@@ -7,8 +7,13 @@ namespace DotNetNuke.Services.Mail
     /// <summary>Enum MailPriority, there are 3 levels of priorities: Normal, Low or High.</summary>
     public enum MailPriority
     {
+        /// <summary>Normal priority.</summary>
         Normal = 0,
+
+        /// <summary>Low priority.</summary>
         Low = 1,
+
+        /// <summary>High priority.</summary>
         High = 2,
     }
 }

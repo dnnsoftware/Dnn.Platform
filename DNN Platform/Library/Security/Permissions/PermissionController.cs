@@ -20,6 +20,7 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
 
+    /// <summary>The default <see cref="IPermissionDefinitionService"/> implementation.</summary>
     public partial class PermissionController : IPermissionDefinitionService
     {
         private static readonly DataProvider Provider = DataProvider.Instance();

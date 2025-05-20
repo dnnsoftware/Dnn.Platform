@@ -134,12 +134,12 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddAdminPages adds an Admin Page and an associated Module to all configured Portals.</summary>
-        /// <param name="tabName">The Name to give this new Tab.</param>
-        /// <param name="description"></param>
-        /// <param name="tabIconFile">The Icon for this new Tab.</param>
-        /// <param name="tabIconFileLarge"></param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
-        /// <param name="moduleDefId">The Module Definition Id for the module to be added to this tab.</param>
+        /// <param name="moduleDefId">The Module Definition ID for the module to be added to this tab.</param>
         /// <param name="moduleTitle">The Module's title.</param>
         /// <param name="moduleIconFile">The Module's icon.</param>
         /// <param name="inheritPermissions">Modules Inherit the Pages View Permissions.</param>
@@ -162,10 +162,10 @@ namespace DotNetNuke.Services.Upgrade
 
         /// <summary>AddAdminPage adds an Admin Tab Page.</summary>
         /// <param name="portal">The Portal.</param>
-        /// <param name="tabName">The Name to give this new Tab.</param>
-        /// <param name="description"></param>
-        /// <param name="tabIconFile">The Icon for this new Tab.</param>
-        /// <param name="tabIconFileLarge"></param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
         public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
@@ -185,10 +185,10 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddHostPage adds a Host Tab Page.</summary>
-        /// <param name="tabName">The Name to give this new Tab.</param>
-        /// <param name="description"></param>
-        /// <param name="tabIconFile">The Icon for this new Tab.</param>
-        /// <param name="tabIconFileLarge"></param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
         public static TabInfo AddHostPage(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
@@ -244,10 +244,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// <summary>AddModuleToPage adds a module to a Page.</summary>
         /// <param name="page">The Page to add the Module to.</param>
-        /// <param name="moduleDefId">The Module Definition Id for the module to be added to this tab.</param>
+        /// <param name="moduleDefId">The Module Definition ID for the module to be added to this tab.</param>
         /// <param name="moduleTitle">The Module's title.</param>
         /// <param name="moduleIconFile">The Module's icon.</param>
         /// <param name="inheritPermissions">Inherit the Pages View Permissions.</param>
+        /// <param name="displayTitle">Whether to display the title.</param>
+        /// <param name="paneName">The pane name.</param>
         /// <returns>The ID of the module, or <see cref="Null.NullInteger"/> to indicate failure.</returns>
         public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, bool displayTitle, string paneName)
         {
@@ -308,7 +310,9 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddModuleToPage adds a module to a Page.</summary>
-        /// <param name="moduleDefId">The Module Definition Id for the module to be added to this tab.</param>
+        /// <param name="tabPath">The tab path of the page.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="moduleDefId">The Module Definition ID for the module to be added to this tab.</param>
         /// <param name="moduleTitle">The Module's title.</param>
         /// <param name="moduleIconFile">The Module's icon.</param>
         /// <param name="inheritPermissions">Inherit the Pages View Permissions.</param>
@@ -348,6 +352,10 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddPortal manages the Installation of a new DotNetNuke Portal.</summary>
+        /// <param name="node">The portal XML node.</param>
+        /// <param name="status">Whether to write status messages to the HTTP response.</param>
+        /// <param name="indent">The indentation level of the status messages.</param>
+        /// <param name="superUser">The admin user for the portal or <see langword="null"/> to create a new user.</param>
         /// <returns>The ID of the new portal, or <c>-1</c> to indicate failure.</returns>
         public static int AddPortal(XmlNode node, bool status, int indent, UserInfo superUser = null)
         {
@@ -485,6 +493,9 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>Obsolete, AddPortal manages the Installation of a new DotNetNuke Portal.</summary>
+        /// <param name="node">The portal XML node.</param>
+        /// <param name="status">Whether to write status messages to the HTTP response.</param>
+        /// <param name="indent">The indentation level of the status messages.</param>
         /// <returns>The ID of the new portal, or <c>-1</c> to indicate failure.</returns>
         [DnnDeprecated(9, 3, 0, "Use the overloaded method with the 'superUser' parameter instead")]
         public static partial int AddPortal(XmlNode node, bool status, int indent)
@@ -919,8 +930,8 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>InstallDatabase runs all the "scripts" identified in the Install Template to install the base version.</summary>
-        /// <param name="version"></param>
-        /// <param name="providerPath"></param>
+        /// <param name="version">The version for which to run installation scripts.</param>
+        /// <param name="providerPath">The data provider path.</param>
         /// <param name="xmlDoc">The Xml Document to load.</param>
         /// <param name="writeFeedback">A flag that determines whether to output feedback to the Response Stream.</param>
         /// <returns>A string which contains the error message - if appropriate.</returns>
@@ -1379,6 +1390,9 @@ namespace DotNetNuke.Services.Upgrade
         ///  should only happen once. Database references are not recommended because future
         ///  versions of the application may result in code incompatibilities.
         /// </remarks>
+        /// <param name="providerPath">The provider path to which log files will be written.</param>
+        /// <param name="version">The version of the upgrade.</param>
+        /// <param name="writeFeedback">Whether to write feedback messages to the HTTP response.</param>
         /// <returns>Exceptions logged or <see cref="string.Empty"/>.</returns>
         public static string UpgradeApplication(string providerPath, Version version, bool writeFeedback)
         {

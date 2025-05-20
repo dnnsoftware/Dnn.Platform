@@ -462,7 +462,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>Deletes all redirection rules that were set for pages that have been soft or hard deleted.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         public void PurgeInvalidRedirections(int portalId)
         {
             var allTabs = TabController.Instance.GetTabsByPortal(portalId);
@@ -568,9 +568,9 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>returns a target URL for the specific redirection.</summary>
-        /// <param name="redirection"></param>
-        /// <param name="portalId"></param>
-        /// <param name="currentTabId"></param>
+        /// <param name="redirection">The redirection rule.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="currentTabId">The tab ID.</param>
         /// <returns>The URL (or <see cref="string.Empty"/> if there's no redirect).</returns>
         public string GetRedirectUrlFromRule(IRedirection redirection, int portalId, int currentTabId)
         {

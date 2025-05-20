@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.Library.Prompt
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A Prompt console command.</summary>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
     public abstract partial class ConsoleCommandBase : IConsoleCommand
     {

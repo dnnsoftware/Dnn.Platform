@@ -764,6 +764,9 @@ namespace DotNetNuke.Common.Utilities
             return sb.ToString();
         }
 
+        /// <summary>Load an XML document from a URL.</summary>
+        /// <param name="contentUrl">The URL to the XML document.</param>
+        /// <returns>An XML document.</returns>
         [DnnDeprecated(7, 0, 0, "Use XmlDocument.Load instead", RemovalVersion = 11)]
         public static partial XmlDocument GetXMLContent(string contentUrl)
         {

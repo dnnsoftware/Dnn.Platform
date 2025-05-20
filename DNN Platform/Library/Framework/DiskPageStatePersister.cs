@@ -10,16 +10,11 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
 
-    /// Namespace:  DotNetNuke.Framework
-    /// Project:    DotNetNuke
-    /// Class:      DiskPageStatePersister
-    /// <summary>DiskPageStatePersister provides a disk (stream) based page state peristence mechanism.</summary>
+    /// <summary>DiskPageStatePersister provides a disk (stream) based page state persistence mechanism.</summary>
     public class DiskPageStatePersister : PageStatePersister
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DiskPageStatePersister"/> class.
-        /// Creates the DiskPageStatePersister.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DiskPageStatePersister"/> class.</summary>
+        /// <param name="page">The <see cref="Page"/> that the view state persistence mechanism is created for.</param>
         public DiskPageStatePersister(Page page)
             : base(page)
         {

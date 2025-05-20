@@ -125,6 +125,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnInit runs when the Container is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -133,6 +134,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnLoad runs when the Container is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -141,6 +143,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnLoad runs just before the Container is rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -149,6 +152,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnUnLoad runs when the Container is unloaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnUnload(EventArgs e)
         {
             base.OnUnload(e);

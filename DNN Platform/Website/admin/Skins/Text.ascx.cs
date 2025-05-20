@@ -9,6 +9,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Tokens;
 
+    /// <summary>A skin/theme object which allows displaying localized text with token replacement.</summary>
     public partial class Text : SkinObjectBase
     {
         public string ShowText { get; set; }

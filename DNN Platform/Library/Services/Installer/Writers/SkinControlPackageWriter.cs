@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Installer.Writers
     public class SkinControlPackageWriter : PackageWriterBase
     {
         /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package info.</param>
         public SkinControlPackageWriter(PackageInfo package)
             : base(package)
         {
@@ -26,8 +26,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
-        /// <param name="skinControl"></param>
-        /// <param name="package"></param>
+        /// <param name="skinControl">The skin control info.</param>
+        /// <param name="package">The package info.</param>
         public SkinControlPackageWriter(SkinControlInfo skinControl, PackageInfo package)
             : base(package)
         {
@@ -37,8 +37,8 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>Initializes a new instance of the <see cref="SkinControlPackageWriter"/> class.</summary>
-        /// <param name="manifestNav"></param>
-        /// <param name="installer"></param>
+        /// <param name="manifestNav">The XPath navigator for the legacy manifest.</param>
+        /// <param name="installer">The installer info.</param>
         public SkinControlPackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
             this.SkinControl = new SkinControlInfo();

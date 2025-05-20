@@ -42,8 +42,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="GetUser"/> class.</summary>
-        /// <param name="userValidator"></param>
-        /// <param name="userControllerWrapper"></param>
+        /// <param name="userValidator">The user validator.</param>
+        /// <param name="userControllerWrapper">The user controller.</param>
         public GetUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)
         {
             this.userValidator = userValidator;

@@ -10,7 +10,10 @@ namespace DotNetNuke.UI.Skins
 
     public enum SkinDefaultType
     {
+        /// <summary>Skin.</summary>
         SkinInfo = 0,
+
+        /// <summary>Container.</summary>
         ContainerInfo = 1,
     }
 

@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Library.Helper
     using System.Collections.Generic;
     using System.Linq;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Library.Helper
 
     public static class PermissionHelper
     {
-        public static void AddUserPermission(this DTO.Permissions dto, PermissionInfoBase permissionInfo)
+        public static void AddUserPermission(this Dto.Permissions dto, PermissionInfoBase permissionInfo)
         {
             var userPermission = dto.UserPermissions.FirstOrDefault(p => p.UserId == permissionInfo.UserID);
             if (userPermission == null)
@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Library.Helper
             }
         }
 
-        public static void AddRolePermission(this DTO.Permissions dto, PermissionInfoBase permissionInfo)
+        public static void AddRolePermission(this Dto.Permissions dto, PermissionInfoBase permissionInfo)
         {
             var rolePermission = dto.RolePermissions.FirstOrDefault(p => p.RoleId == permissionInfo.RoleID);
             if (rolePermission == null)
@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Library.Helper
             }
         }
 
-        public static void EnsureDefaultRoles(this DTO.Permissions dto)
+        public static void EnsureDefaultRoles(this Dto.Permissions dto)
         {
             // Administrators Role always has implicit permissions, then it should be always in
             dto.EnsureRole(RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, PortalSettings.Current.AdministratorRoleId), true, true);
@@ -74,17 +74,17 @@ namespace Dnn.PersonaBar.Library.Helper
             dto.EnsureRole(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName }, false, true);
         }
 
-        public static void EnsureRole(this DTO.Permissions dto, RoleInfo role)
+        public static void EnsureRole(this Dto.Permissions dto, RoleInfo role)
         {
             dto.EnsureRole(role, false);
         }
 
-        public static void EnsureRole(this DTO.Permissions dto, RoleInfo role, bool locked)
+        public static void EnsureRole(this Dto.Permissions dto, RoleInfo role, bool locked)
         {
             dto.EnsureRole(role, locked, false);
         }
 
-        public static void EnsureRole(this DTO.Permissions dto, RoleInfo role, bool locked, bool isDefault)
+        public static void EnsureRole(this Dto.Permissions dto, RoleInfo role, bool locked, bool isDefault)
         {
             if (dto.RolePermissions.All(r => r.RoleId != role.RoleID))
             {

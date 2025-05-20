@@ -6,7 +6,6 @@
 namespace DotNetNuke.Services.Install
 {
     using System;
-    using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
@@ -33,6 +32,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A page which installs or upgrades DNN.</summary>
     public partial class Install : Page
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:FieldNamesMustBeginWithLowerCaseLetter", Justification = "Breaking Change")]
@@ -43,6 +43,21 @@ namespace DotNetNuke.Services.Install
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object InstallLocker = new object();
+
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        public Install()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Install"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public Install(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -66,7 +81,7 @@ namespace DotNetNuke.Services.Install
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Config.AddFCNMode(Config.FcnMode.Single);
+            Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
 
             // Get current Script time-out
             int scriptTimeOut = this.Server.ScriptTimeout;
@@ -90,21 +105,21 @@ namespace DotNetNuke.Services.Install
                 // Set Script timeout to MAX value
                 this.Server.ScriptTimeout = int.MaxValue;
 
-                switch (Globals.Status)
+                switch (this.appStatus.Status)
                 {
-                    case Globals.UpgradeStatus.Install:
+                    case UpgradeStatus.Install:
                         this.InstallApplication();
 
                         // Force an App Restart
-                        Config.Touch();
+                        Config.Touch(this.appStatus);
                         break;
-                    case Globals.UpgradeStatus.Upgrade:
+                    case UpgradeStatus.Upgrade:
                         this.UpgradeApplication();
 
                         // Force an App Restart
-                        Config.Touch();
+                        Config.Touch(this.appStatus);
                         break;
-                    case Globals.UpgradeStatus.None:
+                    case UpgradeStatus.None:
                         // Check mode
                         switch (mode)
                         {
@@ -120,7 +135,7 @@ namespace DotNetNuke.Services.Install
                         }
 
                         break;
-                    case Globals.UpgradeStatus.Error:
+                    case UpgradeStatus.Error:
                         this.NoUpgrade();
                         break;
                 }
@@ -192,7 +207,7 @@ namespace DotNetNuke.Services.Install
 
             if (installationDate == null || string.IsNullOrEmpty(installationDate))
             {
-                string strError = Config.UpdateMachineKey();
+                string strError = Config.UpdateMachineKey(this.appStatus);
                 if (string.IsNullOrEmpty(strError))
                 {
                     // send a new request to the application to initiate step 2
@@ -271,10 +286,10 @@ namespace DotNetNuke.Services.Install
                         }
 
                         var installVersion = DataProvider.Instance().GetInstallVersion();
-                        string strError = Config.UpdateInstallVersion(installVersion);
+                        string strError = Config.UpdateInstallVersion(this.appStatus, installVersion);
 
                         // Adding FCN mode to web.config
-                        strError += Config.AddFCNMode(Config.FcnMode.Single);
+                        strError += Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
                         if (!string.IsNullOrEmpty(strError))
                         {
                             Logger.Error(strError);
@@ -400,12 +415,12 @@ namespace DotNetNuke.Services.Install
                         Upgrade.Upgrade.InstallPackage(package.Key, package.Value.PackageType, true);
                     }
 
-                    // calling GetInstallVersion after SQL scripts exection to ensure sp GetDatabaseInstallVersion exists
+                    // calling GetInstallVersion after SQL scripts execution to ensure sp GetDatabaseInstallVersion exists
                     var installVersion = DataProvider.Instance().GetInstallVersion();
-                    string strError = Config.UpdateInstallVersion(installVersion);
+                    string strError = Config.UpdateInstallVersion(this.appStatus, installVersion);
 
                     // Adding FCN mode to web.config
-                    strError += Config.AddFCNMode(Config.FcnMode.Single);
+                    strError += Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
                     if (!string.IsNullOrEmpty(strError))
                     {
                         Logger.Error(strError);
@@ -504,7 +519,7 @@ namespace DotNetNuke.Services.Install
             this.Response.Flush();
 
             // install new portal(s)
-            string strNewFile = Globals.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
+            string strNewFile = this.appStatus.ApplicationMapPath + "\\Install\\Portal\\Portals.resources";
             if (File.Exists(strNewFile))
             {
                 XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
@@ -518,7 +533,7 @@ namespace DotNetNuke.Services.Install
                     {
                         if (node != null)
                         {
-                            Upgrade.Upgrade.AddPortal(node, true, 0);
+                            Upgrade.Upgrade.AddPortal(node, true, 0, null);
                         }
                     }
                 }

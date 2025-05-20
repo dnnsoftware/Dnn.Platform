@@ -4,16 +4,13 @@
 
 namespace DotNetNuke.UI.WebControls
 {
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Project:    DotNetNuke
-    /// Enum:       ImageCommandColumnEditMode
-    /// <summary>
-    /// The ImageCommandColumnEditMode Enum provides an enumeration of the types
-    /// for how the Grid responds to an Edit Command.
-    /// </summary>
+    /// <summary>The ImageCommandColumnEditMode Enum provides an enumeration of the types for how the Grid responds to an Edit Command.</summary>
     public enum ImageCommandColumnEditMode
     {
+        /// <summary>Render a command button.</summary>
         Command = 0,
+
+        /// <summary>Render a hyperlink.</summary>
         URL = 1,
     }
 }

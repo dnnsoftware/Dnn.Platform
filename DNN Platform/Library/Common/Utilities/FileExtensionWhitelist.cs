@@ -57,7 +57,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>Indicates if the file extension is permitted by the Host Whitelist.</summary>
         /// <param name="extension">The file extension with or without preceding '.'.</param>
-        /// <param name="additionalExtensions"></param>
+        /// <param name="additionalExtensions">Any other additional valid extensions or <see langword="null" />.</param>
         /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
         public bool IsAllowedExtension(string extension, IEnumerable<string> additionalExtensions)
         {

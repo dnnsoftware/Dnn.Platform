@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.Client
 
     using Microsoft.Extensions.DependencyInjection;
 
-    // note: this class is duplicated in ClientDependency.Core.Config.DnnConfiguration, any updates need to be synced between the two.
+    /// <summary>Settings related to managing client resources.</summary>
     public partial class ClientResourceSettings
     {
         // public keys used to identify the dictionaries stored in the application context
@@ -64,6 +64,7 @@ namespace DotNetNuke.Web.Client
             }
         }
 
+        /// <inheritdoc cref="IsOverridingDefaultSettingsEnabled(int?)"/>
         [DnnDeprecated(9, 10, 3, "Use overload taking portalId")]
         public partial bool IsOverridingDefaultSettingsEnabled()
         {
@@ -81,6 +82,7 @@ namespace DotNetNuke.Web.Client
             return portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value;
         }
 
+        /// <inheritdoc cref="GetVersion(int?)"/>
         [DnnDeprecated(9, 10, 3, "Use overload taking portalId")]
         public partial int? GetVersion()
         {
