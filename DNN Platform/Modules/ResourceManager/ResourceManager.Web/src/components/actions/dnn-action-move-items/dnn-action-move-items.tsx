@@ -18,8 +18,8 @@ export class DnnActionMoveItems {
 
   private async showModal(){
     const modal = document.createElement("dnn-modal");
-    modal.backdropDismiss = false;
-    modal.showCloseButton = false;
+    modal.preventBackdropDismiss = true;
+    modal.hideCloseButton = true;
     const editor = document.createElement("dnn-rm-move-items");
     editor.items = this.items;
     modal.appendChild(editor);

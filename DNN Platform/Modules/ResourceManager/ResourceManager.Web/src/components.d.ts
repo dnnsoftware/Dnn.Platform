@@ -11,6 +11,9 @@ export { GetFolderContentResponse, Item } from "./services/ItemsClient";
 export { FolderTreeItem } from "./services/InternalServicesClient";
 export namespace Components {
     interface DnnActionCopyUrl {
+        /**
+          * The list of items to copy.
+         */
         "items": Item[];
     }
     interface DnnActionCreateFolder {
@@ -20,6 +23,9 @@ export namespace Components {
         "parentFolderId": number;
     }
     interface DnnActionDeleteItems {
+        /**
+          * The list of items to delete.
+         */
         "items": Item[];
     }
     interface DnnActionDownloadItem {
@@ -29,18 +35,33 @@ export namespace Components {
         "item": Item;
     }
     interface DnnActionEditItem {
+        /**
+          * The item to edit.
+         */
         "item": Item;
     }
     interface DnnActionMoveItems {
+        /**
+          * The list of items to move.
+         */
         "items": Item[];
     }
     interface DnnActionOpenFile {
+        /**
+          * The item to open.
+         */
         "item": Item;
     }
     interface DnnActionUnlinkItems {
+        /**
+          * The list of items selected.
+         */
         "items": Item[];
     }
     interface DnnActionUploadFile {
+        /**
+          * The ID of the parent folder.
+         */
         "parentFolderId": number;
     }
     interface DnnResourceManager {
@@ -592,6 +613,9 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DnnActionCopyUrl {
+        /**
+          * The list of items to copy.
+         */
         "items": Item[];
     }
     interface DnnActionCreateFolder {
@@ -601,6 +625,9 @@ declare namespace LocalJSX {
         "parentFolderId"?: number;
     }
     interface DnnActionDeleteItems {
+        /**
+          * The list of items to delete.
+         */
         "items": Item[];
     }
     interface DnnActionDownloadItem {
@@ -610,15 +637,27 @@ declare namespace LocalJSX {
         "item": Item;
     }
     interface DnnActionEditItem {
+        /**
+          * The item to edit.
+         */
         "item": Item;
     }
     interface DnnActionMoveItems {
+        /**
+          * The list of items to move.
+         */
         "items": Item[];
     }
     interface DnnActionOpenFile {
+        /**
+          * The item to open.
+         */
         "item": Item;
     }
     interface DnnActionUnlinkItems {
+        /**
+          * The list of items selected.
+         */
         "items": Item[];
     }
     interface DnnActionUploadFile {
@@ -626,6 +665,9 @@ declare namespace LocalJSX {
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
         "onDnnRmFoldersChanged"?: (event: DnnActionUploadFileCustomEvent<void>) => void;
+        /**
+          * The ID of the parent folder.
+         */
         "parentFolderId"?: number;
     }
     interface DnnResourceManager {

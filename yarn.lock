@@ -1195,19 +1195,19 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dnncommunity/dnn-elements@^0.25.0":
-  version "0.25.1"
-  resolved "https://registry.yarnpkg.com/@dnncommunity/dnn-elements/-/dnn-elements-0.25.1.tgz#da248dea27d3d42f64b8db4fe6af334b70b29b39"
-  integrity sha512-vpw9YU/C9uQPm/0y+CjNPbtt10LVEM5meRI6nv5CXDTGyEk3IUVnhcYZgVHGgvwWXF6XZsj1bEmY5DsIdYa51A==
-  dependencies:
-    jodit "^4.2.27"
-
 "@dnncommunity/dnn-elements@^0.26.0":
   version "0.26.0"
   resolved "https://registry.yarnpkg.com/@dnncommunity/dnn-elements/-/dnn-elements-0.26.0.tgz#7ef117f169525a73a7a7aa3a91ea66ce3482768d"
   integrity sha512-7AE85IxKSw3hx121+LD4S1RUPMe6tjnFBuwE9uqDklKgGTNjtsSJGWnQhpzRzjkoseiIhY0HQL8v0YLdOgN9ww==
   dependencies:
     jodit "^4.2.27"
+
+"@dnncommunity/dnn-elements@^0.27.4":
+  version "0.27.4"
+  resolved "https://registry.yarnpkg.com/@dnncommunity/dnn-elements/-/dnn-elements-0.27.4.tgz#a992f35e0372ff1fa3da43fce16036eb8d3d9bd9"
+  integrity sha512-kz5Kow1d26J2wFbIM3g6JnIjiBfNp6KNxIz5Kg4v0FDTkL8cqe07OB2Tko0Wmc5CziSwdYwJvmPQebVbfiZYHw==
+  dependencies:
+    jodit "^4.6.2"
 
 "@emnapi/core@^1.1.0":
   version "1.4.3"
@@ -11865,7 +11865,7 @@ jiti@^2.4.2:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.4.2.tgz#d19b7732ebb6116b06e2038da74a55366faef560"
   integrity sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==
 
-jodit@^4.2.27:
+jodit@^4.2.27, jodit@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/jodit/-/jodit-4.6.2.tgz#993a0e15fc6b998bd19fc1992aec8a2234dc250e"
   integrity sha512-euIYTOBzZO04jroi79RvhRiXVs3ANCSg5JC8HOT/gf81dIdduxUKvkM4lVSdVP28aZBxs0u+nIdLC7OGXh1jhg==

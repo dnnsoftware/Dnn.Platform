@@ -18,8 +18,8 @@ export class DnnActionEditItem {
 
   private async showModal(){
     const modal = document.createElement("dnn-modal");
-    modal.backdropDismiss = false;
-    modal.showCloseButton = false;
+    modal.preventBackdropDismiss = true;
+    modal.hideCloseButton = true;
     // We also need to show a different model depending if we have a file or folder
     if (this.item.isFolder){
       const editor = document.createElement("dnn-rm-edit-folder");

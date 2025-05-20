@@ -146,7 +146,7 @@ export class DnnRmCreateFolder {
             </dnn-button>
             <dnn-button
               appearance="primary"
-              formButtonType="submit"
+              type="submit"
             >
               {state.localization.Save}
             </dnn-button>

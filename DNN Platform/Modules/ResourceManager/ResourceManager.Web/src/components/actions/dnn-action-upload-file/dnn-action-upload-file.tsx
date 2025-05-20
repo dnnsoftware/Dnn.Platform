@@ -23,8 +23,6 @@ export class DnnActionUploadFile {
 
   private async showModal(){
     const modal = document.createElement("dnn-modal");
-    modal.backdropDismiss = true;
-    modal.showCloseButton = true;
     const container = document.createElement("div");
     container.style.overflowY = "auto";
     container.style.maxHeight = "70vh";
