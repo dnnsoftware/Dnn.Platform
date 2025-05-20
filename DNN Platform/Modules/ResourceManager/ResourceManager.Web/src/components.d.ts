@@ -14,12 +14,18 @@ export namespace Components {
         "items": Item[];
     }
     interface DnnActionCreateFolder {
+        /**
+          * The ID of the parent folder
+         */
         "parentFolderId": number;
     }
     interface DnnActionDeleteItems {
         "items": Item[];
     }
     interface DnnActionDownloadItem {
+        /**
+          * The item to download.
+         */
         "item": Item;
     }
     interface DnnActionEditItem {
@@ -589,12 +595,18 @@ declare namespace LocalJSX {
         "items": Item[];
     }
     interface DnnActionCreateFolder {
+        /**
+          * The ID of the parent folder
+         */
         "parentFolderId"?: number;
     }
     interface DnnActionDeleteItems {
         "items": Item[];
     }
     interface DnnActionDownloadItem {
+        /**
+          * The item to download.
+         */
         "item": Item;
     }
     interface DnnActionEditItem {
