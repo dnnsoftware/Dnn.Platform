@@ -208,22 +208,8 @@ namespace DotNetNuke.Modules.Admin.Security
 
         protected bool ShowSubscribe(int roleID)
         {
-            bool showSubscribe = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
-            if (objRole.IsPublic)
-            {
-                PortalInfo objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
-                if (objRole.ServiceFee == 0.0)
-                {
-                    showSubscribe = true;
-                }
-                else if (objPortal != null && !string.IsNullOrEmpty(objPortal.ProcessorUserId))
-                {
-                    showSubscribe = true;
-                }
-            }
-
-            return showSubscribe;
+            var objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
+            return objRole.IsPublic && objRole.ServiceFee == 0.0;
         }
 
         protected bool ShowTrial(int roleID)

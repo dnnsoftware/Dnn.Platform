@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Dto.Tabs;
     using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Components.Exceptions;

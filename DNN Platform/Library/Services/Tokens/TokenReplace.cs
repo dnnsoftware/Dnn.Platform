@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Tokens
 
     /// <summary>
     /// The TokenReplace class provides the option to replace tokens formatted
-    /// [object:property] or [object:property|format] or [custom:no] within a string
+    /// <c>[object:property]</c> or <c>[object:property|format]</c> or <c>[custom:no]</c> within a string
     /// with the appropriate current property/custom values.
     /// Example for Newsletter: 'Dear [user:Displayname],' ==> 'Dear Superuser Account,'
     /// Supported Token Sources: User, Host, Portal, Tab, Module, Membership, Profile,
@@ -23,39 +23,27 @@ namespace DotNetNuke.Services.Tokens
     /// </summary>
     public class TokenReplace : BaseCustomTokenReplace
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
-        /// creates a new TokenReplace object for default context.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TokenReplace"/> class for default context.</summary>
         public TokenReplace()
             : this(Scope.DefaultSettings, null, null, null, Null.NullInteger)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
-        /// creates a new TokenReplace object for default context and the current module.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TokenReplace"/> class for default context and the current module. </summary>
         /// <param name="moduleID">ID of the current module.</param>
         public TokenReplace(int moduleID)
             : this(Scope.DefaultSettings, null, null, null, moduleID)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
-        /// creates a new TokenReplace object for custom context.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TokenReplace"/> class for custom context.</summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>
         public TokenReplace(Scope accessLevel)
             : this(accessLevel, null, null, null, Null.NullInteger)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
-        /// creates a new TokenReplace object for custom context.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TokenReplace"/> class for custom context.</summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>
         /// <param name="moduleID">ID of the current module.</param>
         public TokenReplace(Scope accessLevel, int moduleID)
@@ -63,10 +51,7 @@ namespace DotNetNuke.Services.Tokens
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
-        /// creates a new TokenReplace object for custom context.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TokenReplace"/> class for custom context.</summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>
         /// <param name="language">Locale to be used for formatting etc.</param>
         /// <param name="portalSettings">PortalSettings to be used.</param>
@@ -76,10 +61,7 @@ namespace DotNetNuke.Services.Tokens
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
-        /// creates a new TokenReplace object for custom context.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="TokenReplace"/> class for custom context.</summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>
         /// <param name="language">Locale to be used for formatting etc.</param>
         /// <param name="portalSettings">PortalSettings to be used.</param>
@@ -97,13 +79,13 @@ namespace DotNetNuke.Services.Tokens
                 this.DetermineModule(moduleID);
             }
 
-            this.PropertySource["date"] = new DateTimePropertyAccess();
-            this.PropertySource["datetime"] = new DateTimePropertyAccess();
-            this.PropertySource["ticks"] = new TicksPropertyAccess();
-            this.PropertySource["culture"] = new CulturePropertyAccess();
+            this.AddPropertySource("date", new DateTimePropertyAccess());
+            this.AddPropertySource("datetime", new DateTimePropertyAccess());
+            this.AddPropertySource("ticks", new TicksPropertyAccess());
+            this.AddPropertySource("culture", new CulturePropertyAccess());
         }
 
-        /// <summary>Gets or sets /sets the current ModuleID to be used for 'User:' token replacement.</summary>
+        /// <summary>Gets or sets the current ModuleID to be used for 'User:' token replacement.</summary>
         /// <value>ModuleID (Integer).</value>
         public int ModuleId
         {
@@ -118,96 +100,96 @@ namespace DotNetNuke.Services.Tokens
             set => this.TokenContext.Module = value;
         }
 
-        /// <summary>Gets or sets /sets the portal settings object to use for 'Portal:' token replacement.</summary>
-        /// <value>PortalSettings oject.</value>
+        /// <summary>Gets or sets the portal settings object to use for 'Portal:' token replacement.</summary>
+        /// <value>PortalSettings object.</value>
         public PortalSettings PortalSettings
         {
             get => this.TokenContext.Portal;
             set => this.TokenContext.Portal = value;
         }
 
-        /// <summary>Gets or sets /sets the user object to use for 'User:' token replacement.</summary>
-        /// <value>UserInfo oject.</value>
+        /// <summary>Gets or sets the user object to use for 'User:' token replacement.</summary>
+        /// <value>UserInfo object.</value>
         public UserInfo User
         {
             get => this.TokenContext.User;
             set => this.TokenContext.User = value;
         }
 
-        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
+        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText)
         {
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
+        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <param name="row">The data row to use as the source.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText, DataRow row)
         {
             var rowProperties = new DataRowPropertyAccess(row);
-            this.PropertySource["field"] = rowProperties;
-            this.PropertySource["row"] = rowProperties;
+            this.AddPropertySource("field", rowProperties);
+            this.AddPropertySource("row", rowProperties);
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
+        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <param name="custom">A list of custom properties.</param>
         /// <param name="customCaption">The prefix for the custom properties.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText, ArrayList custom, string customCaption)
         {
-            this.PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
+            this.AddPropertySource(customCaption.ToLowerInvariant(), new ArrayListPropertyAccess(custom));
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
-        /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string. </param>
-        /// <param name="customCaption">Token name to be used inside token  [custom:name].</param>
+        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
+        /// <param name="custom">NameValueList for replacing <c>[custom:name]</c> tokens, where <c>custom</c> is specified in next param and <c>name</c> is either the key or the index number in the string.</param>
+        /// <param name="customCaption">Token name to be used inside token <c>[custom:name]</c>.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText, IDictionary custom, string customCaption)
         {
-            this.PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);
+            this.AddPropertySource(customCaption.ToLowerInvariant(), new DictionaryPropertyAccess(custom));
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
-        /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string. </param>
-        /// <param name="customCaptions">Token names to be used inside token [custom:name], where 'custom' is one of the values in the string array. </param>
+        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
+        /// <param name="custom">NameValueList for replacing <c>[custom:name]</c> tokens, where <c>custom</c> is specified in next param and <c>name</c> is either the key or the index number in the string.</param>
+        /// <param name="customCaptions">Token names to be used inside token <c>[custom:name]</c>, where 'custom' is one of the values in the string array. </param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText, IDictionary custom, string[] customCaptions)
         {
             foreach (var customCaption in customCaptions)
             {
-                this.PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);
+                this.AddPropertySource(customCaption.ToLowerInvariant(), new DictionaryPropertyAccess(custom));
             }
 
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in sourceText parameter with the property values.</summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
-        /// <param name="custom">NameValueList for replacing [custom:name] tokens, where 'custom' is specified in next param and name is either thekey or the index number in the string. </param>
-        /// <param name="customCaption">Token name to be used inside token  [custom:name].</param>
+        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values.</summary>
+        /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
+        /// <param name="custom">NameValueList for replacing <c>[custom:name]</c> tokens, where <c>custom</c> is specified in next param and <c>name</c> is either the key or the index number in the string.</param>
+        /// <param name="customCaption">Token name to be used inside token <c>[custom:name]</c>.</param>
         /// <param name="row">DataRow, from which field values shall be used for replacement.</param>
         /// <returns>string containing replaced values.</returns>
         public string ReplaceEnvironmentTokens(string sourceText, ArrayList custom, string customCaption, DataRow row)
         {
             var rowProperties = new DataRowPropertyAccess(row);
-            this.PropertySource["field"] = rowProperties;
-            this.PropertySource["row"] = rowProperties;
-            this.PropertySource[customCaption.ToLowerInvariant()] = new ArrayListPropertyAccess(custom);
+            this.AddPropertySource("field", rowProperties);
+            this.AddPropertySource("row", rowProperties);
+            this.AddPropertySource(customCaption.ToLowerInvariant(), new ArrayListPropertyAccess(custom));
             return this.ReplaceTokens(sourceText);
         }
 
-        /// <summary>Replaces tokens in sourceText parameter with the property values, skipping environment objects.</summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
+        /// <summary>Replaces tokens in <paramref cref="sourceText"/> with the property values, skipping environment objects.</summary>
+        /// <param name="sourceText">String with <c>[Object:Property]</c> tokens.</param>
         /// <returns>string containing replaced values.</returns>
         protected override string ReplaceTokens(string sourceText)
         {
@@ -216,48 +198,46 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>setup context by creating appropriate objects.</summary>
-        /// <remarks >
-        /// security is not the purpose of the initialization, this is in the responsibility of each property access class.
-        /// </remarks>
+        /// <remarks>security is not the purpose of the initialization, this is in the responsibility of each property access class.</remarks>
         private void InitializePropertySources()
         {
             // Cleanup, by default "" is returned for these objects and any property
             IPropertyAccess defaultPropertyAccess = new EmptyPropertyAccess();
-            this.PropertySource["portal"] = defaultPropertyAccess;
-            this.PropertySource["tab"] = defaultPropertyAccess;
-            this.PropertySource["host"] = defaultPropertyAccess;
-            this.PropertySource["module"] = defaultPropertyAccess;
-            this.PropertySource["user"] = defaultPropertyAccess;
-            this.PropertySource["membership"] = defaultPropertyAccess;
-            this.PropertySource["profile"] = defaultPropertyAccess;
+            this.AddPropertySource("portal", defaultPropertyAccess);
+            this.AddPropertySource("tab", defaultPropertyAccess);
+            this.AddPropertySource("host", defaultPropertyAccess);
+            this.AddPropertySource("module", defaultPropertyAccess);
+            this.AddPropertySource("user", defaultPropertyAccess);
+            this.AddPropertySource("membership", defaultPropertyAccess);
+            this.AddPropertySource("profile", defaultPropertyAccess);
 
             // initialization
             if (this.CurrentAccessLevel >= Scope.Configuration)
             {
                 if (this.PortalSettings != null)
                 {
-                    this.PropertySource["portal"] = this.PortalSettings;
-                    this.PropertySource["tab"] = this.PortalSettings.ActiveTab;
+                    this.AddPropertySource("portal", this.PortalSettings);
+                    this.AddPropertySource("tab", this.PortalSettings.ActiveTab);
                 }
 
-                this.PropertySource["host"] = new HostPropertyAccess();
+                this.AddPropertySource("host", new HostPropertyAccess());
                 if (this.ModuleInfo != null)
                 {
-                    this.PropertySource["module"] = this.ModuleInfo;
+                    this.AddPropertySource("module", this.ModuleInfo);
                 }
             }
 
             if (this.CurrentAccessLevel >= Scope.DefaultSettings && !(this.User == null || this.User.UserID == -1))
             {
-                this.PropertySource["user"] = this.User;
-                this.PropertySource["membership"] = new MembershipPropertyAccess(this.User);
-                this.PropertySource["profile"] = new ProfilePropertyAccess(this.User);
+                this.AddPropertySource("user", this.User);
+                this.AddPropertySource("membership", new MembershipPropertyAccess(this.User));
+                this.AddPropertySource("profile", new ProfilePropertyAccess(this.User));
             }
         }
 
         /// <summary>Load the module for the Module Token Provider.</summary>
         /// <param name="moduleId">The module ID.</param>
-        /// <returns>The populated ModuleInfo or null.</returns>
+        /// <returns>The populated ModuleInfo or <see langword="null"/>.</returns>
         /// <remarks>
         /// This method is called by the Setter of ModuleId.
         /// Because of this, it may NOT access ModuleId itself (which will still be -1) but use moduleId (lower case).

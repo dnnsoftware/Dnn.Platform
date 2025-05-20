@@ -14,6 +14,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -34,14 +35,13 @@ namespace DotNetNuke.Modules.Admin.Modules
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
-    /// module.
-    /// </summary>
+    /// <summary>The ModuleSettingsPage PortalModuleBase is used to edit the settings for a module.</summary>
     public partial class ModuleSettingsPage : PortalModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
         private readonly INavigationManager navigationManager;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IModuleControlPipeline moduleControlPipeline;
 
         private int moduleId = -1;
         private Control control;
@@ -49,8 +49,19 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
         public ModuleSettingsPage()
+            : this(null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleSettingsPage"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        public ModuleSettingsPage(INavigationManager navigationManager, IPortalAliasService portalAliasService, IModuleControlPipeline moduleControlPipeline)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.portalAliasService = portalAliasService ?? this.DependencyProvider.GetRequiredService<IPortalAliasService>();
+            this.moduleControlPipeline = moduleControlPipeline ?? this.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
         }
 
         private bool HideDeleteButton => this.Request.QueryString["HideDelete"] == "true";
@@ -88,12 +99,12 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 var index = 0;
                 TabController.Instance.PopulateBreadCrumbs(ref tab);
-                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.IsSuperTab ? Host.HostPortalID : tab.PortalID)
+                var defaultAlias = this.portalAliasService.GetPortalAliasesByPortalId(tab.IsSuperTab ? Host.HostPortalID : tab.PortalID)
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
                 var portalSettings = new PortalSettings(tab.PortalID)
                 {
-                    PortalAlias = defaultAlias,
+                    PortalAlias = defaultAlias as PortalAliasInfo,
                 };
 
                 var tabUrl = this.navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
@@ -189,7 +200,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (moduleControlInfo != null)
                     {
-                        this.control = ModuleControlFactory.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
+                        this.control = this.moduleControlPipeline.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
 
                         var settingsControl = this.control as ISettingsControl;
                         if (settingsControl != null)
@@ -232,7 +243,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                 if (this.Page.IsPostBack == false)
                 {
-                    this.ctlIcon.FileFilter = Globals.glbImageFileTypes;
+                    this.ctlIcon.FileFilter = Globals.ImageFileTypes;
 
                     this.dgPermissions.TabId = this.PortalSettings.ActiveTab.TabID;
                     this.dgPermissions.ModuleID = this.moduleId;

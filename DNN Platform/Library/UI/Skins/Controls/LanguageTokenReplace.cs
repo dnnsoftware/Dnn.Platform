@@ -18,7 +18,7 @@ namespace DotNetNuke.UI.Skins.Controls
             : base(Scope.NoSettings)
         {
             this.UseObjectLessExpression = true;
-            this.PropertySource[ObjectLessToken] = new LanguagePropertyAccess(this, Globals.GetPortalSettings());
+            this.AddPropertySource(ObjectLessToken, new LanguagePropertyAccess(this, Globals.GetPortalSettings()));
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]

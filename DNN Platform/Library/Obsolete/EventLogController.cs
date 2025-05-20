@@ -651,11 +651,7 @@ namespace DotNetNuke.Services.Log.EventLog
             this.EventLogConfigService.UpdateLogType(logType);
 
         /// <inheritdoc/>
-        [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
-#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
-        protected override partial Func<IEventLogController> GetFactory() =>
-#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
-            () => new EventLogController();
+        protected override Func<IEventLogController> GetFactory() => () => new EventLogController();
     }
 #pragma warning restore SA1601 // Partial elements should be documented
 #pragma warning restore SA1600 // Elements should be documented

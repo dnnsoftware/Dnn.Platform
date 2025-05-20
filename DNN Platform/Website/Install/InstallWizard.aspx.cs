@@ -20,6 +20,8 @@ namespace DotNetNuke.Services.Install
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -37,6 +39,8 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
     using Localization = DotNetNuke.Services.Localization.Localization;
@@ -87,10 +91,28 @@ namespace DotNetNuke.Services.Install
         private static object @lock = new object();
 
         private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalTemplateController portalTemplateController;
+
         private Version dataBaseVersion;
         private XmlDocument installTemplate;
 
-        /// <summary>Gets the current applicatoin version.</summary>
+        /// <summary>Initializes a new instance of the <see cref="InstallWizard"/> class.</summary>
+        public InstallWizard()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="InstallWizard"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalTemplateController">The portal template controller.</param>
+        public InstallWizard(IApplicationStatusInfo appStatus, IPortalTemplateController portalTemplateController)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalTemplateController = portalTemplateController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalTemplateController>();
+        }
+
+        /// <summary>Gets the current application version.</summary>
         protected Version ApplicationVersion
         {
             get
@@ -206,16 +228,15 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <summary>Runs the intaller.</summary>
-        [System.Web.Services.WebMethod]
-
+        /// <summary>Runs the installer.</summary>
+        [WebMethod]
         public static void RunInstall()
         {
             installerRunning = false;
-            LaunchAutoInstall();
+            LaunchAutoInstall(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
         }
 
-        /// <summary>Gets the installatoin log.</summary>
+        /// <summary>Gets the installation log.</summary>
         /// <param name="startRow">At which line to start obtaining log lines.</param>
         /// <returns>Log string from the provided line number forward.</returns>
         [WebMethod]
@@ -538,7 +559,7 @@ namespace DotNetNuke.Services.Install
                 File.Copy(installConfig + ".resources", installConfig);
             }
 
-            GetInstallerLocales();
+            GetInstallerLocales(this.appStatus);
             if (!this.Page.IsPostBack || InstallWizard.installConfig == null)
             {
                 InstallWizard.installConfig = InstallController.Instance.GetInstallConfig();
@@ -598,7 +619,7 @@ namespace DotNetNuke.Services.Install
             this.LocalizePage();
 
             base.OnLoad(e);
-            this.visitSite.Click += VisitSiteClick;
+            this.visitSite.Click += this.VisitSiteClick;
 
             // Create Status Files
             if (!File.Exists(StatusFile))
@@ -617,7 +638,7 @@ namespace DotNetNuke.Services.Install
                 try
                 {
                     installerRunning = true;
-                    LaunchAutoInstall();
+                    LaunchAutoInstall(this.appStatus);
                 }
                 catch (Exception)
                 {
@@ -629,7 +650,7 @@ namespace DotNetNuke.Services.Install
             {
                 if (installerRunning)
                 {
-                    LaunchAutoInstall();
+                    LaunchAutoInstall(this.appStatus);
                 }
                 else
                 {
@@ -644,7 +665,7 @@ namespace DotNetNuke.Services.Install
                     else
                     {
                         // Install but connection string not configured to point at a valid SQL Server
-                        UpdateMachineKey();
+                        UpdateMachineKey(this.appStatus);
                     }
 
                     if (!Regex.IsMatch(this.Request.Url.Host, "^([a-zA-Z0-9.-]+)$"))
@@ -706,9 +727,9 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static void LaunchAutoInstall()
+        private static void LaunchAutoInstall(IApplicationStatusInfo appStatus)
         {
-            if (Globals.Status == Globals.UpgradeStatus.None)
+            if (appStatus.Status == UpgradeStatus.None)
             {
                 HttpContext.Current.Response.Redirect("~/");
                 return;
@@ -725,16 +746,16 @@ namespace DotNetNuke.Services.Install
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
             }
 
-            Install();
+            Install(appStatus);
 
             // restore Script timeout
             HttpContext.Current.Server.ScriptTimeout = scriptTimeOut;
         }
 
-        private static void Install()
+        private static void Install(IApplicationStatusInfo appStatus)
         {
             // bail out early if we are already running
-            if (installerRunning || InstallBlocker.Instance.IsInstallInProgress() || (Globals.Status != Globals.UpgradeStatus.Install))
+            if (installerRunning || InstallBlocker.Instance.IsInstallInProgress() || (appStatus.Status != UpgradeStatus.Install))
             {
                 return;
             }
@@ -835,9 +856,9 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static void GetInstallerLocales()
+        private static void GetInstallerLocales(IApplicationStatusInfo appStatus)
         {
-            var filePath = Globals.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = appStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
 
             if (File.Exists(filePath))
             {
@@ -913,13 +934,13 @@ namespace DotNetNuke.Services.Install
             return connectionResult;
         }
 
-        private static void UpdateMachineKey()
+        private static void UpdateMachineKey(IApplicationStatusInfo appStatus)
         {
             var installationDate = Config.GetSetting("InstallationDate");
 
             if (string.IsNullOrEmpty(installationDate))
             {
-                string strError = Config.UpdateMachineKey();
+                string strError = Config.UpdateMachineKey(appStatus);
                 if (string.IsNullOrEmpty(strError))
                 {
                     // send a new request to the application to initiate step 2
@@ -997,7 +1018,7 @@ namespace DotNetNuke.Services.Install
             InstallController.Instance.SetInstallConfig(installConfig);
         }
 
-        private static void VisitSiteClick(object sender, EventArgs eventArgs)
+        private void VisitSiteClick(object sender, EventArgs eventArgs)
         {
             // Delete the status file.
             try
@@ -1025,7 +1046,7 @@ namespace DotNetNuke.Services.Install
                 // Do nothing
             }
 
-            Config.Touch();
+            Config.Touch(this.appStatus);
             HttpContext.Current.Response.Redirect("../Default.aspx");
         }
 
@@ -1096,7 +1117,7 @@ namespace DotNetNuke.Services.Install
                 else
                 {
                     // Install
-                    UpdateMachineKey();
+                    UpdateMachineKey(this.appStatus);
                 }
             }
         }
@@ -1307,8 +1328,7 @@ namespace DotNetNuke.Services.Install
 
         private void BindTemplates()
         {
-            var templates = PortalController.Instance.GetAvailablePortalTemplates();
-
+            var templates = this.portalTemplateController.GetPortalTemplates();
             foreach (var template in templates)
             {
                 this.templateList.AddItem(template.Name, Path.GetFileName(template.TemplateFilePath));

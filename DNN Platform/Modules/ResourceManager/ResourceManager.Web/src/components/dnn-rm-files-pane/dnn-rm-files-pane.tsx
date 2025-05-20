@@ -91,7 +91,8 @@ export class DnnRmFilesPane {
         state.currentItems.folder.folderId,
         state.currentItems.items.length,
         state.pageSize,
-        state.sortField)
+        state.sortField,
+        state.sortOrder)
       .then(data => state.currentItems = {
         ...state.currentItems,
         items: [...state.currentItems.items, ...data.items],

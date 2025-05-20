@@ -493,7 +493,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ctlMembership.DataBind();
             this.AddModuleMessage("UserLockedOut", ModuleMessage.ModuleMessageType.YellowWarning, this.ctlMembership.UserMembership.LockedOut && (!this.Page.IsPostBack));
             this.imgLockedOut.Visible = this.ctlMembership.UserMembership.LockedOut;
-            this.imgOnline.Visible = this.ctlMembership.UserMembership.IsOnLine;
         }
 
         private void BindUser()

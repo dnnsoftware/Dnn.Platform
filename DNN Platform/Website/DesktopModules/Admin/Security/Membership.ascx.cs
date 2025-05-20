@@ -199,7 +199,6 @@ namespace DotNetNuke.Modules.Admin.Users
                                         : this.LocalizeString("Never");
 
             // ReSharper disable SpecifyACultureInStringConversionExplicitly
-            this.isOnLine.Value = this.LocalizeString(this.UserMembership.IsOnLine.ToString());
             this.lockedOut.Value = this.LocalizeString(this.UserMembership.LockedOut.ToString());
             this.approved.Value = this.LocalizeString(this.UserMembership.Approved.ToString());
             this.updatePassword.Value = this.LocalizeString(this.UserMembership.UpdatePassword.ToString());
