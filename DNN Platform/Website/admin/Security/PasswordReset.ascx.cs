@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -25,30 +26,34 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Web.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Host = DotNetNuke.Entities.Host.Host;
-
     /// <summary>A control which allows a user to request a password reset.</summary>
     public partial class PasswordReset : UserModuleBase
     {
         private const int RedirectTimeout = 3000;
-
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
+
         private string ipAddress;
 
         /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
         public PasswordReset()
-            : this(null, null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger)
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         private string ResetToken
@@ -70,7 +75,7 @@ namespace DotNetNuke.Modules.Admin.Security
             base.OnLoad(e);
             this.ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.PasswordStrength.js");
@@ -128,7 +133,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.resetMessages.Visible = true;
             }
 
-            if (Host.EnableStrengthMeter)
+            if (this.hostSettings.EnableStrengthMeter)
             {
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtPassword.CssClass = "password-strength";

@@ -6,8 +6,10 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
     using System.Collections;
+    using System.Net;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Icons;
@@ -27,8 +29,10 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "Search.ascx";
 
         private readonly INavigationManager navigationManager;
+
         private bool showSite = true;
         private bool showWeb = true;
+        private bool enableWildSearch = true;
         private string siteIconURL;
         private string siteText;
         private string siteToolTip;
@@ -38,11 +42,17 @@ namespace DotNetNuke.UI.Skins.Controls
         private string webToolTip;
         private string webURL;
 
-        private bool enableWildSearch = true;
-
+        /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
         public Search()
+            : this(null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public Search(INavigationManager navigationManager)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
         public string SeeMoreText
@@ -368,14 +378,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                         else
                         {
-                            if (Host.UseFriendlyUrls)
-                            {
-                                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId) + "?Search=" + this.Server.UrlEncode(searchText));
-                            }
-                            else
-                            {
-                                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId) + "&Search=" + this.Server.UrlEncode(searchText));
-                            }
+                            this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId, "Search=" + WebUtility.UrlEncode(searchText)));
                         }
 
                         break;
@@ -394,14 +397,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else
             {
-                if (Host.UseFriendlyUrls)
-                {
-                    this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
-                }
-                else
-                {
-                    this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
-                }
+                this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId));
             }
         }
 

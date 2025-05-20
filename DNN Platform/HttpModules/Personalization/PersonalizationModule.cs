@@ -7,19 +7,47 @@ namespace DotNetNuke.HttpModules.Personalization
     using System.Web;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Personalization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class PersonalizationModule : IHttpModule
     {
-        public string ModuleName
+        private readonly PersonalizationController personalizationController;
+
+        /// <summary>Initializes a new instance of the <see cref="PersonalizationModule"/> class.</summary>
+        public PersonalizationModule()
+            : this(null)
         {
-            get
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PersonalizationModule"/> class.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        public PersonalizationModule(PersonalizationController personalizationController)
+        {
+            if (personalizationController is not null)
             {
-                return "PersonalizationModule";
+                this.personalizationController = personalizationController;
+            }
+            else
+            {
+                var serviceProvider = Globals.GetCurrentServiceProvider();
+                if (serviceProvider is not null)
+                {
+                    this.personalizationController = serviceProvider.GetRequiredService<PersonalizationController>();
+                }
+                else
+                {
+                    this.personalizationController = new PersonalizationController(new HostSettings(new HostController()));
+                }
             }
         }
+
+        public string ModuleName => "PersonalizationModule";
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)
@@ -48,8 +76,7 @@ namespace DotNetNuke.HttpModules.Personalization
             {
                 // load the user info object
                 UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
-                var personalization = new PersonalizationController();
-                personalization.SaveProfile(context, userInfo.UserID, portalSettings.PortalId);
+                this.personalizationController.SaveProfile(context, userInfo.UserID, portalSettings.PortalId);
             }
         }
     }

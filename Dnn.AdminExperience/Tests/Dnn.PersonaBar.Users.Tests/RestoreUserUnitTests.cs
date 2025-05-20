@@ -8,7 +8,13 @@ namespace Dnn.PersonaBar.Users.Tests
     using Dnn.PersonaBar.Recyclebin.Components;
     using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
     using Dnn.PersonaBar.Users.Components;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -18,14 +24,11 @@ namespace Dnn.PersonaBar.Users.Tests
     {
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IRecyclebinController> _recyclebinControllerMock;
+        private FakeServiceProvider serviceProvider;
 
-        protected override string CommandName
-        {
-            get { return "Restore-User"; }
-        }
+        protected override string CommandName => "Restore-User";
 
         [Test]
-
         public void Run_RestoreValidUserId_ReturnSuccessResponse()
         {
             // Arrange
@@ -45,7 +48,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void Run_RecycleBinControllerRestoringError_ReturnErrorResponse()
         {
             // Arrange
@@ -65,7 +67,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void Run_RestoreNotDeletedUser_ReturnErrorResponse()
         {
             // Arrange
@@ -83,7 +84,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void Run_RestoreNullUserId_ReturnErrorResponse()
         {
             // Arrange
@@ -111,6 +111,13 @@ namespace Dnn.PersonaBar.Users.Tests
         {
             this._userValidatorMock = new Mock<IUserValidator>();
             this._recyclebinControllerMock = new Mock<IRecyclebinController>();
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
+        }
+
+        [TearDown]
+        protected override void ChildTearDown()
+        {
+            this.serviceProvider.Dispose();
         }
     }
 }

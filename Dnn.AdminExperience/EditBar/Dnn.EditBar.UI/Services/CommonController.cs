@@ -21,15 +21,30 @@ namespace Dnn.EditBar.UI.Services
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
     [DnnPageEditor]
     public class CommonController : DnnApiController
     {
+        private readonly PersonalizationController personalizationController;
+
+        /// <summary>Initializes a new instance of the <see cref="CommonController"/> class.</summary>
+        public CommonController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CommonController"/> class.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        public CommonController(PersonalizationController personalizationController)
+        {
+            this.personalizationController = personalizationController;
+        }
+
         [HttpGet]
         [AllowAnonymous]
-
         public HttpResponseMessage CheckAuthorized()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, new { success = this.IsPageEditor() });
@@ -37,11 +52,9 @@ namespace Dnn.EditBar.UI.Services
 
         [HttpGet]
         [DnnPageEditor]
-
         public HttpResponseMessage GetUserSetting(string key)
         {
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
+            var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
             var value = personalization.Profile[key + this.PortalSettings.PortalId];
 
             if (value == null)
@@ -61,14 +74,12 @@ namespace Dnn.EditBar.UI.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPageEditor]
-
         public HttpResponseMessage SetUserSetting(UserSetting setting)
         {
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
+            var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
             personalization.Profile[setting.Key + this.PortalSettings.PortalId] = setting.Value;
             personalization.IsModified = true;
-            personalizationController.SaveProfile(personalization);
+            this.personalizationController.SaveProfile(personalization);
 
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }

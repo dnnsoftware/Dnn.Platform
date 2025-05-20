@@ -13,6 +13,7 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Cryptography;
 using DotNetNuke.Tests.Utilities.Fakes;
@@ -31,11 +32,15 @@ public class UrlUtilsTests
     {
         ComponentFactory.RegisterComponent<CryptographyProvider, CoreCryptographyProvider>();
         MockComponentProvider.CreateDataCacheProvider();
+        var hostController = new FakeHostController(HostSettings);
 
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
         serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
-        serviceCollection.AddSingleton<IHostSettingsService>(new FakeHostController(HostSettings));
+        serviceCollection.AddSingleton(Mock.Of<IPortalSettingsController>());
+        serviceCollection.AddSingleton<IHostSettingsService>(hostController);
+        serviceCollection.AddSingleton<IHostSettings>(new HostSettings(hostController));
+
         Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
     }
 
@@ -251,8 +256,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlDoesNotAcceptAbsoluteUrlWithoutMatchingDomain()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();
@@ -266,8 +269,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlDoesAcceptAbsoluteUrlWithMatchingDomain()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();
@@ -281,8 +282,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlDoesNotAcceptAbsoluteUrlWithoutProtocolWhenDomainDoesNotMatch()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();
@@ -296,8 +295,6 @@ public class UrlUtilsTests
     [Test]
     public void ValidateReturnUrlAcceptsAbsoluteUrlWithoutProtocolWhenDomainDoesMatches()
     {
-        ComponentFactory.RegisterComponentInstance<IPortalSettingsController>("PortalSettingsController", Mock.Of<IPortalSettingsController>());
-
         var portalAlias = new PortalAliasInfo { HTTPAlias = "dnncommunity.org", };
         var portalSettings = new PortalSettings(-1, portal: null) { PortalAlias = portalAlias, };
         var portalControllerMock = new Mock<IPortalController>();

@@ -5,12 +5,30 @@ namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
 
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class DefaultPortalThemeController : ServiceLocator<IDefaultPortalThemeController, DefaultPortalThemeController>, IDefaultPortalThemeController
     {
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPortalThemeController"/> class.</summary>
+        public DefaultPortalThemeController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPortalThemeController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public DefaultPortalThemeController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         /// <inheritdoc/>
         public string GetDefaultPortalContainer()
         {
@@ -20,7 +38,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 return null;
             }
 
-            return PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId, Host.DefaultPortalContainer, portalSettings.CultureCode);
+            return PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId, this.hostSettings.DefaultPortalContainer, portalSettings.CultureCode);
         }
 
         /// <inheritdoc/>
@@ -32,13 +50,13 @@ namespace Dnn.PersonaBar.Pages.Components
                 return null;
             }
 
-            return PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId, Host.DefaultPortalSkin, portalSettings.CultureCode);
+            return PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId, this.hostSettings.DefaultPortalSkin, portalSettings.CultureCode);
         }
 
         /// <inheritdoc/>
         protected override Func<IDefaultPortalThemeController> GetFactory()
         {
-            return () => new DefaultPortalThemeController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IDefaultPortalThemeController>();
         }
     }
 }

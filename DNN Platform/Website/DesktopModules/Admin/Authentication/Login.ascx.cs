@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
@@ -47,8 +48,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Host = DotNetNuke.Entities.Host.Host;
-
     /// <summary>The Signin UserModuleBase is used to provide a login for a registered user.</summary>
     public partial class Login : UserModuleBase
     {
@@ -61,6 +60,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
 
         private readonly List<AuthenticationLoginBase> loginControls = new List<AuthenticationLoginBase>();
         private readonly List<AuthenticationLoginBase> defaultauthLogin = new List<AuthenticationLoginBase>();
@@ -68,17 +68,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         public Login()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public Login(INavigationManager navigationManager, IEventLogger eventLogger)
+        /// <param name="hostSettings">The host settings.</param>
+        public Login(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets the Redirect URL (after successful login).</summary>
@@ -156,7 +158,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             && this.User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name
                             && this.LocaleEnabled(this.User.Profile.PreferredLocale))
                     {
-                        redirectURL = ReplaceLanguage(redirectURL, CultureInfo.CurrentCulture.Name, this.User.Profile.PreferredLocale);
+                        redirectURL = ReplaceLanguage(this.hostSettings, redirectURL, CultureInfo.CurrentCulture.Name, this.User.Profile.PreferredLocale);
                     }
                 }
 
@@ -645,9 +647,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                     break;
                 case UserLoginStatus.LOGIN_USERLOCKEDOUT:
-                    if (Host.AutoAccountUnlockDuration > 0)
+                    if (this.hostSettings.AutoAccountUnlockDuration > TimeSpan.Zero)
                     {
-                        this.AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", this.LocalResourceFile), Host.AutoAccountUnlockDuration), ModuleMessage.ModuleMessageType.RedError, true);
+                        this.AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", this.LocalResourceFile), this.hostSettings.AutoAccountUnlockDuration.TotalMinutes), ModuleMessage.ModuleMessageType.RedError, true);
                     }
                     else
                     {
@@ -759,13 +761,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>Replaces the original language with user language.</summary>
+        /// <param name="hostSettings">The host settings.</param>
         /// <param name="url">The URL to update.</param>
         /// <param name="originalLanguage">The original language.</param>
         /// <param name="newLanguage">The new language.</param>
         /// <returns>The <paramref name="url"/> with the <paramref name="newLanguage"/>.</returns>
-        private static string ReplaceLanguage(string url, string originalLanguage, string newLanguage)
+        private static string ReplaceLanguage(IHostSettings hostSettings, string url, string originalLanguage, string newLanguage)
         {
-            var returnValue = Host.UseFriendlyUrls
+            var returnValue = hostSettings.UseFriendlyUrls
                 ? Regex.Replace(url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
                 : UserLanguageRegex.Replace(url, "$1$2$3" + newLanguage + "$5");
             return returnValue;

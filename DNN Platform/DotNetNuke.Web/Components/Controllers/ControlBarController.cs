@@ -10,23 +10,45 @@ namespace DotNetNuke.Web.Components.Controllers
     using System.IO;
     using System.Linq;
 
-    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.ExtensionPoints;
     using DotNetNuke.Framework;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Upgrade;
     using DotNetNuke.Web.Components.Controllers.Models;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class ControlBarController : ServiceLocator<IControlBarController, ControlBarController>, IControlBarController
     {
         private const string BookmarkModulesTitle = "module";
         private const string BookmarkCategoryProperty = "ControlBar_BookmarkCategory";
-        private readonly ExtensionPointManager mef;
+        private readonly ExtensionPointManager mef = new ExtensionPointManager();
+        private readonly PersonalizationController personalizationController;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
 
+        /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
         public ControlBarController()
+            : this(null, null, null, null)
         {
-            this.mef = new ExtensionPointManager();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public ControlBarController(PersonalizationController personalizationController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController)
+        {
+            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         }
 
         /// <inheritdoc/>
@@ -35,11 +57,10 @@ namespace DotNetNuke.Web.Components.Controllers
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
 
             Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> filter = category == "All"
-                ? (kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm))
-                : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
+                ? kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm)
+                : kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm);
 
-            var portalModulesList = DesktopModuleController.GetPortalDesktopModules(portalId).Where(filter);
-            return portalModulesList;
+            return DesktopModuleController.GetPortalDesktopModules(portalId).Where(filter);
         }
 
         /// <inheritdoc/>
@@ -47,10 +68,8 @@ namespace DotNetNuke.Web.Components.Controllers
         {
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
 
-            IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> bookmarkedModules = this.GetBookmarkedModules(PortalSettings.Current.PortalId, userId)
+            return this.GetBookmarkedModules(PortalSettings.Current.PortalId, userId)
                 .Where(kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm));
-
-            return bookmarkedModules;
         }
 
         /// <inheritdoc/>
@@ -62,11 +81,10 @@ namespace DotNetNuke.Web.Components.Controllers
                 ensuredBookmarkValue = this.EnsureBookmarkValue(portalId, ensuredBookmarkValue);
             }
 
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(userId, portalId);
+            var personalization = this.personalizationController.LoadProfile(userId, portalId);
             personalization.Profile["ControlBar:" + bookmarkTitle + portalId] = ensuredBookmarkValue;
             personalization.IsModified = true;
-            personalizationController.SaveProfile(personalization);
+            this.personalizationController.SaveProfile(personalization);
         }
 
         /// <inheritdoc/>
@@ -85,30 +103,30 @@ namespace DotNetNuke.Web.Components.Controllers
         /// <inheritdoc/>
         public UpgradeIndicatorViewModel GetUpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
         {
-            var imageUrl = Upgrade.UpgradeIndicator(version, isLocal, isSecureConnection);
-            return !string.IsNullOrEmpty(imageUrl) ? this.GetDefaultUpgradeIndicator(imageUrl) : null;
+            var imageUrl = Upgrade.UpgradeIndicator(this.hostSettings, this.hostSettingsService, this.portalController, version, isLocal, isSecureConnection);
+            return !string.IsNullOrEmpty(imageUrl) ? GetDefaultUpgradeIndicator(imageUrl) : null;
         }
 
         /// <inheritdoc/>
         public string GetControlBarLogoURL()
         {
-            return HostController.Instance.GetString("ControlBarLogoURL", "~/admin/controlpanel/controlbarimages/dnnLogo.png");
+            return this.hostSettingsService.GetString("ControlBarLogoURL", "~/admin/controlpanel/controlbarimages/dnnLogo.png");
         }
 
         /// <inheritdoc/>
         public IEnumerable<MenuItemViewModel> GetCustomMenuItems()
         {
             var menuItemsExtensionPoints = this.mef.GetUserControlExtensionPoints("ControlBar", "CustomMenuItems");
-            return menuItemsExtensionPoints.Select(this.GetMenuItemFromExtensionPoint);
+            return menuItemsExtensionPoints.Select(GetMenuItemFromExtensionPoint);
         }
 
         /// <inheritdoc/>
         protected override Func<IControlBarController> GetFactory()
         {
-            return () => new ControlBarController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IControlBarController>();
         }
 
-        private UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
+        private static UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
         {
             var alt = LocalizationHelper.GetControlBarString("Upgrade.Text");
             var toolTip = LocalizationHelper.GetControlBarString("Upgrade.ToolTip");
@@ -125,7 +143,7 @@ namespace DotNetNuke.Web.Components.Controllers
             };
         }
 
-        private MenuItemViewModel GetMenuItemFromExtensionPoint(IUserControlExtensionPoint userControlExtensionPoint)
+        private static MenuItemViewModel GetMenuItemFromExtensionPoint(IUserControlExtensionPoint userControlExtensionPoint)
         {
             return new MenuItemViewModel
             {
@@ -145,8 +163,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
         private IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetBookmarkedModules(int portalId, int userId)
         {
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(userId, portalId);
+            var personalization = this.personalizationController.LoadProfile(userId, portalId);
             var bookmarkItems = personalization.Profile["ControlBar:" + BookmarkModulesTitle + portalId];
             if (bookmarkItems == null)
             {
@@ -154,10 +171,9 @@ namespace DotNetNuke.Web.Components.Controllers
             }
 
             var bookmarkItemsKeys = bookmarkItems.ToString().Split(',').ToList();
-            var bookmarkedModules = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                                        .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture)));
 
-            return bookmarkedModules;
+            return DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+                .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture)));
         }
     }
 }

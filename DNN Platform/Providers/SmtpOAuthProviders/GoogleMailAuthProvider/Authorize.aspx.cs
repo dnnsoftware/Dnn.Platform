@@ -25,10 +25,11 @@ public abstract class Authorize : Page
 {
     private readonly ISmtpOAuthController smtpOAuthController;
     private readonly IHostSettingsService hostSettingsService;
+    private readonly IHostSettings hostSettings;
 
     /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
     protected Authorize()
-        : this(null, null)
+        : this(null, null, null)
     {
     }
 
@@ -36,18 +37,19 @@ public abstract class Authorize : Page
     /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
     protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService)
+        : this(smtpOAuthController, hostSettingsService, null)
     {
-        if (smtpOAuthController != null)
-        {
-            this.smtpOAuthController = smtpOAuthController;
-            this.hostSettingsService = hostSettingsService;
-        }
-        else
-        {
-            var serviceProvider = HttpContextSource.Current.GetScope().ServiceProvider;
-            this.smtpOAuthController = serviceProvider.GetRequiredService<ISmtpOAuthController>();
-            this.hostSettingsService = hostSettingsService ?? serviceProvider.GetRequiredService<IHostSettingsService>();
-        }
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
+    /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings)
+    {
+        this.smtpOAuthController = smtpOAuthController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ISmtpOAuthController>();
+        this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
+        this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
     }
 
     /// <summary>OnLoad event.</summary>
@@ -75,7 +77,7 @@ public abstract class Authorize : Page
         var settings = authProvider.GetSettings(portalId);
         var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
 
-        var codeFlow = GoogleMailOAuthProvider.CreateAuthorizationCodeFlow(this.smtpOAuthController, this.hostSettingsService, portalId);
+        var codeFlow = GoogleMailOAuthProvider.CreateAuthorizationCodeFlow(this.smtpOAuthController, this.hostSettingsService, this.hostSettings, portalId);
         if (codeFlow == null || await authProvider.IsAuthorizedAsync(portalId, cancellationToken))
         {
             this.CloseWindow();
