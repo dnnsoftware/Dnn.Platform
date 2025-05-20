@@ -476,7 +476,7 @@ namespace Dnn.Modules.ResourceManager.Services
             var folder = FolderManager.Instance.GetFolder(folderDetails.FolderId);
             if (folder == null)
             {
-                return this.Unauthorized();
+                return this.NotFound();
             }
 
             if (!FolderPermissionController.CanManageFolder((FolderInfo)folder))
