@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Journal.Components
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -196,21 +197,22 @@ namespace DotNetNuke.Modules.Journal.Components
                 ctl.LikeLink = string.Empty;
                 ctl.CommentLink = string.Empty;
 
-                ctl.AuthorNameLink = "<a href=\"" + this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=" + ji.JournalAuthor.Id }) + "\">" + ji.JournalAuthor.Name + "</a>";
+                var authorLink = this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "userId=" + ji.JournalAuthor.Id);
+                ctl.AuthorNameLink = $"<a href=\"{WebUtility.HtmlEncode(authorLink)}\">{WebUtility.HtmlEncode(ji.JournalAuthor.Name)}</a>";
                 if (this.CurrentUser.UserID > 0 && !this.isUnverifiedUser)
                 {
                     if (!ji.CommentsDisabled)
                     {
-                        ctl.CommentLink = "<a href=\"#\" id=\"cmtbtn-" + ji.JournalId + "\">" + comment + "</a>";
+                        ctl.CommentLink = $"<a href=\"#\" id=\"cmtbtn-{ji.JournalId}\">{WebUtility.HtmlEncode(comment)}</a>";
                     }
 
                     if (isLiked)
                     {
-                        ctl.LikeLink = "<a href=\"#\" id=\"like-" + ji.JournalId + "\">{resx:unlike}</a>";
+                        ctl.LikeLink = $"<a href=\"#\" id=\"like-{ji.JournalId}\">{{resx:unlike}}</a>";
                     }
                     else
                     {
-                        ctl.LikeLink = "<a href=\"#\" id=\"like-" + ji.JournalId + "\">{resx:like}</a>";
+                        ctl.LikeLink = $"<a href=\"#\" id=\"like-{ji.JournalId}\">{{resx:like}}</a>";
                     }
                 }
 
@@ -231,7 +233,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 var tokenReplace = new JournalItemTokenReplace(ji, ctl);
                 string tmp = tokenReplace.ReplaceJournalItemTokens(rowTemplate);
                 tmp = tmp.Replace("<br>", "<br />");
-                sb.Append("<div class=\"journalrow\" id=\"jid-" + ji.JournalId + "\">");
+                sb.Append($"<div class=\"journalrow\" id=\"jid-{ji.JournalId}\">");
                 if (this.isAdmin || this.CurrentUser.UserID == ji.UserId || (this.ProfileId > Null.NullInteger && this.CurrentUser.UserID == this.ProfileId))
                 {
                     sb.Append("<div class=\"minidel\" onclick=\"journalDelete(this);\"></div>");
@@ -328,7 +330,7 @@ namespace DotNetNuke.Modules.Journal.Components
                             break;
                         }
 
-                        sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
+                        sb.Append($"<span id=\"user-{userId}\" class=\"juser\">{WebUtility.HtmlEncode(name)}</span>");
                         xc += 1;
                     }
                 }
@@ -348,7 +350,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     int userId = Convert.ToInt32(l.Attributes["uid"].Value);
                     string name = l.Attributes["un"].Value;
-                    sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
+                    sb.Append($"<span id=\"user-{userId}\" class=\"juser\">{WebUtility.HtmlEncode(name)}</span>");
                     xc += 1;
                     if (xc == xLikes.Count - 1)
                     {
@@ -382,7 +384,7 @@ namespace DotNetNuke.Modules.Journal.Components
             }
 
             var sb = new StringBuilder();
-            sb.AppendFormat("<ul class=\"jcmt\" id=\"jcmt-{0}\">", journal.JournalId);
+            sb.Append($"<ul class=\"jcmt\" id=\"jcmt-{journal.JournalId}\">");
             foreach (CommentInfo ci in comments)
             {
                 if (ci.JournalId == journal.JournalId)
@@ -393,8 +395,8 @@ namespace DotNetNuke.Modules.Journal.Components
 
             if (this.CurrentUser.UserID > 0 && !journal.CommentsDisabled)
             {
-                sb.AppendFormat("<li id=\"jcmt-{0}-txtrow\" class=\"cmteditarea\">", journal.JournalId);
-                sb.AppendFormat("<textarea id=\"jcmt-{0}-txt\" class=\"cmteditor\"></textarea>", journal.JournalId);
+                sb.Append($"<li id=\"jcmt-{journal.JournalId}-txtrow\" class=\"cmteditarea\">");
+                sb.Append($"<textarea id=\"jcmt-{journal.JournalId}-txt\" class=\"cmteditor\"></textarea>");
                 sb.Append("<div class=\"editorPlaceholder\">{resx:leavecomment}</div></li>");
                 sb.Append("<li class=\"cmtbtn\">");
                 sb.Append("<a href=\"#\">{resx:comment}</a></li>");
@@ -408,18 +410,18 @@ namespace DotNetNuke.Modules.Journal.Components
         {
             var sb = new StringBuilder();
             string pic = UserController.Instance.GetUserProfilePictureUrl(comment.UserId, 32, 32);
-            sb.AppendFormat("<li id=\"cmt-{0}\">", comment.CommentId);
+            sb.Append($"<li id=\"cmt-{comment.CommentId}\">");
             if (comment.UserId == this.CurrentUser.UserID || journal.UserId == this.CurrentUser.UserID || this.isAdmin)
             {
                 sb.Append("<div class=\"miniclose\"></div>");
             }
 
-            sb.AppendFormat("<img src=\"{0}\" />", pic);
+            sb.Append($"<img src=\"{WebUtility.HtmlEncode(pic)}\" />");
             sb.Append("<p>");
-            string userUrl = this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=" + comment.UserId });
-            sb.AppendFormat("<a href=\"{1}\">{0}</a>", comment.DisplayName, userUrl);
+            string userUrl = this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, "userId=" + comment.UserId);
+            sb.Append($"<a href=\"{WebUtility.HtmlEncode(userUrl)}\">{WebUtility.HtmlEncode(comment.DisplayName)}</a>");
 
-            if (comment.CommentXML != null && comment.CommentXML.SelectSingleNode("/root/comment") != null)
+            if (comment.CommentXML?.SelectSingleNode("/root/comment") != null)
             {
                 string text;
                 if (CdataRegex.IsMatch(comment.CommentXML.SelectSingleNode("/root/comment").InnerText))
@@ -441,7 +443,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
             var timeFrame = DateUtils.CalculateDateForDisplay(comment.DateCreated);
             comment.DateCreated = this.CurrentUser.LocalTime(comment.DateCreated);
-            sb.AppendFormat("<abbr title=\"{0}\">{1}</abbr>", comment.DateCreated, timeFrame);
+            sb.Append($"<abbr title=\"{comment.DateCreated}\">{WebUtility.HtmlEncode(timeFrame)}</abbr>");
 
             sb.Append("</p>");
             sb.Append("</li>");
