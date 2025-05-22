@@ -1202,10 +1202,10 @@
   dependencies:
     jodit "^4.2.27"
 
-"@dnncommunity/dnn-elements@^0.27.4":
-  version "0.27.4"
-  resolved "https://registry.yarnpkg.com/@dnncommunity/dnn-elements/-/dnn-elements-0.27.4.tgz#a992f35e0372ff1fa3da43fce16036eb8d3d9bd9"
-  integrity sha512-kz5Kow1d26J2wFbIM3g6JnIjiBfNp6KNxIz5Kg4v0FDTkL8cqe07OB2Tko0Wmc5CziSwdYwJvmPQebVbfiZYHw==
+"@dnncommunity/dnn-elements@^0.27.5":
+  version "0.27.5"
+  resolved "https://registry.yarnpkg.com/@dnncommunity/dnn-elements/-/dnn-elements-0.27.5.tgz#d580a392ac893fe49ba567cd302516d88d6678e0"
+  integrity sha512-deEMdRCaoQQroVriEK4oKd3sVVkkDK76O4/dRP5bz63ezC48fXb6DcCK83pZ7eQVK6UoklNYn4WNaifN+w+vdA==
   dependencies:
     jodit "^4.6.2"
 
