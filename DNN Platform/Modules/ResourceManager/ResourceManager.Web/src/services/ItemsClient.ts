@@ -20,27 +20,17 @@ export class ItemsClient{
         this.requestUrl = `${this.sf.getServiceRoot("ResourceManager")}Items/`
     }
 
-    public getSettings() {
-        return new Promise<GetSettingsResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}GetSettings`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", this.getGroupId());
-            fetch(url, {
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json()
-                    .then(data => {
-                        resolve(data);
-                    });
-                }
-                else{
-                    response.json().then(error => reject(error));
-                }
-            })
-            .catch(error => reject(error));
-        });
+    public async getSettings() {
+        const url =`${this.requestUrl}GetSettings`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("groupId", this.getGroupId());
+        const response = await fetch(url, { headers });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as GetSettingsResponse;
+        return data;
     }
 
     /**
@@ -51,68 +41,54 @@ export class ItemsClient{
      * @param sorting How to sort the items returned.
      * @returns
      */
-    public getFolderContent(
+    public async getFolderContent(
         folderId: number,
         startIndex = 0,
         numItems = 20,
         sortingField: SortFieldInfo = new SortFieldInfo("ItemName"),
-        sortingOrder: SortOrderInfo = new SortOrderInfo()){
-        return new Promise<GetFolderContentResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sortingField.sortKey}&sortingOrder=${sortingOrder.sortOrderKey}`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", this.getGroupId());
-            this.abortController?.abort();
-            this.abortController = new AbortController();
-            fetch(url, {
-                headers,
-                signal: this.abortController.signal,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.message));
-                }
-            })
-            .catch(error => reject(error));
+        sortingOrder: SortOrderInfo = new SortOrderInfo()
+    ) {
+        const url = `${this.requestUrl}GetFolderContent?folderId=${folderId}&startIndex=${startIndex}&numItems=${numItems}&sorting=${sortingField.sortKey}&sortingOrder=${sortingOrder.sortOrderKey}`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("groupId", this.getGroupId());
+        this.abortController?.abort();
+        this.abortController = new AbortController();
+        const response = await fetch(url, {
+            headers,
+            signal: this.abortController.signal,
         });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as GetFolderContentResponse;
+        return data;
     }
 
-    public getFolderIconUrl(folderId: number) {
-      return new Promise<string>((resolve, reject) => {
+    public async getFolderIconUrl(folderId: number) {
         const url = `${this.requestUrl}GetFolderIconUrl?folderId=${folderId}`;
-        fetch(url, {
+        const response = await fetch(url, {
             headers: this.sf.getModuleHeaders(),
-        })
-        .then(response => {
-            if (response.status == 200){
-                response.json().then(data => resolve(data.url));
-            }
-            else{
-                response.json().then(error => reject(error));
-            }
-        })
-        .catch(error => reject(error));
-      });
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as GetFolderIconUrlResponse;
+        return data.url;
     }
 
-    public getAllowedFileExtensions() {
-        return new Promise<GetAllowedFileExtensionsResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}GetAllowedFileExtensions`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error));
-                }
-            })
-            .catch(error => reject(error));
+    public async getAllowedFileExtensions() {
+        const url = `${this.requestUrl}GetAllowedFileExtensions`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
         });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as GetAllowedFileExtensionsResponse;
+        return data;
     }
 
     /**
@@ -123,31 +99,26 @@ export class ItemsClient{
      * @param recursive If true sync recursively.
      * @returns
      */
-     public syncFolderContent(
+     public async syncFolderContent(
         folderId: number,
         numItems = 20,
         sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
         recursive = false){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}SyncFolderContent?folderId=${folderId}&numItems=${numItems}&sorting=${sorting.sortKey}&recursive=${recursive}`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", this.getGroupId());
-            this.abortController?.abort();
-            this.abortController = new AbortController();
-            fetch(url, {
-                headers,
-                signal: this.abortController.signal,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.message));
-                }
-            })
-            .catch(error => reject(error));
+        const url = `${this.requestUrl}SyncFolderContent?folderId=${folderId}&numItems=${numItems}&sorting=${sorting.sortKey}&recursive=${recursive}`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("groupId", this.getGroupId());
+        this.abortController?.abort();
+        this.abortController = new AbortController();
+        const response = await fetch(url, {
+            headers,
+            signal: this.abortController.signal,
         });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as GetFolderContentResponse;
+        return data;
     }
 
     /**
@@ -158,40 +129,303 @@ export class ItemsClient{
      *                      When false, the browser may render the file instead of downloading it for some formats like pdf or images.
      * @returns The actual requested file.
      */
-     public download(
+     public async download(
         fileId: number,
-        forceDownload = true){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}Download?fileId=${fileId}&forceDownload=${forceDownload}`;
-            const headers = this.sf.getModuleHeaders();
-            this.abortController?.abort();
-            this.abortController = new AbortController();
-            fetch(url, {
-                headers,
-                signal: this.abortController.signal,
-            })
-            .then(response => {
-                if (response.status == 200) {
-                    var filename = response.headers.get("Content-Disposition").split("filename=")[1];
-                    filename = this.decodeRFC5987ContentDisposition(filename);
-                    response.blob().then(blob => {
-                        var oldDownloadLink = document.querySelector("#downloadLink");
-                        if (oldDownloadLink) {
-                            oldDownloadLink.remove();
-                        }
-                        var downloadLink = document.createElement('a');
-                        downloadLink.id = "downloadLink";
-                        downloadLink.href = window.URL.createObjectURL(blob);
-                        downloadLink.download = filename;
-                        document.body.appendChild(downloadLink);
-                        downloadLink.click();
-                        resolve();
-                    });
-                }
-            })
-            .catch(error => reject(error));
+        forceDownload = true
+    ){
+        const url = `${this.requestUrl}Download?fileId=${fileId}&forceDownload=${forceDownload}`;
+        const headers = this.sf.getModuleHeaders();
+        this.abortController?.abort();
+        this.abortController = new AbortController();
+        const response = await fetch(url, {
+            headers,
+            signal: this.abortController.signal,
         });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+
+        let filename = response.headers.get("Content-Disposition").split("filename=")[1];
+        filename = this.decodeRFC5987ContentDisposition(filename);
+
+        const blob = await response.blob()        
+        const oldDownloadLink = document.querySelector("#downloadLink");
+        if (oldDownloadLink !== null) {
+            oldDownloadLink.remove();
+        }
+        const downloadLink = document.createElement('a');
+        downloadLink.id = "downloadLink";
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = filename;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
     }
+
+    public async search(
+        folderId: number,
+        search: string,
+        pageIndex: number,
+        pageSize = 20,
+        sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
+        culture = "")
+    {
+        const url = `${this.requestUrl}Search?folderId=${folderId}&search=${search}&pageIndex=${pageIndex}&pageSize=${pageSize}&sorting=${sorting.sortKey}&culture=${culture}`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("groupId", this.getGroupId());
+        this.abortController?.abort();
+        this.abortController = new AbortController();
+        const response = await fetch(url, {
+            headers,
+            signal: this.abortController.signal,
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as SearchResponse;
+        return data;
+    }
+
+    public async getFolderMappings(){
+        const url = `${this.requestUrl}GetFolderMappings`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as FolderMappingInfo[];
+        return data;
+    }
+
+    public async canManageFolderTypes(){
+        const url = `${this.requestUrl}CanManageFolderTypes`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as boolean;
+        return data;
+    }
+
+    public async getAddFolderTypeUrl(){
+        const url = `${this.requestUrl}GetAddFolderTypeUrl`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as string;
+        return data;
+    };
+
+    public async createNewFolder(request: CreateNewFolderRequest){
+        const url = `${this.requestUrl}CreateNewFolder`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("groupId", this.getGroupId());
+        headers.append("Content-Type", "application/json");
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers,
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as CreateNewFolderResponse;
+        return data;
+    }
+
+    public async getFolderItem(folderId: number){
+        const url = `${this.requestUrl}GetFolderItem?folderId=${folderId}`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("groupId", this.getGroupId());
+        const response = await fetch(url, {
+            headers,
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as Item;
+        return data;
+    }
+
+    public async getFolderDetails(folderId: number){
+        const url = `${this.requestUrl}GetFolderDetails?folderId=${folderId}`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as FolderDetails;
+        return data;
+    }
+
+    public async getFileDetails(fileId: number){
+        const url = `${this.requestUrl}GetFileDetails?fileId=${fileId}`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status === 404)
+        {
+            throw new Error(response.statusText);
+        }
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as FileDetails;
+        return data;
+    }
+
+    public async getRoleGroups(){
+        const url = `${this.requestUrl}GetRoleGroups`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status === 401){
+            throw new Error(response.statusText);
+        }
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as IRoleGroup[];
+        return data;
+    }
+
+    public async getRoles(){
+        const url = `${this.requestUrl}GetRoles`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as IRole[];
+        return data;
+    }
+
+    public async searchUsers(query: string) {
+        const url = `${this.requestUrl}GetSuggestionUsers?keyword=${query}&count=50`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as ISearchedUser[];
+        return data;
+    }
+
+    public async saveFolderDetails(request: SaveFolderDetailsRequest){
+        const url = `${this.requestUrl}SaveFolderDetails`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("Content-Type", "application/json");
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers,
+        });
+        if (response.status === 404){
+            throw new Error(response.statusText);
+        }
+        if (response.status !== 200){
+            throw new Error(response.statusText);
+        }
+    }
+
+    public async saveFileDetails(request: SaveFileDetailsRequest){
+        const url = `${this.requestUrl}SaveFileDetails`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("Content-Type", "application/json");
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers,
+        });
+        if (response.status !== 200){
+            throw new Error(response.statusText);
+        }
+    }
+
+    public async moveFile(request: MoveFileRequest){
+        const url = `${this.requestUrl}MoveFile`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("Content-Type", "application/json");
+        headers.append("groupId", this.getGroupId());
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers,
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+    }
+
+    public async moveFolder(request: MoveFolderRequest){
+        const url = `${this.requestUrl}MoveFolder`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("Content-Type", "application/json");
+        headers.append("groupId", this.getGroupId());
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers,
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+    }
+
+    public async deleteFolder(request: DeleteFolderRequest){
+        const url = `${this.requestUrl}DeleteFolder`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("Content-Type", "application/json");
+        headers.append("groupId", this.getGroupId());
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers,
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+    }
+
+    public async deleteFile(request: DeleteFileRequest){
+        const url = `${this.requestUrl}DeleteFile`;
+        const headers = this.sf.getModuleHeaders();
+        headers.append("Content-Type", "application/json");
+        headers.append("groupId", this.getGroupId());
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(request),
+            headers,
+        });
+        if (response.status !== 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+    }
+
     private decodeRFC5987ContentDisposition(filename: string): string {
         filename = filename.replace(/(^")|("$)/g, '');
 
@@ -207,359 +441,6 @@ export class ItemsClient{
           return filename;
     }
 
-    public search(
-        folderId: number,
-        search: string,
-        pageIndex: number,
-        pageSize = 20,
-        sorting: SortFieldInfo = new SortFieldInfo("ItemName"),
-        culture = "")
-    {
-        return new Promise<SearchResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}Search?folderId=${folderId}&search=${search}&pageIndex=${pageIndex}&pageSize=${pageSize}&sorting=${sorting.sortKey}&culture=${culture}`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", this.getGroupId());
-            this.abortController?.abort();
-            this.abortController = new AbortController();
-            fetch(url, {
-                headers,
-                signal: this.abortController.signal,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.message));
-                }
-            })
-            .catch(error => reject(error));
-        });
-    }
-
-    public getFolderMappings(){
-        return new Promise<FolderMappingInfo[]>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolderMappings`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.message));
-                }
-            })
-            .catch(error => reject(error));
-        });
-    }
-
-    public canManageFolderTypes(){
-        return new Promise<boolean>((resolve, reject) => {
-            const url = `${this.requestUrl}CanManageFolderTypes`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                } else {
-                    response.json().then(error => reject(error.message));
-                }
-            })
-            .catch(error => reject(error));
-        })
-    }
-
-    public getAddFolderTypeUrl(){
-        return new Promise<string>((resolve, reject) => {
-            const url = `${this.requestUrl}GetAddFolderTypeUrl`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.message));
-                }
-            })
-            .catch(error => reject(error));
-        });
-    };
-
-    public createNewFolder(request: CreateNewFolderRequest){
-        return new Promise<CreateNewFolderResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}CreateNewFolder`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", this.getGroupId());
-            headers.append("Content-Type", "application/json");
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-
-        });
-    }
-
-    public getFolderItem(folderId: number){
-        return new Promise<Item>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolderItem?folderId=${folderId}`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("groupId", this.getGroupId());
-            fetch(url, {
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public getFolderDetails(folderId: number){
-        return new Promise<FolderDetails>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolderDetails?folderId=${folderId}`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public getFileDetails(fileId: number){
-        return new Promise<FileDetails>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFileDetails?fileId=${fileId}`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public getRoleGroups(){
-        return new Promise<IRoleGroup[]>((resolve, reject) => {
-            const url = `${this.requestUrl}GetRoleGroups`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-                })
-                .then(response => {
-                    if (response.status == 200){
-                        response.json().then(data => resolve(data));
-                    }
-                    else{
-                        response.json().then(error => reject(error.ExceptionMessage || error.message));
-                    }
-                })
-                .catch(reason => reject(reason));
-        });
-    }
-
-    public getRoles(){
-        return new Promise<IRole[]>((resolve, reject) => {
-            const url = `${this.requestUrl}GetRoles`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public searchUsers(query: string) {
-        return new Promise<ISearchedUser[]>((resolve, reject) => {
-            const url = `${this.requestUrl}GetSuggestionUsers?keyword=${query}&count=50`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public saveFolderDetails(request: SaveFolderDetailsRequest){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}SaveFolderDetails`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("Content-Type", "application/json");
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    resolve();
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public saveFileDetails(request: SaveFileDetailsRequest){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}SaveFileDetails`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("Content-Type", "application/json");
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    resolve();
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public moveFile(request: MoveFileRequest){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}MoveFile`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("Content-Type", "application/json");
-            headers.append("groupId", this.getGroupId());
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    resolve();
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public moveFolder(request: MoveFolderRequest){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}MoveFolder`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("Content-Type", "application/json");
-            headers.append("groupId", this.getGroupId());
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    resolve();
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public deleteFolder(request: DeleteFolderRequest){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}DeleteFolder`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("Content-Type", "application/json");
-            headers.append("groupId", this.getGroupId());
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    resolve();
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
-    public deleteFile(request: DeleteFileRequest){
-        return new Promise<void>((resolve, reject) => {
-            const url = `${this.requestUrl}DeleteFile`;
-            const headers = this.sf.getModuleHeaders();
-            headers.append("Content-Type", "application/json");
-            headers.append("groupId", this.getGroupId());
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(request),
-                headers,
-            })
-            .then(response => {
-                if (response.status == 200){
-                    resolve();
-                }
-                else{
-                    response.json().then(error => reject(error.ExceptionMessage || error.message));
-                }
-            })
-            .catch(reason => reject(reason));
-        });
-    }
-
     private getGroupId(): string {
         let result = "-1";
         if (window.location.pathname.indexOf("/groupid/") > -1){
@@ -571,11 +452,27 @@ export class ItemsClient{
 
         const searchParams = new URLSearchParams(window.location.search);
         const groupId = searchParams.get("groupid");
-        if (groupId){
+        if (groupId != null){
             result = groupId;
         }
 
         return result;
+    }
+
+    private async getGenericErrorMessage(response: Response) {
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+            const errorBody = await response.json() as { Message?: string };
+            if (errorBody?.Message != null){
+                return errorBody.Message;
+            }
+            else if(typeof errorBody === "string"){
+                return errorBody;
+            }
+        }
+        else {
+            return await response.text();
+        }
     }
 }
 
@@ -594,7 +491,7 @@ export interface GetSettingsResponse{
         IsHostPortal: boolean;
 }
 
-export enum ModuleMode{
+enum ModuleMode{
     /** Normal mode is when the module is used to manage site or host files. */
     Normal = 0,
 
@@ -613,6 +510,10 @@ export interface GetFolderContentResponse{
     hasManagePermission: boolean;
     items: Item[];
     totalCount: number;
+}
+
+export interface GetFolderIconUrlResponse{
+    url: string;
 }
 
 export interface GetAllowedFileExtensionsResponse {

@@ -30,36 +30,36 @@ export class DnnRmUnlinkItems {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  private closeModal(): void {
+  private async closeModal() {
     const modal = this.el.parentElement as HTMLDnnModalElement;
-    modal.hide().then(() => {
-      setTimeout(() => {
-        document.body.removeChild(modal);
-      }, 300);
-    });
+    await modal.hide();
+    setTimeout(() => {
+      document.body.removeChild(modal);
+    }, 300);
   }
 
-  private handleUnlink(): void {
+  private async handleUnlink() {
     this.unlinking = true;
-    this.items.forEach(item => {
-      this.itemsClient.deleteFolder({
-        FolderId: item.itemId,
-        UnlinkAllowedStatus: true,
-      })
-      .then(() => {
-        this.handleItemUnlinked(item);
-      })
-      .catch(reason => alert(reason));
-    });
+    for (const item of this.items) {
+      try {
+        await this.itemsClient.deleteFolder({
+          FolderId: item.itemId,
+          UnlinkAllowedStatus: true,
+        })
+        await this.handleItemUnlinked(item);
+      } catch (error) {
+        alert(error);
+      }
+    }
   }
   
-  handleItemUnlinked(item: Item) {
+  private async handleItemUnlinked(item: Item) {
     this.unlinkedCount++;
     this.currentItemName = item.itemName;
     if (this.unlinkedCount == this.items.length) {
       this.unlinking = false;
       this.dnnRmFoldersChanged.emit();
-      this.closeModal();
+      await this.closeModal();
     }
   }
 
@@ -87,13 +87,13 @@ export class DnnRmUnlinkItems {
             appearance="primary"
             reversed
             disabled={this.unlinking}
-            onClick={() => this.closeModal()}
+            onClick={() => void this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
             appearance="primary"
-            onClick={() =>this.handleUnlink()}
+            onClick={() => void this.handleUnlink()}
             disabled={this.unlinking}
           >
             {state.localization?.Unlink}

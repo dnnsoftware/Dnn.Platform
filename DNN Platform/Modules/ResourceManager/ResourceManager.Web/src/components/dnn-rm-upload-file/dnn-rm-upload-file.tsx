@@ -33,19 +33,20 @@ export class DnnRmUploadFile {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  componentWillLoad() {
-    this.itemsClient.getAllowedFileExtensions()
-      .then(data => {
-        this.allowedExtensions = data.allowedExtensions;
-        this.validationCode = data.validationCode;
-        this.maxUploadFileSize = data.maxUploadFileSize;
-      })
-      .catch(err => alert(err));
+  async componentWillLoad() {
+    try {
+      const data = await this.itemsClient.getAllowedFileExtensions();
+      this.allowedExtensions = data.allowedExtensions;
+      this.validationCode = data.validationCode;
+      this.maxUploadFileSize = data.maxUploadFileSize;
+    } catch (error) {
+      alert(error);
+    }
   }
 
   private handleFilesDropped(droppedFiles: File[]): void {
     droppedFiles.forEach(file =>{
-      this.queuedFiles = [...this.queuedFiles, file as File];
+      this.queuedFiles = [...this.queuedFiles, file];
     });
   }
   
@@ -54,9 +55,8 @@ export class DnnRmUploadFile {
       <Host>
         <h2>{state.localization.Upload}</h2>
         <label>
-          <dnn-checkbox onClick={() => this.extract = !this.extract}>
+          <dnn-checkbox onClick={() => this.extract = !this.extract} />
           {state.localization.ExtractUploads}
-          </dnn-checkbox>
         </label>
         <dnn-dropzone
           onFilesSelected={e => this.handleFilesDropped(e.detail)}

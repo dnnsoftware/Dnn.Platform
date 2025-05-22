@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property             | Attribute | Description | Type     | Default     |
-| -------------------- | --------- | ----------- | -------- | ----------- |
-| `items` _(required)_ | --        |             | `Item[]` | `undefined` |
+| Property             | Attribute | Description                | Type     | Default     |
+| -------------------- | --------- | -------------------------- | -------- | ----------- |
+| `items` _(required)_ | `items`   | The list of items to copy. | `Item[]` | `undefined` |
 
 
 ## Dependencies

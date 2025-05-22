@@ -24,7 +24,7 @@ export class DnnRmFilesPane {
 
   @Listen("scroll")
   handleScroll(){
-    this.checkIfMoreItemsNeeded();
+    void this.checkIfMoreItemsNeeded();
   }
 
   @Listen("dnnRmFoldersChanged", {target: "document"})
@@ -34,7 +34,7 @@ export class DnnRmFilesPane {
       items: [],
     };
     state.selectedItems = [];
-    this.checkIfMoreItemsNeeded();
+    void this.checkIfMoreItemsNeeded();
   }
 
   @Listen("dnnRmFileDoubleClicked", {target: "document"})
@@ -52,39 +52,41 @@ export class DnnRmFilesPane {
     }
     this.spacer.style.height = `${spacerHeight}px`;
 
-    this.checkIfMoreItemsNeeded();
+    void this.checkIfMoreItemsNeeded();
   }
 
-  checkIfMoreItemsNeeded() {
+  private async checkIfMoreItemsNeeded() {
     const endOfFilesHeight = this.spacer.getBoundingClientRect().top;
     const thisBottom = this.el.getBoundingClientRect().bottom;
     const offset = endOfFilesHeight - thisBottom;
     if (offset < this.preloadOffset){
-      this.loadMore();
+      await this.loadMore();
     }
   }
 
   @Debounce(50)
-  loadMore() {
+  private async loadMore() {
     if (state.currentItems.items.length >= state.currentItems.totalCount){
       return;
     }
 
-    if (state.itemsSearchTerm){
-      this.itemsClient.search(
-        state.currentItems.folder.folderId,
-        state.itemsSearchTerm,
-        state.lastSearchRequestedPage + 1,
-        state.pageSize,
-        state.sortField)
-      .then(data => {
+    if (state.itemsSearchTerm != null && state.itemsSearchTerm.length > 0){
+      try {
+        const data = await this.itemsClient.search(
+          state.currentItems.folder.folderId,
+          state.itemsSearchTerm,
+          state.lastSearchRequestedPage + 1,
+          state.pageSize,
+          state.sortField);
         state.lastSearchRequestedPage += 1;
         state.currentItems = {
           ...state.currentItems,
           totalCount: data.totalCount,
           items: [...state.currentItems.items, ...data.items],
         }
-      })
+      } catch (error) {
+        alert(error);
+      }
     }
     else{
       this.itemsClient.getFolderContent(

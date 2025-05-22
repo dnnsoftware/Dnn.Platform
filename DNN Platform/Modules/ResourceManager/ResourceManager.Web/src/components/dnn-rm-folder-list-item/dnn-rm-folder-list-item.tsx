@@ -36,7 +36,7 @@ export class DnnRmFolderListItem {
   handleFolderDoubleClicked(e: CustomEvent<number>) {
     if (e.detail == Number.parseInt(this.folder.data.key)) {
       this.dnnRmFolderListItemClicked.emit(this.folder);
-      this.handleUserExpanded();
+      void this.handleUserExpanded();
       this.expanded = true;
     }
   }
@@ -56,25 +56,27 @@ export class DnnRmFolderListItem {
     this.internalServicesClient = new InternalServicesClient(state.moduleId);
   }
   
-  componentWillLoad() {
-    this.itemsClient.getFolderIconUrl(Number.parseInt(this.folder.data.key))
-    .then(data => this.folderIconUrl = data)
-    .catch(error => console.error(error));
-    document.addEventListener("click", this.dismissContextMenu.bind(this));
+  async componentWillLoad() {
+    try {
+      this.folderIconUrl = await this.itemsClient.getFolderIconUrl(Number.parseInt(this.folder.data.key));
+    } catch (error) {
+      console.error(error);
+    }
+    document.addEventListener("click", void this.dismissContextMenu.bind(this));
   }
 
   disconnectedCallback(){
-    document.removeEventListener("click", this.dismissContextMenu.bind(this));
+    document.removeEventListener("click", void this.dismissContextMenu.bind(this));
   }
   
-  private handleUserExpanded() {
+  private async handleUserExpanded() {
     const children = Array.from(this.el.shadowRoot.querySelectorAll('dnn-rm-folder-list-item'));
     children.forEach(element => {
       element.shadowRoot.querySelectorAll("dnn-treeview-item")
         .forEach(t => t.removeAttribute("expanded"));
     });
-    this.internalServicesClient.getFolderDescendants(this.folder.data.key)
-    .then(data => {
+    try {
+      const data = await this.internalServicesClient.getFolderDescendants(this.folder.data.key);
       this.folder = {
         ...this.folder,
         children: data.Items.map(item => {
@@ -87,17 +89,18 @@ export class DnnRmFolderListItem {
             },
           };
         }),
-      };
-    })
-    .catch(error => console.error(error));
+      }; 
+    } catch (error) {
+      alert(error);
+    }
   };
 
-  private handleContextMenu(e: MouseEvent): void {
+  private async handleContextMenu(e: MouseEvent) {
     e.preventDefault();
     this.dismissContextMenu();
 
-    this.itemsClient.getFolderItem(Number.parseInt(this.folder.data.key))
-    .then(item => {
+    try {
+      const item = await this.itemsClient.getFolderItem(Number.parseInt(this.folder.data.key));
       const collapsible = document.createElement("dnn-collapsible");
       const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
       collapsible.appendChild(folderContextMenu);
@@ -111,8 +114,9 @@ export class DnnRmFolderListItem {
         collapsible.expanded = true;
       }, 100);
       this.dnnRmcontextMenuOpened.emit(Number.parseInt(this.folder.data.key));
-    })
-    .catch(reason => console.error(reason));
+    } catch (error) {
+      alert(error);
+    }
   }
 
   private dismissContextMenu() {
@@ -133,14 +137,14 @@ export class DnnRmFolderListItem {
       <Host class={this.getItemClasses()}>
         <dnn-treeview-item
           expanded={this.expanded}
-          onUserExpanded={() => this.handleUserExpanded()}
+          onUserExpanded={() => void this.handleUserExpanded()}
         >
           <button
             title={`${this.folder.data.value} (ID: ${this.folder.data.key})`}
             onClick={() => this.dnnRmFolderListItemClicked.emit(this.folder)}
-            onContextMenu={e => this.handleContextMenu(e)}
+            onContextMenu={e => void this.handleContextMenu(e)}
           >
-            {this.folderIconUrl
+            {this.folderIconUrl != null && this.folderIconUrl.length > 0
             ?
               <img src={this.folderIconUrl} alt={this.folder.data.value} />
             :

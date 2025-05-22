@@ -13,53 +13,58 @@ export class InternalServicesClient{
         this.requestUrl = `${this.sf.getServiceRoot("InternalServices")}ItemListService/`
     }
 
-    public getFolders(parentFolderId: number){
-        return new Promise<GetFoldersResponse>((resolve, reject) => {
-            const url = `${this.requestUrl}GetFolders?parentFolderId=${parentFolderId}`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error));
-                }
-            })
-            .catch(error => reject(error));
+    public async getFolders(parentFolderId: number){
+        const url = `${this.requestUrl}GetFolders?parentFolderId=${parentFolderId}`;
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
         });
+        if (response.status != 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as GetFoldersResponse;
+        return data;
     }
 
-    public getFolderDescendants(
+    public async getFolderDescendants(
         parentId?: string,
         sortOrder = 0,
         searchText = "",
         permission = "",
         portalId = -1)
     {
-        return new Promise<GetFolderDescendantsResponse>((resolve, reject) => {
-            let url = `${this.requestUrl}GetFolderDescendants?parentId=${parentId}&sortOrder=${sortOrder}&searchText=${searchText}&permission=${permission}`;
-            if (portalId > -1){
-                url += "&portalId=${portalId}";
-            }
+        let url = `${this.requestUrl}GetFolderDescendants?parentId=${parentId}&sortOrder=${sortOrder}&searchText=${searchText}&permission=${permission}`;
+        if (portalId > -1){
+            url += "&portalId=${portalId}";
+        }
 
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => resolve(data));
-                }
-                else{
-                    response.json().then(error => reject(error.message));
-                }
-            })
-            .catch(error => reject(error));
+        const response = await fetch(url, {
+            headers: this.sf.getModuleHeaders(),
         });
+        if (response.status != 200){
+            const error = await this.getGenericErrorMessage(response);
+            throw new Error(error);
+        }
+        const data = await response.json() as GetFolderDescendantsResponse;
+        return data;
+    }
+
+    private async getGenericErrorMessage(response: Response) {
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+            const errorBody = await response.json() as { Message?: string };
+            if (errorBody?.Message != null){
+                return errorBody.Message;
+            }
+            else if(typeof errorBody === "string"){
+                return errorBody;
+            }
+        }
+        else {
+            return await response.text();
+        }
     }
 }
-
 
 export interface GetFoldersResponse{
     IgnoreRoot: boolean;

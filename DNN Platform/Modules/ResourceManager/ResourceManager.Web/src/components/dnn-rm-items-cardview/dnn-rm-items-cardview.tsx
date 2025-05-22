@@ -22,11 +22,11 @@ export class DnnRmItemsCardview {
   @Event() dnnRmFileDoubleClicked: EventEmitter<string>;
 
   componentWillLoad() {
-    document.addEventListener("click", this.dismissContextMenu.bind(this));
+    document.addEventListener("click", void this.dismissContextMenu.bind(this));
   }
 
   disconnectedCallback() {
-    document.removeEventListener("click", this.disconnectedCallback.bind(this));
+    document.removeEventListener("click", void this.disconnectedCallback.bind(this));
   }
 
   private dismissContextMenu() {

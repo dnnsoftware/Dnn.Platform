@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property            | Attribute | Description | Type   | Default     |
-| ------------------- | --------- | ----------- | ------ | ----------- |
-| `item` _(required)_ | --        |             | `Item` | `undefined` |
+| Property            | Attribute | Description       | Type   | Default     |
+| ------------------- | --------- | ----------------- | ------ | ----------- |
+| `item` _(required)_ | `item`    | The item to open. | `Item` | `undefined` |
 
 
 ## Dependencies

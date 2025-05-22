@@ -16,23 +16,26 @@ export class DnnRmLeftPane {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  private handleFolderClicked(e: CustomEvent<FolderTreeItem>): void {
-    state.selectedItems = [];
-    this.itemsClient.getFolderContent(
-      Number.parseInt(e.detail.data.key),
-      0,
-      state.pageSize,
-      state.sortField,
-      state.sortOrder)
-    .then(data => state.currentItems = data)
-    .catch(error => console.error(error));
+  private async handleFolderClicked(e: CustomEvent<FolderTreeItem>) {
+    try {
+      state.selectedItems = [];
+      state.currentItems = await this.itemsClient.getFolderContent(
+        Number.parseInt(e.detail.data.key),
+        0,
+        state.pageSize,
+        state.sortField,
+        state.sortOrder);
+      
+    } catch (error) {
+      alert(error);
+    }
   }
 
   render() {
     return (
       <Host>
         <dnn-rm-folder-list
-          onDnnRmFolderListFolderPicked={e => this.handleFolderClicked(e)}
+          onDnnRmFolderListFolderPicked={e => void this.handleFolderClicked(e)}
         />
       </Host>
     );
