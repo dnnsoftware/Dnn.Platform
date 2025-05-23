@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { formatLabel, getColumnsFromRow} from "../utils/helpers";
-import Parser from "html-react-parser";
+import Html from "./Html";
 import DomKey from "../services/DomKey";
 
 const DataTable = ({rows, columns, cssClass}) => {
@@ -23,13 +23,13 @@ const DataTable = ({rows, columns, cssClass}) => {
                 let fieldValue = row[fieldName.replace("$", "")] ? row[fieldName.replace("$", "")] + "" : "";
                 let cmd = row["__" + fieldName] ? row["__" + fieldName] : null;
                 if (cmd) {
-                    return <td key={DomKey.get("datatable")}><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, "&quot;")}>{Parser(fieldValue)}</a></td>;
+                    return <td key={DomKey.get("datatable")}><a href="#" className="dnn-prompt-cmd-insert" data-cmd={cmd} title={cmd.replace(/'/g, "&quot;")}><Html html={fieldValue}/></a></td>;
                 }
                 else if (fieldName.indexOf("$") >= 0) {
-                    return <td key={DomKey.get("datatable")} className="mono">--{Parser(fieldValue)}</td>;
+                    return <td key={DomKey.get("datatable")} className="mono">--<Html html={fieldValue}/></td>;
                 }
                 else {
-                    return <td key={DomKey.get("datatable")}>{Parser(fieldValue)}</td>;
+                    return <td key={DomKey.get("datatable")}><Html html={fieldValue}/></td>;
                 }
             });
             return <tr key={DomKey.get("datatable")}>{rowCells}</tr>;

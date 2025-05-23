@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Parser from "html-react-parser";
+import Html from "./Html";
 import DomKey from "../services/DomKey";
 
 const TextLine = ({txt, css}) => {
@@ -8,7 +8,7 @@ const TextLine = ({txt, css}) => {
         return null;
     }
     const textLines = txt.split("\\n");
-    const rows = textLines.map((line) => line ? <span key={DomKey.get("textline")} className={css}>{Parser(line)}</span> : null).reduce((prev,current) => {
+    const rows = textLines.map((line) => line ? <span key={DomKey.get("textline")} className={css}><Html html={line} /></span> : null).reduce((prev,current) => {
         if (current !== "" && current !== null && current !== undefined) {
             return [...prev,current];
         }
