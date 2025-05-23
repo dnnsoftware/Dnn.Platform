@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.EventQueue;
+    using DotNetNuke.Abstractions.Modules;
 
     /// <summary>The ModuleInstaller installs Module Components to a DotNetNuke site.</summary>
     public class ModuleInstaller : ComponentInstallerBase
@@ -24,6 +25,15 @@ namespace DotNetNuke.Services.Installer.Installers
         private DesktopModuleInfo desktopModule;
         private EventMessage eventMessage;
         private DesktopModuleInfo installedDesktopModule;
+        private bool deleteFiles;
+
+        /// <summary>Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the package.</summary>
+        /// <value>A Boolean value.</value>
+        public bool DeleteFiles
+        {
+            get { return this.deleteFiles; }
+            set { this.deleteFiles = value; }
+        }
 
         /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
         /// <value>A String.</value>
@@ -300,6 +310,29 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);
+
+                    // Call any custom uninstall logic implemented by the module
+                    if (!string.IsNullOrEmpty(tempDesktopModule.BusinessControllerClass))
+                    {
+                        try
+                        {
+                            var businessControllerProvider = Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+                            var uninstallable = businessControllerProvider.GetInstance<IUninstallable>(tempDesktopModule);
+                            
+                            if (uninstallable != null)
+                            {
+                                string message = uninstallable.UninstallModule(this.DeleteFiles);
+                                if (!string.IsNullOrEmpty(message))
+                                {
+                                    this.Log.AddInfo(message);
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Log.AddWarning("Error calling IUninstallable interface: " + ex.Message);
+                        }
+                    }
 
                     // Remove all the tab versions related with the module.
                     foreach (var module in modules)

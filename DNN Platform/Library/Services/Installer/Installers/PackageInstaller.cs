@@ -448,6 +448,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     fileInstaller.DeleteFiles = this.DeleteFiles;
                 }
+                else if (compInstaller is ModuleInstaller moduleInstaller)
+                {
+                    moduleInstaller.DeleteFiles = this.DeleteFiles;
+                }
 
                 this.Log.ResetFlags();
                 this.Log.AddInfo(Util.UNINSTALL_StartComp + " - " + compInstaller.Type);
