@@ -418,7 +418,7 @@ class ScannerCheckPanelBody extends Component {
         return false;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         return (

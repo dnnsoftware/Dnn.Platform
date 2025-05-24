@@ -47,7 +47,7 @@ class Modal extends Component {
             }
         });
     }
-    /*eslint-disable react/no-danger*/
+     
     render() {
         const {props} = this;
         const modalStyles = this.getModalStyles(props);

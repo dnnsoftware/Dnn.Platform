@@ -8,10 +8,8 @@ import {
     task as TaskActions
 } from "../../../actions";
 import util from "../../../utils";
-
-/*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../../svg/checkmark.svg`).default;
-const svgIcon2 = require(`!raw-loader!./../../svg/history.svg`).default;
+import checkmarkIcon from "./../../svg/checkmark.svg?raw";
+import historyIcon from "./../../svg/history.svg?raw";
 
 class SchedulerRow extends Component {
     constructor() {
@@ -61,18 +59,18 @@ class SchedulerRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getEnabledDisplay() {
         if (this.props.id !== "add") {
             if (this.props.enabled) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>;
+                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: checkmarkIcon }}></div>;
             }
             else return <span>&nbsp; </span>;
         }
         else return <span>-</span>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -93,7 +91,7 @@ class SchedulerRow extends Component {
                             {this.getEnabledDisplay()}</div>
                         {props.id !== "add" &&
                             <div className="schedule-item item-row-historyButton">
-                                <div className={opened && props.panelIndex === 1 ? "history-icon-active" : "history-icon"} title={resx.get("ControlTitle_history")} dangerouslySetInnerHTML={{ __html: svgIcon2 }} onClick={this.toggle.bind(this, 1)}>
+                                <div className={opened && props.panelIndex === 1 ? "history-icon-active" : "history-icon"} title={resx.get("ControlTitle_history")} dangerouslySetInnerHTML={{ __html: historyIcon }} onClick={this.toggle.bind(this, 1)}>
                                 </div>
                             </div>
                         }

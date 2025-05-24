@@ -34,11 +34,12 @@ const serversTabActions = {
         return (dispatch) => {
             serversTabService
                 .deleteServer(serverId)
-                .then((response) => {
+                .then(() => {
                     serversTabActions.loadServers()(dispatch);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // eslint-disable-next-line no-console
+                    console.error(err);
                     dispatch({
                         type: ActionTypes.ERROR_DELETING_SERVER,
                         payload: {
@@ -53,7 +54,7 @@ const serversTabActions = {
         return (dispatch) => {
             serversTabService
                 .deleteNonActiveServers()
-                .then((response) => {
+                .then(() => {
                     serversTabActions.loadServers()(dispatch);
                 })
                 .catch(() => {

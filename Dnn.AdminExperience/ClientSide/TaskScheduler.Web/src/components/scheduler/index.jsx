@@ -28,7 +28,7 @@ class SchedulerPanel extends Component {
     componentDidMount() {
         const { props } = this;
         props.dispatch(TaskActions.getSchedulerItemList());
-        if (props.serverList === null || props.serverList === [] || props.serverList === undefined) {
+        if (props.serverList === null || props.serverList === undefined || props.serverList.length === 0) {
             props.dispatch(TaskActions.getServerList());
         }
 
@@ -133,7 +133,7 @@ class SchedulerPanel extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedScedulerItemList() {
         let i = 0;
         if (this.props.schedulerItemList) {

@@ -35,7 +35,7 @@ class Card extends Component {
 
         return <span className={className} onClick={this.onClick.bind(this) } >
             {image ? <img src={image} alt={label} /> : this.getNoImageIcon() }
-            {selected && <span className={(isSiteDefault ? 'checkmark site-default' : 'checkmark') }>{this.getCheckMarkIcon() }</span>}
+            {selected && <span className={(isSiteDefault ? "checkmark site-default" : "checkmark") }>{this.getCheckMarkIcon() }</span>}
             <span className="hoverLayer">{hoverText}</span>
         </span>;
     }
@@ -47,7 +47,7 @@ class Card extends Component {
         return (
             <div className={className}>
                 {this.getImageComponent() }
-                <TextOverflowWrapper text={this.props.label} maxWidth={maxWidth} className={(isSiteDefault ? 'card-title site-default' : 'card-title') }  />
+                <TextOverflowWrapper text={this.props.label} maxWidth={maxWidth} className={(isSiteDefault ? "card-title site-default" : "card-title") }  />
                 <TextOverflowWrapper text={isSiteDefault && localization.get("SiteDefault") } maxWidth={maxWidth} className="card-title-site-default" />
             </div>
         );

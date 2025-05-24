@@ -13,10 +13,10 @@ import FiltersBar from "./FiltersBar";
 import ProgressBar from "./ProgressBar";
 import styles from "./style.module.less";
 import util from "utils";
+import noDataImg from "./img/nodata.svg?raw";
 
 import { Button, GridCell, Pager } from "@dnnsoftware/dnn-react-common";
 
-const noDataImg = require("!raw-loader!./img/nodata.svg").default;
 
 class ImportModal extends Component {
     constructor() {
@@ -208,7 +208,7 @@ class ImportModal extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderPackageVerification() {
         const { props } = this;
         return <div>

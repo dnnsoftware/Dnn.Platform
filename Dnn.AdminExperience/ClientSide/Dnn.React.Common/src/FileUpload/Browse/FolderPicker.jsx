@@ -62,7 +62,7 @@ export default class FolderPicker extends Component {
     }
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         const selectedFolderText = this.props.selectedFolder ? this.props.selectedFolder.value : this.props.notSpecifiedText;
 
         return <div className="drop-down" ref={node => this.node = node}>

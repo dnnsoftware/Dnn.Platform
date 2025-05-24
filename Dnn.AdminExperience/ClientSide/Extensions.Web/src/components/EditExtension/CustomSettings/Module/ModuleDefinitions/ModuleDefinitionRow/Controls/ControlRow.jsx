@@ -12,7 +12,7 @@ class ControlRow extends Component {
             isOpened: false
         };
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         return (

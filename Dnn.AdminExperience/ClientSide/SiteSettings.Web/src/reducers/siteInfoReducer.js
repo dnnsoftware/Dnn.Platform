@@ -30,6 +30,7 @@ export default function siteInfo(state = {
             let currentPortal = action.data.portals.find(a => a.IsCurrentPortal === true);
             return { ...state,
                 portals: action.data.portals,
+                // eslint-disable-next-line eqeqeq -- currentPortal is any.
                 portalId: currentPortal != null ? currentPortal.PortalID : action.data.portals[0].PortalID
             };
         }

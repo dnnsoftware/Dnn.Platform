@@ -57,7 +57,7 @@ class PageLocalization extends Component {
         }).then(() => {
             this.removeLocaleFromState(page.CultureCode);
             if (page.TabId === utils.getCurrentPageId()) {
-                let panelId = window.$('.socialpanel:visible').attr('id');
+                let panelId = window.$(".socialpanel:visible").attr("id");
                 utils.getUtilities().panelViewData(panelId, {tab: [0]});
                 window.top.location.href = utils.getDefaultPageUrl();
             }

@@ -24,7 +24,7 @@ class ProviderRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getEnabledDisplay() {
         const {props} = this;
         if (props.enabled) {
@@ -41,7 +41,7 @@ class ProviderRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
@@ -83,7 +83,8 @@ ProviderRow.propTypes = {
     Collapse: PropTypes.func,
     id: PropTypes.string,
     openId: PropTypes.string,
-    visible: PropTypes.bool
+    visible: PropTypes.bool,
+    children: PropTypes.node,
 };
 
 ProviderRow.defaultProps = {

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { GridCell, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 
-/* eslint-disable react/no-danger */
+ 
 const MainLabel = ({label, portalAliases}) => (
     <GridCell className="portal-name-info">
         <TextOverflowWrapper text={label} maxWidth={220}/>

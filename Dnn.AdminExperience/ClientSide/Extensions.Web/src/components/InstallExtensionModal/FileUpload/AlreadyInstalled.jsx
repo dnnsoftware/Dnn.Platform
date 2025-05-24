@@ -9,7 +9,7 @@ export default class AlreadyInstalled extends Component {
 
     render() {
         const { props } = this;
-        /* eslint-disable react/no-danger */
+         
         return <div className="already-installed">
             <div className="already-installed-container">
                 <div className="upload-file-name">{this.props.fileName || "undefined"}</div>

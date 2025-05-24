@@ -274,7 +274,7 @@ class SchedulerEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props, state } = this;
         if (props.panelIndex === 1) {
@@ -289,7 +289,7 @@ class SchedulerEditor extends Component {
                         style={{ width: 100 + "%", float: "left" }}
                         label={resx.get("plFriendlyName")}
                         error={false}
-                        value={this.getValue("FriendlyName" || "")}
+                        value={this.getValue("FriendlyName") || ""}
                         onChange={this.onSettingChange.bind(this, "FriendlyName")}
                     />
                 </div>

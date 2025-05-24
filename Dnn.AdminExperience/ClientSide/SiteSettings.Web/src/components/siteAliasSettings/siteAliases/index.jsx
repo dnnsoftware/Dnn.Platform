@@ -122,7 +122,7 @@ class SiteAliasesPanel extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedSiteAliases() {
         let i = 0;
         if (this.props.siteAliases) {

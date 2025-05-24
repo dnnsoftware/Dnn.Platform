@@ -50,7 +50,7 @@ class ResourceList extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         const pendingTranslations = Object.keys(this.props.list).filter((key) => {

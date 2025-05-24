@@ -286,7 +286,7 @@ class PagePicker extends Component {
         return className;
     }
 
-    /* eslint-disable react/no-danger */
+     
     getChildItems(children, isCurrentOrDescendant) {
         if (!children) {
             return [];
@@ -556,7 +556,7 @@ class PagePicker extends Component {
     }
 
     //Multi Selection Methods Ends
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         

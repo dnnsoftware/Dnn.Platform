@@ -227,7 +227,7 @@ class Pager extends Component {
         />
         );
     }
-    /* eslint-disable react/no-danger */
+     
     renderIcon(OnClick, Type, Disabled) {
         if (!Disabled) {
             return <li className={"do-not-close pages prev"} onClick={OnClick.bind(this)}>

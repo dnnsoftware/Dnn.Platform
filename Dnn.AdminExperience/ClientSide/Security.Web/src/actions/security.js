@@ -506,7 +506,7 @@ const securityActions = {
         };
     },
     getApiTokenKeys(callback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.getApiTokenKeys(data => {
                 if (callback) {
                     callback(data);
@@ -515,7 +515,7 @@ const securityActions = {
         };
     },
     getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, callback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.getApiTokens(portalId, filter, apiKey, scope, pageIndex, pageSize, data => {
                 if (callback) {
                     callback(data);
@@ -524,7 +524,7 @@ const securityActions = {
         };
     },
     createApiToken(name, scope, tokenTimespan, apiKeys, callback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.createApiToken({
                 TokenName: name,
                 Scope: scope,
@@ -538,7 +538,7 @@ const securityActions = {
         };
     },
     revokeOrDeleteApiToken(apiTokenId, isDelete, callback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.revokeOrDeleteApiToken({
                 ApiTokenId: apiTokenId,
                 Delete: isDelete
@@ -550,7 +550,7 @@ const securityActions = {
         };
     },
     deleteExpiredApiTokens(callback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.deleteExpiredApiTokens(data => {
                 if (callback) {
                     callback(data);
@@ -559,7 +559,7 @@ const securityActions = {
         };
     },
     deleteExpiredAndRevokedApiTokens(callback) {
-        return (dispatch) => {
+        return () => {
             ApplicationService.deleteExpiredAndRevokedApiTokens(data => {
                 if (callback) {
                     callback(data);

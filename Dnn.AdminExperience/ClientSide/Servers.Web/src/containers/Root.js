@@ -1,5 +1,6 @@
-if (process.env.NODE_ENV === "production") {
-    module.exports = require("./Root.prod");
-} else {
-    module.exports = require("./Root.dev");
-}
+import RootProd from "./Root.prod";
+import RootDev from "./Root.dev";
+
+const Root = process.env.NODE_ENV === "production" ? RootProd : RootDev;
+
+export default Root;

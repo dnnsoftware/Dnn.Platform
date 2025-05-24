@@ -83,9 +83,9 @@ class IgnoreWordsEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
-        /* eslint-disable react/no-danger */
+         
         if (this.state.words !== undefined || this.props.id === "add") {  
             return (
                 <div className="words-editor">

@@ -17,7 +17,7 @@ class License extends Component {
     render() {
         const {props} = this;
         const {value} = props;
-        /* eslint-disable react/no-danger */
+         
         return (
             <GridCell className="extension-license extension-form">
                 {props.installationMode && <h6>{Localization.get("InstallExtension_License.Header")}</h6>}

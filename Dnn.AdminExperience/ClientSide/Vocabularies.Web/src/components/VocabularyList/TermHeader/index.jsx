@@ -4,10 +4,8 @@ import { Collapsible as Collapse, TextOverflowWrapper, GridCell, Button } from "
 import styles from "./style.module.less";
 import util from "utils";
 import LocalizedResources from "resources";
-
-/* eslint-disable quotes */
-const SimpleType = require(`!raw-loader!./svg/vocabulary_simple.svg`).default;
-const HierarchyType = require(`!raw-loader!./svg/vocabulary_hierarchy.svg`).default;
+import simpleTypeIcon from "./svg/vocabulary_simple.svg?raw";
+import hierarchyTypeIcon from "./svg/vocabulary_hierarchy.svg?raw";
 
 
 class TermHeader extends Component {
@@ -75,10 +73,10 @@ class TermHeader extends Component {
         const {props} = this;
         props.onDelete(props.term, props.index, () => { this.collapse(); });
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
-        const svgIcon = props.type === 1 ? SimpleType : HierarchyType;
+        const svgIcon = props.type === 1 ? simpleTypeIcon : hierarchyTypeIcon;
         return (
             <div ref={node => this.node = node} className={"" + styles.collapsibleComponent + " " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this)}>

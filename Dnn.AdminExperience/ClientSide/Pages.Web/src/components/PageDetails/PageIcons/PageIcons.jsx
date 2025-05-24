@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { FileUpload, GridSystem, GridCell, Label } from "@dnnsoftware/dnn-react-common";
-import Localization from '../../../localization';
-import util from '../../../utils';
-import styles from './styles.module.less';
+import Localization from "../../../localization";
+import util from "../../../utils";
+import styles from "./styles.module.less";
 
 export default class PageIcons extends Component {            
     constructor(props) {
@@ -28,7 +28,7 @@ export default class PageIcons extends Component {
                         />
                         <FileUpload 
                             utils={util}
-                            onSelectFile={this.onChangeIcon.bind(this, 'iconFile')}
+                            onSelectFile={this.onChangeIcon.bind(this, "iconFile")}
                             selectedFile={props.page.iconFile}
                             folderName={props.page.iconFile ? props.page.iconFile.folderName: null}
                             fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/svg+xml"]}
@@ -60,7 +60,7 @@ export default class PageIcons extends Component {
                         />
                         <FileUpload 
                             utils={util}
-                            onSelectFile={this.onChangeIcon.bind(this, 'iconFileLarge')}
+                            onSelectFile={this.onChangeIcon.bind(this, "iconFileLarge")}
                             selectedFile={props.page.iconFileLarge}
                             folderName={props.page.iconFileLarge ? props.page.iconFileLarge.folderName : null}
                             fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/svg+xml"]}

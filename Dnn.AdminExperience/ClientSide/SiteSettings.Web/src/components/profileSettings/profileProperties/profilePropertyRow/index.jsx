@@ -20,7 +20,7 @@ class ProfilePropertyRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getBooleanDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop) {
@@ -42,7 +42,7 @@ class ProfilePropertyRow extends Component {
         return flag;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);

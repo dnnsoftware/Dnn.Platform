@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const path = require("path");
 const packageJson = require("./package.json");
 const moduleName = "vocabulary";
@@ -79,6 +79,27 @@ module.exports = (env, argv) => {
                         loader: "url-loader?limit=8192",
                     },
                 },
+                {
+                    test: /\.svg$/,
+                    resourceQuery: /raw/,
+                    use: "raw-loader",
+                },
+                {
+                    test: /\.json$/,
+                    type: "javascript/auto",
+                    loader: "json-loader",
+                },
+                {
+                    test: /\.html$/,
+                    use: [
+                        {
+                            loader: "html-loader",
+                            options: {
+                                esModule: false,
+                            },
+                        },
+                    ],
+                }
             ],
         },
 

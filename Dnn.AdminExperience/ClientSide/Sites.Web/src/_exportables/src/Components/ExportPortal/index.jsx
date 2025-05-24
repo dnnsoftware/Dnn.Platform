@@ -61,7 +61,7 @@ class ExportPortal extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         props.dispatch(
             CommonExportPortalActions.getPortalLocales(

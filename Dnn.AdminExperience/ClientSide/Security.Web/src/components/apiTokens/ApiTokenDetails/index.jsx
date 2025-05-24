@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import "./style.less";
-import { Dropdown as Select, GridSystem as Grid, Switch, Button, SingleLineInputWithError, MultiLineInput, Label } from "@dnnsoftware/dnn-react-common";
+import { GridSystem as Grid, Label } from "@dnnsoftware/dnn-react-common";
 import resx from "../../../resources";
 import utils from "../../../utils";
-import { security as SecurityActions } from "../../../actions";
 
 class ApiTokenDetails extends Component {
     constructor(props) {
@@ -110,7 +109,7 @@ class ApiTokenDetails extends Component {
                         <div className="apitokenkeys">
                             {this.props.apiToken.Keys.split(",").map((item) => {
                                 let k = this.props.apiTokenKeys.filter((key) => {
-                                    return key.Scope == this.props.apiToken.Scope && key.Key == item;
+                                    return key.Scope === this.props.apiToken.Scope && key.Key === item;
                                 });
                                 if (k.length > 0) {
                                     return (
@@ -138,7 +137,7 @@ ApiTokenDetails.propTypes = {
     apiTokenKeys: PropTypes.array
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {};
 }
 

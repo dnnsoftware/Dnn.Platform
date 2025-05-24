@@ -9,7 +9,7 @@
 
 | Property            | Attribute | Description                        | Type   | Default     |
 | ------------------- | --------- | ---------------------------------- | ------ | ----------- |
-| `item` _(required)_ | --        | The item that triggered this menu. | `Item` | `undefined` |
+| `item` _(required)_ | `item`    | The item that triggered this menu. | `Item` | `undefined` |
 
 
 ## Dependencies

@@ -124,7 +124,7 @@ class MessagingSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {state} = this;
         if (state.messagingSettings) {

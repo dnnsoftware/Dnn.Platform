@@ -4,15 +4,13 @@ import { connect } from "react-redux";
 import TaskStatusItemRow from "./taskStatusItemRow";
 import "./style.less";
 import resx from "../../resources";
-
-const noDataImage = require("!raw-loader!./../svg/nodata.svg").default;
+import noDataImage from "./../svg/nodata.svg?raw";
 
 class TaskQueuePanelBody extends Component {
     constructor() {
         super();
     }
-
-    /* eslint-disable react/no-danger */
+     
     renderedTaskStatusList() {
         const { props } = this;
         return props.taskStatusList.map((term, index) => {

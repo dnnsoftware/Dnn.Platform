@@ -401,9 +401,9 @@ class ProfilePropertyEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
-        /* eslint-disable react/no-danger */
+         
         if (this.state.profileProperty !== undefined || this.props.id === ADD_PROPERTY_FLAG) {
             const { profileProperty, propertyLocalization } = this.state;
             const columnOne = <div key="column-one" className="left-column">

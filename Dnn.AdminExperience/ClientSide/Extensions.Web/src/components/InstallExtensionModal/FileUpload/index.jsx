@@ -151,12 +151,13 @@ export default class FileUpload extends Component {
     }
     render() {
         /* eslint-disable quotes */
+        // eslint-disable-next-line no-undef
         const svg = require(`!raw-loader!./img/upload.svg`).default;
 
         const buttonsStyle = { width: 67 };
         let className = "overlay" + (this.state.draggedOver ? " hover" : "");
 
-        /* eslint-disable react/no-danger */
+         
         return <div className={"dnn-package-upload" + (this.state.uploading ? " uploading" : "") + (this.props.alreadyInstalled ? " already-installed" : "") + (this.props.viewingLog ? " viewing-log" : "")}>
 
             {((!this.state.uploading || this.state.uploadComplete) && !this.props.viewingLog) && <div className="dropzone-container">

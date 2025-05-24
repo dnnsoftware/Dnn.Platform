@@ -20,7 +20,7 @@ class SiteAliasRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getBooleanDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop) {
@@ -31,7 +31,7 @@ class SiteAliasRow extends Component {
         else return <span>-</span>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);

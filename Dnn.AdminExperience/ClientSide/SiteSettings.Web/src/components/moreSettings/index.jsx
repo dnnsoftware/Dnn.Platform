@@ -44,9 +44,9 @@ class MoreSettingsPanelBody extends Component {
         props.dispatch(
             SiteBehaviorActions.getOtherSettings(props.portalId, (data) => {
                 let whitelistOption = 1;
-                if (data.Settings.AllowedExtensionsWhitelist == data.Settings.HostAllowedExtensionsWhitelists) {
+                if (data.Settings.AllowedExtensionsWhitelist === data.Settings.HostAllowedExtensionsWhitelists) {
                     whitelistOption = 0;
-                } else if (data.Settings.AllowedExtensionsWhitelist == data.Settings.ImageExtensionsList) {
+                } else if (data.Settings.AllowedExtensionsWhitelist === data.Settings.ImageExtensionsList) {
                     whitelistOption = 2;
                 }
                 this.setState({
@@ -318,7 +318,7 @@ class MoreSettingsPanelBody extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props, state } = this;
         let htmlEditor = isHost ? (
@@ -442,7 +442,7 @@ class MoreSettingsPanelBody extends Component {
                                         this,
                                         "AllowedExtensionsWhitelist"
                                     )}
-                                    enabled={state.whitelistOption == 1}
+                                    enabled={state.whitelistOption === 1}
                                 />
                             </InputGroup>
                         </div>

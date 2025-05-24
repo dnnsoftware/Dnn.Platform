@@ -9,9 +9,7 @@ import { Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import ModePanel from "./modePanel";
 import util from "../../utils";
 import resx from "../../resources";
-
-/*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../svg/edit.svg`).default;
+import svgIcon from "./../svg/edit.svg?raw";
 
 class TopPane extends Component {
     constructor() {
@@ -145,7 +143,7 @@ class TopPane extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         return (

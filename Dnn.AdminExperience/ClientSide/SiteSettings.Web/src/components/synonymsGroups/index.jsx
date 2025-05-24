@@ -186,7 +186,7 @@ class SynonymsGroupsPanel extends Component {
         return options;
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedSynonymsGroups() {
         let i = 0;
         if (this.props.synonymsGroups) {

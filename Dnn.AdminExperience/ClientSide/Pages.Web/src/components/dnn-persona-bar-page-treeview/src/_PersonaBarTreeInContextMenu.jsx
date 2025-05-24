@@ -4,7 +4,7 @@ import Localization from "localization";
 import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import Menu from "./InContextMenu/Menu";
 import MenuItem from "./InContextMenu/MenuItem";
-import cloneDeep from 'lodash/cloneDeep';
+import cloneDeep from "lodash/cloneDeep";
 import securityService from "../../../services/securityService";
 
 import "./styles.less";
@@ -124,7 +124,7 @@ export class PersonaBarTreeInContextMenu extends Component {
 
     renderActionable(item) {
         const visibleMenus = this.buildMenuItems(item);
-        /*eslint-disable react/no-danger*/
+         
         if (this.state.showMenu && visibleMenus.length) {
             return (<Menu>
                 {

@@ -70,7 +70,7 @@ class CreatePortal extends Component {
         });
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props, state } = this;
         props.dispatch(CommonPortalListActions.getPortalTemplates((data) => {
             let {newPortal} = state;
@@ -408,7 +408,8 @@ class CreatePortal extends Component {
 
 CreatePortal.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
+    portalTemplates: PropTypes.array,
 };
 
 

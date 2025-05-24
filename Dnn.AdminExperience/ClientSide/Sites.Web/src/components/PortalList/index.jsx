@@ -17,7 +17,7 @@ import {
 import styles from "./style.module.less";
 
 class PortalList extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         props.dispatch(
             CommonPortalListActions.loadPortals({
@@ -88,7 +88,9 @@ PortalList.propTypes = {
     onAddNewSite: PropTypes.func,
     onEditSite: PropTypes.func,
     onExportPortal: PropTypes.func,
-    portals: PropTypes.array
+    portals: PropTypes.array,
+    pagination: PropTypes.object,
+    totalCount: PropTypes.number,
 };
 function mapStateToProps(state) {
     return {

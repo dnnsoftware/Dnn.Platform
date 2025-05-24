@@ -203,7 +203,7 @@ class ProfilePropertiesPanel extends Component {
             }));
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedProfileProperties() {
         let i = 0;
         if (this.props.profileProperties) {

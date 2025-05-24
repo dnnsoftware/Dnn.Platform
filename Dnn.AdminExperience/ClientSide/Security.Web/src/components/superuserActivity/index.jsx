@@ -65,7 +65,7 @@ class SuperuserActivityPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         if (props.activities) {

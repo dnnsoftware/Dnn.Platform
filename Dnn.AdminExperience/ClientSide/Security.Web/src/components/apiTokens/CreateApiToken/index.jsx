@@ -30,7 +30,7 @@ class CreateApiToken extends Component {
 
     resetApiFilterList() {
         const f = this.props.apiTokenKeys.filter((item) => {
-            return item.Scope == this.state.currentScope;
+            return item.Scope === this.state.currentScope;
         });
         this.setState({
             apiTokenKeysFiltered: f,

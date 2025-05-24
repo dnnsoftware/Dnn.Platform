@@ -1,4 +1,4 @@
-/* eslint-disable no-useless-escape */
+ 
 export const PasswordStrengthType = {
     WEAK: "weak",
     FAIR: "fair",

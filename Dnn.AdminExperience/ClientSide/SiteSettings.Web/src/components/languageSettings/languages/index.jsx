@@ -173,7 +173,7 @@ class LanguagesPanel extends Component {
         //
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedLanguages() {
         let i = 0;
         if (this.props.languageList) {

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-/* eslint-disable react/no-danger */
+ 
 const Statistic = ({label, value}) => (
     <div className="portal-statistic">
         <div className="statistic-label">

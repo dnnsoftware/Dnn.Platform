@@ -52,7 +52,7 @@ class LanguageVerifierPanelBody extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         return (
             <div className={styles.languageVerifier}>                

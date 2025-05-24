@@ -28,7 +28,7 @@ class ProviderRow extends Component {
         this.props.onUpdateStatus(props.providerId, event);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.name === this.props.openId);
@@ -67,7 +67,8 @@ ProviderRow.propTypes = {
     id: PropTypes.string,
     openId: PropTypes.string,
     visible: PropTypes.bool,
-    onUpdateStatus: PropTypes.func
+    onUpdateStatus: PropTypes.func,
+    children: PropTypes.node,
 };
 
 ProviderRow.defaultProps = {

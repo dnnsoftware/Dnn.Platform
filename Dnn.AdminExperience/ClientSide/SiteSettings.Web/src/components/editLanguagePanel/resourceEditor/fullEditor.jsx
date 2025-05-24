@@ -44,7 +44,7 @@ class FullEditor extends Component {
         props.onCancel();
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderToolbar() {
         return (
             <div className='fulleditor-controls'>
@@ -59,6 +59,7 @@ class FullEditor extends Component {
                                             data-role={button} 
                                             href='#'
                                             onClick={this.execCommand.bind(this, button)}
+                                            // eslint-disable-next-line no-undef -- Not sure about the proper import syntax here with babel.
                                             dangerouslySetInnerHTML={{ __html: require("./icons/" + button + ".svg").default }}
                                             key={i}>
                                         </a>
@@ -72,7 +73,7 @@ class FullEditor extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderEditor() {
         const { props } = this;
         return (
