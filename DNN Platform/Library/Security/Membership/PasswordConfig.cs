@@ -9,9 +9,6 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Entities.Host;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Membership
-    /// Class:      PasswordConfig
     /// <summary>The PasswordConfig class provides a wrapper any Portal wide Password Settings.</summary>
     public class PasswordConfig
     {

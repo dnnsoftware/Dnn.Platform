@@ -8,8 +8,12 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Globalization;
     using System.Runtime.Serialization;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     [DataContract]
     public class DnnFileUploadOptions
@@ -65,10 +69,17 @@ namespace DotNetNuke.Web.UI.WebControls
         private const int DefaultWidth = 780;
         private const int DefaultHeight = 630;
 
+        private readonly IHostSettings hostSettings;
         private Dictionary<string, string> parameters;
 
         public DnnFileUploadOptions()
+            : this(null)
         {
+        }
+
+        public DnnFileUploadOptions(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.FolderPicker = new DnnDropDownListOptions();
             this.MaxFileSize = (int)Config.GetMaxUploadSize();
             this.Extensions = new List<string>();
@@ -129,7 +140,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
 
-                return ValidationUtils.ComputeValidationCode(parameters);
+                return ValidationUtils.ComputeValidationCode(this.hostSettings, parameters);
             }
         }
     }

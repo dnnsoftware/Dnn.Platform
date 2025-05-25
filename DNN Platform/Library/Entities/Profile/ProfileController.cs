@@ -7,6 +7,8 @@ namespace DotNetNuke.Entities.Profile
     using System.Collections.Generic;
     using System.Data;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -18,6 +20,8 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Log.EventLog;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Profile
@@ -134,11 +138,20 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
         /// <param name="portalId">Portal Id.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
-        public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId, int portalId)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial ProfilePropertyDefinition GetPropertyDefinition(int definitionId, int portalId)
+            => GetPropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), definitionId, portalId);
+
+        /// <summary>Gets a Property Definition from the Data Store by id.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <param name="portalId">Portal Id.</param>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
+        public static ProfilePropertyDefinition GetPropertyDefinition(IHostSettings hostSettings, int definitionId, int portalId)
         {
             bool bFound = Null.NullBoolean;
             ProfilePropertyDefinition definition = null;
-            foreach (ProfilePropertyDefinition def in GetPropertyDefinitions(GetEffectivePortalId(portalId)))
+            foreach (ProfilePropertyDefinition def in GetPropertyDefinitions(hostSettings, GetEffectivePortalId(portalId)))
             {
                 if (def.PropertyDefinitionId == definitionId)
                 {
@@ -157,17 +170,26 @@ namespace DotNetNuke.Entities.Profile
             return definition;
         }
 
-        /// <summary>Gets a Property Defintion from the Data Store by name.</summary>
+        /// <summary>Gets a Property Definition from the Data Store by name.</summary>
         /// <param name="portalId">The id of the Portal.</param>
         /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
-        public static ProfilePropertyDefinition GetPropertyDefinitionByName(int portalId, string name)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial ProfilePropertyDefinition GetPropertyDefinitionByName(int portalId, string name)
+            => GetPropertyDefinitionByName(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, name);
+
+        /// <summary>Gets a Property Definition from the Data Store by name.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
+        public static ProfilePropertyDefinition GetPropertyDefinitionByName(IHostSettings hostSettings, int portalId, string name)
         {
             portalId = GetEffectivePortalId(portalId);
 
             bool bFound = Null.NullBoolean;
             ProfilePropertyDefinition definition = null;
-            foreach (ProfilePropertyDefinition def in GetPropertyDefinitions(portalId))
+            foreach (ProfilePropertyDefinition def in GetPropertyDefinitions(hostSettings, portalId))
             {
                 if (def.PropertyName == name)
                 {
@@ -186,16 +208,25 @@ namespace DotNetNuke.Entities.Profile
             return definition;
         }
 
-        /// <summary>Gets a collection of Property Defintions from the Data Store by category.</summary>
+        /// <summary>Gets a collection of Property Definitions from the Data Store by category.</summary>
         /// <param name="portalId">The id of the Portal.</param>
-        /// <param name="category">The category of the Property Defintions to retrieve.</param>
+        /// <param name="category">The category of the Property Definitions to retrieve.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(int portalId, string category)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(int portalId, string category)
+            => GetPropertyDefinitionsByCategory(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, category);
+
+        /// <summary>Gets a collection of Property Definitions from the Data Store by category.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="category">The category of the Property Definitions to retrieve.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
+        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(IHostSettings hostSettings, int portalId, string category)
         {
             portalId = GetEffectivePortalId(portalId);
 
             var definitions = new ProfilePropertyDefinitionCollection();
-            foreach (ProfilePropertyDefinition definition in GetPropertyDefinitions(portalId))
+            foreach (ProfilePropertyDefinition definition in GetPropertyDefinitions(hostSettings, portalId))
             {
                 if (definition.PropertyCategory == category)
                 {
@@ -223,17 +254,27 @@ namespace DotNetNuke.Entities.Profile
             return GetPropertyDefinitionsByPortal(portalId, clone, true);
         }
 
-        /// <summary>Gets a collection of Property Defintions from the Data Store by portal.</summary>
+        /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
         /// <param name="portalId">The id of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
         /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone, bool includeDeleted)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone, bool includeDeleted)
+            => GetPropertyDefinitionsByPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, clone, includeDeleted);
+
+        /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="clone">Whether to use a clone object.</param>
+        /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
+        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(IHostSettings hostSettings, int portalId, bool clone, bool includeDeleted)
         {
             portalId = GetEffectivePortalId(portalId);
 
             var definitions = new ProfilePropertyDefinitionCollection();
-            foreach (ProfilePropertyDefinition definition in GetPropertyDefinitions(portalId))
+            foreach (ProfilePropertyDefinition definition in GetPropertyDefinitions(hostSettings, portalId))
             {
                 if (!definition.Deleted || includeDeleted)
                 {
@@ -536,7 +577,7 @@ namespace DotNetNuke.Entities.Profile
             return PortalController.GetEffectivePortalId(portalId);
         }
 
-        private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(int portalId)
+        private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(IHostSettings hostSettings, int portalId)
         {
             // Get the Cache Key
             string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);
@@ -546,7 +587,7 @@ namespace DotNetNuke.Entities.Profile
             if (definitions == null)
             {
                 // definitions caching settings
-                int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
+                int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(hostSettings.PerformanceSetting);
 
                 // Get the List from the database
                 definitions = FillPropertyDefinitionInfoCollection(DataProvider.GetPropertyDefinitionsByPortal(portalId));

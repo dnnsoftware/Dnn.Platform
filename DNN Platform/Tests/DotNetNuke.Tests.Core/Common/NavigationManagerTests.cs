@@ -7,6 +7,7 @@ namespace DotNetNuke.Tests.Core.Common
     using System.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -37,7 +38,7 @@ namespace DotNetNuke.Tests.Core.Common
         public void Setup()
         {
             var portalControllerMock = PortalControllerMock();
-            this.navigationManager = new NavigationManager(portalControllerMock);
+            this.navigationManager = new NavigationManager(portalControllerMock, Mock.Of<IHostSettings>());
             PortalController.SetTestableInstance(portalControllerMock);
             TabController.SetTestableInstance(TabControllerMock());
             LocaleController.SetTestableInstance(LocaleControllerMock());
