@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.Skins
     using System.IO.Compression;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -18,14 +19,14 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
-    /// Project  : DotNetNuke
-    /// Class    : SkinController
-    ///
-    /// <summary>    Handles the Business Control Layer for Skins.</summary>
-    public class SkinController
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Handles the Business Control Layer for Skins.</summary>
+    public partial class SkinController
     {
         private const string GlobalSkinPrefix = "[G]";
         private const string PortalSystemSkinPrefix = "[S]";
@@ -62,8 +63,23 @@ namespace DotNetNuke.UI.Skins
             return DataProvider.Instance().AddSkinPackage(skinPackage.PackageID, skinPackage.PortalID, skinPackage.SkinName, skinPackage.SkinType, UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        public static bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
+        /// <summary>Determines whether the given theme folder can be deleted.</summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="portalHomeDirMapPath">The physical path to the portal's home directory.</param>
+        /// <returns><see langword="true"/> if the folder can be deleted, <see langword="false"/> otherwise.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
+            => CanDeleteSkin(null, folderPath, portalHomeDirMapPath);
+
+        /// <summary>Determines whether the given theme folder can be deleted.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="portalHomeDirMapPath">The physical path to the portal's home directory.</param>
+        /// <returns><see langword="true"/> if the folder can be deleted, <see langword="false"/> otherwise.</returns>
+        public static bool CanDeleteSkin(IHostSettings hostSettings, string folderPath, string portalHomeDirMapPath)
         {
+            hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
             string skinType;
             string skinFolder;
             bool canDelete = true;
@@ -84,12 +100,12 @@ namespace DotNetNuke.UI.Skins
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
 
             string skin = "[" + skinType.ToLowerInvariant() + "]" + skinFolder.ToLowerInvariant();
             if (skinFolder.ToLowerInvariant().Contains("skins"))
             {
-                if (Host.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || Host.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
+                if (hostSettings.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || hostSettings.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
                     portalSettings.DefaultAdminSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || portalSettings.DefaultPortalSkin.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase))
                 {
                     canDelete = false;
@@ -97,7 +113,7 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-                if (Host.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || Host.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
+                if (hostSettings.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || hostSettings.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) ||
                     portalSettings.DefaultAdminContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase) || portalSettings.DefaultPortalContainer.StartsWith(skin, StringComparison.InvariantCultureIgnoreCase))
                 {
                     canDelete = false;

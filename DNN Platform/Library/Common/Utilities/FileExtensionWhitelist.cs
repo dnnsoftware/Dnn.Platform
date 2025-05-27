@@ -7,7 +7,10 @@ namespace DotNetNuke.Common.Utilities
     using System.Collections.Generic;
     using System.Linq;
 
-    public class FileExtensionWhitelist
+    using DotNetNuke.Abstractions.Security;
+
+    /// <summary>The default <see cref="IFileExtensionAllowList"/> implementation.</summary>
+    public class FileExtensionWhitelist : IFileExtensionAllowList
     {
         private readonly List<string> extensions;
 
@@ -20,45 +23,29 @@ namespace DotNetNuke.Common.Utilities
             this.extensions = EscapedString.Seperate(extensionList.ToLowerInvariant(), true).Select(item => "." + item).ToList();
         }
 
-        /// <summary>Gets the list of extensions in the whitelist.</summary>
-        /// <remarks>All extensions are lowercase and prefixed with a '.'.</remarks>
-        public IEnumerable<string> AllowedExtensions
-        {
-            get
-            {
-                return this.extensions;
-            }
-        }
+        /// <inheritdoc />
+        public IEnumerable<string> AllowedExtensions => this.extensions;
 
-        /// <summary>Returns a string suitale for display to an end user.</summary>
-        /// <returns>A String of the whitelist extensions formatted for display to an end user.</returns>
+        /// <inheritdoc />
         public string ToDisplayString()
         {
             return this.ToDisplayString(null);
         }
 
-        /// <summary>Formats the extension whitelist appropriate for display to an end user.</summary>
-        /// <param name="additionalExtensions">A list of additionalExtensions to add to the current extensions.</param>
-        /// <remarks><paramref name="additionalExtensions"/>case and '.' prefix will be corrected, and duplicates will be excluded from the string.</remarks>
-        /// <returns>A String of the whitelist extensions formatted for storage display to an end user.</returns>
+        /// <inheritdoc />
         public string ToDisplayString(IEnumerable<string> additionalExtensions)
         {
             IEnumerable<string> allExtensions = this.CombineLists(additionalExtensions);
             return "*" + string.Join(", *", allExtensions.ToArray());
         }
 
-        /// <summary>Indicates if the file extension is permitted by the Host Whitelist.</summary>
-        /// <param name="extension">The file extension with or without preceding '.'.</param>
-        /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
+        /// <inheritdoc />
         public bool IsAllowedExtension(string extension)
         {
             return this.IsAllowedExtension(extension, null);
         }
 
-        /// <summary>Indicates if the file extension is permitted by the Host Whitelist.</summary>
-        /// <param name="extension">The file extension with or without preceding '.'.</param>
-        /// <param name="additionalExtensions">Any other additional valid extensions or <see langword="null" />.</param>
-        /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
+        /// <inheritdoc />
         public bool IsAllowedExtension(string extension, IEnumerable<string> additionalExtensions)
         {
             List<string> allExtensions = this.CombineLists(additionalExtensions).ToList();
@@ -85,17 +72,13 @@ namespace DotNetNuke.Common.Utilities
             return this.ToDisplayString();
         }
 
-        /// <summary>Formats the extension whitelist appropriate for storage in the Host setting.</summary>
-        /// <returns>A String of the whitelist extensions formatted for storage as a Host setting.</returns>
+        /// <inheritdoc />
         public string ToStorageString()
         {
             return this.ToStorageString(null);
         }
 
-        /// <summary>Formats the extension whitelist appropriate for storage in the Host setting.</summary>
-        /// <param name="additionalExtensions">A list of additionalExtensions to add to the current extensions.</param>
-        /// <remarks><paramref name="additionalExtensions"/>case and '.' prefix will be corrected, and duplicates will be excluded from the string.</remarks>
-        /// <returns>A String of the whitelist extensions formatted for storage as a Host setting.</returns>
+        /// <inheritdoc />
         public string ToStorageString(IEnumerable<string> additionalExtensions)
         {
             IEnumerable<string> allExtensions = this.CombineLists(additionalExtensions);
@@ -103,9 +86,17 @@ namespace DotNetNuke.Common.Utilities
             return EscapedString.Combine(leadingDotRemoved);
         }
 
+        /// <inheritdoc cref="IFileExtensionAllowList.RestrictBy"/>
         public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
         {
             var filter = parentList.extensions;
+            return new FileExtensionWhitelist(string.Join(",", this.extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
+        }
+
+        /// <inheritdoc />
+        public IFileExtensionAllowList RestrictBy(IFileExtensionAllowList parentList)
+        {
+            var filter = parentList.AllowedExtensions;
             return new FileExtensionWhitelist(string.Join(",", this.extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
         }
 

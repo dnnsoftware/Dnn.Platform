@@ -10,6 +10,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -24,10 +25,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>
-    /// The ProfileDefinitions PortalModuleBase is used to manage the Profile Properties
-    /// for a portal.
-    /// </summary>
+    /// <summary>The ProfileDefinitions PortalModuleBase is used to manage the Profile Properties for a portal.</summary>
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
         private const int COLUMNREQUIRED = 11;
@@ -36,13 +34,23 @@ namespace DotNetNuke.Modules.Admin.Users
         private const int COLUMNMOVEUP = 3;
 
         private readonly INavigationManager navigationManager;
+        private readonly IHostSettings hostSettings;
         private ProfilePropertyDefinitionCollection profileProperties;
         private bool requiredColumnHidden = false;
 
         /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
         public ProfileDefinitions()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets the Return Url for the page.</summary>
@@ -119,14 +127,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// <summary>Gets the collection of Profile Properties.</summary>
         protected ProfilePropertyDefinitionCollection ProfileProperties
-        {
-            get
-            {
-                return this.profileProperties ?? (this.profileProperties = ProfileController.GetPropertyDefinitionsByPortal(this.UsersPortalId, false, false));
-            }
-        }
+            => this.profileProperties ??= ProfileController.GetPropertyDefinitionsByPortal(this.hostSettings, this.UsersPortalId, false, false);
 
-        /// <summary>Gets the Portal Id whose Users we are managing.</summary>
+        /// <summary>Gets the Portal ID whose Users we are managing.</summary>
         protected int UsersPortalId
         {
             get

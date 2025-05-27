@@ -10,8 +10,14 @@ namespace Dnn.PersonaBar.Users.Tests
 
     using Dnn.PersonaBar.Library.Helper;
     using Dnn.PersonaBar.Users.Components;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -23,6 +29,7 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IContentVerifier> _contentVerifierMock;
 
         private UserValidator _userValidator;
+        private FakeServiceProvider serviceProvider;
 
         [SetUp]
         public void RunBeforeEachTest()
@@ -35,10 +42,17 @@ namespace Dnn.PersonaBar.Users.Tests
                         this._portalControllerMock.Object,
                         this._userControllerWrapperMock.Object,
                         this._contentVerifierMock.Object);
+
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
-
         public void ValidateUser_IfUserIdWithValidValue_ThenSuccessResponse()
         {
             // Arrange
@@ -54,7 +68,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void ValidateUser_IfUserAllowedInSiteGroup_ThenSuccessResponse()
         {
             // Arrange
@@ -70,7 +83,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void ValidateUser_IfUserNotAllowedInSiteGroup_ThenErrorResponse()
         {
             // Arrange
@@ -86,7 +98,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void ValidateUser_IfUserIdNotFound_ThenErrorResponse()
         {
             // Arrange
@@ -105,7 +116,6 @@ namespace Dnn.PersonaBar.Users.Tests
         }
 
         [Test]
-
         public void ValidateUser_IfUserIdWithoutValue_ThenErrorResponse()
         {
             // Arrange
