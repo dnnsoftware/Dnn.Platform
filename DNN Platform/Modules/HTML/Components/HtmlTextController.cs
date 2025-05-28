@@ -89,8 +89,8 @@ namespace DotNetNuke.Modules.Html
             }
 
             // manage relative paths
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background", portalSettings.PortalId);
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src");
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background");
 
             return content;
         }
