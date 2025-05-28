@@ -1,0 +1,83 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* =================================================================
+    Create Missing Content Workflows:
+
+    - This script ensures that the required content workflows and 
+    their states exist in the database.
+    - If the workflows or states already exist, they will not be modified.
+    - If they do not exist, they will be created with default values.
+   =================================================================*/
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON; -- automatic rollback if anything fails
+
+BEGIN TRY
+    BEGIN TRANSACTION;
+
+    /*------------------------------------------------------
+        1.  Ensure required content workflows exist
+    ------------------------------------------------------*/
+    ;WITH Wanted AS
+    (
+        SELECT  p.PortalID, w.*
+        FROM    {databaseOwner}{objectQualifier}Portals AS p
+        CROSS  APPLY (VALUES
+            ('DirectPublish' ,N'Direct Publish'   ,N'Allows an author to directly publish content to the site.'),
+            ('SaveDraft'     ,N'Save Draft'       ,N'Allows author to save a draft copy before the content is published.'),
+            ('ContentApproval',N'Content Approval',N'Allows an author to manage content and then have it reviewed by other users before it is published.')
+        ) w(WorkflowKey, WorkflowName, [Description])
+    )
+    MERGE {databaseOwner}{objectQualifier}ContentWorkflows AS tgt
+    USING Wanted AS src
+            ON  tgt.PortalID    = src.PortalID
+            AND tgt.WorkflowKey = src.WorkflowKey
+    WHEN NOT MATCHED BY TARGET THEN -- insert only
+        INSERT (PortalID, WorkflowName, WorkflowKey, Description, IsSystem, IsDeleted)
+        VALUES (src.PortalID, src.WorkflowName, src.WorkflowKey, src.Description, 1, 0);
+    /*—no WHEN MATCHED clause—existing workflows stay exactly as they are—*/
+
+
+    /*------------------------------------------------------
+        2.  Ensure required content workflows states exist
+    ------------------------------------------------------*/
+    ;WITH StatesWanted AS
+    (
+        SELECT  cw.WorkflowID, v.*
+        FROM    {databaseOwner}{objectQualifier}ContentWorkflows AS cw
+        CROSS  APPLY (VALUES
+            ('DirectPublish'  ,1,N'Published'        ,1,1,0),
+            ('SaveDraft'      ,1,N'Draft'            ,1,1,0),
+            ('SaveDraft'      ,2,N'Published'        ,1,1,0),
+            ('ContentApproval',1,N'Draft'            ,1,1,0),
+            ('ContentApproval',2,N'Ready For Review' ,1,1,1),
+            ('ContentApproval',3,N'Published'        ,1,1,0)
+        ) v(WorkflowKey,[Order],StateName,IsSystem,SendNotification,SendNotificationToAdministrators)
+        WHERE cw.WorkflowKey = v.WorkflowKey
+    )
+    MERGE {databaseOwner}{objectQualifier}ContentWorkflowStates AS tgt
+    USING StatesWanted AS src
+            ON tgt.WorkflowID = src.WorkflowID
+            AND tgt.[Order] = src.[Order] -- one state per slot
+    WHEN NOT MATCHED BY TARGET THEN -- insert only
+        INSERT (WorkflowID, StateName, [Order], IsSystem, SendNotification, SendNotificationToAdministrators)
+        VALUES (src.WorkflowID, src.StateName, src.[Order], src.IsSystem, src.SendNotification, src.SendNotificationToAdministrators);
+    /*—no WHEN MATCHED clause—existing StateName remains unchanged—*/
+
+    COMMIT TRANSACTION;
+
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 ROLLBACK;
+    THROW; -- re-raise original error
+END CATCH;
+
+GO
