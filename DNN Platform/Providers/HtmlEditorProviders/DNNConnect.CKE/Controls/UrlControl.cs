@@ -33,7 +33,7 @@ namespace DNNConnect.CKEditorProvider.Controls
 
         /// <summary>Gets or sets a value indicating whether [reload files].</summary>
         /// <value>
-        ///   <c>true</c> if [reload files]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [reload files]; otherwise, <see langword="false"/>.
         /// </value>
         public bool ReloadFiles
         {

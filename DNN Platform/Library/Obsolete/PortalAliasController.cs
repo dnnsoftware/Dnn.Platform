@@ -54,8 +54,8 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Validates the alias.</summary>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="ischild">if set to <c>true</c> [ischild].</param>
-        /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
+        /// <param name="ischild">if set to <see langword="true"/> [ischild].</param>
+        /// <returns><see langword="true"/> if the alias is a valid url format; otherwise return <see langword="false"/>.</returns>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
         public static partial bool ValidateAlias(string portalAlias, bool ischild) =>
             ((IPortalAliasService)Instance).ValidateAlias(portalAlias, ischild);

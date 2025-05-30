@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use IPortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 

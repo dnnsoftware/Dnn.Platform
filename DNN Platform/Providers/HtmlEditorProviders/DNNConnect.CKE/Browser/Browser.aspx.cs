@@ -200,9 +200,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets a value indicating whether [sort files Ascending].</summary>
-        /// <value>
-        ///   <c>true</c> if [sort files Ascending].
-        /// </value>
+        /// <value><see langword="true"/> if [sort files Ascending].</value>
         private bool SortFilesAscending
         {
             get
@@ -219,7 +217,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Gets or sets a value indicating whether [sort files descending].</summary>
         /// <value>
-        ///   <c>true</c> if [sort files descending].
+        ///   <see langword="true"/> if [sort files descending].
         /// </value>
         private bool SortFilesDescending
         {
@@ -237,7 +235,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Gets or sets a value indicating whether [sort files by Ascending Date].</summary>
         /// <value>
-        ///   <c>true</c> if [sort files by ascending date].
+        ///   <see langword="true"/> if [sort files by ascending date].
         /// </value>
         private bool SortFilesDateAscending
         {
@@ -255,7 +253,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Gets or sets a value indicating whether [sort files by descending Date].</summary>
         /// <value>
-        ///   <c>true</c> if [sort files by descending date]; otherwise sort by ascending Date.
+        ///   <see langword="true"/> if [sort files by descending date]; otherwise sort by ascending Date.
         /// </value>
         private bool SortFilesDateDescending
         {
@@ -554,7 +552,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>Gets the java script code.</summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="fileUrl">The file URL.</param>
-        /// <param name="isPageLink">if set to <c>true</c> [is page link].</param>
+        /// <param name="isPageLink">if set to <see langword="true"/> [is page link].</param>
         /// <returns>
         /// Returns the java script code.
         /// </returns>
@@ -1248,7 +1246,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Shows the files in directory.</summary>
         /// <param name="directory">The directory.</param>
-        /// <param name="pagerChanged">if set to <c>true</c> [pager changed].</param>
+        /// <param name="pagerChanged">if set to <see langword="true"/> [pager changed].</param>
         protected void ShowFilesIn(string directory, bool pagerChanged = false)
         {
             var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(directory, this.portalSettings);
@@ -1351,7 +1349,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Hide Create Items if User has no write access to the Current Folder.</summary>
         /// <param name="folderId">The folder id to check.</param>
-        /// <param name="isFileSelected">if set to <c>true</c> [is file selected].</param>
+        /// <param name="isFileSelected">if set to <see langword="true"/> [is file selected].</param>
         private void CheckFolderAccess(int folderId, bool isFileSelected)
         {
             var hasWriteAccess = Utility.CheckIfUserHasFolderWriteAccess(folderId, this.portalSettings);
@@ -2121,7 +2119,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Shows the files in directory.</summary>
         /// <param name="currentFolderInfo">The current folder information.</param>
-        /// <param name="pagerChanged">if set to <c>true</c> [pager changed].</param>
+        /// <param name="pagerChanged">if set to <see langword="true"/> [pager changed].</param>
         private void ShowFilesIn(IFolderInfo currentFolderInfo, bool pagerChanged = false)
         {
             this.CheckFolderAccess(currentFolderInfo.FolderID, false);

@@ -316,7 +316,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal">The portal.</param>
         /// <param name="serverPath">The server path.</param>
         /// <returns>
-        ///   <c>true</c> if the portal is child portal; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the portal is child portal; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsChildPortal(PortalInfo portal, string serverPath)
         {
@@ -639,7 +639,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
-        /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
+        /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache)
         {
             UpdatePortalSetting(portalID, settingName, settingValue, clearCache, Null.NullString, false);
@@ -660,7 +660,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
-        /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
+        /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
@@ -675,7 +675,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
-        /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
+        /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
         /// <param name="isSecure">When true it encrypt the value before storing it in the database.</param>
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
@@ -888,7 +888,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         public int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
@@ -961,7 +961,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         public int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
