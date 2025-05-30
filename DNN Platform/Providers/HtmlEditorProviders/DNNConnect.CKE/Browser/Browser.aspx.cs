@@ -1875,45 +1875,43 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>JS Code that gets the selected File Url.</summary>
         private void GetSelectedImageOrLink()
         {
-            var scriptSelected = new StringBuilder();
-
-            scriptSelected.Append("var editor = window.top.opener;");
-            scriptSelected.Append("if (typeof(CKEDITOR) !== 'undefined') {");
-            scriptSelected.AppendFormat(
-                "var selection = CKEDITOR.instances.{0}.getSelection(),", this.request.QueryString["CKEditor"]);
-            scriptSelected.Append("element = selection.getStartElement();");
-
-            scriptSelected.Append("if( element.getName()  == 'img')");
-            scriptSelected.Append("{");
-
-            scriptSelected.Append("var imageUrl = element.getAttribute('src');");
-
-            scriptSelected.Append("if (element.getAttribute('src') && imageUrl.indexOf('LinkClick') == -1 && imageUrl.indexOf('http:') == -1 && imageUrl.indexOf('https:') == -1) {");
-            scriptSelected.Append(
-                "jQuery.PageMethod('Browser.aspx', 'SetFile', function(message){if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');}, null, 'fileUrl', imageUrl);");
-
-            scriptSelected.Append("} else {");
-            scriptSelected.Append("if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');");
-
-            scriptSelected.Append("} }");
-            scriptSelected.Append("else if (element.getName() == 'a')");
-            scriptSelected.Append("{");
-
-            scriptSelected.Append("var fileUrl = element.getAttribute('href');");
-
-            scriptSelected.Append("if (element.getAttribute('href') && fileUrl.indexOf('LinkClick') == -1 && fileUrl.indexOf('http:') == -1 && fileUrl.indexOf('https:') == -1) {");
-
-            scriptSelected.Append(
-                "jQuery.PageMethod('Browser.aspx', 'SetFile', function(message){if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');}, null, 'fileUrl', fileUrl);");
-            scriptSelected.Append("} else {");
-            scriptSelected.Append("if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');");
-
-            scriptSelected.Append("} }");
-
-            scriptSelected.Append("}");
+            var scriptSelected = $$"""
+                var editor = window.top.opener;
+                if (typeof(CKEDITOR) !== 'undefined') {
+                    var editorInstanceName = {{HttpUtility.JavaScriptStringEncode(this.request.QueryString["CKEditor"], addDoubleQuotes: true)}}; 
+                    var selection = CKEDITOR.instances[editorInstanceName].getSelection(),element = selection.getStartElement();
+                    if (element.getName() == 'img') {
+                        var imageUrl = element.getAttribute('src');
+                        if (element.getAttribute('src') && imageUrl.indexOf('LinkClick') == -1 && imageUrl.indexOf('http:') == -1 && imageUrl.indexOf('https:') == -1) {
+                            jQuery.PageMethod(
+                                'Browser.aspx',
+                                'SetFile',
+                                function(message) { if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true'); },
+                                null,
+                                'fileUrl',
+                                imageUrl);
+                        } else {
+                            if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true');
+                        }
+                    } else if (element.getName() == 'a') {
+                        var fileUrl = element.getAttribute('href');
+                        if (element.getAttribute('href') && fileUrl.indexOf('LinkClick') == -1 && fileUrl.indexOf('http:') == -1 && fileUrl.indexOf('https:') == -1) {
+                            jQuery.PageMethod(
+                                'Browser.aspx',
+                                'SetFile',
+                                function(message) { if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true'); },
+                                null,
+                                'fileUrl',
+                                fileUrl);
+                        } else {
+                            if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true');
+                        }
+                    }
+                }
+                """;
 
             this.Page.ClientScript.RegisterStartupScript(
-                this.GetType(), "GetSelectedImageLink", scriptSelected.ToString(), true);
+                this.GetType(), "GetSelectedImageLink", scriptSelected, true);
         }
 
         /// <summary>Set Language for all Controls on this Page.</summary>
