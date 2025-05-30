@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Mail
         private const string DefaultContentType = "application/octet-stream";
 
         /// <summary>Initializes a new instance of the <see cref="MailAttachment"/> class.</summary>
-        /// <param name="filePath"></param>
+        /// <param name="filePath">The path to the file to attach.</param>
         public MailAttachment(string filePath)
         {
             var content = File.ReadAllBytes(filePath);
@@ -24,17 +24,17 @@ namespace DotNetNuke.Services.Mail
         }
 
         /// <summary>Initializes a new instance of the <see cref="MailAttachment"/> class.</summary>
-        /// <param name="filename"></param>
-        /// <param name="content"></param>
+        /// <param name="filename">The name of the attachment.</param>
+        /// <param name="content">The contents of the attachment.</param>
         public MailAttachment(string filename, byte[] content)
         {
             this.MailAttachmentInternal(filename, content, MimeMapping.GetMimeMapping(filename));
         }
 
         /// <summary>Initializes a new instance of the <see cref="MailAttachment"/> class.</summary>
-        /// <param name="filename"></param>
-        /// <param name="content"></param>
-        /// <param name="contentType"></param>
+        /// <param name="filename">The name of the attachment.</param>
+        /// <param name="content">The contents of the attachment.</param>
+        /// <param name="contentType">The MIME content type of the attachment.</param>
         public MailAttachment(string filename, byte[] content, string contentType)
         {
             this.MailAttachmentInternal(filename, content, contentType);

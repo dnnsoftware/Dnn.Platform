@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.ModuleCache
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
 
         /// <summary>Initializes a new instance of the <see cref="PurgeModuleCache"/> class.</summary>
-        /// <param name="objScheduleHistoryItem"></param>
+        /// <param name="objScheduleHistoryItem">The schedule history item.</param>
         public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED

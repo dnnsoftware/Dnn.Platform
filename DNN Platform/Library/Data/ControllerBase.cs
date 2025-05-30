@@ -22,7 +22,7 @@ namespace DotNetNuke.Data
         }
 
         /// <summary>Initializes a new instance of the <see cref="ControllerBase{TEntity, TContract, TSelf}"/> class.</summary>
-        /// <param name="dataContext"></param>
+        /// <param name="dataContext">The data context.</param>
         protected ControllerBase(IDataContext dataContext)
         {
             // Argument Contract

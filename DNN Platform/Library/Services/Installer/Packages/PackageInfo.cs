@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Installer.Packages
         private IList<PackageDependencyInfo> dependencies;
 
         /// <summary>Initializes a new instance of the <see cref="PackageInfo"/> class.</summary>
+        /// <param name="info">The installer info.</param>
         public PackageInfo(InstallerInfo info)
             : this()
         {

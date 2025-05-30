@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using System.Text.RegularExpressions;
     using System.Web;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Library.Helper;
     using Dnn.PersonaBar.Pages.Components.Dto;
     using Dnn.PersonaBar.Pages.Components.Exceptions;
@@ -58,6 +58,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IFriendlyUrlWrapper friendlyUrlWrapper;
         private readonly IContentVerifier contentVerifier;
         private readonly IPortalController portalController;
+        private readonly PersonalizationController personalizationController;
 
         public PagesControllerImpl(IBusinessControllerProvider businessControllerProvider, ITemplateController templateController)
             : this(
@@ -87,6 +88,35 @@ namespace Dnn.PersonaBar.Pages.Components
             IFriendlyUrlWrapper friendlyUrlWrapper,
             IContentVerifier contentVerifier,
             IPortalController portalController)
+            : this(
+                businessControllerProvider,
+                tabController,
+                moduleController,
+                pageUrlsController,
+                templateController,
+                defaultPortalThemeController,
+                cloneModuleExecutionContext,
+                urlRewriterUtilsWrapper,
+                friendlyUrlWrapper,
+                contentVerifier,
+                portalController,
+                null)
+        {
+        }
+
+        public PagesControllerImpl(
+            IBusinessControllerProvider businessControllerProvider,
+            ITabController tabController,
+            IModuleController moduleController,
+            IPageUrlsController pageUrlsController,
+            ITemplateController templateController,
+            IDefaultPortalThemeController defaultPortalThemeController,
+            ICloneModuleExecutionContext cloneModuleExecutionContext,
+            IUrlRewriterUtilsWrapper urlRewriterUtilsWrapper,
+            IFriendlyUrlWrapper friendlyUrlWrapper,
+            IContentVerifier contentVerifier,
+            IPortalController portalController,
+            PersonalizationController personalizationController)
         {
             this.businessControllerProvider = businessControllerProvider;
             this.tabController = tabController;
@@ -99,6 +129,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.friendlyUrlWrapper = friendlyUrlWrapper;
             this.contentVerifier = contentVerifier;
             this.portalController = portalController;
+            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
         }
 
         private PortalSettings PortalSettings { get; set; }
@@ -295,11 +326,10 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
             {
-                var personalizationController = new PersonalizationController();
-                var personalization = personalizationController.LoadProfile(userId, portalSettings.PortalId);
+                var personalization = this.personalizationController.LoadProfile(userId, portalSettings.PortalId);
                 personalization.Profile["Usability:UserMode" + portalSettings.PortalId] = "EDIT";
                 personalization.IsModified = true;
-                personalizationController.SaveProfile(personalization);
+                this.personalizationController.SaveProfile(personalization);
             }
         }
 
@@ -1485,7 +1515,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// If the tab description is equal to the portal description
         /// we store null so the system will serve the portal description instead.
         /// </summary>
-        /// <param name="pageSettings"></param>
+        /// <param name="pageSettings">The page settings.</param>
         /// <returns>Tab Description value to be stored.</returns>
         private string GetTabDescription(PageSettings pageSettings)
         {
@@ -1498,7 +1528,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// If the tab keywords is equal to the portal keywords
         /// we store null so the system will serve the portal keywords instead.
         /// </summary>
-        /// <param name="pageSettings"></param>
+        /// <param name="pageSettings">The page settings.</param>
         /// <returns>Tab Keywords value to be stored.</returns>
         private string GetKeyWords(PageSettings pageSettings)
         {

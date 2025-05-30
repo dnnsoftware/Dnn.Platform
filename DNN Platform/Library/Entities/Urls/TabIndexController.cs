@@ -65,15 +65,15 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         /// <param name="minTabPathDepth">ByRef parameter to return the minimum tab path depth (the number of '/' in the tab path).</param>
         /// <param name="maxTabPathDepth">ByRef parameter to return the maximum tab path depth (the number of '/' in the tab path).</param>
         /// <param name="minAliasPathDepth">ByRef parameter to return the minimum alias path depth (the number of '/' in the alias path.</param>
         /// <param name="maxAliasPathDepth">ByRef parameter to return the maximum alias path depth (the number of '/' in the alias path).</param>
-        /// <param name="settings"></param>
-        /// <param name="forceRebuild"></param>
-        /// <param name="bypassCache"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="forceRebuild">Whether to force a rebuild of the dictionary.</param>
+        /// <param name="bypassCache">Whether to bypass the cache.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>Dictionary (string, string) of Tab paths in tab key, with the rewrite path as the value.</returns>
         /// <remarks>
         /// Changes
@@ -284,6 +284,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns an ordered dictionary of alias regex patterns.  These patterns are used to identify a portal alias by getting a match.</summary>
+        /// <param name="settings">The friendly URL settings.</param>
         /// <returns>An <see cref="OrderedDictionary"/> where the keys are <see cref="string"/> aliases and the values are <see cref="PortalAliasInfo"/> instances.</returns>
         internal static OrderedDictionary GetPortalAliases(FriendlyUrlSettings settings)
         {
@@ -299,9 +300,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns the tab path of the base DNN tab.  Ie /Home or /Somepage/SomeOtherPage.</summary>
-        /// <param name="tab"></param>
-        /// <param name="options"></param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="options">The friendly URL options.</param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <remarks>Will remove // from the tabPath as stored in the Tabs object/table.</remarks>
         /// <returns>The friendly URL path.</returns>
         internal static string GetTabPath(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)

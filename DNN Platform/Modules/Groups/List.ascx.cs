@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Framework;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Display the group list.</summary>
     public partial class List : GroupsModuleBase
     {
         /// <summary>Initializes a new instance of the <see cref="List"/> class.</summary>
@@ -21,9 +22,9 @@ namespace DotNetNuke.Modules.Groups
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
-
-        // ReSharper disable once InconsistentNaming
+#pragma warning disable CS3008 // Identifier beginning with an underscore is not CLS-compliant
         public INavigationManager _navigationManager { get; }
+#pragma warning restore CS3008 // Identifier beginning with an underscore is not CLS-compliant
 
         protected void Page_Load(object sender, EventArgs e)
         {

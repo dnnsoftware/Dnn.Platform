@@ -157,15 +157,17 @@ namespace DotNetNuke.Entities.Portals
         ///   Remaps the Special Pages such as Home, Profile, Search
         ///   to their localized versions.
         /// </summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
         void MapLocalizedSpecialPages(int portalId, string cultureCode);
 
         /// <summary>Removes the related PortalLocalization record from the database, adds optional clear cache.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="clearCache">Whether to clear the portal cache.</param>
         void RemovePortalLocalization(int portalId, string cultureCode, bool clearCache = true);
 
-        /// <summary>Processess a template file for the new portal.</summary>
+        /// <summary>Processes a template file for the new portal.</summary>
         /// <param name="portalId">PortalId of the new portal.</param>
         /// <param name="template">The template.</param>
         /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
@@ -193,13 +195,19 @@ namespace DotNetNuke.Entities.Portals
         void UpdatePortalExpiry(int portalId, string cultureCode);
 
         /// <summary>Updates basic portal information.</summary>
-        /// <param name="portal"></param>
+        /// <param name="portal">The portal info.</param>
         void UpdatePortalInfo(PortalInfo portal);
 
         [Obsolete("Deprecated in DotNetNuke 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
 
         /// <summary>Adds or Updates or Deletes a portal setting value.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">The setting name.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">Whether to clear the cache.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="isSecure">Whether the value should be encrypted.</param>
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure);
     }
 }

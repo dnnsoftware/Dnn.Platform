@@ -9,20 +9,20 @@ namespace Dnn.PersonaBar.Library.AppEvents
     /// <summary>This interface defines methods that need to be called in skins lifecycle.</summary>
     public interface ISkinEvents
     {
-        /// <summary>call durgin skin skin event.</summary>
-        /// <param name="e"></param>
+        /// <summary>call during skin init event.</summary>
+        /// <param name="e">The event arguments.</param>
         void Init(SkinEventArgs e);
 
-        /// <summary>call durgin skin load event.</summary>
-        /// <param name="e"></param>
+        /// <summary>call during skin load event.</summary>
+        /// <param name="e">The event arguments.</param>
         void Load(SkinEventArgs e);
 
-        /// <summary>call durgin skin pre render event.</summary>
-        /// <param name="e"></param>
+        /// <summary>call during skin pre-render event.</summary>
+        /// <param name="e">The event arguments.</param>
         void PreRender(SkinEventArgs e);
 
-        /// <summary>call durgin skin unload event.</summary>
-        /// <param name="e"></param>
+        /// <summary>call during skin unload event.</summary>
+        /// <param name="e">The event arguments.</param>
         void UnLoad(SkinEventArgs e);
     }
 }

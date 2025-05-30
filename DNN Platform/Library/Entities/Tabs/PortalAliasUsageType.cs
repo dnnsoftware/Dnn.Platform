@@ -5,9 +5,16 @@ namespace DotNetNuke.Entities.Tabs
 {
     public enum PortalAliasUsageType
     {
+        /// <summary>Default.</summary>
         Default = 0,
+
+        /// <summary>Child pages inherit.</summary>
         ChildPagesInherit = 1,
+
+        /// <summary>Child pages do not inherit.</summary>
         ChildPagesDoNotInherit = 2,
+
+        /// <summary>Inherited from parent.</summary>
         InheritedFromParent = 3,
     }
 }

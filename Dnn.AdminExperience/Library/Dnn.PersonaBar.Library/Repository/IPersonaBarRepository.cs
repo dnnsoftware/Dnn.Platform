@@ -13,31 +13,31 @@ namespace Dnn.PersonaBar.Library.Repository
         PersonaBarMenu GetMenu();
 
         /// <summary>Save menu item info.</summary>
-        /// <param name="item"></param>
+        /// <param name="item">The menu item.</param>
         void SaveMenuItem(MenuItem item);
 
         /// <summary>remove a menu item.</summary>
-        /// <param name="identifier"></param>
+        /// <param name="identifier">The menu item ID.</param>
         void DeleteMenuItem(string identifier);
 
         /// <summary>Get the menu item by identifier.</summary>
-        /// <param name="identifier"></param>
+        /// <param name="identifier">The menu item ID.</param>
         /// <returns>A <see cref="MenuItem"/> instance or <see langword="null"/>.</returns>
         MenuItem GetMenuItem(string identifier);
 
         /// <summary>Get the menu item by menu id.</summary>
-        /// <param name="menuId"></param>
+        /// <param name="menuId">The menu ID.</param>
         /// <returns>A <see cref="MenuItem"/> instance or <see langword="null"/>.</returns>
         MenuItem GetMenuItem(int menuId);
 
         /// <summary>Get a menu item's default allowed permissions.</summary>
-        /// <param name="menuId"></param>
+        /// <param name="menuId">The menu ID.</param>
         /// <returns>The permissions string.</returns>
         string GetMenuDefaultPermissions(int menuId);
 
         /// <summary>Save a menu item's default allowed permissions.</summary>
-        /// <param name="menuItem"></param>
-        /// <param name="roleNames"></param>
+        /// <param name="menuItem">The menu item.</param>
+        /// <param name="roleNames">The default roles allowed to view the menu item.</param>
         void SaveMenuDefaultPermissions(MenuItem menuItem, string roleNames);
 
         void UpdateMenuController(string identifier, string controller);

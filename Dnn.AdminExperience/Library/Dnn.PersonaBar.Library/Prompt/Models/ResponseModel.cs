@@ -15,8 +15,8 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         public string Data;
 
         /// <summary>Initializes a new instance of the <see cref="ResponseModel"/> class.</summary>
-        /// <param name="err"></param>
-        /// <param name="msg"></param>
+        /// <param name="err">Whether the response is an error.</param>
+        /// <param name="msg">The message.</param>
         public ResponseModel(bool err, string msg)
         {
             this.IsError = err;
@@ -25,9 +25,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="ResponseModel"/> class.</summary>
-        /// <param name="err"></param>
-        /// <param name="msg"></param>
-        /// <param name="data"></param>
+        /// <param name="err">Whether the response is an error.</param>
+        /// <param name="msg">The message.</param>
+        /// <param name="data">The data.</param>
         public ResponseModel(bool err, string msg, string data)
         {
             this.IsError = err;

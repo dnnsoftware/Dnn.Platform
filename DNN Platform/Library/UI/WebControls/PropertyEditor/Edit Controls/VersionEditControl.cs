@@ -7,13 +7,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections.Specialized;
     using System.Web.UI;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      VersionEditControl
-    /// <summary>
-    /// The VersionEditControl control provides a standard UI component for editing
-    /// System.Version properties.
-    /// </summary>
+    /// <summary>The VersionEditControl control provides a standard UI component for editing <see cref="Version"/> properties.</summary>
     [ToolboxData("<{0}:VersionEditControl runat=server></{0}:VersionEditControl>")]
     public class VersionEditControl : EditControl
     {
@@ -85,10 +79,8 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -99,10 +91,8 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <summary>
-        /// OnPreRender runs just before the control is rendered.  It forces a postback to the
-        /// Control.
-        /// </summary>
+        /// <summary>OnPreRender runs just before the control is rendered.  It forces a postback to the Control.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

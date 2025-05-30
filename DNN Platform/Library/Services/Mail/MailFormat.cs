@@ -4,10 +4,13 @@
 
 namespace DotNetNuke.Services.Mail
 {
-    /// <summary>Enum MailFormat, possible values: Text and Html.</summary>
+    /// <summary>The format of email content, possible values: Text and HTML.</summary>
     public enum MailFormat
     {
+        /// <summary>Text format.</summary>
         Text = 0,
+
+        /// <summary>HTML format.</summary>
         Html = 1,
     }
 }

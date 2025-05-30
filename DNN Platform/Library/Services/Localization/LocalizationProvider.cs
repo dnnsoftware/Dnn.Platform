@@ -27,8 +27,13 @@ namespace DotNetNuke.Services.Localization
 
         public enum CustomizedLocale
         {
+            /// <summary>The base locale.</summary>
             None = 0,
+
+            /// <summary>A portal-specific customization.</summary>
             Portal = 1,
+
+            /// <summary>A host-level customization.</summary>
             Host = 2,
         }
 

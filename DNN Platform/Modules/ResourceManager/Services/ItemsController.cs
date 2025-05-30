@@ -48,19 +48,23 @@ namespace Dnn.Modules.ResourceManager.Services
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly Hashtable mappedPathsSupported = new Hashtable();
         private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ItemsController"/> class.</summary>
         /// <param name="modulePipeline">An instance of an <see cref="IModuleControlPipeline"/> used to hook into the EditUrl of the webforms folders provider settings UI.</param>
         /// <param name="applicationStatusInfo">The application status info.</param>
         /// <param name="permissionDefinitionService">The permission service.</param>
+        /// <param name="hostSettings">The host settings.</param>
         public ItemsController(
             IModuleControlPipeline modulePipeline,
             IApplicationStatusInfo applicationStatusInfo,
-            IPermissionDefinitionService permissionDefinitionService)
+            IPermissionDefinitionService permissionDefinitionService,
+            IHostSettings hostSettings)
         {
             this.modulePipeline = modulePipeline;
             this.applicationStatusInfo = applicationStatusInfo;
             this.permissionDefinitionService = permissionDefinitionService;
+            this.hostSettings = hostSettings;
         }
 
         /// <summary>Gets the content for a specific folder.</summary>
@@ -72,8 +76,22 @@ namespace Dnn.Modules.ResourceManager.Services
         /// An object containing the folder information, a list of the folder contents and the permissions relating to that folder.
         /// </returns>
         [HttpGet]
-
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting)
+        {
+            return this.GetFolderContent(folderId, startIndex, numItems, sorting, "Ascending");
+        }
+
+        /// <summary>Gets the content for a specific folder.</summary>
+        /// <param name="folderId">The id of the folder.</param>
+        /// <param name="startIndex">The page number to get.</param>
+        /// <param name="numItems">How many items to get per page.</param>
+        /// <param name="sorting">How to sort the list.</param>
+        /// <param name="sortingOrder">The order to sort the list.</param>
+        /// <returns>
+        /// An object containing the folder information, a list of the folder contents and the permissions relating to that folder.
+        /// </returns>
+        [HttpGet]
+        public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, string sortingOrder)
         {
             ContentPage p;
             var groupId = this.FindGroupId(this.Request);
@@ -81,7 +99,7 @@ namespace Dnn.Modules.ResourceManager.Services
             var moduleMode = new SettingsManager(moduleId, groupId).Mode;
             var permissionsManager = PermissionsManager.Instance;
 
-            p = ItemsManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting, moduleMode);
+            p = ItemsManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting, sortingOrder, moduleMode);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -642,18 +660,20 @@ namespace Dnn.Modules.ResourceManager.Services
         /// <returns>An object containing the allowed file extensions and the validation code to use for uploads.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
-
         public IHttpActionResult GetAllowedFileExtensions()
         {
             var allowedExtensions = FileManager.Instance.WhiteList.ToStorageString();
-            var parameters = new List<object>() { allowedExtensions.Split(',').Select(i => i.Trim()).OrderBy(a => a).ToList() };
-            parameters.Add(this.PortalSettings.UserInfo.UserID);
+            var parameters = new List<object>
+            {
+                allowedExtensions.Split(',').Select(i => i.Trim()).OrderBy(a => a).ToList(),
+                this.PortalSettings.UserInfo.UserID,
+            };
             if (!this.UserInfo.IsSuperUser)
             {
                 parameters.Add(this.PortalSettings.PortalId);
             }
 
-            var validationCode = ValidationUtils.ComputeValidationCode(parameters);
+            var validationCode = ValidationUtils.ComputeValidationCode(this.hostSettings, parameters);
 
             var maxUploadFileSize = Config.GetMaxUploadSize(this.applicationStatusInfo);
 

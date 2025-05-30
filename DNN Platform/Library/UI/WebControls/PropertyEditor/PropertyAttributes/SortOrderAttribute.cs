@@ -9,7 +9,7 @@ namespace DotNetNuke.UI.WebControls
     public sealed class SortOrderAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="SortOrderAttribute"/> class.</summary>
-        /// <param name="order"></param>
+        /// <param name="order">The sort order of the property.</param>
         public SortOrderAttribute(int order)
         {
             this.Order = order;

@@ -10,7 +10,7 @@ namespace Dnn.PersonaBar.Library.Controllers
     using System.IO;
     using System.Linq;
 
-    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Dto.Tabs;
     using Dnn.PersonaBar.Library.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;

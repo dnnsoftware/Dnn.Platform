@@ -15,7 +15,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Initializes a new instance of the <see cref="InvalidUserRegisterException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <param name="message">The message that describes the error.</param>
         public InvalidUserRegisterException(string message)
             : base(message)
         {

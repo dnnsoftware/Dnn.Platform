@@ -10,7 +10,10 @@ namespace DNNConnect.CKEditorProvider
     using System.Web.UI;
 
     using DNNConnect.CKEditorProvider.Controls;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
@@ -19,14 +22,31 @@ namespace DNNConnect.CKEditorProvider
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The options page.</summary>
     public partial class Options : PageBase
     {
+        private readonly IHostSettings hostSettings;
+
         /// <summary>The request.</summary>
         private readonly HttpRequest request = HttpContext.Current.Request;
 
         /// <summary>The _portal settings.</summary>
         private PortalSettings curPortalSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
+        public Options()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public Options(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        }
 
         /// <summary>  Gets Current Language from Url.</summary>
         protected string LangCode
@@ -201,7 +221,7 @@ namespace DNNConnect.CKEditorProvider
         /// <summary>Load Favicon from Current Portal Home Directory.</summary>
         private void LoadFavIcon()
         {
-            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.curPortalSettings.PortalId)));
+            this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.hostSettings, this.curPortalSettings.PortalId)));
         }
     }
 }

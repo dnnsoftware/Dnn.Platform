@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         }
 
         /// <summary>Initializes a new instance of the <see cref="PageModelBase"/> class.</summary>
-        /// <param name="tab"></param>
+        /// <param name="tab">The tab information.</param>
         public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
         {
             this.Name = tab.TabName;

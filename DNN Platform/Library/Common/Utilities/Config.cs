@@ -523,6 +523,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>Gets the specified provider path.</summary>
+        /// <param name="type">The name of the <see cref="Type"/> of the <see cref="Provider"/>.</param>
         /// <returns>The provider path.</returns>
         public static string GetProviderPath(string type)
         {

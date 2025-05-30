@@ -7,10 +7,10 @@ namespace DotNetNuke.Modules.SearchResults
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Text;
     using System.Text.RegularExpressions;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.SearchResults
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search.Internals;
 
+    /// <summary>A settings control for the search results module.</summary>
     public partial class ResultsSettings : ModuleSettingsBase
     {
         /// <inheritdoc/>
@@ -164,17 +165,18 @@ namespace DotNetNuke.Modules.SearchResults
         protected IEnumerable<string[]> LoadPortalsList()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-            var mygroup = (from @group in groups
-                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                               into portals
-                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                           select portals.ToArray()).FirstOrDefault();
+            var myGroup = (
+                from @group in groups
+                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
+                where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+                select portals.ToArray())
+                .FirstOrDefault();
 
             var result = new List<string[]>();
-            if (mygroup != null && mygroup.Any())
+            if (myGroup != null && myGroup.Any())
             {
-                result.AddRange(mygroup.Select(
-                    pi => new[] { pi.PortalName, pi.PortalID.ToString(CultureInfo.InvariantCulture) }));
+                result.AddRange(myGroup.Select(
+                    (IPortalInfo pi) => new[] { pi.PortalName, pi.PortalId.ToString(CultureInfo.InvariantCulture) }));
             }
 
             return result;
@@ -187,11 +189,10 @@ namespace DotNetNuke.Modules.SearchResults
             var result = new List<string>();
             foreach (var portal in portals)
             {
-                var pi = portal as PortalInfo;
-
+                var pi = portal as IPortalInfo;
                 if (pi != null)
                 {
-                    var list = InternalSearchController.Instance.GetSearchContentSourceList(pi.PortalID);
+                    var list = InternalSearchController.Instance.GetSearchContentSourceList(pi.PortalId);
                     foreach (var src in list)
                     {
                         if (!src.IsPrivate && !result.Contains(src.LocalizedName))

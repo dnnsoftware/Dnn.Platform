@@ -9,6 +9,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -22,14 +23,26 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Social.Notifications;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A skin/theme object which displays a login link to unauthenticated users and a profile link to authenticated users.</summary>
     public partial class UserAndLogin : SkinObjectBase
     {
         private const string MyFileName = "UserAndLogin.ascx";
         private readonly INavigationManager navigationManager;
+        private readonly IHostSettingsService hostSettingsService;
 
+        /// <summary>Initializes a new instance of the <see cref="UserAndLogin"/> class.</summary>
         public UserAndLogin()
+            : this(null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UserAndLogin"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public UserAndLogin(INavigationManager navigationManager, IHostSettingsService hostSettingsService)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         }
 
         /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>
@@ -255,7 +268,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 return alwaysShowCount;
             }
 
-            var hostSetting = HostController.Instance.GetString(SettingKey, string.Empty);
+            var hostSetting = this.hostSettingsService.GetString(SettingKey, string.Empty);
             if (!string.IsNullOrEmpty(hostSetting) && bool.TryParse(hostSetting, out alwaysShowCount))
             {
                 return alwaysShowCount;

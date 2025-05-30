@@ -16,8 +16,8 @@ namespace DotNetNuke.UI.Modules.Html5
         private readonly string html5File;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleLocalizationPropertyAccess"/> class.</summary>
-        /// <param name="moduleContext"></param>
-        /// <param name="html5File"></param>
+        /// <param name="moduleContext">The module context.</param>
+        /// <param name="html5File">The HTML file.</param>
         public ModuleLocalizationPropertyAccess(ModuleInstanceContext moduleContext, string html5File)
         {
             this.html5File = html5File;

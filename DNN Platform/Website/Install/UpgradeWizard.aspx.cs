@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
@@ -84,9 +83,27 @@ namespace DotNetNuke.Services.Install
                 { new InstallVersionStep(), 1 },
             };
 
+        private readonly IApplicationStatusInfo applicationStatus;
+        private readonly IHostSettings hostSettings;
+
         static UpgradeWizard()
         {
             IsAuthenticated = false;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        public UpgradeWizard()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        /// <param name="applicationStatus">The application status info.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public UpgradeWizard(IApplicationStatusInfo applicationStatus, IHostSettings hostSettings)
+        {
+            this.applicationStatus = applicationStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>
@@ -212,7 +229,8 @@ namespace DotNetNuke.Services.Install
                 LaunchUpgrade();
 
                 // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
-                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
+                var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+                hostSettingsService.Update("InstallerFilesRemoved", "False", true);
             }
         }
 
@@ -306,7 +324,7 @@ namespace DotNetNuke.Services.Install
             }
 
             this.SslRequiredCheck();
-            GetInstallerLocales();
+            GetInstallerLocales(this.applicationStatus);
         }
 
         /// <inheritdoc />
@@ -595,9 +613,9 @@ namespace DotNetNuke.Services.Install
                 .Update(setting);
         }
 
-        private static void GetInstallerLocales()
+        private static void GetInstallerLocales(IApplicationStatusInfo applicationStatus)
         {
-            var filePath = Globals.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
 
             if (File.Exists(filePath))
             {
@@ -793,7 +811,7 @@ namespace DotNetNuke.Services.Install
                 this.versionLabel.Visible = false;
                 this.currentVersionLabel.Visible = false;
                 this.versionsMatch.Text = this.LocalizeString("VersionsMatch");
-                if (Globals.IncrementalVersionExists(this.CurrentVersion))
+                if (this.applicationStatus.IncrementalVersionExists(this.CurrentVersion))
                 {
                     this.versionsMatch.Text = this.LocalizeString("VersionsMatchButIncrementalExists");
                 }
@@ -842,15 +860,15 @@ namespace DotNetNuke.Services.Install
             // remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
-            Config.Touch();
+            Config.Touch(this.applicationStatus);
             this.Response.Redirect("../Default.aspx", true);
         }
 
         private void SslRequiredCheck()
         {
-            if (Entities.Host.Host.UpgradeForceSsl && !this.Request.IsSecureConnection)
+            if (this.hostSettings.UpgradeForceSsl && !this.Request.IsSecureConnection)
             {
-                var sslDomain = Entities.Host.Host.SslDomain;
+                var sslDomain = this.hostSettings.SslDomain;
                 if (string.IsNullOrEmpty(sslDomain))
                 {
                     sslDomain = this.Request.Url.Host;

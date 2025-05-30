@@ -51,7 +51,6 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.UI.Utilities;
-    using Lucene.Net.Search;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualBasic.CompilerServices;
 
@@ -218,33 +217,19 @@ namespace DotNetNuke.Common
 
         // global constants for the life of the application ( set in Application_Start )
 
-        /// <summary>Enumeration of site performance setting, say by another way that means how to set the cache.</summary>
-        /// <remarks>
-        /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
-        /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
-        /// such as if a data has already been deleted but the cache arn't clear, it will cause un expected errors.
-        /// so you should choose a correct performance setting type when you trying to cache some stuff, and always remember
-        /// update cache immediately after the data changed.</para>
-        /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
-        /// <list type="bullet">
-        ///     <item>HostSettingsCacheTimeOut: 20</item>
-        /// <item>PortalAliasCacheTimeOut: 200</item>
-        /// <item>PortalSettingsCacheTimeOut: 20</item>
-        /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
-        /// </list>
-        /// </remarks>
+        /// <inheritdoc cref="DotNetNuke.Abstractions.Application.PerformanceSettings"/>
         public enum PerformanceSettings
         {
-            /// <summary>No Caching.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.NoCaching"/>
             NoCaching = 0,
 
-            /// <summary>Caching for a short time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.LightCaching"/>
             LightCaching = 1,
 
-            /// <summary>Caching for moderate time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.ModerateCaching"/>
             ModerateCaching = 3,
 
-            /// <summary>Caching for a long time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.HeavyCaching"/>
             HeavyCaching = 6,
         }
 
@@ -1100,16 +1085,23 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the host portal settings.</summary>
         /// <returns>Host portal settings.</returns>
-        public static PortalSettings GetHostPortalSettings()
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial PortalSettings GetHostPortalSettings()
+            => GetHostPortalSettings(GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>Gets the host portal settings.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>Host portal settings.</returns>
+        public static PortalSettings GetHostPortalSettings(IHostSettings hostSettings)
         {
             int tabId = -1;
             int portalId = -1;
             IPortalAliasInfo objPortalAliasInfo = null;
 
             // if the portal alias exists
-            if (Host.HostPortalID > Null.NullInteger)
+            if (hostSettings.HostPortalId > Null.NullInteger)
             {
-                portalId = Host.HostPortalID;
+                portalId = hostSettings.HostPortalId;
 
                 // use the host portal
                 objPortalAliasInfo = new PortalAliasInfo();
@@ -1823,19 +1815,27 @@ namespace DotNetNuke.Common
         /// <summary>Gets the external request.</summary>
         /// <param name="address">The address.</param>
         /// <returns>Web request.</returns>
-        public static HttpWebRequest GetExternalRequest(string address)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial HttpWebRequest GetExternalRequest(string address)
+            => GetExternalRequest(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), address);
+
+        /// <summary>Gets the external request.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="address">The address.</param>
+        /// <returns>Web request.</returns>
+        public static HttpWebRequest GetExternalRequest(IHostSettings hostSettings, string address)
         {
             // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(address);
 
-            // Set a time out to the request ... 10 seconds
-            objRequest.Timeout = Host.WebRequestTimeout;
+            // Set a time-out to the request ... 10 seconds
+            objRequest.Timeout = (int)hostSettings.WebRequestTimeout.TotalMilliseconds;
 
             // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
 
             // If there is Proxy info, apply it to the request
-            if (!string.IsNullOrEmpty(Host.ProxyServer))
+            if (!string.IsNullOrEmpty(hostSettings.ProxyServer))
             {
                 // Create a new Proxy
                 WebProxy proxy;
@@ -1844,11 +1844,11 @@ namespace DotNetNuke.Common
                 NetworkCredential proxyCredentials;
 
                 // Fill Proxy info from host settings
-                proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
-                if (!string.IsNullOrEmpty(Host.ProxyUsername))
+                proxy = new WebProxy(hostSettings.ProxyServer, hostSettings.ProxyPort);
+                if (!string.IsNullOrEmpty(hostSettings.ProxyUsername))
                 {
                     // Fill the credential info from host settings
-                    proxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
+                    proxyCredentials = new NetworkCredential(hostSettings.ProxyUsername, hostSettings.ProxyPassword);
 
                     // Apply credentials to proxy
                     proxy.Credentials = proxyCredentials;
@@ -1865,13 +1865,22 @@ namespace DotNetNuke.Common
         /// <param name="address">The address.</param>
         /// <param name="credentials">The credentials.</param>
         /// <returns>Web request.</returns>
-        public static HttpWebRequest GetExternalRequest(string address, NetworkCredential credentials)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial HttpWebRequest GetExternalRequest(string address, NetworkCredential credentials)
+            => GetExternalRequest(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), address, credentials);
+
+        /// <summary>Gets the external request.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="address">The address.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <returns>Web request.</returns>
+        public static HttpWebRequest GetExternalRequest(IHostSettings hostSettings, string address, NetworkCredential credentials)
         {
             // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(address);
 
-            // Set a time out to the request ... 10 seconds
-            objRequest.Timeout = Host.WebRequestTimeout;
+            // Set a time-out to the request ... 10 seconds
+            objRequest.Timeout = (int)hostSettings.WebRequestTimeout.TotalMilliseconds;
 
             // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
@@ -1883,7 +1892,7 @@ namespace DotNetNuke.Common
             }
 
             // If there is Proxy info, apply it to the request
-            if (!string.IsNullOrEmpty(Host.ProxyServer))
+            if (!string.IsNullOrEmpty(hostSettings.ProxyServer))
             {
                 // Create a new Proxy
                 WebProxy proxy;
@@ -1892,11 +1901,11 @@ namespace DotNetNuke.Common
                 NetworkCredential proxyCredentials;
 
                 // Fill Proxy info from host settings
-                proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
-                if (!string.IsNullOrEmpty(Host.ProxyUsername))
+                proxy = new WebProxy(hostSettings.ProxyServer, hostSettings.ProxyPort);
+                if (!string.IsNullOrEmpty(hostSettings.ProxyUsername))
                 {
                     // Fill the credential info from host settings
-                    proxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
+                    proxyCredentials = new NetworkCredential(hostSettings.ProxyUsername, hostSettings.ProxyPassword);
 
                     // Apply credentials to proxy
                     proxy.Credentials = proxyCredentials;
@@ -2992,7 +3001,15 @@ namespace DotNetNuke.Common
         /// <summary>Gets the name of the role.</summary>
         /// <param name="roleId">The role ID.</param>
         /// <returns>Role Name.</returns>
-        public static string GetRoleName(int roleId)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string GetRoleName(int roleId)
+            => GetRoleName(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), roleId);
+
+        /// <summary>Gets the name of the role.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="roleId">The role ID.</param>
+        /// <returns>Role Name.</returns>
+        public static string GetRoleName(IHostSettings hostSettings, int roleId)
         {
             switch (Convert.ToString(roleId))
             {
@@ -3003,7 +3020,7 @@ namespace DotNetNuke.Common
             }
 
             Hashtable htRoles = null;
-            if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
+            if (hostSettings.PerformanceSetting != DotNetNuke.Abstractions.Application.PerformanceSettings.NoCaching)
             {
                 htRoles = (Hashtable)DataCache.GetCache("GetRoles");
             }
@@ -3019,7 +3036,7 @@ namespace DotNetNuke.Common
                     htRoles.Add(role.RoleID, role.RoleName);
                 }
 
-                if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
+                if (hostSettings.PerformanceSetting != DotNetNuke.Abstractions.Application.PerformanceSettings.NoCaching)
                 {
                     DataCache.SetCache("GetRoles", htRoles);
                 }
@@ -3104,11 +3121,19 @@ namespace DotNetNuke.Common
         /// <summary>Gets the online help url or the host configured help url if no url provided.</summary>
         /// <param name="helpUrl">The help URL.</param>
         /// <returns>The help url.</returns>
-        public static string GetOnLineHelp(string helpUrl)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string GetOnLineHelp(string helpUrl)
+            => GetOnLineHelp(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), helpUrl);
+
+        /// <summary>Gets the online help url or the host configured help url if no url provided.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="helpUrl">The help URL.</param>
+        /// <returns>The help url.</returns>
+        public static string GetOnLineHelp(IHostSettings hostSettings, string helpUrl)
         {
             if (string.IsNullOrEmpty(helpUrl))
             {
-                helpUrl = Host.HelpURL;
+                helpUrl = hostSettings.HelpUrl;
             }
 
             return helpUrl;

@@ -316,8 +316,7 @@ namespace DotNetNuke.Services.Search.Internals
             HostController.Instance.Update(Constants.SearchOptimizeFlagName, turnOn ? "1" : "0", true);
         }
 
-        /// <summary>Determines whether there was a request to re-index the site since a specific date/time.</summary>
-        /// <returns><see langword="true"/> if a reindex has been requested since <paramref name="startDate"/>, otherwise <see langword="false"/>.</returns>
+        /// <inheritdoc />
         public bool IsReindexRequested(int portalId, DateTime startDate)
         {
             var reindexDateTime = this.GetSearchReindexRequestTime(portalId);
@@ -325,7 +324,7 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>Returns a collection of portal ID's to reindex if it was requested since last indexing.</summary>
-        /// <param name="startDate"></param>
+        /// <param name="startDate">The date of the last index.</param>
         /// <returns>A sequence of portal IDs.</returns>
         public IEnumerable<int> GetPortalsToReindex(DateTime startDate)
         {
@@ -342,12 +341,7 @@ namespace DotNetNuke.Services.Search.Internals
             return portals2Reindex.ToArray();
         }
 
-        /// <summary>
-        /// Returns the last time search indexing was completed successfully.
-        /// The returned value in local server time (not UTC).
-        /// Beware that the value stored in the database is converted to UTC time.
-        /// </summary>
-        /// <returns>A local <see cref="DateTime"/>.</returns>
+        /// <inheritdoc />
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);
@@ -379,11 +373,7 @@ namespace DotNetNuke.Services.Search.Internals
             return lastTime;
         }
 
-        /// <summary>
-        /// Stores the last successful time of the system search indexer.
-        /// The passed value should be in local system time; not UTC time.
-        /// Beware that the value stored in the database is converted to UTC time.
-        /// </summary>
+        /// <inheritdoc />
         public void SetLastSuccessfulIndexingDateTime(int scheduleId, DateTime startDateLocal)
         {
             SchedulingProvider.Instance()
@@ -470,9 +460,9 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>Processes and re-phrases the search text by looking into exact-match and wildcard option.</summary>
-        /// <param name="searchPhrase"></param>
-        /// <param name="useWildCard"></param>
-        /// <param name="allowLeadingWildcard"></param>
+        /// <param name="searchPhrase">The original search phrase.</param>
+        /// <param name="useWildCard">Whether to use wildcards.</param>
+        /// <param name="allowLeadingWildcard">Whether to allow a leading wildcard.</param>
         /// <returns>cleaned and pre-processed search phrase.</returns>
         public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {

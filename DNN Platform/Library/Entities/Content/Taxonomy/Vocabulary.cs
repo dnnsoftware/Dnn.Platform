@@ -38,31 +38,31 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         }
 
         /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="name"></param>
+        /// <param name="name">The name of the vocabulary.</param>
         public Vocabulary(string name)
             : this(name, Null.NullString, VocabularyType.Simple)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
+        /// <param name="name">The name of the vocabulary.</param>
+        /// <param name="description">The description.</param>
         public Vocabulary(string name, string description)
             : this(name, description, VocabularyType.Simple)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="type"></param>
+        /// <param name="type">The vocabulary type.</param>
         public Vocabulary(VocabularyType type)
             : this(Null.NullString, Null.NullString, type)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Vocabulary"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        /// <param name="type"></param>
+        /// <param name="name">The name of the vocabulary.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="type">The vocabulary type.</param>
         public Vocabulary(string name, string description, VocabularyType type)
         {
             this.Description = description;

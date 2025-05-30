@@ -11,13 +11,7 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : PortalPermissionCollection
-    /// <summary>
-    /// PortalPermissionCollection provides the a custom collection for PortalPermissionInfo
-    /// objects.
-    /// </summary>
+    /// <summary>PortalPermissionCollection provides a custom collection for <see cref="PortalPermissionInfo"/> objects.</summary>
     [Serializable]
     [XmlRoot("portalpermissions")]
     public class PortalPermissionCollection : CollectionBase
@@ -28,22 +22,22 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
-        /// <param name="portalPermissions"></param>
+        /// <param name="portalPermissions">An <see cref="ArrayList"/> of <see cref="PortalPermissionInfo"/> instances.</param>
         public PortalPermissionCollection(ArrayList portalPermissions)
         {
             this.AddRange(portalPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
-        /// <param name="portalPermissions"></param>
+        /// <param name="portalPermissions">A collection of <see cref="PortalPermissionInfo"/> instances.</param>
         public PortalPermissionCollection(PortalPermissionCollection portalPermissions)
         {
             this.AddRange(portalPermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalPermissionCollection"/> class.</summary>
-        /// <param name="portalPermissions"></param>
-        /// <param name="portalId"></param>
+        /// <param name="portalPermissions">An <see cref="ArrayList"/> of <see cref="PortalPermissionInfo"/> instances.</param>
+        /// <param name="portalId">The ID of the portal by which to filter <paramref name="portalPermissions"/>.</param>
         public PortalPermissionCollection(ArrayList portalPermissions, int portalId)
         {
             foreach (PortalPermissionInfo permission in portalPermissions)

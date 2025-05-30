@@ -77,7 +77,8 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
-        /// <summary>  OnPreRender runs just before the control is rendered.</summary>
+        /// <summary>OnPreRender runs just before the control is rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

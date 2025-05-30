@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
 
+    /// <summary>A control which displays an access denied message.</summary>
     public partial class AccessDeniedPage : PortalModuleBase
     {
         /// <inheritdoc/>

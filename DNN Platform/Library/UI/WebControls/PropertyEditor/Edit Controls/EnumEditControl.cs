@@ -9,30 +9,19 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Services.Localization;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      EnumEditControl
-    /// <summary>
-    /// The EnumEditControl control provides a standard UI component for editing
-    /// enumerated properties.
-    /// </summary>
+    /// <summary>The EnumEditControl control provides a standard UI component for editing enumerated properties.</summary>
     [ToolboxData("<{0}:EnumEditControl runat=server></{0}:EnumEditControl>")]
     public class EnumEditControl : EditControl
     {
         private readonly Type enumType;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
-        /// Constructs an EnumEditControl.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EnumEditControl"/> class.</summary>
         public EnumEditControl()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
-        /// Constructs an EnumEditControl.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="EnumEditControl"/> class.</summary>
+        /// <param name="type">The name of the <see cref="Type"/> of the enum.</param>
         public EnumEditControl(string type)
         {
             this.SystemType = type;
@@ -56,10 +45,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event.
-        /// </summary>
+        /// <summary>OnDataChanged runs when the PostbackData has changed.  It raises the <see cref="EditControl.ValueChanged"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             int intValue = Convert.ToInt32(this.Value);

@@ -365,6 +365,7 @@ namespace DotNetNuke.Security.Membership
         /// method does not support RequiresQuestionAndAnswer.
         /// </summary>
         /// <param name="user">The user.</param>
+        /// <param name="newPassword">The new password.</param>
         /// <returns><see langword="true"/> if the password successfully changed, otherwise <see langword="false"/>.</returns>
         public virtual bool ResetAndChangePassword(UserInfo user, string newPassword)
         {
@@ -377,6 +378,8 @@ namespace DotNetNuke.Security.Membership
         /// so old password is not required.
         /// </summary>
         /// <param name="user">The user.</param>
+        /// <param name="newPassword">The new password.</param>
+        /// <param name="answer">The answer to the password question.</param>
         /// <returns><see langword="true"/> if the password successfully changed, otherwise <see langword="false"/>.</returns>
         public virtual bool ResetAndChangePassword(UserInfo user, string newPassword, string answer)
         {

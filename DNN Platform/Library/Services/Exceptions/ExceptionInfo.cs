@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         /// <summary>Initializes a new instance of the <see cref="ExceptionInfo"/> class.</summary>
-        /// <param name="e"></param>
+        /// <param name="e">The exception.</param>
         public ExceptionInfo(Exception e)
         {
             this.Message = e.Message;

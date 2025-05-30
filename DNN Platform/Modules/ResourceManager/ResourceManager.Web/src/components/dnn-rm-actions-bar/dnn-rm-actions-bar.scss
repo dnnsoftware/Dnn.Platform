@@ -53,6 +53,12 @@ button{
     }
   }
 }
+.right-controls{
+  .sort{
+    display: flex;
+    flex-direction: row;
+  }
+}
 dnn-vertical-overflow-menu{
   flex-grow: 1;
   margin-left:24px;

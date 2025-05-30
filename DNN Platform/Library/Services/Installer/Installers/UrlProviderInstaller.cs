@@ -66,7 +66,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>The ReadManifest method reads the manifest file for the compoent.</summary>
+        /// <summary>The ReadManifest method reads the manifest file for the component.</summary>
+        /// <param name="manifestNav">The XPath navigator for the URL Provider section of the manifest.</param>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.extensionUrlProvider = new ExtensionUrlProviderInfo

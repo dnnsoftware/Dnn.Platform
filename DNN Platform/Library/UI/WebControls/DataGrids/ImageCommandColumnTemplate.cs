@@ -10,9 +10,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.UI.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      ImageCommandColumnTemplate
     /// <summary>The ImageCommandColumnTemplate provides a Template for the ImageCommandColumn.</summary>
     public class ImageCommandColumnTemplate : ITemplate
     {
@@ -28,7 +25,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.</summary>
-        /// <param name="itemType"></param>
+        /// <param name="itemType">The list item type.</param>
         public ImageCommandColumnTemplate(ListItemType itemType)
         {
             this.ItemType = itemType;

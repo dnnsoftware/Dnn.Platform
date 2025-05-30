@@ -10,9 +10,6 @@ namespace DotNetNuke.Entities.Users.Social
 
     using DotNetNuke.Security.Roles;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      UserSocial
     /// <summary>
     /// The UserSocial is a high-level class describing social details of a user.
     /// As an example, this class contains Friends, Followers, Follows lists.
@@ -26,7 +23,7 @@ namespace DotNetNuke.Entities.Users.Social
         private IList<UserRoleInfo> roles;
 
         /// <summary>Initializes a new instance of the <see cref="UserSocial"/> class.</summary>
-        /// <param name="userInfo"></param>
+        /// <param name="userInfo">The user info.</param>
         public UserSocial(UserInfo userInfo)
         {
             this.userInfo = userInfo;

@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any IActionControl implementation.</summary>
+    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any <see cref="IActionControl"/> implementation.</summary>
     public class ActionManager
     {
         private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -28,6 +28,7 @@ namespace DotNetNuke.UI.Containers
         private readonly HttpResponse response = HttpContext.Current.Response;
 
         /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
+        /// <param name="actionControl">The action control.</param>
         public ActionManager(IActionControl actionControl)
         {
             this.ActionControl = actionControl;
@@ -46,6 +47,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
+        /// <param name="objNodes">The nav nodes.</param>
         /// <returns><see langword="true"/> if the nodes should be displayed, otherwise <see langword="false"/>.</returns>
         public bool DisplayControl(DNNNodeCollection objNodes)
         {

@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Tokens
         private readonly object obj;
 
         /// <summary>Initializes a new instance of the <see cref="PropertyAccess"/> class.</summary>
-        /// <param name="tokenSource"></param>
+        /// <param name="tokenSource">The object to use as the source for the tokens.</param>
         public PropertyAccess(object tokenSource)
         {
             this.obj = tokenSource;

@@ -11,11 +11,11 @@ namespace DotNetNuke.Entities.Urls
     /// <summary>The Xml Helpers class is used to read in parameter rewrite/replace/redirect rules from the friendlyUrlParms.config file.</summary>
     internal static class XmlHelpers
     {
-        /// <summary>Returns a tab id from either a raw tabId, or a list of tab names delimited by ';'.</summary>
-        /// <param name="tabIdsRaw"></param>
-        /// <param name="tabNames"></param>
-        /// <param name="portalId"></param>
-        /// <param name="messages"></param>
+        /// <summary>Converts <paramref name="tabIdsRaw"/> and <paramref name="tabNames"/> into a list of tab IDs.</summary>
+        /// <param name="tabIdsRaw">A semicolon-delimited list of tab IDs.</param>
+        /// <param name="tabNames">Either <c>"All"</c> or a semicolon-delimited list of tab names.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="messages">A list to be filled with messages.</param>
         /// <returns>A <see cref="List{T}"/> of tab IDs (<c>-1</c> indicates "all", <c>-2</c> indicates "default.aspx", and <c>-3</c> indicates site root).</returns>
         internal static List<int> TabIdsFromAttributes(string tabIdsRaw, string tabNames, int portalId, ref List<string> messages)
         {

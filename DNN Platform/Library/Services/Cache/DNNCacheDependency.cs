@@ -26,14 +26,14 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors a file or directory for changes.</summary>
-        /// <param name="filename"></param>
+        /// <param name="filename">The path to a file which the cache depends on.</param>
         public DNNCacheDependency(string filename)
         {
             this.fileNames = new[] { filename };
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNCacheDependency"/> class that monitors an array of paths (to files or directories) for changes.</summary>
-        /// <param name="filenames">set the cache depend on muti files.</param>
+        /// <param name="filenames">set the cache depend on multiple files.</param>
         public DNNCacheDependency(string[] filenames)
         {
             this.fileNames = filenames;

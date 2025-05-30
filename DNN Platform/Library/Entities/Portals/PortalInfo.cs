@@ -214,11 +214,13 @@ namespace DotNetNuke.Entities.Portals
         int IPortalInfo.PortalId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalID
         {
             get => this.ThisAsInterface.PortalId;
             set => this.ThisAsInterface.PortalId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <summary>Gets the permissions collection for the portal.</summary>
         [XmlArray("portalpermissions")]
@@ -235,11 +237,13 @@ namespace DotNetNuke.Entities.Portals
         int IPortalInfo.PortalGroupId { get; set; }
 
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalInfo.PortalGroupId instead. Scheduled removal in v11.0.0.")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public int PortalGroupID
         {
             get => this.ThisAsInterface.PortalGroupId;
             set => this.ThisAsInterface.PortalGroupId = value;
         }
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc />
         [XmlElement("portalname")]

@@ -17,16 +17,19 @@ namespace DotNetNuke
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
@@ -36,6 +39,8 @@ namespace DotNetNuke
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail.OAuth;
+    using DotNetNuke.Services.Mobile;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -55,6 +60,8 @@ namespace DotNetNuke
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
+            services.AddSingleton<IHostSettings, HostSettings>();
+            services.AddTransient<IMailSettings, MailSettings>();
 
 #pragma warning disable CS0618
             services.AddScoped<IEventLogger, EventLogController>();
@@ -90,8 +97,15 @@ namespace DotNetNuke
             services.AddTransient<IModuleController, ModuleController>();
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
+            services.AddTransient<IRedirectionController, RedirectionController>();
+            services.AddTransient<ICBO, CBO>();
+            services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
+            services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
+            services.AddTransient<IPortalSettingsController, PortalSettingsController>();
+            services.AddTransient<IPortalAliasController, PortalAliasController>();
+            services.AddTransient<ILocaleController, LocaleController>();
 
-            services.AddTransient<IDataContext>(x =>
+            services.AddTransient<IDataContext>(_ =>
             {
                 var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
 
@@ -99,6 +113,7 @@ namespace DotNetNuke
             });
 
             services.AddTransient<ModuleInjectionManager>();
+            services.AddTransient<PersonalizationController>();
             RegisterModuleInjectionFilters(services);
         }
 

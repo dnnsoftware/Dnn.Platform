@@ -10,6 +10,7 @@ namespace DotNetNuke.HttpModules.UsersOnline
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>An HTTP module which keeps track of the users actively on the site.</summary>
     [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
     public partial class UsersOnlineModule : IHttpModule
     {

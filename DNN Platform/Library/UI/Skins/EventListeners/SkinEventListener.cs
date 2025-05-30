@@ -7,8 +7,8 @@ namespace DotNetNuke.UI.Skins.EventListeners
     public class SkinEventListener
     {
         /// <summary>Initializes a new instance of the <see cref="SkinEventListener"/> class.</summary>
-        /// <param name="type"></param>
-        /// <param name="e"></param>
+        /// <param name="type">The event type.</param>
+        /// <param name="e">The event handler.</param>
         public SkinEventListener(SkinEventType type, SkinEventHandler e)
         {
             this.EventType = type;

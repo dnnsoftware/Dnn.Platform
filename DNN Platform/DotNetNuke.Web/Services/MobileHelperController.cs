@@ -26,6 +26,7 @@ namespace DotNetNuke.Web.Services
         private readonly string dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
         /// <summary>Gets the various defined monikers for the various tab modules in the system.</summary>
+        /// <param name="moduleList">A comma-delimited list of module names.</param>
         /// <returns>A response with a list of objects containing <c>tabModuleId</c> and <c>moniker</c> fields.</returns>
         [HttpGet]
         public IHttpActionResult Monikers(string moduleList)

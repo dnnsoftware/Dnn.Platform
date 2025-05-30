@@ -75,9 +75,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>CleanWithTagInfo removes unspecified HTML Tags, Entities (and optionally any punctuation) from a string.</summary>
-        /// <param name="html"></param>
-        /// <param name="tagsFilter"></param>
-        /// <param name="removePunctuation"></param>
+        /// <param name="html">The HTML to clean.</param>
+        /// <param name="tagsFilter">A regular expression indicating attributes of which to keep the value, e.g. <c>"alt|href|src|title"</c>.</param>
+        /// <param name="removePunctuation">Whether to remove punctuation from <paramref name="html"/>.</param>
         /// <returns>The cleaned up string.</returns>
         public static string CleanWithTagInfo(string html, string tagsFilter, bool removePunctuation)
         {
@@ -89,7 +89,7 @@ namespace DotNetNuke.Common.Utilities
             // First remove unspecified HTML Tags ("<....>")
             html = StripUnspecifiedTags(html, tagsFilter, true);
 
-            // Second replace any HTML entities (&nbsp; &lt; etc) through their char symbol
+            // Second replace any HTML entities (&nbsp; &lt; etc.) through their char symbol
             html = HttpUtility.HtmlDecode(html);
 
             // Thirdly remove any punctuation
@@ -272,9 +272,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>  StripUnspecifiedTags removes the HTML tags from the content -- leaving behind the info for the specified HTML tags. </summary>
-        /// <param name="html"></param>
-        /// <param name="specifiedTags"></param>
-        /// <param name="retainSpace"></param>
+        /// <param name="html">The HTML to clean.</param>
+        /// <param name="specifiedTags">A regular expression indicating attributes of which to keep the value, e.g. <c>"alt|href|src|title"</c>.</param>
+        /// <param name="retainSpace">Whether to replace tags with spaces or <see cref="string.Empty"/>.</param>
         /// <returns>The cleaned up string.</returns>
         public static string StripUnspecifiedTags(string html, string specifiedTags, bool retainSpace)
         {

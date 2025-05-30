@@ -19,9 +19,26 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Implements the logic for the default view.</summary>
     public partial class View : PortalModuleBase
     {
+        private readonly IJavaScriptLibraryHelper javaScript;
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        public View()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public View(IJavaScriptLibraryHelper javaScript)
+        {
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+        }
+
         /// <summary>Gets the user id from the request parameters.</summary>
         public int ProfileUserId
         {
@@ -37,7 +54,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        /// <summary>Gets a string indicating whether attachements are allowed "true" or not "false".</summary>
+        /// <summary>Gets a string indicating whether attachments are allowed "true" or not "false".</summary>
         public string ShowAttachments
         {
             get
@@ -92,10 +109,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.Knockout);
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+            this.javaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             this.AddIe7StyleSheet();
 
             base.OnInit(e);

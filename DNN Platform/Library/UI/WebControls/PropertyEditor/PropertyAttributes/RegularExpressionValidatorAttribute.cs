@@ -11,6 +11,7 @@ namespace DotNetNuke.UI.WebControls
         private readonly string expression;
 
         /// <summary>Initializes a new instance of the <see cref="RegularExpressionValidatorAttribute"/> class.</summary>
+        /// <param name="expression">The regular expression pattern.</param>
         public RegularExpressionValidatorAttribute(string expression)
         {
             this.expression = expression;

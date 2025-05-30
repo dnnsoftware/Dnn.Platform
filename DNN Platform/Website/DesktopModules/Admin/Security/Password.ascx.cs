@@ -8,37 +8,59 @@ namespace DotNetNuke.Modules.Admin.Users
     using System.Web.Security;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Membership;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Security;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Skins.Controls;
-    using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
 
-    using Host = DotNetNuke.Entities.Host.Host;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The Password UserModuleBase is used to manage Users Passwords.</summary>
     public partial class Password : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
+        private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
+        /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
+        public Password()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public Password(IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
+        {
+            this.eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        }
+
+        /// <summary>A function which handles an event with <see cref="PasswordUpdatedEventArgs"/>.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         public delegate void PasswordUpdatedEventHandler(object sender, PasswordUpdatedEventArgs e);
 
+        /// <summary>An event which is fired when something related to password updating occurs.</summary>
         public event PasswordUpdatedEventHandler PasswordUpdated;
 
+        /// <summary>An event which is fired when something related to a password Q&amp;A occurs.</summary>
         public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
 
         /// <summary>Gets the UserMembership associated with this control.</summary>
@@ -64,7 +86,8 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>Raises the PasswordUpdated Event.</summary>
+        /// <summary>Raises the <see cref="PasswordUpdated"/> Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnPasswordUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -79,6 +102,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>Raises the PasswordQuestionAnswerUpdated Event.</summary>
+        /// <param name="e">The event arguments.</param>
         public void OnPasswordQuestionAnswerUpdated(PasswordUpdatedEventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -235,11 +259,11 @@ namespace DotNetNuke.Modules.Admin.Users
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
 
-            if (Host.EnableStrengthMeter)
+            if (this.hostSettings.EnableStrengthMeter)
             {
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtNewPassword.CssClass = "password-strength";
@@ -289,7 +313,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 return;
             }
 
-            string answer = string.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && !this.IsAdmin)
             {
                 if (string.IsNullOrEmpty(this.txtAnswer.Text))
@@ -297,17 +320,15 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                     return;
                 }
-
-                answer = this.txtAnswer.Text;
             }
 
             try
             {
                 // create resettoken
-                UserController.ResetPasswordToken(this.User, Entities.Host.Host.AdminMembershipResetLinkValidity);
+                UserController.ResetPasswordToken(this.User, (int)this.hostSettings.AdminMembershipResetLinkValidity.TotalMinutes);
 
                 bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
-                var message = string.Empty;
+                string message;
                 var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
                 if (canSend)
                 {
@@ -342,7 +363,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // send fresh resettoken copy
                 bool canSend = UserController.ResetPasswordToken(this.User, true);
 
-                var message = string.Empty;
+                string message;
                 var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
                 if (canSend)
                 {
@@ -382,15 +403,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void LogResult(string message)
         {
-            var portalSecurity = PortalSecurity.Instance;
-
-            var log = new LogInfo
+            ILogInfo log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
-                LogUserName = portalSecurity.InputFilter(this.User.Username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+                LogUserName = this.User.Username,
             };
+            log.LogUserId = this.UserId;
+            log.LogPortalId = this.PortalSettings.PortalId;
 
             if (string.IsNullOrEmpty(message))
             {
@@ -402,7 +421,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
 
-            LogController.Instance.AddLog(log);
+            this.eventLogger.AddLog(log);
         }
 
         private void CmdUpdate_Click(object sender, EventArgs e)

@@ -61,6 +61,7 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>Gets or sets the Redirect Url for this control.</summary>
         public string RedirectURL { get; set; }
 
+        /// <inheritdoc cref="IUserRequestIPAddressController.GetUserRequestIPAddress(System.Web.HttpRequestBase)"/>
         [DnnDeprecated(9, 2, 0, "Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress")]
         public static partial string GetIPAddress()
         {

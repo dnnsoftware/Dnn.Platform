@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.GeneratedImage
         public abstract Image ProcessImage(Image image);
 
         /// <summary>Creates a new image from stream. The created image is independent of the stream.</summary>
-        /// <param name="imgStream"></param>
+        /// <param name="imgStream">A stream with the contents of the image to copy.</param>
         /// <returns>Image object.</returns>
         public virtual Bitmap CopyImage(Stream imgStream)
         {

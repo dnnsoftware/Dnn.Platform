@@ -9,31 +9,41 @@ namespace DotNetNuke.Entities.Portals
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.Client;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class PortalSettingsController : IPortalSettingsController
     {
-        public static IPortalSettingsController Instance()
-        {
-            var controller = ComponentFactory.GetComponent<IPortalSettingsController>("PortalSettingsController");
-            if (controller == null)
-            {
-                ComponentFactory.RegisterComponent<IPortalSettingsController, PortalSettingsController>("PortalSettingsController");
-            }
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
 
-            return ComponentFactory.GetComponent<IPortalSettingsController>("PortalSettingsController");
+        /// <summary>Initializes a new instance of the <see cref="PortalSettingsController"/> class.</summary>
+        public PortalSettingsController()
+            : this(null, null)
+        {
         }
+
+        /// <summary>Initializes a new instance of the <see cref="PortalSettingsController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public PortalSettingsController(IHostSettings hostSettings, IHostSettingsService hostSettingsService)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        }
+
+        public static IPortalSettingsController Instance() =>
+            Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
 
         /// <inheritdoc/>
         public virtual void ConfigureActiveTab(PortalSettings portalSettings)
@@ -93,8 +103,7 @@ namespace DotNetNuke.Entities.Portals
         public virtual PortalSettings.PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {
             var aliasMapping = PortalSettings.PortalAliasMapping.None;
-            string setting;
-            if (PortalController.Instance.GetPortalSettings(portalId).TryGetValue("PortalAliasMapping", out setting))
+            if (PortalController.Instance.GetPortalSettings(portalId).TryGetValue("PortalAliasMapping", out var setting))
             {
                 switch (setting.ToUpperInvariant())
                 {
@@ -182,35 +191,35 @@ namespace DotNetNuke.Entities.Portals
             }
             else
             {
-                crmVersion = settings.GetValueOrDefault("CrmVersion", HostController.Instance.GetInteger("CrmVersion"));
+                crmVersion = settings.GetValueOrDefault("CrmVersion", this.hostSettingsService.GetInteger("CrmVersion"));
             }
 
             portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
             portalSettings.CdfVersion = crmVersion;
             portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);
-            portalSettings.DefaultAdminContainer = settings.GetValueOrDefault("DefaultAdminContainer", Host.Host.DefaultAdminContainer);
-            portalSettings.DefaultAdminSkin = settings.GetValueOrDefault("DefaultAdminSkin", Host.Host.DefaultAdminSkin);
+            portalSettings.DefaultAdminContainer = settings.GetValueOrDefault("DefaultAdminContainer", this.hostSettings.DefaultAdminContainer);
+            portalSettings.DefaultAdminSkin = settings.GetValueOrDefault("DefaultAdminSkin", this.hostSettings.DefaultAdminSkin);
             portalSettings.DefaultIconLocation = settings.GetValueOrDefault("DefaultIconLocation", "icons/sigma");
             portalSettings.DefaultModuleId = settings.GetValueOrDefault("defaultmoduleid", Null.NullInteger);
             portalSettings.DefaultModuleActionMenu = settings.GetValueOrDefault("DefaultModuleActionMenu", "~/admin/Menus/ModuleActions/ModuleActions.ascx");
-            portalSettings.DefaultPortalContainer = settings.GetValueOrDefault("DefaultPortalContainer", Host.Host.DefaultPortalContainer);
-            portalSettings.DefaultPortalSkin = settings.GetValueOrDefault("DefaultPortalSkin", Host.Host.DefaultPortalSkin);
+            portalSettings.DefaultPortalContainer = settings.GetValueOrDefault("DefaultPortalContainer", this.hostSettings.DefaultPortalContainer);
+            portalSettings.DefaultPortalSkin = settings.GetValueOrDefault("DefaultPortalSkin", this.hostSettings.DefaultPortalSkin);
             portalSettings.DefaultTabId = settings.GetValueOrDefault("defaulttabid", Null.NullInteger);
-            portalSettings.EnableBrowserLanguage = settings.GetValueOrDefault("EnableBrowserLanguage", Host.Host.EnableBrowserLanguage);
+            portalSettings.EnableBrowserLanguage = settings.GetValueOrDefault("EnableBrowserLanguage", this.hostSettings.EnableBrowserLanguage);
             portalSettings.EnableCompositeFiles = settings.GetValueOrDefault("EnableCompositeFiles", false);
             portalSettings.EnablePopUps = settings.GetValueOrDefault("EnablePopUps", true);
             portalSettings.HideLoginControl = settings.GetValueOrDefault("HideLoginControl", false);
             portalSettings.EnableSkinWidgets = settings.GetValueOrDefault("EnableSkinWidgets", true);
             portalSettings.ShowCookieConsent = settings.GetValueOrDefault("ShowCookieConsent", false);
             portalSettings.CookieMoreLink = settings.GetValueOrDefault("CookieMoreLink", Null.NullString);
-            portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", Host.Host.EnableUrlLanguage);
+            portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", this.hostSettings.EnableUrlLanguage);
             portalSettings.HideFoldersEnabled = settings.GetValueOrDefault("HideFoldersEnabled", true);
             portalSettings.InlineEditorEnabled = settings.GetValueOrDefault("InlineEditorEnabled", true);
-            portalSettings.SearchIncludeCommon = settings.GetValueOrDefault("SearchIncludeCommon", Host.Host.SearchIncludeCommon);
-            portalSettings.SearchIncludeNumeric = settings.GetValueOrDefault("SearchIncludeNumeric", Host.Host.SearchIncludeNumeric);
-            portalSettings.SearchIncludedTagInfoFilter = settings.GetValueOrDefault("SearchIncludedTagInfoFilter", Host.Host.SearchIncludedTagInfoFilter);
-            portalSettings.SearchMaxWordlLength = settings.GetValueOrDefault("MaxSearchWordLength", Host.Host.SearchMaxWordlLength);
-            portalSettings.SearchMinWordlLength = settings.GetValueOrDefault("MinSearchWordLength", Host.Host.SearchMinWordlLength);
+            portalSettings.SearchIncludeCommon = settings.GetValueOrDefault("SearchIncludeCommon", this.hostSettings.SearchIncludeCommon);
+            portalSettings.SearchIncludeNumeric = settings.GetValueOrDefault("SearchIncludeNumeric", this.hostSettings.SearchIncludeNumeric);
+            portalSettings.SearchIncludedTagInfoFilter = settings.GetValueOrDefault("SearchIncludedTagInfoFilter", this.hostSettings.SearchIncludedTagInfoFilter);
+            portalSettings.SearchMaxWordlLength = settings.GetValueOrDefault("MaxSearchWordLength", this.hostSettings.SearchMaxWordLength);
+            portalSettings.SearchMinWordlLength = settings.GetValueOrDefault("MinSearchWordLength", this.hostSettings.SearchMinWordLength);
             portalSettings.SSLSetup = (Abstractions.Security.SiteSslSetup)settings.GetValueOrDefault("SSLSetup", (int)Abstractions.Security.SiteSslSetup.Off);
             portalSettings.SSLEnforced = settings.GetValueOrDefault("SSLEnforced", false);
             portalSettings.SSLURL = settings.GetValueOrDefault("SSLURL", Null.NullString);
@@ -222,7 +231,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.SMTPMaxIdleTime = settings.GetValueOrDefault("SMTPMaxIdleTime", 100000);
 
             portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.ModuleEditor;
-            string setting = settings.GetValueOrDefault("ControlPanelSecurity", string.Empty);
+            var setting = settings.GetValueOrDefault("ControlPanelSecurity", string.Empty);
             if (setting.Equals("TAB", StringComparison.InvariantCultureIgnoreCase))
             {
                 portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
@@ -264,7 +273,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelay = int.Parse(setting);
             setting = settings.GetValueOrDefault("DataConsentDelayMeasurement", "d");
             portalSettings.DataConsentDelayMeasurement = setting;
-            setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", HostController.Instance.GetString("DefaultEndUserExtensionWhitelist"));
+            setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
         }
 
@@ -284,13 +293,13 @@ namespace DotNetNuke.Entities.Portals
                     PortalController.GetPortalSetting(
                         "DefaultAdminSkin",
                         portalSettings.PortalId,
-                        Host.Host.DefaultAdminSkin,
+                        this.hostSettings.DefaultAdminSkin,
                         portalSettings.CultureCode))
                     ? portalSettings.DefaultAdminSkin
                     : PortalController.GetPortalSetting(
                         "DefaultAdminSkin",
                         portalSettings.PortalId,
-                        Host.Host.DefaultAdminSkin,
+                        this.hostSettings.DefaultAdminSkin,
                         portalSettings.CultureCode);
             }
             else if (string.IsNullOrEmpty(activeTab.SkinSrc))
@@ -300,13 +309,13 @@ namespace DotNetNuke.Entities.Portals
                     PortalController.GetPortalSetting(
                         "DefaultPortalSkin",
                         portalSettings.PortalId,
-                        Host.Host.DefaultPortalSkin,
+                        this.hostSettings.DefaultPortalSkin,
                         portalSettings.CultureCode))
                     ? portalSettings.DefaultPortalSkin
                     : PortalController.GetPortalSetting(
                         "DefaultPortalSkin",
                         portalSettings.PortalId,
-                        Host.Host.DefaultPortalSkin,
+                        this.hostSettings.DefaultPortalSkin,
                         portalSettings.CultureCode);
             }
 
@@ -319,13 +328,13 @@ namespace DotNetNuke.Entities.Portals
                     PortalController.GetPortalSetting(
                         "DefaultAdminContainer",
                         portalSettings.PortalId,
-                        Host.Host.DefaultAdminContainer,
+                        this.hostSettings.DefaultAdminContainer,
                         portalSettings.CultureCode))
                     ? portalSettings.DefaultAdminContainer
                     : PortalController.GetPortalSetting(
                         "DefaultAdminContainer",
                         portalSettings.PortalId,
-                        Host.Host.DefaultAdminContainer,
+                        this.hostSettings.DefaultAdminContainer,
                         portalSettings.CultureCode);
             }
             else if (string.IsNullOrEmpty(activeTab.ContainerSrc))
@@ -334,13 +343,13 @@ namespace DotNetNuke.Entities.Portals
                     PortalController.GetPortalSetting(
                         "DefaultPortalContainer",
                         portalSettings.PortalId,
-                        Host.Host.DefaultPortalContainer,
+                        this.hostSettings.DefaultPortalContainer,
                         portalSettings.CultureCode))
                     ? portalSettings.DefaultPortalContainer
                     : PortalController.GetPortalSetting(
                         "DefaultPortalContainer",
                         portalSettings.PortalId,
-                        Host.Host.DefaultPortalContainer,
+                        this.hostSettings.DefaultPortalContainer,
                         portalSettings.CultureCode);
             }
 
@@ -388,15 +397,13 @@ namespace DotNetNuke.Entities.Portals
             return activeTab;
         }
 
-        // This method is called few times wiht each request; it would be
+        // This method is called few times with each request; it would be
         // better to have it cache the "activeTab" for a short period.
         private static TabInfo GetTab(int tabId, TabCollection tabs)
         {
-            TabInfo tab;
-            var activeTab = tabId != Null.NullInteger && tabs.TryGetValue(tabId, out tab) && !tab.IsDeleted
+            return tabId != Null.NullInteger && tabs.TryGetValue(tabId, out var tab) && !tab.IsDeleted
                 ? tab.Clone()
                 : null;
-            return activeTab;
         }
     }
 }

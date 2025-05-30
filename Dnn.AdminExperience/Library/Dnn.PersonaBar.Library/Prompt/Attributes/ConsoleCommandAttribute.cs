@@ -8,6 +8,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>An attribute to mark Prompt console commands.</summary>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
     [AttributeUsage(AttributeTargets.Class)]
 #pragma warning disable CS3015 // Type has no accessible constructors which use only CLS-compliant types
@@ -15,9 +16,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
 #pragma warning restore CS3015 // Type has no accessible constructors which use only CLS-compliant types
     {
         /// <summary>Initializes a new instance of the <see cref="ConsoleCommandAttribute"/> class.</summary>
-        /// <param name="name"></param>
-        /// <param name="category"></param>
-        /// <param name="description"></param>
+        /// <param name="name">The command name.</param>
+        /// <param name="category">The command category.</param>
+        /// <param name="description">The command description.</param>
         public ConsoleCommandAttribute(string name, string category, string description)
         {
             this.Name = name;

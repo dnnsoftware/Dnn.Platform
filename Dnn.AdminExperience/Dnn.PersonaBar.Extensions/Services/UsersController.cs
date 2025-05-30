@@ -35,6 +35,7 @@ namespace Dnn.PersonaBar.Users.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
 
         /// <summary>Create a User.</summary>
+        /// <param name="contract">Information about the user to create.</param>
         /// <returns>A response with a (potentially <see langword="null"/>) <see cref="UserBasicDto"/>.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -141,7 +142,7 @@ namespace Dnn.PersonaBar.Users.Services
         }
 
         /// <summary>Get User Detail Info.</summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">The user ID.</param>
         /// <returns>A response with a <see cref="UserDetailDto"/>.</returns>
         [HttpGet]
         public HttpResponseMessage GetUserDetail(int userId)

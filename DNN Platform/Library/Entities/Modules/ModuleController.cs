@@ -628,9 +628,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="module"></param>
         /// <inheritdoc/>
         public void CreateContentItem(ModuleInfo module)
         {
@@ -649,21 +646,7 @@ namespace DotNetNuke.Entities.Modules
             module.ContentItemId = contentController.AddContentItem(module);
         }
 
-        /// <summary>
-        /// DeleteAllModules deletes all instances of a Module (from a collection), optionally excluding the
-        ///     current instance, and optionally including deleting the Module itself.
-        /// </summary>
-        /// <remarks>
-        ///     Note - the base module is not removed unless both the flags are set, indicating
-        ///     to delete all instances AND to delete the Base Module.
-        /// </remarks>
-        /// <param name="moduleId">The Id of the module to copy.</param>
-        /// <param name="tabId">The Id of the current tab.</param>
-        /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted.</param>
-        /// <param name="fromTabs">An ArrayList of TabItem objects.</param>
-        /// <param name="includeCurrent">A flag to indicate whether to delete from the current tab
-        ///         as identified ny tabId.</param>
-        /// <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself.</param>
+        /// <inheritdoc />
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
             var moduleInfo = this.GetModule(moduleId, tabId, false);
@@ -1091,9 +1074,7 @@ namespace DotNetNuke.Entities.Modules
                 c => CBO.FillObject<ModuleInfo>(DataProvider.GetTabModule(tabModuleID)));
         }
 
-        /// <summary>Get all Module references on a tab.</summary>
-        /// <param name="tabId"></param>
-        /// <returns>Dictionary of ModuleID and ModuleInfo.</returns>
+        /// <inheritdoc />
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
             var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
@@ -2512,7 +2493,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Update content item when the module title changed.</summary>
-        /// <param name="module"></param>
+        /// <param name="module">The module info.</param>
         private void UpdateContentItem(ModuleInfo module)
         {
             IContentController contentController = Util.GetContentController();

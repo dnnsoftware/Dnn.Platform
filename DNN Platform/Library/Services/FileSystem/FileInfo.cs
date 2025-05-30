@@ -18,10 +18,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Instrumentation;
     using Newtonsoft.Json;
 
-    /// Project  : DotNetNuke
-    /// Class    : FileInfo
-    ///
-    /// <summary>  Represents the File object and holds the Properties of that object.</summary>
+    /// <summary>Represents the File object and holds the Properties of that object.</summary>
     [XmlRoot("file", IsNullable = false)]
     [Serializable]
     public class FileInfo : BaseEntityInfo, IHydratable, IFileInfo
@@ -44,55 +41,55 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="filename"></param>
-        /// <param name="extension"></param>
-        /// <param name="filesize"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="contentType"></param>
-        /// <param name="folder"></param>
-        /// <param name="folderId"></param>
-        /// <param name="storageLocation"></param>
-        /// <param name="cached"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="filename">The name of the file.</param>
+        /// <param name="extension">The extension of the file (without leading <c>.</c>).</param>
+        /// <param name="filesize">The length of the file in bytes.</param>
+        /// <param name="width">If the file is an image, the width of the image in pixels, otherwise <see cref="Null.NullInteger"/>.</param>
+        /// <param name="height">If the file is an image, the height of the image in pixels, otherwise <see cref="Null.NullInteger"/>.</param>
+        /// <param name="contentType">The content type of the file.</param>
+        /// <param name="folder">The folder path of the file's folder.</param>
+        /// <param name="folderId">The ID of the file's folder.</param>
+        /// <param name="storageLocation">The value of the <see cref="FolderController.StorageLocationTypes"/> for this file.</param>
+        /// <param name="cached">Whether the file is cached.</param>
         public FileInfo(int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached)
             : this(portalId, filename, extension, filesize, width, height, contentType, folder, folderId, storageLocation, cached, Null.NullString)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="filename"></param>
-        /// <param name="extension"></param>
-        /// <param name="filesize"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="contentType"></param>
-        /// <param name="folder"></param>
-        /// <param name="folderId"></param>
-        /// <param name="storageLocation"></param>
-        /// <param name="cached"></param>
-        /// <param name="hash"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="filename">The name of the file.</param>
+        /// <param name="extension">The extension of the file (without leading <c>.</c>).</param>
+        /// <param name="filesize">The length of the file in bytes.</param>
+        /// <param name="width">If the file is an image, the width of the image in pixels, otherwise <see cref="Null.NullInteger"/>.</param>
+        /// <param name="height">If the file is an image, the height of the image in pixels, otherwise <see cref="Null.NullInteger"/>.</param>
+        /// <param name="contentType">The content type of the file.</param>
+        /// <param name="folder">The folder path of the file's folder.</param>
+        /// <param name="folderId">The ID of the file's folder.</param>
+        /// <param name="storageLocation">The value of the <see cref="FolderController.StorageLocationTypes"/> for this file.</param>
+        /// <param name="cached">Whether the file is cached.</param>
+        /// <param name="hash">The SHA1 hash of the file contents.</param>
         public FileInfo(int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached, string hash)
             : this(Guid.NewGuid(), Guid.NewGuid(), portalId, filename, extension, filesize, width, height, contentType, folder, folderId, storageLocation, cached, hash)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FileInfo"/> class.</summary>
-        /// <param name="uniqueId"></param>
-        /// <param name="versionGuid"></param>
-        /// <param name="portalId"></param>
-        /// <param name="filename"></param>
-        /// <param name="extension"></param>
-        /// <param name="filesize"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="contentType"></param>
-        /// <param name="folder"></param>
-        /// <param name="folderId"></param>
-        /// <param name="storageLocation"></param>
-        /// <param name="cached"></param>
-        /// <param name="hash"></param>
+        /// <param name="uniqueId">The unique ID of the file.</param>
+        /// <param name="versionGuid">The unique ID of the file version.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="filename">The name of the file.</param>
+        /// <param name="extension">The extension of the file (without leading <c>.</c>).</param>
+        /// <param name="filesize">The length of the file in bytes.</param>
+        /// <param name="width">If the file is an image, the width of the image in pixels, otherwise <see cref="Null.NullInteger"/>.</param>
+        /// <param name="height">If the file is an image, the height of the image in pixels, otherwise <see cref="Null.NullInteger"/>.</param>
+        /// <param name="contentType">The content type of the file.</param>
+        /// <param name="folder">The folder path of the file's folder.</param>
+        /// <param name="folderId">The ID of the file's folder.</param>
+        /// <param name="storageLocation">The value of the <see cref="FolderController.StorageLocationTypes"/> for this file.</param>
+        /// <param name="cached">Whether the file is cached.</param>
+        /// <param name="hash">The SHA1 hash of the file contents or <see cref="Null.NullString"/>.</param>
         public FileInfo(Guid uniqueId, Guid versionGuid, int portalId, string filename, string extension, int filesize, int width, int height, string contentType, string folder, int folderId, int storageLocation, bool cached, string hash)
         {
             this.UniqueId = uniqueId;

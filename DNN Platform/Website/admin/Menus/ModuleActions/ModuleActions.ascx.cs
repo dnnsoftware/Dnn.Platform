@@ -31,9 +31,29 @@ namespace DotNetNuke.Admin.Containers
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A control which renders module actions.</summary>
     public partial class ModuleActions : ActionBase
     {
         private readonly List<int> validIDs = new List<int>();
+        private readonly IModuleControlPipeline moduleControlPipeline;
+        private readonly IJavaScriptLibraryHelper javaScript;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        public ModuleActions()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public ModuleActions(IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript)
+        {
+            this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        }
 
         protected string AdminText
         {
@@ -80,7 +100,7 @@ namespace DotNetNuke.Admin.Containers
 
             this.actionButton.Click += this.ActionButton_Click;
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
@@ -108,7 +128,7 @@ namespace DotNetNuke.Admin.Containers
                 if (quickSettingsControl != null)
                 {
                     this.SupportsQuickSettings = true;
-                    var control = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    var control = this.moduleControlPipeline.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
                     control.ID += this.ModuleContext.ModuleId;
                     this.quickSettings.Controls.Add(control);
 

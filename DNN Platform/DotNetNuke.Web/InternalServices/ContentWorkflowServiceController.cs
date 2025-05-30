@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    /// <summary>An API controller for managing content moving through its workflow.</summary>
     [DnnAuthorize]
     public partial class ContentWorkflowServiceController : DnnApiController
     {

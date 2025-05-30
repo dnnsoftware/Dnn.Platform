@@ -47,8 +47,8 @@ namespace DotNetNuke.Security.Roles
         RoleInfo GetRole(int portalId, Func<RoleInfo, bool> predicate);
 
         /// <summary>Fetch a single role.</summary>
-        /// <param name="roleId">the role ID.</param>
         /// <param name="portalId">the portal ID.</param>
+        /// <param name="roleId">the role ID.</param>
         /// <returns>>A RoleInfo object or <see langword="null"/>.</returns>
         RoleInfo GetRoleById(int portalId, int roleId);
 

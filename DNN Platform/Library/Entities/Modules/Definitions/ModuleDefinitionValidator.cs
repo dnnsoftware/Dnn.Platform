@@ -14,11 +14,22 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
     public enum ModuleDefinitionVersion
     {
+        /// <summary>An unknown version.</summary>
         VUnknown = 0,
+
+        /// <summary>Version one.</summary>
         V1 = 1,
+
+        /// <summary>Version two.</summary>
         V2 = 2,
+
+        /// <summary>Version two of a skin.</summary>
         V2_Skin = 3,
+
+        /// <summary>Version two of a provider.</summary>
         V2_Provider = 4,
+
+        /// <summary>Version three.</summary>
         V3 = 5,
     }
 

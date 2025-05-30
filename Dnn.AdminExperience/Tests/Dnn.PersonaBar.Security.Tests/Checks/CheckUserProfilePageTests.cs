@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    using Dnn.PersonaBar.Library.DTO;
+    using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Pages.Components;
     using Dnn.PersonaBar.Pages.Services.Dto;
     using Dnn.PersonaBar.Security.Components;

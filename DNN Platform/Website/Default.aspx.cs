@@ -15,10 +15,10 @@ namespace DotNetNuke.Framework
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
@@ -42,10 +42,9 @@ namespace DotNetNuke.Framework
 
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
+    using ReleaseMode = DotNetNuke.Abstractions.Application.ReleaseMode;
 
-    /// <summary>
-    /// The DNN default page.
-    /// </summary>
+    /// <summary>The DNN default page.</summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
@@ -53,12 +52,36 @@ namespace DotNetNuke.Framework
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DefaultPage"/> class.
-        /// </summary>
+        private readonly IApplicationInfo appInfo;
+        private readonly IModuleControlPipeline moduleControlPipeline;
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         public DefaultPage()
+            : this(null, null, null, null, null, null, null)
         {
-            this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appInfo">The application info.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         public string CurrentSkinPath
@@ -135,6 +158,10 @@ namespace DotNetNuke.Framework
             }
         }
 
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
+
+        private IPortalAliasInfo PrimaryPortalAlias => this.PortalSettings.PrimaryAlias;
+
         /// <inheritdoc/>
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
@@ -167,7 +194,7 @@ namespace DotNetNuke.Framework
         /// <returns>A value indicating whether the current version is not a production version.</returns>
         protected bool NonProductionVersion()
         {
-            return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
+            return this.appInfo.Status != ReleaseMode.Stable;
         }
 
         /// <summary>Contains the functionality to populate the Root aspx page with controls.</summary>
@@ -189,7 +216,7 @@ namespace DotNetNuke.Framework
 
             // DataBind common paths for the client resource loader
             this.ClientResourceLoader.DataBind();
-            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.hostSettings, this.hostSettingsService, this.appStatus, this.eventLogger, this.PortalSettings, this.Page);
 
             // check for and read skin package level doctype
             this.SetSkinDoctype();
@@ -215,7 +242,7 @@ namespace DotNetNuke.Framework
                     }
                     else
                     {
-                        this.Response.Redirect(Globals.GetPortalDomainName(this.PortalSettings.PortalAlias.HTTPAlias, this.Request, true), true);
+                        this.Response.Redirect(Globals.GetPortalDomainName(this.CurrentPortalAlias.HttpAlias, this.Request, true), true);
                     }
                 }
             }
@@ -227,18 +254,18 @@ namespace DotNetNuke.Framework
                 if (Config.GetFriendlyUrlProvider() == "advanced")
                 {
                     // advanced mode compares on the primary alias as set during alias identification
-                    if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
+                    if (this.PrimaryPortalAlias != null && this.PortalSettings.PortalAlias != null)
                     {
-                        if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
+                        if (string.Compare(this.PrimaryPortalAlias.HttpAlias, this.CurrentPortalAlias.HttpAlias, StringComparison.InvariantCulture) != 0)
                         {
-                            primaryHttpAlias = this.PortalSettings.PrimaryAlias.HTTPAlias;
+                            primaryHttpAlias = this.PrimaryPortalAlias.HttpAlias;
                         }
                     }
                 }
                 else
                 {
                     // other modes just depend on the default alias
-                    if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
+                    if (string.Compare(this.CurrentPortalAlias.HttpAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
                     {
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
                     }
@@ -248,7 +275,7 @@ namespace DotNetNuke.Framework
                 {
                     // a primary http alias was identified
                     var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
-                    this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
+                    this.CanonicalLinkUrl = originalurl.Replace(this.CurrentPortalAlias.HttpAlias, primaryHttpAlias);
 
                     if (UrlUtils.IsSecureConnectionOrSslOffload(this.Request))
                     {
@@ -282,7 +309,7 @@ namespace DotNetNuke.Framework
             // set the async postback timeout.
             if (AJAX.IsEnabled())
             {
-                AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
+                AJAX.GetScriptManager(this).AsyncPostBackTimeout = (int)this.hostSettings.AsyncTimeout.TotalSeconds;
             }
         }
 
@@ -411,26 +438,22 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            string cacheability = this.Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
-
+            var cacheability = this.Request.IsAuthenticated ? this.hostSettings.AuthenticatedCacheability : this.hostSettings.UnauthenticatedCacheability;
             switch (cacheability)
             {
-                case "0":
+                case CacheControlHeader.NoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                     break;
-                case "1":
+                case CacheControlHeader.Private:
                     this.Response.Cache.SetCacheability(HttpCacheability.Private);
                     break;
-                case "2":
+                case CacheControlHeader.Public:
                     this.Response.Cache.SetCacheability(HttpCacheability.Public);
                     break;
-                case "3":
-                    this.Response.Cache.SetCacheability(HttpCacheability.Server);
-                    break;
-                case "4":
+                case CacheControlHeader.ServerAndNoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     break;
-                case "5":
+                case CacheControlHeader.ServerAndPrivate:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
                     break;
             }
@@ -460,27 +483,20 @@ namespace DotNetNuke.Framework
                 // Skip is popup is just a tab (no slave module)
                 if (slaveModule.DesktopModuleID != Null.NullInteger)
                 {
-                    var control = ModuleControlFactory.CreateModuleControl(slaveModule) as IModuleControl;
+                    var control = (IModuleControl)this.moduleControlPipeline.CreateModuleControl(slaveModule);
                     string extension = Path.GetExtension(slaveModule.ModuleControl.ControlSrc.ToLowerInvariant());
                     switch (extension)
                     {
                         case ".mvc":
                             var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
-
-                            control.LocalResourceFile = string.Format(
-                                "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                slaveModule.DesktopModule.FolderName,
-                                Localization.LocalResourceDirectory,
-                                segments[0]);
+                            control.LocalResourceFile =
+                                $"~/DesktopModules/MVC/{slaveModule.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
                             break;
                         default:
-                            control.LocalResourceFile = string.Concat(
-                                slaveModule.ModuleControl.ControlSrc.Replace(
-                                    Path.GetFileName(slaveModule.ModuleControl.ControlSrc),
-                                    string.Empty),
-                                Localization.LocalResourceDirectory,
-                                "/",
-                                Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
+                            var controlFileName = Path.GetFileName(slaveModule.ModuleControl.ControlSrc);
+                            var controlSrcPath = slaveModule.ModuleControl.ControlSrc.Replace(controlFileName, string.Empty);
+                            control.LocalResourceFile =
+                                $"{controlSrcPath}{Localization.LocalResourceDirectory}/{controlFileName}";
                             break;
                     }
 
@@ -597,10 +613,9 @@ namespace DotNetNuke.Framework
             }
 
             // NonProduction Label Injection
-            if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
+            if (this.NonProductionVersion() && this.hostSettings.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
-                string versionString =
-                    $" ({DotNetNukeContext.Current.Application.Status} Version: {DotNetNukeContext.Current.Application.Version})";
+                string versionString = $" ({this.appInfo.Status} Version: {this.appInfo.Version})";
                 this.Title += versionString;
             }
 
@@ -683,14 +698,14 @@ namespace DotNetNuke.Framework
                 return Skin.GetPopUpSkin(this);
             }
 
-            return Skin.GetSkin(this);
+            return Skin.GetSkin(this.hostSettings, this);
         }
 
         private void LoadPopupScriptsIfNeeded()
         {
             if (this.PortalSettings.EnablePopUps)
             {
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryUI);
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
                                    : "~/js/dnn.modalpopup.js";
@@ -700,7 +715,7 @@ namespace DotNetNuke.Framework
 
         private void ManageFavicon()
         {
-            string headerLink = FavIcon.GetHeaderLink(this.PortalSettings.PortalId);
+            string headerLink = FavIcon.GetHeaderLink(this.hostSettings, this.PortalSettings.PortalId);
 
             if (!string.IsNullOrEmpty(headerLink))
             {
@@ -740,6 +755,7 @@ namespace DotNetNuke.Framework
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
                 this.GetBackgroundFileInfoCallBack);
 
@@ -755,6 +771,7 @@ namespace DotNetNuke.Framework
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "PageStylesheet" + styleSheet);
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority, styleSheet),
                 this.GetPageStylesheetInfoCallBack);
 
@@ -775,7 +792,7 @@ namespace DotNetNuke.Framework
                 DataCache.PortalCacheTimeOut,
                 DataCache.PortalCachePriority,
                 this.PortalSettings.GetStyles());
-            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            string filePath = CBO.GetCachedObject<string>(this.hostSettings, cacheArgs, this.GetCssVariablesStylesheetCallback);
             return filePath;
         }
 

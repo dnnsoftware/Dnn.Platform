@@ -176,6 +176,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <summary>The ReadManifest method reads the manifest file and parses it into components.</summary>
+        /// <param name="manifestNav">The XPath navigator for the package section of the manifest.</param>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Get Name Property

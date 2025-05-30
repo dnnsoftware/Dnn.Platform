@@ -6,6 +6,7 @@ namespace DotNetNuke.Common.Utilities
     using System;
     using System.Web.UI;
 
+    /// <summary>A page which does minimal work but keeps the site's application pool active.</summary>
     public partial class KeepAlive : Page
     {
         /// <inheritdoc/>

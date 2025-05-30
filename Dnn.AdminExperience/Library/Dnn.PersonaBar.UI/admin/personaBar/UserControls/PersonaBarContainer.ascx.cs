@@ -12,6 +12,8 @@ namespace Dnn.PersonaBar.UI.UserControls
 
     using Dnn.PersonaBar.Library.Containers;
     using Dnn.PersonaBar.Library.Controllers;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
@@ -19,19 +21,45 @@ namespace Dnn.PersonaBar.UI.UserControls
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>The control containing the Persona Bar.</summary>
     public partial class PersonaBarContainer : ControlPanelBase
     {
-        private readonly IPersonaBarContainer personaBarContainer = Library.Containers.PersonaBarContainer.Instance;
+        private readonly IPersonaBarContainer personaBarContainer;
+        private readonly IPersonaBarController personaBarController;
+        private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
+
+        /// <summary>Initializes a new instance of the <see cref="PersonaBarContainer"/> class.</summary>
+        public PersonaBarContainer()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PersonaBarContainer"/> class.</summary>
+        /// <param name="personaBarContainer">The Persona Bar container.</param>
+        /// <param name="personaBarController">The Persona Bar controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public PersonaBarContainer(IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
+        {
+            this.personaBarContainer = personaBarContainer ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarContainer>();
+            this.personaBarController = personaBarController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        }
 
         public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
 
         public string AppPath => Globals.ApplicationPath;
 
-        public string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
+        public string BuildNumber => this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture);
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -77,7 +105,7 @@ namespace Dnn.PersonaBar.UI.UserControls
                 return false;
             }
 
-            var menuStructure = PersonaBarController.Instance.GetMenu(this.PortalSettings, UserController.Instance.GetCurrentUserInfo());
+            var menuStructure = this.personaBarController.GetMenu(this.PortalSettings, UserController.Instance.GetCurrentUserInfo());
             if (menuStructure.MenuItems == null || !menuStructure.MenuItems.Any())
             {
                 return false;
@@ -86,8 +114,8 @@ namespace Dnn.PersonaBar.UI.UserControls
             this.RegisterPersonaBarStyleSheet();
 
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins); // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
-            JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins); // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
+            this.javaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
@@ -109,8 +137,7 @@ namespace Dnn.PersonaBar.UI.UserControls
             {
                 for (var i = 0; i < loader.Controls.Count; i++)
                 {
-                    var cssInclude = loader.Controls[i] as DnnCssInclude;
-                    if (cssInclude != null)
+                    if (loader.Controls[i] is DnnCssInclude cssInclude)
                     {
                         if (cssInclude.FilePath == (Globals.HostPath + "admin.css"))
                         {
