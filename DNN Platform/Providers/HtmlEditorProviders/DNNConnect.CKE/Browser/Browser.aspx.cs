@@ -60,9 +60,6 @@ namespace DNNConnect.CKEditorProvider.Browser
     [ScriptService]
     public partial class Browser : PageBase
     {
-        private const string FileItemDisplayFormat =
-            "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>";
-
         /// <summary>The allowed flash extensions.</summary>
         private static readonly ISet<string> AllowedFlashExtensions = new HashSet<string>(new[] { "swf", "flv", "mp3" }, StringComparer.OrdinalIgnoreCase);
 
@@ -348,6 +345,12 @@ namespace DNNConnect.CKEditorProvider.Browser
                     extension = Path.GetExtension(name);
                 }
 
+                var infoHtml =
+                    $"""
+                     <span class="FileName">{WebUtility.HtmlEncode(name)}</span><br />
+                     <span class="FileInfo">{WebUtility.HtmlEncode(sizeResx)}: {fileItem.Size}</span><br />
+                     <span class="FileInfo">{WebUtility.HtmlEncode(createdResx)}: {fileItem.LastModificationTime}</span>
+                     """;
                 switch (type)
                 {
                     case "Image":
@@ -360,13 +363,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
 
-                                dr["Info"] = string.Format(
-                                    FileItemDisplayFormat,
-                                    sizeResx,
-                                    createdResx,
-                                    name,
-                                    fileItem.Size,
-                                    fileItem.LastModificationTime);
+                                dr["Info"] = new HtmlString(infoHtml);
 
                                 filesTable.Rows.Add(dr);
                             }
@@ -381,13 +378,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                                 dr["PictureURL"] = "images/types/swf.png";
 
-                                dr["Info"] = string.Format(
-                                    FileItemDisplayFormat,
-                                    sizeResx,
-                                    createdResx,
-                                    name,
-                                    fileItem.Size,
-                                    fileItem.LastModificationTime);
+                                dr["Info"] = new HtmlString(infoHtml);
 
                                 dr["FileName"] = name;
                                 dr["FileId"] = item.FileId;
@@ -431,13 +422,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                             dr["FileName"] = name;
                             dr["FileId"] = fileItem.FileId;
 
-                            dr["Info"] = string.Format(
-                                FileItemDisplayFormat,
-                                sizeResx,
-                                createdResx,
-                                name,
-                                fileItem.Size,
-                                fileItem.LastModificationTime);
+                            dr["Info"] = new HtmlString(infoHtml);
 
                             filesTable.Rows.Add(dr);
                         }
