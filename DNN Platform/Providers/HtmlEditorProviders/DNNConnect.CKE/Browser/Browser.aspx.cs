@@ -185,14 +185,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets the files table.</summary>
-        /// <value>
-        /// The files table.
-        /// </value>
-        private DataTable FilesTable
+        /// <value>The files table.</value>
+        private IEnumerable<BrowserFile> FilesTable
         {
             get
             {
-                return this.ViewState["FilesTable"] as DataTable;
+                return this.ViewState["FilesTable"] as IEnumerable<BrowserFile>;
             }
 
             set
@@ -285,28 +283,16 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Get all Files and Put them in a DataTable for the GridView.</summary>
         /// <param name="currentFolderInfo">The current folder info.</param>
-        /// <returns>
-        /// The File Table.
-        /// </returns>
-        public DataTable GetFiles(IFolderInfo currentFolderInfo)
+        /// <returns>The Files.</returns>
+        public List<BrowserFile> GetFiles(IFolderInfo currentFolderInfo)
         {
             var sizeResx = this.LocalizeString("Size.Text");
             var createdResx = this.LocalizeString("Created.Text");
 
-            var filesTable = new DataTable();
-
-            filesTable.Columns.Add(new DataColumn("FileName", typeof(string)));
-            filesTable.Columns.Add(new DataColumn("PictureURL", typeof(string)));
-            filesTable.Columns.Add(new DataColumn("Info", typeof(string)));
-            filesTable.Columns.Add(new DataColumn("FileId", typeof(int)));
-
-            HttpRequest httpRequest = HttpContext.Current.Request;
-
-            var type = "Link";
-
-            if (!string.IsNullOrEmpty(httpRequest.QueryString["Type"]))
+            var type = HttpContext.Current.Request.QueryString["Type"];
+            if (string.IsNullOrEmpty(type))
             {
-                type = httpRequest.QueryString["Type"];
+                type = "Link";
             }
 
             // Get the files
@@ -332,10 +318,8 @@ namespace DNNConnect.CKEditorProvider.Browser
                 Utility.SortDescending(files, item => item.CreatedOnDate);
             }
 
-            foreach (var fileItem in files)
+            return files.Select(fileItem =>
             {
-                var item = fileItem;
-
                 var name = fileItem.FileName;
                 var extension = fileItem.Extension;
 
@@ -357,81 +341,67 @@ namespace DNNConnect.CKEditorProvider.Browser
                         {
                             if (AllowedImageExtensions.Contains(extension))
                             {
-                                var dr = filesTable.NewRow();
-
-                                dr["PictureURL"] = FileManager.Instance.GetUrl(fileItem);
-                                dr["FileName"] = name;
-                                dr["FileId"] = item.FileId;
-
-                                dr["Info"] = new HtmlString(infoHtml);
-
-                                filesTable.Rows.Add(dr);
+                                return new BrowserFile
+                                {
+                                    PictureUrl = FileManager.Instance.GetUrl(fileItem),
+                                    FileName = name,
+                                    FileId = fileItem.FileId,
+                                    InfoHtml = infoHtml,
+                                };
                             }
                         }
 
-                        break;
+                        return null;
                     case "Flash":
                         {
                             if (AllowedFlashExtensions.Contains(extension))
                             {
-                                var dr = filesTable.NewRow();
-
-                                dr["PictureURL"] = "images/types/swf.png";
-
-                                dr["Info"] = new HtmlString(infoHtml);
-
-                                dr["FileName"] = name;
-                                dr["FileId"] = item.FileId;
-
-                                filesTable.Rows.Add(dr);
+                                return new BrowserFile
+                                {
+                                    PictureUrl = "images/types/swf.png",
+                                    FileName = name,
+                                    FileId = fileItem.FileId,
+                                    InfoHtml = infoHtml,
+                                };
                             }
                         }
 
-                        break;
-
+                        return null;
                     default:
+                        if (extension.StartsWith("."))
                         {
-                            if (extension.StartsWith("."))
-                            {
-                                extension = extension.Replace(".", string.Empty);
-                            }
-
-                            if (extension.Count() <= 1 || !this.extensionWhiteList.IsAllowedExtension(extension))
-                            {
-                                continue;
-                            }
-
-                            DataRow dr = filesTable.NewRow();
-
-                            var imageExtension = string.Format("images/types/{0}.png", extension);
-
-                            if (File.Exists(this.MapPath(imageExtension)))
-                            {
-                                dr["PictureURL"] = imageExtension;
-                            }
-                            else
-                            {
-                                dr["PictureURL"] = "images/types/unknown.png";
-                            }
-
-                            if (AllowedImageExtensions.Any(sAllowImgExt => name.EndsWith(sAllowImgExt, StringComparison.OrdinalIgnoreCase)))
-                            {
-                                dr["PictureUrl"] = FileManager.Instance.GetUrl(fileItem);
-                            }
-
-                            dr["FileName"] = name;
-                            dr["FileId"] = fileItem.FileId;
-
-                            dr["Info"] = new HtmlString(infoHtml);
-
-                            filesTable.Rows.Add(dr);
+                            extension = extension.Replace(".", string.Empty);
                         }
 
-                        break;
-                }
-            }
+                        if (extension.Length <= 1 || !this.extensionWhiteList.IsAllowedExtension(extension))
+                        {
+                            return null;
+                        }
 
-            return filesTable;
+                        string pictureUrl;
+                        if (AllowedImageExtensions.Any(sAllowImgExt => name.EndsWith(sAllowImgExt, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            pictureUrl = FileManager.Instance.GetUrl(fileItem);
+                        }
+                        else
+                        {
+                            pictureUrl = $"images/types/{extension}.png";
+                            if (!File.Exists(this.MapPath(pictureUrl)))
+                            {
+                                pictureUrl = "images/types/unknown.png";
+                            }
+                        }
+
+                        return new BrowserFile
+                        {
+                            PictureUrl = pictureUrl,
+                            FileName = name,
+                            FileId = fileItem.FileId,
+                            InfoHtml = infoHtml,
+                        };
+                }
+            }).Where(file => file is not null)
+            .ToList();
         }
 
         /// <summary>Register JavaScripts and CSS.</summary>
@@ -2170,7 +2140,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
             }
 
-            var filesPagedDataSource = new PagedDataSource { DataSource = this.FilesTable.DefaultView };
+            var filesPagedDataSource = new PagedDataSource { DataSource = this.FilesTable };
 
             if (this.currentSettings.FileListPageSize > 0)
             {
@@ -3142,6 +3112,20 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
 
             return foundNode;
+        }
+
+        [Serializable]
+        public class BrowserFile
+        {
+            public string FileName { get; set; }
+
+            public string PictureUrl { get; set; }
+
+            public IHtmlString Info => new HtmlString(this.InfoHtml);
+
+            public string InfoHtml { get; set; }
+
+            public int FileId { get; set; }
         }
     }
 }

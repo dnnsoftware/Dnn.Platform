@@ -303,29 +303,27 @@
             <br />
             <asp:HiddenField runat="server" ID="ListViewState"/>
             <div id="FilesBox">
-              <asp:Repeater ID="FilesList" runat="server">
+              <asp:Repeater ID="FilesList" runat="server" ItemType="DNNConnect.CKEditorProvider.Browser.Browser.BrowserFile">
                 <HeaderTemplate>
                   <ul class="FilesDetailView">
                 </HeaderTemplate>
                 <ItemTemplate>
                   <li class="FilesListRow" id="ListRow" runat="server" 
-                      title='<%#: DataBinder.Eval(Container.DataItem, "PictureURL").ToString().Substring(DataBinder.Eval(Container.DataItem, "PictureURL").ToString().LastIndexOf("/", StringComparison.Ordinal) + 1)%>'>
-                    <asp:LinkButton runat="server" ID="FileListItem" CssClass="FilesListItem" 
-                       CommandArgument='<%#: DataBinder.Eval(Container.DataItem, "FileId").ToString()%>'>
-                      <asp:Image runat="server" ID="FileThumb" CssClass="FilePreview" ImageUrl='<%#: DataBinder.Eval(Container.DataItem, "PictureURL").ToString()%>'
-                          AlternateText='<%#: DataBinder.Eval(Container.DataItem, "FileName").ToString()%>' ToolTip='<%#: DataBinder.Eval(Container.DataItem, "FileName").ToString()%>' />
-                      <span class="ItemInfo"><%#: DataBinder.Eval(Container.DataItem, "Info").ToString()%></span>
+                      title='<%#: Item.PictureUrl.Substring(Item.PictureUrl.LastIndexOf("/", StringComparison.Ordinal) + 1)%>'>
+                    <asp:LinkButton runat="server" ID="FileListItem" CssClass="FilesListItem" CommandArgument="<%#: Item.FileId %>">
+                      <asp:Image runat="server" ID="FileThumb" CssClass="FilePreview" ImageUrl="<%#: Item.PictureUrl %>"
+                          AlternateText="<%#: Item.FileName %>" ToolTip="<%#: Item.FileName %>" />
+                      <span class="ItemInfo"><%#: Item.Info %></span>
                     </asp:LinkButton>
                   </li>
                 </ItemTemplate>
                 <AlternatingItemTemplate>
                   <li class="FilesListRowAlt" id="ListRow" runat="server" 
-                      title='<%#: DataBinder.Eval(Container.DataItem, "PictureURL").ToString().Substring(DataBinder.Eval(Container.DataItem, "PictureURL").ToString().LastIndexOf("/", StringComparison.Ordinal) + 1)%>'>
-                                        <asp:LinkButton runat="server" ID="FileListItem" CssClass="FilesListItem" 
-                       CommandArgument='<%#: DataBinder.Eval(Container.DataItem, "FileId").ToString()%>'>
-                      <asp:Image runat="server" ID="FileThumb" CssClass="FilePreview" ImageUrl='<%#: DataBinder.Eval(Container.DataItem, "PictureURL").ToString()%>'
-                          AlternateText='<%#: DataBinder.Eval(Container.DataItem, "FileName").ToString()%>' ToolTip='<%#: DataBinder.Eval(Container.DataItem, "FileName").ToString()%>' />
-                      <span class="ItemInfo"><%#: DataBinder.Eval(Container.DataItem, "Info").ToString()%></span>
+                      title='<%#: Item.PictureUrl.Substring(Item.PictureUrl.LastIndexOf("/", StringComparison.Ordinal) + 1)%>'>
+                    <asp:LinkButton runat="server" ID="FileListItem" CssClass="FilesListItem" CommandArgument="<%#: Item.FileId %>">
+                      <asp:Image runat="server" ID="FileThumb" CssClass="FilePreview" ImageUrl="<%#: Item.PictureUrl %>"
+                          AlternateText="<%#: Item.FileName %>" ToolTip="<%#: Item.FileName %>" />
+                      <span class="ItemInfo"><%#: Item.Info %></span>
                     </asp:LinkButton>
                   </li>
                 </AlternatingItemTemplate>
