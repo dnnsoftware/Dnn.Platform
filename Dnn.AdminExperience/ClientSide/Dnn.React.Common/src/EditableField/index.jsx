@@ -135,7 +135,7 @@ class EditableField extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getEditButton() {
         return <div className="edit-button" onClick={this.toggleEditMode.bind(this)} dangerouslySetInnerHTML={{ __html: EditIcon }}></div>;
     }

@@ -4,23 +4,22 @@ import { action } from "@storybook/addon-actions";
 import Checkbox from "./index";
 
 storiesOf("Checkbox", module).add("with text", () => (
-  <Checkbox value={false} onChange={action("changed")} label="Hello Checkbox" />
+    <Checkbox value={false} onChange={action("changed")} label="Hello Checkbox" />
 ));
 
 storiesOf("Checkbox", module).add("already checked", () => (
-  <Checkbox value={true} onChange={action("changed")} label="I should be pre-checked" />
+    <Checkbox value={true} onChange={action("changed")} label="I should be pre-checked" />
 ));
 
 storiesOf("Checkbox", module).add("with label and tooltip", () => (
-  <Checkbox 
-    value={false} 
-    onChange={action("changed")} 
-    label="I have a tooltip that opens on the bottom" 
-    tooltipMessage="This is the tooltip of the checkbox"
-    tooltipPlace="bottom"  
-  />
-))
-
+    <Checkbox 
+        value={false} 
+        onChange={action("changed")} 
+        label="I have a tooltip that opens on the bottom" 
+        tooltipMessage="This is the tooltip of the checkbox"
+        tooltipPlace="bottom"  
+    />
+));
 
 
 // -------- CHECKBOX AVAILABLE PROPS -------------

@@ -1,4 +1,4 @@
-/* eslint-disable react/no-danger */
+ 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -106,7 +106,7 @@ class AuditCheckPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     getNotesDisplay(notes) {
         if (notes && notes.length > 0) {
             return <div className="log-detail" dangerouslySetInnerHTML={{ __html: notes }}></div>;
@@ -141,7 +141,7 @@ class AuditCheckPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let contentShouldShow = (props.auditCheckResults && props.auditCheckResults.length > 0) ? true : false;

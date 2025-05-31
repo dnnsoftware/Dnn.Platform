@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const path = require("path");
 const packageJson = require("./package.json");
 const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");

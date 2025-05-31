@@ -40,7 +40,7 @@ class SearchResult extends Component {
         }
     }
     
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { searchResult, searchList } = this.props;
         const loader = <div key={-1} className={"lazy-loading"} ></div>;

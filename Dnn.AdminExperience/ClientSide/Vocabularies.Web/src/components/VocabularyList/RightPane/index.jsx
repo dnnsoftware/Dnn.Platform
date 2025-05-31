@@ -310,7 +310,7 @@ class RightPane extends Component {
         const parentDisplay = props.vocabularyTerms.find((term) => {
             return term.TermId === state.termBeingEdited.ParentTermId;
         });
-        /* eslint-disable react/no-danger */
+         
         return (
             <GridCell className={styles.vocabulariesRightPane}>
                 <GridCell className="term-list">
