@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Scheduling
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
@@ -83,15 +84,16 @@ namespace DotNetNuke.Services.Scheduling
         STOPPED = 7,
     }
 
+    /// <inheritdoc cref="Abstractions.Application.SchedulerMode"/>
     public enum SchedulerMode
     {
-        /// <summary>The scheduler is disabled.</summary>
+        /// <inheritdoc cref="Abstractions.Application.SchedulerMode.Disabled"/>
         DISABLED = 0,
 
-        /// <summary>The scheduler is running based on a timer.</summary>
+        /// <inheritdoc cref="Abstractions.Application.SchedulerMode.TimerMethod"/>
         TIMER_METHOD = 1,
 
-        /// <summary>The scheduler is running when triggered by HTTP requests.</summary>
+        /// <inheritdoc cref="Abstractions.Application.SchedulerMode.REQUEST_METHOD"/>
         REQUEST_METHOD = 2,
     }
 
@@ -151,34 +153,16 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        public static bool Enabled
-        {
-            get
-            {
-                return SchedulerMode != SchedulerMode.DISABLED;
-            }
-        }
+        public static bool Enabled => SchedulerMode != SchedulerMode.DISABLED;
 
-        public static bool ReadyForPoll
-        {
-            get
-            {
-                return DataCache.GetCache("ScheduleLastPolled") == null;
-            }
-        }
+        public static bool ReadyForPoll => DataCache.GetCache("ScheduleLastPolled") == null;
 
-        public static SchedulerMode SchedulerMode
-        {
-            get
-            {
-                return Host.SchedulerMode;
-            }
-        }
+        public static SchedulerMode SchedulerMode => Host.SchedulerMode;
 
         /// <summary>
         /// Gets the number of seconds since application start where no timer-initiated
-        /// schedulers are allowed to run before. This safeguards against ovelapped
-        /// application re-starts. See "Disable Ovelapped Recycling" under Recycling
+        /// schedulers are allowed to run before. This safeguards against overlapped
+        /// application re-starts. See "Disable Overlapped Recycling" under Recycling
         /// of IIS Manager Application Pool's Advanced Settings.
         /// </summary>
         public static int DelayAtAppStart { get; private set; }
@@ -204,20 +188,11 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        public virtual Dictionary<string, string> Settings
-        {
-            get
-            {
-                return new Dictionary<string, string>();
-            }
-        }
+        public virtual Dictionary<string, string> Settings => new();
 
         public string ProviderPath { get; private set; }
 
-        public static SchedulingProvider Instance()
-        {
-            return ComponentFactory.GetComponent<SchedulingProvider>();
-        }
+        public static SchedulingProvider Instance() => ComponentFactory.GetComponent<SchedulingProvider>();
 
         public abstract void Start();
 

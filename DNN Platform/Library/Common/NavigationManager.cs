@@ -7,23 +7,35 @@ namespace DotNetNuke.Common
     using System.Threading;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The default <see cref="INavigationManager"/> implementation.</summary>
     internal class NavigationManager : INavigationManager
     {
         private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="NavigationManager"/> class.</summary>
         /// <param name="portalController">An <see cref="IPortalController"/> instance.</param>
         public NavigationManager(IPortalController portalController)
+            : this(portalController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="NavigationManager"/> class.</summary>
+        /// <param name="portalController">An <see cref="IPortalController"/> instance.</param>
+        /// <param name="hostSettings">An <see cref="IHostSettings"/> instance.</param>
+        public NavigationManager(IPortalController portalController, IHostSettings hostSettings)
         {
             this.portalController = portalController;
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets the URL to the current page.</summary>
@@ -196,7 +208,7 @@ namespace DotNetNuke.Common
                 }
             }
 
-            if (Host.UseFriendlyUrls || Config.GetFriendlyUrlProvider() == "advanced")
+            if (this.hostSettings.UseFriendlyUrls || Config.GetFriendlyUrlProvider() == "advanced")
             {
                 if (string.IsNullOrEmpty(pageName))
                 {

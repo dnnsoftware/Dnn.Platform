@@ -7,14 +7,14 @@ namespace DotNetNuke.Entities.Portals
     using System.Collections.Generic;
 
     /// <summary>
-    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
+    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should be used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
     public interface IPortalAliasController
     {
         /// <summary>Add a new Portal Alias.</summary>
         /// <param name="portalAlias">The portal alias to add.</param>
-        /// <returns>The Id of the newly added portal alias.</returns>
+        /// <returns>The ID of the newly added portal alias.</returns>
         int AddPortalAlias(PortalAliasInfo portalAlias);
 
         /// <summary>Delete a Portal Alias.</summary>

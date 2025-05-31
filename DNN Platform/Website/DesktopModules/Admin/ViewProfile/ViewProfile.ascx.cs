@@ -9,6 +9,8 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     using System.Threading;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -28,11 +30,21 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     public partial class ViewProfile : ProfileModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
         public ViewProfile()
+            : this(null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public ViewProfile(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         /// <inheritdoc/>
@@ -75,9 +87,9 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
             this.ProcessQuerystring();
 
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            this.javaScript.RequestRegistration(CommonJs.jQuery);
+            this.javaScript.RequestRegistration(CommonJs.jQueryMigrate);
+            this.javaScript.RequestRegistration(CommonJs.Knockout);
         }
 
         /// <inheritdoc />

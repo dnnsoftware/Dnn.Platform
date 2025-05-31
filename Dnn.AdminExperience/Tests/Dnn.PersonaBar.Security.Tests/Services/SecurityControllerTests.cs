@@ -32,7 +32,8 @@ namespace Dnn.PersonaBar.Security.Tests.Services
                 Mock.Of<IPortalAliasService>(),
                 Mock.Of<IApiTokenController>(),
                 Mock.Of<IHostSettingsService>(),
-                Mock.Of<IApplicationStatusInfo>());
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IHostSettings>());
 
             // act
             var alias = sut.AddPortalAlias(SslUrl, PortalId);
@@ -61,7 +62,8 @@ namespace Dnn.PersonaBar.Security.Tests.Services
                 portalAliasControllerMock.Object,
                 Mock.Of<IApiTokenController>(),
                 Mock.Of<IHostSettingsService>(),
-                Mock.Of<IApplicationStatusInfo>());
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IHostSettings>());
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);
@@ -88,7 +90,8 @@ namespace Dnn.PersonaBar.Security.Tests.Services
                 portalAliasControllerMock.Object,
                 Mock.Of<IApiTokenController>(),
                 Mock.Of<IHostSettingsService>(),
-                Mock.Of<IApplicationStatusInfo>());
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IHostSettings>());
 
             // act
             sut.AddPortalAlias(SslUrl, PortalId);

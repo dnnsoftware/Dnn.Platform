@@ -17,9 +17,13 @@ namespace Dnn.EditBar.UI.Controllers
 
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
@@ -27,13 +31,29 @@ namespace Dnn.EditBar.UI.Controllers
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.UI;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json.Linq;
 
     public class EditBarController : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditBarController));
-
         private static object threadLocker = new object();
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="EditBarController"/> class.</summary>
+        public EditBarController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditBarController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public EditBarController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(new HostController());
+        }
 
         /// <inheritdoc/>
         public IDictionary<string, object> GetConfigurations(int portalId)
@@ -43,9 +63,9 @@ namespace Dnn.EditBar.UI.Controllers
             var user = portalSettings.UserInfo;
 
             settings.Add("applicationPath", Globals.ApplicationPath);
-            settings.Add("buildNumber", Host.CrmVersion.ToString(CultureInfo.InvariantCulture));
+            settings.Add("buildNumber", this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture));
             settings.Add("userId", user.UserID);
-            settings.Add("debugMode", HttpContext.Current != null && HttpContext.Current.IsDebuggingEnabled);
+            settings.Add("debugMode", HttpContextSource.Current != null && HttpContextSource.Current.IsDebuggingEnabled);
             settings.Add("portalId", portalSettings.PortalId);
             settings.Add("culture", portalSettings.CultureCode);
             settings.Add("loginUrl", Globals.LoginURL(HttpContext.Current?.Request.RawUrl, false));

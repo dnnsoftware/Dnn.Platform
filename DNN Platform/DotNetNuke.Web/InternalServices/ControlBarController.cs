@@ -30,6 +30,7 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -42,12 +43,24 @@ namespace DotNetNuke.Web.InternalServices
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly PersonalizationController personalizationController;
         private readonly Components.Controllers.IControlBarController controller;
         private IDictionary<string, string> nameDics;
 
+        /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         public ControlBarController(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="personalizationController">The personalization controller.</param>
+        public ControlBarController(IBusinessControllerProvider businessControllerProvider, PersonalizationController personalizationController)
         {
             this.businessControllerProvider = businessControllerProvider;
+            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
             this.controller = Components.Controllers.ControlBarController.Instance;
         }
 
@@ -361,11 +374,10 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (!string.IsNullOrEmpty(dto.Language))
                     {
-                        var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                        var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
+                        var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
                         personalization.Profile["Usability:UICulture"] = dto.Language;
                         personalization.IsModified = true;
-                        personalizationController.SaveProfile(personalization);
+                        this.personalizationController.SaveProfile(personalization);
                         return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
@@ -472,11 +484,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private void ToggleUserMode(string mode)
         {
-            var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
+            var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
             personalization.Profile["Usability:UserMode" + this.PortalSettings.PortalId] = mode.ToUpper();
             personalization.IsModified = true;
-            personalizationController.SaveProfile(personalization);
+            this.personalizationController.SaveProfile(personalization);
         }
 
         private PortalSettings GetPortalSettings(string portal)

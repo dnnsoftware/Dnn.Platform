@@ -239,6 +239,8 @@
     <Compile Include="Data\SqlDatabaseConnectionProvider.cs" />
     <Compile Include="Entities\Content\Taxonomy\ScopeTypeMemberNameFixer.cs" />
     <Compile Include="Entities\Content\Taxonomy\TermHelper.cs" />
+    <Compile Include="Entities\Host\HostSettings.cs" />
+    <Compile Include="Entities\Host\MailSettings.cs" />
     <Compile Include="Entities\Modules\BusinessControllerProvider.cs" />
     <Compile Include="Entities\Modules\BusinessControllerProviderExtensions.cs" />
     <Compile Include="Entities\Content\Workflow\Actions\TabActions\CompleteState.cs" />
@@ -306,6 +308,7 @@
     <Compile Include="Entities\Users\UserRegistrationEmailNotifier.cs" />
     <Compile Include="ExtensionPoints\PanelEditPagePanelExtensionControl.cs" />
     <Compile Include="ExtensionPoints\PanelTabExtensionControl.cs" />
+    <Compile Include="Framework\JavaScriptLibraries\IJavaScriptLibraryHelper.cs" />
     <Compile Include="Modules\NavigationEventArgs.cs" />
     <Compile Include="Obsolete\EventLogController.cs" />
     <Compile Include="Obsolete\HostController.cs" />
@@ -946,10 +949,13 @@
     <Compile Include="Services\Tokens\PropertyAccess\AntiForgeryTokenPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\ArrayListPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\CssPropertyAccess.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\HtmlEncodingPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptDto.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\JavaScriptEncodingPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JavaScriptPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\JsonPropertyAccess.cs" />
     <Compile Include="Services\Tokens\PropertyAccess\StylesheetDto.cs" />
+    <Compile Include="Services\Tokens\PropertyAccess\UrlEncodingPropertyAccess.cs" />
     <Compile Include="Services\Tokens\Scope.cs" />
     <Compile Include="Services\Tokens\CoreTokenProvider.cs" />
     <Compile Include="Services\Tokens\TokenContext.cs" />

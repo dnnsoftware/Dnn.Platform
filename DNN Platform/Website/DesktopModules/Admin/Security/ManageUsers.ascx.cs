@@ -33,11 +33,21 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class ManageUsers : UserModuleBase, IActionable
     {
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         /// <summary>Initializes a new instance of the <see cref="ManageUsers"/> class.</summary>
         public ManageUsers()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ManageUsers"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public ManageUsers(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         /// <inheritdoc/>
@@ -242,7 +252,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ctlMembership.MembershipDemoteFromSuperuser += this.MembershipDemoteFromSuperuser;
             this.ctlMembership.MembershipPromoteToSuperuser += this.MembershipPromoteToSuperuser;
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";
