@@ -27,7 +27,7 @@ class LogSettingsPanel extends Component {
         canEdit = util.settings.isHost || util.settings.permissions.LOG_SETTINGS_EDIT;
     }
 
-    UNSAFE_UNSAFE_componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         props.dispatch(LogSettingActions.getLogSettings());
         if (canEdit) {
