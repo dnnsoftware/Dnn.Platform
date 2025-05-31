@@ -1,10 +1,9 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import InputGroup from "./index";
 import SingleLineInputWithError from "../SingleLineInputWithError";
 
-storiesOf("InputGroup", module).add("with content", () => (
+export const WithContent =  () => (
   <InputGroup>
     <SingleLineInputWithError
       inputId={"create-term-name"}
@@ -15,4 +14,4 @@ storiesOf("InputGroup", module).add("with content", () => (
       errorMessage="Error"
     />
   </InputGroup>
-));
+);

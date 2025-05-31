@@ -1,27 +1,26 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import Sortable from "./index";
 import Label from "../Label";
 
-storiesOf("Sortable", module).add("with content", () => (
+export const WithContent = () => (
     <Sortable
         onSort={action("Sorted")}
         items={testProperties}
         sortOnDrag={true}>
         {renderedProperties() }
     </Sortable>
-));
+);
 
-storiesOf("Sortable", module).add("in rows", () => (
+export const InRows = () => (
     <Sortable
         onSort={action("Sorted")}
         items={testProperties}
-        sortOnDrag={true}>
-            {renderRows()}
-        </Sortable>
-
-));
+        sortOnDrag={true}
+    >
+        {renderRows()}
+    </Sortable>
+);
 
 const testProperties =
     [

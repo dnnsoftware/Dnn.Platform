@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
 import RadioButtons from "./index";
 
 class MyRadioButtons extends Component{
@@ -23,6 +21,6 @@ class MyRadioButtons extends Component{
   }
 }
 
-storiesOf("RadioButtons", module).add("with content", () => (
+export const WithContent = () => (
   <MyRadioButtons />
-));
+);

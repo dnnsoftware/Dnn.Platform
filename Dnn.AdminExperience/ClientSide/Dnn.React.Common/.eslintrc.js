@@ -6,6 +6,7 @@ module.exports = {
         "filenames",
         "babel"
     ],
+
     "settings": {
         "import/resolver":{
             "node":{
@@ -20,7 +21,9 @@ module.exports = {
           },
           "propWrapperFunctions": [ "forbidExtraProps" ]
     },
+
     "parser": "babel-eslint",
+
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
@@ -43,6 +46,7 @@ module.exports = {
         "ecmaVersion": 6,
         "sourceType": "module"
     },
+
     "rules": {
         "semi": "error",
         "no-var": "error",
@@ -61,5 +65,7 @@ module.exports = {
         "filenames/match-exported": 2,
         "react/no-deprecated": "error",
         "no-dupe-class-members": "error"
-    }
+    },
+
+    extends: ["plugin:storybook/recommended"]
 };

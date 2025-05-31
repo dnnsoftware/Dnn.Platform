@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
 import ContentLoadWrapper from "./index";
 import { TableEmptyState } from "../SvgIcons";
 
@@ -35,7 +34,7 @@ class MyContentLoadWrapper extends Component{
   }
 }
 
-storiesOf("ContentLoadWrapper", module).add("with loading", () => (
+export const WithLoading = () => (
   <ContentLoadWrapper
     loadComplete={false}
     svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
@@ -51,9 +50,10 @@ storiesOf("ContentLoadWrapper", module).add("with loading", () => (
       </div>
     </div>
   </ContentLoadWrapper>
-));
+);
 
-storiesOf("ContentLoadWrapper", module).add("with content", () => (
+
+export const WithContent = () => (
   <ContentLoadWrapper
     loadComplete={true}
     svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
@@ -72,8 +72,8 @@ storiesOf("ContentLoadWrapper", module).add("with content", () => (
       </div>
     </div>
   </ContentLoadWrapper>
-));
+);
 
-storiesOf("ContentLoadWrapper", module).add("loaded after 2 seconds", () => (
+export const LoadedAfterTwoSeconds= () => (
   <MyContentLoadWrapper />
-));
+);

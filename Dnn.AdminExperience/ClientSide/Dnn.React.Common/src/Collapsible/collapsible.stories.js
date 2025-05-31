@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import Collapsible from "./index";
 import InputGroup from "../InputGroup";
 import SingleLineInputWithError from "../SingleLineInputWithError";
 import MultiLineInputWithError from "../MultiLineInputWithError";
 import Button from "../Button";
+import { WithText } from "../BackToLink/backtolink.stories";
 
 class MyCollapsible extends Component {
   constructor(props) {
@@ -47,6 +47,6 @@ class MyCollapsible extends Component {
   }
 }
 
-storiesOf("Collapsible", module).add("with text", () => (
+export const WithText = () => (
   <MyCollapsible />
-));
+);

@@ -1,9 +1,8 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import CollapsibleRow from "./index";
 
-storiesOf("CollapsibleRow", module).add("with text", () => (
+export const WithText = () => (
   <CollapsibleRow
     label={<div>Click Header To Expand</div>}
     closeOnBlur={false}
@@ -14,4 +13,4 @@ storiesOf("CollapsibleRow", module).add("with text", () => (
   >
     <p>Test Content</p>
   </CollapsibleRow>
-));
+);

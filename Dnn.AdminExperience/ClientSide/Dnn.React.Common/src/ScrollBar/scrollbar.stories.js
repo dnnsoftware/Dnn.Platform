@@ -1,9 +1,7 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
 import ScrollBar from "./index";
 
-storiesOf("ScrollBar", module).add("with content", () => (
+export const WithContent = () => (
   <ScrollBar>
     <div>
       <p>
@@ -65,4 +63,4 @@ storiesOf("ScrollBar", module).add("with content", () => (
       </p>
     </div>
   </ScrollBar>
-));
+);

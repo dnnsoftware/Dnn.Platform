@@ -1,8 +1,7 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
 import DropdownWithError from "./index";
 
-storiesOf("DropdownWithError", module).add("with content", () => (
+export const WithContent =  () => (
   <DropdownWithError
     error={true}
     errorMessage="Please select an item"
@@ -13,4 +12,4 @@ storiesOf("DropdownWithError", module).add("with content", () => (
       { label: "Opt 3", value: 3 }
     ]}
   />
-));
+);

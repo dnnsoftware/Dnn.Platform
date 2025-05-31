@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
 import Dropdown from "./index";
 
 class MyDropdown extends Component{
@@ -28,6 +27,6 @@ class MyDropdown extends Component{
     }
 }
 
-storiesOf("Dropdown", module).add("with content", () => (
+export const WithContent =  () => (
     <MyDropdown />
-));
+);

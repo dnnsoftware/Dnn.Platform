@@ -1,9 +1,8 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import MultiLineInputWithError from "./index";
 
-storiesOf("MultiLineInputWithError", module).add("with content", () => (
+export const WithContent = () => (
     <MultiLineInputWithError
         inputId={"create-term-description"}
         withLabel={true}
@@ -11,4 +10,4 @@ storiesOf("MultiLineInputWithError", module).add("with content", () => (
         value="Long descritpion here"
         onChange={action("changed")}
     />
-));
+);

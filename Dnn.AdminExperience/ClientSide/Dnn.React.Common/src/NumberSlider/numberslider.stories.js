@@ -1,9 +1,8 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import NumberSlider from "./index";
 
-storiesOf("NumberSlider", module).add("with content", () => (
+export const WithContent =  () => (
   <NumberSlider
     min={1}
     max={100}
@@ -11,4 +10,4 @@ storiesOf("NumberSlider", module).add("with content", () => (
     value={50}
     onChange={action("Change")}
   />
-));
+);
