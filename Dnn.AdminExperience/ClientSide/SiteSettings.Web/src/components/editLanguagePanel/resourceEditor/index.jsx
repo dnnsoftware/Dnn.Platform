@@ -93,7 +93,7 @@ class ResourceEditor extends Component {
         this.onExitFullMode();
     }
     
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props, state } = this;
 

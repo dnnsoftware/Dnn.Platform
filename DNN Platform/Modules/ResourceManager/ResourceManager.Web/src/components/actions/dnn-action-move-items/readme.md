@@ -9,7 +9,7 @@
 
 | Property             | Attribute | Description | Type     | Default     |
 | -------------------- | --------- | ----------- | -------- | ----------- |
-| `items` _(required)_ | --        |             | `Item[]` | `undefined` |
+| `items` _(required)_ | `items`   |             | `Item[]` | `undefined` |
 
 
 ## Dependencies

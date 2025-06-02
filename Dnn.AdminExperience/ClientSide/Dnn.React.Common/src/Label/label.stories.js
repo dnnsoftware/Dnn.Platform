@@ -53,9 +53,6 @@ export const WithTooltipStyle = () => (
 );
 
 
-
-
-
 // ---------------- Label available props -------------------
 //
 // Label.propTypes = {

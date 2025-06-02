@@ -17,8 +17,6 @@ import "../../tabs.less";
 import "./style.less";
 import ServerList from "../ServerList";
 
-const defaultPlaceHolder = "...";
-
 class Servers extends Component {
     componentDidMount() {
         this.props.onRetrieveServers();

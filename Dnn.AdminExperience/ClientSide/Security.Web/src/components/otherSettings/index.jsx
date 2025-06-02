@@ -164,7 +164,7 @@ class OtherSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { state } = this;
         if (state.otherSettings) {

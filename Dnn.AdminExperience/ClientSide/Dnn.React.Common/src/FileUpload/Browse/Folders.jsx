@@ -54,7 +54,7 @@ export default class Folders extends Component {
             return false;
         }
         const children = folder.children.map((child) => {
-            /* eslint-disable react/no-danger */
+             
             const isOpen = this.state.openFolders.some(id => id === child.data.key);
             const className = isOpen ? "open" : "";
             return <li className={className} key={child.data.key}>
@@ -70,7 +70,7 @@ export default class Folders extends Component {
     }
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         const folders = this.getFolders(this.props.folders);
         return <div className="item-picker">
             {folders}

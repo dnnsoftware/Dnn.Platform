@@ -19,7 +19,7 @@ class ModuleEdit extends Component {
         this.closeOnEndRequest = false;
         this.state = {
             userMode: utils.getUserMode().toLowerCase(),
-            editUrl: ''
+            editUrl: ""
         };
     }
 
@@ -67,7 +67,7 @@ class ModuleEdit extends Component {
         }
 
         if (editUrl !== "") {
-            if (editUrl.toLowerCase().indexOf('popup') === -1) {
+            if (editUrl.toLowerCase().indexOf("popup") === -1) {
                 this.redirectUrl(editUrl);
             } else {
                 editUrl = utils.url.appendQueryString(editUrl, queryString);
@@ -102,7 +102,7 @@ class ModuleEdit extends Component {
 
         PageActions.viewPage(props.selectedPage.tabId, null, () => {
             this.setState({
-                userMode: 'edit'
+                userMode: "edit"
             }, () => {
                 this.checkUrlType();
                 this.addEventListener();
@@ -127,7 +127,8 @@ class ModuleEdit extends Component {
 ModuleEdit.propTypes = {
     module: PropTypes.object.isRequired,
     editType: PropTypes.string.isRequired,
-    onUpdatedModuleSettings: PropTypes.func.isRequired
+    onUpdatedModuleSettings: PropTypes.func.isRequired,
+    selectedPage: PropTypes.object,
 };
 
 export default ModuleEdit;

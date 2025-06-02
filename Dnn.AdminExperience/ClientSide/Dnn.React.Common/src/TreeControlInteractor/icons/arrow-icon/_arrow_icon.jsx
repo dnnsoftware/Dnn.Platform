@@ -53,7 +53,7 @@ export class ArrowIcon extends Component {
 
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         const marginTop = styles.margin({ top: -3 });
         const padding = styles.padding({ all: 2 });
         const baseStyles = style(this.direction);
@@ -67,7 +67,7 @@ export class ArrowIcon extends Component {
                 alt="arrow_icon"
                 onClick={this.onMouseDown.bind(this)} />
         );
-        /* eslint-disable react/no-danger */
+         
     }
 
 }
