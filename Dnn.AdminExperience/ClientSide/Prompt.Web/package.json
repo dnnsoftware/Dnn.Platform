@@ -30,7 +30,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.7",
     "es6-object-assign": "1.1.0",
-    "eslint": "9.25.1",
+    "eslint": "9.28.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-webpack-plugin": "^5.0.1",
     "extract-text-webpack-plugin": "^3.0.2",
