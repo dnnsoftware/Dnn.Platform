@@ -408,7 +408,7 @@ namespace DotNetNuke.Common
         public static UpgradeStatus Status { get => (UpgradeStatus)applicationStatusInfo.Status; }
 
         /// <summary>Gets image file types.</summary>
-        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
+        /// <value>Values read from ImageTypes List. If there is not a List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use ImageFileTypes instead. Scheduled removal in v11.0.0.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.NamingRules",
@@ -417,7 +417,7 @@ namespace DotNetNuke.Common
         public static string glbImageFileTypes => ImageFileTypes;
 
         /// <summary>Gets image file types.</summary>
-        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
+        /// <value>Values read from ImageTypes List. If there is not a List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
         public static string ImageFileTypes
         {
             get
