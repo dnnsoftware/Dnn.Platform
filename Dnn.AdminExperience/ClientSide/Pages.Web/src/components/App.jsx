@@ -480,7 +480,7 @@ class App extends Component {
     }
 
     onChangeParentId() {
-        this.onChangePageField('oldParentId', this.props.selectedPage.parentId);
+        this.onChangePageField("oldParentId", this.props.selectedPage.parentId);
     }
 
     onAddMultiplePage() {
@@ -1140,8 +1140,8 @@ class App extends Component {
         }
 
         let { searchTerm, filterByPageType, filterByPublishStatus, filterByWorkflow, startDate, endDate, startAndEndDateDirty, tags } = this.state;
-        const fullStartDate = `${startDate.getDate() < 10 ? `0` + startDate.getDate() : startDate.getDate()}/${((startDate.getMonth() + 1) < 10 ? `0` + (startDate.getMonth() + 1) : (startDate.getMonth() + 1))}/${startDate.getFullYear()} 00:00:00`;
-        const fullEndDate = `${endDate.getDate() < 10 ? `0` + endDate.getDate() : endDate.getDate()}/${((endDate.getMonth() + 1) < 10 ? `0` + (endDate.getMonth() + 1) : (endDate.getMonth() + 1))}/${endDate.getFullYear()} 23:59:59`;
+        const fullStartDate = `${startDate.getDate() < 10 ? "0" + startDate.getDate() : startDate.getDate()}/${((startDate.getMonth() + 1) < 10 ? "0" + (startDate.getMonth() + 1) : (startDate.getMonth() + 1))}/${startDate.getFullYear()} 00:00:00`;
+        const fullEndDate = `${endDate.getDate() < 10 ? "0" + endDate.getDate() : endDate.getDate()}/${((endDate.getMonth() + 1) < 10 ? "0" + (endDate.getMonth() + 1) : (endDate.getMonth() + 1))}/${endDate.getFullYear()} 23:59:59`;
         const searchDateRange = startAndEndDateDirty ? { publishDateStart: fullStartDate, publishDateEnd: fullEndDate } : {};
 
         if (tags) {
@@ -1548,7 +1548,7 @@ class App extends Component {
         const { inSearch } = this.state;
         const isListPagesAllowed = securityService.canSeePagesList();
        
-        /* eslint-disable react/no-danger */
+         
         return (
 
             <div ref={node => this.node = node} className="pages-app personaBar-mainContainer">
@@ -1679,7 +1679,8 @@ App.propTypes = {
     getPageHierarchy: PropTypes.func.isRequired,
     dirtyTemplate: PropTypes.bool,
     dirtyCustomDetails: PropTypes.bool,
-    onChangeCustomDetails: PropTypes.func
+    onChangeCustomDetails: PropTypes.func,
+    selectedCustomPageSettings: PropTypes.object,
 };
 
 function mapStateToProps(state) {

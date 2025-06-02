@@ -4,5 +4,5 @@ import { action } from "@storybook/addon-actions";
 import Flag from "./index";
 
 storiesOf("Flag", module).add("with content", () => (
-  <Flag title="Test" culture="en-US" onClick={action("Clicked")} />
+    <Flag title="Test" culture="en-US" onClick={action("Clicked")} />
 ));

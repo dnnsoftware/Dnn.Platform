@@ -169,7 +169,7 @@ class ModuleDefinitions extends Component {
             }));
         });
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         const moduleDefinitions = props.extensionBeingEdited.moduleDefinitions.value.map((moduleDefinition, index) => {

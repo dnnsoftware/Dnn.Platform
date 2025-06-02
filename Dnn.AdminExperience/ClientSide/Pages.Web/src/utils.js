@@ -1,6 +1,6 @@
 import UrlParse from "url-parse";
 import * as dayjs from "dayjs";
-const localizedFormat = require('dayjs/plugin/localizedFormat');
+import localizedFormat from "dayjs/plugin/localizedFormat";
 let utilities = null;
 let config = null;
 let moduleName = null;
@@ -180,7 +180,7 @@ function getProductSKU() {
 }
 function isPlatform() {
     checkInit();
-    return settings.productSKU.toLowerCase() === 'dnn';
+    return settings.productSKU.toLowerCase() === "dnn";
 }
 function getIsAdminHostSystemPage() {
     checkInit();
@@ -197,7 +197,8 @@ function formatDate(dateValue, longformat) {
     }
 
     dayjs.extend(localizedFormat);
-    require('dayjs/locale/' + utilities.getCulture().substring(0,2));
+    // eslint-disable-next-line no-undef
+    require("dayjs/locale/" + utilities.getCulture().substring(0,2));
     return dayjs(dateValue).locale(utilities.getCulture().substring(0,2)).format(longformat === true ? "LLL" : "L");
 }
 function getUserMode() {
@@ -207,7 +208,7 @@ const url = {
     appendQueryString: function (url, params) {
         let urlParse = new UrlParse(url, true);
         let newParams = Object.assign({}, urlParse.query, params);
-        urlParse.set('query', newParams);
+        urlParse.set("query", newParams);
         return urlParse.href;
     }
 };

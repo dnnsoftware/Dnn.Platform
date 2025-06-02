@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const settings = require("../../../settings.local.json");
@@ -76,6 +76,11 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(ttf|woff)$/,
                     use: ["url-loader?limit=8192"],
+                },
+                {
+                    test: /\.svg$/i,
+                    resourceQuery: /raw/, // *.svg?raw
+                    use: "raw-loader",
                 },
             ],
         },
