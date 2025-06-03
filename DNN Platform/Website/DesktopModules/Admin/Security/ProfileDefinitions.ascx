@@ -20,7 +20,7 @@
             <asp:TemplateColumn HeaderText="DataType">
                 <ItemStyle Width="60px"></ItemStyle>
                 <ItemTemplate>
-                    <asp:label id="lblDataType" runat="server" Text='<%# DisplayDataType((DotNetNuke.Entities.Profile.ProfilePropertyDefinition)Container.DataItem) %>'></asp:label>
+                    <asp:label id="lblDataType" runat="server" Text='<%#: DisplayDataType((DotNetNuke.Entities.Profile.ProfilePropertyDefinition)Container.DataItem) %>'></asp:label>
                 </ItemTemplate>
             </asp:TemplateColumn>
             <dnn:textcolumn DataField="Length" HeaderText="Length" Width="50px" />
@@ -29,7 +29,7 @@
             <asp:TemplateColumn HeaderText="DefaultVisibility">
                 <ItemStyle Width="100px"></ItemStyle>
                 <ItemTemplate>
-                    <asp:label id="lbDefaultVisibility" runat="server" Text='<%# DisplayDefaultVisibility((DotNetNuke.Entities.Profile.ProfilePropertyDefinition)Container.DataItem) %>'></asp:label>
+                    <asp:label id="lbDefaultVisibility" runat="server" Text='<%#: DisplayDefaultVisibility((DotNetNuke.Entities.Profile.ProfilePropertyDefinition)Container.DataItem) %>'></asp:label>
                 </ItemTemplate>
             </asp:TemplateColumn>
             <dnn:checkboxcolumn DataField="Required" HeaderText="Required" AutoPostBack="True" />
