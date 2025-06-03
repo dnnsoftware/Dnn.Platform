@@ -128,6 +128,14 @@ namespace DotNetNuke.Framework
             }
         }
 
+        /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string)"/>
+        public static IHtmlString JavaScriptStringEncode(string value)
+            => HtmlUtils.JavaScriptStringEncode(value);
+
+        /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string,bool)"/>
+        public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
+            => HtmlUtils.JavaScriptStringEncode(value, addDoubleQuotes);
+
         /// <summary>
         /// <para>RemoveKeyAttribute remove the key attribute from the control. If this isn't done, then the HTML output will have
         /// a bad attribute on it which could cause some older browsers problems.</para>
