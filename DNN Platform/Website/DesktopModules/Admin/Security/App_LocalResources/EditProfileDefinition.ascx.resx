@@ -139,7 +139,7 @@
     <value>Property Category:</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyCategory.Help" xml:space="preserve">
-    <value>Enter the category for this property.  This will allow the related properties to be grouped when dislayed to the user.</value>
+    <value>Enter the category for this property.  This will allow the related properties to be grouped when displayed to the user.</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyName.Text" xml:space="preserve">
     <value>Property Name:</value>
