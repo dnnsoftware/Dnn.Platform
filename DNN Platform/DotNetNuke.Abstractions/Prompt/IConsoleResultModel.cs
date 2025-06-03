@@ -20,7 +20,11 @@ namespace DotNetNuke.Abstractions.Prompt
         /// <remarks>Should the client reload after processing the command.</remarks>
         bool MustReload { get; set; }
 
-        /// <summary>Gets or sets any data to be formatted by the client.</summary>
+        /// <summary>Gets or sets a list of data to be formatted by the client.</summary>
+        /// <remarks>
+        /// If the list contains a single item it will be displayed as a list of properties, otherwise the list will be displayed as a table.
+        /// Each field will be rendered as plain text, unless it is wrapped in <see cref="IConsoleOutput"/>.
+        /// </remarks>
         object Data { get; set; }
 
         /// <summary>Gets or sets the field order.</summary>
