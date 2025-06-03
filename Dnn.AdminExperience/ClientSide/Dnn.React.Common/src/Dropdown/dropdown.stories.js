@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import Dropdown from "./index";
 
+export default {
+    component: Dropdown,
+};
+
 class MyDropdown extends Component {
     constructor() {
         super();

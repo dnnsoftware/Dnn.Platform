@@ -1,7 +1,11 @@
 import React from "react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import SearchableTags from "./index";
 import util from "../../.storybook/utils";
+
+export default {
+    component: SearchableTags,
+};
 
 export const WithContent = () => (
     <SearchableTags

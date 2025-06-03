@@ -1,6 +1,10 @@
 import React from "react";
 import Label from "./index";
 
+export default {
+    component: Label,
+};
+
 export const SimpleLabel =  () => <Label label="Test" />;
 
 export const WithShortTooltip =  () => (

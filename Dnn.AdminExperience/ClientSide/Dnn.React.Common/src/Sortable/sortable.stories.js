@@ -1,7 +1,11 @@
 import React, { Component } from "react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import Sortable from "./index";
 import Label from "../Label";
+
+export default {
+    component: Sortable,
+};
 
 export const WithContent = () => (
     <Sortable
@@ -65,14 +69,4 @@ function renderRows() {
             ></MyComponent>
         );
     });
-}
-
-export default class MyComponent extends Component{
-    render(){
-        return(
-            <div className="my-component">
-                <span>{this.props.name}</span>
-            </div>
-        );
-    }
 }

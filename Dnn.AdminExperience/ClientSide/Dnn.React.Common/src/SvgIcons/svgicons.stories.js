@@ -1,6 +1,10 @@
 import React from "react";
 import * as SvgIcons from "./index";
 
+export default {
+    component: SvgIcons,
+};
+
 export const WithContent =  () => (
     <div>
         <div>ActivityIcon <div style={{width: "24px" }} dangerouslySetInnerHTML={{ __html: SvgIcons.ActivityIcon }}></div></div>

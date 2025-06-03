@@ -1,6 +1,10 @@
 import React from "react";
 import TextOverflowWrapper from "./index";
 
+export default {
+    component: TextOverflowWrapper,
+};
+
 export const WithContent = () => (
     <div style={{ paddingTop: 100, paddingLeft: 100 }}>        
         <TextOverflowWrapper text="Default Content & tooltip" />

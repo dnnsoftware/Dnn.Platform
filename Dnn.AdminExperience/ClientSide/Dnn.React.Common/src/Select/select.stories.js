@@ -1,6 +1,10 @@
 import React from "react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import Select from "./index";
+
+export default {
+    component: Select,
+};
 
 export const WithContent = () => (
     <Select onChange={action("OnSelect")} 

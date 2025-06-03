@@ -1,10 +1,14 @@
 import React from "react";
 import ScrollBar from "./index";
 
+export default {
+    component: ScrollBar,
+};
+
 export const WithContent = () => (
-  <ScrollBar>
-    <div>
-      <p>
+    <ScrollBar>
+        <div>
+            <p>
         Condimentum faucibus fermentum ut habitant phasellus lacus natoque
         curae; tempor eget interdum. Arcu lacus lobortis augue fames torquent
         nunc blandit eros. Sollicitudin etiam suscipit ante condimentum
@@ -15,8 +19,8 @@ export const WithContent = () => (
         purus senectus risus dis risus duis. Dis risus imperdiet litora arcu
         maecenas porta class. Taciti montes elit donec nibh. Vitae facilisis
         ornare phasellus vel nostra. Mi duis molestie.
-      </p>
-      <p>
+            </p>
+            <p>
         Molestie praesent aliquam metus et etiam vitae orci et. Platea tempus
         ullamcorper venenatis lacinia nam tincidunt tristique lacus magnis massa
         sit. Ornare vivamus natoque, inceptos consequat. Suscipit potenti aenean
@@ -26,8 +30,8 @@ export const WithContent = () => (
         sodales odio ultricies dignissim! Porta convallis venenatis, orci
         faucibus leo bibendum cubilia natoque magnis. Pretium suspendisse
         natoque sapien aliquam semper magna class mattis. At.
-      </p>
-      <p>
+            </p>
+            <p>
         Viverra sodales torquent magna justo inceptos convallis nec. Cras
         scelerisque interdum sapien? Fusce a felis dis aptent. Lobortis
         lobortis, urna quisque urna. Sagittis per penatibus duis. Elementum sed
@@ -37,8 +41,8 @@ export const WithContent = () => (
         convallis lacinia eleifend sociis. Ultrices interdum mauris interdum,
         tellus praesent praesent ac phasellus dictumst lacinia ultrices
         consequat. Cras mi nostra nostra ligula? Viverra nunc.
-      </p>
-      <p>
+            </p>
+            <p>
         Pretium sollicitudin ac nec feugiat augue mollis mattis ridiculus
         imperdiet turpis. Diam enim sit iaculis pharetra, laoreet potenti
         lobortis pharetra. Vehicula nostra aliquam interdum euismod potenti
@@ -49,8 +53,8 @@ export const WithContent = () => (
         molestie. Elementum ipsum laoreet quis netus magnis morbi vel quisque
         mattis venenatis. Dictumst bibendum semper praesent hac nec ullamcorper
         netus per commodo! Eget in sociis orci iaculis dictumst.
-      </p>
-      <p>
+            </p>
+            <p>
         Etiam, lobortis quis sagittis. Nullam parturient habitant rhoncus
         sollicitudin netus. Augue arcu ultricies condimentum id eleifend sapien
         dictumst quam integer? Ultrices hendrerit placerat accumsan. Sodales
@@ -60,7 +64,7 @@ export const WithContent = () => (
         tincidunt donec elementum natoque vehicula molestie scelerisque
         ultricies erat, cubilia gravida. Congue platea tincidunt magnis vehicula
         massa dictumst ac dolor vulputate potenti habitant.
-      </p>
-    </div>
-  </ScrollBar>
+            </p>
+        </div>
+    </ScrollBar>
 );

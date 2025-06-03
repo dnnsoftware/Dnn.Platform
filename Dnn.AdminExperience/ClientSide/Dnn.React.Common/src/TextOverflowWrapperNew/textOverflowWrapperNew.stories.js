@@ -1,6 +1,10 @@
 import React from "react";
 import TextOverflowWrapperNew from "./index";
 
+export default {
+    component: TextOverflowWrapperNew,
+};
+
 export const WithContent = () => (
     <div>
         Hover Mouse Here

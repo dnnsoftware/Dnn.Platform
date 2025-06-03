@@ -1,6 +1,10 @@
 import React from "react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import Pager from "./index";
+
+export default {
+    component: Pager,
+};
 
 export const WithContent = () => (
     <Pager
