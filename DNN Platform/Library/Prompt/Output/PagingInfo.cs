@@ -6,6 +6,7 @@ namespace DotNetNuke.Prompt
     using DotNetNuke.Abstractions.Prompt;
     using Newtonsoft.Json;
 
+    /// <summary>Used to page long lists of data to the client.</summary>
     public class PagingInfo : IPagingInfo
     {
         /// <inheritdoc/>

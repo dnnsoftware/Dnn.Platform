@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.Prompt
 {
-    /// <summary>This is used in the ICommandHelp to send a list of command parameters to the client for explanatory help.</summary>
+    /// <summary>This is used in the <see cref="ICommandHelp"/> to send a list of command parameters to the client for explanatory help.</summary>
     public interface ICommandOption
     {
         /// <summary>Gets or sets the name of the parameter.</summary>

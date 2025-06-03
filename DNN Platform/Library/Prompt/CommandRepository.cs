@@ -10,6 +10,7 @@ namespace DotNetNuke.Prompt
     using System.Text.RegularExpressions;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Prompt;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -19,11 +20,14 @@ namespace DotNetNuke.Prompt
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>The repository handles retrieving of commands from the entire DNN installation.</summary>
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
         private readonly IServiceScopeFactory serviceScopeFactory;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public CommandRepository()
             : this(null)
         {
@@ -31,9 +35,19 @@ namespace DotNetNuke.Prompt
 
         /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
         /// <param name="serviceScopeFactory">The service scope factory.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public CommandRepository(IServiceScopeFactory serviceScopeFactory)
         {
             this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CommandRepository"/> class.</summary>
+        /// <param name="serviceScopeFactory">The service scope factory.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public CommandRepository(IServiceScopeFactory serviceScopeFactory, IHostSettings hostSettings)
+        {
+            this.serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc/>
@@ -47,9 +61,9 @@ namespace DotNetNuke.Prompt
         {
             commandName = commandName.ToUpper();
             var allCommands = this.CommandList();
-            if (allCommands.ContainsKey(commandName))
+            if (allCommands.TryGetValue(commandName, out var command))
             {
-                return (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceProvider, Type.GetType(allCommands[commandName].TypeFullName));
+                return (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceProvider, Type.GetType(command.TypeFullName));
             }
 
             return null;
@@ -60,8 +74,9 @@ namespace DotNetNuke.Prompt
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
             return DataCache.GetCachedData<ICommandHelp>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => GetCommandHelpInternal(consoleCommand));
+                _ => GetCommandHelpInternal(consoleCommand));
         }
 
         /// <inheritdoc/>
@@ -163,8 +178,9 @@ namespace DotNetNuke.Prompt
         {
             return
                 DataCache.GetCachedData<SortedDictionary<string, ICommand>>(
+                    this.hostSettings,
                     new CacheItemArgs("DnnPromptCommandList", CacheItemPriority.Default),
-                    c => this.GetCommandsInternal());
+                    _ => this.GetCommandsInternal());
         }
     }
 }
