@@ -15,15 +15,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("list-tasks", Constants.SchedulerCategory, "Prompt_ListTasks_Description")]
-
     public class ListTasks : ConsoleCommandBase
     {
         [FlagParameter("enabled", "Prompt_ListTasks_FlagEnabled", "Boolean")]
-
         private const string FlagEnabled = "enabled";
 
         [FlagParameter("name", "Prompt_ListTasks_FlagName", "String")]
-
         private const string FlagName = "name";
 
         /// <inheritdoc/>
