@@ -40,6 +40,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
         private readonly IModuleControlPipeline moduleControlPipeline;
         private readonly IApplicationInfo applicationInfo;
         private readonly ISkinModelFactory skinModelFactory;
+        private readonly IHostSettings hostSettings;
 
         public PageModelFactory(
             IContentSecurityPolicy contentSecurityPolicy,
@@ -47,7 +48,8 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             IPortalController portalController,
             IModuleControlPipeline moduleControlPipeline,
             IApplicationInfo applicationInfo,
-            ISkinModelFactory skinModelFactory)
+            ISkinModelFactory skinModelFactory,
+            IHostSettings hostSettings)
         {
             this.contentSecurityPolicy = contentSecurityPolicy;
             this.navigationManager = navigationManager;
@@ -55,6 +57,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             this.moduleControlPipeline = moduleControlPipeline;
             this.applicationInfo = applicationInfo;
             this.skinModelFactory = skinModelFactory;
+            this.hostSettings = hostSettings;
         }
 
         public PageModel CreatePageModel(DnnPageController page)
@@ -69,7 +72,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 Language = Thread.CurrentThread.CurrentCulture.Name,
                 ContentSecurityPolicy = this.contentSecurityPolicy,
                 NavigationManager = this.navigationManager,
-                FavIconLink = FavIcon.GetHeaderLink(page.PortalSettings.PortalId),
+                FavIconLink = FavIcon.GetHeaderLink(this.hostSettings, page.PortalSettings.PortalId),
             };
             if (page.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
             {
