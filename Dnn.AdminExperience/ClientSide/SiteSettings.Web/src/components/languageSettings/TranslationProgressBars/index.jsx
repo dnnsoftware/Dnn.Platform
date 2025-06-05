@@ -26,7 +26,7 @@ class TranslationProgressBars extends Component {
         return `${this.normalizeTime(hours)}:${this.normalizeTime(minutes % 60)}:${this.normalizeTime(seconds % 60)}s`;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         const totalProgressText =

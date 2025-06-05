@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property                    | Attribute | Description                | Type                       | Default     |
-| --------------------------- | --------- | -------------------------- | -------------------------- | ----------- |
-| `currentItems` _(required)_ | --        | The list of current items. | `GetFolderContentResponse` | `undefined` |
+| Property                    | Attribute       | Description                | Type                       | Default     |
+| --------------------------- | --------------- | -------------------------- | -------------------------- | ----------- |
+| `currentItems` _(required)_ | `current-items` | The list of current items. | `GetFolderContentResponse` | `undefined` |
 
 
 ## Events

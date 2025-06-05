@@ -87,7 +87,7 @@ class ListEntriesPanel extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedListEntries() {
         let i = 0;
         return this.props.entries.map((item, index) => {
