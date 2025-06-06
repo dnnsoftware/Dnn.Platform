@@ -22,7 +22,6 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
     /// <summary>Services used for common components.</summary>
@@ -31,12 +30,15 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
 
+        /// <summary>Gets the local resource file path.</summary>
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         private int UnauthUserRoleId => int.Parse(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
 
+        /// <summary>An API action for getting the role groups for the portal.</summary>
+        /// <param name="reload">Whether to clear the cache.</param>
+        /// <returns>An HTTP response with a list of <see cref="RoleGroupDto"/> values.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetRoleGroups(bool reload = false)
         {
             try
@@ -64,8 +66,11 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
+        /// <summary>An API action to get users to suggest for an autocomplete.</summary>
+        /// <param name="keyword">The input.</param>
+        /// <param name="count">The number of suggestions to return.</param>
+        /// <returns>An HTTP response with a list of <see cref="SuggestionDto"/> values.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetSuggestionUsers(string keyword, int count)
         {
             try
@@ -98,6 +103,11 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
+        /// <summary>An API action to get roles to suggest for an autocomplete.</summary>
+        /// <param name="keyword">The input.</param>
+        /// <param name="roleGroupId">The role group ID.</param>
+        /// <param name="count">The number of suggestions to return.</param>
+        /// <returns>An HTTP response with a list of <see cref="SuggestionDto"/> values.</returns>
         public HttpResponseMessage GetSuggestionRoles(string keyword, int roleGroupId, int count)
         {
             try

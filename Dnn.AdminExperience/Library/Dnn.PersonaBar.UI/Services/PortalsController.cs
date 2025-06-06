@@ -12,8 +12,11 @@ namespace Dnn.PersonaBar.UI.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>Service to perform portal operations.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
@@ -26,20 +29,19 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="addAll">Add all portals item in list.</param>
         /// <returns>List of portals.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetPortals(bool addAll = false)
         {
             try
             {
-                var portals = PortalController.Instance.GetPortals().OfType<PortalInfo>();
+                var portals = PortalController.Instance.GetPortals().OfType<IPortalInfo>();
                 if (!this.UserInfo.IsSuperUser)
                 {
-                    portals = portals.Where(portal => portal.PortalID == this.PortalId);
+                    portals = portals.Where(portal => portal.PortalId == this.PortalId);
                 }
 
                 var availablePortals = portals.Select(v => new
                 {
-                    v.PortalID,
+                    v.PortalId,
                     v.PortalName,
                 }).ToList();
 
@@ -47,9 +49,8 @@ namespace Dnn.PersonaBar.UI.Services
                 {
                     availablePortals.Insert(0, new
                     {
-                        PortalID = -1,
-                        PortalName =
-                            DotNetNuke.Services.Localization.Localization.GetString("AllSites", Constants.SharedResources),
+                        PortalId = -1,
+                        PortalName = Localization.GetString("AllSites", Constants.SharedResources),
                     });
                 }
 
