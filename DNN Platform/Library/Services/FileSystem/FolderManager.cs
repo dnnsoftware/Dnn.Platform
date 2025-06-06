@@ -2009,23 +2009,26 @@ namespace DotNetNuke.Services.FileSystem
 
         private IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, Regex regex, bool recursive)
         {
-            var fileCollection =
-                CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, false, false));
+            // Get all files in one DB call
+            var fileCollection = CBO.Instance.FillCollection<FileInfo>(
+                DataProvider.Instance().GetFiles(folder.FolderID, false, recursive));
 
-            var files = (from f in fileCollection where regex.IsMatch(f.FileName) select f).Cast<IFileInfo>().ToList();
-
-            if (recursive)
+            if (!recursive)
             {
-                foreach (var subFolder in this.GetFolders(folder))
-                {
-                    if (FolderPermissionController.Instance.CanViewFolder(subFolder))
-                    {
-                        files.AddRange(this.SearchFiles(subFolder, regex, true));
-                    }
-                }
+                return fileCollection.Where(f => regex.IsMatch(f.FileName)).Cast<IFileInfo>();
             }
 
-            return files;
+            // Pre-compute allowed folders once
+            var allowedFolderPaths = this.GetFolders(folder.PortalID)
+                .Where(f => f.FolderPath.StartsWith(folder.FolderPath) &&
+                           FolderPermissionController.Instance.CanViewFolder(f))
+                .Select(f => f.FolderPath)
+                .ToHashSet();
+
+            // Simple filter with folder permission lookup
+            return fileCollection
+                .Where(f => regex.IsMatch(f.FileName) && allowedFolderPaths.Contains(f.Folder))
+                .Cast<IFileInfo>();
         }
 
         private IFolderInfo UpdateFolderInternal(IFolderInfo folder, bool clearCache)
