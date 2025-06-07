@@ -2027,7 +2027,7 @@ namespace DotNetNuke.Services.FileSystem
 
             // Simple filter with folder permission lookup
             return fileCollection
-                .Where(f => regex.IsMatch(f.FileName) && allowedFolderPaths.Contains(f.Folder))
+                .Where(f => allowedFolderPaths.Contains(f.Folder) && regex.IsMatch(f.FileName))
                 .Cast<IFileInfo>();
         }
 
