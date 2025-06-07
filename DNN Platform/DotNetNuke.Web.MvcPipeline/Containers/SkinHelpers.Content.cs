@@ -5,13 +5,18 @@
 namespace DotNetNuke.Web.MvcPipeline.Containers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
-
+    using System.Web.Routing;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
@@ -19,6 +24,8 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 
     public static partial class SkinHelpers
     {
+        private const string ExcludedRouteValues = "mid,ctl,popup,tabid,language";
+
         public static IHtmlString Content(this HtmlHelper<ContainerModel> htmlHelper)
         {
             var model = htmlHelper.ViewData.Model;
@@ -85,8 +92,10 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
            }
            */
 
-            var controlFolder = Path.GetDirectoryName(model.ModuleConfiguration.ModuleControl.ControlSrc);
-            var controlFileNameWithoutExtension = Path.GetFileNameWithoutExtension(model.ModuleConfiguration.ModuleControl.ControlSrc);
+            var controlSrcParts = model.ModuleConfiguration.ModuleControl.ControlSrc.Split('/');
+
+            var controlFolder = controlSrcParts[0];
+            var controlFileNameWithoutExtension = Path.GetFileNameWithoutExtension(controlSrcParts[2]);
             var srcPhysicalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, controlFolder, "Partials", controlFileNameWithoutExtension + ".cshtml");
             if (File.Exists(srcPhysicalPath))
             {
@@ -141,7 +150,19 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             }
             */
 
+            string[] routeValues = { $"moduleId={model.ModuleConfiguration.ModuleID}", $"controller={controlSrcParts[1]}", $"action={controlFileNameWithoutExtension}" };
+
+            var request = htmlHelper.ViewContext.HttpContext.Request;
+            var req = request.Params;
+            var isMyRoute = req["MODULEID"] != null && req["CONTROLLER"] != null && int.TryParse(req["MODULEID"], out var moduleId) && moduleId == model.ModuleConfiguration.ModuleID;
+
+            var url = isMyRoute ? 
+                    request.Url.ToString() : 
+                    TestableGlobals.Instance.NavigateURL(model.ModuleConfiguration.TabID, TestableGlobals.Instance.IsHostTab(model.ModuleConfiguration.TabID), model.PortalSettings, string.Empty, routeValues);
+
+            moduleContentPaneDiv.InnerHtml += $"<form action=\"{url}\" method=\"post\">";
             moduleContentPaneDiv.InnerHtml += moduleDiv.ToString();
+            moduleContentPaneDiv.InnerHtml += "</form>";
             if (!string.IsNullOrEmpty(model.Footer))
             {
                 moduleContentPaneDiv.InnerHtml += model.Footer;
