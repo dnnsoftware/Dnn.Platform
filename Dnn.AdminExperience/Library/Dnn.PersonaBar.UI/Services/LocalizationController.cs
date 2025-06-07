@@ -31,7 +31,8 @@ namespace Dnn.PersonaBar.UI.Services
         private readonly IApplicationStatusInfo appStatus;
 
         /// <summary>Initializes a new instance of the <see cref="LocalizationController"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+
         public LocalizationController()
             : this(null)
         {
