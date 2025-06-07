@@ -59,7 +59,7 @@
     "webpack": "5.94.0",
     "webpack-bundle-analyzer": "^4.9.0",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.1.0"
+    "webpack-dev-server": "5.2.1"
   },
   "dependencies": {
     "@dnnsoftware/dnn-react-common": "10.0.0"
