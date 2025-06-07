@@ -20,11 +20,11 @@ class SearchAdvanced extends Component {
         });
     }
 
-    /*eslint-disable react/no-danger*/
+     
     render() {
         return (
             <div className={`advancedCollapsibleComponent ${this.state.collapsed?"open":""}`}>
-                <div className={`collapsible-header false` } onClick={this.toggle.bind(this)}>
+                <div className={"collapsible-header false" } onClick={this.toggle.bind(this)}>
                     <div className="search-advanced-header">
                         <div className="search-advanced-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.SearchIcon }}>
                         </div>

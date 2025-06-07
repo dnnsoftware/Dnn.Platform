@@ -4,6 +4,7 @@ import "./style.less";
 import { Collapsible, GridCell, IconButton }  from "@dnnsoftware/dnn-react-common";
 import resx from "resources";
 import util from "utils";
+import checkIcon from "../../../img/common/checkmark.svg?raw";
 
 let canEdit = false;
 
@@ -80,7 +81,7 @@ class RoleRow extends Component {
                         <GridCell columnSize={15} >
                             {props.userCount}</GridCell>
                         <GridCell columnSize={15} >
-                            {props.auto ? <IconButton className="icon-flat" customIcon={require("!raw-loader!../../../img/common/checkmark.svg").default} /> : <div>&nbsp; </div>} </GridCell>
+                            {props.auto ? <IconButton className="icon-flat" customIcon={checkIcon} /> : <div>&nbsp; </div>} </GridCell>
                         {canEdit &&
                             <GridCell columnSize={10} >
                                 {props.id !== "add" && props.roleIsApproved &&

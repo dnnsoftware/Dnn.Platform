@@ -10,9 +10,9 @@
 | Property                      | Attribute          | Description                                           | Type             | Default     |
 | ----------------------------- | ------------------ | ----------------------------------------------------- | ---------------- | ----------- |
 | `expanded`                    | `expanded`         | If true, this node will be expanded on load.          | `boolean`        | `false`     |
-| `folder` _(required)_         | --                 | The basic information about the folder                | `FolderTreeItem` | `undefined` |
+| `folder` _(required)_         | `folder`           | The basic information about the folder                | `FolderTreeItem` | `undefined` |
 | `parentFolderId` _(required)_ | `parent-folder-id` | The ID of the parent folder.                          | `number`         | `undefined` |
-| `selectedFolder`              | --                 | Indicates if this item is the currently selected one. | `FolderTreeItem` | `undefined` |
+| `selectedFolder`              | `selected-folder`  | Indicates if this item is the currently selected one. | `FolderTreeItem` | `undefined` |
 
 
 ## Events

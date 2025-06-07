@@ -31,6 +31,26 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>
+    /// Controller for the HTML module's edit view in DotNetNuke (DNN).
+    /// <para>
+    /// This controller is responsible for preparing and managing the data and resources required for the HTML module's editing interface.
+    /// It interacts with the workflow system, content security policy, and navigation manager to provide a secure and user-friendly editing experience.
+    /// </para>
+    /// <para>
+    /// Key responsibilities:
+    /// <list type="bullet">
+    ///   <item>Initializes dependencies such as navigation, HTML content controller, workflow manager, and content security policy.</item>
+    ///   <item>Builds the <see cref="EditHtmlViewModel"/> for the edit view, including workflow state, content, permissions, and UI options.</item>
+    ///   <item>Handles content retrieval, workflow state management, and sets up client-side resources (JavaScript and CSS).</item>
+    ///   <item>Configures content security policy for inline styles, scripts, and image sources.</item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// Usage:
+    /// This controller is used by the DNN MVC pipeline to render and manage the HTML module's edit interface.
+    /// </para>
+    /// </summary>
     public partial class EditHTMLViewController : ModuleViewControllerBase
     {
         private readonly INavigationManager navigationManager;

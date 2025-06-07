@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.Admin.Users
             string retValue = Null.NullString;
             if (!string.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
             {
-                retValue = this.LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
+                retValue = this.LocalizeText(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
             }
 
             return retValue;

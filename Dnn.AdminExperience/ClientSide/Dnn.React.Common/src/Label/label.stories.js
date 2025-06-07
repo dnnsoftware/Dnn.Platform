@@ -56,9 +56,6 @@ storiesOf("Label", module).add("Reproduces issue", () =>
 );
 
 
-
-
-
 // ---------------- Label available props -------------------
 //
 // Label.propTypes = {

@@ -54,9 +54,9 @@ export default class Folders extends Component {
     }
 
     getFolderIcon() {
-        /* eslint-disable react/no-danger */
+         
         return (<div className="icon" dangerouslySetInnerHTML={{ __html: folderIcon }} />);
-        /* eslint-enable react/no-danger */
+         
     }
 
     getFolders(folder) {

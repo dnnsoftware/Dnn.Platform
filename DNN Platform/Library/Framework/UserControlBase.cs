@@ -4,9 +4,11 @@
 namespace DotNetNuke.Framework
 {
     using System.ComponentModel;
+    using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
     /// <summary>
@@ -32,5 +34,13 @@ namespace DotNetNuke.Framework
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
+
+        /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string)"/>
+        public static IHtmlString JavaScriptStringEncode(string value)
+            => HtmlUtils.JavaScriptStringEncode(value);
+
+        /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string,bool)"/>
+        public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
+            => HtmlUtils.JavaScriptStringEncode(value, addDoubleQuotes);
     }
 }

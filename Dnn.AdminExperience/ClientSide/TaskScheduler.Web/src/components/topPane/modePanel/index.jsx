@@ -98,7 +98,7 @@ class ModePanel extends Component {
         props.onClose();
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         return (

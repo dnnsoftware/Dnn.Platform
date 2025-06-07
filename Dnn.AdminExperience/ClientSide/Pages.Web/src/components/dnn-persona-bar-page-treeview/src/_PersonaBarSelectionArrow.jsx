@@ -46,7 +46,7 @@ export default class PersonaBarSelectionArrow extends Component {
         this.setState({ showMenu: false });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderMoreActions() {
         return <div className={this.state.showMenu ? "dots active" : "dots"}
             onMouseEnter={this.onMouseEnter.bind(this)}
@@ -60,7 +60,7 @@ export default class PersonaBarSelectionArrow extends Component {
 
     render() {
         const { item } = this.props;
-        /*eslint-disable react/no-danger*/
+         
         return (
             <div id={`menu-item-${item.name} ${item.selected}`} 
                 className="selection-arrow">

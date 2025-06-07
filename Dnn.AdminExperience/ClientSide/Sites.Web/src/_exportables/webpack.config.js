@@ -1,5 +1,5 @@
 const path = require("path");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const settings = require("../../../../../settings.local.json");
 
 module.exports = (env, argv) => {
