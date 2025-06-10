@@ -17,6 +17,8 @@ namespace DotNetNuke.Entities.Urls
     using System.Web.Configuration;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -37,6 +39,23 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private FriendlyUrlSettings settings;
+
+        /// <summary>Initializes a new instance of the <see cref="AdvancedUrlRewriter"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public AdvancedUrlRewriter()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AdvancedUrlRewriter"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
+            : base(hostSettings, portalAliasService, hostSettingsService, portalController)
+        {
+        }
 
         public void ProcessTestRequestWithContext(
             HttpContext context,

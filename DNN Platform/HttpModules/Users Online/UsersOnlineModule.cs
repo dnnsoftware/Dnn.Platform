@@ -14,13 +14,7 @@ namespace DotNetNuke.HttpModules.UsersOnline
     [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
     public partial class UsersOnlineModule : IHttpModule
     {
-        public string ModuleName
-        {
-            get
-            {
-                return "UsersOnlineModule";
-            }
-        }
+        public string ModuleName => "UsersOnlineModule";
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)

@@ -19,7 +19,7 @@ namespace DotNetNuke.HttpModules.Services
         {
             context.BeginRequest += InitDnn;
 
-            context.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
+            context.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
         /// <inheritdoc/>
@@ -29,19 +29,17 @@ namespace DotNetNuke.HttpModules.Services
 
         private static void InitDnn(object sender, EventArgs e)
         {
-            var app = sender as HttpApplication;
-            if (app != null && ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
+            if (sender is HttpApplication app && ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
             {
                 Initialize.Init(app);
             }
         }
 
-        private void OnPreSendRequestHeaders(object sender, EventArgs e)
+        private static void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
-            var app = sender as HttpApplication;
-            if (app != null)
+            if (sender is HttpApplication app)
             {
-                // WEB API should not send cookies and other specific headers in repsone;
+                // WEB API should not send cookies and other specific headers in response;
                 // they reveal too much info and are security risk
                 var headers = app.Response.Headers;
                 headers.Remove("Server");

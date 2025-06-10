@@ -71,19 +71,19 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalController"/> class.</summary>
-        /// <param name="businessControllerProvider">The DI container.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         public PortalController(IBusinessControllerProvider businessControllerProvider)
             : this(businessControllerProvider, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PortalController"/> class.</summary>
-        /// <param name="businessControllerProvider">The DI container.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="hostSettings">The host settings.</param>
         public PortalController(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
         {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
-            this.hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Adds the portal dictionary.</summary>

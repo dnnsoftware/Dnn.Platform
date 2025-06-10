@@ -146,6 +146,7 @@ public interface IHostSettings
     public string HostUrl { get; }
 
     /// <summary>Gets the HttpCompression Algorithm.</summary>
+    /// <remarks>This value corresponds to a value from <c>DotNetNuke.HttpModules.Compression.Algorithms</c>.</remarks>
     public int HttpCompressionAlgorithm { get; }
 
     /// <summary>Gets size of the batch used to determine how many emails are sent per CoreMessaging Scheduler run.</summary>
