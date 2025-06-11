@@ -10,8 +10,10 @@ namespace DotNetNuke.HttpModules.Services
 
     using DotNetNuke.Common;
 
+    /// <summary>An <see cref="IHttpModule"/> for DNN's ASP.NET Web API Services Framework.</summary>
     public class ServicesModule : IHttpModule
     {
+        /// <inheritdoc cref="Globals.ServicesFrameworkRegex"/>
         public static readonly Regex ServiceApi = Globals.ServicesFrameworkRegex;
 
         /// <inheritdoc/>

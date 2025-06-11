@@ -18,6 +18,7 @@ namespace DotNetNuke.HttpModules
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>An <see cref="IHttpModule"/> for mobile redirection.</summary>
     public class MobileRedirectModule : IHttpModule
     {
         private static readonly IList<string> SpecialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
@@ -41,6 +42,7 @@ namespace DotNetNuke.HttpModules
             this.redirectionController = redirectionController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRedirectionController>();
         }
 
+        /// <summary>Gets the HttpModule module name.</summary>
         public string ModuleName => "MobileRedirectModule";
 
         /// <inheritdoc/>
@@ -54,6 +56,9 @@ namespace DotNetNuke.HttpModules
         {
         }
 
+        /// <summary>Handle the <see cref="HttpApplication.BeginRequest"/> event.</summary>
+        /// <param name="s">The sender.</param>
+        /// <param name="e">The event args.</param>
         public void OnBeginRequest(object s, EventArgs e)
         {
             var app = (HttpApplication)s;

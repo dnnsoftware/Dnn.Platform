@@ -9,6 +9,7 @@ using DotNetNuke.Entities.Urls;
 
 using Microsoft.Extensions.DependencyInjection;
 
+/// <summary>The <see cref="IDnnStartup"/> for <c>DotNetNuke.HttpModules</c>.</summary>
 public class Startup : IDnnStartup
 {
     /// <inheritdoc />

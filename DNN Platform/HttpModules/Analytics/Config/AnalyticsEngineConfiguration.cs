@@ -28,12 +28,19 @@ namespace DotNetNuke.HttpModules.Config
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsEngineConfiguration));
 
+        /// <summary>Gets or sets the collection of analytics engines.</summary>
         public AnalyticsEngineCollection AnalyticsEngines { get; set; }
 
+        /// <summary>Gets the site analytics config.</summary>
+        /// <returns>An <see cref="AnalyticsEngineConfiguration"/> instance.</returns>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public static AnalyticsEngineConfiguration GetConfig()
             => GetConfig(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>());
 
+        /// <summary>Gets the site analytics config.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <returns>An <see cref="AnalyticsEngineConfiguration"/> instance.</returns>
         public static AnalyticsEngineConfiguration GetConfig(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
         {
             var config = new AnalyticsEngineConfiguration { AnalyticsEngines = new AnalyticsEngineCollection() };

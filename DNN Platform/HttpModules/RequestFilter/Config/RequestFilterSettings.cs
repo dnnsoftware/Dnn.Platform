@@ -17,6 +17,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Settings related to request filters.</summary>
     [Serializable]
     [XmlRoot("RewriterConfig")]
     public class RequestFilterSettings
@@ -39,12 +40,15 @@ namespace DotNetNuke.HttpModules.RequestFilter
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
+        /// <summary>Gets a value indicating whether request filters are enabled.</summary>
         public bool Enabled => this.hostSettings.EnableRequestFilters;
 
+        /// <summary>Gets or sets the collection of rules.</summary>
         public List<RequestFilterRule> Rules { get; set; } = new();
 
         /// <summary>Get the current settings from the XML config file.</summary>
         /// <returns>A <see cref="RequestFilterSettings"/> instance.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public static RequestFilterSettings GetSettings()
             => GetSettings(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
 
@@ -94,10 +98,15 @@ namespace DotNetNuke.HttpModules.RequestFilter
             return settings;
         }
 
+        /// <summary>Saves the rules into the <c>DotNetNuke.config</c> file.</summary>
+        /// <param name="rules">The rules.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public static void Save(List<RequestFilterRule> rules)
             => Save(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), rules);
 
+        /// <summary>Saves the rules into the <c>DotNetNuke.config</c> file.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="rules">The rules.</param>
         public static void Save(IApplicationStatusInfo appStatus, List<RequestFilterRule> rules)
         {
             string filePath = Config.GetPathToFile(appStatus, Config.ConfigFileType.DotNetNuke);

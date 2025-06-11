@@ -7,10 +7,6 @@ namespace DotNetNuke.HttpModules
     using System.Web;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.HttpModules.UrlRewrite;
 
@@ -35,6 +31,7 @@ namespace DotNetNuke.HttpModules
             this.urlRewriter = urlRewriter ?? GetUrlRewriterInstance(Globals.GetCurrentServiceProvider());
         }
 
+        /// <summary>Gets the HttpModule module name.</summary>
         public string ModuleName => "UrlRewriteModule";
 
         /// <inheritdoc/>

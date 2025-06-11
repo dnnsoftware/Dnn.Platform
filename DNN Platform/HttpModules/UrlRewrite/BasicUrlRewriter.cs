@@ -22,10 +22,15 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>The basic URL rewriter.</summary>
     internal class BasicUrlRewriter : UrlRewriterBase
     {
+        /// <summary>A regular expression matching a tab ID query string parameter.</summary>
         public static readonly Regex TabIdRegex = new Regex("&?tabid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        /// <summary>A regular expression matching a portal ID query string parameter.</summary>
         public static readonly Regex PortalIdRegex = new Regex("&?portalid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
 
         private readonly IPortalAliasService portalAliasService;

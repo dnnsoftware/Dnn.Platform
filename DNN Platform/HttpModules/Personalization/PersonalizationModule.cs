@@ -13,6 +13,7 @@ namespace DotNetNuke.HttpModules.Personalization
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>An <see cref="IHttpModule"/> which handles user personalization.</summary>
     public class PersonalizationModule : IHttpModule
     {
         private readonly PersonalizationController personalizationController;
@@ -30,6 +31,7 @@ namespace DotNetNuke.HttpModules.Personalization
             this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
         }
 
+        /// <summary>Gets the HttpModule module name.</summary>
         public string ModuleName => "PersonalizationModule";
 
         /// <inheritdoc/>
@@ -43,6 +45,9 @@ namespace DotNetNuke.HttpModules.Personalization
         {
         }
 
+        /// <summary>Handles the <see cref="HttpApplication.EndRequest"/> event.</summary>
+        /// <param name="s">The sender.</param>
+        /// <param name="e">The event args.</param>
         public void OnEndRequest(object s, EventArgs e)
         {
             HttpContext context = ((HttpApplication)s).Context;

@@ -12,6 +12,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>An <see cref="IHttpModule"/> to implement request filtering.</summary>
     public class RequestFilterModule : IHttpModule
     {
         private const string InstalledKey = "httprequestfilter.attemptedinstall";
