@@ -44,10 +44,16 @@ namespace DotNetNuke.Web.Common.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
-        private static readonly string[] Endings =
-            {
-                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",
-            };
+        private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd"];
+
+        static DotNetNukeHttpApplication()
+        {
+            var dependencyProvider = new LazyServiceProvider();
+            Globals.DependencyProvider = dependencyProvider;
+            dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
+            ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
+            HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
+        }
 
         private static void RegisterIfNotAlreadyRegistered<TConcrete>()
             where TConcrete : class, new()
@@ -140,12 +146,6 @@ namespace DotNetNuke.Web.Common.Internal
 
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
-
-            var dependencyProvider = new LazyServiceProvider();
-            Globals.DependencyProvider = dependencyProvider;
-            dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
-            ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
-            HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
 
             ComponentFactory.Container = new ContainerWithServiceProviderFallback(new SimpleContainer(), Globals.DependencyProvider);
 
