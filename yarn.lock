@@ -1768,7 +1768,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
     webpack-node-externals: "npm:^3.0.0"
   peerDependencies:
     prop-types: ^15.6.2
@@ -4547,7 +4547,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:^4.17.33":
+"@types/express-serve-static-core@npm:^4.17.21, @types/express-serve-static-core@npm:^4.17.33":
   version: 4.19.6
   resolution: "@types/express-serve-static-core@npm:4.19.6"
   dependencies:
@@ -5747,7 +5747,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -10604,7 +10604,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -10641,7 +10641,7 @@ __metadata:
     style-loader: "npm:^0.23.1"
     webpack: "npm:5.94.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -10682,7 +10682,7 @@ __metadata:
     utils: "npm:^0.3.1"
     webpack: "npm:5.94.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -12401,7 +12401,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-analyzer: "npm:^4.9.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -12421,7 +12421,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.17.0, express@npm:^4.19.2":
+"express@npm:^4.17.0, express@npm:^4.21.2":
   version: 4.21.2
   resolution: "express@npm:4.21.2"
   dependencies:
@@ -12511,7 +12511,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -14125,7 +14125,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-entities@npm:^2.1.0, html-entities@npm:^2.4.0":
+"html-entities@npm:^2.1.0":
   version: 2.5.2
   resolution: "html-entities@npm:2.5.2"
   checksum: 10/4ec12ebdf2d5ba8192c68e1aef3c1e4a4f36b29246a0a88464fe278a54517d0196d3489af46a3145c7ecacb4fc5fd50497be19eb713b810acab3f0efcf36fdc2
@@ -14283,9 +14283,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-proxy-middleware@npm:^2.0.3":
-  version: 2.0.7
-  resolution: "http-proxy-middleware@npm:2.0.7"
+"http-proxy-middleware@npm:^2.0.7":
+  version: 2.0.9
+  resolution: "http-proxy-middleware@npm:2.0.9"
   dependencies:
     "@types/http-proxy": "npm:^1.17.8"
     http-proxy: "npm:^1.18.1"
@@ -14297,7 +14297,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/express":
       optional: true
-  checksum: 10/4a51bf612b752ad945701995c1c029e9501c97e7224c0cf3f8bf6d48d172d6a8f2b57c20fec469534fdcac3aa8a6f332224a33c6b0d7f387aa2cfff9b67216fd
+  checksum: 10/4ece416a91d52e96f8136c5f4abfbf7ac2f39becbad21fa8b158a12d7e7d8f808287ff1ae342b903fd1f15f2249dee87fabc09e1f0e73106b83331c496d67660
   languageName: node
   linkType: hard
 
@@ -16758,7 +16758,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -19318,7 +19318,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   peerDependencies:
     es6-promise: 4.0.5
   languageName: unknown
@@ -20589,7 +20589,7 @@ __metadata:
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -22429,7 +22429,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -22735,7 +22735,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -22869,7 +22869,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -22994,7 +22994,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -23370,7 +23370,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -23416,7 +23416,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -23452,7 +23452,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -24580,7 +24580,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -24621,7 +24621,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -24810,7 +24810,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -25831,7 +25831,7 @@ __metadata:
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:5.1.4"
-    webpack-dev-server: "npm:5.1.0"
+    webpack-dev-server: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -26227,13 +26227,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-dev-server@npm:5.1.0":
-  version: 5.1.0
-  resolution: "webpack-dev-server@npm:5.1.0"
+"webpack-dev-server@npm:5.2.1":
+  version: 5.2.1
+  resolution: "webpack-dev-server@npm:5.2.1"
   dependencies:
     "@types/bonjour": "npm:^3.5.13"
     "@types/connect-history-api-fallback": "npm:^1.5.4"
     "@types/express": "npm:^4.17.21"
+    "@types/express-serve-static-core": "npm:^4.17.21"
     "@types/serve-index": "npm:^1.9.4"
     "@types/serve-static": "npm:^1.15.5"
     "@types/sockjs": "npm:^0.3.36"
@@ -26244,10 +26245,9 @@ __metadata:
     colorette: "npm:^2.0.10"
     compression: "npm:^1.7.4"
     connect-history-api-fallback: "npm:^2.0.0"
-    express: "npm:^4.19.2"
+    express: "npm:^4.21.2"
     graceful-fs: "npm:^4.2.6"
-    html-entities: "npm:^2.4.0"
-    http-proxy-middleware: "npm:^2.0.3"
+    http-proxy-middleware: "npm:^2.0.7"
     ipaddr.js: "npm:^2.1.0"
     launch-editor: "npm:^2.6.1"
     open: "npm:^10.0.3"
@@ -26268,7 +26268,7 @@ __metadata:
       optional: true
   bin:
     webpack-dev-server: bin/webpack-dev-server.js
-  checksum: 10/f23255681cc5e2c2709b23ca7b2185aeed83b1c9912657d4512eda8685625a46d7a103a92446494a55fe2afdfab936f9bd4f037d20b52f7fdfff303e7e7199c7
+  checksum: 10/424edfe22b7bbe2301a38b8b519dfeb7643e0ca643be01af3fa48ec18512955c1952246741d7577bdb911ee09dcd6c521ade7d65e0059448ee69ab02bfac4624
   languageName: node
   linkType: hard
 

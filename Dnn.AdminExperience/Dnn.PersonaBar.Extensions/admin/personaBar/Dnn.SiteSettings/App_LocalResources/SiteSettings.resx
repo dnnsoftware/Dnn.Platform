@@ -223,7 +223,7 @@
     <value>Icon Set</value>
   </data>
   <data name="plIconSet.Help" xml:space="preserve">
-    <value>The selected iconset will be applied to all icons on the site.</value>
+    <value>The selected icon set will be applied to all icons on the site.</value>
   </data>
   <data name="Save.Text" xml:space="preserve">
     <value>Save</value>
@@ -427,7 +427,7 @@
     <value>Property Category</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyCategory.Help" xml:space="preserve">
-    <value>Enter the category for this property.  This will allow the related properties to be grouped when dislayed to the user.</value>
+    <value>Enter the category for this property.  This will allow the related properties to be grouped when displayed to the user.</value>
   </data>
   <data name="ProfilePropertyDefinition_Length.Text" xml:space="preserve">
     <value>Length</value>
@@ -484,7 +484,7 @@
     <value>The field name is required.</value>
   </data>
   <data name="ProfilePropertyDefinition_PropertyName.NoSpecialCharacters" xml:space="preserve">
-    <value>The field name does not acccept special or space characters.</value>
+    <value>The field name does not accept special or space characters.</value>
   </data>
   <data name="ProfilePropertyDefinition_DataType.Required" xml:space="preserve">
     <value>The data type is required.</value>
@@ -544,7 +544,7 @@
     <value>Could not delete the profile field. Please try later.</value>
   </data>
   <data name="NoSpecialCharacterName.Text" xml:space="preserve">
-    <value>This property does not acccept special characters.</value>
+    <value>This property does not accept special characters.</value>
   </data>
   <data name="DuplicateName.Text" xml:space="preserve">
     <value>This property already exists.  Property names must be unique.  Please select a different name for this property.</value>
