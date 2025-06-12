@@ -293,8 +293,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
-        /// <summary>  Gets a value indicating whether gets whether the control is on a Host or Portal Tab.</summary>
-        /// <value>A Boolean.</value>
+        /// <summary>Gets a value indicating whether the control is on a Host or Portal Tab.</summary>
         protected bool IsHost
         {
             get

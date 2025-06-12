@@ -4,10 +4,10 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
-    using System.Runtime.CompilerServices;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -21,9 +21,7 @@ namespace DotNetNuke.Common.Utilities
     using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
     using File = SchwabenCode.QuickIO.QuickIOFile;
 
-    /// <summary>
-    /// File System utilities.
-    /// </summary>
+    /// <summary>File System utilities.</summary>
     public partial class FileSystemUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
@@ -260,46 +258,54 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                foreach (var zipEntry in zipStream.FileEntries())
-                {
-                    HtmlUtils.WriteKeepAlive();
-                    var localFileName = zipEntry.FullName;
-                    var relativeDir = Path.GetDirectoryName(zipEntry.FullName);
-                    if (!string.IsNullOrEmpty(relativeDir))
-                    {
-                        var destDir = Path.Combine(destPath, relativeDir);
-                        if (!Directory.Exists(destDir))
-                        {
-                            Directory.Create(destDir, true);
-                        }
-                    }
-
-                    if (string.IsNullOrEmpty(localFileName))
-                    {
-                        continue;
-                    }
-
-                    var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
-                    try
-                    {
-                        if (File.Exists(fileNamePath))
-                        {
-                            File.SetAttributes(fileNamePath, FileAttributes.Normal);
-                            File.Delete(fileNamePath);
-                        }
-
-                        using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
-                        zipEntry.Open().CopyToStream(fileStream, 25000);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
-                }
+                UnzipResources(zipStream.FileEntries(), destPath);
             }
             finally
             {
                 zipStream?.Dispose();
+            }
+        }
+
+        /// <summary>Unzips a resources zip file.</summary>
+        /// <param name="zipArchiveEntries">The zip entries to unzip.</param>
+        /// <param name="destPath">The destination path to extract to.</param>
+        public static void UnzipResources(IEnumerable<ZipArchiveEntry> zipArchiveEntries, string destPath)
+        {
+            foreach (var zipEntry in zipArchiveEntries)
+            {
+                HtmlUtils.WriteKeepAlive();
+                var localFileName = zipEntry.FullName;
+                var relativeDir = Path.GetDirectoryName(zipEntry.FullName);
+                if (!string.IsNullOrEmpty(relativeDir))
+                {
+                    var destDir = Path.Combine(destPath, relativeDir);
+                    if (!Directory.Exists(destDir))
+                    {
+                        Directory.Create(destDir, true);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(localFileName))
+                {
+                    continue;
+                }
+
+                var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
+                try
+                {
+                    if (File.Exists(fileNamePath))
+                    {
+                        File.SetAttributes(fileNamePath, FileAttributes.Normal);
+                        File.Delete(fileNamePath);
+                    }
+
+                    using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
+                    zipEntry.Open().CopyToStream(fileStream, 25000);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
             }
         }
 
@@ -312,48 +318,58 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-                foreach (var zipEntry in zipStream.FileEntries())
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    HtmlUtils.WriteKeepAlive();
-
-                    var localFileName = zipEntry.FullName;
-                    var relativeDir = Path.GetDirectoryName(zipEntry.FullName);
-                    if (!string.IsNullOrEmpty(relativeDir))
-                    {
-                        var destDir = Path.Combine(destPath, relativeDir);
-                        if (!await Directory.ExistsAsync(destDir))
-                        {
-                            await Directory.CreateAsync(destDir, true);
-                        }
-                    }
-
-                    if (string.IsNullOrEmpty(localFileName))
-                    {
-                        continue;
-                    }
-
-                    var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
-                    try
-                    {
-                        if (await File.ExistsAsync(fileNamePath))
-                        {
-                            await File.SetAttributesAsync(fileNamePath, FileAttributes.Normal);
-                            await File.DeleteAsync(fileNamePath);
-                        }
-
-                        using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
-                        await zipEntry.Open().CopyToAsync(fileStream, 25000, cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
-                }
+                await UnzipResourcesAsync(zipStream.FileEntries(), destPath, cancellationToken);
             }
             finally
             {
                 zipStream?.Dispose();
+            }
+        }
+
+        /// <summary>Unzips a resources zip file.</summary>
+        /// <param name="zipArchiveEntries">The zip archive entries to extract.</param>
+        /// <param name="destPath">The destination path to extract to.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="Task"/> indicating completion.</returns>
+        public static async Task UnzipResourcesAsync(IEnumerable<ZipArchiveEntry> zipArchiveEntries, string destPath, CancellationToken cancellationToken)
+        {
+            foreach (var zipEntry in zipArchiveEntries)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                HtmlUtils.WriteKeepAlive();
+
+                var localFileName = zipEntry.FullName;
+                var relativeDir = Path.GetDirectoryName(zipEntry.FullName);
+                if (!string.IsNullOrEmpty(relativeDir))
+                {
+                    var destDir = Path.Combine(destPath, relativeDir);
+                    if (!await Directory.ExistsAsync(destDir))
+                    {
+                        await Directory.CreateAsync(destDir, true);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(localFileName))
+                {
+                    continue;
+                }
+
+                var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
+                try
+                {
+                    if (await File.ExistsAsync(fileNamePath))
+                    {
+                        await File.SetAttributesAsync(fileNamePath, FileAttributes.Normal);
+                        await File.DeleteAsync(fileNamePath);
+                    }
+
+                    using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
+                    await zipEntry.Open().CopyToAsync(fileStream, 25000, cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
             }
         }
 

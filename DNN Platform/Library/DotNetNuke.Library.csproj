@@ -857,9 +857,12 @@
     <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
+    <Compile Include="Services\Installer\ILocalUpgradeService.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
+    <Compile Include="Services\Installer\LocalUpgradeInfo.cs" />
+    <Compile Include="Services\Installer\LocalUpgradeService.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
     <Compile Include="Services\Installer\Packages\PackageTypeMemberNameFixer.cs" />
