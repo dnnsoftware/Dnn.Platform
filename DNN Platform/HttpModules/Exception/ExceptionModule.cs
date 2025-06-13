@@ -16,16 +16,7 @@ namespace DotNetNuke.HttpModules.Exceptions
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExceptionModule));
 
         /// <summary>Gets the name of the module.</summary>
-        /// <value>
-        /// The name of the module: "ExceptionModule".
-        /// </value>
-        public string ModuleName
-        {
-            get
-            {
-                return "ExceptionModule";
-            }
-        }
+        public string ModuleName => "ExceptionModule";
 
         /// <summary>Initializes the error handling for the specified application.</summary>
         /// <param name="application">The application.</param>
@@ -51,30 +42,31 @@ namespace DotNetNuke.HttpModules.Exceptions
                     return;
                 }
 
-                HttpContext contxt = HttpContext.Current;
-                HttpServerUtility srver = contxt.Server;
-                HttpRequest request = contxt.Request;
+                HttpContext context = HttpContext.Current;
+                HttpServerUtility server = context.Server;
+                HttpRequest request = context.Request;
 
                 if (!Initialize.ProcessHttpModule(request, false, false))
                 {
                     return;
                 }
 
-                Exception lastException = srver.GetLastError();
-
-                // HttpExceptions are logged elsewhere
-                if (!(lastException is HttpException))
+                Exception lastException = server.GetLastError();
+                if (lastException is HttpException)
                 {
-                    var lex = new Exception("Unhandled Error: ", srver.GetLastError());
-                    var objExceptionLog = new ExceptionLogController();
-                    try
-                    {
-                        objExceptionLog.AddLog(lex);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                    }
+                    // HttpExceptions are logged elsewhere
+                    return;
+                }
+
+                var lex = new Exception("Unhandled Error: ", server.GetLastError());
+                var objExceptionLog = new ExceptionLogController();
+                try
+                {
+                    objExceptionLog.AddLog(lex);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
                 }
             }
             catch (Exception exc)

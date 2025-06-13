@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.EventQueue
                 {
                     // log if message could not be processed
                     var eventLogger = serviceProvider.GetRequiredService<IEventLogger>();
-                    var log = new LogInfo { LogTypeKey = EventLogType.HOST_ALERT.ToString() };
+                    var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT) };
                     log.AddProperty("EventQueue.ProcessMessage", "Message Processing Failed");
                     log.AddProperty("ProcessorType", message.ProcessorType);
                     log.AddProperty("Body", message.Body);
