@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke
@@ -29,11 +29,13 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
@@ -42,6 +44,7 @@ namespace DotNetNuke
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
 
@@ -104,6 +107,9 @@ namespace DotNetNuke
             services.AddTransient<IPortalSettingsController, PortalSettingsController>();
             services.AddTransient<IPortalAliasController, PortalAliasController>();
             services.AddTransient<ILocaleController, LocaleController>();
+            services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
+            services.AddTransient<IRoleController, RoleController>();
+            services.AddTransient<IUserController, UserController>();
 
             services.AddTransient<IDataContext>(_ =>
             {
