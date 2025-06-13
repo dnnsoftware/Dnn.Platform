@@ -26,7 +26,6 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.FileSystem.Internal;
@@ -44,13 +43,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly object ThreadLocker = new object();
 
         /// <summary>Gets the localization key for MyFolderName.</summary>
-        public virtual string MyFolderName
-        {
-            get
-            {
-                return Localization.GetString("MyFolderName");
-            }
-        }
+        public virtual string MyFolderName => Localization.GetString("MyFolderName");
 
         /// <summary>Creates a new folder using the provided folder path.</summary>
         /// <param name="folderMapping">The folder mapping to use.</param>

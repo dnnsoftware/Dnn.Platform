@@ -18,6 +18,7 @@ namespace DotNetNuke
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
@@ -97,6 +98,10 @@ namespace DotNetNuke
 
             // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
             services.AddTransient<ILocalizationProvider, LocalizationProvider>();
+            services.AddTransient<IFileManager, FileManager>();
+            services.AddTransient<IFolderManager, FolderManager>();
+            services.AddTransient(_ => ComponentFactory.GetComponent<DataProvider>());
+
             services.AddTransient<ILoggerSource, LoggerSourceImpl>();
             services.AddTransient<IModuleController, ModuleController>();
             services.AddTransient<IPackageController, PackageController>();
@@ -114,9 +119,10 @@ namespace DotNetNuke
             services.AddTransient<IUserController, UserController>();
             services.AddTransient<IEventManager, EventManager>();
 
-            services.AddTransient<IDataContext>(_ =>
+            services.AddTransient<IDataContext>(serviceProvider =>
             {
-                var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
+                var dataProvider = serviceProvider.GetRequiredService<DataProvider>();
+                var defaultConnectionStringName = dataProvider.Settings["connectionStringName"];
 
                 return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
             });
