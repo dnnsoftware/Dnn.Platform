@@ -8,22 +8,40 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml;
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Repository;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The default <see cref="IAdminMenuController"/> implementation.</summary>
     public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
+        private readonly IApplicationStatusInfo appStatus;
         private IDictionary<string, IList<string>> knownPages;
+
+        /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
+        [Obsolete("Deprecated in IApplicationStatusInfo 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public AdminMenuController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public AdminMenuController(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         /// <inheritdoc/>
         public void CreateLinkMenu(TabInfo tab)
@@ -78,7 +96,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
         /// <inheritdoc/>
         protected override Func<IAdminMenuController> GetFactory()
         {
-            return () => new AdminMenuController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IAdminMenuController>();
         }
 
         private bool ValidateTab(TabInfo tab)
@@ -125,7 +143,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             }
 
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
-            var dataPath = Path.Combine(Globals.ApplicationMapPath, personaBarPath, "data/adminpages.resources");
+            var dataPath = Path.Combine(this.appStatus.ApplicationMapPath, personaBarPath, "data/adminpages.resources");
             var xmlDocument = new XmlDocument { XmlResolver = null };
             xmlDocument.Load(dataPath);
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();

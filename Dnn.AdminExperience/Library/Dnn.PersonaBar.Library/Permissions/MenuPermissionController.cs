@@ -11,6 +11,8 @@ namespace Dnn.PersonaBar.Library.Permissions
     using Dnn.PersonaBar.Library.Data;
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Repository;
+
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -138,9 +140,9 @@ namespace Dnn.PersonaBar.Library.Permissions
             permissionInfo.MenuPermissionId = DataService.SavePersonaBarMenuPermission(
                 portalId,
                 menu.MenuId,
-                permissionInfo.PermissionID,
-                permissionInfo.RoleID,
-                permissionInfo.UserID,
+                ((IPermissionInfo)permissionInfo).PermissionId,
+                ((IPermissionInfo)permissionInfo).RoleId,
+                ((IPermissionInfo)permissionInfo).UserId,
                 permissionInfo.AllowAccess,
                 user.UserID);
 

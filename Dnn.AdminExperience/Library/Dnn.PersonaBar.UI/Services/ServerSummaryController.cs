@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.UI.Services
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A Persona Bar API controller for the server summary.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
