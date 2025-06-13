@@ -112,6 +112,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="permissionDefinitionService">The permission definition service.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
         public Browser(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IPortalAliasService portalAliasService)
+            : base(portalController, appStatus, hostSettings)
         {
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
             this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
