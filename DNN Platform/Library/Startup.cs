@@ -21,6 +21,7 @@ namespace DotNetNuke
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -109,7 +110,9 @@ namespace DotNetNuke
             services.AddTransient<ILocaleController, LocaleController>();
             services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
             services.AddTransient<IRoleController, RoleController>();
+            services.AddTransient(_ => RoleProvider.Instance());
             services.AddTransient<IUserController, UserController>();
+            services.AddTransient<IEventManager, EventManager>();
 
             services.AddTransient<IDataContext>(_ =>
             {

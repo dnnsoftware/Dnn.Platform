@@ -296,7 +296,7 @@ namespace DotNetNuke.Entities.Profile
             user.PortalID = portalId;
         }
 
-        /// <summary>Updates a Property Defintion in the Data Store.</summary>
+        /// <summary>Updates a Property Definition in the Data Store.</summary>
         /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
         public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
         {

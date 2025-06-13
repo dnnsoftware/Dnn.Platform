@@ -4,6 +4,7 @@
 
 namespace Dnn.Modules.ResourceManager.Components
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -11,10 +12,13 @@ namespace Dnn.Modules.ResourceManager.Components
 
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Helper methods for permissions.</summary>
     public static class PermissionHelper
@@ -140,7 +144,20 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <summary>Gets roles for the portal.</summary>
         /// <param name="portalId">The id of the portal.</param>
         /// <returns>An objected containing the roles.</returns>
+        [Obsolete(
+            "Deprecated in DotNetNuke 10.0.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
         public static object GetRoles(int portalId)
+            => GetRoles(
+                HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<RoleProvider>(),
+                HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IRoleController>(),
+                portalId);
+
+        /// <summary>Gets roles for the portal.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>An objected containing the roles.</returns>
+        public static object GetRoles(RoleProvider roleProvider, IRoleController roleController, int portalId)
         {
             var data = new { Groups = new List<object>(), Roles = new List<object>() };
 
@@ -148,7 +165,7 @@ namespace Dnn.Modules.ResourceManager.Components
             data.Groups.Add(new { GroupId = -2, Name = "AllRoles" });
             data.Groups.Add(new { GroupId = -1, Name = "GlobalRoles", Selected = true });
 
-            foreach (RoleGroupInfo group in RoleController.GetRoleGroups(portalId))
+            foreach (RoleGroupInfo group in RoleController.GetRoleGroups(roleProvider, portalId))
             {
                 data.Groups.Add(new { GroupId = group.RoleGroupID, Name = group.RoleGroupName });
             }
@@ -156,7 +173,7 @@ namespace Dnn.Modules.ResourceManager.Components
             // Retrieves roles info
             data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleUnauthUser), GroupId = -1, RoleName = Globals.glbRoleUnauthUserName });
             data.Roles.Add(new { RoleID = int.Parse(Globals.glbRoleAllUsers), GroupId = -1, RoleName = Globals.glbRoleAllUsersName });
-            foreach (RoleInfo role in RoleController.Instance.GetRoles(portalId).OrderBy(r => r.RoleName))
+            foreach (var role in roleController.GetRoles(portalId).OrderBy(r => r.RoleName))
             {
                 data.Roles.Add(new { GroupId = role.RoleGroupID, RoleId = role.RoleID, Name = role.RoleName });
             }
