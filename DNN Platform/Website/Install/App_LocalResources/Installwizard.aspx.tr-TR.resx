@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AccountInfoIntro.Text" xml:space="preserve">
+    <value>Kurulumunuzu yapmak için aşağıdaki bilgileri girin.</value>
+  </data>
+  <data name="AdminInfo.Text" xml:space="preserve">
+    <value>Yönetim Bilgileri</value>
+  </data>
+  <data name="ChooseDbError.Text" xml:space="preserve">
+    <value>Bir Veritabanı Türü seçmelisiniz</value>
+  </data>
+  <data name="cmdContinue.Text" xml:space="preserve">
+    <value>Devam</value>
+  </data>
+  <data name="Confirm.Text" xml:space="preserve">
+    <value>Onayla</value>
+  </data>
+  <data name="DatabaseAdvanced.Text" xml:space="preserve">
+    <value>Özel</value>
+  </data>
+  <data name="DatabaseFilename.Text" xml:space="preserve">
+    <value>Dosya Adı</value>
+  </data>
+  <data name="DatabaseInfo.Text" xml:space="preserve">
+    <value>Veritabanı Bilgileri</value>
+  </data>
+  <data name="DatabaseName.Text" xml:space="preserve">
+    <value>Veritabanı Adı</value>
+  </data>
+  <data name="DatabasePassword.Text" xml:space="preserve">
+    <value>Veritabanı Şifresi</value>
+  </data>
+  <data name="DatabaseRunAs.Text" xml:space="preserve">
+    <value>Veritabanını Şu Şekilde Çalıştır</value>
+  </data>
+  <data name="DatabaseSecurity.Text" xml:space="preserve">
+    <value>Güvenlik</value>
+  </data>
+  <data name="DatabaseServer.Text" xml:space="preserve">
+    <value>Sunucu Adı</value>
+  </data>
+  <data name="DatabaseSetup.Text" xml:space="preserve">
+    <value>Veritabanı Kurulumu</value>
+  </data>
+  <data name="DatabaseStandard.Text" xml:space="preserve">
+    <value>Varsayılan</value>
+  </data>
+  <data name="DatabaseType.Text" xml:space="preserve">
+    <value>Veritabanı Türü</value>
+  </data>
+  <data name="DatabaseUsername.Text" xml:space="preserve">
+    <value>Veritabanı Kullanıcı Adı</value>
+  </data>
+  <data name="DbSecurityIntegrated.Text" xml:space="preserve">
+    <value>Entegre</value>
+  </data>
+  <data name="DbSecurityUserDefined.Text" xml:space="preserve">
+    <value>Kullanıcı Tanımlı</value>
+  </data>
+  <data name="FileAndFolderPermissionCheckTitle.Text" xml:space="preserve">
+    <value>Dosya ve Klasör İzinlerini Kontrol Etme</value>
+  </data>
+  <data name="FileCreateCheck.Text" xml:space="preserve">
+    <value>Dosya Oluşturma Kontrolü</value>
+  </data>
+  <data name="FileDeleteCheck.Text" xml:space="preserve">
+    <value>Dosya Silme Kontrolü</value>
+  </data>
+  <data name="FolderCreateCheck.Text" xml:space="preserve">
+    <value>Klasör Oluşturma Kontrolü</value>
+  </data>
+  <data name="FolderDeleteCheck.Text" xml:space="preserve">
+    <value>Klasör Silme Kontrolü</value>
+  </data>
+  <data name="InstallingExtension.Text" xml:space="preserve">
+    <value>Kurulum {0} - {1}</value>
+  </data>
+  <data name="InstallingLanguagesTitle.Text" xml:space="preserve">
+    <value>Dillerin Kurulumu</value>
+  </data>
+  <data name="InstallTitle.Text" xml:space="preserve">
+    <value>Kurulum</value>
+  </data>
+  <data name="IntroDetail.Text" xml:space="preserve">
+    <value>&lt;a class="videoLink" href="https://dnncommunity.org/How-To/-Download-and-Install" target="new"&gt;DNN Topluluğu web sitesini kontrol edin&lt;/a&gt;</value>
+  </data>
+  <data name="IsAbleToPerformDatabaseActionsCheck.Text" xml:space="preserve">
+    <value>Veritabanı kullanıcısının gerekli işlemleri gerçekleştirebilme yeteneğini kontrol etme</value>
+  </data>
+  <data name="IsAbleToPerformDatabaseActions.Text" xml:space="preserve">
+    <value>Veritabanı kullanıcınız yeterli izinlere (dbo) sahip değil, kurulum yapmak için</value>
+  </data>
+  <data name="IsSqlServerDbo.Text" xml:space="preserve">
+    <value>Veritabanı kullanıcınız dbo izinlerine sahip değil</value>
+  </data>
+  <data name="IsValidSqlServerVersionCheck.Text" xml:space="preserve">
+    <value>Veritabanı sürümünün SQL 2017 (express veya tam ürün) veya daha yüksek olup olmadığını kontrol et</value>
+  </data>
+  <data name="IsValidSqlServerVersion.Text" xml:space="preserve">
+    <value>DNN'in çalışması için SQL 2017 (express veya tam ürün) gereklidir</value>
+  </data>
+  <data name="Language.Text" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="Password.Text" xml:space="preserve">
+    <value>Parola</value>
+  </data>
+  <data name="RequiresFileOrDatabase.Text" xml:space="preserve">
+    <value>DotNetNuke.Install.Config dosyasında bağlantı düğümü altında Dosya veya Veritabanı girişi gereklidir</value>
+  </data>
+  <data name="SqlTypeExpress.Text" xml:space="preserve">
+    <value>SQL Server Express Dosyası</value>
+  </data>
+  <data name="SqlTypeServer.Text" xml:space="preserve">
+    <value>SQL Server/SQL Server Express Veritabanı</value>
+  </data>
+  <data name="StepFailed.Text" xml:space="preserve">
+    <value>{0} Başarısız Oldu</value>
+  </data>
+  <data name="UserName.Text" xml:space="preserve">
+    <value>Kullanıcı Adı</value>
+  </data>
+  <data name="WebsiteInfo.Text" xml:space="preserve">
+    <value>Web Sitesi Bilgileri</value>
+  </data>
+  <data name="WebsiteName.Text" xml:space="preserve">
+    <value>Web Sitesi Adı</value>
+  </data>
+  <data name="WebsiteTemplate.Text" xml:space="preserve">
+    <value>Şablon</value>
+  </data>
+  <data name="LanguageDutch.Text" xml:space="preserve">
+    <value>Hollanda</value>
+  </data>
+  <data name="LanguageEnglish.Text" xml:space="preserve">
+    <value>İngilizce</value>
+  </data>
+  <data name="LanguageFrench.Text" xml:space="preserve">
+    <value>Fransızca</value>
+  </data>
+  <data name="LanguageGerman.Text" xml:space="preserve">
+    <value>Almanca</value>
+  </data>
+  <data name="LanguageItalian.Text" xml:space="preserve">
+    <value>İtalyanca</value>
+  </data>
+  <data name="LanguageSpanish.Text" xml:space="preserve">
+    <value>İspanyolca</value>
+  </data>
+  <data name="TemplateDefault.Text" xml:space="preserve">
+    <value>Varsayılan Şablon</value>
+  </data>
+  <data name="TemplateMobile.Text" xml:space="preserve">
+    <value>Mobil Şablon</value>
+  </data>
+  <data name="TemplateSolutions.Text" xml:space="preserve">
+    <value>Çözümler Şablonu</value>
+  </data>
+  <data name="Confirm.Help" xml:space="preserve">
+    <value>Yukarıdaki şifre alanına girilen şifreyi onaylayın.</value>
+  </data>
+  <data name="DatabaseName.Help" xml:space="preserve">
+    <value>Veritabanınızın adı.</value>
+  </data>
+  <data name="DatabaseOwner.Text" xml:space="preserve">
+    <value>Veritabanı Sahibi</value>
+  </data>
+  <data name="DatabasePassword.Help" xml:space="preserve">
+    <value>Veritabanınızın şifresi.</value>
+  </data>
+  <data name="DatabaseRunAs.Help" xml:space="preserve">
+    <value>Belirtilen kullanıcı türü olarak veritabanını çalıştırın.</value>
+  </data>
+  <data name="DatabaseSecurity.Help" xml:space="preserve">
+    <value>Veritabanınız için kullanılan güvenlik türü.</value>
+  </data>
+  <data name="DatabaseServer.Help" xml:space="preserve">
+    <value>Veritabanı sunucunuzun adı.</value>
+  </data>
+  <data name="DatabaseSetup.Help" xml:space="preserve">
+    <value>Standart veya Gelişmiş Veritabanı Kurulumunu Seçin.</value>
+  </data>
+  <data name="DatabaseType.Help" xml:space="preserve">
+    <value>Kurulum için kullanmak istediğiniz veritabanı türü.</value>
+  </data>
+  <data name="DatabaseUsername.Help" xml:space="preserve">
+    <value>Veritabanınız için kullanıcı adı.</value>
+  </data>
+  <data name="Language.Help" xml:space="preserve">
+    <value>Websitesi için kullanmak istediğiniz dil.</value>
+  </data>
+  <data name="Password.Help" xml:space="preserve">
+    <value>SuperUser hesabının şifresi.</value>
+  </data>
+  <data name="UserName.Help" xml:space="preserve">
+    <value>Süper Kullanıcı hesabı için kullanıcı adı.</value>
+  </data>
+  <data name="WebsiteName.Help" xml:space="preserve">
+    <value>Websitesi için kullanmak istediğiniz adı girin.</value>
+  </data>
+  <data name="WebsiteTemplate.Help" xml:space="preserve">
+    <value>Kurmak istediğiniz web sitesinin türü.</value>
+  </data>
+  <data name="DatabaseInstallation.Text" xml:space="preserve">
+    <value>Veritabanı Kurulumu</value>
+  </data>
+  <data name="ExtensionsInstallation.Text" xml:space="preserve">
+    <value>Uzantılar Kurulumu</value>
+  </data>
+  <data name="FileAndFolderPermissionCheck.Text" xml:space="preserve">
+    <value>Dosya ve Klasör İzinleri Kontrolü</value>
+  </data>
+  <data name="LaunchInstall.Text" xml:space="preserve">
+    <value>Yükleyiciyi Başlat</value>
+  </data>
+  <data name="SeeLogs.Text" xml:space="preserve">
+    <value>Kayıtları Gör</value>
+  </data>
+  <data name="SuperUserCreation.Text" xml:space="preserve">
+    <value>Süper Kullanıcı Oluşturma</value>
+  </data>
+  <data name="VisitWebsite.Text" xml:space="preserve">
+    <value>Web Sitesini Ziyaret Et</value>
+  </data>
+  <data name="WebsiteCreation.Text" xml:space="preserve">
+    <value>Web Sitesi Oluşturma</value>
+  </data>
+  <data name="CreateSuperUser.Text" xml:space="preserve">
+    <value>Süper Kullanıcı Oluştur</value>
+  </data>
+  <data name="CreatingSite.Text" xml:space="preserve">
+    <value>Site Oluşturma [{0}]</value>
+  </data>
+  <data name="CreatingSuperUser.Text" xml:space="preserve">
+    <value>Süper Kullanıcı Oluşturma</value>
+  </data>
+  <data name="DeletingOldFiles.Text" xml:space="preserve">
+    <value>Eski Dosyaları Silme</value>
+  </data>
+  <data name="InstallationDone.Text" xml:space="preserve">
+    <value>Tamamlandı</value>
+  </data>
+  <data name="InstallingDataBaseScriptStep.Text" xml:space="preserve">
+    <value>Veritabanı Betiği Yükleniyor</value>
+  </data>
+  <data name="InstallingMembershipDatabaseScriptStep.Text" xml:space="preserve">
+    <value>Üyelik Veritabanı Betikleri Yükleniyor</value>
+  </data>
+  <data name="ProcessingUpgradeScript.Text" xml:space="preserve">
+    <value>Yükseltme Betiği Uygulanıyor</value>
+  </data>
+  <data name="SkipCreatingSite.Text" xml:space="preserve">
+    <value>Portal Takma Adı [{0}] zaten mevcut. Bu adım atlanıyor.</value>
+  </data>
+  <data name="UpdatingConfigFile.Text" xml:space="preserve">
+    <value>Güncelleme için Yapılandırma</value>
+  </data>
+  <data name="UpgradingNormalApplication.Text" xml:space="preserve">
+    <value>Uygulama Güncelleniyor</value>
+  </data>
+  <data name="UpgradingVersionApplication.Text" xml:space="preserve">
+    <value>Uygulama Güncelleniyor</value>
+  </data>
+  <data name="Retry.Text" xml:space="preserve">
+    <value>Tekrar Dene</value>
+  </data>
+  <data name="CheckingIIS.Text" xml:space="preserve">
+    <value>IIS yapılandırmasını kontrol etme</value>
+  </data>
+  <data name="InitHostSetting.Text" xml:space="preserve">
+    <value>Ana Ayarları Başlatma</value>
+  </data>
+  <data name="ErrorInStep.Text" xml:space="preserve">
+    <value>HATA oluştu - {0}</value>
+  </data>
+  <data name="IISVerificationFail.Text" xml:space="preserve">
+    <value>IIS'deki AppPool, Entegre Mod altında çalışmalıdır</value>
+  </data>
+  <data name="InputErrorInvalidPassword.Text" xml:space="preserve">
+    <value>Girilen şifre minimum şifre gereksinimlerini karşılamıyor.</value>
+  </data>
+  <data name="InputErrorMissingRequiredFields.Text" xml:space="preserve">
+    <value>Gerekli Alanlar Eksik</value>
+  </data>
+  <data name="LegacyLangaugePack.Text" xml:space="preserve">
+    <value>Bu dil paketi, mevcut uygulama sürümünden daha eski:</value>
+  </data>
+  <data name="TemplateBlank.Text" xml:space="preserve">
+    <value>Boş Şablon</value>
+  </data>
+  <data name="NoInstallationLog.Text" xml:space="preserve">
+    <value>Kurulum Günlüğü Yok</value>
+  </data>
+  <data name="LoadingInstallationLog.Text" xml:space="preserve">
+    <value>Yükleme günlükleri yükleniyor, lütfen bekleyin...</value>
+  </data>
+  <data name="NoErrorsLogged.Text" xml:space="preserve">
+    <value>Kurulum hataları kaydedilmedi</value>
+  </data>
+  <data name="DatabaseFilename.Help" xml:space="preserve">
+    <value>Veritabanı dosyanızın adı.</value>
+  </data>
+  <data name="InstallationIntroInfo.Text" xml:space="preserve">
+    <value>Ürün kuruluyor. Sabrınız için teşekkürler...</value>
+  </data>
+  <data name="LicenseActivation.Text" xml:space="preserve">
+    <value>Lisans etkinleştiriliyor</value>
+  </data>
+  <data name="AccountInfo.Text" xml:space="preserve">
+    <value>Hesap Bilgilerinizi Girin</value>
+  </data>
+  <data name="Installation.Text" xml:space="preserve">
+    <value>Yükleme İşlemine Devam Et</value>
+  </data>
+  <data name="ViewWebsite.Text" xml:space="preserve">
+    <value>Web Sitesini Görüntüle</value>
+  </data>
+  <data name="Error.Text" xml:space="preserve">
+    <value>Hata</value>
+  </data>
+  <data name="InstallingExtensionType.Text" xml:space="preserve">
+    <value>Tür - {0} için Paketleri Yükle</value>
+  </data>
+  <data name="DatabaseConnectionError.Text" xml:space="preserve">
+    <value>Veritabanı Bağlantı Hatası</value>
+  </data>
+  <data name="DatabaseError.Text" xml:space="preserve">
+    <value>Veritabanına bağlanılamıyor.</value>
+  </data>
+  <data name="StandardDatabaseMsg.Text" xml:space="preserve">
+    <value>Geçerli varsayılan veritabanı bağlantısı algılanmadı.
+Standart Veritabanı kurulum seçeneği mevcut değil</value>
+  </data>
+  <data name="TestingDatabase.Text" xml:space="preserve">
+    <value>Veritabanı Bağlantısı Doğrulanıyor</value>
+  </data>
+  <data name="TimerSeconds.Text" xml:space="preserve">
+    <value>saniye</value>
+  </data>
+  <data name="InvalidQualifier.Text" xml:space="preserve">
+    <value>Nesne Öneki bir harfle başlamalı ve en fazla 20 karakter olmalıdır.</value>
+  </data>
+  <data name="InstallationComplete.Text" xml:space="preserve">
+    <value>Kurulum Tamamlandı!</value>
+  </data>
+  <data name="PageTitle.Text" xml:space="preserve">
+    <value>Kurulum</value>
+  </data>
+  <data name="TimerMinutes.Text" xml:space="preserve">
+    <value>Dakika</value>
+  </data>
+  <data name="PasswordMismatch.Text" xml:space="preserve">
+    <value>Parolalar eşleşmiyor.</value>
+  </data>
+  <data name="Confirm.Required" xml:space="preserve">
+    <value>Onay parolası gereklidir.</value>
+  </data>
+  <data name="DatabaseFilename.Required" xml:space="preserve">
+    <value>Veritabanı dosya adı gereklidir.</value>
+  </data>
+  <data name="DatabaseName.Required" xml:space="preserve">
+    <value>Veritabanı adı gereklidir.</value>
+  </data>
+  <data name="DatabasePassword.Required" xml:space="preserve">
+    <value>Veritabanı şifresi gereklidir.</value>
+  </data>
+  <data name="DatabaseServer.Required" xml:space="preserve">
+    <value>Veritabanı sunucusu adı gereklidir.</value>
+  </data>
+  <data name="DatabaseUsername.Required" xml:space="preserve">
+    <value>Veritabanı kullanıcı adı gereklidir.</value>
+  </data>
+  <data name="Password.Required" xml:space="preserve">
+    <value>Şifre gereklidir.</value>
+  </data>
+  <data name="UserName.Required" xml:space="preserve">
+    <value>Kullanıcı adı zorunludur.</value>
+  </data>
+  <data name="WebsiteName.Required" xml:space="preserve">
+    <value>Web sitesi adı zorunludur.</value>
+  </data>
+  <data name="HostWarning.Text" xml:space="preserve">
+    <value>Ana bilgisayar adınız yasaklı karakterler içeriyor (yalnızca a-Z, 0-9, - ve . izin verilir). Kullandığınız ana bilgisayar adını değiştirmelisiniz.</value>
+  </data>
+  <data name="InstallVersion.Text" xml:space="preserve">
+    <value>Yükleme Sürümü Ekleme</value>
+  </data>
+  <data name="FcnMode.Text" xml:space="preserve">
+    <value>FcnMode Ekleme</value>
+  </data>
+  <data name="Email.Help" xml:space="preserve">
+    <value>Bu kullanıcı için bir e-posta adresi girin.</value>
+  </data>
+  <data name="Email.Invalid" xml:space="preserve">
+    <value>Girilen e-posta adresi geçerli değil</value>
+  </data>
+  <data name="Email.Required" xml:space="preserve">
+    <value>Bir e-posta adresi gereklidir</value>
+  </data>
+  <data name="Email.Text" xml:space="preserve">
+    <value>E-posta adresi:</value>
+  </data>
+  <data name="AcceptTerms.Text" xml:space="preserve">
+    <value>Lisans sözleşmesini kabul ediyorum</value>
+  </data>
+  <data name="AcceptTerms.Required" xml:space="preserve">
+    <value>Devam etmek için lisans sözleşmesinin şartlarını kabul edin.</value>
+  </data>
+  <data name="DotNetVersion48Required.Text" xml:space="preserve">
+    <value>.Net Framework 4.8 gereklidir. Devam etmeden önce Windows güncellemelerini kontrol edin.</value>
+  </data>
+  <data name="WebsiteSsl.Help" xml:space="preserve">
+    <value>Web sitesi HTTPS üzerinde çalışacak şekilde yapılandırılacaktır.</value>
+  </data>
+  <data name="WebsiteSsl.Text" xml:space="preserve">
+    <value>HTTPS</value>
+  </data>
+  <data name="InstallingSslStep.Text" xml:space="preserve">
+    <value>Site {0} için HTTPS kontrol ediliyor</value>
+  </data>
+  <data name="InstallingSslStepSiteNotFound.Text" xml:space="preserve">
+    <value>Site {0} bulunamadı, HTTPS ayarlanamadı</value>
+  </data>
+  <data name="FileAndFolderPermissionCheckFailed.Text" xml:space="preserve">
+    <value>&lt;div class="permission"&gt;&lt;img alt="Web sitesinin kök klasörü için güvenlik ayarlarını gösteren resim, ASPNET veya NT AUTHORITY/NETWORK SERVICE hesapları için Okuma, Yazma ve Değiştirme Kontrolü olarak ayarlanmalıdır." src="..\403-3.gif" align="right" hspace="10"/&gt;
+&lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Siteniz izin kontrolünü geçemedi.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;
+Windows Gezgini'ni kullanarak web sitenizin klasörlerine gidin ( {0} ). Klasörün üzerine sağ tıklayın ve açılır menüden Paylaşım ve Güvenlik'i seçin. Güvenlik sekmesini seçin. Uygun Kullanıcı Hesabını ekleyin ve İzinleri ayarlayın.
+&lt;br/&gt;&lt;br/&gt;
+&lt;h3&gt;Windows 8 veya daha yeni, Windows Server 2008 R2 veya daha yeni ve IIS7.5 veya daha yeni kullanılıyorsa&lt;/h3&gt;
+&lt;p&gt;IIS AppPool\DefaultAppPool Kullanıcı Hesabının Web Sitesinin sanal kökünde Okuma, Yazma ve Değiştirme Kontrolüne sahip olması gerekir.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Tekrar Kontrol Et&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
+  </data>
+</root>

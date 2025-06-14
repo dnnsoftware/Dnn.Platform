@@ -363,6 +363,9 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public bool AllowRichTextModuleTitle => hostSettingsService.GetBoolean("AllowRichTextModuleTitle", false);
 
     /// <inheritdoc />
+    public bool AllowOverrideThemeViaQueryString => hostSettingsService.GetBoolean("AllowOverrideThemeViaQueryString", false);
+
+    /// <inheritdoc />
     public PerformanceSettings PerformanceSetting
     {
         get

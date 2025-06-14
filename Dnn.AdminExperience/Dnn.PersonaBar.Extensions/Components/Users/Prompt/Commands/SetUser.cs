@@ -18,39 +18,30 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("set-user", Constants.UsersCategory, "Prompt_SetUser_Description")]
-
     public class SetUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_SetUser_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("email", "Prompt_SetUser_FlagEmail", "String")]
-
         private const string FlagEmail = "email";
 
         [FlagParameter("username", "Prompt_SetUser_FlagUsername", "String")]
-
         private const string FlagUsername = "username";
 
         [FlagParameter("displayname", "Prompt_SetUser_FlagDisplayname", "String")]
-
         private const string FlagDisplayname = "displayname";
 
         [FlagParameter("firstname", "Prompt_SetUser_FlagFirstname", "String")]
-
         private const string FlagFirstname = "firstname";
 
         [FlagParameter("lastname", "Prompt_SetUser_FlagLastname", "String")]
-
         private const string FlagLastname = "lastname";
 
         [FlagParameter("approved", "Prompt_SetUser_FlagApproved", "Boolean")]
-
         private const string FlagApproved = "approved";
 
         [FlagParameter("password", "Prompt_SetUser_FlagPassword", "String")]
-
         private const string FlagPassword = "password";
 
         private readonly IUserValidator userValidator;

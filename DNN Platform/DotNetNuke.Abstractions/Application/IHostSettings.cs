@@ -255,6 +255,9 @@ public interface IHostSettings
     /// <summary>Gets a value indicating whether module titles should be allowed to include HTML.</summary>
     public bool AllowRichTextModuleTitle { get; }
 
+    /// <summary>Gets a value indicating whether the skin/theme used for a page can be overridden using the <c>SkinSrc</c> query string parameter for non-editors.</summary>
+    public bool AllowOverrideThemeViaQueryString { get; }
+
     /// <summary>Gets or sets the PerformanceSettings.</summary>
     public PerformanceSettings PerformanceSetting { get; set; }
 }
