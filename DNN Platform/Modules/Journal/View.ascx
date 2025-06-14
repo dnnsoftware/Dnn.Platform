@@ -150,7 +150,7 @@
             var uid =  $(this).attr('id').replace('user-', '');
             window.location.href = profilePage.replace('xxx',uid);
         });
-        var maxUploadSize = <%:MaxUploadSize %>;
+        var maxUploadSize = <%: MaxUploadSize %>;
         
         $('.fileUploadArea').dnnUserFileUpload({
             maxFileSize: maxUploadSize,
