@@ -9,6 +9,7 @@ namespace DotNetNuke.Prompt
     using DotNetNuke.Abstractions.Prompt;
     using Newtonsoft.Json;
 
+    /// <summary>This is used to send the result back to the client when a user asks help for a command.</summary>
     [Serializable]
     [JsonObject]
     public class CommandHelp : ICommandHelp

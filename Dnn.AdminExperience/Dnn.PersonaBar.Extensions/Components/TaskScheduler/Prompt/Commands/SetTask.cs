@@ -17,15 +17,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Services.Scheduling;
 
     [ConsoleCommand("set-task", Constants.SchedulerCategory, "Prompt_SetTask_Description")]
-
     public class SetTask : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_SetTask_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("enabled", "Prompt_SetTask_FlagEnabled", "Boolean", true)]
-
         private const string FlagEnabled = "enabled";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
