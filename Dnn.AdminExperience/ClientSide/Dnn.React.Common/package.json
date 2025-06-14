@@ -52,7 +52,7 @@
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
     "@eslint/compat": "^1.2.9",
-    "@storybook/addon-actions": "^8.3.6",
+    "@storybook/addon-actions": "^9.0.8",
     "@storybook/react": "^5.3.21",
     "babel-loader": "^8.3.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
