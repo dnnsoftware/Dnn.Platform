@@ -8,6 +8,7 @@
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
@@ -58,7 +59,7 @@
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
             using var serviceProvider = FakeServiceProvider.Setup();
-            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>()));
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IEventLogger>()));
             Host.PerformanceSetting = Globals.PerformanceSettings.ModerateCaching;
             var uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));

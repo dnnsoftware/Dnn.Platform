@@ -12,6 +12,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
@@ -159,7 +160,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.SetupLocaleController();
             this.mockHostController = new Mock<IHostController>();
             this.SetupHostController();
-            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>()));
+            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IEventLogger>()));
 
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>

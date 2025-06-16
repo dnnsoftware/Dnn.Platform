@@ -56,19 +56,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the current page in current http request.</summary>
         /// <value>Current Page Info.</value>
-        public static TabInfo CurrentPage
-        {
-            get
-            {
-                TabInfo tab = null;
-                if (PortalController.Instance.GetCurrentPortalSettings() != null)
-                {
-                    tab = PortalController.Instance.GetCurrentPortalSettings().ActiveTab;
-                }
-
-                return tab;
-            }
-        }
+        public static TabInfo CurrentPage => PortalSettings.Current?.ActiveTab;
 
         /// <summary>Copies the design to children.</summary>
         /// <param name="parentTab">The parent tab.</param>

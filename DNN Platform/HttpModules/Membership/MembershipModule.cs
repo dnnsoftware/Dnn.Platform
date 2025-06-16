@@ -258,7 +258,7 @@ namespace DotNetNuke.HttpModules.Membership
                                     && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
             if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
             {
-                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(this.portalController, portalSettings.PortalId);
                 if (isInPortalGroup)
                 {
                     var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
