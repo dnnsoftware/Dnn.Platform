@@ -55,7 +55,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [SetUp]
-
         public virtual void SetUp()
         {
             // Mock Repository and component factory

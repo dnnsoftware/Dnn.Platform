@@ -29,7 +29,6 @@ namespace DotNetNuke.Tests.Content
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
             this.mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -152,7 +151,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ScopeTypeController_GetScopeTypes_Calls_DataService()
         {
             // Arrange
@@ -168,7 +166,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ScopeTypeController_GetScopeTypes_Returns_Empty_List_Of_ScopeTypes_If_No_ScopeTypes()
         {
             // Arrange
@@ -185,7 +182,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ScopeTypeController_GetScopeTypes_Returns_List_Of_ScopeTypes()
         {
             // Arrange

@@ -67,7 +67,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private string SearchIndexFolder => this.mockHostController.Object.GetString(Constants.SearchIndexFolderKey, string.Empty);
 
         [SetUp]
-
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();
@@ -136,7 +135,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Add_Throws_On_Null_Document()
         {
             // Arrange
@@ -154,7 +152,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Add_Empty_FiledsCollection_DoesNot_Create_Index()
         {
             // Arrange
@@ -170,7 +167,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_GetsHighlightedDesc()
         {
             // Arrange
@@ -196,7 +192,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_HighlightedDescHtmlEncodesOutput()
         {
             // Arrange
@@ -225,7 +220,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_FindsResultsUsingNearRealtimeSearchWithoutCommit()
         {
             // Arrange
@@ -247,7 +241,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Returns_Correct_Total_Hits()
         {
             // Arrange
@@ -264,7 +257,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Request_For_1_Result_Returns_1_Record_But_More_TotalHits()
         {
             // Arrange
@@ -281,7 +273,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Request_For_4_Records_Returns_4_Records_With_4_TotalHits_Based_On_PageIndex1_PageSize4()
         {
             // Arrange
@@ -298,7 +289,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Request_For_4_Records_Returns_4_Records_With_4_TotalHits_Based_On_PageIndex4_PageSize1()
         {
             // Arrange
@@ -315,7 +305,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Request_For_NonExisting_PageNumbers_Returns_No_Record()
         {
             // Arrange
@@ -338,7 +327,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Request_For_PagIndex2_PageSize1_Returns_2nd_Record_Only()
         {
             // Arrange
@@ -366,7 +354,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_NumericRangeCheck()
         {
             // Arrange
@@ -402,7 +389,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_DateRangeCheck()
         {
             // Arrange
@@ -462,7 +448,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TestCase(EmptyCustomAnalyzer)]
         [TestCase(InvalidCustomAnalyzer)]
         [TestCase(ValidCustomAnalyzer)]
-
         public void LuceneController_Search_With_Chinese_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
             this.mockHostController.Setup(controller => controller.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
@@ -506,7 +491,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [TestCase(EmptyCustomAnalyzer)]
         [TestCase(InvalidCustomAnalyzer)]
         [TestCase(ValidCustomAnalyzer)]
-
         public void LuceneController_Search_With_English_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
             this.mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
@@ -540,7 +524,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Single_FuzzyQuery()
         {
             // Arrange
@@ -562,7 +545,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_Search_Double_FuzzyQuery()
         {
             // Arrange
@@ -603,7 +585,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_ReaderNotChangedBeforeTimeSpanElapsed()
         {
             // Arrange
@@ -624,7 +605,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_ReaderNotChangedIfNoIndexUpdated()
         {
             // Arrange
@@ -645,7 +625,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_ReaderIsChangedWhenIndexIsUpdatedAndTimeIsElapsed()
         {
             // Arrange
@@ -673,7 +652,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_LockFileWhenExistsDoesNotCauseProblemForFirstIController()
         {
             // Arrange
@@ -700,7 +678,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_LockFileCanBeObtainedByOnlySingleController()
         {
             // Arrange
@@ -721,7 +698,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_DocumentMaxAndCountAreCorrect()
         {
             this.AddTestDocs();
@@ -734,7 +710,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_TestDeleteBeforeOptimize()
         {
             // Arrange
@@ -750,7 +725,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_TestDeleteAfterOptimize()
         {
             // Arrange
@@ -767,7 +741,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void LuceneController_TestGetSearchStatistics()
         {
             // Arrange
@@ -784,7 +757,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchController_LuceneControllerReaderIsNotNullWhenWriterIsNull()
         {
             // Arrange

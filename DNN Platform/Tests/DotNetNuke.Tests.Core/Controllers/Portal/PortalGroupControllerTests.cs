@@ -80,7 +80,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -94,7 +93,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Null_Portal()
         {
             // Arrange
@@ -108,7 +106,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -125,7 +122,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalToGroup_Throws_On_Negative_PortalId()
         {
             // Arrange
@@ -142,7 +138,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -174,7 +169,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_AddPortalGroup_Calls_PortalController_On_Valid_Arguments()
         {
             // Arrange
@@ -238,7 +232,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_DeletePortalGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -251,7 +244,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_DeletePortalGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -348,7 +340,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Null_PortalGroup()
         {
             // Arrange
@@ -362,7 +353,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Null_Portal()
         {
             // Arrange
@@ -376,7 +366,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Negative_PortalGroupId()
         {
             // Arrange
@@ -393,7 +382,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         }
 
         [Test]
-
         public void PortalGroupController_RemovePortalFromGroup_Throws_On_Negative_PortalId()
         {
             // Arrange

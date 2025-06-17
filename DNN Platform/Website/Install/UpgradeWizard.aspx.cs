@@ -138,7 +138,6 @@ namespace DotNetNuke.Services.Install
         /// <param name="accountInfo">Username and password to validate host user.</param>
         /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
         [WebMethod]
-
         public static Tuple<bool, string, SecurityTabResult> GetSecurityTab(Dictionary<string, string> accountInfo)
         {
             if (!VerifyHostUser(accountInfo, out var errorMsg))

@@ -29,7 +29,6 @@ namespace DotNetNuke.Tests.Content
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
             this.mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -154,7 +153,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentTypeController_GetContentTypes_Calls_DataService()
         {
             // Arrange
@@ -170,7 +168,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentTypeController_GetContentTypes_Returns_Empty_List_Of_ContentTypes_If_No_ContentTypes()
         {
             // Arrange
@@ -187,7 +184,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void ContentTypeController_GetContentTypes_Returns_List_Of_ContentTypes()
         {
             // Arrange
