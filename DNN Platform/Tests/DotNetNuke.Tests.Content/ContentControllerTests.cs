@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.Content
 
         public void SetUp()
         {
-            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
             this.mockDataProvider = MockComponentProvider.CreateDataProvider();
             this.mockSearchHelper = new Mock<Services.Search.Internals.ISearchHelper>();
 

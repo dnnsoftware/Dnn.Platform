@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Content
         public void SetUp()
         {
             // Register MockCachingProvider
-            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
             var dataProvider = MockComponentProvider.CreateDataProvider();
             dataProvider.Setup(c => c.GetProviderPath()).Returns(string.Empty);
             this.serviceProvider = FakeServiceProvider.Setup(

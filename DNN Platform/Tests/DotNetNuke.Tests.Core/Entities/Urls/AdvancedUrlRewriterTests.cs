@@ -68,7 +68,7 @@
             var simulator = new HttpSimulator(ApplicationPath, physicalAppPath);
             simulator.SimulateRequest(new Uri(SampleHttpsUrl));
             HttpContext.Current.Items.Add(UrlRewriteItemName, FullUrl);
-            MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateNew<DataProvider>();
             MockComponentProvider.CreateNew<LoggingProvider>();
             MockComponentProvider.CreateNew<PortalSettingsController>(PortalSettingsControllerRegistrationName);

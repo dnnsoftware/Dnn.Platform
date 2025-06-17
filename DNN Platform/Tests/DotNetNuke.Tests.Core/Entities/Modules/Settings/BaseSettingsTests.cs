@@ -63,7 +63,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             ComponentFactory.Container = new SimpleContainer();
 
             // Setup Mock
-            this.MockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.MockCache = MockComponentProvider.CreateDataCacheProvider();
             HostController.RegisterInstance(this.MockHostController.Object);
 
             this.MockPortalController = this.MockRepository.Create<IPortalController>();

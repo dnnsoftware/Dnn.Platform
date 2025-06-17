@@ -16,7 +16,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
     using Moq;
     using NUnit.Framework;
 
-    /// <summary>  Summary description for DataCacheTests.</summary>
     [TestFixture]
     public class DataCacheTests
     {
@@ -28,7 +27,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             // Create a Container
             ComponentFactory.Container = new SimpleContainer();
 
-            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
         }
 
         [Test]
