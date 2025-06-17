@@ -9,9 +9,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Globalization;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Permissions;
@@ -118,6 +121,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     services.AddSingleton(this.folderManager.Object);
                     services.AddSingleton(this.fileManager.Object);
                     services.AddSingleton(this.folderPermissionController.Object);
+                    services.AddSingleton<IRoleController>(new RoleController(this.mockRoleProvider.Object, Mock.Of<IHostSettings>(), Mock.Of<IEventLogger>(), this.portalController.Object, Mock.Of<IUserController>(), Mock.Of<IEventManager>(), this.fileManager.Object, this.folderManager.Object, this.dataProvider.Object));
                 });
         }
 
