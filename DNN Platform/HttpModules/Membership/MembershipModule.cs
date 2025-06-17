@@ -61,7 +61,7 @@ namespace DotNetNuke.HttpModules.Membership
 
         /// <summary>Authenticates the request.</summary>
         /// <param name="context">The context.</param>
-        /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensions.</param>
+        /// <param name="allowUnknownExtensions">if set to <see langword="true"/> to allow unknown extensions.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
         public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
             => AuthenticateRequest(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), context, allowUnknownExtensions);

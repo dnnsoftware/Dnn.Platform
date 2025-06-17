@@ -345,7 +345,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="roles">The roles.</param>
         /// <param name="settings">The settings.</param>
         /// <returns>
-        ///   <c>true</c> if [is in roles] [the specified roles]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [is in roles] [the specified roles]; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsInRoles(string roles, IPortalSettings settings)
         {
@@ -442,7 +442,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         }
 
         /// <summary>Gets the size of the max upload.</summary>
-        /// <param name="inkilobytes">if set to <c>true</c> Returns Value as kilo byte otherwise as byte.</param>
+        /// <param name="inkilobytes">if set to <see langword="true"/> Returns Value as kilo byte otherwise as byte.</param>
         /// <returns>
         /// Returns the Max. Upload Size.
         /// </returns>

@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Localization
 
         /// <summary>Determines whether the language can be deleted.</summary>
         /// <param name="languageId">The language ID.</param>
-        /// <returns><c>true</c> if the language can be delete; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the language can be delete; otherwise, <see langword="false"/>.</returns>
         public bool CanDeleteLanguage(int languageId)
         {
             return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase))
@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Determines whether the specified locale code is enabled.</summary>
         /// <param name="localeCode">The locale code.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <returns><c>true</c> if the specified locale code is enabled; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified locale code is enabled; otherwise, <see langword="false"/>.</returns>
         public bool IsEnabled(ref string localeCode, int portalId)
         {
             try
@@ -222,7 +222,7 @@ namespace DotNetNuke.Services.Localization
 
         /// <summary>Determines the language whether is default language.</summary>
         /// <param name="code">The code.</param>
-        /// <returns><c>true</c> if the language is default language; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the language is default language; otherwise, <see langword="false"/>.</returns>
         public bool IsDefaultLanguage(string code)
         {
             bool returnValue = code == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Activates the language without publishing it.</summary>
         /// <param name="portalid">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <param name="publish">if set to <c>true</c> will publish the language, otherwise will "un-publish".</param>
+        /// <param name="publish">if set to <see langword="true"/> will publish the language, otherwise will "un-publish".</param>
         public void ActivateLanguage(int portalid, string cultureCode, bool publish)
         {
             Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
@@ -247,7 +247,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Publishes the language.</summary>
         /// <param name="portalid">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <param name="publish">if set to <c>true</c> will publish the language.</param>
+        /// <param name="publish">if set to <see langword="true"/> will publish the language.</param>
         public void PublishLanguage(int portalid, string cultureCode, bool publish)
         {
             Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);

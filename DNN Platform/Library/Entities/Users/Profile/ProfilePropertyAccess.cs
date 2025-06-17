@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="property">The property.</param>
         /// <param name="accessingUser">The accessing user.</param>
         /// <param name="targetUser">The target user.</param>
-        /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if property accessible, otherwise <see langword="false"/>.</returns>
         [DnnDeprecated(9, 8, 0, "Use the overload that takes IPortalSettings instead")]
         public static partial bool CheckAccessLevel(PortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
@@ -65,7 +65,7 @@ namespace DotNetNuke.Entities.Users
         /// <param name="property">The property.</param>
         /// <param name="accessingUser">The accessing user.</param>
         /// <param name="targetUser">The target user.</param>
-        /// <returns><c>true</c> if property accessible, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if property accessible, otherwise <see langword="false"/>.</returns>
         public static bool CheckAccessLevel(IPortalSettings portalSettings, ProfilePropertyDefinition property, UserInfo accessingUser, UserInfo targetUser)
         {
             var isAdminUser = IsAdminUser(portalSettings, accessingUser, targetUser);

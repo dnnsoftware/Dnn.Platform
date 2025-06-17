@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>Determines whether is web farm.</summary>
-        /// <returns><c>true</c> if is web farm; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if is web farm; otherwise, <see langword="false"/>.</returns>
         public virtual bool IsWebFarm()
         {
             return ServerController.GetEnabledServers().Count > 1;
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Cache
         /// <summary>Clears the cache internal.</summary>
         /// <param name="cacheType">Type of the cache.</param>
         /// <param name="data">The data.</param>
-        /// <param name="clearRuntime">if set to <c>true</c> clear runtime cache.</param>
+        /// <param name="clearRuntime">if set to <see langword="true"/> clear runtime cache.</param>
         protected void ClearCacheInternal(string cacheType, string data, bool clearRuntime)
         {
             switch (cacheType)

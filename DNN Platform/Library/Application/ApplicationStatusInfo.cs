@@ -206,7 +206,7 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>Determines whether current request is for install.</summary>
-        /// <returns><c>true</c> if current request is for install; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if current request is for install; otherwise, <see langword="false"/>.</returns>
         private bool IsInstallationURL()
         {
             string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
@@ -214,14 +214,14 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>Determines whether has installation date.</summary>
-        /// <returns><c>true</c> if has installation date; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if has installation date; otherwise, <see langword="false"/>.</returns>
         private bool HasInstallationDate()
         {
             return Config.GetSetting("InstallationDate") != null;
         }
 
         /// <summary>Determines whether has data provider log files.</summary>
-        /// <returns><c>true</c> if has data provider log files; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if has data provider log files; otherwise, <see langword="false"/>.</returns>
         private bool HasDataProviderLogFiles()
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
@@ -242,7 +242,7 @@ namespace DotNetNuke.Application
 
         /// <summary>Check whether the modules directory is exists.</summary>
         /// <param name="moduleName">Name of the module.</param>
-        /// <returns><c>true</c> if the module directory exist, otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the module directory exist, otherwise, <see langword="false"/>.</returns>
         private bool ModuleDirectoryExists(string moduleName)
         {
             string dir = this.ApplicationMapPath + "\\desktopmodules\\" + moduleName;
@@ -250,7 +250,7 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>Determines whether has portal directory except default portal directory in portal path.</summary>
-        /// <returns><c>true</c> if has portal directory except default portal directory in portal path; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if has portal directory except default portal directory in portal path; otherwise, <see langword="false"/>.</returns>
         private bool HasNonDefaultPortalDirectory()
         {
             string dir = this.ApplicationMapPath + "\\portals";
@@ -263,7 +263,7 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>Determines whether has InstallVersion set.</summary>
-        /// <returns><c>true</c> if has installation date; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if has installation date; otherwise, <see langword="false"/>.</returns>
         private bool HasInstallVersion()
         {
             return Config.GetSetting("InstallVersion") != null;
