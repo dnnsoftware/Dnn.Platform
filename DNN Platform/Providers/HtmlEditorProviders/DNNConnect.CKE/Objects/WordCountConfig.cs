@@ -19,7 +19,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [show char count].</summary>
         /// <value>
-        ///   <c>true</c> if [show char count]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [show char count]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("showCharCount")]
         [Description("Whether or not you want to show the Word Count.")]
@@ -27,7 +27,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [show word count].</summary>
         /// <value>
-        ///   <c>true</c> if [show word count]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [show word count]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("showWordCount")]
         [Description("Whether or not you want to show the Char Count")]

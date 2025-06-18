@@ -18,12 +18,14 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A Persona Bar API controller for pages.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class TabsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabsController));
         private readonly Library.Controllers.TabsController controller = new Library.Controllers.TabsController();
 
+        /// <summary>Gets the local resource file path.</summary>
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         /// GET: api/Tabs/GetPortalTabs

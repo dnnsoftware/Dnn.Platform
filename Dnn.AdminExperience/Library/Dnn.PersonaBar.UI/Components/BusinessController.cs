@@ -7,29 +7,47 @@ namespace Dnn.PersonaBar.UI.Components
     using System;
     using System.Linq;
 
-    using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Permissions;
     using Dnn.PersonaBar.Library.Repository;
     using Dnn.PersonaBar.UI.Components.Controllers;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
-    using DotNetNuke.Services.Installer.Installers;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Provides upgrade logic for the Persona Bar.</summary>
     public class BusinessController : IUpgradeable
     {
-        private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
-        private static readonly DotNetNuke.Services.Installer.Log.Logger InstallLogger = new DotNetNuke.Services.Installer.Log.Logger();
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BusinessController));
+        private readonly IHostSettingsService hostSettingsService;
+
+        /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
+        public BusinessController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="BusinessController"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public BusinessController(IHostSettingsService hostSettingsService)
+        {
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        }
 
         /// <inheritdoc/>
         public string UpgradeModule(string version)
@@ -38,13 +56,13 @@ namespace Dnn.PersonaBar.UI.Components
             {
                 case "01.00.00":
                     this.UpdateControlPanel();
-                    this.CreateAdminLinks();
+                    CreateAdminLinks();
                     break;
                 case "01.04.00":
-                    this.UpdateEditPermissions();
+                    UpdateEditPermissions();
                     break;
                 case "03.00.00":
-                    this.RemovePersonaBarOldAssemblies();
+                    RemovePersonaBarOldAssemblies();
                     break;
             }
 
@@ -53,7 +71,7 @@ namespace Dnn.PersonaBar.UI.Components
 
         private static void RemoveAssembly(string assemblyName)
         {
-            Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
+            Logger.Info(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
 
             var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
                 p.Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase)
@@ -63,26 +81,26 @@ namespace Dnn.PersonaBar.UI.Components
                 var fileName = assemblyName + ".dll";
                 if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
                 {
-                    Logger.InstallLogInfo(Util.ASSEMBLY_UnRegistered + " - " + fileName);
+                    Logger.Info($"{Util.ASSEMBLY_UnRegistered} - {fileName}");
                 }
             }
             else
             {
-                Logger.InstallLogInfo(Util.ASSEMBLY_InUse + " - " + assemblyName);
+                Logger.Info($"{Util.ASSEMBLY_InUse} - {assemblyName}");
             }
         }
 
-        private void CreateAdminLinks()
+        private static void CreateAdminLinks()
         {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                this.CreatePageLinks(portal.PortalID, "Admin");
+                CreatePageLinks(portal.PortalId, "Admin");
             }
 
-            this.CreatePageLinks(Null.NullInteger, "Host");
+            CreatePageLinks(Null.NullInteger, "Host");
         }
 
-        private void CreatePageLinks(int portalId, string parentPath)
+        private static void CreatePageLinks(int portalId, string parentPath)
         {
             var parentTab = TabController.GetTabByTabPath(portalId, "//" + parentPath, string.Empty);
             if (parentTab == Null.NullInteger)
@@ -97,25 +115,20 @@ namespace Dnn.PersonaBar.UI.Components
             }
         }
 
-        private void UpdateControlPanel()
-        {
-            HostController.Instance.Update("ControlPanel", "DesktopModules/admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx");
-        }
-
-        private void UpdateEditPermissions()
+        private static void UpdateEditPermissions()
         {
             var menuItems = PersonaBarRepository.Instance.GetMenu().AllItems;
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
             {
-                var portalId = portal.PortalID;
+                var portalId = portal.PortalId;
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
                 {
-                    menuItems.ForEach(i => this.SaveEditPermission(portalId, i));
+                    menuItems.ForEach(i => SaveEditPermission(portalId, i));
                 }
             }
         }
 
-        private void SaveEditPermission(int portalId, MenuItem menuItem)
+        private static void SaveEditPermission(int portalId, MenuItem menuItem)
         {
             var viewPermission = MenuPermissionController.GetPermissions(menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "VIEW");
             var editPermission = MenuPermissionController.GetPermissions(menuItem.MenuId).FirstOrDefault(p => p.PermissionKey == "EDIT");
@@ -126,32 +139,37 @@ namespace Dnn.PersonaBar.UI.Components
             }
 
             var permissions = MenuPermissionController.GetMenuPermissions(portalId, menuItem.Identifier).ToList();
-            permissions.ForEach(p =>
+            permissions.ForEach((IPermissionInfo p) =>
             {
-                if (p.PermissionID == viewPermission.PermissionId)
+                if (p.PermissionId != viewPermission.PermissionId)
                 {
-                    if (!permissions.Any(c => c.PermissionID == editPermission.PermissionId && c.RoleID == p.RoleID && c.UserID == p.UserID))
-                    {
-                        var menuPermissionInfo = new MenuPermissionInfo
-                        {
-                            MenuPermissionId = Null.NullInteger,
-                            MenuId = menuItem.MenuId,
-                            PermissionID = editPermission.PermissionId,
-                            RoleID = p.RoleID,
-                            UserID = p.UserID,
-                            AllowAccess = p.AllowAccess,
-                        };
-
-                        MenuPermissionController.SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
-                    }
+                    return;
                 }
+
+                if (permissions.Any((IPermissionInfo c) => c.PermissionId == editPermission.PermissionId && c.RoleId == p.RoleId && c.UserId == p.UserId))
+                {
+                    return;
+                }
+
+                var menuPermissionInfo = new MenuPermissionInfo
+                {
+                    MenuPermissionId = Null.NullInteger,
+                    MenuId = menuItem.MenuId,
+                    AllowAccess = p.AllowAccess,
+                };
+
+                ((IPermissionInfo)menuPermissionInfo).PermissionId = editPermission.PermissionId;
+                ((IPermissionInfo)menuPermissionInfo).RoleId = p.RoleId;
+                ((IPermissionInfo)menuPermissionInfo).UserId = p.UserId;
+
+                MenuPermissionController.SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
             });
         }
 
-        private void RemovePersonaBarOldAssemblies()
+        private static void RemovePersonaBarOldAssemblies()
         {
-            string[] assemblies =
-            {
+            string[] oldPersonaBarAssemblies =
+            [
                 "Dnn.PersonaBar.AdminLogs",
                 "Dnn.PersonaBar.ConfigConsole",
                 "Dnn.PersonaBar.Connectors",
@@ -171,13 +189,18 @@ namespace Dnn.PersonaBar.UI.Components
                 "Dnn.PersonaBar.TaskScheduler",
                 "Dnn.PersonaBar.Themes",
                 "Dnn.PersonaBar.Users",
-                "Dnn.PersonaBar.Vocabularies",
-            };
+                "Dnn.PersonaBar.Vocabularies"
+            ];
 
-            foreach (string assemblyName in assemblies)
+            foreach (var assemblyName in oldPersonaBarAssemblies)
             {
                 RemoveAssembly(assemblyName);
             }
+        }
+
+        private void UpdateControlPanel()
+        {
+            this.hostSettingsService.Update("ControlPanel", "DesktopModules/admin/Dnn.PersonaBar/UserControls/PersonaBarContainer.ascx");
         }
     }
 }

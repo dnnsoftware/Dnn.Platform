@@ -34,7 +34,6 @@ namespace DotNetNuke.Tests.Core.Common
         private FakeServiceProvider serviceProvider;
 
         [OneTimeSetUp]
-
         public void Setup()
         {
             var portalControllerMock = PortalControllerMock();

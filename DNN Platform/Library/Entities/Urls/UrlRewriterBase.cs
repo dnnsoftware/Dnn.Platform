@@ -24,6 +24,7 @@ namespace DotNetNuke.Entities.Urls
         private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="UrlRewriterBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected UrlRewriterBase()
             : this(null, null, null, null)
         {

@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
         /// <param name="file">The assembly file.</param>
         /// <param name="xmlMergeFile">The XML merge file name.</param>
-        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
+        /// <returns><see langword="true"/> if the XML Merge was applied successfully, <see langword="false"/> if the file was not a strong-named assembly or could not be read.</returns>
         private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
         {
             var assemblyFileFullPath = Path.Combine(this.PhysicalBasePath, file.FullName);

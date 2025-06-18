@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Mobile
         [XmlAttribute]
         public object TargetValue { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether this redirection is available.</summary>
+        /// <summary>Gets or sets a value indicating whether this redirection is available.</summary>
         [XmlAttribute]
         public bool Enabled { get; set; }
 

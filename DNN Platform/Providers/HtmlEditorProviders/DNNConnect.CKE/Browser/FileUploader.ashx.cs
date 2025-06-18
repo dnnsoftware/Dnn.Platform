@@ -42,7 +42,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Gets a value indicating whether [override files].</summary>
         /// <value>
-        ///   <c>true</c> if [override files]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [override files]; otherwise, <see langword="false"/>.
         /// </value>
         private bool OverrideFiles
         {
@@ -258,6 +258,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     fileName = fileName.Substring(fileName.Length - 220);
                 }
+
+                // file names starting with '\\' may be used for manipulating the filepath and explore vulnerabilities
+                fileName = Regex.Replace(fileName, @"^\\+", string.Empty);
 
                 var fileNameNoExtenstion = Path.GetFileNameWithoutExtension(fileName);
 

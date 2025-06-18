@@ -103,7 +103,6 @@
         }
 
         [Test]
-
         public void Execute_WhenPublic_ReturnsWarning()
         {
             // arrange
@@ -127,7 +126,6 @@
         }
 
         [Test]
-
         public void Execute_WhenNeitherPublicNorActivityFeed_ReturnsPass()
         {
             // arrange
@@ -151,7 +149,6 @@
         }
 
         [Test]
-
         public void Execute_WhenNotPublicAndActivityFeedAndMyProfileNotFound_ReturnsPass()
         {
             // arrange
@@ -175,7 +172,6 @@
         }
 
         [Test]
-
         public void Execute_WhenNotPublicAndActivityFeedAndMyProfileDeleted_ReturnsPass()
         {
             // arrange
@@ -202,7 +198,6 @@
         [Test]
         [TestCase(true, SeverityEnum.Warning)]
         [TestCase(false, SeverityEnum.Pass)]
-
         public void Execute_WhenNotPublicAndActivityFeedAndMyProfileValid_ReturnsCorrectSeverity(
             bool myProfilePageIsPublic, SeverityEnum expectedSeverity)
         {

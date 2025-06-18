@@ -17,15 +17,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
 
     [ConsoleCommand("get-module", Constants.ModulesCategory, "Prompt_GetModule_Description")]
-
     public class GetModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetModule_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_GetModule_FlagPageId", "Integer", true)]
-
         private const string FlagPageId = "pageid";
 
         /// <inheritdoc/>

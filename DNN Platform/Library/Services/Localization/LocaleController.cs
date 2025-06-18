@@ -9,6 +9,8 @@ namespace DotNetNuke.Services.Localization
     using System.Linq;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -17,6 +19,8 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Installer.Packages;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>LocaleController provides method to manage all pages with localization content.</summary>
     /// <remarks>
@@ -28,6 +32,40 @@ namespace DotNetNuke.Services.Localization
     /// </remarks>
     public class LocaleController : ComponentBase<ILocaleController, LocaleController>, ILocaleController
     {
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly DataProvider dataProvider;
+        private readonly IPortalController portalController;
+        private readonly ITabController tabController;
+        private readonly IUserController userController;
+        private readonly IPackageController packageController;
+
+        /// <summary>Initializes a new instance of the <see cref="LocaleController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public LocaleController()
+            : this(null, null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="LocaleController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="packageController">The package controller.</param>
+        public LocaleController(IHostSettings hostSettings, IApplicationStatusInfo appStatus, DataProvider dataProvider, IPortalController portalController, ITabController tabController, IUserController userController, IPackageController packageController)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+            this.packageController = packageController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPackageController>();
+        }
+
         public static bool IsValidCultureName(string name)
         {
             return
@@ -38,10 +76,10 @@ namespace DotNetNuke.Services.Localization
 
         /// <summary>Determines whether the language can be deleted.</summary>
         /// <param name="languageId">The language ID.</param>
-        /// <returns><c>true</c> if the language can be delete; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the language can be deleted; otherwise, <see langword="false"/>.</returns>
         public bool CanDeleteLanguage(int languageId)
         {
-            return PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase))
+            return this.packageController.GetExtensionPackages(Null.NullInteger, p => p.PackageType.Equals("CoreLanguagePack", StringComparison.OrdinalIgnoreCase))
                         .Select(package => LanguagePackController.GetLanguagePackByPackage(package.PackageID))
                         .All(languagePack => languagePack.LanguageID != languageId);
         }
@@ -76,11 +114,11 @@ namespace DotNetNuke.Services.Localization
         /// <returns>A <see cref="Locale"/> instance.</returns>
         public Locale GetDefaultLocale(int portalId)
         {
-            var portal = PortalController.Instance.GetPortal(portalId);
+            IPortalInfo portal = this.portalController.GetPortal(portalId);
             Locale locale = null;
             if (portal != null)
             {
-                Dictionary<string, Locale> locales = this.GetLocales(portal.PortalID);
+                Dictionary<string, Locale> locales = this.GetLocales(portal.PortalId);
                 if (locales != null && locales.ContainsKey(portal.DefaultLanguage))
                 {
                     locale = locales[portal.DefaultLanguage];
@@ -107,10 +145,7 @@ namespace DotNetNuke.Services.Localization
             Dictionary<string, Locale> dicLocales = this.GetLocales(portalID);
             Locale locale = null;
 
-            if (dicLocales != null)
-            {
-                dicLocales.TryGetValue(code, out locale);
-            }
+            dicLocales?.TryGetValue(code, out locale);
 
             return locale;
         }
@@ -122,7 +157,7 @@ namespace DotNetNuke.Services.Localization
         public Locale GetLocaleOrCurrent(int portalID, string code)
         {
             return string.IsNullOrEmpty(code)
-                       ? LocaleController.Instance.GetCurrentLocale(portalID) : LocaleController.Instance.GetLocale(portalID, code);
+                       ? this.GetCurrentLocale(portalID) : this.GetLocale(portalID, code);
         }
 
         /// <summary>Gets the locale.</summary>
@@ -140,23 +175,30 @@ namespace DotNetNuke.Services.Localization
         /// <returns>A <see cref="Dictionary{TKey,TValue}"/> mapping from culture code to <see cref="Locale"/>, or <see langword="null"/>.</returns>
         public Dictionary<string, Locale> GetLocales(int portalID)
         {
-            if (Globals.Status != Globals.UpgradeStatus.Error)
+            if (this.appStatus.Status == UpgradeStatus.Error)
             {
-                Dictionary<string, Locale> locales;
-                if (Globals.Status != Globals.UpgradeStatus.Install)
-                {
-                    string cacheKey = string.Format(DataCache.LocalesCacheKey, portalID);
-                    locales = CBO.GetCachedObject<Dictionary<string, Locale>>(new CacheItemArgs(cacheKey, DataCache.LocalesCacheTimeOut, DataCache.LocalesCachePriority, portalID), GetLocalesCallBack, true);
-                }
-                else
-                {
-                    locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
-                }
-
-                return locales;
+                return null;
             }
 
-            return null;
+            if (this.appStatus.Status == UpgradeStatus.Install)
+            {
+                return CBO.FillDictionary(
+                    "CultureCode",
+                    this.dataProvider.GetLanguages(),
+                    new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
+            }
+
+            var cacheArgs = new CacheItemArgs(
+                string.Format(DataCache.LocalesCacheKey, portalID),
+                DataCache.LocalesCacheTimeOut,
+                DataCache.LocalesCachePriority,
+                portalID,
+                this.dataProvider);
+            return CBO.GetCachedObject<Dictionary<string, Locale>>(
+                this.hostSettings,
+                cacheArgs,
+                GetLocalesCallBack,
+                true);
         }
 
         /// <summary>Gets the published locales.</summary>
@@ -170,7 +212,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Determines whether the specified locale code is enabled.</summary>
         /// <param name="localeCode">The locale code.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <returns><c>true</c> if the specified locale code is enabled; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the specified locale code is enabled; otherwise, <see langword="false"/>.</returns>
         public bool IsEnabled(ref string localeCode, int portalId)
         {
             try
@@ -180,14 +222,14 @@ namespace DotNetNuke.Services.Localization
 
                 // if ((!dicLocales.ContainsKey(localeCode)))
                 string locale = localeCode;
-                if (dicLocales.FirstOrDefault(x => x.Key.ToLower() == locale.ToLower()).Key == null)
+                if (dicLocales.FirstOrDefault(x => string.Equals(x.Key, locale, StringComparison.CurrentCultureIgnoreCase)).Key == null)
                 {
                     // if localecode is neutral (en, es,...) try to find a locale that has the same language
                     if (localeCode.IndexOf("-", StringComparison.Ordinal) == -1)
                     {
                         foreach (string strLocale in dicLocales.Keys)
                         {
-                            if (strLocale.Split('-')[0].ToLower() == localeCode.ToLower())
+                            if (string.Equals(strLocale.Split('-')[0], localeCode, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 // set the requested _localecode to the full locale
                                 localeCode = strLocale;
@@ -216,51 +258,48 @@ namespace DotNetNuke.Services.Localization
         /// <param name="locale">The locale.</param>
         public void UpdatePortalLocale(Locale locale)
         {
-            DataProvider.Instance().UpdatePortalLanguage(locale.PortalId, locale.LanguageId, locale.IsPublished, UserController.Instance.GetCurrentUserInfo().UserID);
+            this.dataProvider.UpdatePortalLanguage(locale.PortalId, locale.LanguageId, locale.IsPublished, this.userController.GetCurrentUserInfo().UserID);
             DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, locale.PortalId));
         }
 
         /// <summary>Determines the language whether is default language.</summary>
         /// <param name="code">The code.</param>
-        /// <returns><c>true</c> if the language is default language; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the language is default language; otherwise, <see langword="false"/>.</returns>
         public bool IsDefaultLanguage(string code)
         {
-            bool returnValue = code == PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage;
-            return returnValue;
+            return code == this.portalController.GetCurrentSettings().DefaultLanguage;
         }
 
         /// <summary>Activates the language without publishing it.</summary>
         /// <param name="portalid">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <param name="publish">if set to <c>true</c> will publish the language, otherwise will "un-publish".</param>
+        /// <param name="publish">if set to <see langword="true"/> will publish the language, otherwise will "un-publish".</param>
         public void ActivateLanguage(int portalid, string cultureCode, bool publish)
         {
-            Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
-            Locale enabledlanguage;
-            if (enabledLanguages.TryGetValue(cultureCode, out enabledlanguage))
+            Dictionary<string, Locale> enabledLanguages = this.GetLocales(portalid);
+            if (enabledLanguages.TryGetValue(cultureCode, out var enabledLanguage))
             {
-                enabledlanguage.IsPublished = publish;
-                Instance.UpdatePortalLocale(enabledlanguage);
+                enabledLanguage.IsPublished = publish;
+                this.UpdatePortalLocale(enabledLanguage);
             }
         }
 
         /// <summary>Publishes the language.</summary>
         /// <param name="portalid">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <param name="publish">if set to <c>true</c> will publish the language.</param>
+        /// <param name="publish">if set to <see langword="true"/> will publish the language.</param>
         public void PublishLanguage(int portalid, string cultureCode, bool publish)
         {
-            Dictionary<string, Locale> enabledLanguages = Instance.GetLocales(portalid);
-            Locale enabledlanguage;
-            if (enabledLanguages.TryGetValue(cultureCode, out enabledlanguage))
+            Dictionary<string, Locale> enabledLanguages = this.GetLocales(portalid);
+            if (enabledLanguages.TryGetValue(cultureCode, out var enabledLanguage))
             {
-                enabledlanguage.IsPublished = publish;
-                Instance.UpdatePortalLocale(enabledlanguage);
+                enabledLanguage.IsPublished = publish;
+                this.UpdatePortalLocale(enabledLanguage);
                 if (publish)
                 {
                     // only publish tabs if we actually need to do that
                     // we cannot "unpublish"
-                    TabController.Instance.PublishTabs(TabController.GetTabsBySortOrder(portalid, cultureCode, false));
+                    this.tabController.PublishTabs(TabController.GetTabsBySortOrder(portalid, cultureCode, false));
                 }
             }
         }
@@ -268,9 +307,10 @@ namespace DotNetNuke.Services.Localization
         private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
+            var dataProvider = (DataProvider)cacheItemArgs.ParamList[1];
             var languages = portalId > Null.NullInteger
-                ? DataProvider.Instance().GetLanguagesByPortal(portalId)
-                : DataProvider.Instance().GetLanguages();
+                ? dataProvider.GetLanguagesByPortal(portalId)
+                : dataProvider.GetLanguages();
             return CBO.FillDictionary(
                 "CultureCode",
                 languages,
