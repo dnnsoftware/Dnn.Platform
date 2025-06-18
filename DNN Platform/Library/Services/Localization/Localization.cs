@@ -1057,7 +1057,7 @@ namespace DotNetNuke.Services.Localization
 
         /// <summary>LoadCultureDropDownList loads a DropDownList with the list of supported cultures based on the languages defined in the supported locales file, for the current portal.</summary>
         /// <param name="list">DropDownList to load.</param>
-        /// <param name="displayType">Format of the culture to display. Must be one the CultureDropDownTypes values. <see cref="CultureDropDownTypes" /> for list of allowable values.</param>
+        /// <param name="displayType">Format of the culture to display. Must be one of the <see cref="CultureDropDownTypes"/>> values. <see cref="CultureDropDownTypes" /> for list of allowable values.</param>
         /// <param name="selectedValue">Name of the default culture to select.</param>
         public static void LoadCultureDropDownList(DropDownList list, CultureDropDownTypes displayType, string selectedValue)
         {

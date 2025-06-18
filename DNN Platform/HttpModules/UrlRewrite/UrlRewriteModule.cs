@@ -3,50 +3,58 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.HttpModules
 {
+    using System;
     using System.Web;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Urls;
-    using DotNetNuke.Framework.Providers;
     using DotNetNuke.HttpModules.UrlRewrite;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>An HTTP module to wire up URL rewriting.</summary>
     public class UrlRewriteModule : IHttpModule
     {
-        private string providerToUse;
-        private UrlRewriterBase urlRewriter;
+        private readonly UrlRewriterBase urlRewriter;
 
-        public string ModuleName
+        /// <summary>Initializes a new instance of the <see cref="UrlRewriteModule"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with UrlRewriterBase. Scheduled removal in v12.0.0.")]
+        public UrlRewriteModule()
+            : this(null)
         {
-            get { return "UrlRewriteModule"; }
         }
+
+        /// <summary>Initializes a new instance of the <see cref="UrlRewriteModule"/> class.</summary>
+        /// <param name="urlRewriter">The URL rewriter.</param>
+        public UrlRewriteModule(UrlRewriterBase urlRewriter)
+        {
+            this.urlRewriter = urlRewriter ?? GetUrlRewriterInstance(Globals.GetCurrentServiceProvider());
+        }
+
+        /// <summary>Gets the HttpModule module name.</summary>
+        public string ModuleName => "UrlRewriteModule";
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
-            this.providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
-
-            // bind events depending on currently configured friendly url provider
-            // note that the current configured friendly url provider determines what type
-            // of url rewriting is required.
-            switch (this.providerToUse)
-            {
-                case "advanced":
-                    var advancedRewriter = new AdvancedUrlRewriter();
-                    this.urlRewriter = advancedRewriter;
-
-                    // bind the rewrite event to the begin request event
-                    application.BeginRequest += this.urlRewriter.RewriteUrl;
-                    break;
-                default:
-                    var basicRewriter = new BasicUrlRewriter();
-                    this.urlRewriter = basicRewriter;
-                    application.BeginRequest += this.urlRewriter.RewriteUrl;
-                    break;
-            }
+            application.BeginRequest += this.urlRewriter.RewriteUrl;
         }
 
         /// <inheritdoc/>
         public void Dispose()
         {
+        }
+
+        /// <summary>Gets an instance of the URL rewriter.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <returns>A <see cref="UrlRewriterBase"/> instance.</returns>
+        internal static UrlRewriterBase GetUrlRewriterInstance(IServiceProvider serviceProvider)
+        {
+            var providerToUse = Common.Utilities.Config.GetFriendlyUrlProvider();
+            var createAdvancedRewriter = providerToUse == "advanced";
+            return createAdvancedRewriter
+                ? ActivatorUtilities.GetServiceOrCreateInstance<AdvancedUrlRewriter>(serviceProvider)
+                : ActivatorUtilities.GetServiceOrCreateInstance<BasicUrlRewriter>(serviceProvider);
         }
     }
 }

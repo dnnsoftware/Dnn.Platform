@@ -6,4 +6,5 @@
   <language name="Español" key="es-ES" fallback="en-US" />
   <language name="Italiano" key="it-IT" fallback="en-US" />
   <language name="Nederlands" key="nl-NL" fallback="en-US" />
+  <language name="Türkçe" key="tr-TR" fallback="en-US" />
 </root>

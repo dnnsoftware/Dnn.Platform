@@ -28,19 +28,19 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [auto create file thumb nails].</summary>
         /// <value>
-        ///  <c>true</c> if [auto create file thumb nails]; otherwise, <c>false</c>.
+        ///  <see langword="true"/> if [auto create file thumb nails]; otherwise, <see langword="false"/>.
         /// </value>
         public bool AutoCreateFileThumbNails { get; set; }
 
         /// <summary>Gets or sets a value indicating whether [use anchor selector].</summary>
         /// <value>
-        ///  <c>true</c> if [use anchor selector]; otherwise, <c>false</c>.
+        ///  <see langword="true"/> if [use anchor selector]; otherwise, <see langword="false"/>.
         /// </value>
         public bool UseAnchorSelector { get; set; }
 
         /// <summary>Gets or sets a value indicating whether [show page links tab first].</summary>
         /// <value>
-        ///  <c>true</c> if [show page links tab first]; otherwise, <c>false</c>.
+        ///  <see langword="true"/> if [show page links tab first]; otherwise, <see langword="false"/>.
         /// </value>
         public bool ShowPageLinksTabFirst { get; set; }
 

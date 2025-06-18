@@ -60,7 +60,7 @@ namespace DotNetNuke.Common.Internal
 
         /// <summary>Check whether the specific page is a host page.</summary>
         /// <param name="tabId">The tab ID.</param>
-        /// <returns>if <c>true</c> the tab is a host page; otherwise, it is not a host page.</returns>
+        /// <returns>if <see langword="true"/> the tab is a host page; otherwise, it is not a host page.</returns>
         bool IsHostTab(int tabId);
 
         /// <summary>Adds the current request's protocol (<c>"http://"</c> or <c>"https://"</c>) to the given URL, if it does not already have a protocol specified.</summary>
@@ -71,7 +71,7 @@ namespace DotNetNuke.Common.Internal
         /// <summary>Gets the portal domain name.</summary>
         /// <param name="strPortalAlias">The portal alias.</param>
         /// <param name="request">The request or <c>null</c>.</param>
-        /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
+        /// <param name="blnAddHTTP">if set to <see langword="true"/> calls <see cref="AddHTTP"/> on the result.</param>
         /// <returns>domain name.</returns>
         string GetPortalDomainName(string strPortalAlias, HttpRequest request, bool blnAddHTTP);
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.Common.Internal
 
         /// <summary>returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).</summary>
         /// <param name="requestedUri">The requested Uri.</param>
-        /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
+        /// <param name="parsePortNumber">if set to <see langword="true"/> [parse port number].</param>
         /// <returns>domain name.</returns>
         string GetDomainName(Uri requestedUri, bool parsePortNumber);
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Common.Internal
 
         /// <summary>Gets the login URL.</summary>
         /// <param name="returnURL">The URL to redirect to after logging in.</param>
-        /// <param name="override">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <param name="override">if set to <see langword="true"/>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <returns>Formatted URL.</returns>
         string LoginURL(string returnURL, bool @override);
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.Common.Internal
 
         /// <summary>Gets the URL to the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
         string NavigateURL(int tabID, bool isSuperTab);
 
@@ -165,7 +165,7 @@ namespace DotNetNuke.Common.Internal
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
@@ -174,7 +174,7 @@ namespace DotNetNuke.Common.Internal
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="language">The language code.</param>
@@ -190,7 +190,7 @@ namespace DotNetNuke.Common.Internal
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="language">The language code.</param>

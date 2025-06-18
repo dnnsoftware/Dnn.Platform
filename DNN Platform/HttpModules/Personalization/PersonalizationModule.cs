@@ -7,14 +7,13 @@ namespace DotNetNuke.HttpModules.Personalization
     using System.Web;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Personalization;
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>An <see cref="IHttpModule"/> which handles user personalization.</summary>
     public class PersonalizationModule : IHttpModule
     {
         private readonly PersonalizationController personalizationController;
@@ -29,24 +28,10 @@ namespace DotNetNuke.HttpModules.Personalization
         /// <param name="personalizationController">The personalization controller.</param>
         public PersonalizationModule(PersonalizationController personalizationController)
         {
-            if (personalizationController is not null)
-            {
-                this.personalizationController = personalizationController;
-            }
-            else
-            {
-                var serviceProvider = Globals.GetCurrentServiceProvider();
-                if (serviceProvider is not null)
-                {
-                    this.personalizationController = serviceProvider.GetRequiredService<PersonalizationController>();
-                }
-                else
-                {
-                    this.personalizationController = new PersonalizationController(new HostSettings(new HostController()));
-                }
-            }
+            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
         }
 
+        /// <summary>Gets the HttpModule module name.</summary>
         public string ModuleName => "PersonalizationModule";
 
         /// <inheritdoc/>
@@ -60,6 +45,9 @@ namespace DotNetNuke.HttpModules.Personalization
         {
         }
 
+        /// <summary>Handles the <see cref="HttpApplication.EndRequest"/> event.</summary>
+        /// <param name="s">The sender.</param>
+        /// <param name="e">The event args.</param>
         public void OnEndRequest(object s, EventArgs e)
         {
             HttpContext context = ((HttpApplication)s).Context;

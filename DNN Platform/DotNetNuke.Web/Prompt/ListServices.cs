@@ -5,7 +5,6 @@ namespace DotNetNuke.Web.Prompt
 {
     using System;
     using System.Linq;
-    using System.Net;
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Prompt;
@@ -48,8 +47,8 @@ namespace DotNetNuke.Web.Prompt
                         Service = this.GetTypeName(descriptor.ServiceType),
                         Implementation = this.GetImplementationText(descriptor),
                     })
-                .OrderBy(desc => desc.Service)
-                .ThenBy(desc => desc.Implementation)
+                .OrderBy(desc => desc.Service.Output)
+                .ThenBy(desc => desc.Implementation.Output)
                 .ToList();
             return new ConsoleResultModel
             {
@@ -58,29 +57,29 @@ namespace DotNetNuke.Web.Prompt
             };
         }
 
-        private string GetImplementationText(ServiceDescriptor descriptor)
+        private IConsoleOutput GetImplementationText(ServiceDescriptor descriptor)
         {
             if (descriptor.ImplementationInstance != null)
             {
-                return this.LocalizeString("Prompt_ListServices_ImplementationInstance");
+                return new HtmlOutput(this.LocalizeString("Prompt_ListServices_ImplementationInstance"));
             }
 
             if (descriptor.ImplementationFactory != null)
             {
-                return this.LocalizeString("Prompt_ListServices_ImplementationFactory");
+                return new HtmlOutput(this.LocalizeString("Prompt_ListServices_ImplementationFactory"));
             }
 
             return this.GetTypeName(descriptor.ImplementationType);
         }
 
-        private string GetTypeName(Type type)
+        private IConsoleOutput GetTypeName(Type type)
         {
             if (type == null)
             {
-                return this.LocalizeString("Prompt_ListServices_None");
+                return new HtmlOutput(this.LocalizeString("Prompt_ListServices_None"));
             }
 
-            return WebUtility.HtmlEncode(type.FullName ?? type.Name);
+            return new TextOutput(type.FullName ?? type.Name);
         }
     }
 }

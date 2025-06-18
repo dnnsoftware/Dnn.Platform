@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.UI.Services
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A Persona Bar API controller for the server summary.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
@@ -73,7 +74,6 @@ namespace Dnn.PersonaBar.UI.Services
         /// <summary>Returns update information about current framework version.</summary>
         /// <returns>A serialized FrameworkQueryDTO object.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetUpdateInfo()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());

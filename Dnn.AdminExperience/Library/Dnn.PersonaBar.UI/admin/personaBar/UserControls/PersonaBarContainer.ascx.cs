@@ -14,7 +14,6 @@ namespace Dnn.PersonaBar.UI.UserControls
     using Dnn.PersonaBar.Library.Controllers;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
@@ -55,10 +54,13 @@ namespace Dnn.PersonaBar.UI.UserControls
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
+        /// <summary>Gets a JSON representation of <see cref="IPersonaBarContainer.GetConfiguration"/>.</summary>
         public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
 
+        /// <summary>Gets the site's virtual application root path.</summary>
         public string AppPath => Globals.ApplicationPath;
 
+        /// <summary>Gets the client resource version number.</summary>
         public string BuildNumber => this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture);
 
         /// <inheritdoc/>

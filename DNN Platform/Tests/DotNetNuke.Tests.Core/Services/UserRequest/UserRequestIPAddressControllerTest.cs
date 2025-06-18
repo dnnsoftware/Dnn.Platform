@@ -64,7 +64,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [TestCase("111.111.111.111,123.112.11.33", "X-Forwarded-For")]
         [TestCase("111.111.111.111", "X-ProxyUser-Ip")]
         [TestCase("111.111.111.111,23.112.11.33", "X-ProxyUser-Ip")]
-
         public void UserRequestIPAddress_ShouldReturnIP_IfAnyHeaderIsPresent(string requestIp, string headerName)
         {
             // Arrange
@@ -83,7 +82,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         }
 
         [Test]
-
         public void UserRequestIPAddress_ShouldReturnIP_IfRemoteAddrServerVariablePresent()
         {
             // Arrange
@@ -104,7 +102,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         }
 
         [Test]
-
         public void UserRequestIPAddress_ShouldReturnIP_IfUserHostAddress()
         {
             // Arrange
@@ -122,7 +119,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [TestCase("abc.111.eer")]
         [TestCase("somedomain.com")]
         [TestCase("244.275.111.111")]
-
         public void UserRequestIPAddress_ShouldReturnEmptyString_IfIPAddressIsNotValid(string requestIp)
         {
             // Arrange

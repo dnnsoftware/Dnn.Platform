@@ -146,6 +146,7 @@ public interface IHostSettings
     public string HostUrl { get; }
 
     /// <summary>Gets the HttpCompression Algorithm.</summary>
+    /// <remarks>This value corresponds to a value from <c>DotNetNuke.HttpModules.Compression.Algorithms</c>.</remarks>
     public int HttpCompressionAlgorithm { get; }
 
     /// <summary>Gets size of the batch used to determine how many emails are sent per CoreMessaging Scheduler run.</summary>
@@ -250,6 +251,12 @@ public interface IHostSettings
 
     /// <summary>Gets a value indicating whether to put the entire instance into maintenance mode.</summary>
     public bool IsLocked { get; }
+
+    /// <summary>Gets a value indicating whether module titles should be allowed to include HTML.</summary>
+    public bool AllowRichTextModuleTitle { get; }
+
+    /// <summary>Gets a value indicating whether the skin/theme used for a page can be overridden using the <c>SkinSrc</c> query string parameter for non-editors.</summary>
+    public bool AllowOverrideThemeViaQueryString { get; }
 
     /// <summary>Gets or sets the PerformanceSettings.</summary>
     public PerformanceSettings PerformanceSetting { get; set; }

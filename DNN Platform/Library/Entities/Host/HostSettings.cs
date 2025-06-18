@@ -360,6 +360,12 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     public bool IsLocked => hostSettingsService.GetBoolean("IsLocked", false);
 
     /// <inheritdoc />
+    public bool AllowRichTextModuleTitle => hostSettingsService.GetBoolean("AllowRichTextModuleTitle", false);
+
+    /// <inheritdoc />
+    public bool AllowOverrideThemeViaQueryString => hostSettingsService.GetBoolean("AllowOverrideThemeViaQueryString", false);
+
+    /// <inheritdoc />
     public PerformanceSettings PerformanceSetting
     {
         get
