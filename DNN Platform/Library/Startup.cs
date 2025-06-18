@@ -112,6 +112,7 @@ namespace DotNetNuke
             services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
             services.AddTransient<IPortalSettingsController, PortalSettingsController>();
             services.AddTransient<IPortalAliasController, PortalAliasController>();
+            services.AddTransient<IPortalGroupController, PortalGroupController>();
             services.AddTransient<ILocaleController, LocaleController>();
             services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
             services.AddTransient<IRoleController, RoleController>();

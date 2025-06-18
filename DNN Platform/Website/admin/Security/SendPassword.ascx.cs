@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -24,32 +25,37 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Host = DotNetNuke.Entities.Host.Host;
-
     /// <summary>The SendPassword UserModuleBase is used to allow a user to retrieve their password.</summary>
     public partial class SendPassword : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
+        private readonly IMailSettings mailSettings;
 
         private UserInfo user;
         private int userCount = Null.NullInteger;
         private string ipAddress;
 
         /// <summary>Initializes a new instance of the <see cref="SendPassword"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public SendPassword()
-            : this(null, null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SendPassword"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public SendPassword(INavigationManager navigationManager, IEventLogger eventLogger)
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="mailSettings">The host settings.</param>
+        public SendPassword(INavigationManager navigationManager, IEventLogger eventLogger, IPortalController portalController, IMailSettings mailSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.mailSettings = mailSettings ?? this.DependencyProvider.GetRequiredService<IMailSettings>();
         }
 
         /// <summary>Gets the Redirect URL (after successful sending of password).</summary>
@@ -117,21 +123,9 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        protected bool UsernameDisabled
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
-            }
-        }
+        protected bool UsernameDisabled => PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false);
 
-        private bool ShowEmailField
-        {
-            get
-            {
-                return MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
-            }
-        }
+        private bool ShowEmailField => MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -160,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.divPassword.Visible = false;
             }
 
-            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled && !PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false))
+            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled && !PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false))
             {
                 this.lblHelp.Text += Localization.GetString("RequiresUniqueEmail", this.LocalResourceFile);
             }
@@ -228,7 +222,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
 
-                if (string.IsNullOrEmpty(Host.SMTPServer))
+                if (string.IsNullOrEmpty(this.mailSettings.GetServer(this.PortalId)))
                 {
                     // SMTP Server is not configured
                     canSend = false;
@@ -314,11 +308,10 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void GetUser()
         {
-            ArrayList arrUsers;
             if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
             {
-                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this.userCount);
-                if (arrUsers != null && arrUsers.Count == 1)
+                var arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this.userCount);
+                if (arrUsers is { Count: 1 })
                 {
                     this.user = (UserInfo)arrUsers[0];
                 }

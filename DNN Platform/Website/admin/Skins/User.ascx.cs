@@ -5,20 +5,18 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Services.Social.Notifications;
@@ -29,10 +27,28 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private const string MyFileName = "User.ascx";
         private readonly INavigationManager navigationManager;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
 
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public User()
+            : this(null, null, null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public User(INavigationManager navigationManager, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
             this.ShowUnreadMessages = true;
             this.ShowAvatar = true;
             this.LegacyMode = true;
@@ -161,14 +177,14 @@ namespace DotNetNuke.UI.Skins.Controls
 
                         if (this.ShowUnreadMessages)
                         {
-                            var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(userInfo.UserID, PortalController.GetEffectivePortalId(userInfo.PortalID));
-                            var unreadAlerts = NotificationsController.Instance.CountNotifications(userInfo.UserID, PortalController.GetEffectivePortalId(userInfo.PortalID));
+                            var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(userInfo.UserID, PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, userInfo.PortalID));
+                            var unreadAlerts = NotificationsController.Instance.CountNotifications(userInfo.UserID, PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, userInfo.PortalID));
 
                             this.messageLink.Text = unreadMessages > 0 ? string.Format(Localization.GetString("Messages", Localization.GetResourceFile(this, MyFileName)), unreadMessages) : Localization.GetString("NoMessages", Localization.GetResourceFile(this, MyFileName));
                             this.notificationLink.Text = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
 
-                            this.messageLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID));
-                            this.notificationLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID), "view=notifications", "action=notifications");
+                            this.messageLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, $"userId={userInfo.UserID}");
+                            this.notificationLink.NavigateUrl = this.navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, $"userId={userInfo.UserID}", "view=notifications", "action=notifications");
                             this.notificationLink.ToolTip = Localization.GetString("CheckNotifications", Localization.GetResourceFile(this, MyFileName));
                             this.messageLink.ToolTip = Localization.GetString("CheckMessages", Localization.GetResourceFile(this, MyFileName));
                             this.messageGroup.Visible = true;
