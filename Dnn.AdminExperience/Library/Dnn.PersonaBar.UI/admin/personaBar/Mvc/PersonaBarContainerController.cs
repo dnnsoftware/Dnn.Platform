@@ -4,24 +4,17 @@
 
 namespace DotNetNuke.Framework.Controllers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Net.NetworkInformation;
-    using System.Security.Policy;
-    using System.Web;
     using System.Web.Mvc;
 
     using Dnn.PersonaBar.Library.Containers;
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.UI.Controllers;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
@@ -29,24 +22,49 @@ namespace DotNetNuke.Framework.Controllers
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>
+    /// Controller for managing the Persona Bar container in the DNN platform.
+    /// </summary>
     public class PersonaBarContainerController : Controller
     {
-        private readonly IPersonaBarContainer personaBarContainer = Dnn.PersonaBar.Library.Containers.PersonaBarContainer.Instance;
+        private readonly IHostSettings hostSettings;
+        private readonly IPersonaBarContainer personaBarContainer;
 
-        public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
-
-        public string AppPath => Globals.ApplicationPath;
-
-        public string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
-
-        protected PortalSettings PortalSettings
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersonaBarContainerController"/> class.
+        /// </summary>
+        /// <param name="hostSettings">The host settings used to configure the Persona Bar container controller.</param>
+        /// <param name="personaBarContainer">The personalbar container used to configure the Persona Bar container controller.</param>
+        public PersonaBarContainerController(IHostSettings hostSettings, IPersonaBarContainer personaBarContainer)
         {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
+            this.personaBarContainer = personaBarContainer;
+            this.hostSettings = hostSettings;
         }
 
+        /// <summary>
+        /// Gets the Persona Bar settings as a JSON string.
+        /// </summary>
+        public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
+
+        /// <summary>
+        /// Gets the application path.
+        /// </summary>
+        public string AppPath => Globals.ApplicationPath;
+
+        /// <summary>
+        /// Gets the build number of the application.
+        /// </summary>
+        public string BuildNumber => this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture);
+
+        /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
+        protected PortalSettings PortalSettings => PortalSettings.Current;
+
+        /// <summary>
+        /// Returns the default view for the Persona Bar container.
+        /// </summary>
+        /// <returns>An <see cref="ActionResult"/> representing the view.</returns>
         public ActionResult Index()
         {
             return this.View(new PersonaBarContainerModel()
@@ -58,6 +76,10 @@ namespace DotNetNuke.Framework.Controllers
             });
         }
 
+        /// <summary>
+        /// Determines whether the Persona Bar should be injected into the page.
+        /// </summary>
+        /// <returns><c>true</c> if the Persona Bar should be injected; otherwise, <c>false</c>.</returns>
         private bool InjectPersonaBar()
         {
             if (!this.personaBarContainer.Visible)
@@ -90,6 +112,9 @@ namespace DotNetNuke.Framework.Controllers
             return true;
         }
 
+        /// <summary>
+        /// Registers the Persona Bar stylesheet.
+        /// </summary>
         private void RegisterPersonaBarStyleSheet()
         {
             MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
