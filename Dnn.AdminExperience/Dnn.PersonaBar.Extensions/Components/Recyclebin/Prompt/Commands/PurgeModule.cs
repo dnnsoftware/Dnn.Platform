@@ -21,11 +21,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class PurgeModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_PurgeModule_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_PurgeModule_FlagPageId", "Integer", true)]
-
         private const string FlagPageId = "pageid";
 
         /// <inheritdoc/>

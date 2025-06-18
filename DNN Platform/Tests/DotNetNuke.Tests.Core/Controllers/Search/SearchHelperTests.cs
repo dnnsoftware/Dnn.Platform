@@ -45,7 +45,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
             ComponentFactory.Container = new SimpleContainer();
@@ -72,7 +71,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchHelper_GetSynonyms_Two_Terms_Returns_Correct_Results()
         {
             // Arrange
@@ -89,7 +87,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
-
         public void SearchHelper_GetSynonyms_Three_Terms_Returns_Correct_Results()
         {
             // Arrange

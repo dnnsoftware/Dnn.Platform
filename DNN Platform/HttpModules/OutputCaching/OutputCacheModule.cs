@@ -70,10 +70,14 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 return;
             }
 
-            var portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            int tabId = portalSettings.ActiveTab.TabID;
+            var portalSettings = (PortalSettings)HttpContextSource.Current.Items["PortalSettings"];
+            var tabId = portalSettings?.ActiveTab?.TabID;
+            if (tabId == null)
+            {
+                return;
+            }
 
-            Hashtable tabSettings = TabController.Instance.GetTabSettings(tabId);
+            Hashtable tabSettings = TabController.Instance.GetTabSettings(tabId.Value);
 
             if (tabSettings["CacheProvider"] == null || string.IsNullOrEmpty(tabSettings["CacheProvider"].ToString()))
             {
@@ -104,13 +108,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 maxCachedVariationsForTab = Convert.ToInt32(tabSettings["MaxVaryByCount"].ToString());
             }
 
-            var includeVaryByKeys = new StringCollection();
-            includeVaryByKeys.Add("ctl");
-            includeVaryByKeys.Add("returnurl");
-            includeVaryByKeys.Add("tabid");
-            includeVaryByKeys.Add("portalid");
-            includeVaryByKeys.Add("locale");
-            includeVaryByKeys.Add("alias");
+            var includeVaryByKeys = new StringCollection
+            {
+                "ctl",
+                "returnurl",
+                "tabid",
+                "portalid",
+                "locale",
+                "alias",
+            };
 
             // make sure to always add keys in lowercase only
             if (includeExclude == IncludeExcludeType.ExcludeByDefault)
@@ -200,9 +206,9 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 varyBy.Add("alias", ((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias);
             }
 
-            string cacheKey = OutputCachingProvider.Instance(tabOutputCacheProvider).GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy);
+            string cacheKey = OutputCachingProvider.Instance(tabOutputCacheProvider).GenerateCacheKey(tabId.Value, includeVaryByKeys, excludeVaryByKeys, varyBy);
 
-            bool returnedFromCache = OutputCachingProvider.Instance(tabOutputCacheProvider).StreamOutput(tabId, cacheKey, this.app.Context);
+            bool returnedFromCache = OutputCachingProvider.Instance(tabOutputCacheProvider).StreamOutput(tabId.Value, cacheKey, this.app.Context);
 
             if (returnedFromCache)
             {

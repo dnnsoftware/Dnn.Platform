@@ -8,6 +8,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     using System.Net;
     using System.Threading;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -24,6 +25,20 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SimpleWebFarmCachingProvider));
 
         private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
+
+        /// <summary>Initializes a new instance of the <see cref="SimpleWebFarmCachingProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public SimpleWebFarmCachingProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SimpleWebFarmCachingProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public SimpleWebFarmCachingProvider(IHostSettings hostSettings)
+            : base(hostSettings)
+        {
+        }
 
         /// <inheritdoc/>
         public override void Clear(string type, string data)

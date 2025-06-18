@@ -24,11 +24,28 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Services used for common components.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ComponentsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
+        private readonly RoleProvider roleProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="ComponentsController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
+        public ComponentsController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ComponentsController"/> class.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        public ComponentsController(RoleProvider roleProvider)
+        {
+            this.roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+        }
 
         /// <summary>Gets the local resource file path.</summary>
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
@@ -53,7 +70,7 @@ namespace Dnn.PersonaBar.UI.Services
                     DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, this.PortalId));
                 }
 
-                var groups = RoleController.GetRoleGroups(this.PortalId)
+                var groups = RoleController.GetRoleGroups(this.roleProvider, this.PortalId)
                                 .Cast<RoleGroupInfo>()
                                 .Select(RoleGroupDto.FromRoleGroupInfo);
 

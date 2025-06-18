@@ -1160,7 +1160,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>A paged list of `ApiToken` objects for the specified portal and page.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage GetApiTokens(int portalId, int filter, string apiKey, int scope, int pageIndex, int pageSize)
         {
             if (portalId < 0)
@@ -1256,7 +1255,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>A new <see cref="ApiToken"/> object.</returns>
         [HttpPost]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage CreateApiToken(CreateApiTokenRequest data)
         {
             var settings = ApiTokenSettings.GetSettings(this.PortalId);
@@ -1333,7 +1331,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>An HTTP response message with a boolean value indicating whether the token was successfully revoked or deleted.</returns>
         [HttpPost]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage RevokeOrDeleteApiToken(RevokeDeleteApiTokenRequest data)
         {
             var token = this.apiTokenController.GetApiToken(data.ApiTokenId);

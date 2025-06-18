@@ -74,7 +74,6 @@ namespace Dnn.PersonaBar.UI.Services
         /// <summary>Returns update information about current framework version.</summary>
         /// <returns>A serialized FrameworkQueryDTO object.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetUpdateInfo()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());
