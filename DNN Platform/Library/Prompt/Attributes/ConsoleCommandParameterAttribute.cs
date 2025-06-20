@@ -5,6 +5,7 @@ namespace DotNetNuke.Prompt
 {
     using System;
 
+    /// <summary>An attribute decorating a property representing a parameter to a Prompt command.</summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class ConsoleCommandParameterAttribute : Attribute
     {
@@ -50,7 +51,7 @@ namespace DotNetNuke.Prompt
         /// <summary>Gets or sets the name used in commands to access this parameter.</summary>
         public string Name { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether the parameter is required.</summary>
+        /// <summary>Gets or sets a value indicating whether the parameter is required.</summary>
         public bool Required { get; set; }
 
         /// <summary>Gets or sets the default value serialized as string.</summary>

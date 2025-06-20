@@ -33,7 +33,6 @@ namespace Dnn.PersonaBar.Servers.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetApplicationInfo()
         {
             try

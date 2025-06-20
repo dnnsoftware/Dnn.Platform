@@ -29,8 +29,10 @@ namespace DNNConnect.CKEditorProvider.Browser
     using DNNConnect.CKEditorProvider.Utilities;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
@@ -60,14 +62,11 @@ namespace DNNConnect.CKEditorProvider.Browser
     [ScriptService]
     public partial class Browser : PageBase
     {
-        private const string FileItemDisplayFormat =
-            "<span class=\"FileName\">{2}</span><br /><span class=\"FileInfo\">{0}: {3}</span><br /><span class=\"FileInfo\">{1}: {4}</span>";
-
         /// <summary>The allowed flash extensions.</summary>
-        private static readonly ISet<string> AllowedFlashExtensions = new HashSet<string>(new[] { "swf", "flv", "mp3" }, StringComparer.OrdinalIgnoreCase);
+        private static readonly ISet<string> AllowedFlashExtensions = new HashSet<string>(["swf", "flv", "mp3"], StringComparer.OrdinalIgnoreCase);
 
         /// <summary>The allowed image extensions.</summary>
-        private static readonly ISet<string> AllowedImageExtensions = new HashSet<string>(new[] { "bmp", "gif", "jpeg", "jpg", "png", "svg" }, StringComparer.OrdinalIgnoreCase);
+        private static readonly ISet<string> AllowedImageExtensions = new HashSet<string>(["bmp", "gif", "jpeg", "jpg", "png", "svg"], StringComparer.OrdinalIgnoreCase);
 
         /// <summary>The Image or Link that is selected inside the Editor.</summary>
         private static string ckFileUrl;
@@ -76,6 +75,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         private readonly HttpRequest request = HttpContext.Current.Request;
 
         private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IPortalAliasService portalAliasService;
 
         /// <summary>Current Settings Base.</summary>
         private EditorProviderSettings currentSettings = new EditorProviderSettings();
@@ -94,49 +99,46 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Initializes a new instance of the <see cref="Browser"/> class.</summary>
         public Browser()
-            : this(null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Browser"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        public Browser(IHostSettings hostSettings)
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public Browser(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalController portalController, IPermissionDefinitionService permissionDefinitionService, IPortalAliasService portalAliasService)
+            : base(portalController, appStatus, hostSettings)
         {
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
+            this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+            this.permissionDefinitionService = permissionDefinitionService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPermissionDefinitionService>();
+            this.portalAliasService = portalAliasService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalAliasService>();
         }
 
         /// <summary>Gets or sets the accept file types.</summary>
-        /// <value>
-        /// The accept file types.
-        /// </value>
+        /// <value>The accept file types.</value>
         public string AcceptFileTypes
         {
-            get
-            {
-                return this.ViewState["AcceptFileTypes"] != null ? this.ViewState["AcceptFileTypes"].ToString() : ".*";
-            }
-
-            set
-            {
-                this.ViewState["AcceptFileTypes"] = value;
-            }
+            get => this.ViewState["AcceptFileTypes"] != null ? this.ViewState["AcceptFileTypes"].ToString() : ".*";
+            set => this.ViewState["AcceptFileTypes"] = value;
         }
 
-        /// <summary>  Gets Current Language from Url.</summary>
+        /// <summary>Gets Current Language from Url.</summary>
         protected string LanguageCode
         {
-            get
-            {
-                return !string.IsNullOrEmpty(this.request.QueryString["lang"])
-                           ? this.request.QueryString["lang"]
-                           : "en-US";
-            }
+            get => !string.IsNullOrEmpty(this.request.QueryString["lang"]) ? this.request.QueryString["lang"] : "en-US";
         }
 
         /// <summary>Gets the Name for the Current Resource file name.</summary>
-        /// <value>
-        /// The resource executable file.
-        /// </value>
+        /// <value>The resource executable file.</value>
         protected string ResXFile
         {
             get
@@ -154,9 +156,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets the maximum size of the upload.</summary>
-        /// <value>
-        /// The maximum size of the upload.
-        /// </value>
+        /// <value>The maximum size of the upload.</value>
         protected long MaxUploadSize
         {
             get
@@ -188,26 +188,15 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets the files table.</summary>
-        /// <value>
-        /// The files table.
-        /// </value>
-        private DataTable FilesTable
+        /// <value>The files table.</value>
+        private IEnumerable<BrowserFile> FilesTable
         {
-            get
-            {
-                return this.ViewState["FilesTable"] as DataTable;
-            }
-
-            set
-            {
-                this.ViewState["FilesTable"] = value;
-            }
+            get => this.ViewState["FilesTable"] as IEnumerable<BrowserFile>;
+            set => this.ViewState["FilesTable"] = value;
         }
 
         /// <summary>Gets or sets a value indicating whether [sort files Ascending].</summary>
-        /// <value>
-        ///   <c>true</c> if [sort files Ascending].
-        /// </value>
+        /// <value><see langword="true"/> if [sort files Ascending].</value>
         private bool SortFilesAscending
         {
             get
@@ -223,9 +212,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets a value indicating whether [sort files descending].</summary>
-        /// <value>
-        ///   <c>true</c> if [sort files descending].
-        /// </value>
+        /// <value><see langword="true"/> if [sort files descending].</value>
         private bool SortFilesDescending
         {
             get
@@ -241,9 +228,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets a value indicating whether [sort files by Ascending Date].</summary>
-        /// <value>
-        ///   <c>true</c> if [sort files by ascending date].
-        /// </value>
+        /// <value><see langword="true"/> if [sort files by ascending date].</value>
         private bool SortFilesDateAscending
         {
             get
@@ -259,9 +244,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Gets or sets a value indicating whether [sort files by descending Date].</summary>
-        /// <value>
-        ///   <c>true</c> if [sort files by descending date]; otherwise sort by ascending Date.
-        /// </value>
+        /// <value><see langword="true"/> if [sort files by descending date]; otherwise sort by ascending Date.</value>
         private bool SortFilesDateDescending
         {
             get
@@ -277,9 +260,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Set the file url from JavaScript to code.</summary>
-        /// <param name="fileUrl">
-        /// The file url.
-        /// </param>
+        /// <param name="fileUrl">The file url.</param>
         [WebMethod]
         public static void SetFile(string fileUrl)
         {
@@ -288,28 +269,16 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Get all Files and Put them in a DataTable for the GridView.</summary>
         /// <param name="currentFolderInfo">The current folder info.</param>
-        /// <returns>
-        /// The File Table.
-        /// </returns>
-        public DataTable GetFiles(IFolderInfo currentFolderInfo)
+        /// <returns>The Files.</returns>
+        public List<BrowserFile> GetFiles(IFolderInfo currentFolderInfo)
         {
             var sizeResx = this.LocalizeString("Size.Text");
             var createdResx = this.LocalizeString("Created.Text");
 
-            var filesTable = new DataTable();
-
-            filesTable.Columns.Add(new DataColumn("FileName", typeof(string)));
-            filesTable.Columns.Add(new DataColumn("PictureURL", typeof(string)));
-            filesTable.Columns.Add(new DataColumn("Info", typeof(string)));
-            filesTable.Columns.Add(new DataColumn("FileId", typeof(int)));
-
-            HttpRequest httpRequest = HttpContext.Current.Request;
-
-            var type = "Link";
-
-            if (!string.IsNullOrEmpty(httpRequest.QueryString["Type"]))
+            var type = HttpContext.Current.Request.QueryString["Type"];
+            if (string.IsNullOrEmpty(type))
             {
-                type = httpRequest.QueryString["Type"];
+                type = "Link";
             }
 
             // Get the files
@@ -335,10 +304,8 @@ namespace DNNConnect.CKEditorProvider.Browser
                 Utility.SortDescending(files, item => item.CreatedOnDate);
             }
 
-            foreach (var fileItem in files)
+            return files.Select(fileItem =>
             {
-                var item = fileItem;
-
                 var name = fileItem.FileName;
                 var extension = fileItem.Extension;
 
@@ -348,117 +315,89 @@ namespace DNNConnect.CKEditorProvider.Browser
                     extension = Path.GetExtension(name);
                 }
 
+                var infoHtml =
+                    $"""
+                     <span class="FileName">{WebUtility.HtmlEncode(name)}</span><br />
+                     <span class="FileInfo">{WebUtility.HtmlEncode(sizeResx)}: {fileItem.Size}</span><br />
+                     <span class="FileInfo">{WebUtility.HtmlEncode(createdResx)}: {fileItem.LastModificationTime}</span>
+                     """;
                 switch (type)
                 {
                     case "Image":
                         {
                             if (AllowedImageExtensions.Contains(extension))
                             {
-                                var dr = filesTable.NewRow();
-
-                                dr["PictureURL"] = FileManager.Instance.GetUrl(fileItem);
-                                dr["FileName"] = name;
-                                dr["FileId"] = item.FileId;
-
-                                dr["Info"] = string.Format(
-                                    FileItemDisplayFormat,
-                                    sizeResx,
-                                    createdResx,
-                                    name,
-                                    fileItem.Size,
-                                    fileItem.LastModificationTime);
-
-                                filesTable.Rows.Add(dr);
+                                return new BrowserFile
+                                {
+                                    PictureUrl = FileManager.Instance.GetUrl(fileItem),
+                                    FileName = name,
+                                    FileId = fileItem.FileId,
+                                    InfoHtml = infoHtml,
+                                };
                             }
                         }
 
-                        break;
+                        return null;
                     case "Flash":
                         {
                             if (AllowedFlashExtensions.Contains(extension))
                             {
-                                var dr = filesTable.NewRow();
-
-                                dr["PictureURL"] = "images/types/swf.png";
-
-                                dr["Info"] = string.Format(
-                                    FileItemDisplayFormat,
-                                    sizeResx,
-                                    createdResx,
-                                    name,
-                                    fileItem.Size,
-                                    fileItem.LastModificationTime);
-
-                                dr["FileName"] = name;
-                                dr["FileId"] = item.FileId;
-
-                                filesTable.Rows.Add(dr);
+                                return new BrowserFile
+                                {
+                                    PictureUrl = "images/types/swf.png",
+                                    FileName = name,
+                                    FileId = fileItem.FileId,
+                                    InfoHtml = infoHtml,
+                                };
                             }
                         }
 
-                        break;
-
+                        return null;
                     default:
+                        if (extension.StartsWith("."))
                         {
-                            if (extension.StartsWith("."))
-                            {
-                                extension = extension.Replace(".", string.Empty);
-                            }
-
-                            if (extension.Count() <= 1 || !this.extensionWhiteList.IsAllowedExtension(extension))
-                            {
-                                continue;
-                            }
-
-                            DataRow dr = filesTable.NewRow();
-
-                            var imageExtension = string.Format("images/types/{0}.png", extension);
-
-                            if (File.Exists(this.MapPath(imageExtension)))
-                            {
-                                dr["PictureURL"] = imageExtension;
-                            }
-                            else
-                            {
-                                dr["PictureURL"] = "images/types/unknown.png";
-                            }
-
-                            if (AllowedImageExtensions.Any(sAllowImgExt => name.EndsWith(sAllowImgExt, StringComparison.OrdinalIgnoreCase)))
-                            {
-                                dr["PictureUrl"] = FileManager.Instance.GetUrl(fileItem);
-                            }
-
-                            dr["FileName"] = name;
-                            dr["FileId"] = fileItem.FileId;
-
-                            dr["Info"] = string.Format(
-                                FileItemDisplayFormat,
-                                sizeResx,
-                                createdResx,
-                                name,
-                                fileItem.Size,
-                                fileItem.LastModificationTime);
-
-                            filesTable.Rows.Add(dr);
+                            extension = extension.Replace(".", string.Empty);
                         }
 
-                        break;
-                }
-            }
+                        if (extension.Length <= 1 || !this.extensionWhiteList.IsAllowedExtension(extension))
+                        {
+                            return null;
+                        }
 
-            return filesTable;
+                        string pictureUrl;
+                        if (AllowedImageExtensions.Any(sAllowImgExt => name.EndsWith(sAllowImgExt, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            pictureUrl = FileManager.Instance.GetUrl(fileItem);
+                        }
+                        else
+                        {
+                            pictureUrl = $"images/types/{extension}.png";
+                            if (!File.Exists(this.MapPath(pictureUrl)))
+                            {
+                                pictureUrl = "images/types/unknown.png";
+                            }
+                        }
+
+                        return new BrowserFile
+                        {
+                            PictureUrl = pictureUrl,
+                            FileName = name,
+                            FileId = fileItem.FileId,
+                            InfoHtml = infoHtml,
+                        };
+                }
+            }).Where(file => file is not null)
+            .ToList();
         }
 
         /// <summary>Register JavaScripts and CSS.</summary>
-        /// <param name="e">
-        /// The Event Args.
-        /// </param>
+        /// <param name="e">The Event Args.</param>
         protected override void OnPreRender(EventArgs e)
         {
             this.LoadFavIcon();
 
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalSettings, CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalSettings, CommonJs.jQueryUI);
             ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/Browser.js"));
             ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.ImageSlider.js"));
             ClientResourceManager.RegisterScript(this.Page, this.ResolveUrl("js/jquery.cropzoom.js"));
@@ -491,25 +430,20 @@ namespace DNNConnect.CKEditorProvider.Browser
                     int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
                 string fileName = null;
-                var domainName = string.Format("http://{0}", Globals.GetDomainName(this.Request, true));
+                var domainName = $"http://{Globals.GetDomainName(this.Request, true)}";
 
                 // Add Language Parameter ?!
                 var localeSelected = this.LanguageRow.Visible && this.LanguageList.SelectedIndex > 0;
 
-                var friendlyUrl = localeSelected
-                                      ? Globals.FriendlyUrl(
-                                          selectTab,
-                                          string.Format(
-                                              "{0}&language={1}",
-                                              Globals.ApplicationURL(selectTab.TabID),
-                                              this.LanguageList.SelectedValue),
-                                          this.portalSettings)
-                                      : Globals.FriendlyUrl(
-                                          selectTab, Globals.ApplicationURL(selectTab.TabID), this.portalSettings);
+                var friendlyUrlPath = localeSelected
+                    ? $"{Globals.ApplicationURL(selectTab.TabID)}&language={this.LanguageList.SelectedValue}"
+                    : Globals.ApplicationURL(selectTab.TabID);
+
+                var friendlyUrl = Globals.FriendlyUrl(selectTab, friendlyUrlPath, this.portalSettings);
 
                 var locale = localeSelected
-                                 ? string.Format("language/{0}/", this.LanguageList.SelectedValue)
-                                 : string.Empty;
+                    ? $"language/{this.LanguageList.SelectedValue}/"
+                    : string.Empty;
 
                 // Relative or Absolute Url
                 switch (this.rblLinkType.SelectedValue)
@@ -518,17 +452,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                         {
                             if (this.chkHumanFriendy.Checked)
                             {
-                                fileName = friendlyUrl;
-
-                                fileName =
-                                    Globals.ResolveUrl(
-                                        Regex.Replace(fileName, domainName, "~", RegexOptions.IgnoreCase));
+                                fileName = Globals.ResolveUrl(Regex.Replace(friendlyUrl, domainName, "~", RegexOptions.IgnoreCase));
                             }
                             else
                             {
-                                fileName =
-                                    Globals.ResolveUrl(
-                                        string.Format("~/tabid/{0}/{1}Default.aspx", selectTab.TabID, locale));
+                                fileName = Globals.ResolveUrl($"~/tabid/{selectTab.TabID}/{locale}Default.aspx");
                             }
 
                             break;
@@ -538,15 +466,11 @@ namespace DNNConnect.CKEditorProvider.Browser
                         {
                             if (this.chkHumanFriendy.Checked)
                             {
-                                fileName = friendlyUrl;
-
-                                fileName = Regex.Replace(
-                                    fileName, domainName, string.Format("{0}", domainName), RegexOptions.IgnoreCase);
+                                fileName = Regex.Replace(friendlyUrl, domainName, domainName, RegexOptions.IgnoreCase);
                             }
                             else
                             {
-                                fileName = string.Format(
-                                    "{2}/tabid/{0}/{1}Default.aspx", selectTab.TabID, locale, domainName);
+                                fileName = $"{domainName}/tabid/{selectTab.TabID}/{locale}Default.aspx";
                             }
                         }
 
@@ -556,7 +480,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 // Add Page Anchor if one is selected
                 if (this.AnchorList.SelectedIndex > 0 && this.AnchorList.Items.Count > 1)
                 {
-                    fileName = string.Format("{0}#{1}", fileName, this.AnchorList.SelectedItem.Text);
+                    fileName = $"{fileName}#{this.AnchorList.SelectedItem.Text}";
                 }
 
                 this.Response.Write("<script type=\"text/javascript\">");
@@ -575,7 +499,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                     if (this.rblLinkType.SelectedValue.Equals("absLnk", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        filePath = this.BuildAbsoluteUrl(filePath);
+                        filePath = BuildAbsoluteUrl(filePath);
                     }
 
                     this.Response.Write("<script type=\"text/javascript\">");
@@ -596,21 +520,19 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        /// <summary>Gets the java script code.</summary>
+        /// <summary>Gets the JavaScript code.</summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="fileUrl">The file URL.</param>
-        /// <param name="isPageLink">if set to <c>true</c> [is page link].</param>
-        /// <returns>
-        /// Returns the java script code.
-        /// </returns>
+        /// <param name="isPageLink">if set to <see langword="true"/> [is page link].</param>
+        /// <returns>Returns the JavaScript code.</returns>
         protected virtual string GetJavaScriptCode(string fileName, string fileUrl, bool isPageLink)
         {
             if (!string.IsNullOrEmpty(fileUrl) && !string.IsNullOrEmpty(fileName))
             {
                 // If we have both, combine them
                 fileUrl = !fileUrl.EndsWith("/")
-                               ? string.Format("{0}/{1}", fileUrl, fileName)
-                               : string.Format("{0}{1}", fileUrl, fileName);
+                    ? $"{fileUrl}/{fileName}"
+                    : $"{fileUrl}{fileName}";
             }
             else if (string.IsNullOrEmpty(fileUrl))
             {
@@ -633,10 +555,8 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
             }
 
-            HttpRequest httpRequest = HttpContext.Current.Request;
-
             // string _CKEditorName = httpRequest.QueryString["CKEditor"];
-            string funcNum = httpRequest.QueryString["CKEditorFuncNum"];
+            string funcNum = HttpContext.Current.Request.QueryString["CKEditorFuncNum"];
 
             string errorMsg = string.Empty;
 
@@ -650,12 +570,10 @@ namespace DNNConnect.CKEditorProvider.Browser
                     HttpUtility.JavaScriptStringEncode(errorMsg));
         }
 
-        /// <summary>Gets the java script upload code.</summary>
+        /// <summary>Gets the JavaScript upload code.</summary>
         /// <param name="fileName">The file name.</param>
         /// <param name="fileUrl">The file url.</param>
-        /// <returns>
-        /// Returns the formatted java script block.
-        /// </returns>
+        /// <returns>Returns the formatted JavaScript block.</returns>
         protected virtual string GetJsUploadCode(string fileName, string fileUrl)
         {
             fileUrl = string.Format(!fileUrl.EndsWith("/") ? "{0}/{1}" : "{0}{1}", fileUrl, fileName);
@@ -789,7 +707,7 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalSettings, CommonJs.jQuery);
 
             this.SetSortButtonClasses();
 
@@ -814,49 +732,39 @@ namespace DNNConnect.CKEditorProvider.Browser
                 SettingConstants.HostKey,
                 null);
 
-            switch (this.currentSettings.SettingMode)
+            this.currentSettings = this.currentSettings.SettingMode switch
             {
-                case SettingsMode.Default:
-                    // Load Default Settings
-                    this.currentSettings = SettingsUtil.GetDefaultSettings(
-                        this.portalSettings,
-                        this.portalSettings.HomeDirectoryMapPath,
-                        objProvider.Attributes["ck_configFolder"],
-                        portalRoles);
-                    break;
-                case SettingsMode.Host:
-                    this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                        this.portalSettings,
-                        this.currentSettings,
-                        settingsDictionary,
-                        SettingConstants.HostKey,
-                        null);
-                    break;
-                case SettingsMode.Portal:
-                    this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                        this.portalSettings,
-                        this.currentSettings,
-                        settingsDictionary,
-                        SettingConstants.PortalKey(this.request.QueryString["PortalID"]),
-                        portalRoles);
-                    break;
-                case SettingsMode.Page:
-                    this.currentSettings = SettingsUtil.LoadEditorSettingsByKey(
-                        this.portalSettings,
-                        this.currentSettings,
-                        settingsDictionary,
-                        $"DNNCKT#{this.request.QueryString["tabid"]}#",
-                        portalRoles);
-                    break;
-                case SettingsMode.ModuleInstance:
-                    this.currentSettings = SettingsUtil.LoadModuleSettings(
-                        this.portalSettings,
-                        this.currentSettings,
-                        $"DNNCKMI#{this.request.QueryString["mid"]}#INS#{this.request.QueryString["ckId"]}#",
-                        int.Parse(this.request.QueryString["mid"]),
-                        portalRoles);
-                    break;
-            }
+                SettingsMode.Default => SettingsUtil.GetDefaultSettings(
+                    this.portalSettings,
+                    this.portalSettings.HomeDirectoryMapPath,
+                    objProvider.Attributes["ck_configFolder"],
+                    portalRoles),
+                SettingsMode.Host => SettingsUtil.LoadEditorSettingsByKey(
+                    this.portalSettings,
+                    this.currentSettings,
+                    settingsDictionary,
+                    SettingConstants.HostKey,
+                    null),
+                SettingsMode.Portal => SettingsUtil.LoadEditorSettingsByKey(
+                    this.portalSettings,
+                    this.currentSettings,
+                    settingsDictionary,
+                    SettingConstants.PortalKey(this.request.QueryString["PortalID"]),
+                    portalRoles),
+                SettingsMode.Page => SettingsUtil.LoadEditorSettingsByKey(
+                    this.portalSettings,
+                    this.currentSettings,
+                    settingsDictionary,
+                    $"DNNCKT#{this.request.QueryString["tabid"]}#",
+                    portalRoles),
+                SettingsMode.ModuleInstance => SettingsUtil.LoadModuleSettings(
+                    this.portalSettings,
+                    this.currentSettings,
+                    $"DNNCKMI#{this.request.QueryString["mid"]}#INS#{this.request.QueryString["ckId"]}#",
+                    int.Parse(this.request.QueryString["mid"]),
+                    portalRoles),
+                _ => this.currentSettings,
+            };
 
             // set current Upload file size limit
             this.currentSettings.UploadFileSizeLimit = SettingsUtil.GetCurrentUserUploadSize(
@@ -887,7 +795,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     {
                         this.browserModus = this.request.QueryString["Type"];
                         var browserModusText = this.LocalizeString("lblBrowserModus.Text");
-                        var browserModusTypeKey = string.Format("BrowserModus.{0}.Text", this.browserModus);
+                        var browserModusTypeKey = $"BrowserModus.{this.browserModus}.Text";
                         var browserModusTypeText = this.LocalizeString(browserModusTypeKey);
                         this.lblModus.Text = string.Format(browserModusText, browserModusTypeText);
 
@@ -895,7 +803,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         {
                             this.AcceptFileTypes = this.GetAcceptedFileTypes();
 
-                            this.title.Text = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblModus.Text);
+                            this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
                             this.AnchorList.Visible = this.currentSettings.UseAnchorSelector;
                             this.LabelAnchor.Visible = this.currentSettings.UseAnchorSelector;
@@ -903,15 +811,12 @@ namespace DNNConnect.CKEditorProvider.Browser
                             this.ListViewState.Value = this.currentSettings.FileListViewMode.ToString();
 
                             // Set default link mode
-                            switch (this.currentSettings.DefaultLinkMode)
+                            this.rblLinkType.SelectedValue = this.currentSettings.DefaultLinkMode switch
                             {
-                                case LinkMode.RelativeURL:
-                                    this.rblLinkType.SelectedValue = "relLink";
-                                    break;
-                                case LinkMode.AbsoluteURL:
-                                    this.rblLinkType.SelectedValue = "absLnk";
-                                    break;
-                            }
+                                LinkMode.RelativeURL => "relLink",
+                                LinkMode.AbsoluteURL => "absLnk",
+                                _ => this.rblLinkType.SelectedValue,
+                            };
 
                             switch (this.browserModus)
                             {
@@ -926,10 +831,8 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                                         this.lblModus.Text = string.Format(
                                             this.LocalizeString("BrowserModus.Text"),
-                                            string.Format("Page {0}", this.browserModus));
-                                        this.title.Text = string.Format(
-                                            "{0} - DNNConnect.CKEditorProvider.FileBrowser",
-                                            this.lblModus.Text);
+                                            $"Page {this.browserModus}");
+                                        this.title.Text = $"{this.lblModus.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
                                         this.RenderTabs();
                                     }
@@ -941,13 +844,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                                     break;
                                 case "Image":
-                                    this.BrowserMode.Visible = false;
-                                    this.panPageMode.Visible = false;
-                                    break;
                                 case "Flash":
-                                    this.BrowserMode.Visible = false;
-                                    this.panPageMode.Visible = false;
-                                    break;
                                 default:
                                     this.BrowserMode.Visible = false;
                                     this.panPageMode.Visible = false;
@@ -1017,7 +914,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         }
                     }
 
-                    this.FillQualityPrecentages();
+                    this.FillQualityPercentages();
                 }
             }
             else
@@ -1107,12 +1004,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Download selected File.</summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The EventArgs e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The EventArgs e.</param>
         protected void Download_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.FileId.Text))
@@ -1151,7 +1044,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.BrowserMode.Visible = false;
 
             this.lblResizeHeader.Text = this.LocalizeString("lblResizeHeader.Text");
-            this.title.Text = string.Format("{0} - DNNConnect.CKEditorProvider.FileBrowser", this.lblResizeHeader.Text);
+            this.title.Text = $"{this.lblResizeHeader.Text} - DNNConnect.CKEditorProvider.FileBrowser";
 
             // Hide all Unwanted Elements from the Image Editor
             this.cmdClose.Visible = false;
@@ -1165,7 +1058,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             string sFileNameNoExt = Path.GetFileNameWithoutExtension(fileInfo.FileName);
 
-            this.txtThumbName.Text = string.Format("{0}_resized", sFileNameNoExt);
+            this.txtThumbName.Text = $"{sFileNameNoExt}_resized";
 
             if (!AllowedImageExtensions.Contains(fileInfo.Extension))
             {
@@ -1175,8 +1068,6 @@ namespace DNNConnect.CKEditorProvider.Browser
             var fs = FileManager.Instance.GetFileContent(fileInfo);
 
             Image image = Image.FromStream(fs);
-
-            StringBuilder sbScript1 = new StringBuilder();
 
             // Show Preview Images
             this.imgOriginal.ImageUrl = sFilePath;
@@ -1256,26 +1147,19 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.imgResized.ToolTip = this.LocalizeString("imgResized.Text");
             this.imgResized.AlternateText = this.imgResized.ToolTip;
 
-            sbScript1.Append("ResizeMe('#imgResized', 360, 300);");
-
-            //////////////
-            sbScript1.AppendFormat(
-                "SetupSlider('#SliderWidth', 1, {0}, 1, 'horizontal', {1}, '#txtWidth');", image.Width, iDefaultWidth);
-            sbScript1.AppendFormat(
-                "SetupSlider('#SliderHeight', 1, {0}, 1, 'vertical', {1}, '#txtHeight');", image.Height, iDefaultHeight);
-
-            this.Page.ClientScript.RegisterStartupScript(this.GetType(), "SliderScript", sbScript1.ToString(), true);
+            var sliderScript = $"""
+                                ResizeMe('#imgResized', 360, 300);
+                                SetupSlider('#SliderWidth', 1, {image.Width}, 1, 'horizontal', {iDefaultWidth}, '#txtWidth');
+                                SetupSlider('#SliderHeight', 1, {image.Height}, 1, 'vertical', {iDefaultHeight}, '#txtHeight');
+                                """;
+            this.Page.ClientScript.RegisterStartupScript(this.GetType(), "SliderScript", sliderScript, true);
 
             image.Dispose();
         }
 
         /// <summary>Show Upload Controls.</summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         protected void Upload_Click(object sender, EventArgs e)
         {
             this.panUploadDiv.Visible = true;
@@ -1293,7 +1177,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
         /// <summary>Shows the files in directory.</summary>
         /// <param name="directory">The directory.</param>
-        /// <param name="pagerChanged">if set to <c>true</c> [pager changed].</param>
+        /// <param name="pagerChanged">if set to <see langword="true"/> [pager changed].</param>
         protected void ShowFilesIn(string directory, bool pagerChanged = false)
         {
             var currentFolderInfo = Utility.ConvertFilePathToFolderInfo(directory, this.portalSettings);
@@ -1301,27 +1185,23 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.ShowFilesIn(currentFolderInfo, pagerChanged);
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized Text.</returns>
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.ResXFile, this.LanguageCode);
         }
 
         /// <summary>Formats a MapPath into relative MapUrl.</summary>
-        /// <param name="sPath">
-        /// MapPath Input string.
-        /// </param>
-        /// <returns>
-        /// The output URL string.
-        /// </returns>
+        /// <param name="sPath">MapPath Input string.</param>
+        /// <returns>The output URL string.</returns>
         private static string MapUrl(string sPath)
         {
             string sAppPath = HttpContext.Current.Server.MapPath("~");
 
-            string sUrl = string.Format(
-                "{0}",
-                HttpContext.Current.Request.ApplicationPath + sPath.Replace(sAppPath, string.Empty).Replace("\\", "/"));
-
-            return sUrl;
+            return HttpContext.Current.Request.ApplicationPath +
+                   sPath.Replace(sAppPath, string.Empty).Replace("\\", "/");
         }
 
         /// <summary>Get File Name without .resources extension.</summary>
@@ -1333,12 +1213,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>The get encoder.</summary>
-        /// <param name="format">
-        /// The format.
-        /// </param>
-        /// <returns>
-        /// The Encoder.
-        /// </returns>
+        /// <param name="format">The format.</param>
+        /// <returns>The Encoder.</returns>
         private static ImageCodecInfo GetEncoder(ImageFormat format)
         {
             ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
@@ -1346,29 +1222,20 @@ namespace DNNConnect.CKEditorProvider.Browser
             return codecs.FirstOrDefault(codec => codec.FormatID == format.Guid);
         }
 
-        /// <summary>Sets the sort button classes.</summary>
-        private void SetSortButtonClasses()
+        private static string BuildAbsoluteUrl(string fileUrl)
         {
-            this.SortAscending.CssClass = !this.SortFilesAscending ? "ButtonNormal" : "ButtonSelected";
-            this.SortDescending.CssClass = !this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
-            this.SortByDateAscending.CssClass = !this.SortFilesDateAscending ? "ButtonNormal" : "ButtonSelected";
-            this.SortByDateDescending.CssClass = !this.SortFilesDateDescending ? "ButtonNormal" : "ButtonSelected";
-        }
+            if (fileUrl.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return fileUrl;
+            }
 
-        /// <summary>Get Folder Icon.</summary>
-        /// <param name="folderId">The folder id.</param>
-        /// <returns>
-        /// Returns if folder is Secure.
-        /// </returns>
-        private string GetFolderIcon(int folderId)
-        {
-            var folderInfo = FolderManager.Instance.GetFolder(folderId);
-            return this.GetFolderIcon(folderInfo);
+            var requestUrl = HttpContext.Current.Request.Url;
+            return $"{requestUrl.Scheme}://{requestUrl.Authority}{fileUrl}";
         }
 
         /// <summary>Get Folder Icon.</summary>
         /// <param name="folderInfo">The folder info.</param>
-        private string GetFolderIcon(IFolderInfo folderInfo)
+        private static string GetFolderIcon(IFolderInfo folderInfo)
         {
             if (folderInfo == null || string.IsNullOrEmpty(folderInfo.FolderPath))
             {
@@ -1394,9 +1261,65 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
+        /// <summary>Set Folder Permission.</summary>
+        /// <param name="folderInfo">The folder info.</param>
+        private static void SetFolderPermission(IFolderInfo folderInfo)
+        {
+            FolderManager.Instance.CopyParentFolderPermissions(folderInfo);
+        }
+
+        /// <summary>Set Folder Permission.</summary>
+        /// <param name="folderId">The Folder ID.</param>
+        private static void SetFolderPermission(int folderId)
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+
+            SetFolderPermission(folder);
+        }
+
+        /// <summary>Set Folder Permission for the Current User.</summary>
+        /// <param name="folderInfo">The folder info.</param>
+        /// <param name="currentUserInfo">The current user info.</param>
+        private void SetUserFolderPermission(IFolderInfo folderInfo, UserInfo currentUserInfo)
+        {
+            if (FolderPermissionController.CanManageFolder((FolderInfo)folderInfo))
+            {
+                return;
+            }
+
+            var folderPermissions =
+                from permission in this.permissionDefinitionService.GetDefinitionsByFolder()
+                where
+                    permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase)
+                    || permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase)
+                    || permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase)
+                select new FolderPermissionInfo(permission)
+                    {
+                        FolderID = folderInfo.FolderID,
+                        UserID = currentUserInfo.UserID,
+                        RoleID = Convert.ToInt32(Globals.glbRoleNothing),
+                        AllowAccess = true,
+                    };
+            foreach (var folderPermission in folderPermissions)
+            {
+                folderInfo.FolderPermissions.Add(folderPermission, true);
+            }
+
+            FolderPermissionController.SaveFolderPermissions((FolderInfo)folderInfo);
+        }
+
+        /// <summary>Sets the sort button classes.</summary>
+        private void SetSortButtonClasses()
+        {
+            this.SortAscending.CssClass = !this.SortFilesAscending ? "ButtonNormal" : "ButtonSelected";
+            this.SortDescending.CssClass = !this.SortFilesDescending ? "ButtonNormal" : "ButtonSelected";
+            this.SortByDateAscending.CssClass = !this.SortFilesDateAscending ? "ButtonNormal" : "ButtonSelected";
+            this.SortByDateDescending.CssClass = !this.SortFilesDateDescending ? "ButtonNormal" : "ButtonSelected";
+        }
+
         /// <summary>Hide Create Items if User has no write access to the Current Folder.</summary>
         /// <param name="folderId">The folder id to check.</param>
-        /// <param name="isFileSelected">if set to <c>true</c> [is file selected].</param>
+        /// <param name="isFileSelected">if set to <see langword="true"/> [is file selected].</param>
         private void CheckFolderAccess(int folderId, bool isFileSelected)
         {
             var hasWriteAccess = Utility.CheckIfUserHasFolderWriteAccess(folderId, this.portalSettings);
@@ -1416,53 +1339,6 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.cmdDownload.CssClass = isFileSelected ? "LinkNormal" : "LinkDisabled";
         }
 
-        /// <summary>Set Folder Permission.</summary>
-        /// <param name="folderId">The Folder Id.</param>
-        private void SetFolderPermission(int folderId)
-        {
-            var folder = FolderManager.Instance.GetFolder(folderId);
-
-            this.SetFolderPermission(folder);
-        }
-
-        /// <summary>Set Folder Permission.</summary>
-        /// <param name="folderInfo">The folder info.</param>
-        private void SetFolderPermission(IFolderInfo folderInfo)
-        {
-            FolderManager.Instance.CopyParentFolderPermissions(folderInfo);
-        }
-
-        /// <summary>Set Folder Permission for the Current User.</summary>
-        /// <param name="folderInfo">The folder info.</param>
-        /// <param name="currentUserInfo">The current user info.</param>
-        private void SetUserFolderPermission(IFolderInfo folderInfo, UserInfo currentUserInfo)
-        {
-            if (FolderPermissionController.CanManageFolder((FolderInfo)folderInfo))
-            {
-                return;
-            }
-
-            foreach (
-                var folderPermission in from PermissionInfo permission in PermissionController.GetPermissionsByFolder()
-                                        where
-                                            permission.PermissionKey.ToUpper() == "READ"
-                                            || permission.PermissionKey.ToUpper() == "WRITE"
-                                            || permission.PermissionKey.ToUpper() == "BROWSE"
-                                        select
-                                            new FolderPermissionInfo(permission)
-                                            {
-                                                FolderID = folderInfo.FolderID,
-                                                UserID = currentUserInfo.UserID,
-                                                RoleID = Convert.ToInt32(Globals.glbRoleNothing),
-                                                AllowAccess = true,
-                                            })
-            {
-                folderInfo.FolderPermissions.Add(folderPermission, true);
-            }
-
-            FolderPermissionController.SaveFolderPermissions((FolderInfo)folderInfo);
-        }
-
         /// <summary>Sets the default link type text.</summary>
         private void SetDefaultLinkTypeText()
         {
@@ -1479,41 +1355,42 @@ namespace DNNConnect.CKEditorProvider.Browser
             var folderName = !string.IsNullOrEmpty(currentFolderInfo.FolderPath) ?
                 currentFolderInfo.FolderPath : this.LocalizeString("RootFolder.Text");
 
-            TreeNode folderNode = new TreeNode
+            var folderNode = new TreeNode
             {
                 Text = folderName,
                 Value = currentFolderInfo.FolderID.ToString(),
-                ImageUrl = this.GetFolderIcon(currentFolderInfo),
-                ////ExpandedImageUrl = "Images/folderOpen.gif"
+                ImageUrl = GetFolderIcon(currentFolderInfo),
             };
 
             this.FoldersTree.Nodes.Add(folderNode);
 
-            // gets the list of folders the specified user has read permissions and transfrom into dictionary:
-            //      Key = parrent folder id
+            // gets the list of folders the specified user has read permissions and transform into dictionary:
+            //      Key = parent folder ID
             //      Value = list of child folders
             // this will let us possible to create folders tree much faster on a recursion below
-            var readableFolders = FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo())
-                .GroupBy(folder => folder.ParentID)
-                .ToDictionary(key => key.Key, value => value?.Select(folder => folder) ?? Enumerable.Empty<IFolderInfo>());
+            var readableFolders =
+                FolderManager.Instance.GetFolders(UserController.Instance.GetCurrentUserInfo())
+                    .GroupBy(folder => folder.ParentID)
+                    .ToDictionary(
+                        key => key.Key,
+                        value => value?.Select(folder => folder) ?? []);
 
-            // get all folders where parrent folder is current one
-            if (!readableFolders.TryGetValue(currentFolderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
+            // get all folders where parent folder is current one
+            if (!readableFolders.TryGetValue(currentFolderInfo.FolderID, out var folders))
             {
                 return;
             }
 
-            foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(folder => this.RenderFolder(folder, readableFolders)).Where(node => node != null))
+            foreach (var node in folders.Cast<FolderInfo>().Select(folder => this.RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 folderNode.ChildNodes.Add(node);
             }
         }
 
         /// <summary>Fill Quality Values 1-100 %.</summary>
-        private void FillQualityPrecentages()
+        private void FillQualityPercentages()
         {
-            for (int i = 00; i < 101; i++)
+            for (var i = 00; i < 101; i++)
             {
                 this.dDlQuality.Items.Add(new ListItem { Text = i.ToString(), Value = i.ToString() });
             }
@@ -1522,14 +1399,10 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>The get portal settings.</summary>
-        /// <returns>
-        /// Current Portal Settings.
-        /// </returns>
-        private PortalSettings GetPortalSettings()
+        /// <returns>Current Portal Settings.</returns>
+        private IPortalSettings GetPortalSettings()
         {
             int iTabId = 0, iPortalId = 0;
-
-            PortalSettings portalSettings;
 
             try
             {
@@ -1545,24 +1418,19 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 string sDomainName = Globals.GetDomainName(this.Request, true);
 
-                string sPortalAlias = PortalAliasController.GetPortalAliasByPortal(iPortalId, sDomainName);
+                string sPortalAlias = this.portalAliasService.GetPortalAliasByPortal(iPortalId, sDomainName);
 
-                PortalAliasInfo objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(sPortalAlias);
-
-                portalSettings = new PortalSettings(iTabId, objPortalAliasInfo);
+                var objPortalAliasInfo = this.portalAliasService.GetPortalAlias(sPortalAlias) as PortalAliasInfo;
+                return new PortalSettings(iTabId, objPortalAliasInfo);
             }
             catch (Exception)
             {
-                portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+                return (IPortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
-
-            return portalSettings;
         }
 
         /// <summary>Get the Current Starting Directory.</summary>
-        /// <returns>
-        /// Returns the Starting Directory.
-        /// </returns>
+        /// <returns>Returns the Starting Directory.</returns>
         private IFolderInfo StartingDir()
         {
             IFolderInfo startingFolderInfo = null;
@@ -1623,15 +1491,13 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             var folderStart = startingFolderInfo.PhysicalPath;
 
-            folderStart =
-                folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace(
-                    "\\", "/");
+            folderStart = folderStart.Substring(this.portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
 
             startingFolderInfo = FolderManager.Instance.AddFolder(this.portalSettings.PortalId, folderStart);
 
             Directory.CreateDirectory(startingFolderInfo.PhysicalPath);
 
-            this.SetFolderPermission(startingFolderInfo);
+            SetFolderPermission(startingFolderInfo);
 
             return startingFolderInfo;
         }
@@ -1656,13 +1522,11 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 Directory.CreateDirectory(userFolderPath);
 
-                this.SetFolderPermission(userFolderInfo);
+                SetFolderPermission(userFolderInfo);
             }
 
             // Create user folder based on the user id
-            userFolderPath = Path.Combine(
-                userFolderPath,
-                string.Format("{0}\\", UserController.Instance.GetCurrentUserInfo().UserID));
+            userFolderPath = Path.Combine(userFolderPath, $"{UserController.Instance.GetCurrentUserInfo().UserID}\\");
 
             if (!Directory.Exists(userFolderPath))
             {
@@ -1674,7 +1538,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 Directory.CreateDirectory(userFolderPath);
 
-                this.SetFolderPermission(userFolderInfo);
+                SetFolderPermission(userFolderInfo);
 
                 this.SetUserFolderPermission(userFolderInfo, UserController.Instance.GetCurrentUserInfo());
             }
@@ -1720,7 +1584,7 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.FilesList.ItemCommand += this.FilesList_ItemCommand;
 
             this.ClientResourceLoader.DataBind();
-            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
+            this.ClientResourceLoader.PreRender += (_, _) => JavaScript.Register(this.hostSettings, this.hostSettingsService, this.appStatus, this.eventLogger, this.portalSettings, this.Page);
         }
 
         /// <summary>Load Favicon from Current Portal Home Directory.</summary>
@@ -1729,28 +1593,25 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.favicon.Controls.Add(new LiteralControl(DotNetNuke.UI.Internals.FavIcon.GetHeaderLink(this.hostSettings, this.portalSettings.PortalId)));
         }
 
-        /// <summary>Render all Directories and sub directories recursive.</summary>
+        /// <summary>Render all Directories and subdirectories recursive.</summary>
         /// <param name="folderInfo">The folder Info.</param>
         /// <param name="readableFolders">The list of folders that the current user has READ access.</param>
-        /// <returns>
-        /// TreeNode List.
-        /// </returns>
+        /// <returns>TreeNode List.</returns>
         private TreeNode RenderFolder(FolderInfo folderInfo, IDictionary<int, IEnumerable<IFolderInfo>> readableFolders)
         {
-            TreeNode tnFolder = new TreeNode
+            var tnFolder = new TreeNode
             {
                 Text = folderInfo.FolderName,
                 Value = folderInfo.FolderID.ToString(),
-                ImageUrl = this.GetFolderIcon(folderInfo),
+                ImageUrl = GetFolderIcon(folderInfo),
             };
 
-            if (!readableFolders.TryGetValue(folderInfo.FolderID, out IEnumerable<IFolderInfo> folders))
+            if (!readableFolders.TryGetValue(folderInfo.FolderID, out var folders))
             {
                 return tnFolder;
             }
 
-            foreach (TreeNode node in
-                folders.Cast<FolderInfo>().Select(folder => this.RenderFolder(folder, readableFolders)).Where(node => node != null))
+            foreach (var node in folders.Cast<FolderInfo>().Select(folder => this.RenderFolder(folder, readableFolders)).Where(node => node != null))
             {
                 tnFolder.ChildNodes.Add(node);
             }
@@ -1761,11 +1622,10 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>Gets the language list, and sets the default locale if Content Localization is Enabled.</summary>
         private void GetLanguageList()
         {
-            foreach (
-                var languageListItem in
-                    new LocaleController().GetLocales(this.portalSettings.PortalId)
-                                          .Values.Select(
-                                              language => new ListItem { Text = language.Text, Value = language.Code }))
+            var languageListItems =
+                new LocaleController().GetLocales(this.portalSettings.PortalId)
+                    .Values.Select(language => new ListItem { Text = language.Text, Value = language.Code });
+            foreach (var languageListItem in languageListItems)
             {
                 this.LanguageList.Items.Add(languageListItem);
             }
@@ -1812,24 +1672,24 @@ namespace DNNConnect.CKEditorProvider.Browser
             var allPortalTabsList = TabController.GetPortalTabs(this.portalSettings.PortalId, -1, false, null, true, false, true, true, false);
             var allPortalTabs = new HashSet<TabInfo>(allPortalTabsList);
 
-            Func<TabInfo, int> getNodeId = x => x.TabID;
-            Func<TabInfo, int> getParentId = x => x.ParentId;
-            Func<TabInfo, string> getNodeText = x => x.TabName;
-            Func<TabInfo, string> getNodeValue = x => x.TabID.ToString();
-            Func<int, bool> getParentIdCheck = x => x != -1;
-            Func<TabInfo, string> getNodeImageURL = x =>
-                string.IsNullOrWhiteSpace(x.IconFile)
-                ? "Images/Page.gif"
-                : this.ResolveUrl(x.IconFile);
+            var helper = new TreeViewHelper<int>();
+            helper.LoadNodes(allPortalTabs, this.dnntreeTabs.Nodes, GetNodeId, GetParentId, GetNodeText, GetNodeValue, GetNodeImageUrl, GetParentIdCheck);
 
-            TreeViewHelper<int> tvh = new TreeViewHelper<int>();
-            tvh.LoadNodes(allPortalTabs, this.dnntreeTabs.Nodes, getNodeId, getParentId, getNodeText, getNodeValue, getNodeImageURL, getParentIdCheck);
+            return;
+
+            static int GetNodeId(TabInfo x) => x.TabID;
+            static int GetParentId(TabInfo x) => x.ParentId;
+            static string GetNodeText(TabInfo x) => x.TabName;
+            static string GetNodeValue(TabInfo x) => x.TabID.ToString();
+            static bool GetParentIdCheck(int x) => x != -1;
+            string GetNodeImageUrl(TabInfo x) =>
+                string.IsNullOrWhiteSpace(x.IconFile)
+                    ? "Images/Page.gif"
+                    : this.ResolveUrl(x.IconFile);
         }
 
         /// <summary>Scroll to a Selected File or Uploaded File.</summary>
-        /// <param name="elementId">
-        /// The element Id.
-        /// </param>
+        /// <param name="elementId">The element ID.</param>
         private void ScrollToSelectedFile(string elementId)
         {
             this.Page.ClientScript.RegisterStartupScript(
@@ -1840,12 +1700,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Select a folder and the file inside the Browser.</summary>
-        /// <param name="fileUrl">
-        /// The file url.
-        /// </param>
-        /// <returns>
-        /// if folder was selected.
-        /// </returns>
+        /// <param name="fileUrl">The file URL.</param>
+        /// <returns>if folder was selected.</returns>
         private bool SelectFolderFile(string fileUrl)
         {
             var fileName = fileUrl.Substring(fileUrl.LastIndexOf("/", StringComparison.Ordinal) + 1);
@@ -1871,8 +1727,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             var newDir = this.lblCurrentDir.Text;
 
-            TreeNode tnNewFolder = this.FoldersTree.FindNode(newDir);
-
+            var tnNewFolder = this.FoldersTree.FindNode(newDir);
             if (tnNewFolder != null)
             {
                 tnNewFolder.Selected = true;
@@ -1890,45 +1745,43 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>JS Code that gets the selected File Url.</summary>
         private void GetSelectedImageOrLink()
         {
-            var scriptSelected = new StringBuilder();
-
-            scriptSelected.Append("var editor = window.top.opener;");
-            scriptSelected.Append("if (typeof(CKEDITOR) !== 'undefined') {");
-            scriptSelected.AppendFormat(
-                "var selection = CKEDITOR.instances.{0}.getSelection(),", this.request.QueryString["CKEditor"]);
-            scriptSelected.Append("element = selection.getStartElement();");
-
-            scriptSelected.Append("if( element.getName()  == 'img')");
-            scriptSelected.Append("{");
-
-            scriptSelected.Append("var imageUrl = element.getAttribute('src');");
-
-            scriptSelected.Append("if (element.getAttribute('src') && imageUrl.indexOf('LinkClick') == -1 && imageUrl.indexOf('http:') == -1 && imageUrl.indexOf('https:') == -1) {");
-            scriptSelected.Append(
-                "jQuery.PageMethod('Browser.aspx', 'SetFile', function(message){if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');}, null, 'fileUrl', imageUrl);");
-
-            scriptSelected.Append("} else {");
-            scriptSelected.Append("if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');");
-
-            scriptSelected.Append("} }");
-            scriptSelected.Append("else if (element.getName() == 'a')");
-            scriptSelected.Append("{");
-
-            scriptSelected.Append("var fileUrl = element.getAttribute('href');");
-
-            scriptSelected.Append("if (element.getAttribute('href') && fileUrl.indexOf('LinkClick') == -1 && fileUrl.indexOf('http:') == -1 && fileUrl.indexOf('https:') == -1) {");
-
-            scriptSelected.Append(
-                "jQuery.PageMethod('Browser.aspx', 'SetFile', function(message){if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');}, null, 'fileUrl', fileUrl);");
-            scriptSelected.Append("} else {");
-            scriptSelected.Append("if (location.href.indexOf('reload')==-1) location.replace(location.href+'&reload=true');");
-
-            scriptSelected.Append("} }");
-
-            scriptSelected.Append("}");
+            var scriptSelected = $$"""
+                var editor = window.top.opener;
+                if (typeof(CKEDITOR) !== 'undefined') {
+                    var editorInstanceName = {{HttpUtility.JavaScriptStringEncode(this.request.QueryString["CKEditor"], addDoubleQuotes: true)}}; 
+                    var selection = CKEDITOR.instances[editorInstanceName].getSelection(),element = selection.getStartElement();
+                    if (element.getName() == 'img') {
+                        var imageUrl = element.getAttribute('src');
+                        if (element.getAttribute('src') && imageUrl.indexOf('LinkClick') == -1 && imageUrl.indexOf('http:') == -1 && imageUrl.indexOf('https:') == -1) {
+                            jQuery.PageMethod(
+                                'Browser.aspx',
+                                'SetFile',
+                                function(message) { if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true'); },
+                                null,
+                                'fileUrl',
+                                imageUrl);
+                        } else {
+                            if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true');
+                        }
+                    } else if (element.getName() == 'a') {
+                        var fileUrl = element.getAttribute('href');
+                        if (element.getAttribute('href') && fileUrl.indexOf('LinkClick') == -1 && fileUrl.indexOf('http:') == -1 && fileUrl.indexOf('https:') == -1) {
+                            jQuery.PageMethod(
+                                'Browser.aspx',
+                                'SetFile',
+                                function(message) { if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true'); },
+                                null,
+                                'fileUrl',
+                                fileUrl);
+                        } else {
+                            if (location.href.indexOf('reload') == -1) location.replace(location.href+'&reload=true');
+                        }
+                    }
+                }
+                """;
 
             this.Page.ClientScript.RegisterStartupScript(
-                this.GetType(), "GetSelectedImageLink", scriptSelected.ToString(), true);
+                this.GetType(), "GetSelectedImageLink", scriptSelected, true);
         }
 
         /// <summary>Set Language for all Controls on this Page.</summary>
@@ -1998,29 +1851,28 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.OverrideFile.Text = this.LocalizeString("OverrideFile.Text");
 
             // LinkButtons (with Image)
-            this.Syncronize.Text = string.Format(
-               "<img src=\"Images/SyncFolder.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("Syncronize.Text"), this.LocalizeString("Syncronize.Help"));
+            this.Syncronize.Text =
+                $"""<img src="Images/SyncFolder.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("Syncronize.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("Syncronize.Help"))}" />""";
             this.Syncronize.ToolTip = this.LocalizeString("Syncronize.Help");
 
-            this.cmdCreate.Text = string.Format(
-                "<img src=\"Images/CreateFolder.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdCreate.Text"), this.LocalizeString("cmdCreate.Help"));
+            this.cmdCreate.Text =
+                $"""<img src="Images/CreateFolder.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("cmdCreate.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("cmdCreate.Help"))}" />""";
             this.cmdCreate.ToolTip = this.LocalizeString("cmdCreate.Help");
 
             this.cmdDownload.Text =
-                string.Format(
-                    "<img src=\"Images/DownloadButton.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdDownload.Text"), this.LocalizeString("cmdDownload.Help"));
+                $"""<img src="Images/DownloadButton.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("cmdDownload.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("cmdDownload.Help"))}" />""";
             this.cmdDownload.ToolTip = this.LocalizeString("cmdDownload.Help");
 
-            this.cmdUpload.Text = string.Format(
-                "<img src=\"Images/UploadButton.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdUpload.Text"), this.LocalizeString("cmdUpload.Help"));
+            this.cmdUpload.Text =
+                $"""<img src="Images/UploadButton.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("cmdUpload.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("cmdUpload.Help"))}" />""";
             this.cmdUpload.ToolTip = this.LocalizeString("cmdUpload.Help");
 
-            this.cmdDelete.Text = string.Format(
-                "<img src=\"Images/DeleteFile.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdDelete.Text"), this.LocalizeString("cmdDelete.Help"));
+            this.cmdDelete.Text =
+                $"""<img src="Images/DeleteFile.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("cmdDelete.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("cmdDelete.Help"))}" />""";
             this.cmdDelete.ToolTip = this.LocalizeString("cmdDelete.Help");
 
-            this.cmdResizer.Text = string.Format(
-                "<img src=\"Images/ResizeImage.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("cmdResizer.Text"), this.LocalizeString("cmdResizer.Help"));
+            this.cmdResizer.Text =
+                $"""<img src="Images/ResizeImage.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("cmdResizer.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("cmdResizer.Help"))}" />""";
             this.cmdResizer.ToolTip = this.LocalizeString("cmdResizer.Help");
 
             const string SwitchContent =
@@ -2029,38 +1881,38 @@ namespace DNNConnect.CKEditorProvider.Browser
             this.SwitchDetailView.Text = string.Format(
                 SwitchContent,
                 "DetailView",
-                this.LocalizeString("DetailView.Text"),
-                this.LocalizeString("DetailViewTitle.Text"));
+                WebUtility.HtmlEncode(this.LocalizeString("DetailView.Text")),
+                WebUtility.HtmlEncode(this.LocalizeString("DetailViewTitle.Text")));
             this.SwitchDetailView.ToolTip = this.LocalizeString("DetailViewTitle.Text");
 
             this.SwitchListView.Text = string.Format(
                 SwitchContent,
                 "ListView",
-                this.LocalizeString("ListView.Text"),
-                this.LocalizeString("ListViewTitle.Text"));
+                WebUtility.HtmlEncode(this.LocalizeString("ListView.Text")),
+                WebUtility.HtmlEncode(this.LocalizeString("ListViewTitle.Text")));
             this.SwitchListView.ToolTip = this.LocalizeString("ListViewTitle.Text");
 
             this.SwitchIconsView.Text = string.Format(
                 SwitchContent,
                 "IconsView",
-                this.LocalizeString("IconsView.Text"),
-                this.LocalizeString("IconsViewTitle.Text"));
+                WebUtility.HtmlEncode(this.LocalizeString("IconsView.Text")),
+                WebUtility.HtmlEncode(this.LocalizeString("IconsViewTitle.Text")));
             this.SwitchIconsView.ToolTip = this.LocalizeString("IconsViewTitle.Text");
 
-            this.SortAscending.Text = string.Format(
-                 "<img src=\"Images/SortAscending.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("SortAscending.Text"), this.LocalizeString("SortAscending.Help"));
+            this.SortAscending.Text =
+                $"""<img src="Images/SortAscending.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("SortAscending.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("SortAscending.Help"))}" />""";
             this.SortAscending.ToolTip = this.LocalizeString("SortAscending.Help");
 
-            this.SortDescending.Text = string.Format(
-                 "<img src=\"Images/SortDescending.png\" alt=\"{0}\" title=\"{1}\" />", this.LocalizeString("SortDescending.Text"), this.LocalizeString("SortDescending.Help"));
+            this.SortDescending.Text =
+                $"""<img src="Images/SortDescending.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("SortDescending.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("SortDescending.Help"))}" />""";
             this.SortDescending.ToolTip = this.LocalizeString("SortDescending.Help");
 
-            this.SortByDateAscending.Text = string.Format(
-                 "<img src=\"Images/AscendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}", this.LocalizeString("SortByDateAscending.Text"), this.LocalizeString("SortByDateAscending.Help"), this.LocalizeString("SortByDate.Text"));
+            this.SortByDateAscending.Text =
+                $"""<img src="Images/AscendingArrow.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("SortByDateAscending.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("SortByDateAscending.Help"))}" />{WebUtility.HtmlEncode(this.LocalizeString("SortByDate.Text"))}""";
             this.SortByDateAscending.ToolTip = this.LocalizeString("SortByDateAscending.Help");
 
-            this.SortByDateDescending.Text = string.Format(
-                 "<img src=\"Images/DescendingArrow.png\" alt=\"{0}\" title=\"{1}\" />{2}", this.LocalizeString("SortByDateDescending.Text"), this.LocalizeString("SortByDateDescending.Help"), this.LocalizeString("SortByDate.Text"));
+            this.SortByDateDescending.Text =
+                $"""<img src="Images/DescendingArrow.png" alt="{WebUtility.HtmlEncode(this.LocalizeString("SortByDateDescending.Text"))}" title="{WebUtility.HtmlEncode(this.LocalizeString("SortByDateDescending.Help"))}" />{WebUtility.HtmlEncode(this.LocalizeString("SortByDate.Text"))}""";
             this.SortByDateDescending.ToolTip = this.LocalizeString("SortByDateDescending.Help");
 
             ClientAPI.AddButtonConfirm(this.cmdDelete, this.LocalizeString("AreYouSure.Text"));
@@ -2075,17 +1927,13 @@ namespace DNNConnect.CKEditorProvider.Browser
             // Find the File inside the Repeater
             foreach (RepeaterItem item in this.FilesList.Items)
             {
-                HtmlGenericControl listRow = (HtmlGenericControl)item.FindControl("ListRow");
-
-                switch (item.ItemType)
+                var listRow = (HtmlGenericControl)item.FindControl("ListRow");
+                listRow.Attributes["class"] = item.ItemType switch
                 {
-                    case ListItemType.Item:
-                        listRow.Attributes["class"] = "FilesListRow";
-                        break;
-                    case ListItemType.AlternatingItem:
-                        listRow.Attributes["class"] = "FilesListRowAlt";
-                        break;
-                }
+                    ListItemType.Item => "FilesListRow",
+                    ListItemType.AlternatingItem => "FilesListRowAlt",
+                    _ => listRow.Attributes["class"],
+                };
 
                 if (listRow.Attributes["title"] != fileName)
                 {
@@ -2094,8 +1942,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 listRow.Attributes["class"] += " Selected";
 
-                LinkButton fileListItem = (LinkButton)item.FindControl("FileListItem");
-
+                var fileListItem = (LinkButton)item.FindControl("FileListItem");
                 if (fileListItem == null)
                 {
                     return;
@@ -2112,12 +1959,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Show Preview for the URLs.</summary>
-        /// <param name="fileName">
-        /// Selected FileName.
-        /// </param>
-        /// <param name="fileInfo">
-        /// The file Info.
-        /// </param>
+        /// <param name="fileName">Selected FileName.</param>
+        /// <param name="fileInfo">The file Info.</param>
         private void ShowFileHelpUrl(string fileName, IFileInfo fileInfo)
         {
             try
@@ -2126,8 +1969,6 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 // Enable Buttons
                 this.CheckFolderAccess(fileInfo.FolderId, true);
-
-                var folder = FolderManager.Instance.GetFolder(fileInfo.FolderId);
 
                 this.rblLinkType.Items[0].Selected = true;
 
@@ -2144,7 +1985,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.rblLinkType.Items[0].Text = Regex.Replace(this.rblLinkType.Items[0].Text, "/Images/MyImage.jpg", providerFileUrl, RegexOptions.IgnoreCase);
 
                 // Absolute Url
-                this.rblLinkType.Items[1].Text = Regex.Replace(this.rblLinkType.Items[1].Text, "http://www.MyWebsite.com/Images/MyImage.jpg", this.BuildAbsoluteUrl(providerFileUrl), RegexOptions.IgnoreCase);
+                this.rblLinkType.Items[1].Text = Regex.Replace(this.rblLinkType.Items[1].Text, "http://www.MyWebsite.com/Images/MyImage.jpg", BuildAbsoluteUrl(providerFileUrl), RegexOptions.IgnoreCase);
             }
             catch (Exception)
             {
@@ -2152,23 +1993,9 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
         }
 
-        private string BuildAbsoluteUrl(string fileUrl)
-        {
-            if (fileUrl.StartsWith("http", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return fileUrl;
-            }
-
-            return string.Format(
-                    "{0}://{1}{2}",
-                    HttpContext.Current.Request.Url.Scheme,
-                    HttpContext.Current.Request.Url.Authority,
-                    fileUrl);
-        }
-
         /// <summary>Shows the files in directory.</summary>
         /// <param name="currentFolderInfo">The current folder information.</param>
-        /// <param name="pagerChanged">if set to <c>true</c> [pager changed].</param>
+        /// <param name="pagerChanged">if set to <see langword="true"/> [pager changed].</param>
         private void ShowFilesIn(IFolderInfo currentFolderInfo, bool pagerChanged = false)
         {
             this.CheckFolderAccess(currentFolderInfo.FolderID, false);
@@ -2187,7 +2014,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 }
             }
 
-            var filesPagedDataSource = new PagedDataSource { DataSource = this.FilesTable.DefaultView };
+            var filesPagedDataSource = new PagedDataSource { DataSource = this.FilesTable };
 
             if (this.currentSettings.FileListPageSize > 0)
             {
@@ -2208,12 +2035,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Uploads a File.</summary>
-        /// <param name="file">
-        /// The Uploaded File.
-        /// </param>
-        /// <param name="command">
-        /// The Upload Command Type.
-        /// </param>
+        /// <param name="file">The Uploaded File.</param>
+        /// <param name="command">The Upload Command Type.</param>
         private void UploadFile(HttpPostedFile file, string command)
         {
             var fileName = Path.GetFileName(file.FileName).Trim();
@@ -2329,7 +2152,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 if (File.Exists(sFilePath))
                 {
                     iCounter++;
-                    fileName = string.Format("{0}_{1}{2}", sFileNameNoExt, iCounter, Path.GetExtension(file.FileName));
+                    fileName = $"{sFileNameNoExt}_{iCounter}{Path.GetExtension(file.FileName)}";
                 }
 
                 if (!bIsImage)
@@ -2347,75 +2170,64 @@ namespace DNNConnect.CKEditorProvider.Browser
                     else
                     {
                         // check if the size of the image is within boundaries
-                        using (var uplImage = Image.FromStream(file.InputStream))
+                        using var uplImage = Image.FromStream(file.InputStream);
+                        if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
                         {
-                            if (uplImage.Width > maxWidth || uplImage.Height > maxHeight)
+                            // it's too big: we need to resize
+                            int newWidth, newHeight;
+
+                            // which determines the max: height or width?
+                            double ratioWidth = (double)maxWidth / (double)uplImage.Width;
+                            double ratioHeight = (double)maxHeight / (double)uplImage.Height;
+                            if (ratioWidth < ratioHeight)
                             {
-                                // it's too big: we need to resize
-                                int newWidth, newHeight;
-
-                                // which determines the max: height or width?
-                                double ratioWidth = (double)maxWidth / (double)uplImage.Width;
-                                double ratioHeight = (double)maxHeight / (double)uplImage.Height;
-                                if (ratioWidth < ratioHeight)
-                                {
-                                    // max width needs to be used
-                                    newWidth = maxWidth;
-                                    newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
-                                }
-                                else
-                                {
-                                    // max height needs to be used
-                                    newHeight = maxHeight;
-                                    newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
-                                }
-
-                                // Add Compression to Jpeg Images
-                                if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
-                                {
-                                    ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
-
-                                    Encoder myEncoder = Encoder.Quality;
-                                    EncoderParameters encodeParams = new EncoderParameters(1);
-                                    EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
-                                    encodeParams.Param[0] = encodeParam;
-
-                                    using (Bitmap dst = new Bitmap(newWidth, newHeight))
-                                    {
-                                        using (Graphics g = Graphics.FromImage(dst))
-                                        {
-                                            g.SmoothingMode = SmoothingMode.AntiAlias;
-                                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                                            g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
-                                        }
-
-                                        using (var stream = new MemoryStream())
-                                        {
-                                            dst.Save(stream, jpgEncoder, encodeParams);
-                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    // Finally Create a new Resized Image
-                                    using (Image newImage =
-                                           uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
-                                    {
-                                        var imageFormat = uplImage.RawFormat;
-                                        using (var stream = new MemoryStream())
-                                        {
-                                            newImage.Save(stream, imageFormat);
-                                            FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
-                                        }
-                                    }
-                                }
+                                // max width needs to be used
+                                newWidth = maxWidth;
+                                newHeight = (int)Math.Round(uplImage.Height * ratioWidth);
                             }
                             else
                             {
-                                // fits within configured maximum dimensions
-                                FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
+                                // max height needs to be used
+                                newHeight = maxHeight;
+                                newWidth = (int)Math.Round(uplImage.Width * ratioHeight);
                             }
+
+                            // Add Compression to Jpeg Images
+                            if (uplImage.RawFormat.Equals(ImageFormat.Jpeg))
+                            {
+                                ImageCodecInfo jpgEncoder = GetEncoder(uplImage.RawFormat);
+
+                                Encoder myEncoder = Encoder.Quality;
+                                EncoderParameters encodeParams = new EncoderParameters(1);
+                                EncoderParameter encodeParam = new EncoderParameter(myEncoder, 80L);
+                                encodeParams.Param[0] = encodeParam;
+
+                                using Bitmap dst = new Bitmap(newWidth, newHeight);
+                                using (Graphics g = Graphics.FromImage(dst))
+                                {
+                                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                                    g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                                    g.DrawImage(uplImage, 0, 0, dst.Width, dst.Height);
+                                }
+
+                                using var stream = new MemoryStream();
+                                dst.Save(stream, jpgEncoder, encodeParams);
+                                FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                            }
+                            else
+                            {
+                                // Finally Create a new Resized Image
+                                using Image newImage = uplImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero);
+                                var imageFormat = uplImage.RawFormat;
+                                using var stream = new MemoryStream();
+                                newImage.Save(stream, imageFormat);
+                                FileManager.Instance.AddFile(currentFolderInfo, fileName, stream);
+                            }
+                        }
+                        else
+                        {
+                            // fits within configured maximum dimensions
+                            FileManager.Instance.AddFile(currentFolderInfo, fileName, file.InputStream);
                         }
                     }
                 }
@@ -2425,7 +2237,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                     this.Response.ClearContent();
                     this.Response.ContentType = "application/json";
-                    this.Response.Write($"{{\"default\": {HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}");
+                    this.Response.Write($$"""{"default": {{HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}""");
                 }
                 else
                 {
@@ -2435,7 +2247,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                         var fileUrl = string.Format(!MapUrl(uploadPhysicalPath).EndsWith("/") ? "{0}/{1}" : "{0}{1}", MapUrl(uploadPhysicalPath), fileName);
                         this.Response.ClearContent();
                         this.Response.ContentType = "application/json";
-                        this.Response.Write($"{{\"uploaded\": 1, \"fileName\": {HttpUtility.JavaScriptStringEncode(fileName, addDoubleQuotes: true)}, \"url\": {HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}");
+                        this.Response.Write($$"""{"uploaded": 1, "fileName": {{HttpUtility.JavaScriptStringEncode(fileName, addDoubleQuotes: true)}}, "url": {{HttpUtility.JavaScriptStringEncode(fileUrl, addDoubleQuotes: true)}}}""");
                     }
                     else
                     {
@@ -2460,12 +2272,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Exit Dialog.</summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void Cancel_Click(object sender, EventArgs e)
         {
             this.Page.ClientScript.RegisterStartupScript(
@@ -2473,12 +2281,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Hide Create New Folder Panel.</summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The e.</param>
         private void CreateCancel_Click(object sender, EventArgs e)
         {
             this.panCreate.Visible = false;
@@ -2503,7 +2307,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     var portalId = this.portalSettings.PortalId;
                     var currentFolder = this.GetCurrentFolder();
-                    var newFolderPath = string.Format("{0}{1}/", currentFolder.FolderPath, this.tbFolderName.Text);
+                    var newFolderPath = $"{currentFolder.FolderPath}{this.tbFolderName.Text}/";
 
                     var folderMapping = FolderMappingController.Instance.GetFolderMapping(currentFolder.FolderMappingID);
 
@@ -2511,7 +2315,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     {
                         var newFolder = FolderManager.Instance.AddFolder(folderMapping, newFolderPath);
                         newFolderId = newFolder.FolderID;
-                        this.SetFolderPermission(newFolder.FolderID);
+                        SetFolderPermission(newFolder.FolderID);
                         this.lblCurrentDir.Text = newFolder.FolderPath;
                     }
                 }
@@ -2527,8 +2331,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                     if (newFolderId > Null.NullInteger)
                     {
-                        TreeNode tnNewFolder = this.FindNodeByValue(this.FoldersTree, newFolderId.ToString());
-
+                        var tnNewFolder = this.FindNodeByValue(this.FoldersTree, newFolderId.ToString());
                         if (tnNewFolder != null)
                         {
                             tnNewFolder.Selected = true;
@@ -2582,7 +2385,7 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             string sExtension = Path.GetExtension(this.lblFileName.Text);
 
-            this.GoToSelectedFile(string.Format("{0}{1}", this.txtCropImageName.Text, sExtension));
+            this.GoToSelectedFile($"{this.txtCropImageName.Text}{sExtension}");
         }
 
         /// <summary>Hide Image Re-sizing Panel.</summary>
@@ -2619,14 +2422,13 @@ namespace DNNConnect.CKEditorProvider.Browser
             using (var fileStream = FileManager.Instance.GetFileContent(file))
             {
                 var oldImage = Image.FromStream(fileStream);
-                int newWidth, newHeight;
 
-                if (!int.TryParse(this.txtWidth.Text, out newWidth))
+                if (!int.TryParse(this.txtWidth.Text, out var newWidth))
                 {
                     newWidth = oldImage.Width;
                 }
 
-                if (!int.TryParse(this.txtHeight.Text, out newHeight))
+                if (!int.TryParse(this.txtHeight.Text, out var newHeight))
                 {
                     newHeight = oldImage.Height;
                 }
@@ -2640,7 +2442,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                     resizedFileName = $"{Path.GetFileNameWithoutExtension(file.FileName)}_resized.{file.Extension}";
                 }
 
-                // Create an Resized Thumbnail
+                // Create a Resized Thumbnail
                 if (this.chkAspect.Checked)
                 {
                     var finalHeight = Math.Abs(oldImage.Height * newWidth / oldImage.Width);
@@ -2673,35 +2475,27 @@ namespace DNNConnect.CKEditorProvider.Browser
                     EncoderParameter encodeParam = new EncoderParameter(myEncoder, long.Parse(this.dDlQuality.SelectedValue));
                     encodeParams.Param[0] = encodeParam;
 
-                    using (Bitmap dst = new Bitmap(newWidth, newHeight))
+                    using Bitmap dst = new Bitmap(newWidth, newHeight);
+                    using (Graphics g = Graphics.FromImage(dst))
                     {
-                        using (Graphics g = Graphics.FromImage(dst))
-                        {
-                            g.SmoothingMode = SmoothingMode.AntiAlias;
-                            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                            g.DrawImage(oldImage, 0, 0, dst.Width, dst.Height);
-                        }
-
-                        using (var stream = new MemoryStream())
-                        {
-                            dst.Save(stream, jpgEncoder, encodeParams);
-                            FileManager.Instance.AddFile(this.GetCurrentFolder(), resizedFileName, stream);
-                        }
+                        g.SmoothingMode = SmoothingMode.AntiAlias;
+                        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                        g.DrawImage(oldImage, 0, 0, dst.Width, dst.Height);
                     }
+
+                    using var stream = new MemoryStream();
+                    dst.Save(stream, jpgEncoder, encodeParams);
+                    FileManager.Instance.AddFile(this.GetCurrentFolder(), resizedFileName, stream);
                 }
                 else
                 {
                     // Finally Create a new Resized Image
-                    using (Image newImage = oldImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero))
-                    {
-                        var imageFormat = oldImage.RawFormat;
-                        oldImage.Dispose();
-                        using (var stream = new MemoryStream())
-                        {
-                            newImage.Save(stream, imageFormat);
-                            FileManager.Instance.AddFile(this.GetCurrentFolder(), resizedFileName, stream);
-                        }
-                    }
+                    using Image newImage = oldImage.GetThumbnailImage(newWidth, newHeight, null, IntPtr.Zero);
+                    var imageFormat = oldImage.RawFormat;
+                    oldImage.Dispose();
+                    using var stream = new MemoryStream();
+                    newImage.Save(stream, imageFormat);
+                    FileManager.Instance.AddFile(this.GetCurrentFolder(), resizedFileName, stream);
                 }
             }
 
@@ -2733,12 +2527,8 @@ namespace DNNConnect.CKEditorProvider.Browser
         }
 
         /// <summary>Hide Resize Panel and Show CropZoom Panel.</summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The Event Args e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The Event Args e.</param>
         private void Rotate_Click(object sender, EventArgs e)
         {
             this.panThumb.Visible = false;
@@ -2760,90 +2550,76 @@ namespace DNNConnect.CKEditorProvider.Browser
             string sFilePath = FileManager.Instance.GetUrl(file);
 
             string sFileNameNoExt = Path.GetFileNameWithoutExtension(file.FileName);
-            this.txtCropImageName.Text = string.Format("{0}_Crop", sFileNameNoExt);
+            this.txtCropImageName.Text = $"{sFileNameNoExt}_Crop";
 
-            StringBuilder sbCropZoom = new StringBuilder();
-
-            sbCropZoom.Append("jQuery(document).ready(function () {");
-
-            sbCropZoom.Append("jQuery('#imgResized').hide();");
-
-            sbCropZoom.Append("var cropzoom = jQuery('#ImageOriginal').cropzoom({");
-            sbCropZoom.Append("width: 400,");
-            sbCropZoom.Append("height: 300,");
-            sbCropZoom.Append("bgColor: '#CCC',");
-            sbCropZoom.Append("enableRotation: true,");
-            sbCropZoom.Append("enableZoom: true,");
-
-            sbCropZoom.Append("selector: {");
-
-            sbCropZoom.Append("w:100,");
-            sbCropZoom.Append("h:80,");
-            sbCropZoom.Append("showPositionsOnDrag: true,");
-            sbCropZoom.Append("showDimetionsOnDrag: true,");
-            sbCropZoom.Append("bgInfoLayer: '#FFF',");
-            sbCropZoom.Append("infoFontSize: 10,");
-            sbCropZoom.Append("infoFontColor: 'blue',");
-            sbCropZoom.Append("showPositionsOnDrag: true,");
-            sbCropZoom.Append("showDimetionsOnDrag: true,");
-            sbCropZoom.Append("maxHeight: null,");
-            sbCropZoom.Append("maxWidth: null,");
-            sbCropZoom.Append("centered: true,");
-            sbCropZoom.Append("borderColor: 'blue',");
-            sbCropZoom.Append("borderColorHover: '#9eda29'");
-
-            sbCropZoom.Append("},");
-
-            sbCropZoom.Append("image: {");
-            sbCropZoom.AppendFormat("source: '{0}',", HttpUtility.JavaScriptStringEncode(sFilePath));
-            sbCropZoom.AppendFormat("width: {0},", file.Width);
-            sbCropZoom.AppendFormat("height: {0},", file.Height);
-            sbCropZoom.Append("minZoom: 10,");
-            sbCropZoom.Append("maxZoom: 150");
-            sbCropZoom.Append("}");
-            sbCropZoom.Append("});");
-
-            // Preview Button
-            sbCropZoom.Append("jQuery('#PreviewCrop').click(function () {");
-
-            sbCropZoom.Append("jQuery('#lblCropInfo').hide();");
-            sbCropZoom.Append(
-                "jQuery('#imgResized').attr('src', 'ProcessImage.ashx?fileId=" + file.FileId + "&' + cropzoom.PreviewParams()).show();");
-
-            sbCropZoom.Append("ResizeMe('#imgResized', 360, 300);");
-
-            sbCropZoom.Append("});");
-
-            // Reset Button
-            sbCropZoom.Append("jQuery('#ClearCrop').click(function(){");
-            sbCropZoom.Append("jQuery('#imgResized').hide();");
-            sbCropZoom.Append("jQuery('#lblCropInfo').show();");
-            sbCropZoom.Append("cropzoom.restore();");
-            sbCropZoom.Append("});");
-
-            // Save Button
-            sbCropZoom.Append("jQuery('#CropNow').click(function(e) {");
-            sbCropZoom.Append("e.preventDefault();");
-            sbCropZoom.Append(
-                $"cropzoom.send('ProcessImage.ashx', 'POST', {{ newFileName:  jQuery('#txtCropImageName').val(), saveFile: true, fileId: {file.FileId} }}, function(){{ javascript: __doPostBack('cmdCropNow', ''); }});");
-            sbCropZoom.Append("});");
-
-            sbCropZoom.Append("});");
+            var cropZoomScript = $$"""
+                jQuery(document).ready(function () {
+                    jQuery('#imgResized').hide();
+                    var cropzoom = jQuery('#ImageOriginal').cropzoom({
+                        width: 400,
+                        height: 300,
+                        bgColor: '#CCC',
+                        enableRotation: true,
+                        enableZoom: true,
+                        selector: {
+                            w:100,
+                            h:80,
+                            showPositionsOnDrag: true,
+                            showDimetionsOnDrag: true,
+                            bgInfoLayer: '#FFF',
+                            infoFontSize: 10,
+                            infoFontColor: 'blue',
+                            showPositionsOnDrag: true,
+                            showDimetionsOnDrag: true,
+                            maxHeight: null,
+                            maxWidth: null,
+                            centered: true,
+                            borderColor: 'blue',
+                            borderColorHover: '#9eda29'
+                        },
+                        image: {
+                            source: '{{HttpUtility.JavaScriptStringEncode(sFilePath)}}',
+                            width: {{file.Width}},
+                            height: {{file.Height}},
+                            minZoom: 10,
+                            maxZoom: 150
+                        }
+                    });
+                    jQuery('#PreviewCrop').click(function () {
+                        jQuery('#lblCropInfo').hide();
+                        jQuery('#imgResized').attr('src', 'ProcessImage.ashx?fileId={{file.FileId}}&' + cropzoom.PreviewParams()).show();
+                        ResizeMe('#imgResized', 360, 300);
+                    });
+                    jQuery('#ClearCrop').click(function () {
+                        jQuery('#imgResized').hide();
+                        jQuery('#lblCropInfo').show();
+                        cropzoom.restore();
+                    });
+                    jQuery('#CropNow').click(function (e) {
+                        e.preventDefault();
+                        cropzoom.send(
+                            'ProcessImage.ashx',
+                            'POST',
+                            {
+                                newFileName: jQuery('#txtCropImageName').val(),
+                                saveFile: true,
+                                fileId: {{file.FileId}}
+                            },
+                            function() { javascript: __doPostBack('cmdCropNow', ''); });
+                    });
+                });
+                """;
 
             this.Page.ClientScript.RegisterStartupScript(
                 this.GetType(),
                 $"CropZoomScript{Guid.NewGuid()}",
-                sbCropZoom.ToString(),
+                cropZoomScript,
                 true);
         }
 
         /// <summary>Cancel Upload - Hide Upload Controls.</summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The Event Args e.
-        /// </param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The Event Args e.</param>
         private void UploadCancel_Click(object sender, EventArgs e)
         {
             this.panUploadDiv.Visible = false;
@@ -2877,23 +2653,17 @@ namespace DNNConnect.CKEditorProvider.Browser
             var selectTab = tabController.GetTab(
                 int.Parse(this.dnntreeTabs.SelectedValue), this.portalSettings.PortalId, true);
 
-            string sDomainName = string.Format("http://{0}", Globals.GetDomainName(this.Request, true));
+            string sDomainName = $"http://{Globals.GetDomainName(this.Request, true)}";
 
             // Add Language Parameter ?!
             var localeSelected = this.LanguageRow.Visible && this.LanguageList.SelectedIndex > 0;
 
             if (this.chkHumanFriendy.Checked)
             {
-                var fileName = localeSelected
-                                       ? Globals.FriendlyUrl(
-                                           selectTab,
-                                           string.Format(
-                                               "{0}&language={1}",
-                                               Globals.ApplicationURL(selectTab.TabID),
-                                               this.LanguageList.SelectedValue),
-                                           this.portalSettings)
-                                       : Globals.FriendlyUrl(
-                                           selectTab, Globals.ApplicationURL(selectTab.TabID), this.portalSettings);
+                var fileNamePath = localeSelected
+                    ? $"{Globals.ApplicationURL(selectTab.TabID)}&language={this.LanguageList.SelectedValue}"
+                    : Globals.ApplicationURL(selectTab.TabID);
+                var fileName = Globals.FriendlyUrl(selectTab, fileNamePath, this.portalSettings);
 
                 // Relative Url
                 fileName = Globals.ResolveUrl(Regex.Replace(fileName, sDomainName, "~", RegexOptions.IgnoreCase));
@@ -2908,25 +2678,25 @@ namespace DNNConnect.CKEditorProvider.Browser
                 this.rblLinkType.Items[1].Text = Regex.Replace(
                     this.rblLinkType.Items[1].Text,
                     "http://www.MyWebsite.com/Images/MyImage.jpg",
-                    Regex.Replace(fileName, sDomainName, string.Format("{0}", sDomainName), RegexOptions.IgnoreCase),
+                    Regex.Replace(fileName, sDomainName, sDomainName, RegexOptions.IgnoreCase),
                     RegexOptions.IgnoreCase);
             }
             else
             {
-                string locale = localeSelected ? string.Format("language/{0}/", this.LanguageList.SelectedValue) : string.Empty;
+                string locale = localeSelected ? $"language/{this.LanguageList.SelectedValue}/" : string.Empty;
 
                 // Relative Url
                 this.rblLinkType.Items[0].Text = Regex.Replace(
                     this.rblLinkType.Items[0].Text,
                     "/Images/MyImage.jpg",
-                    Globals.ResolveUrl(string.Format("~/tabid/{0}/{1}Default.aspx", selectTab.TabID, locale)),
+                    Globals.ResolveUrl($"~/tabid/{selectTab.TabID}/{locale}Default.aspx"),
                     RegexOptions.IgnoreCase);
 
                 // Absolute Url
                 this.rblLinkType.Items[1].Text = Regex.Replace(
                     this.rblLinkType.Items[1].Text,
                     "http://www.MyWebsite.com/Images/MyImage.jpg",
-                    string.Format("{2}/tabid/{0}/{1}Default.aspx", selectTab.TabID, locale, sDomainName),
+                    $"{sDomainName}/tabid/{selectTab.TabID}/{locale}Default.aspx",
                     RegexOptions.IgnoreCase);
             }
 
@@ -2937,15 +2707,13 @@ namespace DNNConnect.CKEditorProvider.Browser
 
             this.Page.ClientScript.RegisterStartupScript(
                 this.GetType(),
-                string.Format("hideLoadingScript{0}", Guid.NewGuid()),
+                $"hideLoadingScript{Guid.NewGuid()}",
                 "jQuery('#panelLoading').hide();",
                 true);
         }
 
         /// <summary>Find and List all Anchors from the Selected Page.</summary>
-        /// <param name="selectedTab">
-        /// The selected tab.
-        /// </param>
+        /// <param name="selectedTab">The selected tab.</param>
         private void FindAnchorsOnTab(TabInfo selectedTab)
         {
             // Clear Item list first...
@@ -2961,11 +2729,8 @@ namespace DNNConnect.CKEditorProvider.Browser
 
                 if (tabUrl.StartsWith("/"))
                 {
-                    tabUrl = string.Format(
-                        "{0}://{1}{2}",
-                        HttpContext.Current.Request.Url.Scheme,
-                        HttpContext.Current.Request.Url.Authority,
-                        tabUrl);
+                    var requestUrl = HttpContext.Current.Request.Url;
+                    tabUrl = $"{requestUrl.Scheme}://{requestUrl.Authority}{tabUrl}";
                 }
 
                 var page = wc.DownloadString(tabUrl);
@@ -2994,15 +2759,12 @@ namespace DNNConnect.CKEditorProvider.Browser
             {
                 var listRowItem = (HtmlGenericControl)item.FindControl("ListRow");
 
-                switch (item.ItemType)
+                listRowItem.Attributes["class"] = item.ItemType switch
                 {
-                    case ListItemType.Item:
-                        listRowItem.Attributes["class"] = "FilesListRow";
-                        break;
-                    case ListItemType.AlternatingItem:
-                        listRowItem.Attributes["class"] = "FilesListRowAlt";
-                        break;
-                }
+                    ListItemType.Item => "FilesListRow",
+                    ListItemType.AlternatingItem => "FilesListRowAlt",
+                    _ => listRowItem.Attributes["class"],
+                };
             }
 
             var listRow = (HtmlGenericControl)e.Item.FindControl("ListRow");
@@ -3015,7 +2777,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 return;
             }
 
-            int fileId = Convert.ToInt32(fileListItem.CommandArgument);
+            var fileId = Convert.ToInt32(fileListItem.CommandArgument);
 
             var currentFile = FileManager.Instance.GetFile(fileId);
 
@@ -3039,7 +2801,7 @@ namespace DNNConnect.CKEditorProvider.Browser
                 case "page":
                     this.panLinkMode.Visible = false;
                     this.panPageMode.Visible = true;
-                    this.lblModus.Text = string.Format(this.LocalizeString("BrowserModus.Text"), string.Format("Page {0}", this.browserModus));
+                    this.lblModus.Text = string.Format(this.LocalizeString("BrowserModus.Text"), $"Page {this.browserModus}");
 
                     this.RenderTabs();
                     break;
@@ -3081,13 +2843,11 @@ namespace DNNConnect.CKEditorProvider.Browser
         {
             var spaceAvailable = this.portalSettings.HostSpace.Equals(0)
                                      ? this.LocalizeString("UnlimitedSpace.Text")
-                                     : string.Format("{0}MB", this.portalSettings.HostSpace);
+                                     : $"{this.portalSettings.HostSpace}MB";
 
-            var spaceUsed = new PortalController().GetPortalSpaceUsedBytes(this.portalSettings.PortalId);
+            var spaceUsed = this.portalController.GetPortalSpaceUsedBytes(this.portalSettings.PortalId);
 
-            string usedSpace;
-
-            string[] suffix = { "B", "KB", "MB", "GB", "TB" };
+            string[] suffix = ["B", "KB", "MB", "GB", "TB"];
 
             var index = 0;
 
@@ -3099,13 +2859,9 @@ namespace DNNConnect.CKEditorProvider.Browser
                 {
                     spaceUsedDouble = spaceUsed / 1024.0;
                 }
+            }
 
-                usedSpace = string.Format("{0:0.##}{1}", spaceUsedDouble, suffix[index]);
-            }
-            else
-            {
-                usedSpace = string.Format("{0:0.##}{1}", spaceUsedDouble, suffix[index]);
-            }
+            var usedSpace = $"{spaceUsedDouble:0.##}{suffix[index]}";
 
             this.FileSpaceUsedLabel.Text =
                 string.Format(
@@ -3117,15 +2873,12 @@ namespace DNNConnect.CKEditorProvider.Browser
         /// <summary>Gets the accepted file types.</summary>
         private string GetAcceptedFileTypes()
         {
-            switch (this.browserModus)
+            return this.browserModus switch
             {
-                case "Flash":
-                    return string.Join("|", AllowedFlashExtensions);
-                case "Image":
-                    return string.Join("|", AllowedImageExtensions);
-                default:
-                    return this.extensionWhiteList.ToStorageString().Replace(",", "|");
-            }
+                "Flash" => string.Join("|", AllowedFlashExtensions),
+                "Image" => string.Join("|", AllowedImageExtensions),
+                _ => this.extensionWhiteList.ToStorageString().Replace(",", "|"),
+            };
         }
 
         private IFolderInfo GetCurrentFolder()
@@ -3159,6 +2912,26 @@ namespace DNNConnect.CKEditorProvider.Browser
             }
 
             return foundNode;
+        }
+
+        /// <summary>Information about a file to display in the file browser.</summary>
+        [Serializable]
+        public class BrowserFile
+        {
+            /// <summary>Gets or sets the name of the file.</summary>
+            public string FileName { get; set; }
+
+            /// <summary>Gets or sets the URL to the picture for the file.</summary>
+            public string PictureUrl { get; set; }
+
+            /// <summary>Gets the information summary for the file.</summary>
+            public IHtmlString Info => new HtmlString(this.InfoHtml);
+
+            /// <summary>Gets or sets the HTML of the information summary for the file.</summary>
+            public string InfoHtml { get; set; }
+
+            /// <summary>Gets or sets the ID of the file.</summary>
+            public int FileId { get; set; }
         }
     }
 }

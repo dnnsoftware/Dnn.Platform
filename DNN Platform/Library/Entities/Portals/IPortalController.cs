@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Portals
     public interface IPortalController
     {
         /// <summary>Creates a new portal alias.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="portalAlias">Portal Alias to be created.</param>
         void AddPortalAlias(int portalId, string portalAlias);
 
@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         int CreatePortal(string portalName, int adminUserId, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use IPortalTemplateInfo template argument instead. Scheduled removal in v11.0.0.")]
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalController.PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">The portal alias.</param>
         /// <param name="serverPath">The server path.</param>
         /// <param name="childPath">The child path.</param>
-        /// <param name="isChildPortal">if set to <c>true</c> means the portal is child portal.</param>
+        /// <param name="isChildPortal">if set to <see langword="true"/> means the portal is child portal.</param>
         /// <returns>Portal id.</returns>
         int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal);
 
@@ -99,13 +99,13 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>portal settings.</returns>
         IPortalSettings GetCurrentSettings();
 
-        /// <summary>  Gets information of a portal.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <summary>Gets information of a portal.</summary>
+        /// <param name="portalId">ID of the portal.</param>
         /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId);
 
-        /// <summary>  Gets information of a portal.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <summary>Gets information of a portal.</summary>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns>PortalInfo object with portal definition.</returns>
         PortalInfo GetPortal(int portalId, string cultureCode);
@@ -148,7 +148,7 @@ namespace DotNetNuke.Entities.Portals
         PortalController.PortalTemplateInfo GetPortalTemplate(string templateFileName, string cultureCode);
 
         /// <summary>Verifies if there's enough space to upload a new file on the given portal.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="fileSizeBytes">Size of the file being uploaded.</param>
         /// <returns>True if there's enough space available to upload the file.</returns>
         bool HasSpaceAvailable(int portalId, long fileSizeBytes);
@@ -198,6 +198,12 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal">The portal info.</param>
         void UpdatePortalInfo(PortalInfo portal);
 
+        /// <summary>Adds or Updates or Deletes a portal setting value.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        /// <param name="settingName">The setting name.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">Whether to clear the cache.</param>
+        /// <param name="cultureCode">The culture code.</param>
         [Obsolete("Deprecated in DotNetNuke 9.2.0. Use the overloaded one with the 'isSecure' parameter instead. Scheduled removal in v11.0.0.")]
         void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode);
 

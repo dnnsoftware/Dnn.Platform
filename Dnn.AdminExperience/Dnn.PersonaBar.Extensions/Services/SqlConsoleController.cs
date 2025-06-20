@@ -53,7 +53,6 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage SaveQuery(SqlQuery query)
         {
             query.CreatedOnDate = DateTime.Now;
@@ -100,7 +99,6 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RunQuery(AdhocSqlQuery query)
         {
             var connectionstring = Config.GetConnectionString(query.ConnectionStringName);

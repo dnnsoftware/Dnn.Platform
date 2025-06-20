@@ -47,7 +47,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Determines whether this instance is valid.</summary>
-        /// <returns><c>true</c> if this instance is valid; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this instance is valid; otherwise, <see langword="false"/>.</returns>
         public bool IsValid()
         {
             // There is a bug here which I haven't been able to fix.
