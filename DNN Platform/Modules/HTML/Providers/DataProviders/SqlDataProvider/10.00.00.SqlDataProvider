@@ -33,9 +33,27 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwne
 GO
 
 CREATE PROCEDURE {databaseOwner}{objectQualifier}MigrateHtmlWorkflows
+    @PublishedList NVARCHAR(MAX) = N'Published|veröffentlicht|Publicado|Publié|Pubblicato|Publiceren',
+    @DraftList NVARCHAR(MAX) = N'Draft|Entwurf|Borrador|Brouillon|Bozza|Concept'
 AS
 BEGIN
     SET NOCOUNT ON;
+
+    -- Declare a table variable for Published state translations
+    DECLARE @PublishedStates TABLE (StateName NVARCHAR(40));
+
+    -- Split the string and insert into @PublishedStates
+    INSERT INTO @PublishedStates (StateName)
+    SELECT LTRIM(RTRIM(value))
+    FROM STRING_SPLIT(@PublishedList, '|');
+
+    -- Declare a table variable for Draft state translations
+    DECLARE @DraftStates TABLE (StateName NVARCHAR(40));
+
+    -- Split the string and insert into @DraftStates
+    INSERT INTO @DraftStates (StateName)
+    SELECT LTRIM(RTRIM(value))
+    FROM STRING_SPLIT(@DraftList, '|');
     
     -- Create mapping table for old and new workflow states
     DECLARE @StateMapping TABLE (
@@ -56,20 +74,8 @@ BEGIN
     INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON 
         cw.WorkflowID = cws.WorkflowID
         AND (ws.StateName = cws.StateName
-            OR (ws.StateName = N'Published' AND cws.StateName IN (
-                N'Published',
-                N'veröffentlicht',
-                N'Publicado',
-                N'Publié',
-                N'Pubblicato',
-                N'Publiceren'))
-            OR (ws.StateName = N'Draft' AND cws.StateName IN (
-                N'Draft',
-                N'Borrador',
-                N'Bozza',
-                N'Brouillon',
-                N'Concept',
-                N'Entwurf'))
+            OR (ws.StateName = N'Published' AND cws.StateName IN (SELECT StateName FROM @PublishedStates))
+            OR (ws.StateName = N'Draft' AND cws.StateName IN (SELECT StateName FROM @DraftStates))
         );
     
     -- Update HtmlText table with new StateIDs
@@ -94,20 +100,8 @@ BEGIN
         INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON 
             cw.WorkflowID = cws.WorkflowID 
             AND (ws.StateName = cws.StateName
-                OR (ws.StateName = N'Published' AND cws.StateName IN (
-                    N'Published',
-                    N'veröffentlicht',
-                    N'Publicado',
-                    N'Publié',
-                    N'Pubblicato',
-                    N'Publiceren'))
-                OR (ws.StateName = N'Draft' AND cws.StateName IN (
-                    N'Draft',
-                    N'Borrador',
-                    N'Bozza',
-                    N'Brouillon',
-                    N'Concept',
-                    N'Entwurf'))
+                OR (ws.StateName = N'Published' AND cws.StateName IN (SELECT StateName FROM @PublishedStates))
+                OR (ws.StateName = N'Draft' AND cws.StateName IN (SELECT StateName FROM @DraftStates))
             )
         WHERE NOT EXISTS (
             SELECT 1 FROM @StateMapping sm WHERE ht.StateID = sm.OldStateID AND m.PortalID = sm.PortalID
@@ -119,13 +113,7 @@ BEGIN
         FROM {databaseOwner}{objectQualifier}HtmlText ht
         INNER JOIN {databaseOwner}{objectQualifier}Modules m ON ht.ModuleID = m.ModuleID
         INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflows cw ON m.PortalID = cw.PortalID AND cw.WorkflowKey = 'DirectPublish'
-        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON cw.WorkflowID = cws.WorkflowID AND cws.StateName IN (
-            N'Published',
-            N'veröffentlicht',
-            N'Publicado',
-            N'Publié',
-            N'Pubblicato',
-            N'Publiceren')
+        INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON cw.WorkflowID = cws.WorkflowID AND cws.StateName IN (SELECT StateName FROM @PublishedStates)
         WHERE NOT EXISTS (
             SELECT 1 FROM {databaseOwner}{objectQualifier}ContentWorkflowStates WHERE StateID = ht.StateID /*AND m.PortalID = sm.PortalID*/
         );
@@ -149,20 +137,8 @@ BEGIN
         INNER JOIN {databaseOwner}{objectQualifier}ContentWorkflowStates cws ON 
             cw.WorkflowID = cws.WorkflowID
             AND (ws.StateName = cws.StateName
-                OR (ws.StateName = N'Published' AND cws.StateName IN (
-                    N'Published',
-                    N'veröffentlicht',
-                    N'Publicado',
-                    N'Publié',
-                    N'Pubblicato',
-                    N'Publiceren'))
-                OR (ws.StateName = N'Draft' AND cws.StateName IN (
-                    N'Draft',
-                    N'Borrador',
-                    N'Bozza',
-                    N'Brouillon',
-                    N'Concept',
-                    N'Entwurf'))
+                OR (ws.StateName = N'Published' AND cws.StateName IN (SELECT StateName FROM @PublishedStates))
+                OR (ws.StateName = N'Draft' AND cws.StateName IN (SELECT StateName FROM @DraftStates))
         )
         WHERE NOT EXISTS (
             SELECT 1 FROM @StateMapping sm WHERE htl.StateID = sm.OldStateID
@@ -176,37 +152,6 @@ BEGIN
         PRINT 'Error updating HTML module workflow references: ' + ERROR_MESSAGE();
     END CATCH
 END
-GO
-
--- Execute the migration procedure
-EXEC {databaseOwner}{objectQualifier}MigrateHtmlWorkflows;
-GO
-
--- Clean up by dropping the migration procedure (optional)
--- IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}MigrateHtmlWorkflows') AND type in (N'P', N'PC'))
---     BEGIN
---         DROP PROCEDURE {databaseOwner}{objectQualifier}MigrateHtmlWorkflows;
---     END
--- GO
-
--- Drop WorkflowStates table
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}WorkflowStates') AND type in (N'U'))
-    DROP TABLE {databaseOwner}{objectQualifier}WorkflowStates;
-GO
-
--- Drop Workflow table
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}Workflow') AND type in (N'U'))
-    DROP TABLE {databaseOwner}{objectQualifier}Workflow;
-GO
-
--- Create Foreign Key FK_HtmlText_WorkflowStates if it does not exist
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlText'))
-    ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH NOCHECK ADD CONSTRAINT FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
-GO
-
--- Create Foreign Key FK_HtmlTextLog_WorkflowStates if it does not exist
-IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates') AND parent_object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}HtmlTextLog'))
-    ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH NOCHECK ADD CONSTRAINT FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates FOREIGN KEY (StateID) REFERENCES {databaseOwner}{objectQualifier}ContentWorkflowStates (StateID);
 GO
 
 -- Drop Procedure GetAllHtmlText
@@ -330,16 +275,6 @@ BEGIN
       AND (IsPublished = @IsPublished OR @IsPublished = 0)
     ORDER BY {databaseOwner}{objectQualifier}HtmlText.LastModifiedOnDate DESC
 END
-GO
-
--- Enable constraints after checking existing data
-ALTER TABLE {databaseOwner}{objectQualifier}HtmlText WITH CHECK CHECK CONSTRAINT FK_{objectQualifier}HtmlText_{objectQualifier}WorkflowStates;
-ALTER TABLE {databaseOwner}{objectQualifier}HtmlTextLog WITH CHECK CHECK CONSTRAINT FK_{objectQualifier}HtmlTextLog_{objectQualifier}WorkflowStates;
-GO
-
--- Drop WorkflowStatePermission table
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}{objectQualifier}WorkflowStatePermission') AND OBJECTPROPERTY(id, N'IsTable') = 1)
-    DROP TABLE {databaseOwner}{objectQualifier}WorkflowStatePermission
 GO
 
 -- Drop WorkflowStatePermission view
