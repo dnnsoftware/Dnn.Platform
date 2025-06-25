@@ -161,6 +161,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                     TestableGlobals.Instance.NavigateURL(model.ModuleConfiguration.TabID, TestableGlobals.Instance.IsHostTab(model.ModuleConfiguration.TabID), model.PortalSettings, string.Empty, routeValues);
 
             moduleContentPaneDiv.InnerHtml += $"<form action=\"{url}\" method=\"post\">";
+            moduleContentPaneDiv.InnerHtml += htmlHelper.AntiForgeryToken().ToHtmlString();
             moduleContentPaneDiv.InnerHtml += moduleDiv.ToString();
             moduleContentPaneDiv.InnerHtml += "</form>";
             if (!string.IsNullOrEmpty(model.Footer))
