@@ -225,13 +225,13 @@ namespace DotNetNuke.Entities.Tabs
 
         private static bool IsLocalizationEnabled()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return (portalSettings != null) ? portalSettings.ContentLocalizationEnabled : Null.NullBoolean;
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
+            return portalSettings?.ContentLocalizationEnabled ?? Null.NullBoolean;
         }
 
         private static bool IsLocalizationEnabled(int portalId)
         {
-            return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
+            return PortalController.GetPortalSettingAsBoolean(PortalController.Instance, "ContentLocalizationEnabled", portalId, false);
         }
 
         private void AddInternal(TabInfo tab)

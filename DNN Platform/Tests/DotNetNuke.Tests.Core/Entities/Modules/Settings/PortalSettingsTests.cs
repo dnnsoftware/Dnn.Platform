@@ -19,22 +19,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class PortalSettingsTests : BaseSettingsTests
     {
-        private FakeServiceProvider serviceProvider;
-
-        [SetUp]
-        public void Setup()
+        /// <inheritdoc />
+        protected override void SetupServiceProvider(IServiceCollection services)
         {
-            this.serviceProvider = FakeServiceProvider.Setup(
-                services =>
-                {
-                    services.AddSingleton<ISerializationManager, SerializationManager>();
-                });
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            this.serviceProvider.Dispose();
+            services.AddSingleton<ISerializationManager, SerializationManager>();
         }
 
         [Test]
