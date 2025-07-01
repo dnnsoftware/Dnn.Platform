@@ -1419,6 +1419,17 @@
   </data>
   <data name="plUserRequestIpHeader.Help" xml:space="preserve">
     <value>When set, this header will be used to find the actual user IP in scenarios where the request is forwarded (WAF, ReverseProxy, LoadBalancer, etc.) "X-Forwarded-For" is a commonly used header for this. If unset the server variable "REMOTE_ADDR" will be utilized for all user IP address identification.</value>
-
+  </data>
+  <data name="plAllowOverrideThemeViaQueryString.Text" xml:space="preserve">
+    <value>Allow Overriding Theme via QueryString</value>
+  </data>
+  <data name="plAllowOverrideThemeViaQueryString.Help" xml:space="preserve">
+    <value>If true, any visitor can load themes (including unused ones) using the SkinSrc querystring parameter.</value>
+  </data>
+  <data name="plAllowRichTextModuleTitle.Text" xml:space="preserve">
+    <value>Allow Rich Text Module Titles</value>
+  </data>
+  <data name="plAllowRichTextModuleTitle.Help" xml:space="preserve">
+    <value>If enabled, HTML content will be allowed as module titles.</value>
   </data>
 </root>

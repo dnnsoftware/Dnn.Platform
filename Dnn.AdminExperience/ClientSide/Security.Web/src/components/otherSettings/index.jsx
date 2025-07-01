@@ -228,6 +228,50 @@ class OtherSettingsPanelBody extends Component {
                         </div>
                     </InputGroup>
                     <InputGroup>
+                        <div className="otherSettings-row_switch">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("plAllowOverrideThemeViaQueryString.Help")}
+                                label={resx.get("plAllowOverrideThemeViaQueryString")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                    />
+                                }
+                            />
+                            <Switch
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
+                                value={state.otherSettings.AllowOverrideThemeViaQueryString}
+                                onChange={this.onSettingChange.bind(this, "AllowOverrideThemeViaQueryString")}
+                            />
+                        </div>
+                    </InputGroup>
+                    <InputGroup>
+                        <div className="otherSettings-row_switch">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("plAllowRichTextModuleTitle.Help")}
+                                label={resx.get("plAllowRichTextModuleTitle")}
+                                extra={
+                                    <Tooltip
+                                        messages={[resx.get("GlobalSetting")]}
+                                        type="global"
+                                        style={{ float: "left", position: "static" }}
+                                    />
+                                }
+                            />
+                            <Switch
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
+                                value={state.otherSettings.AllowRichTextModuleTitle}
+                                onChange={this.onSettingChange.bind(this, "AllowRichTextModuleTitle")}
+                            />
+                        </div>
+                    </InputGroup>
+                    <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plAutoAccountUnlock.Help")}
                             label={resx.get("plAutoAccountUnlock")}

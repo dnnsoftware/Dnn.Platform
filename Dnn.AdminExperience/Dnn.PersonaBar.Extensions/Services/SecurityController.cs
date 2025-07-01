@@ -693,7 +693,7 @@ namespace Dnn.PersonaBar.Security.Services
                 Stream oStream = null;
                 try
                 {
-                    HttpWebRequest oRequest = Globals.GetExternalRequest(sRequest);
+                    HttpWebRequest oRequest = Globals.GetExternalRequest(this.hostSettings, sRequest);
                     oRequest.Timeout = 10000; // 10 seconds
                     WebResponse oResponse = oRequest.GetResponse();
                     oStream = oResponse.GetResponseStream();
@@ -767,6 +767,8 @@ namespace Dnn.PersonaBar.Security.Services
                             this.hostSettings.ShowCriticalErrors,
                             this.hostSettings.DebugMode,
                             this.hostSettings.RememberCheckbox,
+                            this.hostSettings.AllowOverrideThemeViaQueryString,
+                            this.hostSettings.AllowRichTextModuleTitle,
                             AutoAccountUnlockDuration = this.hostSettings.AutoAccountUnlockDuration.TotalMinutes,
                             AsyncTimeout = this.hostSettings.AsyncTimeout.TotalMinutes,
                             MaxUploadSize = Config.GetMaxUploadSize(this.applicationStatusInfo) / 1024 / 1024,
@@ -800,6 +802,8 @@ namespace Dnn.PersonaBar.Security.Services
                 this.hostSettingsService.Update("ShowCriticalErrors", request.ShowCriticalErrors ? "Y" : "N", false);
                 this.hostSettingsService.Update("DebugMode", request.DebugMode ? "True" : "False", false);
                 this.hostSettingsService.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowOverrideThemeViaQueryString", request.AllowOverrideThemeViaQueryString ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowRichTextModuleTitle", request.AllowRichTextModuleTitle ? "Y" : "N", false);
                 this.hostSettingsService.Update("AutoAccountUnlockDuration", request.AutoAccountUnlockDuration.ToString(), false);
                 this.hostSettingsService.Update("AsyncTimeout", request.AsyncTimeout.ToString(), false);
                 var oldExtensionList = this.hostSettings.AllowedExtensionAllowList.ToStorageString();
