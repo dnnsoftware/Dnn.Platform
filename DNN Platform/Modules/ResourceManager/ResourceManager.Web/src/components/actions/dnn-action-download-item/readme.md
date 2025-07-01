@@ -9,7 +9,7 @@
 
 | Property            | Attribute | Description | Type   | Default     |
 | ------------------- | --------- | ----------- | ------ | ----------- |
-| `item` _(required)_ | `item`    |             | `Item` | `undefined` |
+| `item` _(required)_ | --        |             | `Item` | `undefined` |
 
 
 ## Dependencies
