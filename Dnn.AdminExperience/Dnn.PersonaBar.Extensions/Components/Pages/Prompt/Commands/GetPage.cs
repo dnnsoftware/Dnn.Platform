@@ -17,19 +17,15 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-page", Constants.PagesCategory, "Prompt_GetPage_Description")]
-
     public class GetPage : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_GetPage_FlagName", "String")]
-
         private const string FlagName = "name";
 
         [FlagParameter("id", "Prompt_GetPage_FlagId", "Integer")]
-
         private const string FlagId = "id";
 
         [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
-
         private const string FlagParentId = "parentid";
 
         private readonly ITabController tabController;

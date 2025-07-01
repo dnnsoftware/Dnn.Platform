@@ -5,6 +5,7 @@ namespace DotNetNuke.Prompt
 {
     using DotNetNuke.Services.Localization;
 
+    /// <summary>This is used to return the results of a command error to the client.</summary>
     public class ConsoleErrorResultModel : ConsoleResultModel
     {
         /// <summary>Initializes a new instance of the <see cref="ConsoleErrorResultModel"/> class.</summary>

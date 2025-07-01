@@ -14,7 +14,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("list-portals", Constants.PortalCategory, "Prompt_ListPortals_Description")]
-
     public class ListPortals : ConsoleCommandBase
     {
         /// <inheritdoc/>

@@ -6,16 +6,16 @@ namespace DotNetNuke.Abstractions.Prompt
     /// <summary>Used to page long lists of data to the client.</summary>
     public interface IPagingInfo
     {
-        /// <summary>Gets or sets the current page nr.</summary>
+        /// <summary>Gets or sets the current page number.</summary>
         int PageNo { get; set; }
 
         /// <summary>Gets or sets the Page size.</summary>
         int PageSize { get; set; }
 
-        /// <summary>Gets or sets the total nr of pages.</summary>
+        /// <summary>Gets or sets the total number of pages.</summary>
         int TotalPages { get; set; }
 
-        /// <summary>Gets or sets the total nr of records.</summary>
+        /// <summary>Gets or sets the total number of records.</summary>
         int TotalRecords { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.Mvc.Common
         /// <param name="collection">The <see cref="IDictionary{TKey,TValue}"/> instance where <c>TValue</c> is <c>object</c>.</param>
         /// <param name="key">The key whose value to get.</param>
         /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter.</param>
-        /// <returns><c>true</c> if key was found, value is non-null, and value is of type <typeparamref name="T"/>; otherwise false.</returns>
+        /// <returns><see langword="true"/> if key was found, value is non-null, and value is of type <typeparamref name="T"/>; otherwise false.</returns>
         public static bool TryGetValue<T>(this IDictionary<string, object> collection, string key, out T value)
         {
             Contract.Assert(collection != null);

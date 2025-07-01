@@ -157,7 +157,7 @@ namespace DotNetNuke.Entities.Urls
 
         public bool CustomParmRewrite { get; set; }
 
-        // 737 : mobile browser identificatino
+        // 737 : mobile browser identification
         public BrowserTypes BrowserType { get; private set; }
 
         public bool IsPhysicalResource { get; set; }

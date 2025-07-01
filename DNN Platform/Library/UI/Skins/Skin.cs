@@ -35,6 +35,7 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Internal.SourceGenerators;
+    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -357,8 +358,13 @@ namespace DotNetNuke.UI.Skins
             // skin preview
             if (page.Request.QueryString["SkinSrc"] != null)
             {
-                skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(page.Request.QueryString["SkinSrc"]) + ".ascx", page.PortalSettings);
-                skin = LoadSkin(page, skinSource);
+                hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+                if (hostSettings.AllowOverrideThemeViaQueryString || TabPermissionController.CanManagePage())
+                {
+                    skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(page.Request.QueryString["SkinSrc"]) + ".ascx", page.PortalSettings);
+                    skin = LoadSkin(page, skinSource);
+                }
             }
 
             // load user skin ( based on cookie )

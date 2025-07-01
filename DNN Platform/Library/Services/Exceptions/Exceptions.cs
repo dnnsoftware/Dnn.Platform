@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <summary>Processes the module load exception.</summary>
         /// <param name="objPortalModuleBase">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> display error message.</param>
         public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool displayErrorMessage)
         {
             ProcessModuleLoadException((Control)objPortalModuleBase, exc, displayErrorMessage);
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="friendlyMessage">The friendly message.</param>
         /// <param name="objPortalModuleBase">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> display error message.</param>
         public static void ProcessModuleLoadException(string friendlyMessage, PortalModuleBase objPortalModuleBase, Exception exc, bool displayErrorMessage)
         {
             ProcessModuleLoadException(friendlyMessage, (Control)objPortalModuleBase, exc, displayErrorMessage);
@@ -167,7 +167,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <summary>Processes the module load exception.</summary>
         /// <param name="ctrl">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> displays an error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> displays an error message.</param>
         public static void ProcessModuleLoadException(Control ctrl, Exception exc, bool displayErrorMessage)
         {
             // Exit Early if ThreadAbort Exception
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="friendlyMessage">The friendly message.</param>
         /// <param name="ctrl">The control.</param>
         /// <param name="exc">The exception.</param>
-        /// <param name="displayErrorMessage">if set to <c>true</c> display error message.</param>
+        /// <param name="displayErrorMessage">if set to <see langword="true"/> display error message.</param>
         public static void ProcessModuleLoadException(string friendlyMessage, Control ctrl, Exception exc, bool displayErrorMessage)
         {
             // Exit Early if ThreadAbort Exception

@@ -125,7 +125,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [allowed content].</summary>
         /// <value>
-        ///   <c>true</c> if [allowed content]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [allowed content]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("allowedContent")]
         [Description("Allowed content rules. This setting is used when instantiating CKEDITOR.editor.filter.")]
@@ -157,7 +157,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [auto grow_ on startup].</summary>
         /// <value>
-        ///   <c>true</c> if [auto grow_ on startup]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [auto grow_ on startup]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("autoGrow_onStartup")]
         [Description("Whether to have the auto grow happen on editor creation.")]
@@ -165,7 +165,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [auto paragraph].</summary>
         /// <value>
-        ///   <c>true</c> if [auto paragraph]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [auto paragraph]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("autoParagraph")]
         [Description("Whether automatically create wrapping blocks around inline contents inside document body, this helps to ensure the integrality of the block enter mode.")]
@@ -181,7 +181,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [auto update element].</summary>
         /// <value>
-        ///   <c>true</c> if [auto update element]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [auto update element]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("autoUpdateElement")]
         [Description("Whether the replaced element is to be updated automatically when posting the form containing the editor.")]
@@ -205,7 +205,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [basic entities].</summary>
         /// <value>
-        ///   <c>true</c> if [basic entities]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [basic entities]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("basicEntities")]
         [Description("Whether to escape basic HTML entities in the document, including: nbsp, gt, lt, amp")]
@@ -237,7 +237,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [browser context menu on CTRL].</summary>
         /// <value>
-        /// <c>true</c> if [browser context menu on CTRL]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [browser context menu on CTRL]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("browserContextMenuOnCtrl")]
         [Description("Whether to show the browser native context menu when the Ctrl or Meta (Mac) key is pressed on opening the context menu with the right mouse button click or the Menu key.")]
@@ -275,7 +275,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [color button_ enable more].</summary>
         /// <value>
-        /// <c>true</c> if [color button_ enable more]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [color button_ enable more]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("colorButton_enableMore")]
         [Description("Whether to enable the More Colors button in the color selectors.")]
@@ -443,7 +443,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [dialog_ startup focus tab].</summary>
         /// <value>
-        /// <c>true</c> if [dialog_ startup focus tab]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [dialog_ startup focus tab]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("dialog_startupFocusTab")]
         [Description("If the dialog has more than one tab, put focus into the first tab as soon as dialog is opened.")]
@@ -451,7 +451,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [disable native spell checker].</summary>
         /// <value>
-        /// <c>true</c> if [disable native spell checker]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [disable native spell checker]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("disableNativeSpellChecker")]
         [Description("Disables the built-in words spell checker if browser provides one.")]
@@ -459,7 +459,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [disable native table handles].</summary>
         /// <value>
-        /// <c>true</c> if [disable native table handles]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [disable native table handles]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("disableNativeTableHandles")]
         [Description("Disables the table tools offered natively by the browser (currently Firefox only) to make quick table editing operations, like adding or deleting rows and columns.")]
@@ -467,7 +467,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [disable object resizing].</summary>
         /// <value>
-        /// <c>true</c> if [disable object resizing]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [disable object resizing]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("disableObjectResizing")]
         [Description("Disables the ability of resize objects (image and tables) in the editing area.")]
@@ -475,7 +475,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [disable readonly styling].</summary>
         /// <value>
-        /// <c>true</c> if [disable readonly styling]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [disable readonly styling]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("disableReadonlyStyling")]
         [Description("Disables inline styling on read-only elements.")]
@@ -491,7 +491,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [div_ wrap table].</summary>
         /// <value>
-        ///   <c>true</c> if [div_ wrap table]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [div_ wrap table]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("div_wrapTable")]
         [Description("Whether to wrap the whole table instead of indivisual cells when created DIV in table cell.")]
@@ -523,7 +523,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [enable tab key tools].</summary>
         /// <value>
-        ///   <c>true</c> if [enable tab key tools]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [enable tab key tools]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("enableTabKeyTools")]
         [Description("Allow context-sensitive tab key behaviors.")]
@@ -539,7 +539,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether this <see cref="EditorConfig" /> is entities.</summary>
         /// <value>
-        ///   <c>true</c> if entities; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if entities; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("entities")]
         [Description("Whether to use HTML entities in the output.")]
@@ -555,7 +555,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [entities_ greek].</summary>
         /// <value>
-        ///   <c>true</c> if [entities_ greek]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [entities_ greek]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("entities_greek")]
         [Description("Whether to convert some symbols, mathematical symbols, and Greek letters to HTML entities. This may be more relevant for users typing text written in Greek. The list of entities can be found in the [W3C HTML 4.01 Specification, section 24.3.1(http://www.w3.org/TR/html4/sgml/entities.html#h-24.3.1).")]
@@ -563,7 +563,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [entities_ latin].</summary>
         /// <value>
-        ///   <c>true</c> if [entities_ latin]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [entities_ latin]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("entities_latin")]
         [Description("Whether to convert some Latin characters (Latin alphabet No. 1, ISO 8859-1) to HTML entities. The list of entities can be found in the W3C HTML 4.01 Specification, section 24.2.1.")]
@@ -571,7 +571,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [entities_ process numerical].</summary>
         /// <value>
-        /// <c>true</c> if [entities_ process numerical]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [entities_ process numerical]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("entities_processNumerical")]
         [Description("Whether to convert all remaining characters not included in the ASCII character table to their relative decimal numeric representation of HTML entity. When set to force, it will convert all entities into this format.")]
@@ -675,7 +675,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [fill empty blocks].</summary>
         /// <value>
-        ///   <c>true</c> if [fill empty blocks]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [fill empty blocks]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("fillEmptyBlocks")]
         [Description("Whether a filler text (non-breaking space entity) will be inserted into empty block elements in HTML output, this is used to render block elements properly with line-height When a function is instead specified, it'll be passed a CKEDITOR.htmlParser.element to decide whether adding the filler text by expecting a boolean return value.")]
@@ -691,7 +691,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [flash add embed tag].</summary>
         /// <value>
-        ///   <c>true</c> if [flash add embed tag]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [flash add embed tag]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("flashAddEmbedTag")]
         [Description("Add <embed> tag as alternative: <object><embed></embed></object>.")]
@@ -699,7 +699,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [flash convert on edit].</summary>
         /// <value>
-        ///   <c>true</c> if [flash convert on edit]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [flash convert on edit]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("flashConvertOnEdit")]
         [Description("Use flashEmbedTagOnly and flashAddEmbedTag values on edit.")]
@@ -707,7 +707,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [flash embed tag only].</summary>
         /// <value>
-        ///   <c>true</c> if [flash embed tag only]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [flash embed tag only]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("flashEmbedTagOnly")]
         [Description("Save as <embed> tag only. This tag is unrecommended.")]
@@ -795,7 +795,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [force enter mode].</summary>
         /// <value>
-        ///   <c>true</c> if [force enter mode]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [force enter mode]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("forceEnterMode")]
         [Description("Force the use of enterMode as line break regardless of the context. If, for example, enterMode is set to CKEDITOR.ENTER_P, pressing the Enter key inside a <div> element will create a new paragraph with <p> instead of a <div>")]
@@ -803,7 +803,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [force paste as plain text].</summary>
         /// <value>
-        /// <c>true</c> if [force paste as plain text]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [force paste as plain text]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("forcePasteAsPlainText")]
         [Description("Whether to force all pasting operations to insert on plain text into the editor, loosing any formatting information possibly available in the source text.")]
@@ -811,7 +811,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [force simple ampersand].</summary>
         /// <value>
-        /// <c>true</c> if [force simple ampersand]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [force simple ampersand]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("forceSimpleAmpersand")]
         [Description("Whether to force using '&' instead of '&amp;' in elements attributes values, it's not recommended to change this setting for compliance with the W3C XHTML 1.0 standards (C.12, XHTML 1.0).")]
@@ -907,7 +907,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [full page].</summary>
         /// <value>
-        ///   <c>true</c> if [full page]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [full page]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("fullPage")]
         [Description("Indicates whether the contents to be edited are being input as a full HTML page. A full page includes the <html>, <head>, and <body> elements. The final output will also reflect this setting, including the <body> contents only if this setting is disabled.")]
@@ -923,7 +923,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [HTML encode output].</summary>
         /// <value>
-        ///   <c>true</c> if [HTML encode output]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [HTML encode output]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("htmlEncodeOutput")]
         [Description("Whether to escape HTML when the editor updates the original input element.")]
@@ -931,7 +931,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [ignore empty paragraph].</summary>
         /// <value>
-        /// <c>true</c> if [ignore empty paragraph]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [ignore empty paragraph]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("ignoreEmptyParagraph")]
         [Description("Padding text to set off the image in preview area.")]
@@ -947,7 +947,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [image_ remove link by empty URL].</summary>
         /// <value>
-        /// <c>true</c> if [image_ remove link by empty URL]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [image_ remove link by empty URL]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("image_removeLinkByEmptyURL")]
         [Description("Whether to remove links when emptying the link URL field in the image dialog.")]
@@ -995,7 +995,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [link java script links allowed].</summary>
         /// <value>
-        /// <c>true</c> if [link java script links allowed]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [link java script links allowed]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("linkJavaScriptLinksAllowed")]
         [Description("Whether JavaScript code is allowed as a href attribute in an anchor tag. With this option enabled it is possible to create links")]
@@ -1003,7 +1003,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [link show advanced tab].</summary>
         /// <value>
-        /// <c>true</c> if [link show advanced tab]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [link show advanced tab]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("linkShowAdvancedTab")]
         [Description("Whether to show the Advanced tab in the Link dialog window.")]
@@ -1011,7 +1011,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [link show target tab].</summary>
         /// <value>
-        ///   <c>true</c> if [link show target tab]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [link show target tab]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("linkShowTargetTab")]
         [Description("Whether to show the Target tab in the Link dialog window.")]
@@ -1051,7 +1051,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [magic line put everywhere].</summary>
         /// <value>
-        /// <c>true</c> if [magic line put everywhere]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [magic line put everywhere]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("magicline_putEverywhere")]
         [Description("Activates plugin mode that considers all focus spaces between CKEDITOR.dtd.$block elements as accessible by the box.")]
@@ -1114,7 +1114,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [paste from word numbered heading to list].</summary>
         /// <value>
-        /// <c>true</c> if [paste from word numbered heading to list]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [paste from word numbered heading to list]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("pasteFromWordNumberedHeadingToList")]
         [Description("Whether to transform MS Word outline numbered headings into lists.")]
@@ -1122,7 +1122,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [paste from word prompt cleanup].</summary>
         /// <value>
-        /// <c>true</c> if [paste from word prompt cleanup]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [paste from word prompt cleanup]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("pasteFromWordPromptCleanup")]
         [Description("Whether to prompt the user about the clean up of content being pasted from MS Word.")]
@@ -1130,7 +1130,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [paste from word remove font styles].</summary>
         /// <value>
-        /// <c>true</c> if [paste from word remove font styles]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [paste from word remove font styles]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("pasteFromWordRemoveFontStyles")]
         [Description("Whether to ignore all font related formatting styles")]
@@ -1138,7 +1138,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [paste from word remove styles].</summary>
         /// <value>
-        /// <c>true</c> if [paste from word remove styles]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [paste from word remove styles]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("pasteFromWordRemoveStyles")]
         [Description("Whether to remove element styles that can't be managed with the editor. Note that this doesn't handle the font specific styles, which depends on the pasteFromWordRemoveFontStyles setting instead.")]
@@ -1162,7 +1162,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [read only].</summary>
         /// <value>
-        ///   <c>true</c> if [read only]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [read only]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("readOnly")]
         [Description("If true, makes the editor start in read-only state. Otherwise, it will check if the linked <textarea> element has the disabled attribute.")]
@@ -1218,7 +1218,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [resize_ enabled].</summary>
         /// <value>
-        ///   <c>true</c> if [resize_ enabled]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [resize_ enabled]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("resize_enabled")]
         [Description("Whether to enable the resizing feature. If this feature is disabled, the resize handle will not be visible.")]
@@ -1258,7 +1258,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [SCAYT auto startup].</summary>
         /// <value>
-        ///   <c>true</c> if [SCAYT auto startup]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [SCAYT auto startup]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("scayt_autoStartup")]
         [Description("If enabled (set to true), turns on SCAYT automatically after loading the editor.")]
@@ -1410,7 +1410,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [startup focus].</summary>
         /// <value>
-        ///   <c>true</c> if [startup focus]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [startup focus]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("startupFocus")]
         [Description("Sets whether the editable should have the focus when editor is loading for the first time.")]
@@ -1426,7 +1426,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [startup outline blocks].</summary>
         /// <value>
-        /// <c>true</c> if [startup outline blocks]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [startup outline blocks]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("startupOutlineBlocks")]
         [Description("Whether to automaticaly enable the show block command when the editor loads.")]
@@ -1434,7 +1434,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [startup show borders].</summary>
         /// <value>
-        ///   <c>true</c> if [startup show borders]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [startup show borders]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("startupShowBorders")]
         [Description("Whether to automatically enable the 'show borders' command when the editor loads.")]
@@ -1482,7 +1482,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [templates_ replace content].</summary>
         /// <value>
-        /// <c>true</c> if [templates_ replace content]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [templates_ replace content]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("templates_replaceContent")]
         [Description("Whether the 'Replace actual contents' checkbox is checked by default in the Templates dialog.")]
@@ -1498,7 +1498,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [toolbar can collapse].</summary>
         /// <value>
-        ///   <c>true</c> if [toolbar can collapse]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [toolbar can collapse]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("toolbarCanCollapse")]
         [Description("Whether the toolbar can be collapsed by the user. If disabled, the collapser button will not be displayed.")]
@@ -1506,7 +1506,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [toolbar group cycling].</summary>
         /// <value>
-        ///   <c>true</c> if [toolbar group cycling]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [toolbar group cycling]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("toolbarGroupCycling")]
         [Description("When enabled, makes the arrow keys navigation cycle within the current toolbar group. Otherwise the arrows will move through all items available in the toolbar. The TAB key will still be used to quickly jump among the toolbar groups.")]
@@ -1530,7 +1530,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [toolbar startup expanded].</summary>
         /// <value>
-        /// <c>true</c> if [toolbar startup expanded]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [toolbar startup expanded]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("toolbarStartupExpanded")]
         [Description("Whether the toolbar must start expanded when the editor is loaded.")]
@@ -1554,7 +1554,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [use computed state].</summary>
         /// <value>
-        ///   <c>true</c> if [use computed state]; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if [use computed state]; otherwise, <see langword="false"/>.
         /// </value>
         [XmlAttribute("useComputedState")]
         [Description("Indicates that some of the editor features, like alignment and text direction, should use the computed value of the feature to indicate its on/off state instead of using the real value If enabled in a Left-To-Right written document, the 'Left Justify' alignment button will be shown as active, even if the alignment style is not explicitly applied to the current paragraph in the editor.")]

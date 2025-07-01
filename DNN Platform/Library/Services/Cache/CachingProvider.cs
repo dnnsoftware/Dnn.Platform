@@ -10,6 +10,8 @@ namespace DotNetNuke.Services.Cache
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -21,12 +23,14 @@ namespace DotNetNuke.Services.Cache
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>CachingProvider provides basic component of cache system, by default it will use HttpRuntime.Cache.</summary>
     /// <remarks>
     /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
     /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
     /// such as if a data has already been deleted but the cache aren't clear, it will cause un expected errors.
-    /// so you should choose a correct performance setting type when you trying to cache some stuff, and always remember
+    /// so you should choose a correct performance setting type when you're trying to cache some stuff, and always remember
     /// update cache immediately after the data changed.</para>
     /// </remarks>
     /// <example>
@@ -41,8 +45,23 @@ namespace DotNetNuke.Services.Cache
     {
         private const string CachePrefix = "DNN_";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
-
         private static System.Web.Caching.Cache cache;
+
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="CachingProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        protected CachingProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="CachingProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        protected CachingProvider(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
 
         /// <summary>Gets the default cache provider.</summary>
         /// <value>HttpRuntime.Cache.</value>
@@ -54,7 +73,7 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>Gets a value indicating whether whether current caching provider disabled to expire cache.</summary>
+        /// <summary>Gets a value indicating whether current caching provider disabled to expire cache.</summary>
         /// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
         protected static bool CacheExpirationDisable { get; private set; }
 
@@ -156,7 +175,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>Determines whether is web farm.</summary>
-        /// <returns><c>true</c> if is web farm; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if is web farm; otherwise, <see langword="false"/>.</returns>
         public virtual bool IsWebFarm()
         {
             return ServerController.GetEnabledServers().Count > 1;
@@ -202,7 +221,7 @@ namespace DotNetNuke.Services.Cache
         /// <summary>Clears the cache internal.</summary>
         /// <param name="cacheType">Type of the cache.</param>
         /// <param name="data">The data.</param>
-        /// <param name="clearRuntime">if set to <c>true</c> clear runtime cache.</param>
+        /// <param name="clearRuntime">if set to <see langword="true"/> clear runtime cache.</param>
         protected void ClearCacheInternal(string cacheType, string data, bool clearRuntime)
         {
             switch (cacheType)
@@ -372,7 +391,7 @@ namespace DotNetNuke.Services.Cache
             if (locales == null || locales.Count == 0)
             {
                 // At least attempt to remove default locale
-                string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
+                string defaultLocale = PortalController.GetPortalDefaultLanguage(this.hostSettings, portalId);
                 this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
                 this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
                 this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, defaultLocale);
@@ -423,7 +442,7 @@ namespace DotNetNuke.Services.Cache
             if (locales == null || locales.Count == 0)
             {
                 // At least attempt to remove default locale
-                string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
+                string defaultLocale = PortalController.GetPortalDefaultLanguage(this.hostSettings, portalId);
                 this.RemoveCacheKey(string.Format(DataCache.TabPathCacheKey, defaultLocale, portalId), clearRuntime);
             }
             else

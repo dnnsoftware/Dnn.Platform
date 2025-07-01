@@ -20,27 +20,21 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Security.Roles;
 
     [ConsoleCommand("new-role", Constants.RolesCategory, "Prompt_NewRole_Description")]
-
     public class NewRole : ConsoleCommandBase
     {
         [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
-
         private const string FlagIsPublic = "public";
 
         [FlagParameter("autoassign", "Prompt_NewRole_FlagAutoAssign", "Boolean", "false")]
-
         private const string FlagAutoAssign = "autoassign";
 
         [FlagParameter("name", "Prompt_NewRole_FlagRoleName", "String", true)]
-
         private const string FlagRoleName = "name";
 
         [FlagParameter("description", "Prompt_NewRole_FlagDescription", "String")]
-
         private const string FlagDescription = "description";
 
         [FlagParameter("status", "Prompt_NewRole_FlagStatus", "Boolean", "approved")]
-
         private const string FlagStatus = "status";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));

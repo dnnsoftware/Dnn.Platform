@@ -20,7 +20,6 @@ namespace Dnn.PersonaBar.Servers.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebController));
 
         [HttpGet]
-
         public HttpResponseMessage GetWebServerInfo()
         {
             try

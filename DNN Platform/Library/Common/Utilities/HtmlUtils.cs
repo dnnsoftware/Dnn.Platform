@@ -362,7 +362,7 @@ namespace DotNetNuke.Common.Utilities
             return StripNonWordRegex.Replace(html, repString);
         }
 
-        /// <summary>Determines whether or not the passed in string contains any HTML tags.</summary>
+        /// <summary>Determines whether the passed in string contains any HTML tags.</summary>
         /// <param name="text">Text to be inspected.</param>
         /// <returns>True for HTML and False for plain text.</returns>
         public static bool IsHtml(string text)
@@ -567,5 +567,13 @@ namespace DotNetNuke.Common.Utilities
 
             return html;
         }
+
+        /// <inheritdoc cref="HttpUtility.JavaScriptStringEncode(string)"/>
+        public static IHtmlString JavaScriptStringEncode(string value)
+            => JavaScriptStringEncode(value, false);
+
+        /// <inheritdoc cref="HttpUtility.JavaScriptStringEncode(string,bool)"/>
+        public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
+            => new HtmlString(HttpUtility.JavaScriptStringEncode(value, addDoubleQuotes));
     }
 }
