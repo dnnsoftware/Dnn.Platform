@@ -33,7 +33,6 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -46,12 +45,12 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Web.Api.Auth.ApiTokens;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using Constants = Dnn.PersonaBar.Library.Constants;
     using Localization = DotNetNuke.Services.Localization.Localization;
 
-    /// <summary>
-    /// Provides REST APIs to manage security settings.
-    /// </summary>
+    /// <summary>Provides REST APIs to manage security settings.</summary>
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
@@ -66,6 +65,7 @@ namespace Dnn.PersonaBar.Security.Services
         private readonly IApiTokenController apiTokenController;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IApplicationStatusInfo applicationStatusInfo;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="SecurityController"/> class.</summary>
         /// <param name="pagesController">The pages controller.</param>
@@ -85,7 +85,8 @@ namespace Dnn.PersonaBar.Security.Services
                 portalAliasService,
                 apiTokenController,
                 hostSettingsService,
-                applicationStatusInfo)
+                applicationStatusInfo,
+                null)
         {
         }
 
@@ -96,13 +97,15 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="apiTokenController">The API token controller.</param>
         /// <param name="hostSettingsService">Provides services to manage host settings.</param>
         /// <param name="applicationStatusInfo">Provides information about the application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
         internal SecurityController(
             Components.SecurityController controller,
             IPagesController pagesController,
             IPortalAliasService portalAliasService,
             IApiTokenController apiTokenController,
             IHostSettingsService hostSettingsService,
-            IApplicationStatusInfo applicationStatusInfo)
+            IApplicationStatusInfo applicationStatusInfo,
+            IHostSettings hostSettings)
         {
             this.pagesController = pagesController;
             this.controller = controller;
@@ -111,6 +114,7 @@ namespace Dnn.PersonaBar.Security.Services
             this.hostSettingsService = hostSettingsService;
             this.applicationStatusInfo = applicationStatusInfo;
             this.applicationStatusInfo = applicationStatusInfo;
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// GET: api/Security/GetBasicLoginSettings
@@ -119,7 +123,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>Portal's basic login settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.BasicLoginSettingsView)]
-
         public HttpResponseMessage GetBasicLoginSettings(string cultureCode)
         {
             try
@@ -242,7 +245,7 @@ namespace Dnn.PersonaBar.Security.Services
                     Results = new
                     {
                         Filters = filters,
-                        Host.EnableIPChecking,
+                        this.hostSettings.EnableIPChecking,
                     },
                 };
 
@@ -388,16 +391,16 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Settings = new
                         {
-                            Host.MembershipResetLinkValidity,
-                            Host.AdminMembershipResetLinkValidity,
-                            Host.EnablePasswordHistory,
-                            Host.MembershipNumberPasswords,
-                            Host.MembershipDaysBeforePasswordReuse,
-                            Host.EnableBannedList,
-                            Host.EnableStrengthMeter,
-                            Host.EnableIPChecking,
-                            Host.PasswordExpiry,
-                            Host.PasswordExpiryReminder,
+                            MembershipResetLinkValidity = this.hostSettings.MembershipResetLinkValidity.TotalMinutes,
+                            AdminMembershipResetLinkValidity = this.hostSettings.AdminMembershipResetLinkValidity.TotalMinutes,
+                            this.hostSettings.EnablePasswordHistory,
+                            this.hostSettings.MembershipNumberPasswords,
+                            this.hostSettings.MembershipDaysBeforePasswordReuse,
+                            this.hostSettings.EnableBannedList,
+                            this.hostSettings.EnableStrengthMeter,
+                            this.hostSettings.EnableIPChecking,
+                            PasswordExpiry = this.hostSettings.PasswordExpiry.TotalDays,
+                            PasswordExpiryReminder = this.hostSettings.PasswordExpiryReminder.TotalDays,
                             ForceLogoutAfterPasswordChanged = this.hostSettingsService.GetBoolean("ForceLogoutAfterPasswordChanged"),
                         },
                     },
@@ -690,7 +693,7 @@ namespace Dnn.PersonaBar.Security.Services
                 Stream oStream = null;
                 try
                 {
-                    HttpWebRequest oRequest = Globals.GetExternalRequest(sRequest);
+                    HttpWebRequest oRequest = Globals.GetExternalRequest(this.hostSettings, sRequest);
                     oRequest.Timeout = 10000; // 10 seconds
                     WebResponse oResponse = oRequest.GetResponse();
                     oStream = oResponse.GetResponseStream();
@@ -761,15 +764,17 @@ namespace Dnn.PersonaBar.Security.Services
                     {
                         Settings = new
                         {
-                            Host.ShowCriticalErrors,
-                            Host.DebugMode,
-                            Host.RememberCheckbox,
-                            Host.AutoAccountUnlockDuration,
-                            Host.AsyncTimeout,
+                            this.hostSettings.ShowCriticalErrors,
+                            this.hostSettings.DebugMode,
+                            this.hostSettings.RememberCheckbox,
+                            this.hostSettings.AllowOverrideThemeViaQueryString,
+                            this.hostSettings.AllowRichTextModuleTitle,
+                            AutoAccountUnlockDuration = this.hostSettings.AutoAccountUnlockDuration.TotalMinutes,
+                            AsyncTimeout = this.hostSettings.AsyncTimeout.TotalMinutes,
                             MaxUploadSize = Config.GetMaxUploadSize(this.applicationStatusInfo) / 1024 / 1024,
                             RangeUploadSize = 4294967295 / 1024 / 1024, // 4GB (max allowedContentLength supported in IIS7)
-                            AllowedExtensionWhitelist = Host.AllowedExtensionWhitelist.ToStorageString(),
-                            DefaultEndUserExtensionWhitelist = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
+                            AllowedExtensionWhitelist = this.hostSettings.AllowedExtensionAllowList.ToStorageString(),
+                            DefaultEndUserExtensionWhitelist = this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString(),
                         },
                     },
                 };
@@ -797,9 +802,11 @@ namespace Dnn.PersonaBar.Security.Services
                 this.hostSettingsService.Update("ShowCriticalErrors", request.ShowCriticalErrors ? "Y" : "N", false);
                 this.hostSettingsService.Update("DebugMode", request.DebugMode ? "True" : "False", false);
                 this.hostSettingsService.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowOverrideThemeViaQueryString", request.AllowOverrideThemeViaQueryString ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowRichTextModuleTitle", request.AllowRichTextModuleTitle ? "Y" : "N", false);
                 this.hostSettingsService.Update("AutoAccountUnlockDuration", request.AutoAccountUnlockDuration.ToString(), false);
                 this.hostSettingsService.Update("AsyncTimeout", request.AsyncTimeout.ToString(), false);
-                var oldExtensionList = Host.AllowedExtensionWhitelist.ToStorageString();
+                var oldExtensionList = this.hostSettings.AllowedExtensionAllowList.ToStorageString();
                 var fileExtensions = new FileExtensionWhitelist(request.AllowedExtensionWhitelist);
                 var newExtensionList = fileExtensions.ToStorageString();
                 this.hostSettingsService.Update("FileExtensions", newExtensionList, false);
@@ -1157,7 +1164,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>A paged list of `ApiToken` objects for the specified portal and page.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage GetApiTokens(int portalId, int filter, string apiKey, int scope, int pageIndex, int pageSize)
         {
             if (portalId < 0)
@@ -1253,7 +1259,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>A new <see cref="ApiToken"/> object.</returns>
         [HttpPost]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage CreateApiToken(CreateApiTokenRequest data)
         {
             var settings = ApiTokenSettings.GetSettings(this.PortalId);
@@ -1330,7 +1335,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>An HTTP response message with a boolean value indicating whether the token was successfully revoked or deleted.</returns>
         [HttpPost]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage RevokeOrDeleteApiToken(RevokeDeleteApiTokenRequest data)
         {
             var token = this.apiTokenController.GetApiToken(data.ApiTokenId);

@@ -1,7 +1,7 @@
 ﻿const packageJson = require("./package.json");
 const path = require("path");
 const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
 const settings = require("../../../settings.local.json");
 
@@ -79,7 +79,12 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(d.ts)$/,
                     use: ["null-loader"],
-                }
+                },
+                {
+                    test: /\.html$/,
+                    resourceQuery: /raw/,
+                    use: "raw-loader",
+                },
             ],
         },
         resolve: {

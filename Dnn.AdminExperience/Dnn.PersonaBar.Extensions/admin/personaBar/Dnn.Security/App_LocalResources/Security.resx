@@ -802,7 +802,7 @@
     <value>Username</value>
   </data>
   <data name="CheckBiographyFailure.Text" xml:space="preserve">
-    <value>The field is richtext. Spammers may put links to their website in their biography field. The field type can be changed in Settings -&gt; Site Settings -&gt; Site Behavior -&gt; User Profiles</value>
+    <value>The field is rich-text. Spammers may put links to their website in their biography field. The field type can be changed in Settings -&gt; Site Settings -&gt; Site Behavior -&gt; User Profiles</value>
   </data>
   <data name="CheckBiographyReason.Text" xml:space="preserve">
     <value>The biography field is a common target for spammers as they can add links/html to it. In DNN 7.2.0 this was changed to a multiline textbox which removes this risk.</value>
@@ -866,7 +866,7 @@
     <value>Severity</value>
   </data>
   <data name="CheckBiographyName.Text" xml:space="preserve">
-    <value>Check if public profile fields use richtext</value>
+    <value>Check if public profile fields use rich-text</value>
   </data>
   <data name="CheckDebugName.Text" xml:space="preserve">
     <value>Check Debug status</value>
@@ -1280,7 +1280,7 @@
     <value>Token Status</value>
   </data>
   <data name="CreatedBy.Help" xml:space="preserve">
-    <value>Displayname and username of the user that created the token</value>
+    <value>Display name and username of the user that created the token</value>
   </data>
   <data name="CreatedBy.Text" xml:space="preserve">
     <value>Created By</value>
@@ -1301,7 +1301,7 @@
     <value>Expires On</value>
   </data>
   <data name="RevokedBy.Help" xml:space="preserve">
-    <value>Displayname and username of the user that revoked the token.</value>
+    <value>Display name and username of the user that revoked the token.</value>
   </data>
   <data name="RevokedBy.Text" xml:space="preserve">
     <value>Revoked By</value>
@@ -1418,7 +1418,18 @@
     <value>User Request IP Header</value>
   </data>
   <data name="plUserRequestIpHeader.Help" xml:space="preserve">
-    <value>When set, this header will be used to find the actual user IP in scenarios where the request is forwared (WAF, ReverseProxy, LoadBalancer, etc.) "X-Forwarded-For" is a commonly used header for this. If unset the server variable "REMOTE_ADDR" will be utilized for all user IP address identification.</value>
-
+    <value>When set, this header will be used to find the actual user IP in scenarios where the request is forwarded (WAF, ReverseProxy, LoadBalancer, etc.) "X-Forwarded-For" is a commonly used header for this. If unset the server variable "REMOTE_ADDR" will be utilized for all user IP address identification.</value>
+  </data>
+  <data name="plAllowOverrideThemeViaQueryString.Text" xml:space="preserve">
+    <value>Allow Overriding Theme via QueryString</value>
+  </data>
+  <data name="plAllowOverrideThemeViaQueryString.Help" xml:space="preserve">
+    <value>If true, any visitor can load themes (including unused ones) using the SkinSrc querystring parameter.</value>
+  </data>
+  <data name="plAllowRichTextModuleTitle.Text" xml:space="preserve">
+    <value>Allow Rich Text Module Titles</value>
+  </data>
+  <data name="plAllowRichTextModuleTitle.Help" xml:space="preserve">
+    <value>If enabled, HTML content will be allowed as module titles.</value>
   </data>
 </root>

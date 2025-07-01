@@ -19,6 +19,7 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Web.Api;
 
+    /// <summary>A Persona Bar API controller for user settings.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class UserSettingsController : PersonaBarApiController
     {

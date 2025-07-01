@@ -75,7 +75,7 @@ class TestUrlPanelBody extends Component {
         props.dispatch(SeoActions.testUrlRewrite(state.test.UrlToTest));
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";

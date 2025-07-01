@@ -16,10 +16,9 @@ namespace DotNetNuke.Framework
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
@@ -55,31 +54,43 @@ namespace DotNetNuke.Framework
 
         private readonly IApplicationInfo appInfo;
         private readonly IModuleControlPipeline moduleControlPipeline;
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalSettingsController portalSettingsController;
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null)
+            : this(null, null, null, null, null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="appInfo">The application info.</param>
+        /// <param name="appStatus">The application status.</param>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IModuleControlPipeline moduleControlPipeline)
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalSettingsController">The portal settings controller.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController)
+            : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
         }
 
-        public string CurrentSkinPath
-        {
-            get
-            {
-                return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
-            }
-        }
+        public string CurrentSkinPath => ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
 
         /// <summary>Gets or sets property to allow the programmatic assigning of ScrollTop position.</summary>
         /// <value>
@@ -205,7 +216,7 @@ namespace DotNetNuke.Framework
 
             // DataBind common paths for the client resource loader
             this.ClientResourceLoader.DataBind();
-            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.hostSettings, this.hostSettingsService, this.appStatus, this.eventLogger, this.PortalSettings, this.Page);
 
             // check for and read skin package level doctype
             this.SetSkinDoctype();
@@ -298,7 +309,7 @@ namespace DotNetNuke.Framework
             // set the async postback timeout.
             if (AJAX.IsEnabled())
             {
-                AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
+                AJAX.GetScriptManager(this).AsyncPostBackTimeout = (int)this.hostSettings.AsyncTimeout.TotalSeconds;
             }
         }
 
@@ -395,7 +406,7 @@ namespace DotNetNuke.Framework
             }
 
             // Configure the ActiveTab with Skin/Container information
-            PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
+            this.portalSettingsController.ConfigureActiveTab(this.PortalSettings);
 
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
@@ -427,26 +438,22 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            string cacheability = this.Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
-
+            var cacheability = this.Request.IsAuthenticated ? this.hostSettings.AuthenticatedCacheability : this.hostSettings.UnauthenticatedCacheability;
             switch (cacheability)
             {
-                case "0":
+                case CacheControlHeader.NoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                     break;
-                case "1":
+                case CacheControlHeader.Private:
                     this.Response.Cache.SetCacheability(HttpCacheability.Private);
                     break;
-                case "2":
+                case CacheControlHeader.Public:
                     this.Response.Cache.SetCacheability(HttpCacheability.Public);
                     break;
-                case "3":
-                    this.Response.Cache.SetCacheability(HttpCacheability.Server);
-                    break;
-                case "4":
+                case CacheControlHeader.ServerAndNoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
                     break;
-                case "5":
+                case CacheControlHeader.ServerAndPrivate:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
                     break;
             }
@@ -606,7 +613,7 @@ namespace DotNetNuke.Framework
             }
 
             // NonProduction Label Injection
-            if (this.NonProductionVersion() && Host.DisplayBetaNotice && !UrlUtils.InPopUp())
+            if (this.NonProductionVersion() && this.hostSettings.DisplayBetaNotice && !UrlUtils.InPopUp())
             {
                 string versionString = $" ({this.appInfo.Status} Version: {this.appInfo.Version})";
                 this.Title += versionString;
@@ -691,14 +698,14 @@ namespace DotNetNuke.Framework
                 return Skin.GetPopUpSkin(this);
             }
 
-            return Skin.GetSkin(this);
+            return Skin.GetSkin(this.hostSettings, this);
         }
 
         private void LoadPopupScriptsIfNeeded()
         {
             if (this.PortalSettings.EnablePopUps)
             {
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryUI);
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
                                    : "~/js/dnn.modalpopup.js";
@@ -708,7 +715,7 @@ namespace DotNetNuke.Framework
 
         private void ManageFavicon()
         {
-            string headerLink = FavIcon.GetHeaderLink(this.PortalSettings.PortalId);
+            string headerLink = FavIcon.GetHeaderLink(this.hostSettings, this.PortalSettings.PortalId);
 
             if (!string.IsNullOrEmpty(headerLink))
             {
@@ -748,6 +755,7 @@ namespace DotNetNuke.Framework
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
                 this.GetBackgroundFileInfoCallBack);
 
@@ -763,6 +771,7 @@ namespace DotNetNuke.Framework
         {
             string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "PageStylesheet" + styleSheet);
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority, styleSheet),
                 this.GetPageStylesheetInfoCallBack);
 
@@ -783,7 +792,7 @@ namespace DotNetNuke.Framework
                 DataCache.PortalCacheTimeOut,
                 DataCache.PortalCachePriority,
                 this.PortalSettings.GetStyles());
-            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            string filePath = CBO.GetCachedObject<string>(this.hostSettings, cacheArgs, this.GetCssVariablesStylesheetCallback);
             return filePath;
         }
 

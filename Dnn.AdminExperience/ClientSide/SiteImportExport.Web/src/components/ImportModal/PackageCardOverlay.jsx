@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Localization from "localization";
 
 class PackageCardOverlay extends Component {
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         return (

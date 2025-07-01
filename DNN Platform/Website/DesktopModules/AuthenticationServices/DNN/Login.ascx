@@ -1,6 +1,7 @@
 <%@ Control Language="C#" Inherits="DotNetNuke.Modules.Admin.Authentication.DNN.Login" AutoEventWireup="false" CodeBehind="Login.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
+<%@ Import Namespace="DotNetNuke.Common.Utilities" %>
 <div class="dnnForm dnnLoginService dnnClear">
     <div class="dnnFormItem">
 		<div class="dnnLabel">
@@ -44,7 +45,7 @@
         /*globals jQuery, window, Sys */
         (function ($, Sys) {
             const disabledActionClass = "dnnDisabledAction";
-            const actionLinks = $('a[id^="dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN"]');
+            const actionLinks = $('a[id^="dnn_ctr<%:ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN"]');
             function isActionDisabled($el) {
                 return $el && $el.hasClass(disabledActionClass);
             }
@@ -76,7 +77,7 @@
             $(document).ready(function () {
                 $(document).on('keydown', '.dnnLoginService', function (e) {
                     if ($(e.target).is('input:text,input:password') && e.keyCode === 13) {
-                        var $loginButton = $('#dnn_ctr<%=ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin');
+                        var $loginButton = $('#dnn_ctr<%:ModuleId > Null.NullInteger ? ModuleId.ToString() : ""%>_Login_Login_DNN_cmdLogin');
                         if (isActionDisabled($loginButton)) {
                             return false;
                         }

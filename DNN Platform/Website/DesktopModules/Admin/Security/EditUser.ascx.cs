@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -37,10 +38,20 @@ namespace DotNetNuke.Modules.Admin.Users
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
         private readonly INavigationManager navigationManager;
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IHostSettings hostSettings;
 
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditUser()
+            : this(null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets or sets the current Page No.</summary>
@@ -172,8 +183,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
             this.email.ValidationExpression = this.PortalSettings.Registration.EmailValidator;
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.Knockout);
 
             // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";
@@ -576,10 +587,10 @@ namespace DotNetNuke.Modules.Admin.Users
             ProfilePropertyDefinition localeProperty = this.UserInfo.Profile.GetProperty("PreferredLocale");
             if (localeProperty.IsDirty)
             {
-                // store preferredlocale in cookie, if none specified set to portal default.
+                // store PreferredLocale in cookie, if none specified set to portal default.
                 if (this.UserInfo.Profile.PreferredLocale == string.Empty)
                 {
-                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.UserInfo.PortalID));
+                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.hostSettings, this.UserInfo.PortalID));
                 }
                 else
                 {

@@ -149,18 +149,18 @@ namespace DotNetNuke.Services.Tokens
             {
                 result = this.PropertySource[objectName.ToLowerInvariant()].GetProperty(propertyName, format, this.FormatProvider, this.AccessingUser, this.CurrentAccessLevel, ref propertyNotFound);
             }
-            else
+            else if (this.DebugMessages)
             {
-                if (this.DebugMessages)
+                string message = Localization.GetString(
+                    "TokenReplaceUnknownObject",
+                    Localization.SharedResourceFile,
+                    this.FormatProvider.ToString());
+                if (message == string.Empty)
                 {
-                    string message = Localization.GetString("TokenReplaceUnknownObject", Localization.SharedResourceFile, this.FormatProvider.ToString());
-                    if (message == string.Empty)
-                    {
-                        message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
-                    }
-
-                    result = string.Format(message, objectName, propertyName);
+                    message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
                 }
+
+                result = string.Format(message, objectName, propertyName);
             }
 
             if (this.DebugMessages && propertyNotFound)
@@ -190,6 +190,34 @@ namespace DotNetNuke.Services.Tokens
         protected override string ReplaceTokens(string sourceText)
         {
             return this.Provider is CoreTokenProvider ? base.ReplaceTokens(sourceText) : this.Provider.Tokenize(sourceText, this.TokenContext);
+        }
+
+        /// <summary>
+        /// Adds the <paramref name="properties"/> with the given <paramref name="name"/> as a source for the token replace, by default HTML encoding its results.
+        /// Additionally, provides derived sources to encode the results in a variety of ways.
+        /// <list type="bullet">
+        /// <item>name - HTML encoded output (e.g. <c>"</c> becomes <c>&quot;</c>)</item>
+        /// <item>name_raw - Raw, unencoded output</item>
+        /// <item>name_url - URL encoded output (e.g. <c>"</c> becomes <c>%22</c>)</item>
+        /// <item>name_js - JavaScript string encoded output (e.g. <c>"</c> becomes <c>\"</c>)</item>
+        /// </list>
+        /// </summary>
+        /// <param name="name">The base name of the source.</param>
+        /// <param name="properties">The <see cref="IPropertyAccess"/> implementation.</param>
+        protected void AddPropertySource(string name, IPropertyAccess properties)
+        {
+            this.PropertySource[name + "_raw"] = properties;
+            this.PropertySource[name] = new HtmlEncodingPropertyAccess(properties);
+            this.PropertySource[name + "_url"] = new UrlEncodingPropertyAccess(properties);
+            this.PropertySource[name + "_js"] = new JavaScriptEncodingPropertyAccess(properties);
+        }
+
+        /// <summary>Adds the <paramref name="properties"/> with the given <paramref name="name"/> as a source for the token replace.</summary>
+        /// <param name="name">The name of the source.</param>
+        /// <param name="properties">The <see cref="IPropertyAccess"/> implementation.</param>
+        protected void AddRawPropertySource(string name, IPropertyAccess properties)
+        {
+            this.PropertySource[name] = properties;
         }
     }
 }

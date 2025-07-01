@@ -61,8 +61,8 @@ namespace DotNetNuke.Framework
         ///   requires users to be authenticated.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if authentication is required
-        ///   otherwise, <c>false</c>.
+        ///   <see langword="true"/> if authentication is required
+        ///   otherwise, <see langword="false"/>.
         /// </value>
         public virtual bool RequiresAuthentication
         {
@@ -78,11 +78,11 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         ///   By default all authenticated users have permssions.
-        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>.
+        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <see langword="true"/>.
         /// </remarks>
         /// <value>
-        ///   <c>true</c> if the user has the appropriate permissions
-        ///   otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the user has the appropriate permissions
+        ///   otherwise, <see langword="false"/>.
         /// </value>
         public virtual bool HasPermission
         {
@@ -184,8 +184,8 @@ namespace DotNetNuke.Framework
         ///   implement this and return true if the parameters are
         ///   valid, otherwise false.
         /// </summary>
-        /// <returns><c>true</c> if the parameters are valid,
-        ///   otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the parameters are valid,
+        ///   otherwise <see langword="false"/>.</returns>
         public abstract bool ValidateParameters();
 
         /// <summary>

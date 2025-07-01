@@ -51,7 +51,6 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.UI.Utilities;
-    using Lucene.Net.Search;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualBasic.CompilerServices;
 
@@ -218,33 +217,19 @@ namespace DotNetNuke.Common
 
         // global constants for the life of the application ( set in Application_Start )
 
-        /// <summary>Enumeration of site performance setting, say by another way that means how to set the cache.</summary>
-        /// <remarks>
-        /// <para>Using cache will speed up the application to a great degree, we recommend to use cache for whole modules,
-        /// but sometimes cache also make confuse for user, if we didn't take care of how to make cache expired when needed,
-        /// such as if a data has already been deleted but the cache arn't clear, it will cause un expected errors.
-        /// so you should choose a correct performance setting type when you trying to cache some stuff, and always remember
-        /// update cache immediately after the data changed.</para>
-        /// <para>default cache policy in core api will use cache timeout muitple Host Performance setting's value as cache time(unit: minutes):</para>
-        /// <list type="bullet">
-        ///     <item>HostSettingsCacheTimeOut: 20</item>
-        /// <item>PortalAliasCacheTimeOut: 200</item>
-        /// <item>PortalSettingsCacheTimeOut: 20</item>
-        /// <item>More cache timeout definitions see<see cref="DotNetNuke.Common.Utilities.DataCache"/></item>
-        /// </list>
-        /// </remarks>
+        /// <inheritdoc cref="DotNetNuke.Abstractions.Application.PerformanceSettings"/>
         public enum PerformanceSettings
         {
-            /// <summary>No Caching.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.NoCaching"/>
             NoCaching = 0,
 
-            /// <summary>Caching for a short time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.LightCaching"/>
             LightCaching = 1,
 
-            /// <summary>Caching for moderate time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.ModerateCaching"/>
             ModerateCaching = 3,
 
-            /// <summary>Caching for a long time.</summary>
+            /// <inheritdoc cref="Abstractions.Application.PerformanceSettings.HeavyCaching"/>
             HeavyCaching = 6,
         }
 
@@ -423,7 +408,7 @@ namespace DotNetNuke.Common
         public static UpgradeStatus Status { get => (UpgradeStatus)applicationStatusInfo.Status; }
 
         /// <summary>Gets image file types.</summary>
-        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
+        /// <value>Values read from ImageTypes List. If there is not a List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use ImageFileTypes instead. Scheduled removal in v11.0.0.")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage(
             "StyleCop.CSharp.NamingRules",
@@ -432,7 +417,7 @@ namespace DotNetNuke.Common
         public static string glbImageFileTypes => ImageFileTypes;
 
         /// <summary>Gets image file types.</summary>
-        /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
+        /// <value>Values read from ImageTypes List. If there is not a List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico.</value>
         public static string ImageFileTypes
         {
             get
@@ -512,7 +497,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Redirects the specified URL.</summary>
         /// <param name="url">The URL.</param>
-        /// <param name="endResponse">if set to <c>true</c> [end response].</param>
+        /// <param name="endResponse">if set to <see langword="true"/> [end response].</param>
         public static void Redirect(string url, bool endResponse)
         {
             try
@@ -879,7 +864,7 @@ namespace DotNetNuke.Common
         /// <param name="major">The major.</param>
         /// <param name="minor">The minor.</param>
         /// <param name="build">The build.</param>
-        /// <returns>return <c>true</c> if can find the specific version, otherwise will retur <c>false</c>.</returns>
+        /// <returns>return <see langword="true"/> if can find the specific version, otherwise will retur <see langword="false"/>.</returns>
         public static bool FindDatabaseVersion(int major, int minor, int build)
         {
             bool version = false;
@@ -958,7 +943,7 @@ namespace DotNetNuke.Common
 
         /// <summary>returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).</summary>
         /// <param name="request">The request.</param>
-        /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
+        /// <param name="parsePortNumber">if set to <see langword="true"/> [parse port number].</param>
         /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequest request, bool parsePortNumber)
         {
@@ -967,7 +952,7 @@ namespace DotNetNuke.Common
 
         /// <summary>returns the domain name of the current request ( ie. www.domain.com or 207.132.12.123 or www.domain.com/directory if subhost ).</summary>
         /// <param name="request">The request.</param>
-        /// <param name="parsePortNumber">if set to <c>true</c> [parse port number].</param>
+        /// <param name="parsePortNumber">if set to <see langword="true"/> [parse port number].</param>
         /// <returns>domain name.</returns>
         public static string GetDomainName(HttpRequestBase request, bool parsePortNumber)
         {
@@ -976,7 +961,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Determin whether use port number by the value in config file.</summary>
         /// <returns>
-        /// <c>true</c> if use port number, otherwise, return <c>false</c>.
+        /// <see langword="true"/> if use port number, otherwise, return <see langword="false"/>.
         /// </returns>
         public static bool UsePortNumber()
         {
@@ -1016,7 +1001,7 @@ namespace DotNetNuke.Common
         /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
-        /// <param name="noneSpecified">if set to <c>true</c> [none specified].</param>
+        /// <param name="noneSpecified">if set to <see langword="true"/> [none specified].</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified)
         {
@@ -1026,7 +1011,7 @@ namespace DotNetNuke.Common
         /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
-        /// <param name="noneSpecified">if set to <c>true</c> [none specified].</param>
+        /// <param name="noneSpecified">if set to <see langword="true"/> [none specified].</param>
         /// <param name="folder">The folder.</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified, string folder)
@@ -1037,9 +1022,9 @@ namespace DotNetNuke.Common
         /// <summary>Gets the file list.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="strExtensions">The STR extensions.</param>
-        /// <param name="noneSpecified">if set to <c>true</c> [none specified].</param>
+        /// <param name="noneSpecified">if set to <see langword="true"/> [none specified].</param>
         /// <param name="folder">The folder.</param>
-        /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
+        /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified, string folder, bool includeHidden)
         {
@@ -1100,16 +1085,23 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the host portal settings.</summary>
         /// <returns>Host portal settings.</returns>
-        public static PortalSettings GetHostPortalSettings()
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial PortalSettings GetHostPortalSettings()
+            => GetHostPortalSettings(GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>Gets the host portal settings.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>Host portal settings.</returns>
+        public static PortalSettings GetHostPortalSettings(IHostSettings hostSettings)
         {
             int tabId = -1;
             int portalId = -1;
             IPortalAliasInfo objPortalAliasInfo = null;
 
             // if the portal alias exists
-            if (Host.HostPortalID > Null.NullInteger)
+            if (hostSettings.HostPortalId > Null.NullInteger)
             {
-                portalId = Host.HostPortalID;
+                portalId = hostSettings.HostPortalId;
 
                 // use the host portal
                 objPortalAliasInfo = new PortalAliasInfo();
@@ -1123,7 +1115,7 @@ namespace DotNetNuke.Common
         /// <summary>Gets the portal domain name.</summary>
         /// <param name="strPortalAlias">The portal alias.</param>
         /// <param name="request">The request or <c>null</c>.</param>
-        /// <param name="blnAddHTTP">if set to <c>true</c> calls <see cref="AddHTTP"/> on the result.</param>
+        /// <param name="blnAddHTTP">if set to <see langword="true"/> calls <see cref="AddHTTP"/> on the result.</param>
         /// <returns>domain name.</returns>
         public static string GetPortalDomainName(string strPortalAlias, HttpRequest request, bool blnAddHTTP)
         {
@@ -1365,7 +1357,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Formats the version.</summary>
         /// <param name="version">The version.</param>
-        /// <param name="includeBuild">if set to <c>true</c> [include build].</param>
+        /// <param name="includeBuild">if set to <see langword="true"/> [include build].</param>
         /// <returns>Formatted version as string.</returns>
         /// <example>
         /// <code lang="C#">
@@ -1514,7 +1506,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Determines whether current request contains admin control information.</summary>
         /// <returns>
-        ///   <c>true</c> if current request contains admin control information; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if current request contains admin control information; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsAdminControl()
         {
@@ -1529,7 +1521,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Determines whether current request use admin skin.</summary>
         /// <returns>
-        ///   <c>true</c> if current request use admin skin; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if current request use admin skin; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsAdminSkin()
         {
@@ -1557,14 +1549,14 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Returns whether the current tab is in EditMode.</summary>
-        /// <returns><c>true</c> if the tab is in Edit mode; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the tab is in Edit mode; otherwise <see langword="false"/>.</returns>
         public static bool IsEditMode()
         {
             return Personalization.GetUserMode() == PortalSettings.Mode.Edit && TabPermissionController.CanAddContentToPage();
         }
 
         /// <summary>Returns whether the current tab is in LayoutMode.</summary>
-        /// <returns><c>true</c> if the current tab is in layout mode; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the current tab is in layout mode; otherwise <see langword="false"/>.</returns>
         public static bool IsLayoutMode()
         {
             return TabPermissionController.CanAddContentToPage() && Personalization.GetUserMode() == PortalSettings.Mode.Layout;
@@ -1823,19 +1815,27 @@ namespace DotNetNuke.Common
         /// <summary>Gets the external request.</summary>
         /// <param name="address">The address.</param>
         /// <returns>Web request.</returns>
-        public static HttpWebRequest GetExternalRequest(string address)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial HttpWebRequest GetExternalRequest(string address)
+            => GetExternalRequest(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), address);
+
+        /// <summary>Gets the external request.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="address">The address.</param>
+        /// <returns>Web request.</returns>
+        public static HttpWebRequest GetExternalRequest(IHostSettings hostSettings, string address)
         {
             // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(address);
 
-            // Set a time out to the request ... 10 seconds
-            objRequest.Timeout = Host.WebRequestTimeout;
+            // Set a time-out to the request ... 10 seconds
+            objRequest.Timeout = (int)hostSettings.WebRequestTimeout.TotalMilliseconds;
 
             // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
 
             // If there is Proxy info, apply it to the request
-            if (!string.IsNullOrEmpty(Host.ProxyServer))
+            if (!string.IsNullOrEmpty(hostSettings.ProxyServer))
             {
                 // Create a new Proxy
                 WebProxy proxy;
@@ -1844,11 +1844,11 @@ namespace DotNetNuke.Common
                 NetworkCredential proxyCredentials;
 
                 // Fill Proxy info from host settings
-                proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
-                if (!string.IsNullOrEmpty(Host.ProxyUsername))
+                proxy = new WebProxy(hostSettings.ProxyServer, hostSettings.ProxyPort);
+                if (!string.IsNullOrEmpty(hostSettings.ProxyUsername))
                 {
                     // Fill the credential info from host settings
-                    proxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
+                    proxyCredentials = new NetworkCredential(hostSettings.ProxyUsername, hostSettings.ProxyPassword);
 
                     // Apply credentials to proxy
                     proxy.Credentials = proxyCredentials;
@@ -1865,13 +1865,22 @@ namespace DotNetNuke.Common
         /// <param name="address">The address.</param>
         /// <param name="credentials">The credentials.</param>
         /// <returns>Web request.</returns>
-        public static HttpWebRequest GetExternalRequest(string address, NetworkCredential credentials)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial HttpWebRequest GetExternalRequest(string address, NetworkCredential credentials)
+            => GetExternalRequest(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), address, credentials);
+
+        /// <summary>Gets the external request.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="address">The address.</param>
+        /// <param name="credentials">The credentials.</param>
+        /// <returns>Web request.</returns>
+        public static HttpWebRequest GetExternalRequest(IHostSettings hostSettings, string address, NetworkCredential credentials)
         {
             // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(address);
 
-            // Set a time out to the request ... 10 seconds
-            objRequest.Timeout = Host.WebRequestTimeout;
+            // Set a time-out to the request ... 10 seconds
+            objRequest.Timeout = (int)hostSettings.WebRequestTimeout.TotalMilliseconds;
 
             // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
@@ -1883,7 +1892,7 @@ namespace DotNetNuke.Common
             }
 
             // If there is Proxy info, apply it to the request
-            if (!string.IsNullOrEmpty(Host.ProxyServer))
+            if (!string.IsNullOrEmpty(hostSettings.ProxyServer))
             {
                 // Create a new Proxy
                 WebProxy proxy;
@@ -1892,11 +1901,11 @@ namespace DotNetNuke.Common
                 NetworkCredential proxyCredentials;
 
                 // Fill Proxy info from host settings
-                proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
-                if (!string.IsNullOrEmpty(Host.ProxyUsername))
+                proxy = new WebProxy(hostSettings.ProxyServer, hostSettings.ProxyPort);
+                if (!string.IsNullOrEmpty(hostSettings.ProxyUsername))
                 {
                     // Fill the credential info from host settings
-                    proxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
+                    proxyCredentials = new NetworkCredential(hostSettings.ProxyUsername, hostSettings.ProxyPassword);
 
                     // Apply credentials to proxy
                     proxy.Credentials = proxyCredentials;
@@ -2449,7 +2458,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the login URL.</summary>
         /// <param name="returnUrl">The URL to redirect to after logging in.</param>
-        /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <param name="overrideSetting">if set to <see langword="true"/>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnUrl, bool overrideSetting)
         {
@@ -2458,7 +2467,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the login URL.</summary>
         /// <param name="returnUrl">The URL to redirect to after logging in.</param>
-        /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <param name="overrideSetting">if set to <see langword="true"/>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <returns>Formatted URL.</returns>
         [DnnDeprecated(9, 8, 1, "Use the overload that takes IPortalSettings instead")]
@@ -2469,7 +2478,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the login URL.</summary>
         /// <param name="returnUrl">The URL to redirect to after logging in.</param>
-        /// <param name="overrideSetting">if set to <c>true</c>, show the login control on the current page, even if there is a login page defined for the site.</param>
+        /// <param name="overrideSetting">if set to <see langword="true"/>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <returns>Formatted URL.</returns>
         public static string LoginURL(string returnUrl, bool overrideSetting, IPortalSettings portalSettings)
@@ -2553,7 +2562,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the URL to the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -2627,7 +2636,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
@@ -2642,7 +2651,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="language">The language code.</param>
@@ -2656,7 +2665,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="language">The language code.</param>
@@ -2867,7 +2876,7 @@ namespace DotNetNuke.Common
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
-        /// <param name="trackClicks">if set to <c>true</c> [track clicks].</param>
+        /// <param name="trackClicks">if set to <see langword="true"/> [track clicks].</param>
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string link, int tabId, int moduleId, bool trackClicks)
         {
@@ -2878,7 +2887,7 @@ namespace DotNetNuke.Common
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
-        /// <param name="trackClicks">if set to <c>true</c> [track clicks].</param>
+        /// <param name="trackClicks">if set to <see langword="true"/> [track clicks].</param>
         /// <param name="contentType">Type of the content.</param>
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string link, int tabId, int moduleId, bool trackClicks, string contentType)
@@ -2890,8 +2899,8 @@ namespace DotNetNuke.Common
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
-        /// <param name="trackClicks">if set to <c>true</c> [track clicks].</param>
-        /// <param name="forceDownload">if set to <c>true</c> [force download].</param>
+        /// <param name="trackClicks">if set to <see langword="true"/> [track clicks].</param>
+        /// <param name="forceDownload">if set to <see langword="true"/> [force download].</param>
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string link, int tabId, int moduleId, bool trackClicks, bool forceDownload)
         {
@@ -2903,10 +2912,10 @@ namespace DotNetNuke.Common
         /// <param name="link">The link.</param>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="moduleId">The module ID.</param>
-        /// <param name="trackClicks">if set to <c>true</c> [track clicks].</param>
-        /// <param name="forceDownload">if set to <c>true</c> [force download].</param>
+        /// <param name="trackClicks">if set to <see langword="true"/> [track clicks].</param>
+        /// <param name="forceDownload">if set to <see langword="true"/> [force download].</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="enableUrlLanguage">if set to <c>true</c> [enable URL language].</param>
+        /// <param name="enableUrlLanguage">if set to <see langword="true"/> [enable URL language].</param>
         /// <param name="portalGuid">The portal GUID.</param>
         /// <returns>Formatted url.</returns>
         public static string LinkClick(
@@ -2992,7 +3001,15 @@ namespace DotNetNuke.Common
         /// <summary>Gets the name of the role.</summary>
         /// <param name="roleId">The role ID.</param>
         /// <returns>Role Name.</returns>
-        public static string GetRoleName(int roleId)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string GetRoleName(int roleId)
+            => GetRoleName(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), roleId);
+
+        /// <summary>Gets the name of the role.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="roleId">The role ID.</param>
+        /// <returns>Role Name.</returns>
+        public static string GetRoleName(IHostSettings hostSettings, int roleId)
         {
             switch (Convert.ToString(roleId))
             {
@@ -3003,7 +3020,7 @@ namespace DotNetNuke.Common
             }
 
             Hashtable htRoles = null;
-            if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
+            if (hostSettings.PerformanceSetting != DotNetNuke.Abstractions.Application.PerformanceSettings.NoCaching)
             {
                 htRoles = (Hashtable)DataCache.GetCache("GetRoles");
             }
@@ -3019,7 +3036,7 @@ namespace DotNetNuke.Common
                     htRoles.Add(role.RoleID, role.RoleName);
                 }
 
-                if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
+                if (hostSettings.PerformanceSetting != DotNetNuke.Abstractions.Application.PerformanceSettings.NoCaching)
                 {
                     DataCache.SetCache("GetRoles", htRoles);
                 }
@@ -3104,11 +3121,19 @@ namespace DotNetNuke.Common
         /// <summary>Gets the online help url or the host configured help url if no url provided.</summary>
         /// <param name="helpUrl">The help URL.</param>
         /// <returns>The help url.</returns>
-        public static string GetOnLineHelp(string helpUrl)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string GetOnLineHelp(string helpUrl)
+            => GetOnLineHelp(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), helpUrl);
+
+        /// <summary>Gets the online help url or the host configured help url if no url provided.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="helpUrl">The help URL.</param>
+        /// <returns>The help url.</returns>
+        public static string GetOnLineHelp(IHostSettings hostSettings, string helpUrl)
         {
             if (string.IsNullOrEmpty(helpUrl))
             {
-                helpUrl = Host.HelpURL;
+                helpUrl = hostSettings.HelpUrl;
             }
 
             return helpUrl;
@@ -3116,7 +3141,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Check whether the tab contains "Account Login" module.</summary>
         /// <param name="tabId">The tab id.</param>
-        /// <returns><c>true</c> if the tab contains "Account Login" module, otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the tab contains "Account Login" module, otherwise, <see langword="false"/>.</returns>
         public static bool ValidateLoginTabID(int tabId)
         {
             return ValidateModuleInTab(tabId, "Account Login");
@@ -3125,7 +3150,7 @@ namespace DotNetNuke.Common
         /// <summary>Check whether the tab contains specific module.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="moduleName">The module need to check.</param>
-        /// <returns><c>true</c> if the tab contains the module, otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the tab contains the module, otherwise, <see langword="false"/>.</returns>
         public static bool ValidateModuleInTab(int tabId, string moduleName)
         {
             bool hasModule = Null.NullBoolean;
@@ -3250,7 +3275,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Check whether the specific page is a host page.</summary>
         /// <param name="tabId">The tab ID.</param>
-        /// <returns>if <c>true</c> the tab is a host page; otherwise, it is not a host page.</returns>
+        /// <returns>if <see langword="true"/> the tab is a host page; otherwise, it is not a host page.</returns>
         public static bool IsHostTab(int tabId)
         {
             bool isHostTab = false;
@@ -3463,7 +3488,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the culture code of the tab.</summary>
         /// <param name="tabId">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> [is super tab].</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> [is super tab].</param>
         /// <param name="settings">The settings.</param>
         /// <returns>return the tab's culture code, if ths tab doesn't exist, it will return current culture name.</returns>
         internal static string GetCultureCode(int tabId, bool isSuperTab, IPortalSettings settings)
@@ -3511,7 +3536,7 @@ namespace DotNetNuke.Common
         /// <summary>Check whether the Filename matches extensions.</summary>
         /// <param name="filename">The filename.</param>
         /// <param name="strExtensions">The valid extensions.</param>
-        /// <returns><c>true</c> if the Filename matches extensions, otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the Filename matches extensions, otherwise, <see langword="false"/>.</returns>
         private static bool FilenameMatchesExtensions(string filename, string strExtensions)
         {
             bool result = string.IsNullOrEmpty(strExtensions);

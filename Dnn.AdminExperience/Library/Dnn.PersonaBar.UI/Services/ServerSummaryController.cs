@@ -5,38 +5,42 @@
 namespace Dnn.PersonaBar.UI.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Net;
     using System.Net.Http;
-    using System.Security.Cryptography;
-    using System.Text;
-    using System.Text.RegularExpressions;
-    using System.Web;
-    using System.Web.Caching;
     using System.Web.Http;
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.UI.Services.DTO;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Upgrade;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A Persona Bar API controller for the server summary.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
-        private enum UpdateType
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="ServerSummaryController"/> class.</summary>
+        public ServerSummaryController()
+            : this(null)
         {
-            None = 0,
-            Normal = 1,
-            Critical = 2,
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ServerSummaryController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public ServerSummaryController(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Return server info.</summary>
@@ -70,7 +74,6 @@ namespace Dnn.PersonaBar.UI.Services
         /// <summary>Returns update information about current framework version.</summary>
         /// <returns>A serialized FrameworkQueryDTO object.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetUpdateInfo()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo());
@@ -86,12 +89,12 @@ namespace Dnn.PersonaBar.UI.Services
 
         private FrameworkQueryDTO UpdateInfo()
         {
-            if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
+            if (HttpContextSource.Current == null || !this.hostSettings.CheckUpgrade || !this.UserInfo.IsSuperUser)
             {
                 return new FrameworkQueryDTO();
             }
 
-            return CBO.GetCachedObject<FrameworkQueryDTO>(new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
+            return CBO.GetCachedObject<FrameworkQueryDTO>(this.hostSettings, new CacheItemArgs("DnnUpdateUrl"), this.RetrieveUpdateUrl);
         }
 
         private FrameworkQueryDTO RetrieveUpdateUrl(CacheItemArgs args)
@@ -102,7 +105,7 @@ namespace Dnn.PersonaBar.UI.Services
                 url += "?core=" + Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, string.Empty);
                 url += "&type=" + DotNetNukeContext.Current.Application.Type;
                 url += "&name=" + DotNetNukeContext.Current.Application.Name;
-                url += "&id=" + Host.GUID;
+                url += "&id=" + this.hostSettings.Guid;
                 url += "&no=" + PortalController.Instance.GetPortals().Count;
                 url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, string.Empty);
                 url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, string.Empty);
@@ -125,8 +128,8 @@ namespace Dnn.PersonaBar.UI.Services
 
         private T GetJsonObject<T>(string url)
         {
-            var request = Globals.GetExternalRequest(url);
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            var request = Globals.GetExternalRequest(this.hostSettings, url);
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -138,13 +141,6 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
             return default(T);
-        }
-
-        private string UpdateUrl()
-        {
-            var url = DotNetNukeContext.Current.Application.UpgradeUrl;
-
-            return url;
         }
     }
 }

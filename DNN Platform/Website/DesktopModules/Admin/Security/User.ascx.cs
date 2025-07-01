@@ -6,36 +6,48 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
     using System.Collections;
     using System.Linq;
-    using System.Web;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
-    using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>The User UserModuleBase is used to manage the base parts of a User.</summary>
     public partial class User : UserUserControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
+        private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
+
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        public User()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
+        {
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+        }
 
         /// <summary>Gets a value indicating whether the User is valid.</summary>
         public bool IsValid
@@ -282,11 +294,11 @@ namespace DotNetNuke.Modules.Admin.Users
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
 
-            if (Host.EnableStrengthMeter)
+            if (this.hostSettings.EnableStrengthMeter)
             {
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtPassword.CssClass = "password-strength";
@@ -551,7 +563,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
                             if (usersWithSameDisplayName.Any(user => user.UserID != this.User.UserID))
                             {
-                                UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                                UI.Skins.Skin.AddModuleMessage(this, this.LocalizeText("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
                                 return;
                             }
                         }

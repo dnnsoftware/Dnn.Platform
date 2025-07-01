@@ -12,6 +12,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Cache;
@@ -75,16 +76,16 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
         [Test]
         [TestCaseSource(typeof(PortalSettingsControllerTestFactory), nameof(PortalSettingsControllerTestFactory.LoadPortalSettings_Loads_Default_Value))]
-
         public void LoadPortalSettings_Loads_Default_Value(Dictionary<string, string> testFields)
         {
             // Arrange
+            var mockHostSettingsService = this.mockHostController.As<IHostSettingsService>();
             var propertyName = testFields["PropertyName"];
             var settingName = testFields["SettingName"];
             var isHostDefault = bool.Parse(testFields["IsHostDefault"]);
             var defaultValue = testFields["DefaultValue"];
-            var controller = new PortalSettingsController();
-            var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
+            var controller = new PortalSettingsController(new HostSettings(mockHostSettingsService.Object), mockHostSettingsService.Object);
+            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var hostSettings = PortalSettingsControllerTestFactory.GetHostSettings();
 
             var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
@@ -96,15 +97,15 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Returns(new Dictionary<string, string>());
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
+            mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>()))
                 .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
-            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
+            mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns((string s1, string s2) => hostSettings.GetValueOrDefault<string>(s1));
-            this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
+            mockHostSettingsService.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns((string s, bool b) => hostSettings.GetValueOrDefault<bool>(s));
-            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
+            mockHostSettingsService.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns((string s, int i) => hostSettings.GetValueOrDefault<int>(s));
-            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>()))
+            mockHostSettingsService.Setup(c => c.GetInteger(It.IsAny<string>()))
                             .Returns((string s) => hostSettings.GetValueOrDefault<int>(s));
 
             if (isHostDefault)
@@ -130,16 +131,16 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
         [Test]
         [TestCaseSource(typeof(PortalSettingsControllerTestFactory), nameof(PortalSettingsControllerTestFactory.LoadPortalSettings_Loads_Setting_Value))]
-
         public void LoadPortalSettings_Loads_Setting_Value(Dictionary<string, string> testFields)
         {
             // Arrange
+            var mockHostSettingsService = this.mockHostController.As<IHostSettingsService>();
             var propertyName = testFields["PropertyName"];
             var settingName = testFields["SettingName"];
             var settingValue = testFields["SettingValue"];
-            var propertyValue = testFields.ContainsKey("PropertyValue") ? testFields["PropertyValue"] : settingValue;
-            var controller = new PortalSettingsController();
-            var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
+            var propertyValue = testFields.TryGetValue("PropertyValue", out var field) ? field : settingValue;
+            var controller = new PortalSettingsController(new HostSettings(mockHostSettingsService.Object), mockHostSettingsService.Object);
+            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var hostSettings = PortalSettingsControllerTestFactory.GetHostSettings();
 
             var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
@@ -151,13 +152,13 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Returns(new Dictionary<string, string> { { settingName, settingValue } });
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
+            mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>()))
                 .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
-            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
+            mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns((string s1, string s2) => hostSettings.GetValueOrDefault<string>(s1));
-            this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
+            mockHostSettingsService.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns((string s, bool b) => hostSettings.GetValueOrDefault<bool>(s));
-            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
+            mockHostSettingsService.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                 .Returns((string s, int i) => hostSettings.GetValueOrDefault<int>(s));
 
             // Act
@@ -177,12 +178,12 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void LoadPortalSettings_Sets_TimeZone_Property_To_Local_TimeZone()
         {
             // Arrange
-            var controller = new PortalSettingsController();
-            var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
+            var mockHostSettingsService = this.mockHostController.As<IHostSettingsService>();
+            var controller = new PortalSettingsController(new HostSettings(mockHostSettingsService.Object), mockHostSettingsService.Object);
+            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var hostSettings = PortalSettingsControllerTestFactory.GetHostSettings();
 
             var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
@@ -194,13 +195,13 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 .Returns(new Dictionary<string, string>());
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>()))
+            mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>()))
                             .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
-            this.mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
+            mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns((string s1, string s2) => hostSettings.GetValueOrDefault<string>(s1));
-            this.mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
+            mockHostSettingsService.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
                             .Returns((string s, bool b) => hostSettings.GetValueOrDefault<bool>(s));
-            this.mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
+            mockHostSettingsService.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
                             .Returns((string s, int i) => hostSettings.GetValueOrDefault<int>(s));
 
             // Act
@@ -211,7 +212,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void LoadPortal_Loads_Portal_Property_Values()
         {
             // Arrange
@@ -276,7 +276,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void GetActiveTab_Gets_Correct_Tab_If_Valid_Portal_TabId()
         {
             // Arrange
@@ -301,7 +300,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void GetActiveTab_Gets_Correct_Tab_If_Valid_Host_TabId()
         {
             // Arrange
@@ -326,7 +324,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void GetActiveTab_Gets_Splash_Tab_If_InValid_TabId_And_SplashTab_Set()
         {
             // Arrange
@@ -350,7 +347,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void GetActiveTab_Gets_Home_Tab_If_InValid_TabId_And_Home_Set()
         {
             // Arrange
@@ -374,7 +370,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void GetActiveTab_Gets_Splash_Tab_If_InValid_TabId_And_Both_HomeTab_And_SplashTab_Set()
         {
             // Arrange
@@ -399,7 +394,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void GetActiveTab_Sets_StartDate_And_EndDate_Of_Tab_If_Not_Set()
         {
             // Arrange
@@ -428,7 +422,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void ConfigureTab_Uses_PortalSettings_DefaultSkin_If_SkinSrc_Not_Set()
         {
             // Arrange
@@ -457,7 +450,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void ConfigureTab_Uses_Tab_SkinSrc_If_SkinSrc_Set()
         {
             // Arrange
@@ -485,8 +477,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
-        public void ConfigureTab_Formats_Tab_SkinSrc_If_Neccessary()
+        public void ConfigureTab_Formats_Tab_SkinSrc_If_Necessary()
         {
             // Arrange
             var controller = new PortalSettingsController();
@@ -513,7 +504,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void ConfigureTab_Uses_PortalSettings_DefaultContainer_If_ContainerSrc_Not_Set()
         {
             // Arrange
@@ -542,7 +532,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void ConfigureTab_Uses_Tab_ContainerSrc_If_ContainerSrc_Set()
         {
             // Arrange
@@ -569,8 +558,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
-        public void ConfigureTab_Formats_Tab_ContainerSrc_If_Neccessary()
+        public void ConfigureTab_Formats_Tab_ContainerSrc_If_Necessary()
         {
             // Arrange
             var controller = new PortalSettingsController();
@@ -596,7 +584,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void ConfigureTab_Builds_Breadcrumbs_For_Tab()
         {
             // Arrange
@@ -625,7 +612,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         }
 
         [Test]
-
         public void ConfigureTab_Builds_Breadcrumbs_For_Tab_And_Parent()
         {
             // Arrange

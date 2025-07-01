@@ -4,9 +4,10 @@
 
 namespace DotNetNuke.UI.Internals
 {
-    using DotNetNuke.Common;
+    using System.Net;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
 
@@ -28,9 +29,10 @@ namespace DotNetNuke.UI.Internals
         }
 
         /// <summary>Get the HTML for a favicon link.</summary>
+        /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalId">The portal id.</param>
         /// <returns>The HTML for the favicon link for the portal, or an empty string if there is no favicon.</returns>
-        public static string GetHeaderLink(int portalId)
+        public static string GetHeaderLink(IHostSettings hostSettings, int portalId)
         {
             string headerLink;
             object fromCache = DataCache.GetCache(GetCacheKey(portalId));
@@ -41,7 +43,7 @@ namespace DotNetNuke.UI.Internals
                 string favIconPath = new FavIcon(portalId).GetRelativeUrl();
                 if (!string.IsNullOrEmpty(favIconPath))
                 {
-                    headerLink = string.Format("<link rel='icon' href='{0}' type='image/x-icon' />", favIconPath);
+                    headerLink = $"<link rel='icon' href='{WebUtility.HtmlEncode(favIconPath)}' type='image/x-icon' />";
                 }
                 else
                 {
@@ -50,7 +52,7 @@ namespace DotNetNuke.UI.Internals
 
                 // cache link or empty string to ensure we don't always have a
                 // cache miss when no favicon is in use
-                UpdateCachedHeaderLink(portalId, headerLink);
+                UpdateCachedHeaderLink(hostSettings, portalId, headerLink);
             }
             else
             {
@@ -77,9 +79,9 @@ namespace DotNetNuke.UI.Internals
             DataCache.ClearCache(GetCacheKey(this.portalId));
         }
 
-        private static void UpdateCachedHeaderLink(int portalId, string headerLink)
+        private static void UpdateCachedHeaderLink(IHostSettings hostSettings, int portalId, string headerLink)
         {
-            if (Host.PerformanceSetting != Globals.PerformanceSettings.NoCaching)
+            if (hostSettings.PerformanceSetting != PerformanceSettings.NoCaching)
             {
                 DataCache.SetCache(GetCacheKey(portalId), headerLink);
             }

@@ -10,49 +10,59 @@ namespace DotNetNuke.HttpModules.RequestFilter
     using System.Xml.Serialization;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Cache;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Settings related to request filters.</summary>
     [Serializable]
     [XmlRoot("RewriterConfig")]
     public class RequestFilterSettings
     {
         private const string RequestFilterConfig = "RequestFilter.Config";
+        private readonly IHostSettings hostSettings;
 
-        private List<RequestFilterRule> rules = new List<RequestFilterRule>();
-
-        public bool Enabled
+        /// <summary>Initializes a new instance of the <see cref="RequestFilterSettings"/> class.</summary>
+        [Obsolete(
+            "Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public RequestFilterSettings()
+            : this(null)
         {
-            get
-            {
-                return Host.EnableRequestFilters;
-            }
         }
 
-        public List<RequestFilterRule> Rules
+        /// <summary>Initializes a new instance of the <see cref="RequestFilterSettings"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public RequestFilterSettings(IHostSettings hostSettings)
         {
-            get
-            {
-                return this.rules;
-            }
-
-            set
-            {
-                this.rules = value;
-            }
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <summary>Get the current settings from the xml config file.</summary>
+        /// <summary>Gets a value indicating whether request filters are enabled.</summary>
+        public bool Enabled => this.hostSettings.EnableRequestFilters;
+
+        /// <summary>Gets or sets the collection of rules.</summary>
+        public List<RequestFilterRule> Rules { get; set; } = new();
+
+        /// <summary>Get the current settings from the XML config file.</summary>
         /// <returns>A <see cref="RequestFilterSettings"/> instance.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public static RequestFilterSettings GetSettings()
+            => GetSettings(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
+
+        /// <summary>Get the current settings from the XML config file.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <returns>A <see cref="RequestFilterSettings"/> instance.</returns>
+        public static RequestFilterSettings GetSettings(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         {
             var settings = (RequestFilterSettings)DataCache.GetCache(RequestFilterConfig);
             if (settings == null)
             {
-                settings = new RequestFilterSettings();
-                string filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.DotNetNuke);
+                settings = new RequestFilterSettings(hostSettings);
+                string filePath = Config.GetPathToFile(appStatus, Config.ConfigFileType.DotNetNuke);
 
                 // Create a FileStream for the Config file
                 using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -88,12 +98,21 @@ namespace DotNetNuke.HttpModules.RequestFilter
             return settings;
         }
 
+        /// <summary>Saves the rules into the <c>DotNetNuke.config</c> file.</summary>
+        /// <param name="rules">The rules.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public static void Save(List<RequestFilterRule> rules)
+            => Save(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), rules);
+
+        /// <summary>Saves the rules into the <c>DotNetNuke.config</c> file.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="rules">The rules.</param>
+        public static void Save(IApplicationStatusInfo appStatus, List<RequestFilterRule> rules)
         {
-            string filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.DotNetNuke);
+            string filePath = Config.GetPathToFile(appStatus, Config.ConfigFileType.DotNetNuke);
             if (!File.Exists(filePath))
             {
-                string defaultConfigFile = Globals.ApplicationMapPath + Globals.glbConfigFolder + Globals.glbDotNetNukeConfig;
+                string defaultConfigFile = appStatus.ApplicationMapPath + Globals.glbConfigFolder + Globals.glbDotNetNukeConfig;
                 if (File.Exists(defaultConfigFile))
                 {
                     File.Copy(defaultConfigFile, filePath, true);

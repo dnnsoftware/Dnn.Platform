@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Application;
@@ -44,6 +45,8 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Assembly = System.Reflection.Assembly;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
@@ -1618,15 +1621,59 @@ namespace DotNetNuke.Services.Upgrade
             DataCache.ClearHostCache(true);
         }
 
-        public static string UpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
+        /// <summary>Gets a URL for an image which indicates the latest known version of DNN.</summary>
+        /// <param name="version">The package version.</param>
+        /// <param name="isLocal">Whether the request is local.</param>
+        /// <param name="isSecureConnection">Whether the request is over a secure connection.</param>
+        /// <returns>An image URL or <see cref="string.Empty"/>.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string UpgradeIndicator(Version version, bool isLocal, bool isSecureConnection)
+            => UpgradeIndicator(null, null, null, version, isLocal, isSecureConnection);
+
+        /// <summary>Gets a URL for an image which indicates the latest known version of DNN.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="version">The package version.</param>
+        /// <param name="isLocal">Whether the request is local.</param>
+        /// <param name="isSecureConnection">Whether the request is over a secure connection.</param>
+        /// <returns>An image URL or <see cref="string.Empty"/>.</returns>
+        public static string UpgradeIndicator(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, Version version, bool isLocal, bool isSecureConnection)
         {
-            return UpgradeIndicator(version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, string.Empty, isLocal, isSecureConnection);
+            return UpgradeIndicator(hostSettings, hostSettingsService, portalController, version, DotNetNukeContext.Current.Application.Type, DotNetNukeContext.Current.Application.Name, string.Empty, isLocal, isSecureConnection);
         }
 
-        public static string UpgradeIndicator(Version version, string packageType, string packageName, string culture, bool isLocal, bool isSecureConnection)
+        /// <summary>Gets a URL for an image which indicates the latest known version of the given package.</summary>
+        /// <param name="version">The package version.</param>
+        /// <param name="packageType">The package type.</param>
+        /// <param name="packageName">The package name.</param>
+        /// <param name="culture">The culture code.</param>
+        /// <param name="isLocal">Whether the request is local.</param>
+        /// <param name="isSecureConnection">Whether the request is over a secure connection.</param>
+        /// <returns>An image URL or <see cref="string.Empty"/>.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string UpgradeIndicator(Version version, string packageType, string packageName, string culture, bool isLocal, bool isSecureConnection)
+            => UpgradeIndicator(null, null, null, version, packageType, packageName, culture, isLocal, isSecureConnection);
+
+        /// <summary>Gets a URL for an image which indicates the latest known version of the given package.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="version">The package version.</param>
+        /// <param name="packageType">The package type.</param>
+        /// <param name="packageName">The package name.</param>
+        /// <param name="culture">The culture code.</param>
+        /// <param name="isLocal">Whether the request is local.</param>
+        /// <param name="isSecureConnection">Whether the request is over a secure connection.</param>
+        /// <returns>An image URL or <see cref="string.Empty"/>.</returns>
+        public static string UpgradeIndicator(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, Version version, string packageType, string packageName, string culture, bool isLocal, bool isSecureConnection)
         {
+            hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            hostSettingsService ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            portalController ??= Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+
             string url = string.Empty;
-            if (Host.CheckUpgrade && version != new Version(0, 0, 0))
+            if (hostSettings.CheckUpgrade && version != new Version(0, 0, 0))
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/update.aspx";
 
@@ -1645,15 +1692,16 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
 
-                url += "&id=" + Host.GUID;
+                url += "&id=" + hostSettings.Guid;
                 if (packageType.Equals(DotNetNukeContext.Current.Application.Type, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!string.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
+                    var newsletterSubscribeEmail = hostSettingsService.GetString("NewsletterSubscribeEmail");
+                    if (!string.IsNullOrEmpty(newsletterSubscribeEmail))
                     {
-                        url += "&email=" + HttpUtility.UrlEncode(HostController.Instance.GetString("NewsletterSubscribeEmail"));
+                        url += "&email=" + HttpUtility.UrlEncode(newsletterSubscribeEmail);
                     }
 
-                    var portals = PortalController.Instance.GetPortals();
+                    var portals = portalController.GetPortals();
                     url += "&no=" + portals.Count;
                     url += "&os=" + Globals.FormatVersion(Globals.OperatingSystemVersion, "00", 2, string.Empty);
                     url += "&net=" + Globals.FormatVersion(Globals.NETFrameworkVersion, "00", 2, string.Empty);

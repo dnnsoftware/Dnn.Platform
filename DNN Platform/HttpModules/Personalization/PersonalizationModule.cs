@@ -11,15 +11,28 @@ namespace DotNetNuke.HttpModules.Personalization
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Personalization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>An <see cref="IHttpModule"/> which handles user personalization.</summary>
     public class PersonalizationModule : IHttpModule
     {
-        public string ModuleName
+        private readonly PersonalizationController personalizationController;
+
+        /// <summary>Initializes a new instance of the <see cref="PersonalizationModule"/> class.</summary>
+        public PersonalizationModule()
+            : this(null)
         {
-            get
-            {
-                return "PersonalizationModule";
-            }
         }
+
+        /// <summary>Initializes a new instance of the <see cref="PersonalizationModule"/> class.</summary>
+        /// <param name="personalizationController">The personalization controller.</param>
+        public PersonalizationModule(PersonalizationController personalizationController)
+        {
+            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
+        }
+
+        /// <summary>Gets the HttpModule module name.</summary>
+        public string ModuleName => "PersonalizationModule";
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)
@@ -32,6 +45,9 @@ namespace DotNetNuke.HttpModules.Personalization
         {
         }
 
+        /// <summary>Handles the <see cref="HttpApplication.EndRequest"/> event.</summary>
+        /// <param name="s">The sender.</param>
+        /// <param name="e">The event args.</param>
         public void OnEndRequest(object s, EventArgs e)
         {
             HttpContext context = ((HttpApplication)s).Context;
@@ -48,8 +64,7 @@ namespace DotNetNuke.HttpModules.Personalization
             {
                 // load the user info object
                 UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
-                var personalization = new PersonalizationController();
-                personalization.SaveProfile(context, userInfo.UserID, portalSettings.PortalId);
+                this.personalizationController.SaveProfile(context, userInfo.UserID, portalSettings.PortalId);
             }
         }
     }

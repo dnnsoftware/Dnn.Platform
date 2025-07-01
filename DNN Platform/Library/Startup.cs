@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke
@@ -17,27 +17,36 @@ namespace DotNetNuke
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Settings;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Templates;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Services.Mobile;
+    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
 
@@ -56,6 +65,8 @@ namespace DotNetNuke
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
             services.AddSingleton<IDnnContext, DotNetNukeContext>();
+            services.AddSingleton<IHostSettings, HostSettings>();
+            services.AddTransient<IMailSettings, MailSettings>();
 
 #pragma warning disable CS0618
             services.AddScoped<IEventLogger, EventLogController>();
@@ -87,20 +98,37 @@ namespace DotNetNuke
 
             // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
             services.AddTransient<ILocalizationProvider, LocalizationProvider>();
+            services.AddTransient<IFileManager, FileManager>();
+            services.AddTransient<IFolderManager, FolderManager>();
+            services.AddTransient(_ => ComponentFactory.GetComponent<DataProvider>());
+
             services.AddTransient<ILoggerSource, LoggerSourceImpl>();
             services.AddTransient<IModuleController, ModuleController>();
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
             services.AddTransient<IRedirectionController, RedirectionController>();
+            services.AddTransient<ICBO, CBO>();
+            services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
+            services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
+            services.AddTransient<IPortalSettingsController, PortalSettingsController>();
+            services.AddTransient<IPortalAliasController, PortalAliasController>();
+            services.AddTransient<ILocaleController, LocaleController>();
+            services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
+            services.AddTransient<IRoleController, RoleController>();
+            services.AddTransient(_ => RoleProvider.Instance());
+            services.AddTransient<IUserController, UserController>();
+            services.AddTransient<IEventManager, EventManager>();
 
-            services.AddTransient<IDataContext>(x =>
+            services.AddTransient<IDataContext>(serviceProvider =>
             {
-                var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
+                var dataProvider = serviceProvider.GetRequiredService<DataProvider>();
+                var defaultConnectionStringName = dataProvider.Settings["connectionStringName"];
 
                 return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
             });
 
             services.AddTransient<ModuleInjectionManager>();
+            services.AddTransient<PersonalizationController>();
             RegisterModuleInjectionFilters(services);
         }
 

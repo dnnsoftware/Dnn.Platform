@@ -17,11 +17,17 @@ namespace DotNetNuke.Tests.Web.Api
     using Dnn.AuthServices.Jwt.Auth;
     using Dnn.AuthServices.Jwt.Components.Entity;
     using Dnn.AuthServices.Jwt.Data;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Membership;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -38,7 +44,9 @@ namespace DotNetNuke.Tests.Web.Api
         private Mock<IDataService> mockJwtDataService;
         private Mock<IUserController> mockUserController;
         private Mock<IPortalController> mockPortalController;
+        private FakeServiceProvider serviceProvider;
 
+        [SetUp]
         public void SetupMockServices()
         {
             MockComponentProvider.CreateDataCacheProvider();
@@ -71,8 +79,16 @@ namespace DotNetNuke.Tests.Web.Api
             UserController.SetTestableInstance(this.mockUserController.Object);
             this.mockUserController.Setup(x => x.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
                 (int portalId, int userId) => GetUserByIdCallback(portalId, userId));
-
             ////mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
+
+            this.serviceProvider =
+                FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IHostSettings>()));
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -166,7 +182,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void AuthorizationTokenWithoutResponse()
         {
             // Arrange
@@ -174,7 +189,6 @@ namespace DotNetNuke.Tests.Web.Api
             request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer " + ValidToken);
 
             // Act
-            this.SetupMockServices();
             var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, CancellationToken.None);
 

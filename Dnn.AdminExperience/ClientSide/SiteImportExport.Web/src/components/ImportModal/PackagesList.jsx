@@ -25,7 +25,7 @@ class PackagesList extends Component {
         else return;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         if (props.importPackages && props.importPackages.length > 0) {

@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
 import Dropdown from "./index";
 
-class MyDropdown extends Component{
-    constructor(){
+class MyDropdown extends Component {
+    constructor() {
         super();
-        this.state = { option: {} }
+        this.state = { option: {} };
     }
 
-    handleSelect(option){
+    handleSelect(option) {
         this.setState( { option: option });
     }
 
-    render(){
+    render() {
         return (
             <Dropdown
                 label="Test"

@@ -3,12 +3,10 @@ import PropTypes from "prop-types";
 import { Collapsible } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../../resources";
-
-/*eslint-disable quotes*/
-const allowIcon = require(`!raw-loader!./../../svg/checkbox.svg`).default;
-const denyIcon = require(`!raw-loader!./../../svg/cross_out.svg`).default;
-const editIcon = require(`!raw-loader!./../../svg/edit.svg`).default;
-const deleteIcon = require(`!raw-loader!./../../svg/trash.svg`).default;
+import allowIcon from "./../../svg/checkbox.svg?raw";
+import denyIcon from "./../../svg/cross_out.svg?raw";
+import editIcon from "./../../svg/edit.svg?raw";
+import deleteIcon from "./../../svg/trash.svg?raw";
 
 class IpFilterRow extends Component {
     constructor() {
@@ -30,7 +28,7 @@ class IpFilterRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getRuleTypeDisplay() {
         const {props} = this;
         if (props.id !== "add") {
@@ -56,7 +54,7 @@ class IpFilterRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
@@ -102,7 +100,8 @@ IpFilterRow.propTypes = {
     id: PropTypes.string,
     openId: PropTypes.string,
     visible: PropTypes.bool,
-    readOnly: PropTypes.bool
+    readOnly: PropTypes.bool,
+    children: PropTypes.node,
 };
 
 IpFilterRow.defaultProps = {
