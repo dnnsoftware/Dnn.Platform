@@ -74,6 +74,7 @@ export namespace Components {
     interface DnnRmFilesPane {
         /**
           * Defines how much more pixels to load under the fold.
+          * @default 5000
          */
         "preloadOffset": number;
     }
@@ -88,6 +89,7 @@ export namespace Components {
     interface DnnRmFolderListItem {
         /**
           * If true, this node will be expanded on load.
+          * @default false
          */
         "expanded": boolean;
         /**
@@ -128,16 +130,19 @@ export namespace Components {
     interface DnnRmProgressBar {
         /**
           * Defines the max progress value.
+          * @default 100
          */
         "max": number;
         /**
           * Defines the current progress value.
+          * @default 0
          */
         "value": number;
     }
     interface DnnRmQueuedFile {
         /**
           * Whether to extract uploaded zip files.
+          * @default false
          */
         "extract": boolean;
         /**
@@ -669,6 +674,7 @@ declare namespace LocalJSX {
     interface DnnRmFilesPane {
         /**
           * Defines how much more pixels to load under the fold.
+          * @default 5000
          */
         "preloadOffset"?: number;
     }
@@ -691,6 +697,7 @@ declare namespace LocalJSX {
     interface DnnRmFolderListItem {
         /**
           * If true, this node will be expanded on load.
+          * @default false
          */
         "expanded"?: boolean;
         /**
@@ -759,16 +766,19 @@ declare namespace LocalJSX {
     interface DnnRmProgressBar {
         /**
           * Defines the max progress value.
+          * @default 100
          */
         "max"?: number;
         /**
           * Defines the current progress value.
+          * @default 0
          */
         "value"?: number;
     }
     interface DnnRmQueuedFile {
         /**
           * Whether to extract uploaded zip files.
+          * @default false
          */
         "extract"?: boolean;
         /**
