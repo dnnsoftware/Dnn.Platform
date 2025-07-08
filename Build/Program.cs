@@ -30,7 +30,7 @@ namespace DotNetNuke.Build
                 .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=6.3.0"))
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
-                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=6.12.2"))
+                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=6.14.0"))
                 .Run(args);
         }
     }
