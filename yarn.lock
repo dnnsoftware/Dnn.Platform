@@ -5022,6 +5022,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/project-service@npm:8.35.1":
+  version: 8.35.1
+  resolution: "@typescript-eslint/project-service@npm:8.35.1"
+  dependencies:
+    "@typescript-eslint/tsconfig-utils": "npm:^8.35.1"
+    "@typescript-eslint/types": "npm:^8.35.1"
+    debug: "npm:^4.3.4"
+  peerDependencies:
+    typescript: ">=4.8.4 <5.9.0"
+  checksum: 10/f8ceb1c6ab7cdf2c7bc334e74d0d1cd86b5e563319c5477987a05f47af433543b281912ae0cdd875561dc2cc4d3ba4ed3bdd8d5bb6dba68bcde4f68a7d0967e7
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/scope-manager@npm:8.33.1":
+  version: 8.33.1
+  resolution: "@typescript-eslint/scope-manager@npm:8.33.1"
 "@typescript-eslint/scope-manager@npm:8.35.1":
   version: 8.35.1
   resolution: "@typescript-eslint/scope-manager@npm:8.35.1"
@@ -5032,6 +5048,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/scope-manager@npm:8.35.1":
+  version: 8.35.1
+  resolution: "@typescript-eslint/scope-manager@npm:8.35.1"
+  dependencies:
+    "@typescript-eslint/types": "npm:8.35.1"
+    "@typescript-eslint/visitor-keys": "npm:8.35.1"
+  checksum: 10/9124302c969126a50c70f9ccbefec0e5a771563b5518318d56fc6242c5cff61da74e7885832370ccd406a048edc300476b1723ad1845d41bd205879d95fbc6b6
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/tsconfig-utils@npm:8.33.1, @typescript-eslint/tsconfig-utils@npm:^8.33.1":
+  version: 8.33.1
+  resolution: "@typescript-eslint/tsconfig-utils@npm:8.33.1"
 "@typescript-eslint/tsconfig-utils@npm:8.35.1, @typescript-eslint/tsconfig-utils@npm:^8.35.1":
   version: 8.35.1
   resolution: "@typescript-eslint/tsconfig-utils@npm:8.35.1"
@@ -5044,6 +5073,18 @@ __metadata:
 "@typescript-eslint/type-utils@npm:8.35.1":
   version: 8.35.1
   resolution: "@typescript-eslint/type-utils@npm:8.35.1"
+"@typescript-eslint/tsconfig-utils@npm:8.35.1, @typescript-eslint/tsconfig-utils@npm:^8.35.1":
+  version: 8.35.1
+  resolution: "@typescript-eslint/tsconfig-utils@npm:8.35.1"
+  peerDependencies:
+    typescript: ">=4.8.4 <5.9.0"
+  checksum: 10/6b6176ec7dbfbe53539bce3e7554f062ff4d220aa5cb5793d52067fe6c196d749e77557dca66f5bf1ee23972e948d5c59461fa3e11da9e34a0a27d9fb7585f5a
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/type-utils@npm:8.33.1":
+  version: 8.33.1
+  resolution: "@typescript-eslint/type-utils@npm:8.33.1"
   dependencies:
     "@typescript-eslint/typescript-estree": "npm:8.35.1"
     "@typescript-eslint/utils": "npm:8.35.1"
@@ -5060,6 +5101,36 @@ __metadata:
   version: 8.35.1
   resolution: "@typescript-eslint/types@npm:8.35.1"
   checksum: 10/2d5b8f40b2ef0b7d439ee119d2ed12372097c4372aea7ff6d46f92fa743fc60619f8619192fbc0df3833d941be5d9bcb5129b8f6d029716ca86ba42514fbeff9
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/types@npm:8.35.1, @typescript-eslint/types@npm:^8.35.1":
+  version: 8.35.1
+  resolution: "@typescript-eslint/types@npm:8.35.1"
+  checksum: 10/2d5b8f40b2ef0b7d439ee119d2ed12372097c4372aea7ff6d46f92fa743fc60619f8619192fbc0df3833d941be5d9bcb5129b8f6d029716ca86ba42514fbeff9
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/typescript-estree@npm:8.33.1":
+  version: 8.33.1
+  resolution: "@typescript-eslint/typescript-estree@npm:8.33.1"
+"@typescript-eslint/typescript-estree@npm:8.35.1":
+  version: 8.35.1
+  resolution: "@typescript-eslint/typescript-estree@npm:8.35.1"
+  dependencies:
+    "@typescript-eslint/project-service": "npm:8.35.1"
+    "@typescript-eslint/tsconfig-utils": "npm:8.35.1"
+    "@typescript-eslint/types": "npm:8.35.1"
+    "@typescript-eslint/visitor-keys": "npm:8.35.1"
+    debug: "npm:^4.3.4"
+    fast-glob: "npm:^3.3.2"
+    is-glob: "npm:^4.0.3"
+    minimatch: "npm:^9.0.4"
+    semver: "npm:^7.6.0"
+    ts-api-utils: "npm:^2.1.0"
+  peerDependencies:
+    typescript: ">=4.8.4 <5.9.0"
+  checksum: 10/b38a891a37e1c8d76bdb3e8039482b723df590bf9d192a5480ec6777a316914542f610a1d9070bc53e0642c511ddc4ee1c3c03ac0e04a5510feefa95307f51b7
   languageName: node
   linkType: hard
 
@@ -5083,6 +5154,9 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/utils@npm:8.33.1, @typescript-eslint/utils@npm:^6.0.0 || ^7.0.0 || ^8.0.0":
+  version: 8.33.1
+  resolution: "@typescript-eslint/utils@npm:8.33.1"
 "@typescript-eslint/utils@npm:8.35.1, @typescript-eslint/utils@npm:^6.0.0 || ^7.0.0 || ^8.0.0, @typescript-eslint/utils@npm:^8.32.1":
   version: 8.35.1
   resolution: "@typescript-eslint/utils@npm:8.35.1"
@@ -5095,6 +5169,16 @@ __metadata:
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <5.9.0"
   checksum: 10/68388898dc095d7813a18049e782d90ed6500496bb68e3ea5efd7e1de24f37732b133bf88faca835b6219383f406693fdf846e16d3c48e9418388121c89dcf48
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:8.35.1":
+  version: 8.35.1
+  resolution: "@typescript-eslint/visitor-keys@npm:8.35.1"
+  dependencies:
+    "@typescript-eslint/types": "npm:8.35.1"
+    eslint-visitor-keys: "npm:^4.2.1"
+  checksum: 10/0add7a9c00e7b336797bb7378bd02b3ef31368a8e928afb2dbeec0cc4ab9f6413519e477f5c504d62b38d1dae3791f7ffda36d41b403411608628bff8dd123bd
   languageName: node
   linkType: hard
 
@@ -5635,7 +5719,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:10.0.0"
     array.prototype.find: "npm:2.2.3"
-    array.prototype.findindex: "npm:2.2.1"
+    array.prototype.findindex: "npm:2.2.4"
     babel-loader: "npm:8.3.0"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
@@ -6229,19 +6313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array.prototype.findindex@npm:2.2.1":
-  version: 2.2.1
-  resolution: "array.prototype.findindex@npm:2.2.1"
-  dependencies:
-    call-bind: "npm:^1.0.2"
-    define-properties: "npm:^1.1.4"
-    es-abstract: "npm:^1.20.4"
-    es-shim-unscopables: "npm:^1.0.0"
-  checksum: 10/62ad1bd7229706a280f2ffb4cd4425686695cdb415b91d558e09adfb49b7e3f278c12ef49e97cd51981fa67397f7037d6dec276ca650c5096a356401887cfd85
-  languageName: node
-  linkType: hard
-
-"array.prototype.findindex@npm:^2.2.1":
+"array.prototype.findindex@npm:2.2.4, array.prototype.findindex@npm:^2.2.1":
   version: 2.2.4
   resolution: "array.prototype.findindex@npm:2.2.4"
   dependencies:
@@ -10255,7 +10327,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"define-properties@npm:^1.1.2, define-properties@npm:^1.1.3, define-properties@npm:^1.1.4, define-properties@npm:^1.2.0, define-properties@npm:^1.2.1":
+"define-properties@npm:^1.1.2, define-properties@npm:^1.1.3, define-properties@npm:^1.2.0, define-properties@npm:^1.2.1":
   version: 1.2.1
   resolution: "define-properties@npm:1.2.1"
   dependencies:
@@ -11938,6 +12010,13 @@ __metadata:
   linkType: hard
 
 "eslint-visitor-keys@npm:^4.2.0, eslint-visitor-keys@npm:^4.2.1":
+  version: 4.2.1
+  resolution: "eslint-visitor-keys@npm:4.2.1"
+  checksum: 10/3ee00fc6a7002d4b0ffd9dc99e13a6a7882c557329e6c25ab254220d71e5c9c4f89dca4695352949ea678eb1f3ba912a18ef8aac0a7fe094196fd92f441bfce2
+  languageName: node
+  linkType: hard
+
+"eslint-visitor-keys@npm:^4.2.1":
   version: 4.2.1
   resolution: "eslint-visitor-keys@npm:4.2.1"
   checksum: 10/3ee00fc6a7002d4b0ffd9dc99e13a6a7882c557329e6c25ab254220d71e5c9c4f89dca4695352949ea678eb1f3ba912a18ef8aac0a7fe094196fd92f441bfce2
@@ -16608,7 +16687,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:10.0.0"
     array.prototype.find: "npm:2.2.3"
-    array.prototype.findindex: "npm:2.2.1"
+    array.prototype.findindex: "npm:2.2.4"
     babel-loader: "npm:8.3.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
     babel-plugin-transform-object-rest-spread: "npm:6.26.0"
@@ -20416,7 +20495,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:10.0.0"
     array.prototype.find: "npm:2.2.3"
-    array.prototype.findindex: "npm:2.2.1"
+    array.prototype.findindex: "npm:2.2.4"
     babel-eslint: "npm:^10.1.0"
     babel-jest: "npm:^29.7.0"
     babel-loader: "npm:^8.3.0"
@@ -22883,7 +22962,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:10.0.0"
     array.prototype.find: "npm:2.2.3"
-    array.prototype.findindex: "npm:2.2.1"
+    array.prototype.findindex: "npm:2.2.4"
     babel-loader: "npm:8.3.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
     babel-plugin-transform-object-rest-spread: "npm:6.26.0"
@@ -23427,7 +23506,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:10.0.0"
     array.prototype.find: "npm:2.2.3"
-    array.prototype.findindex: "npm:2.2.1"
+    array.prototype.findindex: "npm:2.2.4"
     babel-loader: "npm:^8.3.0"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
     create-react-class: "npm:^15.7.0"
@@ -24617,7 +24696,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:10.0.0"
     array.prototype.find: "npm:2.2.3"
-    array.prototype.findindex: "npm:2.2.1"
+    array.prototype.findindex: "npm:2.2.4"
     babel-loader: "npm:8.3.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
     babel-plugin-transform-object-rest-spread: "npm:6.26.0"
@@ -24658,7 +24737,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.25.9"
     "@dnnsoftware/dnn-react-common": "npm:10.0.0"
     array.prototype.find: "npm:2.2.3"
-    array.prototype.findindex: "npm:2.2.1"
+    array.prototype.findindex: "npm:2.2.4"
     babel-loader: "npm:^8.3.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
     babel-plugin-transform-object-rest-spread: "npm:6.26.0"
