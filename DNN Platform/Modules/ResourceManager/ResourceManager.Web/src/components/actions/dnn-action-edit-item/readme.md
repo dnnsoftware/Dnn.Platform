@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property            | Attribute | Description | Type   | Default     |
-| ------------------- | --------- | ----------- | ------ | ----------- |
-| `item` _(required)_ | `item`    |             | `Item` | `undefined` |
+| Property            | Attribute | Description       | Type   | Default     |
+| ------------------- | --------- | ----------------- | ------ | ----------- |
+| `item` _(required)_ | `item`    | The item to edit. | `Item` | `undefined` |
 
 
 ## Dependencies

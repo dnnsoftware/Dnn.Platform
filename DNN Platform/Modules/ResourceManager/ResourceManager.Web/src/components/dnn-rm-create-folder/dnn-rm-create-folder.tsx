@@ -32,17 +32,18 @@ export class DnnRmCreateFolder {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  componentWillLoad() {
-    this.itemsClient.getFolderMappings()
-    .then(data => {
+  async componentWillLoad() {
+    try {
+      const data = await this.itemsClient.getFolderMappings();
       this.folderMappings = data.sort((a, b) => a.FolderMappingID - b.FolderMappingID);
       this.newFolderRequest = {
         ...this.newFolderRequest,
         FolderMappingId: this.folderMappings[0].FolderMappingID,
         ParentFolderId: state.currentItems.folder.folderId,
       };
-    })
-    .catch(reason => console.error(reason));
+    } catch (error) {
+      alert(error);
+    }
   }
 
   componentDidLoad() {
@@ -51,32 +52,31 @@ export class DnnRmCreateFolder {
     }, 350);
   }
 
-  private handleCancel(): void {
+  private async handleCancel() {
     const modal = this.el.parentElement as HTMLDnnModalElement;
-    modal.hide().then(() => {
-      setTimeout(() => {
-        document.body.removeChild(modal);
-      }, 300);
-    });
+    await modal.hide();
+    setTimeout(() => {
+      document.body.removeChild(modal);
+    }, 300);
   }
 
-  private handleSave(e: Event): void {
+  private async handleSave(e: Event) {
     e.preventDefault();
-    this.itemsClient.createNewFolder(this.newFolderRequest)
-    .then(() => {
-      this.dnnRmFoldersChanged.emit();
-      state.currentItems = {
-        ...state.currentItems,
-        items: [],
-      };
+    try {
+      await this.itemsClient.createNewFolder(this.newFolderRequest)
+        this.dnnRmFoldersChanged.emit();
+        state.currentItems = {
+          ...state.currentItems,
+          items: [],
+        };
       const modal = this.el.parentElement as HTMLDnnModalElement;
-      modal.hide().then(() => {
+      await modal.hide();
         setTimeout(() => {
           document.body.removeChild(modal);
         }, 300);
-      });
-    })
-    .catch(error => alert(error));
+    } catch (error) {
+      alert(error);
+    }
   }
 
   private canChooseFolderProvider() {
@@ -89,7 +89,7 @@ export class DnnRmCreateFolder {
       <Host>
         <h2>{state.localization.AddFolder}</h2>
         <form
-          onSubmit={e => this.handleSave(e)}
+          onSubmit={e => void this.handleSave(e)}
         >
           <div class="form">
             {state.currentItems.folder.folderName.length > 0 &&[
@@ -140,13 +140,13 @@ export class DnnRmCreateFolder {
             <dnn-button
               appearance="primary"
               reversed
-              onClick={() => this.handleCancel()}
+              onClick={() => void this.handleCancel()}
             >
               {state.localization.Cancel}
             </dnn-button>
             <dnn-button
               appearance="primary"
-              formButtonType="submit"
+              type="submit"
             >
               {state.localization.Save}
             </dnn-button>

@@ -34,46 +34,47 @@ export class DnnRmMoveItems {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  private closeModal(): void {
+  private async closeModal() {
     const modal = this.el.parentElement as HTMLDnnModalElement;
-    modal.hide().then(() => {
-      setTimeout(() => {
-        document.body.removeChild(modal);
-      }, 300);
-    });
+    await modal.hide();
+    setTimeout(() => {
+      document.body.removeChild(modal);
+    }, 300);
   }
 
-  private handleMove(): void {
+  private async handleMove() {
     this.moving = true;
-    this.items.forEach(item => {
+    for (const item of this.items){
       if (item.isFolder){
-        this.itemsClient.moveFolder({
-          SourceFolderId: item.itemId,
-          DestinationFolderId: Number.parseInt(this.selectedFolder.data.key)})
-        .then(() => {
-          this.handleItemMoved(item);
-        })
-        .catch(reason => alert(reason));
+        try {
+          await this.itemsClient.moveFolder({
+            SourceFolderId: item.itemId,
+            DestinationFolderId: Number.parseInt(this.selectedFolder.data.key)});
+          await this.handleItemMoved(item);
+        } catch (error) {
+          alert(error);
+        }
       }
       else {
-        this.itemsClient.moveFile({
-          SourceFileId: item.itemId,
-          DestinationFolderId: Number.parseInt(this.selectedFolder.data.key)})
-        .then(() => {
-          this.handleItemMoved(item);
-        })
-        .catch(reason => alert(reason));
+        try {
+          await this.itemsClient.moveFile({
+            SourceFileId: item.itemId,
+            DestinationFolderId: Number.parseInt(this.selectedFolder.data.key)});
+            await this.handleItemMoved(item);
+        } catch (error) {
+          alert(error);
+        }
       }
-    });
+    }
   }
   
-  handleItemMoved(item: Item) {
+  private async handleItemMoved(item: Item) {
     this.movedCount++;
     this.currentItemName = item.itemName;
     if (this.movedCount == this.items.length) {
       this.moving = false;
       this.dnnRmFoldersChanged.emit();
-      this.closeModal();
+      await this.closeModal();
     }
   }
 
@@ -103,13 +104,13 @@ export class DnnRmMoveItems {
             appearance="primary"
             reversed
             disabled={this.moving}
-            onClick={() => this.closeModal()}
+            onClick={() => void this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
             appearance="primary"
-            onConfirmed={() =>this.handleMove()}
+            onConfirmed={() => void this.handleMove()}
             confirm
             confirmMessage={state.localization?.ConfirmMoveMessage}
             confirmYesText={state.localization?.Yes}

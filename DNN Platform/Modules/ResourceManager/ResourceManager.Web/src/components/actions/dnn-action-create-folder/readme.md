@@ -7,9 +7,9 @@
 
 ## Properties
 
-| Property         | Attribute          | Description | Type     | Default     |
-| ---------------- | ------------------ | ----------- | -------- | ----------- |
-| `parentFolderId` | `parent-folder-id` |             | `number` | `undefined` |
+| Property         | Attribute          | Description                 | Type     | Default     |
+| ---------------- | ------------------ | --------------------------- | -------- | ----------- |
+| `parentFolderId` | `parent-folder-id` | The ID of the parent folder | `number` | `undefined` |
 
 
 ## Dependencies
