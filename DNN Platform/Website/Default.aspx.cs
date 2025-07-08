@@ -209,6 +209,21 @@ namespace DotNetNuke.Framework
         {
             base.OnInit(e);
 
+            // Add 'rtl' class to body for right-to-left language support
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+            {
+                string existingClass = this.Body.Attributes["class"];
+
+                if (string.IsNullOrEmpty(existingClass))
+                {
+                    this.Body.Attributes.Add("class", "rtl ");
+                }
+                else if (!existingClass.Contains("rtl"))
+                {
+                    this.Body.Attributes["class"] = existingClass + " rtl ";
+                }
+            }
+
             // set global page settings
             this.InitializePage();
 
