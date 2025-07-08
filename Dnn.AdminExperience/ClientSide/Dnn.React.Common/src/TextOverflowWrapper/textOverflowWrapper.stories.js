@@ -1,16 +1,18 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
 import TextOverflowWrapper from "./index";
 
-storiesOf("TextOverflowWrapper", module).add("with content", () => (
+export default {
+    component: TextOverflowWrapper,
+};
+
+export const WithContent = () => (
     <div style={{ paddingTop: 100, paddingLeft: 100 }}>        
         <TextOverflowWrapper text="Default Content & tooltip" />
     </div>
-));
+);
 
-storiesOf("TextOverflowWrapper", module).add("with tooltip", () => (            
-    <div style={{ paddingTop: 100, paddingLeft: 100 }}>                
+export const WithTooltip = () => (            
+    <div style={{ paddingTop: 100, paddingLeft: 100 }}>
         <TextOverflowWrapper
             text="Tooltip test"            
             doNotUseTitleAttribute={true}
@@ -21,9 +23,9 @@ storiesOf("TextOverflowWrapper", module).add("with tooltip", () => (
             toolTipStyle={{ display: "inline-block" }}
         />
     </div>
-));
+);
 
-storiesOf("TextOverflowWrapper", module).add("with hyperlink", () => (
+export const WithHyperlink = () => (
     <div style={{ paddingTop: 100, paddingLeft: 100 }}>
         <TextOverflowWrapper
             text="hyperlink test"
@@ -32,4 +34,4 @@ storiesOf("TextOverflowWrapper", module).add("with hyperlink", () => (
             type="info"            
         />
     </div>
-));
+);

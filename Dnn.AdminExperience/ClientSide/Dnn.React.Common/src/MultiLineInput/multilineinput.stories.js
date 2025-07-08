@@ -1,12 +1,15 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import MultiLineInput from "./index";
 
-storiesOf("MultiLineInput", module).add("with content", () => (
+export default {
+    component: MultiLineInput,
+};
+
+export const WithContent = () => (
     <MultiLineInput
         inputId={"create-term-description"}
         placeholder="Long descritpion here"
         onChange={action("changed")}
     />
-));
+);

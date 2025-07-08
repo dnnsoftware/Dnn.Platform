@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import Switch from "./index";
 
-class ControlledSwitch extends Component {
+export default {
+    component: Switch,
+};
+
+class MyControlledSwitch extends Component {
     constructor(props) {
         super(props);
         this.state = { value: props.value ? props.value : false};
@@ -24,7 +27,7 @@ class ControlledSwitch extends Component {
     }
 }
 
-storiesOf("Switch", module).add("with off", () => (
+export const WithOff = () => (
     <Switch
         labelHidden={false}
         onText="On"
@@ -33,9 +36,9 @@ storiesOf("Switch", module).add("with off", () => (
         onChange={action("changed")}
         labelPlacement="left"
     />
-));
+);
 
-storiesOf("Switch", module).add("with on", () => (
+export const WithOn = () => (
     <Switch
         labelHidden={false}
         onText="On"
@@ -45,8 +48,8 @@ storiesOf("Switch", module).add("with on", () => (
         labelPlacement="left"
         value={true}
     />
-));
+);
 
-storiesOf("Switch", module).add("controlled switch", () => (
-    <ControlledSwitch />
-));
+export const ControlledSwitch = () => (
+    <MyControlledSwitch />
+);
