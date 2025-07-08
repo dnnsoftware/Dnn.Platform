@@ -209,6 +209,19 @@ namespace DotNetNuke.Framework
         {
             base.OnInit(e);
 
+            // Set Persian culture to support localization when culture is fa-IR (e.g. for 404 pages)
+            if (this.PortalSettings.CultureCode == "fa-IR")
+            {
+                var newCulture = Services.Localization.Persian.PersianController.GetPersianCultureInfo();
+                System.Threading.Thread.CurrentThread.CurrentUICulture = newCulture;
+            }
+
+            // Add 'rtl' class to body for right-to-left language support
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+            {
+                this.Body.Attributes.Add("class", "rtl ");
+            }
+
             // set global page settings
             this.InitializePage();
 
