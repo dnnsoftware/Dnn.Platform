@@ -209,13 +209,6 @@ namespace DotNetNuke.Framework
         {
             base.OnInit(e);
 
-            // Add 'rtl' class to body for right-to-left language support
-            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
-            {
-                string existingClass = this.Body.Attributes["class"] ?? string.Empty;
-                this.Body.Attributes["class"] = (existingClass + " rtl").Trim();
-            }
-
             // set global page settings
             this.InitializePage();
 
@@ -696,6 +689,13 @@ namespace DotNetNuke.Framework
             // Find the placeholder control and render the doctype
             this.skinDocType.Text = this.PortalSettings.ActiveTab.SkinDoctype;
             this.attributeList.Text = this.HtmlAttributeList;
+
+            // Add 'rtl' class to body for right-to-left language support
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+            {
+                string existingClass = this.Body.Attributes["class"] ?? string.Empty;
+                this.Body.Attributes["class"] = (existingClass + " rtl").Trim();
+            }
         }
 
         private Skin GetSkin()
