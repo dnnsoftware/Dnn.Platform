@@ -1,26 +1,28 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import Checkbox from "./index";
 
-storiesOf("Checkbox", module).add("with text", () => (
+export default {
+    component: Checkbox,
+};
+
+export const WithText = () => (
     <Checkbox value={false} onChange={action("changed")} label="Hello Checkbox" />
-));
+);
 
-storiesOf("Checkbox", module).add("already checked", () => (
+export const AlreadyChecked = () => (
     <Checkbox value={true} onChange={action("changed")} label="I should be pre-checked" />
-));
+);
 
-storiesOf("Checkbox", module).add("with label and tooltip", () => (
+export const WithLabelAndTooltip = () => (
     <Checkbox 
         value={false} 
         onChange={action("changed")} 
-        label="I have a tooltip that opens on the bottom" 
+        label="I have a tooltip that opens on the right" 
         tooltipMessage="This is the tooltip of the checkbox"
-        tooltipPlace="bottom"  
+        tooltipPlace="right"  
     />
-));
-
+);
 
 // -------- CHECKBOX AVAILABLE PROPS -------------
 

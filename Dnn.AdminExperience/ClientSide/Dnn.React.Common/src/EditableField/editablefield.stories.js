@@ -1,18 +1,21 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import EditableField from "./index";
 
-storiesOf("EditableField", module).add("with single line input", () => (
+export default {
+    component: EditableField,
+};
+
+export const WithSingleLineInput =  () => (
     <EditableField
         label="Test"
         value="Content"
         onFocus={action("focus")}
         onEnter={action("enter")}
     />
-));
+);
 
-storiesOf("EditableField", module).add("with multi-line input", () => (
+export const WithMultiLineInput =  () => (
     <EditableField
         label="Test"
         value="Content"
@@ -20,4 +23,4 @@ storiesOf("EditableField", module).add("with multi-line input", () => (
         onFocus={action("focus")}
         onEnter={action("enter")}
     />
-));
+);

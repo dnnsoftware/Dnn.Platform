@@ -1,8 +1,11 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
 import Tooltip from "./index";
 
-storiesOf("Tooltip", module).add("error with only required props", () => (
+export default {
+    component: Tooltip,
+};
+
+export const ErrorWithOnlyRequiredProps = () => (
     <div style={{marginTop:100, marginLeft:100, width: 20}}>
         <Tooltip
             type="error"
@@ -10,9 +13,9 @@ storiesOf("Tooltip", module).add("error with only required props", () => (
             tooltipPlace="top"
         />
     </div>
-));
+);
 
-storiesOf("Tooltip", module).add("warning list on bottom", () => (
+export const WarningListOnBottom = () => (
     <div style={{marginTop:100, marginLeft:100, width:20}}>
         <Tooltip
             type="warning"
@@ -20,9 +23,9 @@ storiesOf("Tooltip", module).add("warning list on bottom", () => (
             tooltipPlace="bottom"
         />
     </div>
-));
+);
 
-storiesOf("Tooltip", module).add("info with long message and maxWidth", () => (
+export const InfoWithLongMessageAndMaxWidth = () => (
     <div style={{marginTop:250, marginLeft:100, width:20}}>
         <Tooltip
             type="info"
@@ -32,9 +35,9 @@ storiesOf("Tooltip", module).add("info with long message and maxWidth", () => (
             maxWidth={70}
         />
     </div>
-));
+);
 
-storiesOf("Tooltip", module).add("global setting and positioned on the bottom", () => (
+export const GlobalSettingAndPositionedOnTheBottom = () => (
     <div style={{marginTop:100, marginLeft:100, width:20}}>
         <Tooltip
             type="global"
@@ -44,11 +47,11 @@ storiesOf("Tooltip", module).add("global setting and positioned on the bottom", 
             delayHide={3000}
         />
     </div>
-));
+);
 
-storiesOf("Tooltip", module).add("not rendered", () => (
+export const NotRendered = () => (
     <DynamicRenderedTooltip />
-));
+);
 
 class DynamicRenderedTooltip extends Component {
     constructor() {
