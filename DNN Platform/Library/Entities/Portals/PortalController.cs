@@ -96,11 +96,24 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>Adds the portal dictionary.</summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="tabId">The tab id.</param>
-        public static void AddPortalDictionary(int portalId, int tabId)
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
+        [DnnDeprecated(10, 0, 2, "Please use overload with IHostSettings")]
+        public static partial void AddPortalDictionary(int portalId, int tabId)
+            => AddPortalDictionary(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                portalId,
+                tabId);
+
+        /// <summary>Adds the portal dictionary.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
+        public static void AddPortalDictionary(IHostSettings hostSettings, DataProvider dataProvider, int portalId, int tabId)
         {
-            var portalDic = GetPortalDictionary();
+            var portalDic = GetPortalDictionary(hostSettings, dataProvider);
             portalDic[tabId] = portalId;
             DataCache.SetCache(DataCache.PortalDictionaryCacheKey, portalDic);
         }
@@ -150,71 +163,96 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Deletes all expired portals.</summary>
         /// <param name="serverPath">The server path.</param>
-        public static void DeleteExpiredPortals(string serverPath)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial void DeleteExpiredPortals(string serverPath)
+            => DeleteExpiredPortals(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>(),
+                serverPath);
+
+        /// <summary>Deletes all expired portals.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="serverPath">The server path.</param>
+        public static void DeleteExpiredPortals(IPortalController portalController, DataProvider dataProvider, IPortalAliasService portalAliasService, string serverPath)
         {
-            foreach (PortalInfo portal in GetExpiredPortals())
+            foreach (IPortalInfo portal in GetExpiredPortals(dataProvider))
             {
-                DeletePortal(portal, serverPath);
+                DeletePortal(portalController, portalAliasService, portal, serverPath);
             }
         }
 
         /// <summary>Deletes the portal.</summary>
         /// <param name="portal">The portal.</param>
         /// <param name="serverPath">The server path.</param>
-        /// <returns>If the method executed successful, it will return NullString, otherwise return error message.</returns>
-        public static string DeletePortal(PortalInfo portal, string serverPath)
+        /// <returns>If the method executed successful, it will return <see cref="Null.NullString"/>, otherwise return error message.</returns>
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial string DeletePortal(PortalInfo portal, string serverPath)
+            => DeletePortal(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>(), portal, serverPath);
+
+        /// <summary>Deletes the portal.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="portal">The portal.</param>
+        /// <param name="serverPath">The server path.</param>
+        /// <returns>If the method executed successful, it will return <see cref="Null.NullString"/>, otherwise return error message.</returns>
+        public static string DeletePortal(IPortalController portalController, IPortalAliasService portalAliasService, IPortalInfo portal, string serverPath)
         {
             string message = string.Empty;
 
             // check if this is the last portal
-            var portals = Instance.GetPortals();
+            var portals = portalController.GetPortals();
             if (portals.Count > 1)
             {
-                if (portal != null)
+                if (portal == null)
                 {
-                    // delete custom resource files
-                    Globals.DeleteFilesRecursive(serverPath, ".Portal-" + portal.PortalID + ".resx");
-
-                    // If child portal delete child folder
-                    var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
-                    if (arr.Count > 0)
-                    {
-                        var portalAliasInfo = arr[0];
-                        string portalName = Globals.GetPortalDomainName(portalAliasInfo.HTTPAlias, null, true);
-                        if (portalAliasInfo.HTTPAlias.IndexOf("/", StringComparison.Ordinal) > -1)
-                        {
-                            portalName = GetPortalFolder(portalAliasInfo.HTTPAlias);
-                        }
-
-                        if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
-                        {
-                            DeletePortalFolder(serverPath, portalName);
-                        }
-                    }
-
-                    // delete upload directory
-                    if (!string.IsNullOrEmpty(portal.HomeDirectory))
-                    {
-                        var homeDirectory = portal.HomeDirectoryMapPath;
-
-                        // check whether home directory is not used by other portal
-                        // it happens when new portal creation failed, but home directory defined by user is already in use with other portal
-                        var homeDirectoryInUse = portals.OfType<PortalInfo>().Any(x =>
-                            x.PortalID != portal.PortalID &&
-                            x.HomeDirectoryMapPath.Equals(homeDirectory, StringComparison.OrdinalIgnoreCase));
-
-                        if (!homeDirectoryInUse)
-                        {
-                            if (Directory.Exists(homeDirectory))
-                            {
-                                Globals.DeleteFolderRecursive(homeDirectory);
-                            }
-                        }
-                    }
-
-                    // remove database references
-                    DeletePortalInternal(portal.PortalID);
+                    return message;
                 }
+
+                // delete custom resource files
+                Globals.DeleteFilesRecursive(serverPath, $".Portal-{portal.PortalId}.resx");
+
+                // If child portal delete child folder
+                var arr = portalAliasService.GetPortalAliasesByPortalId(portal.PortalId).ToList();
+                if (arr.Count > 0)
+                {
+                    var portalAliasInfo = arr[0];
+                    var portalName = Globals.GetPortalDomainName(portalAliasInfo.HttpAlias, null, true);
+                    if (portalAliasInfo.HttpAlias.IndexOf("/", StringComparison.Ordinal) > -1)
+                    {
+                        portalName = GetPortalFolder(portalAliasInfo.HttpAlias);
+                    }
+
+                    if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
+                    {
+                        DeletePortalFolder(serverPath, portalName);
+                    }
+                }
+
+                // delete upload directory
+                if (!string.IsNullOrEmpty(portal.HomeDirectory))
+                {
+                    var homeDirectory = portal.HomeDirectoryMapPath;
+
+                    // check whether home directory is not used by other portal
+                    // it happens when new portal creation failed, but home directory defined by user is already in use with other portal
+                    var homeDirectoryInUse = portals.OfType<IPortalInfo>().Any(x =>
+                        x.PortalId != portal.PortalId &&
+                        x.HomeDirectoryMapPath.Equals(homeDirectory, StringComparison.OrdinalIgnoreCase));
+
+                    if (!homeDirectoryInUse)
+                    {
+                        if (Directory.Exists(homeDirectory))
+                        {
+                            Globals.DeleteFolderRecursive(homeDirectory);
+                        }
+                    }
+                }
+
+                // remove database references
+                DeletePortalInternal(portal.PortalId);
             }
             else
             {
@@ -224,7 +262,7 @@ namespace DotNetNuke.Entities.Portals
             return message;
         }
 
-        /// <summary>Get the portal folder froma child portal alias.</summary>
+        /// <summary>Get the portal folder from a child portal alias.</summary>
         /// <param name="alias">portal alias.</param>
         /// <returns>folder path of the child portal.</returns>
         public static string GetPortalFolder(string alias)
@@ -233,7 +271,7 @@ namespace DotNetNuke.Entities.Portals
             var appPath = Globals.ApplicationPath + "/";
             if (string.IsNullOrEmpty(Globals.ApplicationPath) || alias.IndexOf(appPath, StringComparison.InvariantCultureIgnoreCase) == Null.NullInteger)
             {
-                return alias.Contains("/") ? alias.Substring(alias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase) + 1) : string.Empty;
+                return alias.Contains('/') ? alias.Substring(alias.IndexOf('/') + 1) : string.Empty;
             }
 
             return alias.Substring(alias.IndexOf(appPath, StringComparison.InvariantCultureIgnoreCase) + appPath.Length);
@@ -265,19 +303,43 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the portal dictionary.</summary>
         /// <returns>portal dictionary. the dictionary's Key -> Value is: TabId -> PortalId.</returns>
-        public static Dictionary<int, int> GetPortalDictionary()
+        [DnnDeprecated(10, 0, 2, "Please use overload with IHostSettings")]
+        public static partial Dictionary<int, int> GetPortalDictionary()
+            => GetPortalDictionary(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>());
+
+        /// <summary>Gets the portal dictionary.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <returns>portal dictionary. the dictionary's Key -> Value is: TabId -> PortalId.</returns>
+        public static Dictionary<int, int> GetPortalDictionary(IHostSettings hostSettings, DataProvider dataProvider)
         {
             string cacheKey = string.Format(DataCache.PortalDictionaryCacheKey);
-            return CBO.GetCachedObject<Dictionary<int, int>>(new CacheItemArgs(cacheKey, DataCache.PortalDictionaryTimeOut, DataCache.PortalDictionaryCachePriority), GetPortalDictionaryCallback);
+            return CBO.GetCachedObject<Dictionary<int, int>>(
+                hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.PortalDictionaryTimeOut, DataCache.PortalDictionaryCachePriority, hostSettings, dataProvider),
+                GetPortalDictionaryCallback);
         }
 
         /// <summary>GetPortalsByName gets all the portals whose name matches a provided filter expression.</summary>
         /// <param name="nameToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
-        /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
-        /// <returns>An ArrayList of PortalInfo objects.</returns>
-        public static ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <returns>An <see cref="ArrayList"/> of <see cref="PortalInfo"/> objects.</returns>
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial ArrayList GetPortalsByName(string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
+            => GetPortalsByName(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), nameToMatch, pageIndex, pageSize, ref totalRecords);
+
+        /// <summary>GetPortalsByName gets all the portals whose name matches a provided filter expression.</summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="nameToMatch">The email address to use to find a match.</param>
+        /// <param name="pageIndex">The page of records to return.</param>
+        /// <param name="pageSize">The size of the page.</param>
+        /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
+        /// <returns>An <see cref="ArrayList"/> of <see cref="PortalInfo"/> objects.</returns>
+        public static ArrayList GetPortalsByName(DataProvider dataProvider, string nameToMatch, int pageIndex, int pageSize, ref int totalRecords)
         {
             if (pageIndex == -1)
             {
@@ -285,30 +347,60 @@ namespace DotNetNuke.Entities.Portals
                 pageSize = int.MaxValue;
             }
 
-            Type type = typeof(PortalInfo);
-            return CBO.FillCollection(DataProvider.Instance().GetPortalsByName(nameToMatch, pageIndex, pageSize), ref type, ref totalRecords);
+            var type = typeof(PortalInfo);
+            return CBO.FillCollection(dataProvider.GetPortalsByName(nameToMatch, pageIndex, pageSize), ref type, ref totalRecords);
         }
 
-        public static ArrayList GetPortalsByUser(int userId)
+        /// <summary>Gets a list of all the portals of which the given user is a member.</summary>
+        /// <param name="userId">The user ID.</param>
+        /// <returns>An <see cref="ArrayList"/> of <see cref="PortalInfo"/> instances.</returns>
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial ArrayList GetPortalsByUser(int userId)
+            => GetPortalsByUser(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), userId);
+
+        /// <summary>Gets a list of all the portals of which the given user is a member.</summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="userId">The user ID.</param>
+        /// <returns>An <see cref="ArrayList"/> of <see cref="PortalInfo"/> instances.</returns>
+        public static ArrayList GetPortalsByUser(DataProvider dataProvider, int userId)
         {
-            Type type = typeof(PortalInfo);
-            return CBO.FillCollection(DataProvider.Instance().GetPortalsByUser(userId), type);
+            return CBO.FillCollection(dataProvider.GetPortalsByUser(userId), typeof(PortalInfo));
         }
 
-        public static int GetEffectivePortalId(int portalId)
+        /// <summary>Gets the master portal ID for the given portal, if the portal is part of a portal group.</summary>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>The effective portal ID.</returns>
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial int GetEffectivePortalId(int portalId)
+            => GetEffectivePortalId(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId);
+
+        /// <summary>Gets the master portal ID for the given portal, if the portal is part of a portal group.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <returns>The effective portal ID.</returns>
+        public static int GetEffectivePortalId(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId)
         {
-            if (portalId > Null.NullInteger && Globals.Status != Globals.UpgradeStatus.Upgrade)
+            if (portalId <= Null.NullInteger || appStatus.Status == UpgradeStatus.Upgrade)
             {
-                var portal = Instance.GetPortal(portalId);
-                var portalGroup = (from p in PortalGroupController.Instance.GetPortalGroups()
-                                   where p.PortalGroupId == portal.PortalGroupID
-                                   select p)
-                                .SingleOrDefault();
+                return portalId;
+            }
 
-                if (portalGroup != null)
-                {
-                    portalId = portalGroup.MasterPortalId;
-                }
+            var portal = portalController.GetPortal(portalId);
+            var portalGroup = (
+                    from p in portalGroupController.GetPortalGroups()
+                    where p.PortalGroupId == ((IPortalInfo)portal).PortalGroupId
+                    select p)
+                .SingleOrDefault();
+
+            if (portalGroup != null)
+            {
+                portalId = portalGroup.MasterPortalId;
             }
 
             return portalId;
@@ -316,9 +408,16 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets all expired portals.</summary>
         /// <returns>all expired portals as array list.</returns>
-        public static ArrayList GetExpiredPortals()
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial ArrayList GetExpiredPortals()
+            => GetExpiredPortals(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>());
+
+        /// <summary>Gets all expired portals.</summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <returns>all expired portals as array list.</returns>
+        public static ArrayList GetExpiredPortals(DataProvider dataProvider)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetExpiredPortals(), typeof(PortalInfo));
+            return CBO.FillCollection(dataProvider.GetExpiredPortals(), typeof(PortalInfo));
         }
 
         /// <summary>Determines whether the portal is child portal.</summary>
@@ -327,26 +426,33 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>
         ///   <see langword="true"/> if the portal is child portal; otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool IsChildPortal(PortalInfo portal, string serverPath)
-        {
-            bool isChild = Null.NullBoolean;
-            var arr = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
-            if (arr.Count > 0)
-            {
-                PortalAliasInfo portalAlias = arr[0];
-                var portalName = Globals.GetPortalDomainName(portalAlias.HTTPAlias, null, true);
-                if (portalAlias.HTTPAlias.IndexOf("/") > -1)
-                {
-                    portalName = GetPortalFolder(portalAlias.HTTPAlias);
-                }
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalAliasService")]
+        public static partial bool IsChildPortal(PortalInfo portal, string serverPath)
+            => IsChildPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>(), portal, serverPath);
 
-                if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
-                {
-                    isChild = true;
-                }
+        /// <summary>Determines whether the portal is child portal.</summary>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="portal">The portal.</param>
+        /// <param name="serverPath">The server path.</param>
+        /// <returns>
+        ///   <see langword="true"/> if the portal is child portal; otherwise, <see langword="false"/>.
+        /// </returns>
+        public static bool IsChildPortal(IPortalAliasService portalAliasService, IPortalInfo portal, string serverPath)
+        {
+            var arr = portalAliasService.GetPortalAliasesByPortalId(portal.PortalId).ToList();
+            if (arr.Count <= 0)
+            {
+                return false;
             }
 
-            return isChild;
+            var portalAlias = arr[0];
+            var portalName = Globals.GetPortalDomainName(portalAlias.HttpAlias, null, true);
+            if (portalAlias.HttpAlias.IndexOf('/') > -1)
+            {
+                portalName = GetPortalFolder(portalAlias.HttpAlias);
+            }
+
+            return !string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName);
         }
 
         /// <summary>Gets a value indicating whether the portal with the given <paramref name="portalId"/> is in a portal group.</summary>
@@ -369,36 +475,104 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>Deletes the portal setting (neutral and for all languages).</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
-        public static void DeletePortalSetting(int portalID, string settingName)
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial void DeletePortalSetting(int portalID, string settingName)
+            => DeletePortalSetting(
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>(),
+                portalID,
+                settingName);
+
+        /// <summary>Deletes the portal setting (neutral and for all languages).</summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        public static void DeletePortalSetting(DataProvider dataProvider, IEventLogger eventLogger, IUserController userController, int portalId, string settingName)
         {
-            DeletePortalSetting(portalID, settingName, Null.NullString);
+            DeletePortalSetting(dataProvider, eventLogger, userController, portalId, settingName, Null.NullString);
         }
 
         /// <summary>Deletes the portal setting in this language.</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="cultureCode">The culture code.</param>
-        public static void DeletePortalSetting(int portalID, string settingName, string cultureCode)
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial void DeletePortalSetting(int portalID, string settingName, string cultureCode)
+            => DeletePortalSetting(
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>(),
+                portalID,
+                settingName,
+                cultureCode);
+
+        /// <summary>Deletes the portal setting in this language.</summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        public static void DeletePortalSetting(DataProvider dataProvider, IEventLogger eventLogger, IUserController userController, int portalId, string settingName, string cultureCode)
         {
-            DataProvider.Instance().DeletePortalSetting(portalID, settingName, cultureCode.ToLowerInvariant());
-            EventLogController.Instance.AddLog("SettingName", settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            dataProvider.DeletePortalSetting(portalId, settingName, cultureCode.ToLowerInvariant());
+            eventLogger.AddLog(
+                "SettingName",
+                settingName + (cultureCode == Null.NullString ? string.Empty : $" ({cultureCode})"),
+                GetCurrentPortalSettingsInternal(),
+                userController.GetCurrentUserInfo().UserID,
+                EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
-        /// <summary>Deletes all portal settings by portal id.</summary>
+        /// <summary>Deletes all portal settings by portal ID.</summary>
         /// <param name="portalID">The portal ID.</param>
-        public static void DeletePortalSettings(int portalID)
-        {
-            DeletePortalSettings(portalID, Null.NullString);
-        }
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial void DeletePortalSettings(int portalID)
+            => DeletePortalSettings(
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>(),
+                portalID);
 
-        /// <summary>Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).</summary>
+        /// <summary>Deletes all portal settings by portal ID.</summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public static void DeletePortalSettings(DataProvider dataProvider, IEventLogger eventLogger, IUserController userController, int portalId)
+            => DeletePortalSettings(dataProvider, eventLogger, userController, portalId, Null.NullString);
+
+        /// <summary>Deletes all portal settings by portal ID and for a given language (Null: all languages and neutral settings).</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="cultureCode">The culture code or <see cref="Null.NullString"/>.</param>
-        public static void DeletePortalSettings(int portalID, string cultureCode)
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial void DeletePortalSettings(int portalID, string cultureCode)
+            => DeletePortalSettings(
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>(),
+                portalID,
+                cultureCode);
+
+        /// <summary>Deletes all portal settings by portal id and for a given language (Null: all languages and neutral settings).</summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code or <see cref="Null.NullString"/>.</param>
+        public static void DeletePortalSettings(DataProvider dataProvider, IEventLogger eventLogger, IUserController userController, int portalId, string cultureCode)
         {
-            DataProvider.Instance().DeletePortalSettings(portalID, cultureCode);
-            EventLogController.Instance.AddLog("PortalID", portalID.ToString() + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_DELETED);
+            dataProvider.DeletePortalSettings(portalId, cultureCode);
+            eventLogger.AddLog(
+                "PortalID",
+                portalId + (cultureCode == Null.NullString ? string.Empty : $" ({cultureCode})"),
+                GetCurrentPortalSettingsInternal(),
+                userController.GetCurrentUserInfo().UserID,
+                EventLogType.PORTAL_SETTING_DELETED);
             DataCache.ClearHostCache(true);
         }
 
@@ -409,20 +583,26 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>The decrypted setting value.</returns>
         [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
         public static partial string GetEncryptedString(string settingName, int portalID, string passPhrase)
-            => GetEncryptedString(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), settingName, portalID, passPhrase);
+            => GetEncryptedString(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                settingName,
+                portalID,
+                passPhrase);
 
         /// <summary>takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
         /// <param name="settingName">the setting to read.</param>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
         /// <returns>The decrypted setting value.</returns>
-        public static string GetEncryptedString(IHostSettings hostSettings, string settingName, int portalId, string passPhrase)
+        public static string GetEncryptedString(IHostSettings hostSettings, IPortalController portalController, string settingName, int portalId, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", settingName);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
 
-            var cipherText = GetPortalSetting(settingName, portalId, string.Empty);
+            var cipherText = GetPortalSetting(portalController, settingName, portalId, string.Empty);
 
             return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, hostSettings.Guid);
         }
@@ -432,13 +612,26 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
-        public static string GetPortalSetting(string settingName, int portalID, string defaultValue)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial string GetPortalSetting(string settingName, int portalID, string defaultValue)
+            => GetPortalSetting(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                settingName,
+                portalID,
+                defaultValue);
+
+        /// <summary>Gets the portal setting.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        public static string GetPortalSetting(IPortalController portalController, string settingName, int portalId, string defaultValue)
         {
             var retValue = Null.NullString;
             try
             {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(settingName, out setting);
+                portalController.GetPortalSettings(portalId).TryGetValue(settingName, out var setting);
                 retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
@@ -455,21 +648,35 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="defaultValue">The default value.</param>
         /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
         /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
-        public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
+            => GetPortalSetting(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                settingName,
+                portalID,
+                defaultValue,
+                cultureCode);
+
+        /// <summary>Gets the portal setting for a specific language (or neutral).</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
+        /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
+        public static string GetPortalSetting(IPortalController portalController, string settingName, int portalId, string defaultValue, string cultureCode)
         {
-            var retValue = Null.NullString;
             try
             {
-                string setting;
-                Instance.GetPortalSettings(portalID, cultureCode).TryGetValue(settingName, out setting);
-                retValue = string.IsNullOrEmpty(setting) ? defaultValue : setting;
+                portalController.GetPortalSettings(portalId, cultureCode).TryGetValue(settingName, out var setting);
+                return string.IsNullOrEmpty(setting) ? defaultValue : setting;
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
 
-            return retValue;
+            return Null.NullString;
         }
 
         /// <summary>Gets the portal setting as boolean.</summary>
@@ -477,13 +684,26 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
-        public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue)
+            => GetPortalSettingAsBoolean(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                key,
+                portalID,
+                defaultValue);
+
+        /// <summary>Gets the portal setting as boolean.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="defaultValue">default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        public static bool GetPortalSettingAsBoolean(IPortalController portalController, string key, int portalId, bool defaultValue)
         {
-            bool retValue = Null.NullBoolean;
+            var retValue = Null.NullBoolean;
             try
             {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
+                Instance.GetPortalSettings(portalId).TryGetValue(key, out var setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -557,13 +777,26 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
-        public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial int GetPortalSettingAsInteger(string key, int portalID, int defaultValue)
+            => GetPortalSettingAsInteger(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                key,
+                portalID,
+                defaultValue);
+
+        /// <summary>Gets the portal setting as integer.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        public static int GetPortalSettingAsInteger(IPortalController portalController, string key, int portalId, int defaultValue)
         {
             int retValue = Null.NullInteger;
             try
             {
-                string setting;
-                Instance.GetPortalSettings(portalID).TryGetValue(key, out setting);
+                portalController.GetPortalSettings(portalId).TryGetValue(key, out var setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -583,16 +816,29 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the portal setting as double.</summary>
         /// <param name="key">The key.</param>
-        /// <param name="portalId">The portal Id.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
-        public static double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial double GetPortalSettingAsDouble(string key, int portalId, double defaultValue)
+            => GetPortalSettingAsDouble(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                key,
+                portalId,
+                defaultValue);
+
+        /// <summary>Gets the portal setting as <see cref="double"/>.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns>Returns setting's value if portal contains the specific setting, otherwise return defaultValue.</returns>
+        public static double GetPortalSettingAsDouble(IPortalController portalController, string key, int portalId, double defaultValue)
         {
             double retValue = Null.NullDouble;
             try
             {
-                string setting;
-                Instance.GetPortalSettings(portalId).TryGetValue(key, out setting);
+                portalController.GetPortalSettings(portalId).TryGetValue(key, out var setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -689,8 +935,16 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue)
+            => UpdatePortalSetting(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalID, settingName, settingValue);
+
+        /// <summary>Updates a single neutral (not language specific) portal setting and clears it from the cache.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        public static void UpdatePortalSetting(IPortalController portalController, int portalId, string settingName, string settingValue)
         {
-            UpdatePortalSetting(portalID, settingName, settingValue, true);
+            UpdatePortalSetting(portalController, portalId, settingName, settingValue, true);
         }
 
         /// <summary>Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.</summary>
@@ -698,9 +952,24 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
-        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache)
+            => UpdatePortalSetting(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                portalID,
+                settingName,
+                settingValue,
+                clearCache);
+
+        /// <summary>Updates a single neutral (not language specific) portal setting, optionally without clearing the cache.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
+        public static void UpdatePortalSetting(IPortalController portalController, int portalId, string settingName, string settingValue, bool clearCache)
         {
-            UpdatePortalSetting(portalID, settingName, settingValue, clearCache, Null.NullString, false);
+            UpdatePortalSetting(portalController, portalId, settingName, settingValue, clearCache, Null.NullString, false);
         }
 
         /// <summary>Updates a language specific or neutral portal setting and clears it from the cache.</summary>
@@ -719,26 +988,72 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
-        /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+        /// <param name="cultureCode">culture code for language specific settings, null string otherwise.</param>
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode)
+            => UpdatePortalSetting(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                portalID,
+                settingName,
+                settingValue,
+                clearCache,
+                cultureCode);
+
+        /// <summary>Updates a language specific or neutral portal setting and optionally clears it from the cache.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
+        /// <param name="cultureCode">culture code for language specific settings, null string otherwise.</param>
+        public static void UpdatePortalSetting(IPortalController portalController, int portalId, string settingName, string settingValue, bool clearCache, string cultureCode)
         {
-            UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, false);
+            UpdatePortalSetting(portalController, portalId, settingName, settingValue, clearCache, cultureCode, false);
         }
 
         /// <summary>
         /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
-        /// All overloaded methors will not encrypt the setting value. Therefore, call this method whenever
-        /// there is a need to encrypt the setting value before storing it in the datanbase.
+        /// All overloaded methods will not encrypt the setting value. Therefore, call this method whenever
+        /// there is a need to encrypt the setting value before storing it in the database.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
-        /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
+        /// <param name="cultureCode">culture code for language specific settings, null string otherwise.</param>
         /// <param name="isSecure">When true it encrypt the value before storing it in the database.</param>
-        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial void UpdatePortalSetting(
+            int portalID,
+            string settingName,
+            string settingValue,
+            bool clearCache,
+            string cultureCode,
+            bool isSecure)
+            => UpdatePortalSetting(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                portalID,
+                settingName,
+                settingValue,
+                clearCache,
+                cultureCode,
+                isSecure);
+
+        /// <summary>
+        /// Updates a language specific or neutral portal setting and optionally clears it from the cache.
+        /// All overloaded methods will not encrypt the setting value. Therefore, call this method whenever
+        /// there is a need to encrypt the setting value before storing it in the database.
+        /// </summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingName">Name of the setting.</param>
+        /// <param name="settingValue">The setting value.</param>
+        /// <param name="clearCache">if set to <see langword="true"/> [clear cache].</param>
+        /// <param name="cultureCode">culture code for language specific settings, null string otherwise.</param>
+        /// <param name="isSecure">When true it encrypt the value before storing it in the database.</param>
+        public static void UpdatePortalSetting(IPortalController portalController, int portalId, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
-            Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
+            portalController.UpdatePortalSetting(portalId, settingName, settingValue, clearCache, cultureCode, isSecure);
         }
 
         /// <summary>Checks the desktop modules whether is installed.</summary>
@@ -806,8 +1121,8 @@ namespace DotNetNuke.Entities.Portals
         public static string GetActivePortalLanguage(IHostSettings hostSettings, IApplicationStatusInfo appStatus, int portalId)
         {
             // get Language
-            string language = Localization.SystemLocale;
-            string tmpLanguage = GetPortalDefaultLanguage(hostSettings, portalId);
+            var language = Localization.SystemLocale;
+            var tmpLanguage = GetPortalDefaultLanguage(hostSettings, portalId);
             var isDefaultLanguage = false;
             if (!string.IsNullOrEmpty(tmpLanguage))
             {
@@ -815,47 +1130,46 @@ namespace DotNetNuke.Entities.Portals
                 isDefaultLanguage = true;
             }
 
-            // handles case where portalcontroller methods invoked before a language is installed
+            // handles case where PortalController methods invoked before a language is installed
             if (portalId > Null.NullInteger && appStatus.Status == UpgradeStatus.None && Localization.ActiveLanguagesByPortalID(portalId) == 1)
             {
                 return language;
             }
 
-            if (HttpContext.Current != null && appStatus.Status == UpgradeStatus.None)
+            var context = HttpContextSource.Current;
+            if (context == null || appStatus.Status != UpgradeStatus.None)
             {
-                if (HttpContext.Current.Request.QueryString["language"] != null)
-                {
-                    language = HttpContext.Current.Request.QueryString["language"];
-                }
-                else
-                {
-                    PortalSettings portalSettings = GetCurrentPortalSettingsInternal();
-                    if (portalSettings != null && portalSettings.ActiveTab != null && !string.IsNullOrEmpty(portalSettings.ActiveTab.CultureCode))
-                    {
-                        language = portalSettings.ActiveTab.CultureCode;
-                    }
-                    else
-                    {
-                        // PortalSettings IS Nothing - probably means we haven't set it yet (in Begin Request)
-                        // so try detecting the user's cookie
-                        if (HttpContext.Current.Request["language"] != null)
-                        {
-                            language = HttpContext.Current.Request["language"];
-                            isDefaultLanguage = false;
-                        }
+                return language;
+            }
 
-                        // if no cookie - try detecting browser
-                        if ((string.IsNullOrEmpty(language) || isDefaultLanguage) && EnableBrowserLanguageInDefault(hostSettings, appStatus, portalId))
-                        {
-                            CultureInfo culture = Localization.GetBrowserCulture(portalId);
+            if (context.Request.QueryString["language"] != null)
+            {
+                return context.Request.QueryString["language"];
+            }
 
-                            if (culture != null)
-                            {
-                                language = culture.Name;
-                            }
-                        }
-                    }
-                }
+            var portalSettings = GetCurrentPortalSettingsInternal();
+            if (portalSettings is { ActiveTab: not null } && !string.IsNullOrEmpty(portalSettings.ActiveTab.CultureCode))
+            {
+                return portalSettings.ActiveTab.CultureCode;
+            }
+
+            // PortalSettings IS Nothing - probably means we haven't set it yet (in Begin Request)
+            // so try detecting the user's cookie
+            if (HttpContext.Current.Request["language"] != null)
+            {
+                language = HttpContext.Current.Request["language"];
+                isDefaultLanguage = false;
+            }
+
+            if ((!string.IsNullOrEmpty(language) && !isDefaultLanguage) || !EnableBrowserLanguageInDefault(hostSettings, appStatus, portalId))
+            {
+                return language;
+            }
+
+            var culture = Localization.GetBrowserCulture(portalId);
+            if (culture != null)
+            {
+                language = culture.Name;
             }
 
             return language;
@@ -887,44 +1201,69 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="cultureCode">The culture code.</param>
-        public static void UpdatePortalDefaultLanguage(int portalID, string cultureCode)
+        [DnnDeprecated(10, 0, 2, "Please use overload with DataProvider")]
+        public static partial void UpdatePortalDefaultLanguage(int portalID, string cultureCode)
+            => UpdatePortalDefaultLanguage(Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(), portalID, cultureCode);
+
+        /// <summary>
+        ///   set the required DefaultLanguage in the Portals table for a particular portal
+        ///   saves having to update an entire PortalInfo object.
+        /// </summary>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        public static void UpdatePortalDefaultLanguage(DataProvider dataProvider, int portalId, string cultureCode)
         {
-            DataProvider.Instance().UpdatePortalDefaultLanguage(portalID, cultureCode);
+            dataProvider.UpdatePortalDefaultLanguage(portalId, cultureCode);
 
             // ensure localization record exists as new portal default language may be relying on fallback chain
             // of which it is now the final part
-            DataProvider.Instance().EnsureLocalizationExists(portalID, cultureCode);
+            dataProvider.EnsureLocalizationExists(portalId, cultureCode);
         }
 
-        public static void IncrementCrmVersion(int portalID)
+        /// <summary>Increments the Client Resource Manager version.</summary>
+        /// <param name="portalID">The portal ID.</param>
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial void IncrementCrmVersion(int portalID)
+            => IncrementCrmVersion(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalID);
+
+        /// <summary>Increments the Client Resource Manager version.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        public static void IncrementCrmVersion(IPortalController portalController, int portalId)
         {
-            int currentVersion;
-            var versionSetting = GetPortalSetting(ClientResourceSettings.VersionKey, portalID, "1");
-            if (int.TryParse(versionSetting, out currentVersion))
+            var versionSetting = GetPortalSetting(portalController, ClientResourceSettings.VersionKey, portalId, "1");
+            if (int.TryParse(versionSetting, out var currentVersion))
             {
                 var newVersion = currentVersion + 1;
-                UpdatePortalSetting(portalID, ClientResourceSettings.VersionKey, newVersion.ToString(CultureInfo.InvariantCulture), true);
+                UpdatePortalSetting(portalController, portalId, ClientResourceSettings.VersionKey, newVersion.ToString(CultureInfo.InvariantCulture), true);
             }
         }
 
-        public static void IncrementOverridingPortalsCrmVersion()
+        /// <summary>Increment the CRM version for all portals that are overriding the host CRM version.</summary>
+        [DnnDeprecated(10, 0, 2, "Please use overload with IPortalController")]
+        public static partial void IncrementOverridingPortalsCrmVersion()
+            => IncrementOverridingPortalsCrmVersion(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>());
+
+        /// <summary>Increment the CRM version for all portals that are overriding the host CRM version.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        public static void IncrementOverridingPortalsCrmVersion(IPortalController portalController)
         {
-            foreach (PortalInfo portal in Instance.GetPortals())
+            foreach (IPortalInfo portal in portalController.GetPortals())
             {
-                string setting = GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey, portal.PortalID, "False");
-                bool overriden;
+                var setting = GetPortalSetting(portalController, ClientResourceSettings.OverrideDefaultSettingsKey, portal.PortalId, "False");
 
                 // if this portal is overriding the host level...
-                if (bool.TryParse(setting, out overriden) && overriden)
+                if (bool.TryParse(setting, out var overriden) && overriden)
                 {
                     // increment its version
-                    IncrementCrmVersion(portal.PortalID);
+                    IncrementCrmVersion(portalController, portal.PortalId);
                 }
             }
         }
 
         /// <summary>Creates a new portal alias.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="portalAlias">Portal Alias to be created.</param>
         public void AddPortalAlias(int portalId, string portalAlias)
         {
@@ -944,21 +1283,23 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="mappedHomeDirectory">The mapped home directory.</param>
         public void CopyPageTemplate(string templateFile, string mappedHomeDirectory)
         {
-            string hostTemplateFile = string.Format("{0}Templates\\{1}", Globals.HostMapPath, templateFile);
-            if (File.Exists(hostTemplateFile))
+            string hostTemplateFile = $"{Globals.HostMapPath}Templates\\{templateFile}";
+            if (!File.Exists(hostTemplateFile))
             {
-                string portalTemplateFolder = string.Format("{0}Templates\\", mappedHomeDirectory);
-                if (!Directory.Exists(portalTemplateFolder))
-                {
-                    // Create Portal Templates folder
-                    Directory.CreateDirectory(portalTemplateFolder);
-                }
+                return;
+            }
 
-                string portalTemplateFile = portalTemplateFolder + templateFile;
-                if (!File.Exists(portalTemplateFile))
-                {
-                    File.Copy(hostTemplateFile, portalTemplateFile);
-                }
+            string portalTemplateFolder = $"{mappedHomeDirectory}Templates\\";
+            if (!Directory.Exists(portalTemplateFolder))
+            {
+                // Create Portal Templates folder
+                Directory.CreateDirectory(portalTemplateFolder);
+            }
+
+            string portalTemplateFile = portalTemplateFolder + templateFile;
+            if (!File.Exists(portalTemplateFile))
+            {
+                File.Copy(hostTemplateFile, portalTemplateFile);
             }
         }
 
@@ -1181,44 +1522,39 @@ namespace DotNetNuke.Entities.Portals
                 return null;
             }
 
-            PortalInfo portal = GetPortalInternal(portalId, cultureCode);
-
-            if (Localization.ActiveLanguagesByPortalID(portalId) > 1)
+            var portal = GetPortalInternal(this, portalId, cultureCode);
+            if (Localization.ActiveLanguagesByPortalID(portalId) <= 1 || portal != null)
             {
-                if (portal == null)
-                {
-                    // Get Fallback language
-                    string fallbackLanguage = string.Empty;
-
-                    if (string.IsNullOrEmpty(cultureCode))
-                    {
-                        cultureCode = GetPortalDefaultLanguage(this.hostSettings, portalId);
-                    }
-
-                    Locale userLocale = LocaleController.Instance.GetLocale(cultureCode);
-                    if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))
-                    {
-                        fallbackLanguage = userLocale.Fallback;
-                    }
-
-                    if (string.IsNullOrEmpty(fallbackLanguage))
-                    {
-                        fallbackLanguage = Localization.SystemLocale;
-                    }
-
-                    portal = GetPortalInternal(portalId, fallbackLanguage);
-
-                    // if we cannot find any fallback, it means it's a non-portal default language
-                    if (portal == null)
-                    {
-                        DataProvider.Instance().EnsureLocalizationExists(portalId, GetActivePortalLanguage(this.hostSettings, this.appStatus, portalId));
-                        DataCache.ClearHostCache(true);
-                        portal = GetPortalInternal(portalId, GetActivePortalLanguage(this.hostSettings, this.appStatus, portalId));
-                    }
-                }
+                return portal;
             }
 
-            return portal;
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                cultureCode = GetPortalDefaultLanguage(this.hostSettings, portalId);
+            }
+
+            var fallbackLanguage = string.Empty;
+            var userLocale = LocaleController.Instance.GetLocale(cultureCode);
+            if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))
+            {
+                fallbackLanguage = userLocale.Fallback;
+            }
+
+            if (string.IsNullOrEmpty(fallbackLanguage))
+            {
+                fallbackLanguage = Localization.SystemLocale;
+            }
+
+            portal = GetPortalInternal(this, portalId, fallbackLanguage);
+            if (portal != null)
+            {
+                return portal;
+            }
+
+            // if we cannot find any fallback, it means it's a non-portal default language
+            DataProvider.Instance().EnsureLocalizationExists(portalId, GetActivePortalLanguage(this.hostSettings, this.appStatus, portalId));
+            DataCache.ClearHostCache(true);
+            return GetPortalInternal(this, portalId, GetActivePortalLanguage(this.hostSettings, this.appStatus, portalId));
         }
 
         /// <summary>Gets the portal.</summary>
@@ -1821,42 +2157,41 @@ namespace DotNetNuke.Entities.Portals
             return objPortalSettings;
         }
 
-        private static PortalInfo GetPortalInternal(int portalId, string cultureCode)
+        private static PortalInfo GetPortalInternal(IPortalController portalController, int portalId, string cultureCode)
         {
-            return Instance.GetPortalList(cultureCode).SingleOrDefault(p => p.PortalID == portalId);
+            return portalController.GetPortalList(cultureCode).SingleOrDefault(p => ((IPortalInfo)p).PortalId == portalId);
         }
 
         private static object GetPortalDefaultLanguageCallBack(CacheItemArgs cacheItemArgs)
         {
-            int portalID = (int)cacheItemArgs.ParamList[0];
-            return DataProvider.Instance().GetPortalDefaultLanguage(portalID);
+            int portalId = (int)cacheItemArgs.ParamList[0];
+            return DataProvider.Instance().GetPortalDefaultLanguage(portalId);
         }
 
         private static object GetPortalDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
+            var hostSettings = (IHostSettings)cacheItemArgs.Params[0];
+            var dataProvider = (DataProvider)cacheItemArgs.Params[1];
             var portalDic = new Dictionary<int, int>();
-            if (Host.Host.PerformanceSetting != Globals.PerformanceSettings.NoCaching)
+            if (hostSettings.PerformanceSetting == PerformanceSettings.NoCaching)
             {
-                // get all tabs
-                int intField = 0;
-                IDataReader dr = DataProvider.Instance().GetTabPaths(Null.NullInteger, Null.NullString);
-                try
+                return portalDic;
+            }
+
+            // get all tabs
+            const int intField = 0;
+            using var dr = dataProvider.GetTabPaths(Null.NullInteger, Null.NullString);
+            try
+            {
+                while (dr.Read())
                 {
-                    while (dr.Read())
-                    {
-                        // add to dictionary
-                        portalDic[Convert.ToInt32(Null.SetNull(dr["TabID"], intField))] = Convert.ToInt32(Null.SetNull(dr["PortalID"], intField));
-                    }
+                    // add to dictionary
+                    portalDic[Convert.ToInt32(Null.SetNull(dr["TabID"], intField))] = Convert.ToInt32(Null.SetNull(dr["PortalID"], intField));
                 }
-                catch (Exception exc)
-                {
-                    Exceptions.LogException(exc);
-                }
-                finally
-                {
-                    // close datareader
-                    CBO.CloseDataReader(dr, true);
-                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
             }
 
             return portalDic;

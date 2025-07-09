@@ -12,8 +12,9 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using System.Web;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -26,6 +27,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Provides messaging web services.</summary>
     [SupportedModules("DotNetNuke.Modules.CoreMessaging")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
@@ -33,10 +36,31 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     public class MessagingServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
+
+        /// <summary>Initializes a new instance of the <see cref="MessagingServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public MessagingServiceController()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MessagingServiceController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public MessagingServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        {
+            this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalGroupController>();
+        }
 
         /// <summary>Provides access to the user inbox.</summary>
         /// <param name="afterMessageId">After which message id to start returning new messages.</param>
-        /// <param name="numberOfRecords">How many messges to get.</param>
+        /// <param name="numberOfRecords">How many messages to get.</param>
         /// <returns>A <see cref="DotNetNuke.Services.Social.Messaging.Internal.Views.MessageBoxView"/>.</returns>
         [HttpGet]
         public HttpResponseMessage Inbox(int afterMessageId, int numberOfRecords)
@@ -44,7 +68,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var messageBoxView = InternalMessagingController.Instance.GetRecentInbox(this.UserInfo.UserID, afterMessageId, numberOfRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
 
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 messageBoxView.TotalConversations = InternalMessagingController.Instance.CountConversations(this.UserInfo.UserID, portalId);
@@ -69,7 +93,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var messageBoxView = InternalMessagingController.Instance.GetRecentSentbox(this.UserInfo.UserID, afterMessageId, numberOfRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 messageBoxView.TotalConversations = InternalMessagingController.Instance.CountSentConversations(this.UserInfo.UserID, portalId);
 
@@ -93,7 +117,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 var messageBoxView = InternalMessagingController.Instance.GetArchivedMessages(this.UserInfo.UserID, afterMessageId, numberOfRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageBoxView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 messageBoxView.TotalConversations = InternalMessagingController.Instance.CountArchivedConversations(this.UserInfo.UserID, portalId);
 
@@ -119,7 +143,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 var totalRecords = 0;
                 var messageThreadsView = InternalMessagingController.Instance.GetMessageThread(conversationId, this.UserInfo.UserID, afterMessageId, numberOfRecords, ref totalRecords);
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
                 messageThreadsView.TotalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 messageThreadsView.TotalThreads = InternalMessagingController.Instance.CountMessagesByConversation(conversationId);
                 messageThreadsView.TotalArchivedThreads = InternalMessagingController.Instance.CountArchivedMessagesByConversation(conversationId);
@@ -147,7 +171,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 body = WebUtility.HtmlEncode(body);
                 var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, body, postData.FileIds);
                 var message = this.ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
 
                 var totalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 var totalThreads = InternalMessagingController.Instance.CountMessagesByConversation(postData.ConversationId);
@@ -272,7 +296,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
                 var notificationsDomainModel = NotificationsController.Instance.GetNotifications(this.UserInfo.UserID, portalId, afterNotificationId, numberOfRecords);
 
                 var notificationsViewModel = new NotificationsViewModel
@@ -365,13 +389,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
                 int notifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, notifications);
             }
             catch (Exception ex)
             {
-                var message = "An unexpected error occurred while attempting to get the notifiation count, consult the server logs for more information.";
+                const string message = "An unexpected error occurred while attempting to get the notification count, consult the server logs for more information.";
                 Logger.Error(message, ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
             }
@@ -384,7 +408,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
                 var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, unreadMessages);
             }
@@ -403,7 +427,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, UserController.Instance.GetCurrentUserInfo().PortalID);
                 var totalsViewModel = new TotalsViewModel
                 {
                     TotalUnreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId),

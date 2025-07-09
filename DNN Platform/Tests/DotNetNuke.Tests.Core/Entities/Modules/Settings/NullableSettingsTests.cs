@@ -28,22 +28,9 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             new object[] { "lorem ipsum", 456, DateTime.Now, DateTime.Today - DateTime.Now, },
         };
 
-        private FakeServiceProvider serviceProvider;
-
-        [SetUp]
-        public void Setup()
+        protected override void SetupServiceProvider(IServiceCollection services)
         {
-            this.serviceProvider = FakeServiceProvider.Setup(
-                services =>
-                {
-                    services.AddSingleton<ISerializationManager, SerializationManager>();
-                });
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            this.serviceProvider.Dispose();
+            services.AddSingleton<ISerializationManager, SerializationManager>();
         }
 
         [Test]
