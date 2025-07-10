@@ -30,47 +30,44 @@ export class DnnRmDeleteItems {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  private closeModal(): void {
+  private async closeModal() {
     const modal = this.el.parentElement as HTMLDnnModalElement;
-    modal.hide().then(() => {
-      setTimeout(() => {
-        document.body.removeChild(modal);
-      }, 300);
-    });
+    await modal.hide();
+    setTimeout(() => {
+      document.body.removeChild(modal);
+    }, 300);
   }
 
-  private handleDelete(): void {
+  private async handleDelete() {
     this.deleting = true;
-    this.items.forEach(item => {
-      if (item.isFolder){
-        this.itemsClient.deleteFolder({
-          FolderId: item.itemId,
-          UnlinkAllowedStatus: false,
-        })
-        .then(() => {
-          this.handleItemDeleted(item);
-        })
-        .catch(reason => alert(reason));
+    try {
+      for (const item of this.items){
+        if (item.isFolder){
+          await this.itemsClient.deleteFolder({
+            FolderId: item.itemId,
+            UnlinkAllowedStatus: false,
+          });
+          await this.handleItemDeleted(item);
+        }
+        else {
+          await this.itemsClient.deleteFile({
+            FileId: item.itemId,
+          });
+          await this.handleItemDeleted(item);
+        }
       }
-      else {
-        this.itemsClient.deleteFile({
-          FileId: item.itemId,
-        })
-        .then(() => {
-          this.handleItemDeleted(item);
-        })
-        .catch(reason => alert(reason));
-      }
-    });
+    } catch (error) {
+      alert(error);
+    }
   }
   
-  handleItemDeleted(item: Item) {
+  private async handleItemDeleted(item: Item) {
     this.deletedCount++;
     this.currentItemName = item.itemName;
     if (this.deletedCount == this.items.length) {
       this.deleting = false;
       this.dnnRmFoldersChanged.emit();
-      this.closeModal();
+      await this.closeModal();
     }
   }
 
@@ -98,13 +95,13 @@ export class DnnRmDeleteItems {
             appearance="primary"
             reversed
             disabled={this.deleting}
-            onClick={() => this.closeModal()}
+            onClick={() => void this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
             appearance="primary"
-            onClick={() =>this.handleDelete()}
+            onClick={() => void this.handleDelete()}
             disabled={this.deleting}
           >
             {state.localization?.Delete}

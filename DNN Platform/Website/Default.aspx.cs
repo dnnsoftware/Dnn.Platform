@@ -663,6 +663,7 @@ namespace DotNetNuke.Framework
         {
             string strLang = CultureInfo.CurrentCulture.ToString();
             string strDocType = this.PortalSettings.ActiveTab.SkinDoctype;
+            string strDir = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "rtl" : "ltr";
             if (strDocType.Contains("XHTML 1.0"))
             {
                 // XHTML 1.0
@@ -682,9 +683,19 @@ namespace DotNetNuke.Framework
                 this.HtmlAttributes.Add("lang", strLang);
             }
 
+            // Add "dir" attribute for text direction
+            this.HtmlAttributes.Add("dir", strDir);
+
             // Find the placeholder control and render the doctype
             this.skinDocType.Text = this.PortalSettings.ActiveTab.SkinDoctype;
             this.attributeList.Text = this.HtmlAttributeList;
+
+            // Add 'rtl' class to body for right-to-left language support
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+            {
+                string existingClass = this.Body.Attributes["class"] ?? string.Empty;
+                this.Body.Attributes["class"] = (existingClass + " rtl").Trim();
+            }
         }
 
         private Skin GetSkin()

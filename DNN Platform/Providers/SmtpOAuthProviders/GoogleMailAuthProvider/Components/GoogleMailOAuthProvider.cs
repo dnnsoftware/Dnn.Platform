@@ -25,7 +25,6 @@ using DotNetNuke.Services.Mail.OAuth;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
 using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.Util;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,13 +34,14 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
     private readonly IHostSettingsService hostSettingsService;
     private readonly IPortalAliasService portalAliasService;
     private readonly IHostSettings hostSettings;
+    private readonly IPortalController portalController;
 
     /// <summary>Initializes a new instance of the <see cref="GoogleMailOAuthProvider"/> class.</summary>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="portalAliasService">The portal alias service.</param>
     [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
-        : this(hostSettingsService, portalAliasService, null)
+        : this(hostSettingsService, portalAliasService, null, null)
     {
     }
 
@@ -49,11 +49,13 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="portalAliasService">The portal alias service.</param>
     /// <param name="hostSettings">The host settings.</param>
-    public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings)
+    /// <param name="portalController">The portal contoller.</param>
+    public GoogleMailOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings, IPortalController portalController)
     {
         this.hostSettingsService = hostSettingsService;
         this.portalAliasService = portalAliasService;
         this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(hostSettingsService);
+        this.portalController = portalController ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
     }
 
     /// <inheritdoc />
@@ -77,7 +79,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
             return false;
         }
 
-        var credential = await new GoogleCredentialDataStore(portalId, this.hostSettingsService, this.hostSettings).GetAsync<TokenResponse>(accountEmail);
+        var credential = await new GoogleCredentialDataStore(portalId, this.hostSettingsService, this.hostSettings, this.portalController).GetAsync<TokenResponse>(accountEmail);
 
         return !string.IsNullOrWhiteSpace(credential?.AccessToken);
     }
@@ -148,7 +150,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
             return;
         }
 
-        var response = new GoogleCredentialDataStore(portalId, this.hostSettingsService, this.hostSettings).GetAsync<TokenResponse>(accountEmail).Result;
+        var response = new GoogleCredentialDataStore(portalId, this.hostSettingsService, this.hostSettings, this.portalController).GetAsync<TokenResponse>(accountEmail).Result;
         var credential = new UserCredential(codeFlow, accountEmail, response);
         if (credential.Token.IsStale)
         {
@@ -169,7 +171,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
             return;
         }
 
-        var response = await new GoogleCredentialDataStore(portalId, this.hostSettingsService, this.hostSettings).GetAsync<TokenResponse>(accountEmail);
+        var response = await new GoogleCredentialDataStore(portalId, this.hostSettingsService, this.hostSettings, this.portalController).GetAsync<TokenResponse>(accountEmail);
         var credential = new UserCredential(codeFlow, accountEmail, response);
         if (credential.Token.IsStale)
         {
@@ -183,14 +185,15 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
     /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="hostSettings">The host settings.</param>
+    /// <param name="portalController">The portal controller.</param>
     /// <param name="portalId">The portal ID.</param>
     /// <returns>The authorization code flow.</returns>
-    internal static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings, int portalId)
+    internal static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController, int portalId)
     {
-        return CreateAuthorizationCodeFlow(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, hostSettings, portalId);
+        return CreateAuthorizationCodeFlow(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, hostSettings, portalController, portalId);
     }
 
-    private static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, IHostSettings hostSettings, int portalId)
+    private static IAuthorizationCodeFlow CreateAuthorizationCodeFlow(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController, int portalId)
     {
         var settings = authProvider.GetSettings(portalId);
         var accountEmail = settings.FirstOrDefault(i => i.Name == Constants.AccountEmailSettingName)?.Value ?? string.Empty;
@@ -213,7 +216,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
         return new GoogleAuthorizationCodeFlow(
             new GoogleAuthorizationCodeFlow.Initializer
             {
-                DataStore = new GoogleCredentialDataStore(portalId, hostSettingsService, hostSettings),
+                DataStore = new GoogleCredentialDataStore(portalId, hostSettingsService, hostSettings, portalController),
                 Scopes = new[] { "https://mail.google.com/", },
                 ClientSecrets = clientSecrets,
                 Prompt = "consent",
@@ -271,7 +274,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
     /// <returns>The authorization code flow.</returns>
     private IAuthorizationCodeFlow CreateAuthorizationCodeFlow(int portalId)
     {
-        return CreateAuthorizationCodeFlow(this, this.hostSettingsService, this.hostSettings, portalId);
+        return CreateAuthorizationCodeFlow(this, this.hostSettingsService, this.hostSettings, this.portalController, portalId);
     }
 
     private IList<SmtpOAuthSetting> GetSettingsFromHost()
@@ -359,20 +362,20 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
         var changed = false;
         if (settings.ContainsKey(Constants.AccountEmailSettingName) && settings[Constants.AccountEmailSettingName] != accountEmail)
         {
-            PortalController.UpdatePortalSetting(portalId, Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.AccountEmailSettingName, settings[Constants.AccountEmailSettingName], false);
             changed = true;
         }
 
         if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
         {
-            PortalController.UpdatePortalSetting(portalId, Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
             changed = true;
         }
 
         if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
         {
             var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-            PortalController.UpdatePortalSetting(portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
             changed = true;
         }
 
@@ -400,7 +403,7 @@ public class GoogleMailOAuthProvider : ISmtpOAuthProvider
         }
         else
         {
-            PortalController.UpdatePortalSetting(portalId, settingName, string.Empty, false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, settingName, string.Empty, false);
         }
     }
 }

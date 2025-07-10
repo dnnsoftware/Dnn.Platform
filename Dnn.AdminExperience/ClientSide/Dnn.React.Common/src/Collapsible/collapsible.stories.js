@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
+import { action } from "storybook/actions";
 import Collapsible from "./index";
 import InputGroup from "../InputGroup";
 import SingleLineInputWithError from "../SingleLineInputWithError";
@@ -47,6 +46,10 @@ class MyCollapsible extends Component {
     }
 }
 
-storiesOf("Collapsible", module).add("with text", () => (
+export default {
+    componenet: Collapsible,
+};
+
+export const WithText = () => (
     <MyCollapsible />
-));
+);
