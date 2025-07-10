@@ -6,34 +6,37 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security;
-    using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Modules.Admin.Users
-    /// Class:      Membership
-    /// <summary>
-    /// The Membership UserModuleBase is used to manage the membership aspects of a
-    /// User.
-    /// </summary>
+    /// <summary>The Membership UserModuleBase is used to manage the membership aspects of a User.</summary>
     public partial class Membership : UserModuleBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly DataProvider dataProvider;
 
         /// <summary>Initializes a new instance of the <see cref="Membership"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with DataProvider. Scheduled removal in v12.0.0.")]
         public Membership()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Membership"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public Membership(INavigationManager navigationManager, DataProvider dataProvider)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
         }
 
         /// <summary>Raises the MembershipAuthorized Event</summary>
@@ -188,14 +191,14 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.cmdToggleSuperuser.Text = Localization.GetString("PromoteToSuperUser", this.LocalResourceFile);
                 }
 
-                if (PortalController.GetPortalsByUser(this.User.UserID).Count == 0)
+                if (PortalController.GetPortalsByUser(this.dataProvider, this.User.UserID).Count == 0)
                 {
                     this.cmdToggleSuperuser.Visible = false;
                 }
             }
 
             this.lastLockoutDate.Value = this.UserMembership.LastLockoutDate.Year > 2000
-                                        ? (object)this.UserMembership.LastLockoutDate
+                                        ? this.UserMembership.LastLockoutDate
                                         : this.LocalizeText("Never");
 
             // ReSharper disable SpecifyACultureInStringConversionExplicitly
@@ -275,7 +278,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
-            var message = string.Empty;
             if (canSend)
             {
                 // Get the Membership Information from the property editors
@@ -290,7 +292,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             else
             {
-                message = Localization.GetString("OptionUnavailable", this.LocalResourceFile);
+                var message = Localization.GetString("OptionUnavailable", this.LocalResourceFile);
                 UI.Skins.Skin.AddModuleMessage(this, message, ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }

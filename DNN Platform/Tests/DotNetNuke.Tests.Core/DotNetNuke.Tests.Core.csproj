@@ -295,12 +295,12 @@
     <Compile Include="FileSystemUtilsTests.cs" />
     <Compile Include="Services\UtilTest.cs" />
     <Compile Include="Services\UserRequest\UserRequestIPAddressControllerTest.cs" />
-    <Compile Include="TabCollectionTest.cs" />
     <Compile Include="Services\HtmlUtilsTest.cs" />
     <Compile Include="Providers\Caching\DataCacheTests.cs" />
     <Compile Include="Providers\Caching\MoqExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TabCollectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">

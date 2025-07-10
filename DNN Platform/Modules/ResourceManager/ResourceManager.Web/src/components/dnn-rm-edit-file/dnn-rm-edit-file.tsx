@@ -35,25 +35,28 @@ export class DnnRmEditFile {
       .catch(reason => alert(reason));
   }
 
-  private closeModal(): void {
+  private async closeModal() {
     const modal = this.el.parentElement as HTMLDnnModalElement;
-    modal.hide().then(() => {
-      setTimeout(() => {
-        document.body.removeChild(modal);
-      }, 300);
-    });
+    await modal.hide();
+    setTimeout(() => {
+      document.body.removeChild(modal);
+    }, 300);
   }
 
-  private handleSave(): void {
-    const request: SaveFileDetailsRequest = {
-      fileId: this.fileId,
-      fileName: this.fileDetails.fileName,
-      title: this.fileDetails.title,
-      description: this.fileDetails.description,
-    };
-    this.itemsClient.saveFileDetails(request)
-    .then(() => this.closeModal())
-    .catch(reason => alert(reason));
+  private async handleSave() {
+    try {
+      const request: SaveFileDetailsRequest = {
+        fileId: this.fileId,
+        fileName: this.fileDetails.fileName,
+        title: this.fileDetails.title,
+        description: this.fileDetails.description,
+      };
+      await this.itemsClient.saveFileDetails(request);
+      await this.closeModal();
+      
+    } catch (error) {
+      alert(error);
+    }
   }
 
   render() {
@@ -117,7 +120,7 @@ export class DnnRmEditFile {
                     onValueInput={e =>
                       this.fileDetails = {
                         ...this.fileDetails,
-                        description: (e.detail as string).substring(0, 499),
+                        description: (e.detail).substring(0, 499),
                       }
                     }
                   />
@@ -130,13 +133,13 @@ export class DnnRmEditFile {
           <dnn-button
             appearance="primary"
             reversed
-            onClick={() => this.closeModal()}
+            onClick={() => void this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
             appearance="primary"
-            onClick={() => this.handleSave()}
+            onClick={() => void this.handleSave()}
           >
             {state.localization.Save}
           </dnn-button>

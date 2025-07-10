@@ -369,26 +369,26 @@ namespace Dnn.Modules.ResourceManager.Services
         /// <returns>Detailed information about the file.</returns>
         [HttpGet]
         [AllowAnonymous]
-        public HttpResponseMessage GetFileDetails(int fileId)
+
+        public IHttpActionResult GetFileDetails(int fileId)
         {
             var file = FileManager.Instance.GetFile(fileId);
             if (file == null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.NotFound, new { });
+                return this.NotFound();
             }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             if (!FolderPermissionController.CanViewFolder((FolderInfo)folder))
             {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.InternalServerError,
-                    new { message = LocalizationHelper.GetString("UserHasNoPermissionToReadFileProperties.Error") });
+                var message = LocalizationHelper.GetString("UserHasNoPermissionToReadFileProperties.Error");
+                return this.InternalServerError(new Exception(message));
             }
 
             var createdBy = file.CreatedByUser(this.PortalSettings.PortalId);
             var lastModifiedBy = file.LastModifiedByUser(this.PortalSettings.PortalId);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new
+            return this.Ok(new
             {
                 fileId = file.FileId,
                 fileName = file.FileName,
@@ -409,46 +409,46 @@ namespace Dnn.Modules.ResourceManager.Services
         /// <returns>OK if the request succeeded.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage SaveFileDetails(FileDetailsRequest fileDetails)
+
+        public IHttpActionResult SaveFileDetails(FileDetailsRequest fileDetails)
         {
             var file = FileManager.Instance.GetFile(fileDetails.FileId);
             if (file == null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.NotFound, new { message = "File doesn't exist." });
+                return this.NotFound();
             }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             if (!FolderPermissionController.CanManageFolder((FolderInfo)folder))
             {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.InternalServerError,
-                    new { message = LocalizationHelper.GetString("UserHasNoPermissionToManageFileProperties.Error") });
+                var message = LocalizationHelper.GetString("UserHasNoPermissionToManageFileProperties.Error");
+                return this.InternalServerError(new Exception(message));
             }
 
             ItemsManager.Instance.SaveFileDetails(file, fileDetails);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Ok(new { Status = 0 });
         }
 
         /// <summary>Gets details about a folder.</summary>
         /// <param name="folderId">The id of the folder from which to get the details.</param>
         /// <returns>Detailed information about the folder.</returns>
         [HttpGet]
-        public HttpResponseMessage GetFolderDetails(int folderId)
+
+        public IHttpActionResult GetFolderDetails(int folderId)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
 
             if (!FolderPermissionController.CanManageFolder((FolderInfo)folder))
             {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.InternalServerError,
-                    new { message = LocalizationHelper.GetString("UserHasNoPermissionToManageFolder.Error") });
+                var message = LocalizationHelper.GetString("UserHasNoPermissionToManageFolder.Error");
+                return this.InternalServerError(new Exception(message));
             }
 
             var createdBy = folder.CreatedByUser(this.PortalSettings.PortalId);
             var lastModifiedBy = folder.LastModifiedByUser(this.PortalSettings.PortalId);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new
+            return this.Ok(new
             {
                 folderId = folder.FolderID,
                 folderName = folder.FolderName,
@@ -467,24 +467,24 @@ namespace Dnn.Modules.ResourceManager.Services
         /// <returns>OK if the request succeeded.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage SaveFolderDetails(FolderDetailsRequest folderDetails)
+
+        public IHttpActionResult SaveFolderDetails(FolderDetailsRequest folderDetails)
         {
             var folder = FolderManager.Instance.GetFolder(folderDetails.FolderId);
             if (folder == null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.NotFound, new { message = "Folder doesn't exist." });
+                return this.NotFound();
             }
 
             if (!FolderPermissionController.CanManageFolder((FolderInfo)folder))
             {
-                return this.Request.CreateResponse(
-                    HttpStatusCode.InternalServerError,
-                    new { message = LocalizationHelper.GetString("UserHasNoPermissionToManageFolder.Error") });
+                var message = LocalizationHelper.GetString("UserHasNoPermissionToManageFolder.Error");
+                return this.InternalServerError(new Exception(message));
             }
 
             ItemsManager.Instance.SaveFolderDetails(folder, folderDetails);
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
+            return this.Ok(new { Status = 0 });
         }
 
         /// <summary>Gets available sorting options.</summary>
