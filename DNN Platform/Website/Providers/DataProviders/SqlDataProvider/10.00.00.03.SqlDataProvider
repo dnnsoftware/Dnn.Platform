@@ -13,7 +13,8 @@
 
     - This script ensures that the required content workflows and 
     their states exist in the database.
-    - If the workflows or states already exist, they will not be modified.
+    - If the workflows or states already exist, they will not be modified,
+      except for their keys.
     - If they do not exist, they will be created with default values.
    =================================================================*/
 
@@ -24,7 +25,25 @@ BEGIN TRY
     BEGIN TRANSACTION;
 
     /*------------------------------------------------------
-        1.  Ensure required content workflows exist
+        1.  Ensure known workflows has expected key
+    ------------------------------------------------------*/
+
+    -- ensure that each workflow with name 'Direct Publish' has workflow key 'DirectPublish'
+    UPDATE {databaseOwner}{objectQualifier}ContentWorkflows
+    SET WorkflowKey = 'DirectPublish'
+    WHERE WorkflowName = N'Direct Publish' AND WorkflowKey <> 'DirectPublish';
+
+    -- ensure that each workflow with name 'Save Draft' has workflow key 'SaveDraft'
+    UPDATE {databaseOwner}{objectQualifier}ContentWorkflows
+    SET WorkflowKey = 'SaveDraft'
+    WHERE WorkflowName = N'Save Draft' AND WorkflowKey <> 'SaveDraft';
+    -- ensure that each workflow with name 'Content Approval' has workflow key 'ContentApproval'
+    UPDATE {databaseOwner}{objectQualifier}ContentWorkflows
+    SET WorkflowKey = 'ContentApproval'
+    WHERE WorkflowName = N'Content Approval' AND WorkflowKey <> 'ContentApproval';
+
+    /*------------------------------------------------------
+        2.  Ensure required content workflows exist
     ------------------------------------------------------*/
     ;WITH Wanted AS
     (
@@ -47,7 +66,7 @@ BEGIN TRY
 
 
     /*------------------------------------------------------
-        2.  Ensure required content workflows states exist
+        3.  Ensure required content workflows states exist
     ------------------------------------------------------*/
     ;WITH StatesWanted AS
     (
