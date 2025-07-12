@@ -428,6 +428,16 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 return;
             }
 
+            // Replace CSS file with its RTL version if the current culture is right-to-left and the RTL file exists
+            if ((System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft && filePath.Contains(".css")) && !filePath.Contains("http"))
+            {
+                string locfile = filePath.Replace(".css", ".rtl.css");
+                if (FileExists(page, locfile))
+                {
+                    filePath = locfile;
+                }
+            }
+
             var include = new DnnCssInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
             if (htmlAttributes != null)
             {
