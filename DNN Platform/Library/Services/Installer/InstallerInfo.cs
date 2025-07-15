@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Installer
         /// the physical path to the temporary install folder and a string representing
         /// the physical path to the root of the site.
         /// </summary>
-        /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
+        /// <param name="tempFolder">The physical path to the zip file containing the package.</param>
         /// <param name="manifest">The manifest filename.</param>
         /// <param name="sitePath">The physical path to the root of the site.</param>
         public InstallerInfo(string tempFolder, string manifest, string sitePath)
@@ -132,13 +132,7 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>Gets a value indicating whether the InstallerInfo instance is Valid.</summary>
-        public bool IsValid
-        {
-            get
-            {
-                return this.Log.Valid;
-            }
-        }
+        public bool IsValid => this.Log.Valid;
 
         /// <summary>Gets or sets a list of allowable file extensions (in addition to the Host's List).</summary>
         public string AllowableFiles { get; set; }
@@ -149,13 +143,13 @@ namespace DotNetNuke.Services.Installer
         /// <summary>Gets or sets a value indicating whether the File Extension WhiteList is ignored.</summary>
         public bool IgnoreWhiteList { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets whether the Package is already installed with the same version.</summary>
+        /// <summary>Gets or sets a value indicating whether the Package is already installed with the same version.</summary>
         public bool Installed { get; set; }
 
         /// <summary>Gets the InstallMode.</summary>
         public InstallMode InstallMode { get; private set; }
 
-        /// <summary>Gets or sets a value indicating whether gets whether the Installer is in legacy mode.</summary>
+        /// <summary>Gets or sets a value indicating whether the Installer is in legacy mode.</summary>
         public bool IsLegacyMode { get; set; }
 
         /// <summary>Gets or sets the associated Logger.</summary>

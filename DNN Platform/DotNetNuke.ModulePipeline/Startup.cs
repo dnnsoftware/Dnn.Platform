@@ -13,16 +13,7 @@ namespace DotNetNuke.ModulePipeline
         /// <inheritdoc/>
         public void ConfigureServices(IServiceCollection services)
         {
-            // MULTI-TARGETTING PIPELINE
-            // -------------------------
-            // This file multi-targets .NET Framework and .NET Standard,
-            // which is needed as DNN migrates to .NET Core. The 'NETFRAMEWORK'
-            // pre-processor directives are to fully support Legacy DNN.
-            // As the Pipeline is upgraded to be more complaint with
-            // .NET Standard 2.0 use the appropriate pre-processor directives.
-#if NETFRAMEWORK
             services.AddSingleton<IModuleControlPipeline, ModuleControlPipeline>();
-#endif
         }
     }
 }

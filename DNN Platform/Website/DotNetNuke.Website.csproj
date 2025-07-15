@@ -588,6 +588,7 @@
     </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <Content Include="App_Data\Upgrade\PlaceHolder.txt" />
     <Content Include="Install\InstallWizard.aspx" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
@@ -1379,7 +1380,6 @@
     <Content Include="admin\Tabs\import.ascx" />
     <Content Include="admin\Tabs\module.css" />
     <Content Include="admin\Users\ViewProfile.ascx" />
-    <Content Include="App_Data\PlaceHolder.txt" />
     <Content Include="App_GlobalResources\TimeZones.xml" />
     <Content Include="Components\ResourceInstaller\template.dnn.txt" />
     <Content Include="Config\PlaceHolder.txt" />

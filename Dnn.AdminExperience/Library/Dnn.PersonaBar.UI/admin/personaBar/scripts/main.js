@@ -755,6 +755,10 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                             resx: util.resx.PersonaBar,
                             menu: menuViewModel.menu,
                             upToDate: ko.observable(true),
+                            localUpgrades: ko.observableArray([]),
+                            localUpgradeAvailable: ko.pureComputed(function () { 
+                                return viewModel.localUpgrades() && viewModel.localUpgrades().length > 0 && viewModel.localUpgrades().some(u => u.IsValid && !u.IsOutdated); 
+                            }),
                             updateLink: ko.observable(''),
                             updateCritical: ko.observable(false),
                             logOff: function() {
@@ -767,6 +771,13 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
 
                                 util.sf.rawCall("GET", config.logOff, null, onLogOffSuccess);
                                 return;
+                            },
+                            startLocalUpgrade: function() {
+                                util.sf.moduleRoot = 'personabar';
+                                util.sf.controller = "serversummary";
+                                util.sf.postsilence('StartLocalUpgrade', {}, function onSuccess() {
+                                    window.top.document.location.href = window.top.document.location.href;
+                                });
                             }
                         };
 
@@ -784,6 +795,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                             viewModel.upToDate(data.UpToDate);
                             viewModel.updateLink(data.Url);
                             viewModel.updateCritical(data.Critical);
+                            viewModel.localUpgrades(data.LocalUpgrades);
                         });
 
                         document.addEventListener("click", function(e) {
