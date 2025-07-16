@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Services.FileSystem
+namespace DotNetNuke.Services.FileSystem.Internal
 {
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Icons;
 
+    /// <summary>The default <see cref="IIconController"/> implementation.</summary>
     internal class IconControllerWrapper : ComponentBase<IIconController, IconControllerWrapper>, IIconController
     {
         /// <inheritdoc/>

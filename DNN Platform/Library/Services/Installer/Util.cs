@@ -463,7 +463,7 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>
-        /// The GetLocalizedString method provides a conveniencewrapper around the
+        /// The GetLocalizedString method provides a convenience wrapper around the
         /// Localization of Strings.
         /// </summary>
         /// <param name="key">The localization key.</param>
@@ -928,13 +928,13 @@ namespace DotNetNuke.Services.Installer
             string fullFileName = Path.Combine(basePath, installFile.FullName);
             string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
 
-            // create the backup folder if neccessary
+            // create the backup folder if necessary
             if (!Directory.Exists(installFile.BackupPath))
             {
                 Directory.CreateDirectory(installFile.BackupPath);
             }
 
-            // Copy file to backup location
+            // Copy file to the backup location
             RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(fullFileName, backupFileName), "Backup file " + fullFileName);
             log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
         }

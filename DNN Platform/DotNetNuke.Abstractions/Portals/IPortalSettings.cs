@@ -171,13 +171,8 @@ namespace DotNetNuke.Abstractions.Portals
         /// <summary>Gets or sets the portal GUID.</summary>
         Guid GUID { get; set; }
 
-        /// <summary>
-        /// Gets a value indicating whether gets whether folders which are hidden or whose name begins with underscore
-        /// are included in folder synchronization.
-        /// </summary>
-        /// <remarks>
-        /// Defaults to True.
-        /// </remarks>
+        /// <summary>Gets a value indicating whether folders which are hidden or whose name begins with underscore are included in folder synchronization.</summary>
+        /// <remarks>Defaults to True.</remarks>
         bool HideFoldersEnabled { get; }
 
         /// <summary>Gets a value indicating whether hide the login link.</summary>

@@ -17,6 +17,7 @@ namespace DotNetNuke.Common
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Caching;
     using System.Web.UI;
@@ -1920,17 +1921,28 @@ namespace DotNetNuke.Common
         /// <summary>Deletes the folder recursive, include the folder itself will be deleted.</summary>
         /// <param name="strRoot">The root.</param>
         public static void DeleteFolderRecursive(string strRoot)
-        {
-            FileSystemUtils.DeleteFolderRecursive(strRoot);
-        }
+            => FileSystemUtils.DeleteFolderRecursive(strRoot);
+
+        /// <summary>Deletes the folder recursive, include the folder itself will be deleted.</summary>
+        /// <param name="strRoot">The root.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="Task"/> indicating completion.</returns>
+        public static async Task DeleteFolderRecursiveAsync(string strRoot, CancellationToken cancellationToken = default)
+            => await FileSystemUtils.DeleteFolderRecursiveAsync(strRoot, cancellationToken);
 
         /// <summary>Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.</summary>
         /// <param name="strRoot">The root.</param>
         /// <param name="filter">The filter.</param>
         public static void DeleteFilesRecursive(string strRoot, string filter)
-        {
-            FileSystemUtils.DeleteFilesRecursive(strRoot, filter);
-        }
+            => FileSystemUtils.DeleteFilesRecursive(strRoot, filter);
+
+        /// <summary>Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.</summary>
+        /// <param name="strRoot">The root.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A <see cref="Task"/> indicating completion.</returns>
+        public static async Task DeleteFilesRecursiveAsync(string strRoot, string filter, CancellationToken cancellationToken = default)
+            => await FileSystemUtils.DeleteFilesRecursiveAsync(strRoot, filter, cancellationToken);
 
         /// <summary>Cleans the name of the file.</summary>
         /// <param name="fileName">Name of the file.</param>

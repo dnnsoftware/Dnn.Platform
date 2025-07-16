@@ -39,6 +39,7 @@ namespace DotNetNuke
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
@@ -119,6 +120,7 @@ namespace DotNetNuke
             services.AddTransient(_ => RoleProvider.Instance());
             services.AddTransient<IUserController, UserController>();
             services.AddTransient<IEventManager, EventManager>();
+            services.AddTransient<ILocalUpgradeService, LocalUpgradeService>();
 
             services.AddTransient<IDataContext>(serviceProvider =>
             {

@@ -437,18 +437,22 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>This method adds an empty char to the response stream to avoid closing http connection on long running tasks.</summary>
+        /// <summary>This method adds an empty char to the response stream to avoid closing http connection on long-running tasks.</summary>
         public static void WriteKeepAlive()
         {
-            if (HttpContext.Current != null)
+            if (HttpContext.Current == null)
             {
-                if (HttpContext.Current.Request.RawUrl.ToLowerInvariant().Contains("install.aspx?"))
-                {
-                    var response = HttpContext.Current.Response;
-                    response.Write(" ");
-                    response.Flush();
-                }
+                return;
             }
+
+            if (!HttpContext.Current.Request.RawUrl.ToLowerInvariant().Contains("install.aspx?"))
+            {
+                return;
+            }
+
+            var response = HttpContext.Current.Response;
+            response.Write(" ");
+            response.Flush();
         }
 
         /// <summary>WriteFooter outputs the Footer during Install/Upgrade etc.</summary>
