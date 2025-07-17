@@ -430,7 +430,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
 
             // Replace CSS file with its RTL version if the current culture is right-to-left and the RTL file exists
-            if ((System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft && filePath.Contains(".css")) && !filePath.Contains("http"))
+            if ((System.Globalization.CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft &&
+                filePath.EndsWith(".css", StringComparison.OrdinalIgnoreCase)) &&
+                !filePath.EndsWith(".rtl.css", StringComparison.OrdinalIgnoreCase) &&
+                !filePath.Contains("http"))
             {
                 string locfile = filePath.Replace(".css", ".rtl.css");
                 if (FileExists(page, locfile))
