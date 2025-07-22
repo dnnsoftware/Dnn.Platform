@@ -1,0 +1,212 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* =================================================================
+   Deduplicate ContentWorkflows and ContentWorkflowStates after migration
+   Fix issues where migration created duplicate English workflows alongside
+   existing localized workflows, and duplicate states within workflows.
+   =================================================================*/
+
+SET NOCOUNT ON;
+SET XACT_ABORT ON; -- automatic rollback if anything fails
+
+BEGIN TRY
+    BEGIN TRANSACTION;
+
+    /*------------------------------------------------------------
+      1.  Find duplicate workflows by (PortalID, WorkflowKey)
+          Keep the workflow with LOWEST WorkflowID (original localized)
+      ------------------------------------------------------------*/
+    DECLARE @DuplicateWorkflows TABLE
+    (
+        DuplicateWorkflowID INT   PRIMARY KEY,
+        KeepWorkflowID      INT,
+        WorkflowKey         NVARCHAR(40),
+        PortalID            INT
+    );
+
+    ;WITH WorkflowRanked AS
+    (
+        SELECT  WorkflowID,
+                WorkflowKey,
+                PortalID,
+                WorkflowName,
+                ROW_NUMBER() OVER (PARTITION BY PortalID, WorkflowKey ORDER BY WorkflowID) AS rn,
+                MIN(WorkflowID) OVER (PARTITION BY PortalID, WorkflowKey) AS KeepWorkflowID
+        FROM    {databaseOwner}{objectQualifier}ContentWorkflows
+        WHERE   IsDeleted = 0
+    )
+    INSERT INTO @DuplicateWorkflows (DuplicateWorkflowID, KeepWorkflowID, WorkflowKey, PortalID)
+    SELECT  WorkflowID, KeepWorkflowID, WorkflowKey, PortalID
+    FROM    WorkflowRanked
+    WHERE   rn > 1; -- Keep only the first (original) workflow per portal/key
+
+    PRINT 'Found ' + CAST(@@ROWCOUNT AS VARCHAR(10)) + ' duplicate workflows to remove.';
+
+    /*------------------------------------------------------------
+      2.  Build comprehensive state mapping: DuplicateStateID -> OriginalStateID
+      ------------------------------------------------------------*/
+    DECLARE @StateMap TABLE
+    (
+        DuplicateStateID INT  PRIMARY KEY,
+        OriginalStateID  INT,
+        WorkflowID       INT,
+        [Order]          INT
+    );
+
+    /* 2-a  Map states from duplicate workflows to kept workflows
+            Match by [Order] position within workflow */
+    INSERT INTO @StateMap (DuplicateStateID, OriginalStateID, WorkflowID, [Order])
+    SELECT  dupState.StateID,
+            keepState.StateID,
+            dupState.WorkflowID,
+            dupState.[Order]
+    FROM    {databaseOwner}{objectQualifier}ContentWorkflowStates AS dupState
+    JOIN    @DuplicateWorkflows       AS dw
+              ON dw.DuplicateWorkflowID = dupState.WorkflowID
+    JOIN    {databaseOwner}{objectQualifier}ContentWorkflowStates AS keepState
+              ON  keepState.WorkflowID = dw.KeepWorkflowID
+              AND keepState.[Order]    = dupState.[Order]; -- Match by position
+
+    PRINT 'Mapped ' + CAST(@@ROWCOUNT AS VARCHAR(10)) + ' states from duplicate workflows.';
+
+    /* 2-b  Find duplicate states within surviving workflows
+            Keep state with LOWEST StateID for each (WorkflowID, Order) */
+    ;WITH StatesRanked AS
+    (
+        SELECT  StateID,
+                WorkflowID,
+                [Order],
+                StateName,
+                ROW_NUMBER() OVER (PARTITION BY WorkflowID, [Order] ORDER BY StateID) AS rn,
+                MIN(StateID) OVER (PARTITION BY WorkflowID, [Order]) AS KeepStateID
+        FROM    {databaseOwner}{objectQualifier}ContentWorkflowStates
+        WHERE   WorkflowID NOT IN (SELECT DuplicateWorkflowID FROM @DuplicateWorkflows)
+    )
+    INSERT INTO @StateMap (DuplicateStateID, OriginalStateID, WorkflowID, [Order])
+    SELECT  StateID, KeepStateID, WorkflowID, [Order]
+    FROM    StatesRanked
+    WHERE   rn > 1 -- Duplicates only
+      AND   NOT EXISTS (SELECT 1 FROM @StateMap WHERE DuplicateStateID = StatesRanked.StateID);
+
+    DECLARE @Count INT;
+    SELECT @Count = COUNT(*) FROM @StateMap WHERE WorkflowID NOT IN (SELECT DuplicateWorkflowID FROM @DuplicateWorkflows);
+    PRINT 'Found ' + CAST(@Count AS VARCHAR(10)) + ' duplicate states within surviving workflows.';
+
+    /*------------------------------------------------------------
+      3.  Update all references to point to original states
+      ------------------------------------------------------------*/
+    DECLARE @UpdateCount INT;
+
+    -- Update HtmlText table
+    UPDATE  ht
+    SET     StateID = sm.OriginalStateID
+    FROM    {databaseOwner}{objectQualifier}HtmlText AS ht
+    JOIN    @StateMap   AS sm ON ht.StateID = sm.DuplicateStateID;
+    
+    SET @UpdateCount = @@ROWCOUNT;
+    PRINT 'Updated ' + CAST(@UpdateCount AS VARCHAR(10)) + ' HtmlText records.';
+
+    -- Update HtmlTextLog table
+    UPDATE  htl
+    SET     StateID = sm.OriginalStateID
+    FROM    {databaseOwner}{objectQualifier}HtmlTextLog AS htl
+    JOIN    @StateMap      AS sm ON htl.StateID = sm.DuplicateStateID;
+    
+    SET @UpdateCount = @@ROWCOUNT;
+    PRINT 'Updated ' + CAST(@UpdateCount AS VARCHAR(10)) + ' HtmlTextLog records.';
+
+    -- Update HtmlTextUsers table
+    UPDATE  htu
+    SET     StateID = sm.OriginalStateID
+    FROM    {databaseOwner}{objectQualifier}HtmlTextUsers AS htu
+    JOIN    @StateMap        AS sm ON htu.StateID = sm.DuplicateStateID;
+    
+    SET @UpdateCount = @@ROWCOUNT;
+    PRINT 'Updated ' + CAST(@UpdateCount AS VARCHAR(10)) + ' HtmlTextUsers records.';
+
+    /*------------------------------------------------------------
+      4.  Delete duplicate workflows (cascades to their states)
+      ------------------------------------------------------------*/
+    DELETE  cw
+    FROM    {databaseOwner}{objectQualifier}ContentWorkflows AS cw
+    JOIN    @DuplicateWorkflows  AS dw ON dw.DuplicateWorkflowID = cw.WorkflowID;
+    
+    SET @UpdateCount = @@ROWCOUNT;
+    PRINT 'Deleted ' + CAST(@UpdateCount AS VARCHAR(10)) + ' duplicate workflows.';
+
+    /*------------------------------------------------------------
+      5.  Delete duplicate states within surviving workflows
+      ------------------------------------------------------------*/
+    DELETE  s
+    FROM    {databaseOwner}{objectQualifier}ContentWorkflowStates AS s
+    JOIN    @StateMap                AS sm ON sm.DuplicateStateID = s.StateID
+    WHERE   s.WorkflowID NOT IN (SELECT DuplicateWorkflowID FROM @DuplicateWorkflows);
+    
+    SET @UpdateCount = @@ROWCOUNT;
+    PRINT 'Deleted ' + CAST(@UpdateCount AS VARCHAR(10)) + ' duplicate states from surviving workflows.';
+
+    /*------------------------------------------------------------
+      6.  Verification - show final counts
+      ------------------------------------------------------------*/
+    PRINT '';
+    PRINT 'Final verification:';
+    
+    SELECT  PortalID, 
+            WorkflowKey, 
+            COUNT(*) AS WorkflowCount
+    FROM    {databaseOwner}{objectQualifier}ContentWorkflows 
+    WHERE   IsDeleted = 0
+    GROUP BY PortalID, WorkflowKey
+    HAVING  COUNT(*) > 1;
+    
+    IF @@ROWCOUNT = 0
+        PRINT 'SUCCESS: No duplicate workflows remain.';
+    ELSE
+        PRINT 'WARNING: Some duplicate workflows still exist!';
+
+    SELECT  WorkflowID, 
+            [Order], 
+            COUNT(*) AS StateCount
+    FROM    {databaseOwner}{objectQualifier}ContentWorkflowStates
+    GROUP BY WorkflowID, [Order]
+    HAVING  COUNT(*) > 1;
+    
+    IF @@ROWCOUNT = 0
+        PRINT 'SUCCESS: No duplicate states remain.';
+    ELSE
+        PRINT 'WARNING: Some duplicate states still exist!';
+
+    /*------------------------------------------------------------
+      7.  Success - commit all changes
+      ------------------------------------------------------------*/
+    COMMIT TRANSACTION;
+    PRINT '';
+    PRINT 'ContentWorkflow deduplication completed successfully!';
+
+END TRY
+BEGIN CATCH
+    /*------------------------------------------------------------
+      Error handling - rollback and report
+      ------------------------------------------------------------*/
+    IF XACT_STATE() <> 0
+        ROLLBACK TRANSACTION;
+
+    DECLARE
+        @ErrMsg  NVARCHAR(4000) = ERROR_MESSAGE(),
+        @ErrSev  INT            = ERROR_SEVERITY(),
+        @ErrSta  INT            = ERROR_STATE();
+
+    PRINT 'ERROR during deduplication: ' + @ErrMsg;
+    RAISERROR (@ErrMsg, @ErrSev, @ErrSta);
+END CATCH;
+
+GO
+
