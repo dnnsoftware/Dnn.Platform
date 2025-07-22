@@ -67,12 +67,45 @@ BEGIN TRY
 
     /*------------------------------------------------------
         3.  Ensure required content workflows states exist
+    --------------------------------------------------------
+        - Prefer name match (including translations)
+        - Fallback to [Order] to keep one state per slot
     ------------------------------------------------------*/
-    ;WITH StatesWanted AS
+    ;WITH Translations AS
     (
-        SELECT  cw.WorkflowID, v.*
+        -- Canonical name , Any equivalent/translated spelling
+        SELECT N'Published'        AS Canon, N'Published'                AS Name UNION ALL
+        SELECT N'Published'       , N'veröffentlicht'                    UNION ALL
+        SELECT N'Published'       , N'Publicado'                         UNION ALL
+        SELECT N'Published'       , N'Publié'                            UNION ALL
+        SELECT N'Published'       , N'Pubblicato'                        UNION ALL
+        SELECT N'Published'       , N'Publiceren'                        UNION ALL
+
+        SELECT N'Draft'           , N'Draft'                             UNION ALL
+        SELECT N'Draft'           , N'Borrador'                          UNION ALL
+        SELECT N'Draft'           , N'Bozza'                             UNION ALL
+        SELECT N'Draft'           , N'Brouillon'                         UNION ALL
+        SELECT N'Draft'           , N'Concept'                           UNION ALL
+        SELECT N'Draft'           , N'Entwurf'                           UNION ALL
+
+        SELECT N'Ready For Review', N'Ready For Review'                  UNION ALL
+        SELECT N'Ready For Review', N'bereit zur Überprüfung'            UNION ALL
+        SELECT N'Ready For Review', N'Klaar voor review'                 UNION ALL
+        SELECT N'Ready For Review', N'Listo para revisión'               UNION ALL
+        SELECT N'Ready For Review', N'Prêt pour l''examen'               UNION ALL
+        SELECT N'Ready For Review', N'Pronto Per la Revisione'
+    ),
+    StatesWanted AS
+    (
+        SELECT  cw.WorkflowID,
+                v.WorkflowKey,
+                v.[Order],
+                v.StateName,
+                v.IsSystem,
+                v.SendNotification,
+                v.SendNotificationToAdministrators
         FROM    {databaseOwner}{objectQualifier}ContentWorkflows AS cw
-        CROSS  APPLY (VALUES
+        CROSS APPLY (VALUES
             ('DirectPublish'  ,1,N'Published'        ,1,1,0),
             ('SaveDraft'      ,1,N'Draft'            ,1,1,0),
             ('SaveDraft'      ,2,N'Published'        ,1,1,0),
@@ -84,12 +117,20 @@ BEGIN TRY
     )
     MERGE {databaseOwner}{objectQualifier}ContentWorkflowStates AS tgt
     USING StatesWanted AS src
-            ON tgt.WorkflowID = src.WorkflowID
-            AND tgt.[Order] = src.[Order] -- one state per slot
-    WHEN NOT MATCHED BY TARGET THEN -- insert only
+        ON  tgt.WorkflowID = src.WorkflowID
+        AND (
+                -- 1) name match (canonical or any translation)
+                tgt.StateName IN (
+                        SELECT t.Name
+                        FROM   Translations AS t
+                        WHERE  t.Canon = src.StateName
+                )
+                -- 2) fallback: same slot/order if no name match
+                OR tgt.[Order] = src.[Order]
+            )
+    WHEN NOT MATCHED BY TARGET THEN
         INSERT (WorkflowID, StateName, [Order], IsSystem, SendNotification, SendNotificationToAdministrators)
         VALUES (src.WorkflowID, src.StateName, src.[Order], src.IsSystem, src.SendNotification, src.SendNotificationToAdministrators);
-    /*—no WHEN MATCHED clause—existing StateName remains unchanged—*/
 
     COMMIT TRANSACTION;
 
