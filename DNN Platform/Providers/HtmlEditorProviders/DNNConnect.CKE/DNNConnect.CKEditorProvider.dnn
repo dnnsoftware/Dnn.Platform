@@ -1,5 +1,5 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="10.00.00">
+  <packages><package name="DNNConnect.CKEditorProvider" type="Provider" version="10.01.00">
             <friendlyName>CKEditor Provider</friendlyName>
             <description>CKEditor Provider for DNN</description>
             <iconFile>~/Providers/HtmlEditorProviders/DNNConnect.CKE/LogoCKEditor.png</iconFile>
