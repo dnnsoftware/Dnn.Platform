@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
     <packages>
-        <package name="TelerikRemoval" type="Module" version="10.00.00">
+        <package name="TelerikRemoval" type="Module" version="10.01.00">
             <friendlyName>Telerik Removal</friendlyName>
             <description>This module allows you to remove the DotNetNuke Telerik Web Components library from your site.</description>
             <owner>

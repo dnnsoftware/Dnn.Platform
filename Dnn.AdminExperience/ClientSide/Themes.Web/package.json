@@ -1,6 +1,6 @@
 {
   "name": "themes",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
@@ -14,7 +14,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
-    "@dnnsoftware/dnn-react-common": "10.0.0",
+    "@dnnsoftware/dnn-react-common": "10.1.0",
     "babel-loader": "8.3.0",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",

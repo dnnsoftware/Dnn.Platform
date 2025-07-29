@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="9.0">
   <packages>
-    <package name="Skin.Aperture" type="Skin" version="10.00.00">
+    <package name="Skin.Aperture" type="Skin" version="10.01.00">
       <friendlyName>Aperture</friendlyName>
       <description>Default theme for DNN 10.</description>
       <iconFile>aperture.png</iconFile>
