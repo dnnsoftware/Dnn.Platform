@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.UI;
 
+using Dnn.PersonaBar.UI.Components.Controllers;
 using DotNetNuke.DependencyInjection;
 using DotNetNuke.Services.FileSystem.Internal;
 
@@ -17,5 +18,6 @@ public class Startup : IDnnStartup
     public void ConfigureServices(IServiceCollection services)
     {
         services.TryAddTransient<IDirectory, DirectoryWrapper>();
+        services.AddTransient<IAdminMenuController, AdminMenuController>();
     }
 }
