@@ -50,8 +50,8 @@
     <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
+    <Reference Include="ClientDependency.Core, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dnn.ClientDependency.1.10.0\lib\net48\ClientDependency.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
