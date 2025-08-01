@@ -42,7 +42,7 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.4.2",
     "services": "^0.0.3",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "throttle-debounce": "^5.0.0",
     "url-loader": "1.1.2",
     "utils": "^0.3.1",
