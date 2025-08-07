@@ -3156,7 +3156,37 @@ namespace DotNetNuke.Common
         /// <returns><see langword="true"/> if the tab contains "Account Login" module, otherwise, <see langword="false"/>.</returns>
         public static bool ValidateLoginTabID(int tabId)
         {
-            return ValidateModuleInTab(tabId, "Account Login");
+            return ValidateModuleInTab(tabId, new[] { "login", "auth", "account" });
+        }
+
+        /// <summary>
+        /// Check whether the tab contains any module whose name contains any of the specified keywords.
+        /// </summary>
+        /// <param name="tabId">The tab id.</param>
+        /// <param name="moduleKeywords">
+        /// The array of keywords to check in the module names (case-insensitive, e.g., "login", "auth").
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the tab contains at least one module whose name includes any keyword; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool ValidateModuleInTab(int tabId, string[] moduleKeywords)
+        {
+            bool hasModule = Null.NullBoolean;
+            foreach (ModuleInfo objModule in ModuleController.Instance.GetTabModules(tabId).Values)
+            {
+                var name = objModule.ModuleDefinition.FriendlyName?.ToLower() ?? string.Empty;
+                if (moduleKeywords.Any(keyword => name.Contains(keyword.ToLower())))
+                {
+                    TabInfo tab = TabController.Instance.GetTab(tabId, objModule.PortalID, false);
+                    if (TabPermissionController.CanViewPage(tab))
+                    {
+                        hasModule = true;
+                        break;
+                    }
+                }
+            }
+
+            return hasModule;
         }
 
         /// <summary>Check whether the tab contains specific module.</summary>
