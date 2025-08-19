@@ -14,11 +14,16 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>The default <see cref="IPortalAliasRouteManager"/> implementation.</summary>
     internal partial class PortalAliasRouteManager : IPortalAliasRouteManager
     {
         private List<int> prefixCounts;
 
-        // TODO: this method need remove after drop use old api format.
+        /// <summary>Gets the route URL for the old-style web API route.</summary>
+        /// <param name="moduleFolderName">The module folder name.</param>
+        /// <param name="url">The main URL component.</param>
+        /// <param name="count">The count for the route name.</param>
+        /// <returns>A route path.</returns>
         [DnnDeprecated(9, 0, 0, "Replaced with GetRouteUrl")]
         public static partial string GetOldRouteUrl(string moduleFolderName, string url, int count)
         {

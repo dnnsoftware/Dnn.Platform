@@ -153,7 +153,8 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>The ReadManifest method reads the manifest file for the Module compoent.</summary>
+        /// <summary>The ReadManifest method reads the manifest file for the Module component.</summary>
+        /// <param name="manifestNav">The XPath navigator for the Module section of the manifest.</param>
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the Desktop Module from the manifest

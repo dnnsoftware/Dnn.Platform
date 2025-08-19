@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Authentication;
@@ -18,9 +19,20 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         }
 
         /// <summary>Initializes a new instance of the <see cref="PackageInfoSlimDto"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="package"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="package">The package info.</param>
         public PackageInfoSlimDto(int portalId, PackageInfo package)
+            : this(null, null, null, portalId, package)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PackageInfoSlimDto"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="package">The package info.</param>
+        public PackageInfoSlimDto(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IPortalController portalController, int portalId, PackageInfo package)
         {
             this.PackageId = package.PackageID;
             this.FriendlyName = package.FriendlyName;
@@ -30,7 +42,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
             this.Version = package.Version.ToString(3);
             this.IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
             this.UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
-            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
+            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(hostSettings, hostSettingsService, portalController, package.Version, package.PackageType, package.Name);
             this.PackageIcon = ExtensionsController.GetPackageIcon(package);
             this.Url = package.Url;
             this.CanDelete = package.PackageID != Null.NullInteger && !package.IsSystemPackage && PackageController.CanDeletePackage(package, PortalSettings.Current);

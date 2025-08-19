@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tab">The obj tab.</param>
         /// <param name="tabs">The h tabs.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="isAdminTemplate">if set to <c>true</c> [is admin template].</param>
+        /// <param name="isAdminTemplate">if set to <see langword="true"/> [is admin template].</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="modules">The h modules.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
@@ -121,8 +121,8 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
         [DnnDeprecated(9, 11, 1, "Use AddMissingLanguagesWithWarnings")]
         public partial void AddMissingLanguages(int portalId, int tabId)
         {

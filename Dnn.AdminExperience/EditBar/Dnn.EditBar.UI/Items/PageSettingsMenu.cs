@@ -8,17 +8,35 @@ namespace Dnn.EditBar.UI.Items
 
     using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
-    using DotNetNuke.Entities.Host;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Personalization;
 
-    /// <summary>
-    /// Menu item to edit the current page settings.
-    /// </summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Menu item to edit the current page settings.</summary>
     [Serializable]
     public class PageSettingsMenu : BaseMenuItem
     {
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="PageSettingsMenu"/> class.</summary>
+        public PageSettingsMenu()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PageSettingsMenu"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public PageSettingsMenu(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        }
+
         /// <inheritdoc/>
         public override string Name => "PageSettings";
 
@@ -38,7 +56,7 @@ namespace Dnn.EditBar.UI.Items
         public override bool Visible()
         {
             var isInEditMode = Personalization.GetUserMode() == PortalSettings.Mode.Edit;
-            var isCurrentControlPanel = Host.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
+            var isCurrentControlPanel = this.hostSettings.ControlPanel.EndsWith("PersonaBarContainer.ascx", StringComparison.InvariantCultureIgnoreCase);
             var canEditPageSettings = this.CanEditPageSettings();
 
             return isInEditMode && isCurrentControlPanel && canEditPageSettings;

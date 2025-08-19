@@ -9,6 +9,7 @@ namespace DotNetNuke.Common.Controls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>A control which displays the terms of the website.</summary>
     public partial class Terms : PortalModuleBase
     {
         /// <inheritdoc/>
@@ -22,6 +23,7 @@ namespace DotNetNuke.Common.Controls
         }
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

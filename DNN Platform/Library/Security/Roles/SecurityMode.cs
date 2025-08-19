@@ -6,8 +6,13 @@ namespace DotNetNuke.Security.Roles
 {
     public enum SecurityMode
     {
+        /// <summary>A security role.</summary>
         SecurityRole = 0,
+
+        /// <summary>A social group role.</summary>
         SocialGroup = 1,
+
+        /// <summary>A role that is both a social group and a security role.</summary>
         Both = 2,
     }
 }

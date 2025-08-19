@@ -24,8 +24,8 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Initializes a new instance of the <see cref="ProfileVisibility"/> class.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="extendedVisibility"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="extendedVisibility">The extended visibility string, a semicolon-delimited list of comma-delimited lists of role IDs and relationship IDs.</param>
         public ProfileVisibility(int portalId, string extendedVisibility)
             : this()
         {

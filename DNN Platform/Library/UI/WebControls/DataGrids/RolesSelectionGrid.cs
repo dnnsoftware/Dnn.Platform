@@ -300,6 +300,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Overrides the base OnPreRender method to Bind the Grid to the Permissions.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             this.BindData();
@@ -307,7 +308,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Updates a Selection.</summary>
         /// <param name="roleName">The name of the role.</param>
-        /// <param name="selected"></param>
+        /// <param name="selected">Whether it's selected.</param>
         protected virtual void UpdateSelection(string roleName, bool selected)
         {
             var isMatch = false;

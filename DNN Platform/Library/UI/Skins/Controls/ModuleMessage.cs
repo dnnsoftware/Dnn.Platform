@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Services.Exceptions;
 
-    /// <summary></summary>
+    /// <summary>A skin object to display a message from a module.</summary>
     public class ModuleMessage : SkinObjectBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
@@ -24,9 +24,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public enum ModuleMessageType
         {
+            /// <summary>A green success message.</summary>
             GreenSuccess = 0,
+
+            /// <summary>A yellow warning message.</summary>
             YellowWarning = 1,
+
+            /// <summary>A red error message.</summary>
             RedError = 2,
+
+            /// <summary>A blue info message.</summary>
             BlueInfo = 3,
         }
 
@@ -47,10 +54,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string IconImage { get; set; }
 
-        /// <summary>
-        /// The Page_Load server event handler on this page is used
-        /// to populate the role information for the page.
-        /// </summary>
+        /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

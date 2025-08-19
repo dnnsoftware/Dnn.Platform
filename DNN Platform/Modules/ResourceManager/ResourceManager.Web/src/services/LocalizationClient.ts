@@ -14,32 +14,22 @@ export class LocalizationClient{
     }
 
     /** Gets the localized strings */
-    public getResources(){
-        return new Promise<LocalizedStrings>((resolve, reject) => {
-            const LocalizationStorageKey = "ResourceManagerLocalization";
-            const localization = sessionStorage.getItem(LocalizationStorageKey);
-            if (localization){
-                resolve(JSON.parse(localization));
-                return;
-            }
+    public async getResources(): Promise<LocalizedStrings> {
+        const LocalizationStorageKey = "ResourceManagerLocalization";
+        const localization = sessionStorage.getItem(LocalizationStorageKey);
+        if (localization !== null){
+            return JSON.parse(localization) as LocalizedStrings;
+        }
 
-            const url = `${this.requestUrl}GetResources`;
-            fetch(url, {
-                headers: this.sf.getModuleHeaders(),
-            })
-            .then(response => {
-                if (response.status == 200){
-                    response.json().then(data => {
-                        sessionStorage.setItem(LocalizationStorageKey, JSON.stringify(data));
-                        resolve(data);
-                    });
-                }
-                else{
-                    response.json().then(error => reject(error));
-                }
-            })
-            .catch(error => reject(error));
-        })
+        const url = `${this.requestUrl}GetResources`;
+        const response = await fetch(url, { headers: this.sf.getModuleHeaders()});
+        if (response.status !== 200){
+            throw new Error(`Error getting localized strings: ${response.statusText}`);
+        }
+
+        const data = await response.json() as LocalizedStrings;
+        sessionStorage.setItem(LocalizationStorageKey, JSON.stringify(data));
+        return data;
     }
 }
 

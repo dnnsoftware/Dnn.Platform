@@ -41,7 +41,7 @@ class LanguageVerifierGridPanel extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedGrid() {
         const {props} = this;
         return (

@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <inheritdoc cref="DotNetNuke.Prompt.CommandRepository"/>
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project.")]
     public partial class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {

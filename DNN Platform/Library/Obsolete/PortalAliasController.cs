@@ -22,10 +22,10 @@ namespace DotNetNuke.Entities.Portals
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <content>The obsolete methods for <see cref="PortalAliasController"/>.</content>
     public partial class PortalAliasController : ServiceLocator<IPortalAliasController, PortalAliasController>, IPortalAliasController
     {
         [Obsolete("Deprecated in DotNetNuke 9.7.2. Use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead. Scheduled removal in v11.0.0.")]
-
         public static new IPortalAliasController Instance
         {
             get
@@ -53,8 +53,8 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Validates the alias.</summary>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <param name="ischild">if set to <c>true</c> [ischild].</param>
-        /// <returns><c>true</c> if the alias is a valid url format; otherwise return <c>false</c>.</returns>
+        /// <param name="ischild">if set to <see langword="true"/> [ischild].</param>
+        /// <returns><see langword="true"/> if the alias is a valid url format; otherwise return <see langword="false"/>.</returns>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
         public static partial bool ValidateAlias(string portalAlias, bool ischild) =>
             ((IPortalAliasService)Instance).ValidateAlias(portalAlias, ischild);
@@ -86,8 +86,10 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAliasId">The portal alias ID.</param>
         /// <returns>Portal alias info.</returns>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public partial PortalAliasInfo GetPortalAliasByPortalAliasID(int portalAliasId) =>
             (PortalAliasInfo)((IPortalAliasService)this).GetPortalAliasByPortalAliasId(portalAliasId);
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc cref="IPortalAliasService.GetPortalAliases"/>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
@@ -112,8 +114,10 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAliasId">The portal alias id.</param>
         /// <returns>Portal info.</returns>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]
+#pragma warning disable CS3005 // Identifier differing only in case is not CLS-compliant
         public partial PortalInfo GetPortalByPortalAliasID(int portalAliasId) =>
             (PortalInfo)((IPortalAliasService)this).GetPortalByPortalAliasId(portalAliasId);
+#pragma warning restore CS3005 // Identifier differing only in case is not CLS-compliant
 
         /// <inheritdoc cref="IPortalAliasService.UpdatePortalAlias"/>
         [DnnDeprecated(9, 7, 2, "use DotNetNuke.Abstractions.Portals.IPortalAliasService via dependency injection instead")]

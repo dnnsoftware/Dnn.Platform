@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.MemberDirectory.ViewModels
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Web.Mvp;
 
+    /// <summary>The model for <see cref="Settings"/>.</summary>
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public partial class MemberDirectorySettingsModel : SettingsModel
     {

@@ -339,7 +339,7 @@ namespace DotNetNuke.Services.Installer.Packages
         }
 
         /// <summary>Save or update the package.</summary>
-        /// <param name="package"></param>
+        /// <param name="package">The package.</param>
         public void SaveExtensionPackage(PackageInfo package)
         {
             if (package.PackageID == Null.NullInteger)

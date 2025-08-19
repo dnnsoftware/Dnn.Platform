@@ -7,7 +7,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
     public class WorkflowSecurityException : WorkflowException
     {
         /// <summary>Initializes a new instance of the <see cref="WorkflowSecurityException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <param name="message">A message that describes the error.</param>
         public WorkflowSecurityException(string message)
             : base(message)
         {

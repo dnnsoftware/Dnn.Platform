@@ -9,9 +9,11 @@ namespace DotNetNuke.Entities.Modules
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Threading;
+    using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -21,9 +23,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
-    /// Project  : DotNetNuke
-    /// Class    : PortalModuleBase
-    ///
     /// <summary>
     /// The PortalModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal.
@@ -388,6 +387,9 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Gets the file name for the module cache.</summary>
+        /// <param name="tabModuleId">The tab-module ID.</param>
+        /// <returns>The absolute file path.</returns>
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheFileName(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheFileName(int tabModuleId)
         {
@@ -397,6 +399,9 @@ namespace DotNetNuke.Entities.Modules
             return PortalController.Instance.GetCurrentPortalSettings().HomeDirectoryMapPath + "Cache" + "\\" + Globals.CleanFileName(strCacheKey) + ".resources";
         }
 
+        /// <summary>Gets the cache key for the module.</summary>
+        /// <param name="tabModuleId">The tab-module ID.</param>
+        /// <returns>The cache key.</returns>
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.CacheKey(TabModuleID)", RemovalVersion = 11)]
         public partial string GetCacheKey(int tabModuleId)
         {
@@ -406,6 +411,7 @@ namespace DotNetNuke.Entities.Modules
             return strCacheKey;
         }
 
+        /// <inheritdoc cref="ModuleController.SynchronizeModule" />
         [DnnDeprecated(7, 0, 0, "Please use ModuleController.SynchronizeModule(ModuleId)", RemovalVersion = 11)]
         public partial void SynchronizeModule()
         {
@@ -442,10 +448,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
-        /// Module Control.
-        /// </summary>
+        /// <summary>Helper method that can be used to add an ActionEventHandler to the Skin for this Module Control.</summary>
+        /// <param name="e">The event arguments.</param>
         protected void AddActionHandler(ActionEventHandler e)
         {
             UI.Skins.Skin parentSkin = UI.Skins.Skin.GetParentSkin(this);
@@ -455,14 +459,37 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        protected string LocalizeString(string key)
+        /// <inheritdoc cref="Localization.GetString(string,string)"/>
+        [DnnDeprecated(10, 0, 2, "Use LocalizeText or LocalizeHtml")]
+        protected partial string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        protected string LocalizeSafeJsString(string key)
+        /// <inheritdoc cref="Localization.GetSafeJSString(string,string)"/>
+        [DnnDeprecated(10, 0, 2, "Use LocalizeJsString")]
+        protected partial string LocalizeSafeJsString(string key)
         {
             return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
+
+        /// <summary>Gets the text associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized text.</returns>
+        protected string LocalizeText(string key)
+            => Localization.GetString(key, this.LocalResourceFile);
+
+        /// <summary>Gets the HTML associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized text as HTML.</returns>
+        protected IHtmlString LocalizeHtml(string key)
+            => new HtmlString(Localization.GetString(key, this.LocalResourceFile));
+
+        /// <summary>Gets the text associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <param name="addDoubleQuotes">A value that indicates whether double quotation marks will be included around the encoded string.</param>
+        /// <returns>The localized text encoded as a JavaScript string.</returns>
+        protected IHtmlString LocalizeJsString(string key, bool addDoubleQuotes = false)
+            => HtmlUtils.JavaScriptStringEncode(Localization.GetString(key, this.LocalResourceFile), addDoubleQuotes);
     }
 }

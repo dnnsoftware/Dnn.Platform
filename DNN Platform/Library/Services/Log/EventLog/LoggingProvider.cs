@@ -15,7 +15,10 @@ namespace DotNetNuke.Services.Log.EventLog
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogService.GetLog()' instead. Scheduled for removal in v11.0.0.")]
         public enum ReturnType
         {
+            /// <summary><see cref="LogInfo"/> objects.</summary>
             LogInfoObjects = 0,
+
+            /// <summary>An XML document.</summary>
             XML = 1,
         }
 

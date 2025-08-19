@@ -20,6 +20,7 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.FileSystem;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>Display the group create view.</summary>
     public partial class Create : GroupsModuleBase
     {
         private readonly INavigationManager navigationManager;

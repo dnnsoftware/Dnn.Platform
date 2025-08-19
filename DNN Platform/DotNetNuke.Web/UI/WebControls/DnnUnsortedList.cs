@@ -36,9 +36,8 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>A "macro" that adds a set of controls or control as a single list item (li).  Use ListItems.Add(UnsortedListItem) method.</summary>
-        /// <remarks>
-        /// All controls from the list will be rendered as a childs of a single list item.
-        /// </remarks>
+        /// <remarks>All controls from the list will be rendered as children of a single list item.</remarks>
+        /// <param name="listItemControls">The controls to add to a new list item.</param>
         public void AddListItem(params Control[] listItemControls)
         {
             var listItem = new DnnUnsortedListItem();

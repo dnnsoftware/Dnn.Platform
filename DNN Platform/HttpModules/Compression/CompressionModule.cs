@@ -3,15 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.HttpModules.Compression
 {
-    using System;
-    using System.IO;
     using System.Web;
 
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
+    /// <summary>An HTTP module which compresses responses.</summary>
     [DnnDeprecated(9, 2, 0, "No replacement")]
     public partial class CompressionModule : IHttpModule
     {

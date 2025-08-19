@@ -30,14 +30,22 @@ namespace DotNetNuke.Entities.Modules
 
     public enum DisplayMode
     {
+        /// <summary>Display all.</summary>
         All = 0,
+
+        /// <summary>Display the first letter.</summary>
         FirstLetter = 1,
+
+        /// <summary>Display nothing.</summary>
         None = 2,
     }
 
     public enum UsersControl
     {
+        /// <summary>A combo box.</summary>
         Combo = 0,
+
+        /// <summary>A text box.</summary>
         TextBox = 1,
     }
 
@@ -214,6 +222,8 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Gets a Setting for the Module.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingKey">The setting key.</param>
         /// <returns>The setting value or <see langword="null"/>.</returns>
         public static object GetSetting(int portalId, string settingKey)
         {
@@ -239,6 +249,8 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Updates the Settings for the Module.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The settings to update.</param>
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
             string key;

@@ -5,13 +5,12 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 {
     using System;
     using System.IO;
-    using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer;
@@ -28,14 +27,27 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     public partial class EditExtension : ModuleUserControlBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         private Control control;
         private PackageInfo package;
 
         /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
         public EditExtension()
+        : this(null, null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
         public string Mode
@@ -122,10 +134,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -278,7 +291,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
                 // Determine if Package is ready for packaging
                 PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
-                this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(Globals.ApplicationMapPath, writer.BasePath));
+                this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(this.appStatus.ApplicationMapPath, writer.BasePath));
 
                 this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && PackageController.CanDeletePackage(this.Package, this.ModuleContext.PortalSettings);
                 this.ctlAudit.Entity = this.Package;

@@ -483,7 +483,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="sourceModule">The source module.</param>
         /// <param name="destinationTab">The destination tab.</param>
         /// <param name="toPaneName">Name of to pane.</param>
-        /// <param name="includeSettings">if set to <c>true</c> include settings.</param>
+        /// <param name="includeSettings">if set to <see langword="true"/> include settings.</param>
         public void CopyModule(ModuleInfo sourceModule, TabInfo destinationTab, string toPaneName, bool includeSettings)
         {
             PortalInfo portal = PortalController.Instance.GetPortal(destinationTab.PortalID);
@@ -590,7 +590,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Copies all modules in source page to a new page.</summary>
         /// <param name="sourceTab">The source tab.</param>
         /// <param name="destinationTab">The destination tab.</param>
-        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
+        /// <param name="asReference">if set to <see langword="true"/> will use source module directly, else will create new module info by source module.</param>
         public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference)
         {
             this.CopyModules(sourceTab, destinationTab, asReference, false);
@@ -599,8 +599,8 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Copies all modules in source page to a new page.</summary>
         /// <param name="sourceTab">The source tab.</param>
         /// <param name="destinationTab">The destination tab.</param>
-        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
-        /// <param name="includeAllTabsMobules">if set to <c>true</c> will include modules which shown on all pages, this is used when create localized copy.</param>
+        /// <param name="asReference">if set to <see langword="true"/> will use source module directly, else will create new module info by source module.</param>
+        /// <param name="includeAllTabsMobules">if set to <see langword="true"/> will include modules which shown on all pages, this is used when create localized copy.</param>
         public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference, bool includeAllTabsMobules)
         {
             foreach (KeyValuePair<int, ModuleInfo> kvp in this.GetTabModules(sourceTab.TabID))
@@ -628,9 +628,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="module"></param>
         /// <inheritdoc/>
         public void CreateContentItem(ModuleInfo module)
         {
@@ -649,21 +646,7 @@ namespace DotNetNuke.Entities.Modules
             module.ContentItemId = contentController.AddContentItem(module);
         }
 
-        /// <summary>
-        /// DeleteAllModules deletes all instances of a Module (from a collection), optionally excluding the
-        ///     current instance, and optionally including deleting the Module itself.
-        /// </summary>
-        /// <remarks>
-        ///     Note - the base module is not removed unless both the flags are set, indicating
-        ///     to delete all instances AND to delete the Base Module.
-        /// </remarks>
-        /// <param name="moduleId">The Id of the module to copy.</param>
-        /// <param name="tabId">The Id of the current tab.</param>
-        /// <param name="softDelete">A flag that determines whether the instance should be soft-deleted.</param>
-        /// <param name="fromTabs">An ArrayList of TabItem objects.</param>
-        /// <param name="includeCurrent">A flag to indicate whether to delete from the current tab
-        ///         as identified ny tabId.</param>
-        /// <param name="deleteBaseModule">A flag to indicate whether to delete the Module itself.</param>
+        /// <inheritdoc />
         public void DeleteAllModules(int moduleId, int tabId, List<TabInfo> fromTabs, bool softDelete, bool includeCurrent, bool deleteBaseModule)
         {
             var moduleInfo = this.GetModule(moduleId, tabId, false);
@@ -1091,9 +1074,7 @@ namespace DotNetNuke.Entities.Modules
                 c => CBO.FillObject<ModuleInfo>(DataProvider.GetTabModule(tabModuleID)));
         }
 
-        /// <summary>Get all Module references on a tab.</summary>
-        /// <param name="tabId"></param>
-        /// <returns>Dictionary of ModuleID and ModuleInfo.</returns>
+        /// <inheritdoc />
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
             var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
@@ -1611,7 +1592,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>Updates the translation status.</summary>
         /// <param name="localizedModule">The localized module.</param>
-        /// <param name="isTranslated">if set to <c>true</c> will mark the module as translated].</param>
+        /// <param name="isTranslated">if set to <see langword="true"/> will mark the module as translated].</param>
         public void UpdateTranslationStatus(ModuleInfo localizedModule, bool isTranslated)
         {
             if (isTranslated && (localizedModule.DefaultLanguageModule != null))
@@ -2512,7 +2493,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Update content item when the module title changed.</summary>
-        /// <param name="module"></param>
+        /// <param name="module">The module info.</param>
         private void UpdateContentItem(ModuleInfo module)
         {
             IContentController contentController = Util.GetContentController();

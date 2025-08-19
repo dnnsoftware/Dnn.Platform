@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security
@@ -12,6 +12,7 @@ namespace DotNetNuke.Security
     using System.Web;
     using System.Web.Security;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -22,7 +23,8 @@ namespace DotNetNuke.Security
     using DotNetNuke.Security.Cookies;
     using DotNetNuke.Services.Cryptography;
 
-    public class PortalSecurity
+    /// <summary>A variety of security-related utility functions.</summary>
+    public partial class PortalSecurity
     {
         public static readonly PortalSecurity Instance = new PortalSecurity();
         private const string RoleFriendPrefix = "FRIEND:";
@@ -97,34 +99,40 @@ namespace DotNetNuke.Security
         [Flags]
         public enum FilterFlag
         {
+            /// <summary>Replaces line breaks with <c>&lt;br&gt;</c> tags.</summary>
             MultiLine = 1,
 
+            /// <summary>Removes text which could be interpreted as HTML markup.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
             NoMarkup = 2,
 
+            /// <summary>Removes text which could be interpreted as JavaScript commands.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. A direct call to WebUtility.HtmlEncode should be used. Scheduled for removal in v11.0.0.")]
             NoScripting = 4,
 
+            /// <summary>Removes text which could be interpreted as SQL commands.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. Parameterized SQL should be preferred for SQL Injection protection. Scheduled for removal in v11.0.0.")]
             NoSQL = 8,
 
+            /// <summary>Removes angle brackets from the text.</summary>
             [Obsolete("Deprecated in DotNetNuke 9.8.1. Individual string replacement should be completed. Scheduled for removal in v11.0.0.")]
             NoAngleBrackets = 16,
+
+            /// <summary>Removes matches with the site's profanity filter.</summary>
             NoProfanity = 32,
 
-            /// <summary>
-            /// Removes all unicode control characters (like \0, \t, \n, \r, etc.) from the string.
-            /// </summary>
-            /// <remarks>
-            /// The control characters \r\n, \r, \n, and \t are replaced with a single space instead of being removed.
-            /// </remarks>
+            /// <summary>Removes all Unicode control characters (like \0, \t, \n, \r, etc.) from the string.</summary>
+            /// <remarks>The control characters \r\n, \r, \n, and \t are replaced with a single space instead of being removed.</remarks>
             NoControlCharacters = 64,
         }
 
         /// <summary>Determines the configuration source for the remove and replace functions.</summary>
         public enum ConfigType
         {
+            /// <summary>Retrieve configuration via <see cref="DotNetNuke.Common.Lists.ListController"/>.</summary>
             ListController = 0,
+
+            /// <summary>Retrieve configuration from an external file.</summary>
             ExternalFile = 1,
         }
 
@@ -134,8 +142,13 @@ namespace DotNetNuke.Security
         /// </summary>
         public enum FilterScope
         {
+            /// <summary>Use the host-level list.</summary>
             SystemList = 0,
+
+            /// <summary>Use a portal-specific list.</summary>
             PortalList = 1,
+
+            /// <summary>Combine both lists.</summary>
             SystemAndPortalList = 2,
         }
 
@@ -216,7 +229,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if the current user is denied from the provided specified roles; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the current user is denied from the provided specified roles; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsDenied(string roles)
         {
@@ -232,7 +245,7 @@ namespace DotNetNuke.Security
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is denied; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is denied; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
@@ -272,13 +285,9 @@ namespace DotNetNuke.Security
             return isDenied;
         }
 
-        /// <summary>
-        /// Determines whether the current user belonds to the specified role.
-        /// </summary>
+        /// <summary>Determines whether the current user belongs to the specified role.</summary>
         /// <param name="role">The role name.</param>
-        /// <returns>
-        ///   <c>true</c> if user belongs to the specified role; otherwise, <c>false</c>.
-        /// </returns>
+        /// <returns><see langword="true"/> if user belongs to the specified role; otherwise, <see langword="false"/>.</returns>
         public static bool IsInRole(string role)
         {
             if (!string.IsNullOrEmpty(role) && role == Globals.glbRoleUnauthUserName && !HttpContext.Current.Request.IsAuthenticated)
@@ -294,7 +303,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if user belongs to the specified roles; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if user belongs to the specified roles; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsInRoles(string roles)
         {
@@ -310,31 +319,43 @@ namespace DotNetNuke.Security
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns>
-        ///   <c>true</c> if the provided user belongs to the specific roles; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
-        {
-            // super user always has full access
-            bool isInRoles = objUserInfo.IsSuperUser;
+        [DnnDeprecated(10, 0, 2, "Use overload taking IPortalSettings")]
+        public static partial bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
+            => IsInRoles(objUserInfo, (IPortalSettings)settings, roles);
 
-            if (!isInRoles)
+        /// <summary>
+        /// Determines whether the provided user belongs to the specified roles.
+        /// </summary>
+        /// <param name="objUserInfo">The user information.</param>
+        /// <param name="settings">The settings.</param>
+        /// <param name="roles">The semicolon separated list of roles.</param>
+        /// <returns>
+        ///   <see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.
+        /// </returns>
+        public static bool IsInRoles(UserInfo objUserInfo, IPortalSettings settings, string roles)
+        {
+            if (objUserInfo.IsSuperUser)
             {
-                if (roles != null)
+                return true;
+            }
+
+            if (roles == null)
+            {
+                return false;
+            }
+
+            foreach (var role in roles.Split(';'))
+            {
+                ProcessRole(objUserInfo, settings, role, out var roleAllowed);
+                if (roleAllowed.HasValue)
                 {
-                    foreach (string role in roles.Split(new[] { ';' }))
-                    {
-                        bool? roleAllowed;
-                        ProcessRole(objUserInfo, settings, role, out roleAllowed);
-                        if (roleAllowed.HasValue)
-                        {
-                            isInRoles = roleAllowed.Value;
-                            break;
-                        }
-                    }
+                    return roleAllowed.Value;
                 }
             }
 
-            return isInRoles;
+            return false;
         }
 
         /// <summary>
@@ -342,7 +363,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is a friend of the current user; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is a friend of the current user; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsFriend(int userId)
         {
@@ -356,7 +377,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is a follower of the current user; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is a follower of the current user; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsFollower(int userId)
         {
@@ -370,7 +391,7 @@ namespace DotNetNuke.Security
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns>
-        ///   <c>true</c> if the specified user is an owner; otherwise, <c>false</c>.
+        ///   <see langword="true"/> if the specified user is an owner; otherwise, <see langword="false"/>.
         /// </returns>
         public static bool IsOwner(int userId)
         {
@@ -611,7 +632,7 @@ namespace DotNetNuke.Security
         /// Signs the provided user in and sets a persistent login cookie if needed.
         /// </summary>
         /// <param name="user">The user info.</param>
-        /// <param name="createPersistentCookie">if set to <c>true</c> [create persistent cookie].</param>
+        /// <param name="createPersistentCookie">if set to <see langword="true"/> [create persistent cookie].</param>
         public void SignIn(UserInfo user, bool createPersistentCookie)
         {
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
@@ -827,7 +848,7 @@ namespace DotNetNuke.Security
             }
         }
 
-        private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        private static void ProcessRole(UserInfo user, IPortalSettings settings, string roleName, out bool? roleAllowed)
         {
             var roleType = GetRoleType(roleName);
             switch (roleType)
@@ -891,7 +912,7 @@ namespace DotNetNuke.Security
             return Null.NullInteger;
         }
 
-        private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
+        private static void ProcessSecurityRole(UserInfo user, IPortalSettings settings, string roleName, out bool? roleAllowed)
         {
             roleAllowed = null;
 

@@ -10,6 +10,8 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Xml.Linq;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Exceptions;
@@ -21,11 +23,21 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Logo : SkinObjectBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Logo"/> class.</summary>
         public Logo()
+            : this(null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Logo"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Logo(INavigationManager navigationManager, IHostSettings hostSettings)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets or sets the width of the border around the image.</summary>
@@ -39,6 +51,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>Gets or sets a value indicating whether to inject the SVG content inline instead of wrapping it in an img tag.</summary>
         public bool InjectSvg { get; set; }
+
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
@@ -96,7 +110,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-                    this.hypLogo.NavigateUrl = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
+                    this.hypLogo.NavigateUrl = Globals.AddHTTP(this.CurrentPortalAlias.HttpAlias);
                 }
             }
             catch (Exception exc)
@@ -108,11 +122,11 @@ namespace DotNetNuke.UI.Skins.Controls
         private IFileInfo GetLogoFileInfo()
         {
             string cacheKey = string.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
-            var file = CBO.GetCachedObject<FileInfo>(
+
+            return CBO.GetCachedObject<FileInfo>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority),
                 this.GetLogoFileInfoCallBack);
-
-            return file;
         }
 
         private IFileInfo GetLogoFileInfoCallBack(CacheItemArgs itemArgs)
@@ -124,6 +138,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             var cacheKey = string.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoSvg";
             return CBO.GetCachedObject<string>(
+                this.hostSettings,
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, svgFile),
                 (_) =>
                 {

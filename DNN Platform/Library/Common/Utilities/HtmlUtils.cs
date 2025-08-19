@@ -75,9 +75,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>CleanWithTagInfo removes unspecified HTML Tags, Entities (and optionally any punctuation) from a string.</summary>
-        /// <param name="html"></param>
-        /// <param name="tagsFilter"></param>
-        /// <param name="removePunctuation"></param>
+        /// <param name="html">The HTML to clean.</param>
+        /// <param name="tagsFilter">A regular expression indicating attributes of which to keep the value, e.g. <c>"alt|href|src|title"</c>.</param>
+        /// <param name="removePunctuation">Whether to remove punctuation from <paramref name="html"/>.</param>
         /// <returns>The cleaned up string.</returns>
         public static string CleanWithTagInfo(string html, string tagsFilter, bool removePunctuation)
         {
@@ -89,7 +89,7 @@ namespace DotNetNuke.Common.Utilities
             // First remove unspecified HTML Tags ("<....>")
             html = StripUnspecifiedTags(html, tagsFilter, true);
 
-            // Second replace any HTML entities (&nbsp; &lt; etc) through their char symbol
+            // Second replace any HTML entities (&nbsp; &lt; etc.) through their char symbol
             html = HttpUtility.HtmlDecode(html);
 
             // Thirdly remove any punctuation
@@ -272,9 +272,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>  StripUnspecifiedTags removes the HTML tags from the content -- leaving behind the info for the specified HTML tags. </summary>
-        /// <param name="html"></param>
-        /// <param name="specifiedTags"></param>
-        /// <param name="retainSpace"></param>
+        /// <param name="html">The HTML to clean.</param>
+        /// <param name="specifiedTags">A regular expression indicating attributes of which to keep the value, e.g. <c>"alt|href|src|title"</c>.</param>
+        /// <param name="retainSpace">Whether to replace tags with spaces or <see cref="string.Empty"/>.</param>
         /// <returns>The cleaned up string.</returns>
         public static string StripUnspecifiedTags(string html, string specifiedTags, bool retainSpace)
         {
@@ -362,7 +362,7 @@ namespace DotNetNuke.Common.Utilities
             return StripNonWordRegex.Replace(html, repString);
         }
 
-        /// <summary>Determines whether or not the passed in string contains any HTML tags.</summary>
+        /// <summary>Determines whether the passed in string contains any HTML tags.</summary>
         /// <param name="text">Text to be inspected.</param>
         /// <returns>True for HTML and False for plain text.</returns>
         public static bool IsHtml(string text)
@@ -437,18 +437,22 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <summary>This method adds an empty char to the response stream to avoid closing http connection on long running tasks.</summary>
+        /// <summary>This method adds an empty char to the response stream to avoid closing http connection on long-running tasks.</summary>
         public static void WriteKeepAlive()
         {
-            if (HttpContext.Current != null)
+            if (HttpContext.Current == null)
             {
-                if (HttpContext.Current.Request.RawUrl.ToLowerInvariant().Contains("install.aspx?"))
-                {
-                    var response = HttpContext.Current.Response;
-                    response.Write(" ");
-                    response.Flush();
-                }
+                return;
             }
+
+            if (!HttpContext.Current.Request.RawUrl.ToLowerInvariant().Contains("install.aspx?"))
+            {
+                return;
+            }
+
+            var response = HttpContext.Current.Response;
+            response.Write(" ");
+            response.Flush();
         }
 
         /// <summary>WriteFooter outputs the Footer during Install/Upgrade etc.</summary>
@@ -567,5 +571,13 @@ namespace DotNetNuke.Common.Utilities
 
             return html;
         }
+
+        /// <inheritdoc cref="HttpUtility.JavaScriptStringEncode(string)"/>
+        public static IHtmlString JavaScriptStringEncode(string value)
+            => JavaScriptStringEncode(value, false);
+
+        /// <inheritdoc cref="HttpUtility.JavaScriptStringEncode(string,bool)"/>
+        public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
+            => new HtmlString(HttpUtility.JavaScriptStringEncode(value, addDoubleQuotes));
     }
 }

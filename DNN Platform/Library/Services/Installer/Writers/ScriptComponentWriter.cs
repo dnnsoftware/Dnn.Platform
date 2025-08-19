@@ -18,9 +18,9 @@ namespace DotNetNuke.Services.Installer.Writers
     public class ScriptComponentWriter : FileComponentWriter
     {
         /// <summary>Initializes a new instance of the <see cref="ScriptComponentWriter"/> class.</summary>
-        /// <param name="basePath"></param>
-        /// <param name="scripts"></param>
-        /// <param name="package"></param>
+        /// <param name="basePath">The script files base path.</param>
+        /// <param name="scripts">The script files.</param>
+        /// <param name="package">The package info.</param>
         public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package)
             : base(basePath, scripts, package)
         {

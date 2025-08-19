@@ -56,19 +56,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the current page in current http request.</summary>
         /// <value>Current Page Info.</value>
-        public static TabInfo CurrentPage
-        {
-            get
-            {
-                TabInfo tab = null;
-                if (PortalController.Instance.GetCurrentPortalSettings() != null)
-                {
-                    tab = PortalController.Instance.GetCurrentPortalSettings().ActiveTab;
-                }
-
-                return tab;
-            }
-        }
+        public static TabInfo CurrentPage => PortalSettings.Current?.ActiveTab;
 
         /// <summary>Copies the design to children.</summary>
         /// <param name="parentTab">The parent tab.</param>
@@ -244,7 +232,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tab">The obj tab.</param>
         /// <param name="tabs">The h tabs.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="isAdminTemplate">if set to <c>true</c> [is admin template].</param>
+        /// <param name="isAdminTemplate">if set to <see langword="true"/> [is admin template].</param>
         /// <param name="mergeTabs">The merge tabs.</param>
         /// <param name="modules">The h modules.</param>
         /// <returns>The deserialized <see cref="TabInfo"/> instance.</returns>
@@ -396,8 +384,8 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the portal tabs.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="excludeTabId">The exclude tab id.</param>
-        /// <param name="includeNoneSpecified">if set to <c>true</c> [include none specified].</param>
-        /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
+        /// <param name="includeNoneSpecified">if set to <see langword="true"/> [include none specified].</param>
+        /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
         public static List<TabInfo> GetPortalTabs(int portalId, int excludeTabId, bool includeNoneSpecified, bool includeHidden)
         {
@@ -417,10 +405,10 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the portal tabs.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="excludeTabId">The exclude tab id.</param>
-        /// <param name="includeNoneSpecified">if set to <c>true</c> [include none specified].</param>
-        /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
-        /// <param name="includeDeleted">if set to <c>true</c> [include deleted].</param>
-        /// <param name="includeURL">if set to <c>true</c> [include URL].</param>
+        /// <param name="includeNoneSpecified">if set to <see langword="true"/> [include none specified].</param>
+        /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
+        /// <param name="includeDeleted">if set to <see langword="true"/> [include deleted].</param>
+        /// <param name="includeURL">if set to <see langword="true"/> [include URL].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
         public static List<TabInfo> GetPortalTabs(int portalId, int excludeTabId, bool includeNoneSpecified, bool includeHidden, bool includeDeleted, bool includeURL)
         {
@@ -440,13 +428,13 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the portal tabs.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="excludeTabId">The exclude tab id.</param>
-        /// <param name="includeNoneSpecified">if set to <c>true</c> [include none specified].</param>
+        /// <param name="includeNoneSpecified">if set to <see langword="true"/> [include none specified].</param>
         /// <param name="noneSpecifiedText">The none specified text.</param>
-        /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
-        /// <param name="includeDeleted">if set to <c>true</c> [include deleted].</param>
-        /// <param name="includeURL">if set to <c>true</c> [include URL].</param>
-        /// <param name="checkViewPermisison">if set to <c>true</c> [check view permission].</param>
-        /// <param name="checkEditPermission">if set to <c>true</c> [check edit permission].</param>
+        /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
+        /// <param name="includeDeleted">if set to <see langword="true"/> [include deleted].</param>
+        /// <param name="includeURL">if set to <see langword="true"/> [include URL].</param>
+        /// <param name="checkViewPermisison">if set to <see langword="true"/> [check view permission].</param>
+        /// <param name="checkEditPermission">if set to <see langword="true"/> [check edit permission].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
         public static List<TabInfo> GetPortalTabs(int portalId, int excludeTabId, bool includeNoneSpecified, string noneSpecifiedText, bool includeHidden, bool includeDeleted, bool includeURL, bool checkViewPermisison, bool checkEditPermission)
         {
@@ -466,13 +454,13 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the portal tabs.</summary>
         /// <param name="tabs">The tabs.</param>
         /// <param name="excludeTabId">The exclude tab id.</param>
-        /// <param name="includeNoneSpecified">if set to <c>true</c> [include none specified].</param>
+        /// <param name="includeNoneSpecified">if set to <see langword="true"/> [include none specified].</param>
         /// <param name="noneSpecifiedText">The none specified text.</param>
-        /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
-        /// <param name="includeDeleted">if set to <c>true</c> [include deleted].</param>
-        /// <param name="includeURL">if set to <c>true</c> [include URL].</param>
-        /// <param name="checkViewPermisison">if set to <c>true</c> [check view permission].</param>
-        /// <param name="checkEditPermission">if set to <c>true</c> [check edit permission].</param>
+        /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
+        /// <param name="includeDeleted">if set to <see langword="true"/> [include deleted].</param>
+        /// <param name="includeURL">if set to <see langword="true"/> [include URL].</param>
+        /// <param name="checkViewPermisison">if set to <see langword="true"/> [check view permission].</param>
+        /// <param name="checkEditPermission">if set to <see langword="true"/> [check edit permission].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
         public static List<TabInfo> GetPortalTabs(List<TabInfo> tabs, int excludeTabId, bool includeNoneSpecified, string noneSpecifiedText, bool includeHidden, bool includeDeleted, bool includeURL, bool checkViewPermisison, bool checkEditPermission)
         {
@@ -492,13 +480,13 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the portal tabs.</summary>
         /// <param name="tabs">The tabs.</param>
         /// <param name="excludeTabId">The exclude tab id.</param>
-        /// <param name="includeNoneSpecified">if set to <c>true</c> [include none specified].</param>
+        /// <param name="includeNoneSpecified">if set to <see langword="true"/> [include none specified].</param>
         /// <param name="noneSpecifiedText">The none specified text.</param>
-        /// <param name="includeHidden">if set to <c>true</c> [include hidden].</param>
-        /// <param name="includeDeleted">if set to <c>true</c> [include deleted].</param>
-        /// <param name="includeURL">if set to <c>true</c> [include URL].</param>
-        /// <param name="checkViewPermisison">if set to <c>true</c> [check view permission].</param>
-        /// <param name="checkEditPermission">if set to <c>true</c> [check edit permission].</param>
+        /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
+        /// <param name="includeDeleted">if set to <see langword="true"/> [include deleted].</param>
+        /// <param name="includeURL">if set to <see langword="true"/> [include URL].</param>
+        /// <param name="checkViewPermisison">if set to <see langword="true"/> [check view permission].</param>
+        /// <param name="checkEditPermission">if set to <see langword="true"/> [check edit permission].</param>
         /// <param name="includeDeletedChildren">The value of this parameter affects <see cref="TabInfo.HasChildren"></see> property.</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
         public static List<TabInfo> GetPortalTabs(
@@ -599,7 +587,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the tabs by sort order.</summary>
         /// <param name="portalId">The portal id.</param>
         /// <param name="cultureCode">The culture code.</param>
-        /// <param name="includeNeutral">if set to <c>true</c> [include neutral].</param>
+        /// <param name="includeNeutral">if set to <see langword="true"/> [include neutral].</param>
         /// <returns>A <see cref="List{T}"/> or <see cref="TabInfo"/> instances.</returns>
         public static List<TabInfo> GetTabsBySortOrder(int portalId, string cultureCode, bool includeNeutral)
         {
@@ -644,7 +632,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Determines whether is special tab.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalSettings">The portal settings.</param>
-        /// <returns><c>true</c> if is special tab; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if is special tab; otherwise, <see langword="false"/>.</returns>
         public static bool IsSpecialTab(int tabId, PortalSettings portalSettings)
         {
             return tabId == portalSettings.SplashTabId || tabId == portalSettings.HomeTabId ||
@@ -975,10 +963,7 @@ namespace DotNetNuke.Entities.Tabs
             return true;
         }
 
-        /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <returns>Whether all missing languages were added.</returns>
+        /// <inheritdoc />
         public bool AddMissingLanguagesWithWarnings(int portalId, int tabId)
         {
             var addedAllMissingLanguages = true;
@@ -1111,14 +1096,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        /// <summary>
-        /// Converts one single tab to a neutral culture
-        /// clears the tab cache optionally.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void ConvertTabToNeutralLanguage(int portalId, int tabId, string cultureCode, bool clearCache)
         {
             // parent tabs can not be deleted
@@ -1207,7 +1185,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Deletes a tab permanently from the database.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="deleteDescendants">if set to <c>true</c> will delete all child tabs.</param>
+        /// <param name="deleteDescendants">if set to <see langword="true"/> will delete all child tabs.</param>
         public void DeleteTab(int tabId, int portalId, bool deleteDescendants)
         {
             List<TabInfo> descendantList = this.GetTabsByPortal(portalId).DescendentsOf(tabId);
@@ -1294,13 +1272,7 @@ namespace DotNetNuke.Entities.Tabs
             return true;
         }
 
-        /// <summary>
-        /// Reverts page culture back to Neutral (Null), to ensure a non localized site
-        /// clears the tab cache optionally.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void EnsureNeutralLanguage(int portalId, string cultureCode, bool clearCache)
         {
             this.dataProvider.EnsureNeutralLanguage(portalId, cultureCode);
@@ -1364,7 +1336,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the tab.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id or <see cref="P:DotNetNuke.Common.Utilities.Null.NullInteger" />.</param>
-        /// <param name="ignoreCache">if set to <c>true</c> will get tab info directly from database.</param>
+        /// <param name="ignoreCache">if set to <see langword="true"/> will get tab info directly from database.</param>
         /// <returns>tab info.</returns>
         public TabInfo GetTab(int tabId, int portalId, bool ignoreCache)
         {
@@ -1501,7 +1473,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the tabs which use the package.</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="packageID">The package ID.</param>
-        /// <param name="forHost">if set to <c>true</c> [for host].</param>
+        /// <param name="forHost">if set to <see langword="true"/> [for host].</param>
         /// <returns>tab collection.</returns>
         public IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost)
         {
@@ -1526,12 +1498,7 @@ namespace DotNetNuke.Entities.Tabs
                                                             });
         }
 
-        /// <summary>
-        /// Get the actual visible tabs for a given portal id.
-        /// System Tabs and Admin Tabs are excluded from the result set.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <returns>A new <see cref="TabCollection"/> instance.</returns>
+        /// <inheritdoc />
         public TabCollection GetUserTabsByPortal(int portalId)
         {
             var tabs = this.GetTabsByPortal(portalId);
@@ -1690,10 +1657,7 @@ namespace DotNetNuke.Entities.Tabs
             this.LocalizeTab(originalTab, locale, true);
         }
 
-        /// <summary>Localizes the tab, with optional clear cache.</summary>
-        /// <param name="originalTab"></param>
-        /// <param name="locale"></param>
-        /// <param name="clearCache"></param>
+        /// <inheritdoc />
         public void LocalizeTab(TabInfo originalTab, Locale locale, bool clearCache)
         {
             this.dataProvider.LocalizeTab(originalTab.TabID, locale.Code, UserController.Instance.GetCurrentUserInfo().UserID);
@@ -2086,7 +2050,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Updates the translation status.</summary>
         /// <param name="localizedTab">The localized tab.</param>
-        /// <param name="isTranslated">if set to <c>true</c> means the tab has already been translated.</param>
+        /// <param name="isTranslated">if set to <see langword="true"/> means the tab has already been translated.</param>
         public void UpdateTranslationStatus(TabInfo localizedTab, bool isTranslated)
         {
             if (isTranslated && (localizedTab.DefaultLanguageTab != null))
@@ -2572,8 +2536,8 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>If a parent tab is localized, its localized children need to be updated to point at their corresponding localized parents.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="parentTabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="parentTabId">The parent tab ID.</param>
         private void UpdateChildTabLocalizedParents(int portalId, int parentTabId)
         {
             var childTabs = GetTabsByParent(parentTabId, portalId);

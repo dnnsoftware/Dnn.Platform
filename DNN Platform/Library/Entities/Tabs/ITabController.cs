@@ -12,20 +12,20 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.Localization;
 
     /// <summary>
-    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
+    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should be used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
     public interface ITabController
     {
         /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
         [Obsolete("Deprecated in DotNetNuke 9.11.1. Use AddMissingLanguagesWithWarnings. Scheduled removal in v11.0.0.")]
         void AddMissingLanguages(int portalId, int tabId);
 
         /// <summary>Adds localized copies of the page in all missing languages.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
         /// <returns>Whether all missing languages were added.</returns>
         bool AddMissingLanguagesWithWarnings(int portalId, int tabId);
 
@@ -59,10 +59,10 @@ namespace DotNetNuke.Entities.Tabs
         void ClearCache(int portalId);
 
         /// <summary>Converts one single tab to a neutral culture clears the tab cache optionally.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="clearCache">Whether to clear the portal cache.</param>
         void ConvertTabToNeutralLanguage(int portalId, int tabId, string cultureCode, bool clearCache);
 
         /// <summary>Creates content item for the tab..</summary>
@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Deletes a tab permanently from the database.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="deleteDescendants">if set to <c>true</c> will delete all child tabs.</param>
+        /// <param name="deleteDescendants">if set to <see langword="true"/> will delete all child tabs.</param>
         void DeleteTab(int tabId, int portalId, bool deleteDescendants);
 
         /// <summary>Delete a Setting of a tab instance.</summary>
@@ -110,9 +110,9 @@ namespace DotNetNuke.Entities.Tabs
         /// Deletes all tabs for a specific language. Double checks if we are not deleting pages for the default language
         /// Clears the tab cache optionally.
         /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="clearCache">Whether to clear the portal cache.</param>
         /// <returns><see langword="true"/> if the deletion completes.</returns>
         bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache);
 
@@ -120,9 +120,9 @@ namespace DotNetNuke.Entities.Tabs
         /// Reverts page culture back to Neutral (Null), to ensure a non localized site
         /// clears the tab cache optionally.
         /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="cultureCode"></param>
-        /// <param name="clearCache"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="cultureCode">The culture code.</param>
+        /// <param name="clearCache">Whether to clear the portal cache.</param>
         void EnsureNeutralLanguage(int portalId, string cultureCode, bool clearCache);
 
         /// <summary>Get the list of skins per alias at tab level.</summary>
@@ -146,7 +146,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the tab.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="ignoreCache">if set to <c>true</c> will get tab info directly from database.</param>
+        /// <param name="ignoreCache">if set to <see langword="true"/> will get tab info directly from database.</param>
         /// <returns>tab info.</returns>
         TabInfo GetTab(int tabId, int portalId, bool ignoreCache);
 
@@ -178,7 +178,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the tabs which use the package.</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="packageID">The package ID.</param>
-        /// <param name="forHost">if set to <c>true</c> [for host].</param>
+        /// <param name="forHost">if set to <see langword="true"/> [for host].</param>
         /// <returns>tab collection.</returns>
         IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost);
 
@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Tabs
         /// Get the actual visible tabs for a given portal id.
         /// System Tabs and Admin Tabs are excluded from the result set.
         /// </summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>tab collection.</returns>
         TabCollection GetTabsByPortal(int portalId);
 
@@ -219,8 +219,8 @@ namespace DotNetNuke.Entities.Tabs
         void GiveTranslatorRoleEditRights(TabInfo localizedTab, Dictionary<int, UserInfo> users);
 
         /// <summary>Returns True if a page is missing a translated version in at least one other language.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
         /// <returns><see langword="true"/> if the page has missing languages, otherwise <see langword="false"/>.</returns>
         bool HasMissingLanguages(int portalId, int tabId);
 
@@ -240,9 +240,9 @@ namespace DotNetNuke.Entities.Tabs
         void LocalizeTab(TabInfo originalTab, Locale locale);
 
         /// <summary>Localizes the tab, with optional clear cache.</summary>
-        /// <param name="originalTab"></param>
-        /// <param name="locale"></param>
-        /// <param name="clearCache"></param>
+        /// <param name="originalTab">The original tab.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="clearCache">Whether to clean the cache.</param>
         void LocalizeTab(TabInfo originalTab, Locale locale, bool clearCache);
 
         /// <summary>Moves the tab after a specific tab.</summary>
@@ -312,12 +312,12 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Updates the translation status.</summary>
         /// <param name="localizedTab">The localized tab.</param>
-        /// <param name="isTranslated">if set to <c>true</c> means the tab has already been translated.</param>
+        /// <param name="isTranslated">if set to <see langword="true"/> means the tab has already been translated.</param>
         void UpdateTranslationStatus(TabInfo localizedTab, bool isTranslated);
 
         /// <summary>Refresh the tabinfo in cache object of portal tabs collection, use this instead of clear the whole cache to improve performance.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="tabId"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="tabId">The tab ID.</param>
         void RefreshCache(int portalId, int tabId);
     }
 }

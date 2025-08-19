@@ -58,7 +58,7 @@ class More extends Component {
     }
 
     render() {
-        const { page, errors, onChangeField, cacheProviderList, workflowList } = this.props;
+        const { page, errors, onChangeField, cacheProviderList } = this.props;
         const cacheProviderOptions = cacheProviderList &&
             [{ value: null, label: Localization.get("None") },
                 ...cacheProviderList.map(x => ({ value: x, label: x }))];

@@ -65,8 +65,8 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Returns a portal info object for the portal.</summary>
-        /// <param name="portalId"></param>
-        /// <param name="exceptionOnNull"></param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="exceptionOnNull">Whether to throw an exception if the portal is not found.</param>
         /// <remarks>This method wraps the PortalController.GetPortal method, and adds a check if the result is null.</remarks>.
         /// <returns>A <see cref="PortalInfo"/> instance or <see langword="null"/> if the portal isn't found and <paramref name="exceptionOnNull"/> is <see langword="false"/>.</returns>
         public static PortalInfo GetPortal(int portalId, bool exceptionOnNull)
@@ -236,7 +236,7 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>Finds the best match friendlyurlparms.config file path.</summary>
         /// <param name="portalId">The portalId to search for. -1 if all portals required.</param>
-        /// <param name="portalSpecificFound"></param>
+        /// <param name="portalSpecificFound">Whether a portal specific config file was found.</param>
         /// <returns>If a non-zero length string, a valid file path.  If a zero length string, no file was found.</returns>
         /// <remarks>
         /// First priority is a file called n.friendlyurlparms.config, in the root path
@@ -587,9 +587,9 @@ namespace DotNetNuke.Entities.Urls
         /// If a tab doesn't appear on this cached list, then the cache isn't checked
         /// for that particular tabid/portalId combination.
         /// </summary>
-        /// <param name="providers"></param>
-        /// <param name="portalId"></param>
-        /// <param name="settings"></param>
+        /// <param name="providers">A list of extension providers.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         internal static void StoreListOfTabsWithProviders(List<ExtensionUrlProvider> providers, int portalId, FriendlyUrlSettings settings)
         {
             // go through the list of providers and store all the tabs that they are configured for
@@ -742,9 +742,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Retrieve the Url Dictionary for the installation.</summary>
-        /// <param name="urlDict"></param>
-        /// <param name="urlPortals"></param>
-        /// <param name="customAliasTabs"></param>
+        /// <param name="urlDict">A dictionary of tabs for all portals.</param>
+        /// <param name="urlPortals">The portal IDs.</param>
+        /// <param name="customAliasTabs">A dictionary of portals for which we've retrieved the tabs.</param>
         internal void GetFriendlyUrlIndexFromCache(
             out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             out ConcurrentBag<int> urlPortals,
@@ -796,11 +796,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Store the Url Dictionary (all tab urls / tabids) for the installation.</summary>
-        /// <param name="urlDict"></param>
-        /// <param name="urlPortals"></param>
-        /// <param name="customAliasTabs"></param>
-        /// <param name="settings"></param>
-        /// <param name="reason"></param>
+        /// <param name="urlDict">A dictionary of tabs for all portals.</param>
+        /// <param name="urlPortals">The portal IDs.</param>
+        /// <param name="customAliasTabs">A dictionary of portals for which we've retrieved the tabs.</param>
+        /// <param name="settings">The friendly URL settings.</param>
+        /// <param name="reason">The reason for rebuilding the index (for logging).</param>
         internal void StoreFriendlyUrlIndexInCache(
             SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             ConcurrentBag<int> urlPortals,

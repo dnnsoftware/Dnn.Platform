@@ -7,6 +7,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -19,37 +21,46 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
-    using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>The Login AuthenticationLoginBase is used to provide a login for a registered user portal.</summary>
     public partial class Login : AuthenticationLoginBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
         private readonly INavigationManager navigationManager;
+        private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
+        private readonly IPortalGroupController portalGroupController;
+        private readonly IApplicationStatusInfo appStatus;
 
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public Login()
+            : this(null, null, null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        public Login(INavigationManager navigationManager, IPortalController portalController, IHostSettings hostSettings, IPortalGroupController portalGroupController, IApplicationStatusInfo appStatus)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.portalGroupController = portalGroupController ?? this.DependencyProvider.GetRequiredService<IPortalGroupController>();
+            this.appStatus = appStatus ?? this.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
         }
 
         /// <summary>Gets a value indicating whether check if the Auth System is Enabled (for the Portal).</summary>
-        public override bool Enabled
-        {
-            get
-            {
-                return AuthenticationConfig.GetConfig(this.PortalId).Enabled;
-            }
-        }
+        public override bool Enabled => AuthenticationConfig.GetConfig(this.PortalId).Enabled;
 
         /// <summary>Gets a value indicating whether the Captcha control is used to validate the login.</summary>
-        protected bool UseCaptcha
-        {
-            get
-            {
-                return AuthenticationConfig.GetConfig(this.PortalId).UseCaptcha;
-            }
-        }
+        protected bool UseCaptcha => AuthenticationConfig.GetConfig(this.PortalId).UseCaptcha;
+
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
         /// <inheritdoc/>
         protected override void OnLoad(EventArgs e)
@@ -101,12 +112,12 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             }
 
             // see if the portal supports persistant cookies
-            this.chkCookie.Visible = Host.RememberCheckbox;
+            this.chkCookie.Visible = this.hostSettings.RememberCheckbox;
 
             // no need to show password link if feature is disabled, let's check this first
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
-                url = this.navigationManager.NavigateURL("SendPassword", "returnurl=" + returnUrl);
+                url = this.navigationManager.NavigateURL("SendPassword", $"returnurl={returnUrl}");
                 this.passwordLink.NavigateUrl = url;
                 if (this.PortalSettings.EnablePopUps)
                 {
@@ -144,7 +155,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                             if (redirectTabId > 0)
                             {
                                 var redirectUrl = this.navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
-                                redirectUrl = redirectUrl.Replace(Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias), string.Empty);
+                                redirectUrl = redirectUrl.Replace(Globals.AddHTTP(this.CurrentPortalAlias.HttpAlias), string.Empty);
                                 this.Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
 
@@ -178,9 +189,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                     {
                         if (this.Request.QueryString["username"] != null)
                         {
+#pragma warning disable CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                             string userName = PortalSecurity.Instance.InputFilter(
                                 this.Request.QueryString["username"],
                                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup | PortalSecurity.FilterFlag.NoControlCharacters);
+#pragma warning restore CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
 
                             this.txtUsername.Text = userName;
                         }
@@ -216,7 +229,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 useEmailAsUserName = !registrationFields.Contains("Username");
             }
 
-            this.plUsername.Text = this.LocalizeString(useEmailAsUserName ? "Email" : "Username");
+            this.plUsername.Text = this.LocalizeText(useEmailAsUserName ? "Email" : "Username");
             this.divCaptcha1.Visible = this.UseCaptcha;
             this.divCaptcha2.Visible = this.UseCaptcha;
         }
@@ -267,19 +280,21 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
             {
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
+#pragma warning disable CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                 string userName = PortalSecurity.Instance.InputFilter(
                     this.txtUsername.Text,
                     PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup | PortalSecurity.FilterFlag.NoControlCharacters);
+#pragma warning restore CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
 
                 // DNN-6093
                 // check if we use email address here rather than username
                 UserInfo userByEmail = null;
-                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
+                var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false);
 
                 if (emailUsedAsUsername)
                 {
-                    // one additonal call to db to see if an account with that email actually exists
-                    userByEmail = UserController.GetUserByEmail(PortalController.GetEffectivePortalId(this.PortalId), userName);
+                    // one additional call to db to see if an account with that email actually exists
+                    userByEmail = UserController.GetUserByEmail(PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, this.PortalId), userName);
 
                     if (userByEmail != null)
                     {

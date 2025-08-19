@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Tokens
         private readonly DataRow dr;
 
         /// <summary>Initializes a new instance of the <see cref="DataRowPropertyAccess"/> class.</summary>
-        /// <param name="row"></param>
+        /// <param name="row">The data row with token values.</param>
         public DataRowPropertyAccess(DataRow row)
         {
             this.dr = row;

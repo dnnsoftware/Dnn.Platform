@@ -9,30 +9,36 @@ namespace DotNetNuke.Common.Utilities
     using System.Threading;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.OutputCache;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in DotNetNuke 9.13.8. This type has no known use. Scheduled for removal in v11.0.0.")]
     public enum CoreCacheType
     {
+        /// <summary>Host level.</summary>
         Host = 1,
+
+        /// <summary>Portal level.</summary>
         Portal = 2,
+
+        /// <summary>Tab level.</summary>
         Tab = 3,
     }
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Common.Utilities
-    /// Class:      DataCache
     /// <summary>The DataCache class is a facade class for the CachingProvider Instance's.</summary>
-    public class DataCache
+    public partial class DataCache
     {
         // Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
@@ -463,10 +469,19 @@ namespace DotNetNuke.Common.Utilities
             RemoveCache(string.Format(PackagesCacheKey, portalId));
         }
 
-        public static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        /// <summary>Get cached data.</summary>
+        /// <param name="cacheItemArgs">Information about the cache item.</param>
+        /// <param name="cacheItemExpired">The callback to supply an item when it's not in the cache.</param>
+        /// <typeparam name="TObject">The type of the object to retrieve from the cache.</typeparam>
+        /// <returns>The <typeparamref name="TObject"/> instance or <see langword="default"/>.</returns>
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+            => GetCachedData<TObject>(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), cacheItemArgs, cacheItemExpired);
+
+        public static TObject GetCachedData<TObject>(IHostSettings hostSettings, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
             // declare local object and try and retrieve item from the cache
-            return GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, false);
+            return GetCachedData<TObject>(hostSettings.PerformanceSetting, cacheItemArgs, cacheItemExpired, false);
         }
 
         public static TObject GetCache<TObject>(string cacheKey)
@@ -572,11 +587,11 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        internal static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
+        internal static TObject GetCachedData<TObject>(PerformanceSettings performance, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
         {
             object objObject = storeInDictionary
                                    ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired)
-                                   : GetCachedDataFromRuntimeCache(cacheItemArgs, cacheItemExpired);
+                                   : GetCachedDataFromRuntimeCache(performance, cacheItemArgs, cacheItemExpired);
 
             // return the object
             if (objObject == null)
@@ -597,7 +612,7 @@ namespace DotNetNuke.Common.Utilities
             return CachingProvider.CleanCacheKey(cacheKey);
         }
 
-        private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        private static object GetCachedDataFromRuntimeCache(PerformanceSettings performance, CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
             object objObject = GetCache(cacheItemArgs.CacheKey);
 
@@ -628,7 +643,7 @@ namespace DotNetNuke.Common.Utilities
                         }
 
                         // set cache timeout
-                        int timeOut = cacheItemArgs.CacheTimeOut * Convert.ToInt32(Host.PerformanceSetting);
+                        int timeOut = cacheItemArgs.CacheTimeOut * Convert.ToInt32(performance);
 
                         // if we retrieved a valid object and we are using caching
                         if (objObject != null && timeOut > 0)

@@ -6,26 +6,22 @@ namespace DotNetNuke.Tests.Utilities.Fakes;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Abstractions.Settings;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Controllers;
 
-public class FakeHostController : IHostController, IHostSettingsService
+public class FakeHostController(IReadOnlyDictionary<string, IConfigurationSetting> settings)
+    : IHostController, IHostSettingsService
 {
-    private readonly IReadOnlyDictionary<string, IConfigurationSetting> settings;
-
-    public FakeHostController(IReadOnlyDictionary<string, IConfigurationSetting> settings)
-    {
-        this.settings = settings;
-    }
-
     public bool GetBoolean(string key) => this.GetBoolean(key, Null.NullBoolean);
 
     public bool GetBoolean(string key, bool defaultValue)
     {
-        if (this.settings.TryGetValue(key, out var setting))
+        if (settings.TryGetValue(key, out var setting))
         {
             return setting.Value.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Value.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
         }
@@ -33,163 +29,55 @@ public class FakeHostController : IHostController, IHostSettingsService
         return defaultValue;
     }
 
-    double IHostSettingsService.GetDouble(string key)
-    {
-        throw new System.NotImplementedException();
-    }
+    public double GetDouble(string key, double defaultValue)
+        => double.TryParse(this.GetString(key), out var value) ? value : defaultValue;
 
-    double IHostSettingsService.GetDouble(string key, double defaultValue)
-    {
-        throw new System.NotImplementedException();
-    }
+    public double GetDouble(string key)
+        => this.GetDouble(key, Null.NullDouble);
 
-    string IHostSettingsService.GetEncryptedString(string key, string passPhrase)
-    {
-        throw new System.NotImplementedException();
-    }
+    public int GetInteger(string key)
+        => this.GetInteger(key, Null.NullInteger);
 
-    int IHostSettingsService.GetInteger(string key)
-    {
-        throw new System.NotImplementedException();
-    }
+    public int GetInteger(string key, int defaultValue)
+        => int.TryParse(this.GetString(key), out var value) ? value : defaultValue;
 
-    int IHostSettingsService.GetInteger(string key, int defaultValue)
-    {
-        throw new System.NotImplementedException();
-    }
+    public string GetString(string key)
+        => this.GetString(key, string.Empty);
 
-    IDictionary<string, IConfigurationSetting> IHostSettingsService.GetSettings()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    IDictionary<string, string> IHostSettingsService.GetSettingsDictionary()
-    {
-        return this.GetSettingsDictionary();
-    }
-
-    string IHostSettingsService.GetString(string key)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    string IHostSettingsService.GetString(string key, string defaultValue)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void IHostSettingsService.IncrementCrmVersion(bool includeOverridingPortals)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Update(IConfigurationSetting config)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Update(IConfigurationSetting config, bool clearCache)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Update(IDictionary<string, string> settings)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void IHostSettingsService.Update(string key, string value)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void IHostSettingsService.Update(string key, string value, bool clearCache)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    void IHostSettingsService.UpdateEncryptedString(string key, string value, string passPhrase)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    double IHostController.GetDouble(string key, double defaultValue)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    double IHostController.GetDouble(string key)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    int IHostController.GetInteger(string key)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    int IHostController.GetInteger(string key, int defaultValue)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    Dictionary<string, ConfigurationSetting> IHostController.GetSettings()
-    {
-        throw new System.NotImplementedException();
-    }
+    public string GetString(string key, string defaultValue)
+        => settings.TryGetValue(key, out var setting) ? setting.Value : defaultValue;
 
     public Dictionary<string, string> GetSettingsDictionary()
-    {
-        throw new System.NotImplementedException();
-    }
+        => settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Value);
 
-    string IHostController.GetEncryptedString(string key, string passPhrase)
-    {
-        throw new System.NotImplementedException();
-    }
+    public IDictionary<string, IConfigurationSetting> GetSettings()
+        => settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-    string IHostController.GetString(string key)
-    {
-        throw new System.NotImplementedException();
-    }
+    Dictionary<string, ConfigurationSetting> IHostController.GetSettings()
+        => settings.ToDictionary(kvp => kvp.Key, kvp => kvp.Value as ConfigurationSetting);
 
-    string IHostController.GetString(string key, string defaultValue)
-    {
-        throw new System.NotImplementedException();
-    }
+    IDictionary<string, string> IHostSettingsService.GetSettingsDictionary()
+        => this.GetSettingsDictionary();
 
-    public void Update(Dictionary<string, string> settings)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Update(IConfigurationSetting config) => throw new NotImplementedException();
 
-    public void Update(ConfigurationSetting config)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Update(IConfigurationSetting config, bool clearCache) => throw new NotImplementedException();
 
-    public void Update(ConfigurationSetting config, bool clearCache)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Update(IDictionary<string, string> settings) => throw new NotImplementedException();
 
-    void IHostController.Update(string key, string value, bool clearCache)
-    {
-        throw new System.NotImplementedException();
-    }
+    public string GetEncryptedString(string key, string passPhrase) => throw new NotImplementedException();
 
-    void IHostController.Update(string key, string value)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Update(Dictionary<string, string> settings) => throw new NotImplementedException();
 
-    void IHostController.UpdateEncryptedString(string key, string value, string passPhrase)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Update(ConfigurationSetting config) => throw new NotImplementedException();
 
-    void IHostController.IncrementCrmVersion(bool includeOverridingPortals)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void Update(ConfigurationSetting config, bool clearCache) => throw new NotImplementedException();
+
+    public void Update(string key, string value, bool clearCache) => throw new NotImplementedException();
+
+    public void Update(string key, string value) => throw new NotImplementedException();
+
+    public void UpdateEncryptedString(string key, string value, string passPhrase) => throw new NotImplementedException();
+
+    public void IncrementCrmVersion(bool includeOverridingPortals) => throw new NotImplementedException();
 }

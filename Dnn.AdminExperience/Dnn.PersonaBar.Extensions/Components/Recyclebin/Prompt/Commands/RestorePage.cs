@@ -17,15 +17,12 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class RestorePage : ConsoleCommandBase
     {
         [FlagParameter("name", "Prompt_RestorePage_FlagName", "String")]
-
         private const string FlagName = "name";
 
         [FlagParameter("parentid", "Prompt_RestorePage_FlagParentId", "Integer")]
-
         private const string FlagParentId = "parentid";
 
         [FlagParameter("id", "Prompt_RestorePage_FlagId", "Integer")]
-
         private const string FlagId = "id";
 
         private readonly ITabController tabController;
@@ -39,9 +36,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="RestorePage"/> class.</summary>
-        /// <param name="tabController"></param>
-        /// <param name="recyclebinController"></param>
-        /// <param name="contentVerifier"></param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="recyclebinController">The recycle bin controller.</param>
+        /// <param name="contentVerifier">The content verifier.</param>
         public RestorePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
             this.tabController = tabController;

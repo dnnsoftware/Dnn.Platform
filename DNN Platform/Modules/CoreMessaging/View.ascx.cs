@@ -5,7 +5,6 @@ namespace DotNetNuke.Modules.CoreMessaging
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -19,9 +18,38 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Implements the logic for the default view.</summary>
     public partial class View : PortalModuleBase
     {
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IPortalController portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public View()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public View(IJavaScriptLibraryHelper javaScript)
+            : this(javaScript, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController)
+        {
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+        }
+
         /// <summary>Gets the user id from the request parameters.</summary>
         public int ProfileUserId
         {
@@ -37,35 +65,19 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        /// <summary>Gets a string indicating whether attachements are allowed "true" or not "false".</summary>
-        public string ShowAttachments
-        {
-            get
-            {
-                var allowAttachments = PortalController.GetPortalSetting("MessagingAllowAttachments", this.PortalId, "NO");
-                return allowAttachments == "NO" ? "false" : "true";
-            }
-        }
+        /// <summary>Gets a string indicating whether attachments are allowed "true" or not "false".</summary>
+        public string ShowAttachments =>
+            PortalController.GetPortalSetting(this.portalController, "MessagingAllowAttachments", this.PortalId, "NO") == "NO" ? "false" : "true";
 
         /// <summary>Gets a value indicating whether the subscriptions tab should be shown.</summary>
-        public bool ShowSubscriptionTab
-        {
-            get
-            {
-                return !this.Settings.ContainsKey("ShowSubscriptionTab") ||
-                       this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
-            }
-        }
+        public bool ShowSubscriptionTab =>
+            !this.Settings.ContainsKey("ShowSubscriptionTab") ||
+            this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
 
         /// <summary>Gets a value indicating whether the private messaging should be disabled.</summary>
-        public bool DisablePrivateMessage
-        {
-            get
-            {
-                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
-                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
-            }
-        }
+        public bool DisablePrivateMessage =>
+            this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
+                                                      && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -92,10 +104,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.Knockout);
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+            this.javaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             this.AddIe7StyleSheet();
 
             base.OnInit(e);

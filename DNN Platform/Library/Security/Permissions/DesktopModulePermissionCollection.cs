@@ -9,13 +9,7 @@ namespace DotNetNuke.Security.Permissions
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : DesktopModulePermissionCollection
-    /// <summary>
-    /// DesktopModulePermissionCollection provides the a custom collection for DesktopModulePermissionInfo
-    /// objects.
-    /// </summary>
+    /// <summary>DesktopModulePermissionCollection provides a custom collection for <see cref="DesktopModulePermissionInfo"/> objects.</summary>
     [Serializable]
     public class DesktopModulePermissionCollection : CollectionBase
     {
@@ -25,22 +19,22 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
-        /// <param name="desktopModulePermissions"></param>
+        /// <param name="desktopModulePermissions">An <see cref="ArrayList"/> of <see cref="DesktopModulePermissionInfo"/> instances.</param>
         public DesktopModulePermissionCollection(ArrayList desktopModulePermissions)
         {
             this.AddRange(desktopModulePermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
-        /// <param name="desktopModulePermissions"></param>
+        /// <param name="desktopModulePermissions">A collection of <see cref="DesktopModulePermissionInfo"/> instances.</param>
         public DesktopModulePermissionCollection(DesktopModulePermissionCollection desktopModulePermissions)
         {
             this.AddRange(desktopModulePermissions);
         }
 
         /// <summary>Initializes a new instance of the <see cref="DesktopModulePermissionCollection"/> class.</summary>
-        /// <param name="desktopModulePermissions"></param>
-        /// <param name="desktopModulePermissionID"></param>
+        /// <param name="desktopModulePermissions">An <see cref="ArrayList"/> of <see cref="DesktopModulePermissionInfo"/> instances.</param>
+        /// <param name="desktopModulePermissionID">The ID of the desktop module by which to filter <paramref name="desktopModulePermissions"/>.</param>
         public DesktopModulePermissionCollection(ArrayList desktopModulePermissions, int desktopModulePermissionID)
         {
             foreach (DesktopModulePermissionInfo permission in desktopModulePermissions)

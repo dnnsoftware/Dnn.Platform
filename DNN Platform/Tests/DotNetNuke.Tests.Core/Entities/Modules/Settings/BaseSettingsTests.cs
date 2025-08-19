@@ -9,12 +9,17 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     using System.Collections.Generic;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -38,6 +43,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         protected Mock<IHostController> MockHostController;
         protected Mock<IModuleController> MockModuleController;
         protected Mock<IPortalController> MockPortalController;
+        private FakeServiceProvider serviceProvider;
 
         public enum TestingEnum
         {
@@ -52,10 +58,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         {
             this.MockRepository = new MockRepository(MockBehavior.Default);
             this.MockHostController = this.MockRepository.Create<IHostController>();
+            this.MockHostController.As<IHostSettingsService>();
         }
 
         [SetUp]
-
         public virtual void SetUp()
         {
             // Mock Repository and component factory
@@ -63,13 +69,24 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             ComponentFactory.Container = new SimpleContainer();
 
             // Setup Mock
-            this.MockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.MockCache = MockComponentProvider.CreateDataCacheProvider();
             HostController.RegisterInstance(this.MockHostController.Object);
 
             this.MockPortalController = this.MockRepository.Create<IPortalController>();
             PortalController.SetTestableInstance(this.MockPortalController.Object);
             this.MockModuleController = this.MockRepository.Create<IModuleController>();
             ModuleController.SetTestableInstance(this.MockModuleController.Object);
+
+            this.serviceProvider = FakeServiceProvider.Setup(
+                services =>
+                {
+                    services.AddSingleton(this.MockCache.Object);
+                    services.AddSingleton(this.MockPortalController.Object);
+                    services.AddSingleton(this.MockModuleController.Object);
+                    services.AddSingleton(this.MockHostController.Object);
+                    services.AddSingleton(this.MockHostController.As<IHostSettingsService>().Object);
+                    this.SetupServiceProvider(services);
+                });
 
             // Setup mock cache
             this.MockCacheCollection = new Hashtable();
@@ -86,6 +103,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             MockComponentProvider.ResetContainer();
             PortalController.ClearInstance();
             ModuleController.ClearInstance();
+            this.serviceProvider?.Dispose();
         }
 
         protected static string CacheKey(ModuleInfo moduleInfo) => $"SettingsModule{moduleInfo.TabModuleID}";
@@ -93,6 +111,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         protected static string ModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"ModuleSettings{moduleInfo.TabID}";
 
         protected static string TabModuleSettingsCacheKey(ModuleInfo moduleInfo) => $"TabModuleSettings{moduleInfo.TabID}";
+
+        protected virtual void SetupServiceProvider(IServiceCollection services)
+        {
+        }
 
         protected void MockPortalSettings(ModuleInfo moduleInfo, Dictionary<string, string> portalSettings)
         {

@@ -20,11 +20,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class PurgePage : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_PurgePage_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("deletechildren", "Prompt_PurgePage_FlagDeleteChildren", "Boolean", "false")]
-
         private const string FlagDeleteChildren = "deletechildren";
 
         private readonly ITabController tabController;
@@ -41,9 +39,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         }
 
         /// <summary>Initializes a new instance of the <see cref="PurgePage"/> class.</summary>
-        /// <param name="tabController"></param>
-        /// <param name="recyclebinController"></param>
-        /// <param name="contentVerifier"></param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="recyclebinController">The recycle bin controller.</param>
+        /// <param name="contentVerifier">The content verifier.</param>
         public PurgePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
             this.tabController = tabController;

@@ -76,6 +76,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnAction raises the Action Event.</summary>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnAction(ActionEventArgs e)
         {
             if (this.Action != null)
@@ -85,6 +86,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnButtonClick runs when the underlying CommandButton is clicked.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnButtonClick(EventArgs e)
         {
             base.OnButtonClick(e);
@@ -95,6 +97,7 @@ namespace DotNetNuke.UI.Containers
         }
 
         /// <summary>OnPreRender runs when just before the Render phase of the Page Lifecycle.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

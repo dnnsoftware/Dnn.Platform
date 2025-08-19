@@ -1,23 +1,30 @@
 ﻿namespace DotNetNuke.Tests.Core.Entities.Urls
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Data;
     using System.IO;
     using System.Reflection;
     using System.Web;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
-    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Urls;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
     using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -29,7 +36,6 @@
         private const string GenericHost = "dnn";
 
         [Test]
-
         public void CheckForRedirects_WithUmlautUrls_DontRedirectInfinitely()
         {
             // Arrange
@@ -56,7 +62,75 @@
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
-            PortalController.SetTestableInstance(new PortalController(Mock.Of<IBusinessControllerProvider>()));
+            var portalController = new PortalController(
+                Mock.Of<IBusinessControllerProvider>(),
+                Mock.Of<IHostSettings>(),
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IEventLogger>());
+
+            using var serviceProvider = FakeServiceProvider.Setup(services =>
+            {
+                var hostController = new FakeHostController(new Dictionary<string, IConfigurationSetting>());
+                services.AddSingleton<IHostSettingsService>(hostController);
+                services.AddSingleton<IHostController>(hostController);
+
+                var dataProvider = MockComponentProvider.CreateDataProvider();
+                services.AddSingleton(dataProvider);
+                var hostSettingsTable = new DataTable(HostSettingsTableName);
+                dataProvider
+                    .Setup(s => s.GetHostSettings())
+                    .Returns(() => hostSettingsTable.CreateDataReader());
+                var portalSettingsTable = new DataTable(PortalSettingsTableName);
+                dataProvider
+                    .Setup(s => s.GetPortalSettings(
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
+                    .Returns(() => portalSettingsTable.CreateDataReader());
+                var languagesTable = new DataTable(LanguagesTableName);
+                dataProvider
+                    .Setup(s => s.GetLanguagesByPortal(It.IsAny<int>()))
+                    .Returns(() => languagesTable.CreateDataReader());
+                var tabsTable = new DataTable(TabsTableName);
+                FillTabsTable(tabsTable);
+                dataProvider
+                    .Setup(s => s.GetTabs(It.IsAny<int>()))
+                    .Returns(() => tabsTable.CreateDataReader());
+                dataProvider
+                    .Setup(s => s.GetTabCustomAliases(It.IsAny<int>()))
+                    .Returns(() => tabsTable.CreateDataReader());
+                var tabUrlsTable = new DataTable(TabUrlsTableName);
+                dataProvider
+                    .Setup(s => s.GetTabPaths(
+                        It.IsAny<int>(),
+                        It.IsAny<string>()))
+                    .Returns(() => tabUrlsTable.CreateDataReader());
+                dataProvider
+                    .Setup(s => s.GetTabUrls(It.IsAny<int>()))
+                    .Returns(() => tabUrlsTable.CreateDataReader());
+                var tabSettingsTable = new DataTable(TabSettingsTableName);
+                dataProvider
+                    .Setup(s => s.GetTabSettings(It.IsAny<int>()))
+                    .Returns(() => tabSettingsTable.CreateDataReader());
+                var portalsTable = new DataTable(PortalsTableName);
+                FillPortalsTable(portalsTable);
+                dataProvider
+                    .Setup(s => s.GetPortals(It.IsAny<string>()))
+                    .Returns(() => portalsTable.CreateDataReader());
+                var extensionUrlProviderTable = new DataTable(ExtensionUrlProviderTableName);
+                dataProvider
+                    .Setup(s => s.GetExtensionUrlProviders(It.IsAny<int>()))
+                    .Returns(() => extensionUrlProviderTable.CreateDataReader());
+                var portalAliasTable = new DataTable(PortalAliasTableName);
+                FillPortalAliasTable(portalAliasTable);
+                dataProvider
+                    .Setup(s => s.GetPortalAliases())
+                    .Returns(() => portalAliasTable.CreateDataReader());
+
+                services.AddSingleton(MockComponentProvider.CreateDataCacheProvider());
+                services.AddSingleton(MockComponentProvider.CreateNew<LoggingProvider>());
+                services.AddSingleton(MockComponentProvider.CreateNew<PortalSettingsController>(PortalSettingsControllerRegistrationName, Mock.Of<IHostSettings>(), hostController));
+                services.AddSingleton<IPortalController>(portalController);
+            });
             Host.PerformanceSetting = Globals.PerformanceSettings.ModerateCaching;
             var uri = new Uri(Assembly.GetExecutingAssembly().CodeBase);
             var path = HttpUtility.UrlDecode(Path.GetFullPath(uri.AbsolutePath));
@@ -65,71 +139,13 @@
             var simulator = new HttpSimulator(ApplicationPath, physicalAppPath);
             simulator.SimulateRequest(new Uri(SampleHttpsUrl));
             HttpContext.Current.Items.Add(UrlRewriteItemName, FullUrl);
-            MockComponentProvider.CreateNew<CachingProvider>();
-            MockComponentProvider.CreateNew<DataProvider>();
-            MockComponentProvider.CreateNew<LoggingProvider>();
-            MockComponentProvider.CreateNew<PortalSettingsController>(PortalSettingsControllerRegistrationName);
-            var dataProvider = MockComponentProvider.CreateDataProvider();
-            var hostSettingsTable = new DataTable(HostSettingsTableName);
-            dataProvider
-                .Setup(s => s.GetHostSettings())
-                .Returns(() => hostSettingsTable.CreateDataReader());
-            var portalSettingsTable = new DataTable(PortalSettingsTableName);
-            dataProvider
-                .Setup(s => s.GetPortalSettings(
-                    It.IsAny<int>(),
-                    It.IsAny<string>()))
-                .Returns(() => portalSettingsTable.CreateDataReader());
-            var languagesTable = new DataTable(LanguagesTableName);
-            dataProvider
-                .Setup(s => s.GetLanguagesByPortal(It.IsAny<int>()))
-                .Returns(() => languagesTable.CreateDataReader());
-            var tabsTable = new DataTable(TabsTableName);
-            FillTabsTable(tabsTable);
-            dataProvider
-                .Setup(s => s.GetTabs(It.IsAny<int>()))
-                .Returns(() => tabsTable.CreateDataReader());
-            dataProvider
-                .Setup(s => s.GetTabCustomAliases(It.IsAny<int>()))
-                .Returns(() => tabsTable.CreateDataReader());
-            var tabUrlsTable = new DataTable(TabUrlsTableName);
-            dataProvider
-                .Setup(s => s.GetTabPaths(
-                    It.IsAny<int>(),
-                    It.IsAny<string>()))
-                .Returns(() => tabUrlsTable.CreateDataReader());
-            dataProvider
-                .Setup(s => s.GetTabUrls(It.IsAny<int>()))
-                .Returns(() => tabUrlsTable.CreateDataReader());
-            var tabSettingsTable = new DataTable(TabSettingsTableName);
-            dataProvider
-                .Setup(s => s.GetTabSettings(It.IsAny<int>()))
-                .Returns(() => tabSettingsTable.CreateDataReader());
-            var portalsTable = new DataTable(PortalsTableName);
-            FillPortalsTable(portalsTable);
-            dataProvider
-                .Setup(s => s.GetPortals(It.IsAny<string>()))
-                .Returns(() => portalsTable.CreateDataReader());
-            var extensionUrlProviderTable = new DataTable(ExtensionUrlProviderTableName);
-            dataProvider
-                .Setup(s => s.GetExtensionUrlProviders(It.IsAny<int>()))
-                .Returns(() => extensionUrlProviderTable.CreateDataReader());
-            var portalAliasTable = new DataTable(PortalAliasTableName);
-            FillPortalAliasTable(portalAliasTable);
-            dataProvider
-                .Setup(s => s.GetPortalAliases())
-                .Returns(() => portalAliasTable.CreateDataReader());
-
-            using var serviceProvider = FakeServiceProvider.Setup();
 
             var urlRewriter = new AdvancedUrlRewriter();
             var checkForRedirectsMethod = typeof(AdvancedUrlRewriter)
-                .GetMethod(
-                    CheckForRedirectsMethodName,
-                    BindingFlags.Static | BindingFlags.NonPublic);
+                .GetMethod(CheckForRedirectsMethodName, BindingFlags.Static | BindingFlags.NonPublic);
             var requestUri = new Uri(UriUrl);
             var queryStringCollection = new NameValueCollection();
-            var friendlyUrlSettings = new FriendlyUrlSettings(PortalController.Instance, GenericPortalId);
+            var friendlyUrlSettings = new FriendlyUrlSettings(portalController, GenericPortalId);
             var urlAction = new UrlAction(
                 HttpScheme,
                 string.Empty,
@@ -153,24 +169,23 @@
             // Act
             var isRedirected = checkForRedirectsMethod.Invoke(
                 urlRewriter,
-                new object[]
-                {
+                [
                     requestUri,
                     FullUrl,
                     queryStringCollection,
                     urlAction,
                     requestType,
                     friendlyUrlSettings,
-                    portalHomeTabId,
-                });
+                    portalHomeTabId
+                ]);
 
             // Assert
             Assert.That(isRedirected, Is.EqualTo(false));
         }
 
-        private void FillTabsTable(DataTable tabsTable)
+        private static void FillTabsTable(DataTable tabsTable)
         {
-            var tabColumns = new string[]
+            var tabColumns = new[]
             {
                 "TabID",
                 "UniqueId",
@@ -270,7 +285,7 @@
 
         }
 
-        private void FillPortalsTable(DataTable portalsTable)
+        private static void FillPortalsTable(DataTable portalsTable)
         {
             var portalColumns = new[]
             {
@@ -373,7 +388,7 @@
                 "en-US");
         }
 
-        private void FillPortalAliasTable(DataTable portalAliasTable)
+        private static void FillPortalAliasTable(DataTable portalAliasTable)
         {
             var portalAliasColumns = new[]
             {

@@ -9,13 +9,12 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Web;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Entities.Users.Membership;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Membership;
@@ -26,22 +25,37 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Host = DotNetNuke.Entities.Host.Host;
-
     /// <summary>The SendPassword UserModuleBase is used to allow a user to retrieve their password.</summary>
     public partial class SendPassword : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
         private readonly INavigationManager navigationManager;
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
+        private readonly IMailSettings mailSettings;
 
         private UserInfo user;
         private int userCount = Null.NullInteger;
         private string ipAddress;
 
         /// <summary>Initializes a new instance of the <see cref="SendPassword"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public SendPassword()
+            : this(null, null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SendPassword"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="mailSettings">The host settings.</param>
+        public SendPassword(INavigationManager navigationManager, IEventLogger eventLogger, IPortalController portalController, IMailSettings mailSettings)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.mailSettings = mailSettings ?? this.DependencyProvider.GetRequiredService<IMailSettings>();
         }
 
         /// <summary>Gets the Redirect URL (after successful sending of password).</summary>
@@ -109,21 +123,9 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        protected bool UsernameDisabled
-        {
-            get
-            {
-                return PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
-            }
-        }
+        protected bool UsernameDisabled => PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false);
 
-        private bool ShowEmailField
-        {
-            get
-            {
-                return MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
-            }
-        }
+        private bool ShowEmailField => MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -152,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.divPassword.Visible = false;
             }
 
-            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled && !PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false))
+            if (MembershipProviderConfig.RequiresUniqueEmail && isEnabled && !PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false))
             {
                 this.lblHelp.Text += Localization.GetString("RequiresUniqueEmail", this.LocalResourceFile);
             }
@@ -164,6 +166,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -185,9 +188,11 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>cmdSendPassword_Click runs when the Password Reminder button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void OnSendPasswordClick(object sender, EventArgs e)
         {
-            // pretty much always display the same message to avoid hinting on the existance of a user name
+            // pretty much always display the same message to avoid hinting on the existence of a user name
             var input = string.IsNullOrEmpty(this.txtUsername.Text) ? this.txtEmail.Text : this.txtUsername.Text;
             var message = string.Format(Localization.GetString("PasswordSent", this.LocalResourceFile), WebUtility.HtmlEncode(input));
             var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
@@ -217,7 +222,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
 
-                if (string.IsNullOrEmpty(Host.SMTPServer))
+                if (string.IsNullOrEmpty(this.mailSettings.GetServer(this.PortalId)))
                 {
                     // SMTP Server is not configured
                     canSend = false;
@@ -303,11 +308,10 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void GetUser()
         {
-            ArrayList arrUsers;
             if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
             {
-                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this.userCount);
-                if (arrUsers != null && arrUsers.Count == 1)
+                var arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this.userCount);
+                if (arrUsers is { Count: 1 })
                 {
                     this.user = (UserInfo)arrUsers[0];
                 }
@@ -332,13 +336,15 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             var portalSecurity = PortalSecurity.Instance;
 
-            var log = new LogInfo
+            ILogInfo log = new LogInfo
             {
-                LogPortalID = this.PortalSettings.PortalId,
                 LogPortalName = this.PortalSettings.PortalName,
-                LogUserID = this.UserId,
+#pragma warning disable CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
                 LogUserName = portalSecurity.InputFilter(this.txtUsername.Text, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+#pragma warning restore CS0618 // PortalSecurity.FilterFlag.NoScripting is deprecated
             };
+            log.LogUserId = this.UserId;
+            log.LogPortalId = this.PortalSettings.PortalId;
 
             if (string.IsNullOrEmpty(message))
             {
@@ -352,7 +358,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             log.AddProperty("IP", this.ipAddress);
 
-            LogController.Instance.AddLog(log);
+            this.eventLogger.AddLog(log);
         }
     }
 }

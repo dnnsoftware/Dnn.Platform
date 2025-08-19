@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>Initializes a new instance of the <see cref="UserPreferencesController"/> class.</summary>
-        /// <param name="dataService"></param>
+        /// <param name="dataService">The data service.</param>
         public UserPreferencesController(IDataService dataService)
         {
             // Argument Contract

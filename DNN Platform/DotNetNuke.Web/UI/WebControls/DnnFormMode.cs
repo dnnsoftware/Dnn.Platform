@@ -6,8 +6,13 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public enum DnnFormMode
     {
+        /// <summary>Inherit.</summary>
         Inherit = 0,
+
+        /// <summary>Short.</summary>
         Short = 1,
+
+        /// <summary>Long.</summary>
         Long = 2,
     }
 }

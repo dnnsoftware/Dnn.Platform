@@ -14,12 +14,15 @@ namespace DotNetNuke.Modules.Admin.Sales
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
     using Microsoft.Extensions.DependencyInjection;
 
     using Host = DotNetNuke.Entities.Host.Host;
 
+    /// <summary>A control which allows a user to purchase access to a role.</summary>
+    [DnnDeprecated(10, 0, 2, "No replacement")]
     public partial class Purchase : PortalModuleBase
     {
         private readonly INavigationManager navigationManager;

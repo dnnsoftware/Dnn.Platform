@@ -27,7 +27,7 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <summary>Initializes a new instance of the <see cref="SimpleContainer"/> class.</summary>
-        /// <param name="name"></param>
+        /// <param name="name">The container name.</param>
         public SimpleContainer(string name)
         {
             this.name = name;

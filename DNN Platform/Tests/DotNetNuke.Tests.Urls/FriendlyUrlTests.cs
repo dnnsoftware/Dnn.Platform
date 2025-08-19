@@ -49,7 +49,6 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeSetUp]
-
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
@@ -88,7 +87,6 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [TearDown]
-
         public override void TearDown()
         {
             base.TearDown();
@@ -116,7 +114,6 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeTearDown]
-
         public override void TestFixtureTearDown()
         {
             base.TestFixtureTearDown();
@@ -138,7 +135,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_BaseTestCases))]
-
         public void AdvancedUrlProvider_BaseFriendlyUrl(Dictionary<string, string> testFields)
         {
             this.ExecuteTest("Base", testFields);
@@ -146,7 +142,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_ImprovedTestCases))]
-
         public void AdvancedUrlProvider_ImprovedFriendlyUrl(Dictionary<string, string> testFields)
         {
             this.ExecuteTest("Improved", testFields);
@@ -154,7 +149,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_SpaceEncodingTestCases))]
-
         public void AdvancedUrlProvider_SpaceEncoding(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "SpaceEncoding", this.PortalId);
@@ -172,7 +166,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_PageExtensionTestCases))]
-
         public void AdvancedUrlProvider_PageExtension(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PageExtension", this.PortalId);
@@ -203,7 +196,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_PrimaryPortalAliasTestCases))]
-
         public void AdvancedUrlProvider_PrimaryPortalAlias(Dictionary<string, string> testFields)
         {
             string defaultAlias = testFields["DefaultAlias"];
@@ -241,7 +233,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_RegexTestCases))]
-
         public void AdvancedUrlProvider_Regex(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
@@ -290,7 +281,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_ReplaceCharsTestCases))]
-
         public void AdvancedUrlProvider_ReplaceChars(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
@@ -322,7 +312,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_ReplaceSpaceTestCases))]
-
         public void AdvancedUrlProvider_ReplaceSpace(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
@@ -338,7 +327,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_VanityUrlTestCases))]
-
         public void AdvancedUrlProvider_VanityUrl(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
@@ -366,7 +354,6 @@ namespace DotNetNuke.Tests.Urls
 
         [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.FriendlyUrl_ForceLowerCaseTestCases))]
-
         public void AdvancedUrlProvider_ForceLowerCase(Dictionary<string, string> testFields)
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);

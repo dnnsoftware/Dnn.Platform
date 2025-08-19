@@ -88,6 +88,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Gets an instance of a specific FolderProvider of a given name.</summary>
+        /// <param name="friendlyName">The provider name.</param>
         /// <returns>A <see cref="FolderProvider"/> instance.</returns>
         public static FolderProvider Instance(string friendlyName)
         {
@@ -104,6 +105,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Copies the specified file to the destination folder.</summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <param name="newFolderPath">The new folder path.</param>
+        /// <param name="folderMapping">The folder mapping.</param>
         public virtual void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -139,6 +144,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Gets a file Stream of the specified file.</summary>
+        /// <param name="folder">The file's folder.</param>
+        /// <param name="file">The file.</param>
+        /// <param name="version">The version of the file.</param>
         /// <returns>A <see cref="Stream"/> of the file contents.</returns>
         public virtual Stream GetFileStream(IFolderInfo folder, IFileInfo file, int version)
         {
@@ -166,13 +174,17 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>Moves a file to a new folder.</summary>
-        /// <param name="file"></param>
+        /// <param name="file">The file to move.</param>
+        /// <param name="destinationFolder">The folder to which <paramref name="file"/> is to be moved.</param>
         public virtual void MoveFile(IFileInfo file, IFolderInfo destinationFolder)
         {
             throw new NotImplementedException("This provider does not implement MoveFile");
         }
 
         /// <summary>Moves the folder and files at the specified folder path to the new folder path.</summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="newFolderPath">The new folder path.</param>
+        /// <param name="folderMapping">The folder mapping.</param>
         public virtual void MoveFolder(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNullOrEmpty("folderPath", folderPath);
@@ -253,47 +265,65 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>Adds a new file to the specified folder.</summary>
         /// <remarks>Do not close content Stream.</remarks>
+        /// <param name="folder">The file's folder.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="content">The file's content.</param>
         public abstract void AddFile(IFolderInfo folder, string fileName, Stream content);
 
         /// <summary>Adds a new folder to a specified parent folder.</summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="folderMapping">The folder mapping.</param>
         public abstract void AddFolder(string folderPath, FolderMappingInfo folderMapping);
 
         /// <summary>Deletes the specified file.</summary>
+        /// <param name="file">The file to delete.</param>
         public abstract void DeleteFile(IFileInfo file);
 
         /// <summary>Deletes the specified folder.</summary>
+        /// <param name="folder">The folder to delete.</param>
         public abstract void DeleteFolder(IFolderInfo folder);
 
         /// <summary>Checks the existence of the specified file in the underlying system.</summary>
+        /// <param name="folder">The file's folder.</param>
+        /// <param name="fileName">The name of the file.</param>
         /// <returns><see langword="true"/> if the file exists, otherwise <see langword="false"/>.</returns>
         public abstract bool FileExists(IFolderInfo folder, string fileName);
 
         /// <summary>Checks the existence of the specified folder in the underlying system.</summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="folderMapping">The folder mapping.</param>
         /// <returns><see langword="true"/> if the folder exists, otherwise <see langword="false"/>.</returns>
         public abstract bool FolderExists(string folderPath, FolderMappingInfo folderMapping);
 
         /// <summary>Gets the file attributes of the specified file.</summary>
-        /// <remarks>Because some Providers don't support file attributes, this methods returns a nullable type to allow them to return null.</remarks>
+        /// <remarks>Because some Providers don't support file attributes, this method returns a nullable type to allow them to return <see langword="null"/>.</remarks>
+        /// <param name="file">The file.</param>
         /// <returns>The file attributes or <see langword="null"/>.</returns>
         public abstract FileAttributes? GetFileAttributes(IFileInfo file);
 
         /// <summary>Gets the list of file names contained in the specified folder.</summary>
+        /// <param name="folder">The folder.</param>
         /// <returns>An array of file names.</returns>
         public abstract string[] GetFiles(IFolderInfo folder);
 
         /// <summary>Gets the file length.</summary>
-        /// <returns>The file size.</returns>
+        /// <param name="file">The file.</param>
+        /// <returns>The file size in bytes.</returns>
         public abstract long GetFileSize(IFileInfo file);
 
         /// <summary>Gets a file Stream of the specified file.</summary>
+        /// <param name="file">The file.</param>
         /// <returns>A <see cref="Stream"/> of the file contents.</returns>
         public abstract Stream GetFileStream(IFileInfo file);
 
         /// <summary>Gets a file Stream of the specified file.</summary>
+        /// <param name="folder">The file's folder.</param>
+        /// <param name="fileName">The file's name.</param>
         /// <returns>A <see cref="Stream"/> of the file contents.</returns>
         public abstract Stream GetFileStream(IFolderInfo folder, string fileName);
 
         /// <summary>Gets the direct URL to the file.</summary>
+        /// <param name="file">The file.</param>
         /// <returns>The URL.</returns>
         public abstract string GetFileUrl(IFileInfo file);
 
@@ -302,24 +332,34 @@ namespace DotNetNuke.Services.FileSystem
         public abstract string GetFolderProviderIconPath();
 
         /// <summary>Gets the time when the specified file was last modified.</summary>
+        /// <param name="file">The file.</param>
         /// <returns>The last modified <see cref="DateTime"/>.</returns>
         public abstract DateTime GetLastModificationTime(IFileInfo file);
 
         /// <summary>Gets the list of subfolders for the specified folder.</summary>
+        /// <param name="folderPath">The folder path.</param>
+        /// <param name="folderMapping">The folder mapping.</param>
         /// <returns>A sequence of relative sub-folder paths.</returns>
         public abstract IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping);
 
         /// <summary>Indicates if the specified file is synchronized.</summary>
+        /// <param name="file">The file.</param>
         /// <returns><see langword="true"/> if the file is in sync, otherwise <see langword="false"/>.</returns>
         public abstract bool IsInSync(IFileInfo file);
 
         /// <summary>Renames the specified file using the new filename.</summary>
+        /// <param name="file">The file.</param>
+        /// <param name="newFileName">The new file name.</param>
         public abstract void RenameFile(IFileInfo file, string newFileName);
 
         /// <summary>Renames the specified folder using the new <paramref name="newFolderName"/>.</summary>
+        /// <param name="folder">The folder.</param>
+        /// <param name="newFolderName">The new folder name.</param>
         public abstract void RenameFolder(IFolderInfo folder, string newFolderName);
 
         /// <summary>Sets the specified attributes to the specified file.</summary>
+        /// <param name="file">The file.</param>
+        /// <param name="fileAttributes">The new file attributes.</param>
         public abstract void SetFileAttributes(IFileInfo file, FileAttributes fileAttributes);
 
         /// <summary>Gets a value indicating if the underlying system supports file attributes.</summary>
@@ -327,10 +367,15 @@ namespace DotNetNuke.Services.FileSystem
         public abstract bool SupportsFileAttributes();
 
         /// <summary>Updates the content of the specified file. It creates it if it doesn't exist.</summary>
+        /// <param name="file">The file.</param>
+        /// <param name="content">The file content.</param>
         /// <remarks>Do not close content Stream.</remarks>
         public abstract void UpdateFile(IFileInfo file, Stream content);
 
         /// <summary>Updates the content of the specified file. It creates it if it doesn't exist.</summary>
+        /// <param name="folder">The file's folder.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="content">The file's content.</param>
         /// <remarks>Do not close content Stream.</remarks>
         public abstract void UpdateFile(IFolderInfo folder, string fileName, Stream content);
 

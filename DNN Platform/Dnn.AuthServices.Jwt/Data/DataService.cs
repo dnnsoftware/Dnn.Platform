@@ -9,14 +9,36 @@ namespace Dnn.AuthServices.Jwt.Data
     using System.Web.Caching;
 
     using Dnn.AuthServices.Jwt.Components.Entity;
+
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This class provides the Data Access Layer for the JWT Authentication library.</summary>
     public class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="DataService"/> class.</summary>
+        public DataService()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DataService"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public DataService(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(new HostController());
+        }
 
         /// <inheritdoc/>
         public virtual PersistedToken GetTokenById(string tokenId)
@@ -24,6 +46,7 @@ namespace Dnn.AuthServices.Jwt.Data
             try
             {
                 return CBO.GetCachedObject<PersistedToken>(
+                    this.hostSettings,
                     new CacheItemArgs(GetCacheKey(tokenId), 60, CacheItemPriority.Default),
                     _ => CBO.FillObject<PersistedToken>(this.dataProvider.ExecuteReader("JsonWebTokens_GetById", tokenId)));
             }

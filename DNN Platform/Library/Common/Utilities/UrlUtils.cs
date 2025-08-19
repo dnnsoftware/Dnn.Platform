@@ -11,15 +11,17 @@ namespace DotNetNuke.Common.Utilities
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides utilities for dealing with DNN's URLs. Consider using <see cref="System.Uri"/> if applicable.</summary>
-    public static class UrlUtils
+    public static partial class UrlUtils
     {
         private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
@@ -339,9 +341,19 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="param">The parameter name.</param>
         /// <param name="newValue">The parameter value.</param>
         /// <returns>The updated URL.</returns>
-        public static string ReplaceQSParam(string url, string param, string newValue)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string ReplaceQSParam(string url, string param, string newValue)
+            => ReplaceQSParam(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), url, param, newValue);
+
+        /// <summary>Replaces a query string parameter's value in a URL.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <param name="newValue">The parameter value.</param>
+        /// <returns>The updated URL.</returns>
+        public static string ReplaceQSParam(IHostSettings hostSettings, string url, string param, string newValue)
         {
-            if (Host.UseFriendlyUrls)
+            if (hostSettings.UseFriendlyUrls)
             {
                 var escapedReplacementValue = newValue.Replace("$1", "$$1").Replace("$2", "$$2").Replace("$3", "$$3").Replace("$4", "$$4");
                 return Regex.Replace(url, $@"(.*)({Regex.Escape(param)}/)([^/]+)(/.*)", $"$1$2{escapedReplacementValue}$4", RegexOptions.IgnoreCase);
@@ -357,9 +369,18 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="url">The URL.</param>
         /// <param name="param">The parameter name.</param>
         /// <returns>The updated URL.</returns>
-        public static string StripQSParam(string url, string param)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
+        public static partial string StripQSParam(string url, string param)
+            => StripQSParam(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), url, param);
+
+        /// <summary>Removes the query string parameter with the given name from the URL.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="url">The URL.</param>
+        /// <param name="param">The parameter name.</param>
+        /// <returns>The updated URL.</returns>
+        public static string StripQSParam(IHostSettings hostSettings, string url, string param)
         {
-            if (Host.UseFriendlyUrls)
+            if (hostSettings.UseFriendlyUrls)
             {
                 return Regex.Replace(url, $"(.*)({Regex.Escape(param)}/[^/]+/)(.*)", "$1$3", RegexOptions.IgnoreCase);
             }

@@ -11,9 +11,9 @@ namespace DotNetNuke.Services.Installer.Writers
     public class WidgetComponentWriter : FileComponentWriter
     {
         /// <summary>Initializes a new instance of the <see cref="WidgetComponentWriter"/> class.</summary>
-        /// <param name="basePath"></param>
-        /// <param name="files"></param>
-        /// <param name="package"></param>
+        /// <param name="basePath">The base path.</param>
+        /// <param name="files">The files.</param>
+        /// <param name="package">The package.</param>
         public WidgetComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
             : base(basePath, files, package)
         {

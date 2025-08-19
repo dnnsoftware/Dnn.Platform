@@ -4,81 +4,81 @@
 namespace DotNetNuke.HttpModules.Compression
 {
     using System;
-    using System.Collections.Specialized;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Cache;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This class encapsulates the settings for an HttpCompressionModule.</summary>
     [Serializable]
     public class Settings
     {
-        private readonly StringCollection excludedPaths;
-        private Algorithms preferredAlgorithm;
-
-        private Settings()
-        {
-            this.preferredAlgorithm = Algorithms.None;
-            this.excludedPaths = new StringCollection();
-        }
+        private readonly List<string> excludedPaths = new();
 
         /// <summary>Gets the default settings.  Deflate + normal.</summary>
-        public static Settings Default
-        {
-            get
-            {
-                return new Settings();
-            }
-        }
+        public static Settings Default => new();
 
         /// <summary>Gets the preferred algorithm to use for compression.</summary>
-        public Algorithms PreferredAlgorithm
-        {
-            get
-            {
-                return this.preferredAlgorithm;
-            }
-        }
+        public Algorithms PreferredAlgorithm { get; private set; } = Algorithms.None;
 
         /// <summary>Get the current settings from the xml config file.</summary>
         /// <returns>A <see cref="Settings"/> instance.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public static Settings GetSettings()
+            => GetSettings(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
+
+        /// <summary>Get the current settings from the XML config file.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <returns>A <see cref="Settings"/> instance.</returns>
+        public static Settings GetSettings(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         {
             var settings = (Settings)DataCache.GetCache("CompressionConfig");
-            if (settings == null)
+            if (settings != null)
             {
-                settings = Default;
+                return settings;
+            }
 
-                // Place this in a try/catch as during install the host settings will not exist
-                try
-                {
-                    settings.preferredAlgorithm = (Algorithms)Host.HttpCompressionAlgorithm;
-                }
-                catch (Exception e)
+            settings = Default;
+
+            // Place this in a try/catch as during install the host settings will not exist
+            try
+            {
+                settings.PreferredAlgorithm = (Algorithms)hostSettings.HttpCompressionAlgorithm;
+            }
+            catch (Exception e)
+            {
+                if (appStatus.Status != UpgradeStatus.Install)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(e);
                 }
+            }
 
-                string filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.Compression);
+            string filePath = Config.GetPathToFile(appStatus, Config.ConfigFileType.Compression);
 
-                // Create a FileStream for the Config file
-                using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            // Create a FileStream for the Config file
+            using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var doc = new XPathDocument(fileReader);
+                foreach (XPathNavigator nav in doc.CreateNavigator().Select("compression/excludedPaths/path"))
                 {
-                    var doc = new XPathDocument(fileReader);
-                    foreach (XPathNavigator nav in doc.CreateNavigator().Select("compression/excludedPaths/path"))
-                    {
-                        settings.excludedPaths.Add(nav.Value.ToLowerInvariant());
-                    }
+                    settings.excludedPaths.Add(nav.Value.ToLowerInvariant());
                 }
+            }
 
-                if (File.Exists(filePath))
-                {
-                    // Set back into Cache
-                    DataCache.SetCache("CompressionConfig", settings, new DNNCacheDependency(filePath));
-                }
+            if (File.Exists(filePath))
+            {
+                // Set back into Cache
+                DataCache.SetCache("CompressionConfig", settings, new DNNCacheDependency(filePath));
             }
 
             return settings;
@@ -89,17 +89,7 @@ namespace DotNetNuke.HttpModules.Compression
         /// <returns>true if excluded, false if not.</returns>
         public bool IsExcludedPath(string relUrl)
         {
-            bool match = false;
-            foreach (string path in this.excludedPaths)
-            {
-                if (relUrl.ToLowerInvariant().Contains(path))
-                {
-                    match = true;
-                    break;
-                }
-            }
-
-            return match;
+            return this.excludedPaths.Any(path => relUrl.ToLowerInvariant().Contains(path));
         }
     }
 }

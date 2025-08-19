@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     using System.Drawing;
     using System.Drawing.Imaging;
 
-    /// <summary>Summary description for PaletteQuantizer.</summary>
+    /// <summary>A <see cref="Quantizer"/> for a given color palette.</summary>
     [CLSCompliant(false)]
     public class PaletteQuantizer : Quantizer
     {
@@ -24,14 +24,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <summary>Lookup table for colors.</summary>
         private readonly Hashtable colorMap;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PaletteQuantizer"/> class.
-        /// Construct the palette quantizer.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="PaletteQuantizer"/> class.</summary>
         /// <param name="palette">The color palette to quantize to.</param>
-        /// <remarks>
-        /// Palette quantization only requires a single quantization step.
-        /// </remarks>
+        /// <remarks>Palette quantization only requires a single quantization step.</remarks>
         public PaletteQuantizer(ArrayList palette)
             : base(true)
         {
@@ -113,7 +108,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>Retrieve the palette for the quantized image.</summary>
-        /// <param name="palette">Any old palette, this is overrwritten.</param>
+        /// <param name="palette">Any old palette, this is overwritten.</param>
         /// <returns>The new color palette.</returns>
         protected override ColorPalette GetPalette(ColorPalette palette)
         {

@@ -9,15 +9,15 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
     using DotNetNuke.Data;
 
-    /// <summary>FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into database.</summary>
+    /// <summary>FileResponseFilter implements <see cref="OutputCacheResponseFilter"/> to capture the response into database.</summary>
     public class DatabaseResponseFilter : OutputCacheResponseFilter
     {
         /// <summary>Initializes a new instance of the <see cref="DatabaseResponseFilter"/> class.</summary>
-        /// <param name="itemId"></param>
-        /// <param name="maxVaryByCount"></param>
-        /// <param name="filterChain"></param>
-        /// <param name="cacheKey"></param>
-        /// <param name="cacheDuration"></param>
+        /// <param name="itemId">The tab ID.</param>
+        /// <param name="maxVaryByCount">The maximum number of values by which the cached response can vary.</param>
+        /// <param name="filterChain">The stream to write into the database.</param>
+        /// <param name="cacheKey">The cache key.</param>
+        /// <param name="cacheDuration">The duration for which the response should be cached.</param>
         internal DatabaseResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
             : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {

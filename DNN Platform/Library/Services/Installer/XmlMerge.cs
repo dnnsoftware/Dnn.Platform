@@ -24,9 +24,9 @@ namespace DotNetNuke.Services.Installer
         private IDictionary<string, XmlDocument> pendingDocuments;
 
         /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
-        /// <param name="version"></param>
-        /// <param name="sender"></param>
-        /// <param name="sourceFileName"></param>
+        /// <param name="sourceFileName">The path to the XML merge file.</param>
+        /// <param name="version">The version for which the merge is being done.</param>
+        /// <param name="sender">The name of the component responsible for the merge.</param>
         public XmlMerge(string sourceFileName, string version, string sender)
         {
             this.Version = version;
@@ -36,9 +36,9 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
-        /// <param name="version"></param>
-        /// <param name="sender"></param>
-        /// <param name="sourceStream"></param>
+        /// <param name="sourceStream">A stream with the source config.</param>
+        /// <param name="version">The version for which the merge is being done.</param>
+        /// <param name="sender">The name of the component responsible for the merge.</param>
         public XmlMerge(Stream sourceStream, string version, string sender)
         {
             this.Version = version;
@@ -48,9 +48,9 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
-        /// <param name="version"></param>
-        /// <param name="sender"></param>
-        /// <param name="sourceReader"></param>
+        /// <param name="sourceReader">A reader with the source config.</param>
+        /// <param name="version">The version for which the merge is being done.</param>
+        /// <param name="sender">The name of the component responsible for the merge.</param>
         public XmlMerge(TextReader sourceReader, string version, string sender)
         {
             this.Version = version;
@@ -60,9 +60,9 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>Initializes a new instance of the <see cref="XmlMerge"/> class.</summary>
-        /// <param name="version"></param>
-        /// <param name="sender"></param>
-        /// <param name="sourceDoc"></param>
+        /// <param name="sourceDoc">A document with the source config.</param>
+        /// <param name="version">The version for which the merge is being done.</param>
+        /// <param name="sender">The name of the component responsible for the merge.</param>
         public XmlMerge(XmlDocument sourceDoc, string version, string sender)
         {
             this.Version = version;
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Installer
         public string Version { get; private set; }
 
         /// <summary>Gets a value indicating whether the last update performed by this instance resulted in any changes.</summary>
-        /// <value><c>true</c> if there were changes, <c>false</c> if no changes were made to the target document.</value>
+        /// <value><see langword="true"/> if there were changes, <see langword="false"/> if no changes were made to the target document.</value>
         public bool ConfigUpdateChangedNodes { get; private set; }
 
         /// <summary>

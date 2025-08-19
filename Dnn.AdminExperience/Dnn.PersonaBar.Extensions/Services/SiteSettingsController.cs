@@ -23,6 +23,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Dnn.PersonaBar.SiteSettings.Services.Dto;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -49,6 +50,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using DotNetNuke.UI.Skins;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Constants = Dnn.PersonaBar.Library.Constants;
     using FileInfo = System.IO.FileInfo;
@@ -77,14 +80,28 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private readonly Components.SiteSettingsController controller = new Components.SiteSettingsController();
         private readonly INavigationManager navigationManager;
         private readonly IApplicationStatusInfo applicationStatusInfo;
+        private readonly PersonalizationController personalizationController;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
         /// <param name="navigationManager">A manager to provide navigation services.</param>
         /// <param name="applicationStatusInfo">The application status info.</param>
         public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo)
+            : this(navigationManager, applicationStatusInfo, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
+        /// <param name="navigationManager">A manager to provide navigation services.</param>
+        /// <param name="applicationStatusInfo">The application status info.</param>
+        /// <param name="personalizationController">The personalization controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public SiteSettingsController(INavigationManager navigationManager, IApplicationStatusInfo applicationStatusInfo, PersonalizationController personalizationController, IHostSettings hostSettings)
         {
             this.navigationManager = navigationManager;
             this.applicationStatusInfo = applicationStatusInfo;
+            this.personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets provides navigation services.</summary>
@@ -497,7 +514,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns>profile settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetProfileSettings(int? portalId)
         {
             try
@@ -575,7 +591,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetProfileProperties
         /// <summary>Gets profile properties.</summary>
-        /// <param name="portalId"></param>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>profile properties.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
@@ -1394,7 +1410,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// POST: api/SiteSettings/UpdateListEntry
         /// <summary>Adds/Updates list entry.</summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request body.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -2110,7 +2126,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage AddIgnoreWords(UpdateIgnoreWordsRequest request)
         {
             try
@@ -2218,7 +2233,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns>language settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetLanguageSettings(int? portalId)
         {
             try
@@ -2256,7 +2270,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     portalSettings.EnableBrowserLanguage,
                     portalSettings.AllowUserUICulture,
                     portal.CultureCode,
-                    AllowContentLocalization = Host.EnableContentLocalization,
+                    AllowContentLocalization = this.hostSettings.EnableContentLocalization,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
@@ -2332,13 +2346,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var oldLanguageDisplayMode = this.GetLanguageDisplayMode(pid);
                 if (request.LanguageDisplayMode != oldLanguageDisplayMode)
                 {
-                    var personalizationController = new PersonalizationController();
-                    var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, pid);
+                    var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, pid);
                     Personalization.SetProfile(personalization, "LanguageDisplayMode", "ViewType" + pid, request.LanguageDisplayMode);
-                    personalizationController.SaveProfile(personalization);
+                    this.personalizationController.SaveProfile(personalization);
                 }
 
-                if (this.UserInfo.IsSuperUser && Host.EnableContentLocalization != request.AllowContentLocalization)
+                if (this.UserInfo.IsSuperUser && this.hostSettings.EnableContentLocalization != request.AllowContentLocalization)
                 {
                     HostController.Instance.Update("EnableContentLocalization", request.AllowContentLocalization ? "Y" : "N", false);
                     DataCache.ClearCache();
@@ -2999,8 +3012,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// GET: api/SiteSettings/GetTranslatorRoles
         /// <summary>Gets roles.</summary>
-        /// <param name="portalId">The Id of the portal for which to get the translator roles for.</param>
-        /// <param name="groupId">The Id of the role group to filter the results.</param>
+        /// <param name="portalId">The ID of the portal for which to get the translator roles for.</param>
+        /// <param name="groupId">The ID of the role group to filter the results.</param>
         /// <param name="cultureCode">The culture code for which to get the translators for.</param>
         /// <returns>list of translator roles.</returns>
         [HttpGet]
@@ -3108,7 +3121,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     Settings = new
                     {
                         AllowedExtensionsWhitelist = portalSettings.AllowedExtensionsWhitelist.ToStorageString(),
-                        HostAllowedExtensionsWhitelists = Host.DefaultEndUserExtensionWhitelist.ToStorageString(),
+                        HostAllowedExtensionsWhitelists = this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString(),
                         ImageExtensionsList = Globals.ImageFileTypes,
                         EnablePopups = portalSettings.EnablePopUps,
                         InjectModuleHyperLink = portalSettings.InjectModuleHyperLink,
@@ -3145,15 +3158,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "InjectModuleHyperLink", request.InjectModuleHyperLink.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "InlineEditorEnabled", request.InlineEditorEnabled.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);
-                if (request.AllowedExtensionsWhitelist == Host.DefaultEndUserExtensionWhitelist.ToStorageString())
+                if (request.AllowedExtensionsWhitelist == this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString())
                 {
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", null, false, null, false);
                 }
                 else
                 {
-                    var whitelist = new FileExtensionWhitelist(request.AllowedExtensionsWhitelist);
-                    whitelist = whitelist.RestrictBy(Host.AllowedExtensionWhitelist);
-                    PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", whitelist.ToStorageString(), false, null, false);
+                    IFileExtensionAllowList allowList = new FileExtensionWhitelist(request.AllowedExtensionsWhitelist);
+                    allowList = allowList.RestrictBy(this.hostSettings.AllowedExtensionAllowList);
+                    PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", allowList.ToStorageString(), false, null, false);
                 }
 
                 if (request.EnabledVersioning.HasValue)
@@ -3458,8 +3471,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private string GetLanguageDisplayMode(int portalId)
         {
             string viewTypePersonalizationKey = "LanguageDisplayMode:ViewType" + portalId;
-            var personalizationController = new PersonalizationController();
-            var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, portalId);
+            var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, portalId);
 
             string viewType = Convert.ToString(personalization.Profile[viewTypePersonalizationKey]);
             return string.IsNullOrEmpty(viewType) ? "NATIVE" : viewType;

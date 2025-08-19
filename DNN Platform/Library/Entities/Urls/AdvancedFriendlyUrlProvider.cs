@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
 
         /// <summary>Initializes a new instance of the <see cref="AdvancedFriendlyUrlProvider"/> class.</summary>
-        /// <param name="attributes"></param>
+        /// <param name="attributes">The provider attributes.</param>
         internal AdvancedFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="httpAlias">The current portal alias to use.</param>
         /// <param name="ignoreCustomRedirects">If true, then the Friendly Url will be constructed without using any custom redirects.</param>
         /// <param name="settings">The current Friendly Url Settings to use.</param>
-        /// <param name="parentTraceId"></param>
+        /// <param name="parentTraceId">The parent trace ID.</param>
         /// <returns>The friendly URL.</returns>
         public static string ImprovedFriendlyUrl(
             TabInfo tab,
@@ -66,6 +66,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.</summary>
+        /// <param name="tab">The tab info.</param>
+        /// <param name="path">The path.</param>
+        /// <param name="pageName">The page name.</param>
+        /// <param name="httpAlias">The HTTP alias.</param>
+        /// <param name="settings">The friendly URL settings.</param>
         /// <returns>The friendly URL.</returns>
         internal static string BaseFriendlyUrl(TabInfo tab, string path, string pageName, string httpAlias, FriendlyUrlSettings settings)
         {

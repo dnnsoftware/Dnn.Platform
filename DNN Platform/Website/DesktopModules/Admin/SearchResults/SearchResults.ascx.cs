@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.SearchResults
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
@@ -19,6 +20,9 @@ namespace DotNetNuke.Modules.SearchResults
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A control which displays search results.</summary>
     public partial class SearchResults : PortalModuleBase
     {
         private const int DefaultPageIndex = 1;
@@ -27,8 +31,22 @@ namespace DotNetNuke.Modules.SearchResults
 
         private const string MyFileName = "SearchResults.ascx";
 
+        private readonly IJavaScriptLibraryHelper javaScript;
         private IList<string> searchContentSources;
         private IList<int> searchPortalIds;
+
+        /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
+        public SearchResults()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public SearchResults(IJavaScriptLibraryHelper javaScript)
+        {
+            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        }
 
         protected string SearchTerm
         {
@@ -341,7 +359,7 @@ namespace DotNetNuke.Modules.SearchResults
             base.OnLoad(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");

@@ -99,6 +99,7 @@ namespace DotNetNuke.Entities.Content.Data
         }
 
         /// <summary>Retrieve all content items associated with a articular Module ID, <paramref name="moduleId"/>.</summary>
+        /// <param name="moduleId">The module ID.</param>
         /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByModuleId(int moduleId)
         {
@@ -106,6 +107,7 @@ namespace DotNetNuke.Entities.Content.Data
         }
 
         /// <summary>Retrieve a list of content items containing terms from the specified Vocabulary ID.</summary>
+        /// <param name="vocabularyId">The vocabulary ID.</param>
         /// <returns>A data reader containing the content items.</returns>
         public IDataReader GetContentItemsByVocabularyId(int vocabularyId)
         {
@@ -311,6 +313,7 @@ namespace DotNetNuke.Entities.Content.Data
         }
 
         /// <summary>Retrieve term usage data for the specified Term ID, <paramref name="termId"/>.</summary>
+        /// <param name="termId">The term ID.</param>
         /// <returns>A data reader with the term usage.</returns>
         public IDataReader GetTermUsage(int termId)
         {

@@ -3,15 +3,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
 import { Dropdown, Button, Pager } from "@dnnsoftware/dnn-react-common";
-import { GridCell } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
 import ApiTokenRow from "./ApiTokenRow";
 import ApiTokenDetails from "./ApiTokenDetails";
 import CreateApiToken from "./CreateApiToken";
-
+import "./style.less";
 
 let scopeOptions = [];
 let filterOptions = [];
@@ -39,12 +37,12 @@ class ApiTokensPanelBody extends Component {
         isHost = util.settings.isHost;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const { props } = this;
         if (isHost) {
             props.dispatch(SecurityActions.getPortalList(util.settings.isHost, (dataPortal) => {
                 let portalList = Object.assign([], dataPortal.Results);
-                let currentPortalId = portalList[0].PortalID;
+                let currentPortalId = portalList[0].PortalId;
                 let currentPortal = portalList[0].PortalName;
                 this.setState({
                     portalList,
@@ -104,7 +102,7 @@ class ApiTokensPanelBody extends Component {
     }
 
     getTimespanOptions() {
-        if (timespanOptions.length == 0) {
+        if (timespanOptions.length === 0) {
             timespanOptions.push({ "value": 0, "label": resx.get("Days30") });
             timespanOptions.push({ "value": 1, "label": resx.get("Days60") });
             timespanOptions.push({ "value": 2, "label": resx.get("Days90") });
@@ -124,11 +122,11 @@ class ApiTokensPanelBody extends Component {
     resetApiFilterList() {
         let newOptions = [];
         newOptions.push({ "value": "", "label": resx.get("All") });
-        const f = this.state.currentScope == -2 ? this.state.apiTokenKeys : this.state.apiTokenKeys.filter((item) => {
-            return item.Scope == this.state.currentScope;
+        const f = this.state.currentScope === -2 ? this.state.apiTokenKeys : this.state.apiTokenKeys.filter((item) => {
+            return item.Scope === this.state.currentScope;
         });
         f.forEach((item) => {
-            if (newOptions.filter((option) => { return option.value == item.Key; }).length == 0)
+            if (newOptions.filter((option) => { return option.value === item.Key; }).length === 0)
                 newOptions.push({ "value": item.Key, "label": item.Name });
         });
         this.setState({
@@ -162,7 +160,7 @@ class ApiTokensPanelBody extends Component {
         let tableHeaders = tableFields.map((field, index) => {
             let className = "logHeader";
             return <div key={index} className={className} style={{ width: field.width.toString() + "%" }}>
-                <span>{field.name != "" && resx.get(field.name + ".Header")}&nbsp;</span>
+                <span>{field.name !== "" && resx.get(field.name + ".Header")}&nbsp;</span>
             </div>;
         });
 
@@ -226,7 +224,7 @@ class ApiTokensPanelBody extends Component {
                         type="danger"
                         onClick={() => {
                             util.utilities.confirm(resx.get("DeleteExpired.Confirm"), resx.get("Yes"), resx.get("No"), () => {
-                                this.props.dispatch(SecurityActions.deleteExpiredAndRevokedApiTokens((data) => {
+                                this.props.dispatch(SecurityActions.deleteExpiredAndRevokedApiTokens(() => {
                                     this.getData();
                                 }));
                             });
@@ -251,12 +249,12 @@ class ApiTokensPanelBody extends Component {
                                     value={state.currentPortalId}
                                     style={{ width: "100%" }}
                                     options={state.portalList.map((item) => {
-                                        return { label: item.PortalName, value: item.PortalID };
+                                        return { label: item.PortalName, value: item.PortalId };
                                     })}
                                     withBorder={false}
                                     onSelect={(value) => {
                                         let currentPortal = state.portalList.filter((item) => {
-                                            return item.PortalID === value.value;
+                                            return item.PortalId === value.value;
                                         })[0].PortalName;
                                         this.setState({
                                             currentPortalId: value.value,

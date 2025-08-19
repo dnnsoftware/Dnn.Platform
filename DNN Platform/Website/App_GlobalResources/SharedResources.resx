@@ -319,7 +319,7 @@
     <value>A user already exists for the user name specified.  Please register again using a different user name.</value>
   </data>
   <data name="RegError.Text" xml:space="preserve">
-    <value>An unexpected error occurred during registration.  Please contact the Administrator for futher information.</value>
+    <value>An unexpected error occurred during registration.  Please contact the Administrator for further information.</value>
   </data>
   <data name="PaneNotFound.Error" xml:space="preserve">
     <value>Cannot locate ContentPane for Theme</value>
@@ -520,7 +520,7 @@
     <value>Exception</value>
   </data>
   <data name="EXCEPTION_DesktopSrc.Text" xml:space="preserve">
-    <value>A module control must have a Desktopsrc value, aborting</value>
+    <value>A module control must have a DesktopSrc value, aborting</value>
   </data>
   <data name="EXCEPTION_FileLoad.Text" xml:space="preserve">
     <value>File load failed, aborting</value>
@@ -667,7 +667,7 @@
     <value>Directory already exists</value>
   </data>
   <data name="EXCEPTION.DuplicateLocale.Text" xml:space="preserve">
-    <value>This locale is lready Defined</value>
+    <value>This locale is already Defined</value>
   </data>
   <data name="EXCEPTION.SaveLocale.Text" xml:space="preserve">
     <value>A file operation failed. Please check resource file permissions so files can be edited.</value>

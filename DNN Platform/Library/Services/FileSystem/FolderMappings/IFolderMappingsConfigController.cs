@@ -17,11 +17,11 @@ namespace DotNetNuke.Services.FileSystem.FolderMappings
         void LoadConfig();
 
         /// <summary>Save data in folderMappings config file.</summary>
-        /// <param name="folderMappinsSettings"></param>
+        /// <param name="folderMappinsSettings">The folder mapping settings XML.</param>
         void SaveConfig(string folderMappinsSettings);
 
         /// <summary>Gets the folderMapping configured for a specific folder.</summary>
-        /// <param name="portalId">Portal Id where the folder is.</param>
+        /// <param name="portalId">Portal ID where the folder is.</param>
         /// <param name="folderPath">Specific folder path.</param>
         /// <returns>A <see cref="FolderMappingInfo"/> instance or <see langword="null"/>.</returns>
         FolderMappingInfo GetFolderMapping(int portalId, string folderPath);

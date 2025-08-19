@@ -9,8 +9,8 @@ import state from "../../../store/store";
 })
 export class DnnActionOpenFile {
 
+  /** The item to open. */
   @Prop() item!: Item;
-
 
   private handleClick(): void {
     window.open(this.item.path, "_blank");

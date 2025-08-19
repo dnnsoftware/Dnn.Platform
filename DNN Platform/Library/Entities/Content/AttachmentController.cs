@@ -33,7 +33,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>Initializes a new instance of the <see cref="AttachmentController"/> class.</summary>
-        /// <param name="contentController"></param>
+        /// <param name="contentController">The content controller.</param>
         public AttachmentController(IContentController contentController)
         {
             this.contentController = contentController;

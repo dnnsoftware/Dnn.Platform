@@ -293,8 +293,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         public string LocalResourceFile { get; set; }
 
-        /// <summary>  Gets a value indicating whether gets whether the control is on a Host or Portal Tab.</summary>
-        /// <value>A Boolean.</value>
+        /// <summary>Gets a value indicating whether the control is on a Host or Portal Tab.</summary>
         protected bool IsHost
         {
             get
@@ -415,7 +414,8 @@ namespace DotNetNuke.Web.UI.WebControls
             base.CreateChildControls();
         }
 
-        /// <summary>  OnPreRender runs just before the control is rendered.</summary>
+        /// <summary>OnPreRender runs just before the control is rendered.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -585,9 +585,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.LoadFolders();
         }
 
-        /// <summary>
-        ///
-        /// </summary>
+        /// <summary>Adds an empty preview image to the <see cref="pnlRightDiv"/> control.</summary>
         private void GeneratePreviewImage()
         {
             this.imgPreview = new Image();

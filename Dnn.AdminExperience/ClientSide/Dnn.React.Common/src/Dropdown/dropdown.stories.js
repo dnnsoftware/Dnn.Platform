@@ -1,18 +1,21 @@
 import React, { Component } from "react";
-import { storiesOf } from "@storybook/react";
 import Dropdown from "./index";
 
-class MyDropdown extends Component{
-    constructor(){
+export default {
+    component: Dropdown,
+};
+
+class MyDropdown extends Component {
+    constructor() {
         super();
-        this.state = { option: {} }
+        this.state = { option: {} };
     }
 
-    handleSelect(option){
+    handleSelect(option) {
         this.setState( { option: option });
     }
 
-    render(){
+    render() {
         return (
             <Dropdown
                 label="Test"
@@ -28,6 +31,6 @@ class MyDropdown extends Component{
     }
 }
 
-storiesOf("Dropdown", module).add("with content", () => (
+export const WithContent =  () => (
     <MyDropdown />
-));
+);

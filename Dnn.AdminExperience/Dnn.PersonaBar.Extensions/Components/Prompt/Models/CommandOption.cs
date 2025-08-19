@@ -10,6 +10,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 
     using Newtonsoft.Json;
 
+    /// <inheritdoc cref="DotNetNuke.Prompt.CommandOption"/>
     [Serializable]
     [JsonObject]
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project.")]

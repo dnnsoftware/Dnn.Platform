@@ -7,6 +7,7 @@ namespace DotNetNuke.Common.Controls
 
     using DotNetNuke.Entities.Modules;
 
+    /// <summary>A control which displays a message.</summary>
     public partial class Message : PortalModuleBase
     {
         /// <inheritdoc/>

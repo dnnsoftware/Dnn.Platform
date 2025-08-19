@@ -20,28 +20,42 @@ namespace DotNetNuke.UI.WebControls
 
         public enum LanguageItemStyle
         {
+            /// <summary>Display only the flag.</summary>
             FlagOnly = 1,
+
+            /// <summary>Display the flag and a caption.</summary>
             FlagAndCaption = 2,
+
+            /// <summary>Display only the caption.</summary>
             CaptionOnly = 3,
         }
 
         public enum LanguageListDirection
         {
+            /// <summary>Horizontal language list.</summary>
             Horizontal = 1,
+
+            /// <summary>Vertical language list.</summary>
             Vertical = 2,
         }
 
         /// <summary>Language Selection mode, offered to the user: single select or multiple select.</summary>
         public enum LanguageSelectionMode
         {
+            /// <summary>Multiple select.</summary>
             Multiple = 1,
+
+            /// <summary>Single select.</summary>
             Single = 2,
         }
 
         /// <summary>Selection object: Language ("de", "en") or Locale ("de-DE", "en-US").</summary>
         public enum LanguageSelectionObject
         {
+            /// <summary>A language without a culture, e.g. "de" or "en".</summary>
             NeutralCulture = 1,
+
+            /// <summary>A langauge/culture pair, e.g. "de-DE" or "en-US".</summary>
             SpecificCulture = 2,
         }
 

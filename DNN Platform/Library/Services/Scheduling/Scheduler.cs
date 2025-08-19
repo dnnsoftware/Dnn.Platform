@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>Adds an item to the collection of schedule items in queue.</summary>
-            /// <param name="scheduleHistoryItem"></param>
+            /// <param name="scheduleHistoryItem">The schedule history item.</param>
             /// <remarks>Thread Safe.</remarks>
             public static void AddToScheduleQueue(ScheduleHistoryItem scheduleHistoryItem)
             {
@@ -1367,7 +1367,7 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>Removes an item from the collection of schedule items in progress.</summary>
-            /// <param name="scheduleItem"></param>
+            /// <param name="scheduleItem">The schedule item.</param>
             /// <remarks>Thread Safe.</remarks>
             private static void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
             {
@@ -1391,7 +1391,7 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>Gets a schedulehistory item from the collection of schedule items in progress.</summary>
-            /// <param name="scheduleItem"></param>
+            /// <param name="scheduleItem">The schedule item.</param>
             /// <remarks>Thread Safe.</remarks>
             private static ScheduleHistoryItem GetScheduleItemFromScheduleInProgress(ScheduleItem scheduleItem)
             {

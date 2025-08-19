@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
-    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Client ID of the hidden input containing the Telerik anti-forgery token.</summary>
         protected static readonly string TelerikAntiForgeryTokenClientID = "telerikAntiForgeryToken";
 
-        /// <summary>Client Id of the Telerik uninstall radio buttons.</summary>
+        /// <summary>Client ID of the Telerik uninstall radio buttons.</summary>
         protected static readonly string TelerikUninstallOptionClientID = DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey;
 
         /// <summary>Form value when user selects Yes.</summary>
@@ -55,9 +55,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Form value when user selects No.</summary>
         protected static readonly string OptionNo = "N";
 
-        /// <summary>
-        /// The upgrade status filename.
-        /// </summary>
+        /// <summary>The upgrade status filename.</summary>
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
 
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
@@ -84,40 +82,41 @@ namespace DotNetNuke.Services.Install
                 { new InstallVersionStep(), 1 },
             };
 
+        private readonly IApplicationStatusInfo applicationStatus;
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationInfo application;
+
         static UpgradeWizard()
         {
             IsAuthenticated = false;
         }
 
-        /// <summary>
-        /// Gets the application version.
-        /// </summary>
-        protected Version ApplicationVersion
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        public UpgradeWizard()
+            : this(null, null, null, null)
         {
-            get
-            {
-                return DotNetNukeContext.Current.Application.Version;
-            }
         }
 
-        /// <summary>
-        /// Gets the current version.
-        /// </summary>
-        protected Version CurrentVersion
+        /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="application">The application info.</param>
+        public UpgradeWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IApplicationInfo application)
+            : base(portalController, appStatus, hostSettings)
         {
-            get
-            {
-                return DotNetNukeContext.Current.Application.CurrentVersion;
-            }
+            this.applicationStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.application = application ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
         }
 
-        private static string StatusFile
-        {
-            get
-            {
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", StatusFilename);
-            }
-        }
+        /// <summary>Gets the application version.</summary>
+        protected Version ApplicationVersion => this.application.Version;
+
+        /// <summary>Gets the current version.</summary>
+        protected Version CurrentVersion => this.application.CurrentVersion;
+
+        private static string StatusFile => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", StatusFilename);
 
         private static bool IsAuthenticated { get; set; }
 
@@ -139,7 +138,6 @@ namespace DotNetNuke.Services.Install
         /// <param name="accountInfo">Username and password to validate host user.</param>
         /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
         [WebMethod]
-
         public static Tuple<bool, string, SecurityTabResult> GetSecurityTab(Dictionary<string, string> accountInfo)
         {
             if (!VerifyHostUser(accountInfo, out var errorMsg))
@@ -212,7 +210,8 @@ namespace DotNetNuke.Services.Install
                 LaunchUpgrade();
 
                 // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
-                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
+                var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+                hostSettingsService.Update("InstallerFilesRemoved", "False", true);
             }
         }
 
@@ -306,7 +305,7 @@ namespace DotNetNuke.Services.Install
             }
 
             this.SslRequiredCheck();
-            GetInstallerLocales();
+            GetInstallerLocales(this.applicationStatus);
         }
 
         /// <inheritdoc />
@@ -595,9 +594,9 @@ namespace DotNetNuke.Services.Install
                 .Update(setting);
         }
 
-        private static void GetInstallerLocales()
+        private static void GetInstallerLocales(IApplicationStatusInfo applicationStatus)
         {
-            var filePath = Globals.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = applicationStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
 
             if (File.Exists(filePath))
             {
@@ -793,7 +792,7 @@ namespace DotNetNuke.Services.Install
                 this.versionLabel.Visible = false;
                 this.currentVersionLabel.Visible = false;
                 this.versionsMatch.Text = this.LocalizeString("VersionsMatch");
-                if (Globals.IncrementalVersionExists(this.CurrentVersion))
+                if (this.applicationStatus.IncrementalVersionExists(this.CurrentVersion))
                 {
                     this.versionsMatch.Text = this.LocalizeString("VersionsMatchButIncrementalExists");
                 }
@@ -842,15 +841,15 @@ namespace DotNetNuke.Services.Install
             // remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
-            Config.Touch();
+            Config.Touch(this.applicationStatus);
             this.Response.Redirect("../Default.aspx", true);
         }
 
         private void SslRequiredCheck()
         {
-            if (Entities.Host.Host.UpgradeForceSsl && !this.Request.IsSecureConnection)
+            if (this.hostSettings.UpgradeForceSsl && !this.Request.IsSecureConnection)
             {
-                var sslDomain = Entities.Host.Host.SslDomain;
+                var sslDomain = this.hostSettings.SslDomain;
                 if (string.IsNullOrEmpty(sslDomain))
                 {
                     sslDomain = this.Request.Url.Host;

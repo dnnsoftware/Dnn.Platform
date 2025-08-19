@@ -18,7 +18,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     public class SetMode : IConsoleCommand
     {
         [FlagParameter("mode", "Prompt_SetMode_FlagMode", "DNN View Mode", true)]
-
         private const string FlagMode = "mode";
 
         /// <inheritdoc/>

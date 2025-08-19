@@ -11,9 +11,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      StandardEditorInfoAdapter
     /// <summary>The StandardEditorInfoAdapter control provides an Adapter for standard datasources.</summary>
     public class StandardEditorInfoAdapter : IEditorInfoAdapter
     {
@@ -21,8 +18,8 @@ namespace DotNetNuke.UI.WebControls
         private readonly string fieldName;
 
         /// <summary>Initializes a new instance of the <see cref="StandardEditorInfoAdapter"/> class.</summary>
-        /// <param name="dataSource"></param>
-        /// <param name="fieldName"></param>
+        /// <param name="dataSource">The data source object.</param>
+        /// <param name="fieldName">The field/property name.</param>
         public StandardEditorInfoAdapter(object dataSource, string fieldName)
         {
             this.dataSource = dataSource;

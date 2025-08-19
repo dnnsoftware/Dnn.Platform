@@ -169,7 +169,7 @@
     <value>Parent Term</value>
   </data>
   <data name="ParentTerm.ToolTip" xml:space="preserve">
-    <value>The parent term for this heirarchical term.</value>
+    <value>The parent term for this hierarchical term.</value>
   </data>
   <data name="TermName.Text" xml:space="preserve">
     <value>Name</value>
@@ -217,7 +217,7 @@
     <value>Type</value>
   </data>
   <data name="Type.ToolTip" xml:space="preserve">
-    <value>The type of vocabulary, simple or heirarchical.</value>
+    <value>The type of vocabulary, simple or hierarchical.</value>
   </data>
   <data name="VocabularyExists.Error" xml:space="preserve">
     <value>The vocabulary "{0}" exists in the list.</value>

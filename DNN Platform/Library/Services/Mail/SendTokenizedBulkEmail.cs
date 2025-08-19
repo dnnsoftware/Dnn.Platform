@@ -70,11 +70,11 @@ namespace DotNetNuke.Services.Mail
         }
 
         /// <summary>Initializes a new instance of the <see cref="SendTokenizedBulkEmail"/> class.</summary>
-        /// <param name="addressedRoles"></param>
-        /// <param name="addressedUsers"></param>
-        /// <param name="removeDuplicates"></param>
-        /// <param name="subject"></param>
-        /// <param name="body"></param>
+        /// <param name="addressedRoles">The names of the roles to which the email is addressed.</param>
+        /// <param name="addressedUsers">The users to which the email is addressed.</param>
+        /// <param name="removeDuplicates">Whether to remove duplicate recipients.</param>
+        /// <param name="subject">The email's subject.</param>
+        /// <param name="body">The email's body.</param>
         public SendTokenizedBulkEmail(List<string> addressedRoles, List<UserInfo> addressedUsers, bool removeDuplicates, string subject, string body)
         {
             this.ReportRecipients = true;
@@ -101,8 +101,13 @@ namespace DotNetNuke.Services.Mail
         // Existing public API
         public enum AddressMethods
         {
+            /// <summary>Put the recipient's email address in the TO field.</summary>
             Send_TO = 1,
+
+            /// <summary>Put the recipient's email address in the BCC field.</summary>
             Send_BCC = 2,
+
+            /// <summary>Send via an email relay address.</summary>
             Send_Relay = 3,
         }
 

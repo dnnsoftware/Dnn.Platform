@@ -7,7 +7,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
     using DotNetNuke.Services.Localization;
 
-    /// <summary></summary>
+    /// <summary>A skin/theme object which displays the site's copyright statement.</summary>
     public partial class Copyright : SkinObjectBase
     {
         private const string MyFileName = "Copyright.ascx";

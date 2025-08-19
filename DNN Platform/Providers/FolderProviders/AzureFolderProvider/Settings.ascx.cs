@@ -118,8 +118,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             folderMappingController.UpdateFolderMapping(folderMapping);
         }
 
-        /// <summary>
-        /// </summary>
+        /// <summary>Handles the <see cref="ListControl.SelectedIndexChanged"/> event of the Container drop-down list.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         protected void ddlContainers_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -150,8 +151,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
-        /// <summary>
-        /// </summary>
+        /// <summary>Handles the click event for the New Container button.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         protected void btnNewContainer_Click(object sender, EventArgs e)
         {
@@ -159,8 +161,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.CreateContainerPanel.Visible = true;
         }
 
-        /// <summary>
-        /// </summary>
+        /// <summary>Handles the click event for the Select Existing Container button.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         protected void btnSelectExistingContainer_Click(object sender, EventArgs e)
         {
@@ -168,8 +171,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.CreateContainerPanel.Visible = false;
         }
 
-        /// <summary>
-        /// </summary>
+        /// <summary>Handles the <see cref="CustomValidator.ServerValidate"/> event of the Container Name validator.</summary>
+        /// <param name="source">The event sender.</param>
+        /// <param name="args">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
         protected void valContainerName_ServerValidate(object source, ServerValidateEventArgs args)
         {

@@ -26,7 +26,7 @@ export class DnnStylesModule {
 
   connectedCallback() {
     this.resizeObserver = new ResizeObserver(entries => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         const newWidth = entry.contentRect.width;
         if (this.componentWidth == newWidth) {
           return;
@@ -50,8 +50,8 @@ export class DnnStylesModule {
   }
 
   componentWillLoad() {
-    var dnnStyles = window.dnn as unknown as IDnnWrapper;
-    this.resx = dnnStyles.initStyles().utility?.resx?.Styles as IStylesResx;
+    const dnnStyles = window.dnn as unknown as IDnnWrapper;
+    this.resx = dnnStyles.initStyles().utility?.resx?.Styles;
     const header = document.querySelector("#dnnStylesHeader h3");
     if (header) {
       header.textContent = this.resx.nav_Styles;
@@ -337,7 +337,7 @@ export class DnnStylesModule {
               {this.resx?.RestoreDefault}
             </dnn-button>
             <dnn-button
-              formButtonType='submit'
+              type='submit'
             >
               {this.resx?.Save}
             </dnn-button>

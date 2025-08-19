@@ -350,7 +350,7 @@ namespace DotNetNuke.UI.WebControls
             private readonly PagingControl pagingControl;
 
             /// <summary>Initializes a new instance of the <see cref="PageNumberLinkTemplate"/> class.</summary>
-            /// <param name="ctlPagingControl"></param>
+            /// <param name="ctlPagingControl">The paging control.</param>
             public PageNumberLinkTemplate(PagingControl ctlPagingControl)
             {
                 this.pagingControl = ctlPagingControl;

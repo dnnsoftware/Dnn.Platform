@@ -5,9 +5,11 @@
 namespace Dnn.PersonaBar.UI.MenuControllers
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
+
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -16,6 +18,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.Api.Internal;
 
+    /// <summary>An <see cref="IMenuItemController"/> for the edit menu.</summary>
     [DnnPageEditor]
     public class EditMenuController : IMenuItemController
     {
@@ -27,7 +30,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
         /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
-            return this.IsPageAdmin() || this.IsModuleAdmin();
+            return IsPageAdmin() || IsModuleAdmin();
         }
 
         /// <inheritdoc/>
@@ -36,27 +39,19 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             return null;
         }
 
-        private bool IsModuleAdmin()
+        private static bool IsModuleAdmin()
         {
-            bool moduleAdmin = Null.NullBoolean;
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            foreach (ModuleInfo module in TabController.CurrentPage.Modules)
-            {
-                if (!module.IsDeleted)
-                {
-                    bool hasEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString, module);
-                    if (hasEditPermissions)
-                    {
-                        moduleAdmin = true;
-                        break;
-                    }
-                }
-            }
+            var moduleAdmin = TabController.CurrentPage.Modules.Cast<ModuleInfo>()
+                .Where(module => !module.IsDeleted)
+                .Any(module => ModulePermissionController.HasModuleAccess(
+                    SecurityAccessLevel.Edit,
+                    Null.NullString,
+                    module));
 
-            return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && moduleAdmin;
+            return PortalSettings.Current.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && moduleAdmin;
         }
 
-        private bool IsPageAdmin()
+        private static bool IsPageAdmin()
         {
             return TabPermissionController.CanAddContentToPage()
                     || TabPermissionController.CanAddPage()

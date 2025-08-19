@@ -14,15 +14,15 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
         }
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowException"/> class.</summary>
-        /// <param name="message"></param>
+        /// <param name="message">A message that describes the error.</param>
         public WorkflowException(string message)
             : base(message)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowException"/> class.</summary>
-        /// <param name="message"></param>
-        /// <param name="innerException"></param>
+        /// <param name="message">A message that describes the error.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception. If the <paramref name="innerException"/> parameter is not a <see langword="null"/> reference, the current exception is raised in a catch block that handles the inner exception.</param>
         public WorkflowException(string message, Exception innerException)
             : base(message, innerException)
         {

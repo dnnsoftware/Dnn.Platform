@@ -18,9 +18,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Common.Utils;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -46,8 +48,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Host = DotNetNuke.Entities.Host.Host;
-
     /// <summary>The Signin UserModuleBase is used to provide a login for a registered user.</summary>
     public partial class Login : UserModuleBase
     {
@@ -59,6 +59,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly INavigationManager navigationManager;
+        private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
 
         private readonly List<AuthenticationLoginBase> loginControls = new List<AuthenticationLoginBase>();
         private readonly List<AuthenticationLoginBase> defaultauthLogin = new List<AuthenticationLoginBase>();
@@ -66,8 +68,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         public Login()
+            : this(null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Login(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets the Redirect URL (after successful login).</summary>
@@ -107,7 +120,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
 
-                var alias = this.PortalAlias.HTTPAlias;
+                var alias = this.CurrentPortalAlias.HttpAlias;
                 var comparison = StringComparison.InvariantCultureIgnoreCase;
 
                 // we need .TrimEnd('/') because a portlalias for a specific culture will not have a trailing /, while a returnurl will.
@@ -145,7 +158,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             && this.User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name
                             && this.LocaleEnabled(this.User.Profile.PreferredLocale))
                     {
-                        redirectURL = ReplaceLanguage(redirectURL, CultureInfo.CurrentCulture.Name, this.User.Profile.PreferredLocale);
+                        redirectURL = ReplaceLanguage(this.hostSettings, redirectURL, CultureInfo.CurrentCulture.Name, this.User.Profile.PreferredLocale);
                     }
                 }
 
@@ -324,10 +337,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private bool NeedRedirectAfterLogin =>
                this.LoginStatus == UserLoginStatus.LOGIN_SUCCESS
             || this.LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
+#pragma warning disable CS0618 // UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD is deprecated
             || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
             || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
+#pragma warning disable CS0618 // UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD is deprecated
+
+        private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
         /// <summary>Page_Init runs when the control is initialised.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -364,6 +382,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -454,6 +473,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>cmdAssociate_Click runs when the associate button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -492,6 +513,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>cmdCreateUser runs when the register (as new user) button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -519,6 +542,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>cmdProceed_Click runs when the Proceed Anyway button is clicked.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -529,6 +554,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>PasswordUpdated runs when the password is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void PasswordUpdated(object sender, Password.PasswordUpdatedEventArgs e)
         {
             PasswordUpdateStatus status = e.UpdateStatus;
@@ -540,7 +567,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 user.Membership.UpdatePassword = false;
                 this.LoginStatus = user.IsSuperUser ? UserLoginStatus.LOGIN_SUPERUSER : UserLoginStatus.LOGIN_SUCCESS;
                 UserLoginStatus userstatus = UserLoginStatus.LOGIN_FAILURE;
+#pragma warning disable CS0618 // UserController.CheckInsecurePassword is deprecated
                 UserController.CheckInsecurePassword(user.Username, user.Membership.Password, ref userstatus);
+#pragma warning disable CS0618 // UserController.CheckInsecurePassword is deprecated
                 this.LoginStatus = userstatus;
                 this.ValidateUser(user, true);
             }
@@ -551,6 +580,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>DataConsentCompleted runs after the user has gone through the data consent screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void DataConsentCompleted(object sender, DataConsent.DataConsentEventArgs e)
         {
             switch (e.Status)
@@ -569,16 +600,17 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>ProfileUpdated runs when the profile is updated.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void ProfileUpdated(object sender, EventArgs e)
         {
             // Authorize User
             this.ValidateUser(this.ctlProfile.User, true);
         }
 
-        /// <summary>
-        /// UserAuthenticated runs when the user is authenticated by one of the child
-        /// Authentication controls.
-        /// </summary>
+        /// <summary>UserAuthenticated runs when the user is authenticated by one of the child Authentication controls.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
         {
             this.LoginStatus = e.LoginStatus;
@@ -615,9 +647,9 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                     break;
                 case UserLoginStatus.LOGIN_USERLOCKEDOUT:
-                    if (Host.AutoAccountUnlockDuration > 0)
+                    if (this.hostSettings.AutoAccountUnlockDuration > TimeSpan.Zero)
                     {
-                        this.AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", this.LocalResourceFile), Host.AutoAccountUnlockDuration), ModuleMessage.ModuleMessageType.RedError, true);
+                        this.AddLocalizedModuleMessage(string.Format(Localization.GetString("UserLockedOut", this.LocalResourceFile), this.hostSettings.AutoAccountUnlockDuration.TotalMinutes), ModuleMessage.ModuleMessageType.RedError, true);
                     }
                     else
                     {
@@ -696,6 +728,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>UserCreateCompleted runs when a new user has been Created.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
             var strMessage = string.Empty;
@@ -727,13 +761,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>Replaces the original language with user language.</summary>
+        /// <param name="hostSettings">The host settings.</param>
         /// <param name="url">The URL to update.</param>
         /// <param name="originalLanguage">The original language.</param>
         /// <param name="newLanguage">The new language.</param>
         /// <returns>The <paramref name="url"/> with the <paramref name="newLanguage"/>.</returns>
-        private static string ReplaceLanguage(string url, string originalLanguage, string newLanguage)
+        private static string ReplaceLanguage(IHostSettings hostSettings, string url, string originalLanguage, string newLanguage)
         {
-            var returnValue = Host.UseFriendlyUrls
+            var returnValue = hostSettings.UseFriendlyUrls
                 ? Regex.Replace(url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
                 : UserLanguageRegex.Replace(url, "$1$2$3" + newLanguage + "$5");
             return returnValue;
@@ -1326,7 +1361,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     this.pnlProceed.Visible = true;
                     break;
                 case UserValidStatus.UPDATEPASSWORD:
-                    var portalAlias = Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias);
+                    var portalAlias = Globals.AddHTTP(this.CurrentPortalAlias.HttpAlias);
                     if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
                     {
                         UserController.ResetPasswordToken(this.User);
@@ -1388,15 +1423,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private void AddEventLog(int userId, string username, int portalId, string propertyName, string propertyValue)
         {
-            var log = new LogInfo
+            ILogInfo log = new LogInfo
             {
-                LogUserID = userId,
                 LogUserName = username,
-                LogPortalID = portalId,
-                LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
             };
+            log.LogPortalId = portalId;
+            log.LogUserId = userId;
             log.AddProperty(propertyName, propertyValue);
-            LogController.Instance.AddLog(log);
+            this.eventLogger.AddLog(log);
         }
     }
 }

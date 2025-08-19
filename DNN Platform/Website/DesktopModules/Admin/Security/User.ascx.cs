@@ -6,74 +6,82 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
     using System.Collections;
     using System.Linq;
-    using System.Web;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
-    using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
-    using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
-    using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>The User UserModuleBase is used to manage the base parts of a User.</summary>
     public partial class User : UserUserControlBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
+        private readonly IHostSettings hostSettings;
+        private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IPortalController portalController;
+        private readonly DataProvider dataProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public User()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
+            : this(hostSettings, javaScript, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider)
+        {
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
+        }
 
         /// <summary>Gets a value indicating whether the User is valid.</summary>
-        public bool IsValid
-        {
-            get
-            {
-                return this.Validate();
-            }
-        }
+        public bool IsValid => this.Validate();
 
         public UserCreateStatus CreateStatus { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the Password section is displayed.</summary>
         public bool ShowPassword
         {
-            get
-            {
-                return this.Password.Visible;
-            }
-
-            set
-            {
-                this.Password.Visible = value;
-            }
+            get => this.Password.Visible;
+            set => this.Password.Visible = value;
         }
 
         /// <summary>Gets or sets a value indicating whether the Update button.</summary>
         public bool ShowUpdate
         {
-            get
-            {
-                return this.actionsRow.Visible;
-            }
-
-            set
-            {
-                this.actionsRow.Visible = value;
-            }
+            get => this.actionsRow.Visible;
+            set => this.actionsRow.Visible = value;
         }
 
         /// <summary>Gets or sets user Form's css class.</summary>
@@ -110,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.Users
             var user = this.User;
 
             // make sure username is set in UseEmailAsUserName" mode
-            if (PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false))
+            if (PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false))
             {
                 user.Username = this.User.Email;
                 this.User.Username = this.User.Email;
@@ -186,7 +194,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.txtPassword.Attributes.Add("value", this.txtPassword.Text);
             }
 
-            bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
+            bool disableUsername = PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false);
 
             // only show username row once UseEmailAsUserName is disabled in site settings
             if (disableUsername)
@@ -207,7 +215,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.userName.Visible = false;
                 this.userNameReadOnly.Visible = false;
 
-                ArrayList portals = PortalController.GetPortalsByUser(this.User.UserID);
+                ArrayList portals = PortalController.GetPortalsByUser(this.dataProvider, this.User.UserID);
                 if (portals.Count > 1)
                 {
                     this.numSites.Text = string.Format(Localization.GetString("UpdateUserName", this.LocalResourceFile), portals.Count.ToString());
@@ -282,11 +290,11 @@ namespace DotNetNuke.Modules.Admin.Users
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
 
-            if (Host.EnableStrengthMeter)
+            if (this.hostSettings.EnableStrengthMeter)
             {
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtPassword.CssClass = "password-strength";
@@ -363,7 +371,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     return false;
                 }
 
-                if (PortalController.GetPortalsByUser(this.User.UserID).Count == 1)
+                if (PortalController.GetPortalsByUser(this.dataProvider, this.User.UserID).Count == 1)
                 {
                     return true;
                 }
@@ -551,7 +559,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
                             if (usersWithSameDisplayName.Any(user => user.UserID != this.User.UserID))
                             {
-                                UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
+                                UI.Skins.Skin.AddModuleMessage(this, this.LocalizeText("DisplayNameNotUnique"), UI.Skins.Controls.ModuleMessage.ModuleMessageType.RedError);
                                 return;
                             }
                         }

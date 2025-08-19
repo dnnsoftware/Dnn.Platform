@@ -16,12 +16,25 @@ namespace DotNetNuke.Services.Log.EventLog
     {
         public enum ExceptionLogType
         {
+            /// <summary>A general exception.</summary>
             GENERAL_EXCEPTION = 0,
+
+            /// <summary>An exception while loading a module.</summary>
             MODULE_LOAD_EXCEPTION = 1,
+
+            /// <summary>An exception while loading a page.</summary>
             PAGE_LOAD_EXCEPTION = 2,
+
+            /// <summary>An exception while running a scheduled task.</summary>
             SCHEDULER_EXCEPTION = 3,
+
+            /// <summary>A security violation.</summary>
             SECURITY_EXCEPTION = 4,
+
+            /// <summary>An exception while running a search indexer.</summary>
             SEARCH_INDEXER_EXCEPTION = 5,
+
+            /// <summary>An exception related to data issues.</summary>
             DATA_EXCEPTION = 6,
         }
 

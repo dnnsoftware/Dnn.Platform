@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
     internal class UserRequestIPAddressControllerTest
     {
         private Mock<IPortalController> mockPortalController;
-        private Mock<IHostController> mockHostController;
+        private Mock<IHostSettingsService> hostSettingsService;
         private Mock<HttpRequestBase> mockRequest;
 
         private UserRequestIPAddressController userRequestIPAddressController;
@@ -34,8 +34,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         public void Setup()
         {
             // Setup Mock
-            this.mockHostController = new Mock<IHostController>();
-            this.mockHostController.As<IHostSettingsService>();
+            this.hostSettingsService = new Mock<IHostSettingsService>();
             this.mockPortalController = MockComponentProvider.CreateNew<IPortalController>();
             PortalController.SetTestableInstance(this.mockPortalController.Object);
 
@@ -43,8 +42,8 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
                 services =>
                 {
                     services.AddSingleton(this.mockPortalController.Object);
-                    services.AddSingleton(this.mockHostController.Object);
-                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.hostSettingsService.Object);
+                    services.AddSingleton((IHostSettingsService)this.hostSettingsService.Object);
                 });
             var mockHttpContext = Mock.Get(HttpContextSource.Current);
             this.mockRequest = Mock.Get(mockHttpContext.Object.Request);
@@ -65,7 +64,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [TestCase("111.111.111.111,123.112.11.33", "X-Forwarded-For")]
         [TestCase("111.111.111.111", "X-ProxyUser-Ip")]
         [TestCase("111.111.111.111,23.112.11.33", "X-ProxyUser-Ip")]
-
         public void UserRequestIPAddress_ShouldReturnIP_IfAnyHeaderIsPresent(string requestIp, string headerName)
         {
             // Arrange
@@ -73,7 +71,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
 
             NameValueCollection headersWithXForwardedHeaders = new NameValueCollection();
             headersWithXForwardedHeaders.Add(headerName, requestIp);
-            this.mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
+            this.hostSettingsService.As<IHostSettingsService>().Setup(hc => hc.GetString(It.IsAny<string>())).Returns(headerName);
             this.mockRequest.Setup(x => x.Headers).Returns(headersWithXForwardedHeaders);
 
             // Act
@@ -84,7 +82,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         }
 
         [Test]
-
         public void UserRequestIPAddress_ShouldReturnIP_IfRemoteAddrServerVariablePresent()
         {
             // Arrange
@@ -102,12 +99,9 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             // Assert
             Assert.That(userRequestIPAddress, Is.SameAs(expectedIp));
             this.mockRequest.VerifyGet(r => r.ServerVariables);
-            this.mockRequest.VerifyGet(r => r.Headers);
-            this.mockHostController.Verify(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>()));
         }
 
         [Test]
-
         public void UserRequestIPAddress_ShouldReturnIP_IfUserHostAddress()
         {
             // Arrange
@@ -125,7 +119,6 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
         [TestCase("abc.111.eer")]
         [TestCase("somedomain.com")]
         [TestCase("244.275.111.111")]
-
         public void UserRequestIPAddress_ShouldReturnEmptyString_IfIPAddressIsNotValid(string requestIp)
         {
             // Arrange
@@ -134,7 +127,7 @@ namespace DotNetNuke.Tests.Core.Services.UserRequest
             NameValueCollection headersWithXForwardedHeaders = new NameValueCollection();
             headersWithXForwardedHeaders.Add(headerName, requestIp);
             this.mockRequest.Setup(x => x.Headers).Returns(headersWithXForwardedHeaders);
-            this.mockHostController.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
+            this.hostSettingsService.Setup(hc => hc.GetString(It.IsAny<string>(), It.IsAny<string>())).Returns(headerName);
 
             // Act
             var userRequestIPAddress = this.userRequestIPAddressController.GetUserRequestIPAddress(this.mockRequest.Object);

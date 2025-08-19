@@ -331,7 +331,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Gets the value of a child node as a <see cref="bool"/>.</summary>
         /// <param name="navigator">A navigator pointing to the parent node.</param>
         /// <param name="path">An XPath expression to find the child node.</param>
-        /// <returns>The value of the node or <c>false</c> if the node doesn't exist or doesn't have a value.</returns>
+        /// <returns>The value of the node or <see langword="false"/> if the node doesn't exist or doesn't have a value.</returns>
         /// <seealso cref="Convert.ToBoolean(string)"/>
         public static bool GetNodeValueBoolean(XPathNavigator navigator, string path)
         {
@@ -764,6 +764,9 @@ namespace DotNetNuke.Common.Utilities
             return sb.ToString();
         }
 
+        /// <summary>Load an XML document from a URL.</summary>
+        /// <param name="contentUrl">The URL to the XML document.</param>
+        /// <returns>An XML document.</returns>
         [DnnDeprecated(7, 0, 0, "Use XmlDocument.Load instead", RemovalVersion = 11)]
         public static partial XmlDocument GetXMLContent(string contentUrl)
         {

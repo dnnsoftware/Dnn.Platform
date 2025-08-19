@@ -18,76 +18,29 @@ namespace DotNetNuke.Application
     {
         private static NewReleaseMode status = NewReleaseMode.None;
 
-        /// <summary>Initializes a new instance of the <see cref="Application"/> class.</summary>
-        public Application()
-        {
-        }
+        /// <inheritdoc />
+        public string Company => "DNN Corporation";
 
         /// <inheritdoc />
-        public string Company
-        {
-            get
-            {
-                return "DNN Corporation";
-            }
-        }
+        public virtual Version CurrentVersion => DataProvider.Instance().GetVersion();
 
         /// <inheritdoc />
-        public virtual Version CurrentVersion
-        {
-            get
-            {
-                return DataProvider.Instance().GetVersion();
-            }
-        }
+        public virtual string Description => "DNN Platform";
 
         /// <inheritdoc />
-        public virtual string Description
-        {
-            get
-            {
-                return "DNN Platform";
-            }
-        }
+        public string HelpUrl => "https://docs.dnncommunity.org/";
 
         /// <inheritdoc />
-        public string HelpUrl
-        {
-            get
-            {
-                return "https://docs.dnncommunity.org/";
-            }
-        }
+        public string LegalCopyright => $"DNN Platform is copyright 2002-{DateTime.Today:yyyy} by .NET Foundation";
 
         /// <inheritdoc />
-        public string LegalCopyright
-        {
-            get
-            {
-                return string.Concat("DNN Platform is copyright 2002-", DateTime.Today.ToString("yyyy"), " by .NET Foundation");
-            }
-        }
+        public virtual string Name => "DNNCORP.CE";
 
         /// <inheritdoc />
-        public virtual string Name
-        {
-            get
-            {
-                return "DNNCORP.CE";
-            }
-        }
-
-        /// <inheritdoc />
-        public virtual string SKU
-        {
-            get
-            {
-                return "DNN";
-            }
-        }
+        public virtual string SKU => "DNN";
 
         /// <summary>Gets the status of the DotnetNuke application.</summary>
-        /// <remarks>If the value is not be Stable, you will see the exactly status and version in page's title if allow display beta message in host setting.</remarks>
+        /// <remarks>If the value is not <see cref="Abstractions.Application.ReleaseMode.Stable"/>, you will see the exact status and version in page's title if allow display beta message in host setting.</remarks>
         /// <value>The value can be: None, Alpha, Beta, RC, Stable.</value>
         [Obsolete("Deprecated in DotNetNuke 9.7.0. Use 'DotNetNuke.Abstractions.Application.IApplicationInfo' with Dependency Injection instead. Scheduled removal in v11.0.0.")]
         public ReleaseMode Status { get => (ReleaseMode)(this as IApplicationInfo).Status; }
@@ -97,17 +50,21 @@ namespace DotNetNuke.Application
         {
             get
             {
-                if (status == NewReleaseMode.None)
+                if (status != NewReleaseMode.None)
                 {
-                    Assembly assy = Assembly.GetExecutingAssembly();
-                    if (Attribute.IsDefined(assy, typeof(AssemblyStatusAttribute)))
-                    {
-                        Attribute attr = Attribute.GetCustomAttribute(assy, typeof(AssemblyStatusAttribute));
-                        if (attr != null)
-                        {
-                            status = (NewReleaseMode)((AssemblyStatusAttribute)attr).Status;
-                        }
-                    }
+                    return status;
+                }
+
+                var assembly = Assembly.GetExecutingAssembly();
+                if (!Attribute.IsDefined(assembly, typeof(AssemblyStatusAttribute)))
+                {
+                    return status;
+                }
+
+                var statusAttribute = Attribute.GetCustomAttribute(assembly, typeof(AssemblyStatusAttribute));
+                if (statusAttribute != null)
+                {
+                    status = (NewReleaseMode)((AssemblyStatusAttribute)statusAttribute).Status;
                 }
 
                 return status;
@@ -115,31 +72,13 @@ namespace DotNetNuke.Application
         }
 
         /// <inheritdoc />
-        public string Title
-        {
-            get
-            {
-                return "DotNetNuke";
-            }
-        }
+        public string Title => "DotNetNuke";
 
         /// <inheritdoc />
-        public string Trademark
-        {
-            get
-            {
-                return "DotNetNuke,DNN";
-            }
-        }
+        public string Trademark => "DotNetNuke,DNN";
 
         /// <inheritdoc />
-        public string Type
-        {
-            get
-            {
-                return "Framework";
-            }
-        }
+        public string Type => "Framework";
 
         /// <inheritdoc />
         public string UpgradeUrl
@@ -157,13 +96,7 @@ namespace DotNetNuke.Application
         }
 
         /// <inheritdoc />
-        public string Url
-        {
-            get
-            {
-                return "https://dnncommunity.org";
-            }
-        }
+        public string Url => "https://dnncommunity.org";
 
         /// <inheritdoc />
         public virtual Version Version
@@ -177,9 +110,6 @@ namespace DotNetNuke.Application
         }
 
         /// <inheritdoc />
-        public virtual bool ApplyToProduct(string productNames)
-        {
-            return productNames.Contains(this.Name);
-        }
+        public virtual bool ApplyToProduct(string productNames) => productNames.Contains(this.Name);
     }
 }

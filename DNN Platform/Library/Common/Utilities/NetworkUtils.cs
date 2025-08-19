@@ -14,7 +14,10 @@ namespace DotNetNuke.Common.Utils
     /// <summary>Enumeration of IP address types.</summary>
     public enum AddressType
     {
+        /// <summary>A version 4 IP address, e.g. 8.8.8.8.</summary>
         IPv4 = 0,
+
+        /// <summary>A version 6 IP address, e.g. 2001:4860:4860::8888.</summary>
         IPv6 = 1,
     }
 

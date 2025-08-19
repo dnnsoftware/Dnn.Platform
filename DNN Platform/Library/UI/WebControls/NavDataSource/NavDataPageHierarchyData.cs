@@ -168,7 +168,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>Computes valuepath necessary for ASP.NET controls to guarantee uniqueness.</summary>
-        /// <param name="objNode"></param>
+        /// <param name="objNode">The nav node.</param>
         /// <returns>ValuePath.</returns>
         /// <remarks>Not sure if it is ok to hardcode the "\" separator, but also not sure where I would get it from.</remarks>
         private string GetValuePath(DNNNode objNode)

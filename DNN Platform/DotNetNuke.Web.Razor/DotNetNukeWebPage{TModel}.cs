@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.Razor
 
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>A razor web page model.</summary>
+    /// <typeparam name="TModel">The model type.</typeparam>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public abstract partial class DotNetNukeWebPage<TModel> : DotNetNukeWebPage
         where TModel : class

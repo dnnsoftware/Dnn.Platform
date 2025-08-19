@@ -137,6 +137,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page.</summary>
+        /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

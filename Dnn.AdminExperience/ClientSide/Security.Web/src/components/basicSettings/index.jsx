@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { security as SecurityActions } from "../../actions";
-import { InputGroup, Dropdown, Switch, Label, Button } from "@dnnsoftware/dnn-react-common";
+import { InputGroup, Dropdown, Switch, Label, Button, SingleLineInput, Tooltip } from "@dnnsoftware/dnn-react-common";
 import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.module.less";
@@ -103,7 +103,7 @@ class BasicSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {state} = this;
 
@@ -123,14 +123,32 @@ class BasicSettingsPanelBody extends Component {
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plAdministrator.Help") }
-                            label={resx.get("plAdministrator") } />
+                            label={resx.get("plAdministrator") }
+                        />
                         <Dropdown
                             options={this.getAdminUserOptions() }
                             value={state.basicLoginSettings.PrimaryAdministratorId}
                             onSelect={this.onSettingChange.bind(this, "PrimaryAdministratorId") }
                             enabled={canEdit} />
                     </InputGroup>
-                    <div style={{paddingBottom: "15px", fontStyle: "italic"}}>{resx.get("RedirectionMovedToSiteSettings")}</div>
+                    <InputGroup
+                        style={{marginBottom: "2rem"}}
+                    >
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Label
+                                tooltipMessage={resx.get("plUserRequestIpHeader.Help") }
+                                label={resx.get("plUserRequestIpHeader") }
+                                style={{width: "auto", alignItems: "center"}}
+                            />
+                            <Tooltip
+                                messages={[resx.get("GlobalSetting")]}
+                                type="global"/>
+                        </div>
+                        <SingleLineInput
+                            value={state.basicLoginSettings.userRequestIPHeader}
+                            onChange={this.onSettingChange.bind(this, "userRequestIPHeader") }
+                        />
+                    </InputGroup>
                     <InputGroup>
                         <div className="loginSettings-row_switch" style={{ margin: "0" }}>
                             <Label

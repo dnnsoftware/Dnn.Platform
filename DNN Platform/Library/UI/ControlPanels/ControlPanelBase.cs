@@ -29,7 +29,10 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected enum ViewPermissionType
         {
+            /// <summary>Permission to view.</summary>
             View = 0,
+
+            /// <summary>Permission to edit.</summary>
             Edit = 1,
         }
 

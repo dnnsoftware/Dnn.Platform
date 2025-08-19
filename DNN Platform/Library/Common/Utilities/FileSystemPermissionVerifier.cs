@@ -9,10 +9,8 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Instrumentation;
 
-    /// <summary>  Verifies the abililty to create and delete files and folders.</summary>
-    /// <remarks>
-    ///   This class is not meant for use in modules, or in any other manner outside the DotNetNuke core.
-    /// </remarks>
+    /// <summary>Verifies the ability to create and delete files and folders.</summary>
+    /// <remarks>This class is not meant for use in modules, or in any other manner outside the DotNetNuke core.</remarks>
     public class FileSystemPermissionVerifier
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
@@ -20,16 +18,16 @@ namespace DotNetNuke.Common.Utilities
 
         private int retryTimes = 30;
 
-        /// <summary>Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.</summary>
-        /// <param name="basePath"></param>
+        /// <summary>Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class with a default of 30 retries.</summary>
+        /// <param name="basePath">The path at which to start verifying.</param>
         public FileSystemPermissionVerifier(string basePath)
         {
             this.basePath = basePath;
         }
 
         /// <summary>Initializes a new instance of the <see cref="FileSystemPermissionVerifier"/> class.</summary>
-        /// <param name="basePath"></param>
-        /// <param name="retryTimes"></param>
+        /// <param name="basePath">The path at which to start verifying.</param>
+        /// <param name="retryTimes">The number of times to retry (defaults to 30).</param>
         public FileSystemPermissionVerifier(string basePath, int retryTimes)
             : this(basePath)
         {

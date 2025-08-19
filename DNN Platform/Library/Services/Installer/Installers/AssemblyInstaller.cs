@@ -21,55 +21,26 @@ namespace DotNetNuke.Services.Installer.Installers
         private static readonly string OldVersion = "0.0.0.0-" + new Version(short.MaxValue, short.MaxValue, short.MaxValue, short.MaxValue);
 
         /// <inheritdoc />
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "dll,pdb";
-            }
-        }
+        public override string AllowableFiles => "dll,pdb";
 
         /// <summary>Gets the name of the Collection Node (<c>assemblies</c>).</summary>
-        protected override string CollectionNodeName
-        {
-            get
-            {
-                return "assemblies";
-            }
-        }
+        protected override string CollectionNodeName => "assemblies";
 
         /// <summary>Gets the default Path for the file - if not present in the manifest.</summary>
-        protected override string DefaultPath
-        {
-            get
-            {
-                return "bin\\";
-            }
-        }
+        protected override string DefaultPath => "bin\\";
 
         /// <summary>Gets the name of the Item Node (<c>assembly</c>).</summary>
-        protected override string ItemNodeName
-        {
-            get
-            {
-                return "assembly";
-            }
-        }
+        protected override string ItemNodeName => "assembly";
 
         /// <summary>Gets the PhysicalBasePath for the assemblies.</summary>
-        protected override string PhysicalBasePath
-        {
-            get
-            {
-                return this.PhysicalSitePath + "\\";
-            }
-        }
+        protected override string PhysicalBasePath => this.PhysicalSitePath + "\\";
 
         /// <inheritdoc />
         protected override void DeleteFile(InstallFile file)
         {
-            // Attempt to unregister assembly this will return False if the assembly is used by another package and
-            // cannot be delete andtrue if it is not being used and can be deleted
+            // Attempt to unregister assembly
+            // this will only log if the assembly is used by another package and cannot be deleted
+            // if it is not being used it will be deleted
             if (DataProvider.Instance().UnRegisterAssembly(this.Package.PackageID, file.Name))
             {
                 this.Log.AddInfo(Util.ASSEMBLY_UnRegistered + " - " + file.FullName);
@@ -256,7 +227,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>If the <paramref name="file"/> is a strong-named assembly, applies the XML merge.</summary>
         /// <param name="file">The assembly file.</param>
         /// <param name="xmlMergeFile">The XML merge file name.</param>
-        /// <returns><c>true</c> if the XML Merge was applied successfully, <c>false</c> if the file was not a strong-named assembly or could not be read.</returns>
+        /// <returns><see langword="true"/> if the XML Merge was applied successfully, <see langword="false"/> if the file was not a strong-named assembly or could not be read.</returns>
         private bool ApplyXmlMerge(InstallFile file, string xmlMergeFile)
         {
             var assemblyFileFullPath = Path.Combine(this.PhysicalBasePath, file.FullName);

@@ -13,6 +13,7 @@ namespace DotNetNuke.Common.Utilities
 
     using ICSharpCode.SharpZipLib.Zip;
 
+    /// <summary>Extension methods for types related to the file system (e.g. <see cref="ZipArchiveEntry"/> and <see cref="Stream"/>).</summary>
     public static partial class FileSystemExtensions
     {
         public static void CheckZipEntry(this ZipArchiveEntry input)
@@ -57,6 +58,9 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        /// <summary>Check whether the <paramref name="input"/> is invalid.</summary>
+        /// <param name="input">The entry to check.</param>
+        /// <exception cref="Exception">Illegal zip file.</exception>
         [DnnDeprecated(9, 11, 0, "Replaced with .NET compression types.")]
         public static partial void CheckZipEntry(this ZipEntry input)
         {

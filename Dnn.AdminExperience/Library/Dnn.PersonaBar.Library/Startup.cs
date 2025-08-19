@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Library
         {
             services.AddSingleton<IPersonaBarContainer, PersonaBarContainer>();
             services.AddSingleton<IPersonaBarController, PersonaBarController>();
+            services.AddSingleton<IPersonaBarUserSettingsController, PersonaBarUserSettingsController>();
         }
     }
 }

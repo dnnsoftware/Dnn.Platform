@@ -16,8 +16,8 @@ namespace DotNetNuke.Data.PetaPoco
         private readonly IMapper mapper;
 
         /// <summary>Initializes a new instance of the <see cref="PetaPocoRepository{T}"/> class.</summary>
-        /// <param name="database"></param>
-        /// <param name="mapper"></param>
+        /// <param name="database">The database.</param>
+        /// <param name="mapper">The mapper.</param>
         public PetaPocoRepository(Database database, IMapper mapper)
         {
             Requires.NotNull("database", database);

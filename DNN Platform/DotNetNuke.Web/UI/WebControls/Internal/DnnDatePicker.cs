@@ -14,9 +14,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnDatePicker : TextBox
     {
         public DateTime? SelectedDate
@@ -66,8 +64,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return new Dictionary<string, object>
             {
-                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date({HttpUtility.JavaScriptStringEncode(this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture), addDoubleQuotes: true)})$" : string.Empty },
-                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date({HttpUtility.JavaScriptStringEncode(this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture), addDoubleQuotes: true)})$" : string.Empty },
+                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{HttpUtility.JavaScriptStringEncode(this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture))}')$" : string.Empty },
+                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{HttpUtility.JavaScriptStringEncode(this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture))}')$" : string.Empty },
                 { "format", this.ClientFormat },
             };
         }
