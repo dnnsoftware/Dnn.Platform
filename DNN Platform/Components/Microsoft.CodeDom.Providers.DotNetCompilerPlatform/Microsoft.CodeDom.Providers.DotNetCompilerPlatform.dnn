@@ -2,7 +2,7 @@
   <packages>
     <package name="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" type="Library" version="04.01.00" isSystem="false">
       <friendlyName>Microsoft CodeDom .NET Compiler</friendlyName>
-      <description>Provides compiler support for C# 7.3 and VB 15.</description>
+      <description>Provides compiler support for C# 10 and VB 16.</description>
       <dependencies/>
       <owner>
         <name>.NET Foundation and Contributors</name>
