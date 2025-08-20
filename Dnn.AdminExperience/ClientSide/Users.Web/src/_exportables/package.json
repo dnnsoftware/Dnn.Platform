@@ -39,7 +39,7 @@
     "react-redux": "^8.1.1",
     "react-widgets": "^5.8.4",
     "redux": "4.2.1",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "throttle-debounce": "^5.0.0",
     "utils": "^0.3.1",
     "webpack": "5.94.0",
