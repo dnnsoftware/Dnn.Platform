@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.Skins
             {
                 if (!Globals.IsAdminControl() && (this.PortalSettings.InjectModuleHyperLink || Personalization.GetUserMode() != PortalSettings.Mode.View))
                 {
-                    this.containerWrapperControl.Controls.Add(new LiteralControl("<a name=\"" + module.ModuleID + "\"></a>"));
+                    _containerWrapperControl.Attributes["id"] = module.ModuleID.ToString();
                 }
 
                 // Load container control
