@@ -1,0 +1,7 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg">
+    <foreignObject width="1" height="1">
+        <iframe xmlns="http://www.w3.org/1999/xhtml"
+                srcdoc='&lt;!doctype html&gt;&lt;script&gt;parent.alert(1)&lt;/script&gt;'>
+        </iframe>
+    </foreignObject>
+</svg>
