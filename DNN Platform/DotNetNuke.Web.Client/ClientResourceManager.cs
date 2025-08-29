@@ -14,9 +14,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.Web.UI;
     using System.Xml;
 
-    using ClientDependency.Core;
-    using ClientDependency.Core.CompositeFiles.Providers;
-    using ClientDependency.Core.Config;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 

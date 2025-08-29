@@ -4,8 +4,6 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    using DotNetNuke.Web.Client.Controls;
-
     public class DnnCssExclude : ClientResourceExclude
     {
         public DnnCssExclude()

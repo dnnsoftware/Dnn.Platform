@@ -7,9 +7,6 @@ namespace DotNetNuke.Web.Client.Controls
     using System;
     using System.Web.UI;
 
-    using ClientDependency.Core;
-    using ClientDependency.Core.Controls;
-
     public abstract class ClientResourceExclude : Control
     {
         public string Name { get; set; }

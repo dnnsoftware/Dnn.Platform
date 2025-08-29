@@ -6,8 +6,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System.Web.UI;
 
-    using ClientDependency.Core.Controls;
-
     /// <summary>Registers a JavaScript resource.</summary>
     public class DnnJsInclude : JsInclude
     {

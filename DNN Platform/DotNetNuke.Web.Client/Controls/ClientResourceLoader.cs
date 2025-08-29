@@ -4,11 +4,7 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    using System;
     using System.Web;
-    using System.Web.UI;
-
-    using ClientDependency.Core.Controls;
 
     /// <summary>The central control with which all client resources are registered.</summary>
     public class ClientResourceLoader : ClientDependencyLoader
