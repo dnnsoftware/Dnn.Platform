@@ -29,8 +29,8 @@ class DashboardPanelBody extends Component {
         const { props } = this;
         props.dispatch(ImportExportActions.getPortals((data) => {
             if (data.TotalResults === 1) {
-                props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalID, data.Results[0].PortalName, () => {
-                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalID), (data) => {
+                props.dispatch(ImportExportActions.siteSelected(data.Results[0].PortalId, data.Results[0].PortalName, () => {
+                    props.dispatch(ImportExportActions.getAllJobs(this.getNextPage(data.Results[0].PortalId), (data) => {
                         if (data.Jobs && data.Jobs.find(j => j.Status < 2 && !j.Cancelled)) {
                             this.addInterval(props);
                         }
@@ -134,7 +134,7 @@ class DashboardPanelBody extends Component {
             options = props.portals.map((item) => {
                 return {
                     label: item.PortalName,
-                    value: item.PortalID
+                    value: item.PortalId
                 };
             });
             if (options.length > 1) {
@@ -380,7 +380,7 @@ class DashboardPanelBody extends Component {
                         jobType={job.JobType}
                         jobDate={job.CreatedOnString}
                         jobUser={job.User}
-                        jobPortal={props.portals.find(p => p.PortalID === job.PortalId) ? props.portals.find(p => p.PortalID === job.PortalId).PortalName : Localization.get("DeletedPortal")}
+                        jobPortal={props.portals.find(p => p.PortalId === job.PortalId) ? props.portals.find(p => p.PortalId === job.PortalId).PortalName : Localization.get("DeletedPortal")}
                         jobStatus={job.Status}
                         jobCancelled={job.Cancelled}
                         index={index}

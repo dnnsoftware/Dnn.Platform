@@ -225,7 +225,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             input = input.Replace("�", string.Empty);
 
-            input = Encoding.ASCII.GetString(Encoding.GetEncoding(1251).GetBytes(input));
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            input = string.Join("_", input.Split(invalidChars));
 
             input = input.Replace("?", string.Empty); // replace the unknown char which created in above.
             input = input.Replace("�", string.Empty);

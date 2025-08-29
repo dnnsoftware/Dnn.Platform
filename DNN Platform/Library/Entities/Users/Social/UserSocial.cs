@@ -106,9 +106,9 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                return this.roles ?? (this.roles = (this.userInfo.PortalID == -1 && this.userInfo.UserID == -1)
-                                            ? new List<UserRoleInfo>(0)
-                                            : RoleController.Instance.GetUserRoles(this.userInfo, true));
+                return this.roles ??= this.userInfo.PortalID == -1 && this.userInfo.UserID == -1
+                    ? new List<UserRoleInfo>(0)
+                    : RoleController.Instance.GetUserRoles(this.userInfo, true);
             }
         }
     }

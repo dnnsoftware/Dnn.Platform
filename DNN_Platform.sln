@@ -205,13 +205,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KnockoutMapping", "Knockout
 		DNN Platform\JavaScript Libraries\KnockoutMapping\releaseNotes.txt = DNN Platform\JavaScript Libraries\KnockoutMapping\releaseNotes.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5EC5DBCB-B4AD-453E-896C-E238F0F57FDA}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotNetNuke.WebUtility", "DNN Platform\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj", "{4912F062-F8A8-4F9D-8F8E-244EBEE1ACBD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{03E3AFA5-DDC9-48FB-A839-AD4282CE237E} = {03E3AFA5-DDC9-48FB-A839-AD4282CE237E}
@@ -672,12 +665,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		.github\workflows\image-actions.yml = .github\workflows\image-actions.yml
 		.github\workflows\open-merged-pr-to-future.yml = .github\workflows\open-merged-pr-to-future.yml
 		.github\workflows\updateVersions.yml = .github\workflows\updateVersions.yml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4B3512F4-E0A9-420E-9F44-1C84413D2D58}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{4FBA4C58-559B-4CD2-9926-CDA3498FE20E}"
@@ -2678,7 +2665,6 @@ Global
 		{1F652865-83DA-423F-9779-D74A44E9E128} = {572DF6DE-32A7-4695-B994-5C25AA588320}
 		{439FDC7C-C86F-40DF-AC6D-2282E59A9323} = {572DF6DE-32A7-4695-B994-5C25AA588320}
 		{AC5B9AB0-6049-43F3-B0C6-3E3090CBA5C2} = {572DF6DE-32A7-4695-B994-5C25AA588320}
-		{4B3512F4-E0A9-420E-9F44-1C84413D2D58} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
 		{4FBA4C58-559B-4CD2-9926-CDA3498FE20E} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
 		{9F20422E-76EB-4B24-B721-B1CAF17407F4} = {04F3856F-18A5-4916-A0EB-D3CFE0858443}
 		{549CCB04-6321-4E6B-88C1-06FAC574D061} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}

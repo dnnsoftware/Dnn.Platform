@@ -7,33 +7,17 @@ namespace DotNetNuke.ModulePipeline
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-#if NETFRAMEWORK
     using System.Web.UI;
-#endif
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.UI.Modules.Html5;
-    using DotNetNuke.Web.Mvc;
-    using DotNetNuke.Web.Razor;
 
     /// <summary>
     /// The Module Pipeline that determines which Module pattern
     /// to invoke based on the input module type.
     /// </summary>
-    public class ModuleControlPipeline
-
-    // MULTI-TARGETTING PIPELINE
-    // -------------------------
-    // This file multi-targets .NET Framework and .NET Standard,
-    // which is needed as DNN migrates to .NET Core. The 'NETFRAMEWORK'
-    // pre-processor directives are to fully support Legacy DNN.
-    // As the Pipeline is upgraded to be more complaint with
-    // .NET Standard 2.0 use the appropriate pre-processor directives.
-#if NETFRAMEWORK
-        : IModuleControlPipeline
-#endif
+    public class ModuleControlPipeline : IModuleControlPipeline
     {
         private static readonly ILog TraceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private readonly IModuleControlFactory[] factories;
@@ -45,7 +29,6 @@ namespace DotNetNuke.ModulePipeline
             this.factories = factories.OrderByDescending(f => f.Priority).ToArray();
         }
 
-#if NETFRAMEWORK
         /// <inheritdoc />
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
@@ -196,6 +179,5 @@ namespace DotNetNuke.ModulePipeline
             // The following exception should never be thrown, as the default factory should always be able to create a control
             throw new NotSupportedException($"No module control factory found for module {moduleConfiguration.ModuleID} with control source {controlSrc}");
         }
-#endif
     }
 }
