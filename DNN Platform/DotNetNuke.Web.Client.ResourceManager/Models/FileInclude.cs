@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using DotNetNuke.Abstractions.ClientResources;
 
-    internal class FileInclude
+    public class FileInclude
     {
         public string FilePath { get; set; }
         public string PathNameAlias { get; set; }

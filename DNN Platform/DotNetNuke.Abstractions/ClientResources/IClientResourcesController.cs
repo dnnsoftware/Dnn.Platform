@@ -3,155 +3,66 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.ClientResources;
 
-using System.Collections.Generic;
-
 /// <summary>Provides an interface for managing client resources.</summary>
 public interface IClientResourcesController
 {
-    /// <summary>Registers a stylesheet that has an admin level priority.</summary>
-    /// <param name="filePath">The path to the CSS stylesheet.</param>
-    void RegisterAdminStylesheet(string filePath);
+    /// <summary>
+    /// Adds a link resource to the client resources controller.
+    /// </summary>
+    /// <param name="link">The <see cref="ILinkResource"/> to add.</param>
+    void AddLink(ILinkResource link);
 
-    /// <summary>Registers the <c>default.css</c> stylesheet.</summary>
-    /// <param name="filePath">The path to the CSS stylesheet.</param>
-    void RegisterDefaultStylesheet(string filePath);
+    /// <summary>
+    /// Adds a script resource to the client resources controller.
+    /// </summary>
+    /// <param name="script">The <see cref="IScriptResource"/> to add.</param>
+    void AddScript(IScriptResource script);
 
-    /// <summary>Registers a stylesheet for a specific feature.</summary>
-    /// <param name="filePath">The path to the CSS stylesheet.</param>
-    void RegisterFeatureStylesheet(string filePath);
+    /// <summary>
+    /// Creates a new link resource.
+    /// </summary>
+    /// <returns>An <see cref="ILinkResource"/> instance representing the created link resource.</returns>
+    ILinkResource CreateLink();
 
-    /// <summary>Requests that a CSS file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    void RegisterStyleSheet(string filePath);
+    /// <summary>
+    /// Create a new script resource.
+    /// </summary>
+    /// <returns>An <see cref="IScriptResource"/> instance representing the created script resource.</returns>
+    IScriptResource CreateScript();
 
-    /// <summary>Requests that a CSS file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterStyleSheet(string filePath, IDictionary<string, string> htmlAttributes);
+    /// <summary>
+    /// Registers a link resource by its path.
+    /// </summary>
+    /// <param name="linkPath">The path to the link resource to register.</param>
+    void RegisterLink(string linkPath);
 
-    /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    void RegisterStyleSheet(string filePath, int priority);
+    /// <summary>
+    /// Registers a script resource by its path.
+    /// </summary>
+    /// <param name="scriptPath">The path to the script resource to register.</param>
+    void RegisterScript(string scriptPath);
 
-    /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterStyleSheet(string filePath, int priority, IDictionary<string, string> htmlAttributes);
+    /// <summary>
+    /// Removes a link resource by its name.
+    /// </summary>
+    /// <param name="linkName">The name of the link resource to remove.</param>
+    void RemoveLinkByName(string linkName);
 
-    /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    void RegisterStyleSheet(string filePath, FileOrder.Css priority);
+    /// <summary>
+    /// Removes a link resource by its path.
+    /// </summary>
+    /// <param name="linkPath">The path of the link resource to remove.</param>
+    void RemoveLinkByPath(string linkPath);
 
-    /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterStyleSheet(string filePath, FileOrder.Css priority, IDictionary<string, string> htmlAttributes);
+    /// <summary>
+    /// Removes a script resource by its name.
+    /// </summary>
+    /// <param name="scriptName">The name of the script resource to remove.</param>
+    void RemoveScriptByName(string scriptName);
 
-    /// <summary>Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The provider name to be used to render the css file on the page.</param>
-    void RegisterStyleSheet(string filePath, int priority, string provider);
-
-    /// <summary>Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The provider name to be used to render the css file on the page.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterStyleSheet(string filePath, int priority, string provider, IDictionary<string, string> htmlAttributes);
-
-    /// <summary>Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The provider name to be used to render the css file on the page.</param>
-    /// <param name="name">Name of framework like Bootstrap, Angular, etc.</param>
-    /// <param name="version">Version number of framework.</param>
-    void RegisterStyleSheet(string filePath, int priority, string provider, string name, string version);
-
-    /// <summary>Requests that a CSS file be registered on the client browser. Allows for overriding the default provider.</summary>
-    /// <param name="filePath">The relative file path to the CSS resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The provider name to be used to render the css file on the page.</param>
-    /// <param name="name">Name of framework like Bootstrap, Angular, etc.</param>
-    /// <param name="version">Version number of framework.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterStyleSheet(string filePath, int priority, string provider, string name, string version, IDictionary<string, string> htmlAttributes);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    void RegisterScript(string filePath);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterScript(string filePath, IDictionary<string, string> htmlAttributes);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    void RegisterScript(string filePath, int priority);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterScript(string filePath, int priority, IDictionary<string, string> htmlAttributes);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    void RegisterScript(string filePath, FileOrder.Js priority);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterScript(string filePath, FileOrder.Js priority, IDictionary<string, string> htmlAttributes);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-    void RegisterScript(string filePath, FileOrder.Js priority, string provider);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterScript(string filePath, FileOrder.Js priority, string provider, IDictionary<string, string> htmlAttributes);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-    void RegisterScript(string filePath, int priority, string provider);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterScript(string filePath, int priority, string provider, IDictionary<string, string> htmlAttributes);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-    /// <param name="name">Name of framework like Bootstrap, Angular, etc.</param>
-    /// <param name="version">Version number of framework.</param>
-    void RegisterScript(string filePath, int priority, string provider, string name, string version);
-
-    /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
-    /// <param name="filePath">The relative file path to the JavaScript resource.</param>
-    /// <param name="priority">The relative priority in which the file should be loaded.</param>
-    /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-    /// <param name="name">Name of framework like Bootstrap, Angular, etc.</param>
-    /// <param name="version">Version number of framework.</param>
-    /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-    void RegisterScript(string filePath, int priority, string provider, string name, string version, IDictionary<string, string> htmlAttributes);
+    /// <summary>
+    /// Removes a script resource by its path.
+    /// </summary>
+    /// <param name="scriptPath">The path of the script resource to remove.</param>
+    void RemoveScriptByPath(string scriptPath);
 }

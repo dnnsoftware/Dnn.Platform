@@ -6,10 +6,14 @@ namespace DotNetNuke.Abstractions.ClientResources
     /// <summary>Contains constants for the supported PathNameAlias values within the framework's registration system.</summary>
     public class PathNameAlias
     {
-        /// <summary>The path to the current skin.</summary>
+        /// <summary>
+        /// The path to the current skin.
+        /// </summary>
         public const string SkinPath = "SkinPath";
 
-        /// <summary>~/Resources/Shared/Scripts/</summary>
+        /// <summary>
+        /// Path relative to ~/Resources/Shared/Scripts/.
+        /// </summary>
         public const string SharedScripts = "SharedScripts";
     }
 }
