@@ -37,6 +37,13 @@ public interface IClientResourcesController
     void RegisterLink(string linkPath);
 
     /// <summary>
+    /// Registers a path name alias for resolving resource paths.
+    /// </summary>
+    /// <param name="pathNameAlias">The path name alias.</param>
+    /// <param name="resolvedPath">The resolved path corresponding to the alias.</param>
+    void RegisterPathNameAlias(string pathNameAlias, string resolvedPath);
+
+    /// <summary>
     /// Registers a script resource by its path.
     /// </summary>
     /// <param name="scriptPath">The path to the script resource to register.</param>
@@ -52,7 +59,8 @@ public interface IClientResourcesController
     /// Removes a link resource by its path.
     /// </summary>
     /// <param name="linkPath">The path of the link resource to remove.</param>
-    void RemoveLinkByPath(string linkPath);
+    /// <param name="pathNameAlias">The name alias for the path to remove.</param>
+    void RemoveLinkByPath(string linkPath, string pathNameAlias);
 
     /// <summary>
     /// Removes a script resource by its name.
@@ -64,5 +72,14 @@ public interface IClientResourcesController
     /// Removes a script resource by its path.
     /// </summary>
     /// <param name="scriptPath">The path of the script resource to remove.</param>
-    void RemoveScriptByPath(string scriptPath);
+    /// <param name="pathNameAlias">The name alias for the path to remove.</param>
+    void RemoveScriptByPath(string scriptPath, string pathNameAlias);
+
+    /// <summary>
+    /// Renders the dependencies for the specified resource type and provider.
+    /// </summary>
+    /// <param name="resourceType">The type of resource to render dependencies for.</param>
+    /// <param name="provider">The provider to use for rendering dependencies.</param>
+    /// <returns>A string containing the rendered dependencies.</returns>
+    string RenderDependencies(ResourceType resourceType, string provider);
 }

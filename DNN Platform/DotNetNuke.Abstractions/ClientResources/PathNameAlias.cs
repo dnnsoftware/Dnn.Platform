@@ -7,6 +7,11 @@ namespace DotNetNuke.Abstractions.ClientResources
     public class PathNameAlias
     {
         /// <summary>
+        /// Root path of the DNN installation.
+        /// </summary>
+        public const string Default = "";
+
+        /// <summary>
         /// The path to the current skin.
         /// </summary>
         public const string SkinPath = "SkinPath";

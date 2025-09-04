@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.Client.ResourceManager
 {
     using System.Collections.Generic;
+    using System.Linq;
     using DotNetNuke.Abstractions.ClientResources;
 
     /// <inheritdoc />
@@ -11,17 +12,18 @@ namespace DotNetNuke.Web.Client.ResourceManager
     {
         private List<ILinkResource> Links { get; set; } = new List<ILinkResource>();
         private List<IScriptResource> Scripts { get; set; } = new List<IScriptResource>();
+        private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>();
 
         /// <inheritdoc />
         public void AddLink(ILinkResource link)
         {
-            Links.Add(link);
+            this.Links = this.AddResource(this.Links, link);
         }
 
         /// <inheritdoc />
         public void AddScript(IScriptResource script)
         {
-            Scripts.Add(script);
+            this.Scripts = this.AddResource(this.Scripts, script);
         }
 
         /// <inheritdoc />
@@ -43,6 +45,12 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
+        public void RegisterPathNameAlias(string pathNameAlias, string resolvedPath)
+        {
+            this.PathNameAliases[pathNameAlias.ToLowerInvariant()] = resolvedPath;
+        }
+
+        /// <inheritdoc />
         public void RegisterScript(string scriptPath)
         {
             this.CreateScript().FromSrc(scriptPath).Register();
@@ -51,25 +59,113 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc />
         public void RemoveLinkByName(string linkName)
         {
-            this.Links.RemoveAll(l => l.Name == linkName);
+            this.Links.RemoveAll(l => l.Name.ToLowerInvariant() == linkName.ToLowerInvariant());
         }
 
         /// <inheritdoc />
-        public void RemoveLinkByPath(string linkPath)
+        public void RemoveLinkByPath(string linkPath, string pathNameAlias)
         {
-            this.Links.RemoveAll(l => l.FilePath == linkPath);
+            var key = this.ResolvePath(linkPath, pathNameAlias).ToLowerInvariant();
+            this.Links.RemoveAll(l => l.Key == key);
         }
 
         /// <inheritdoc />
         public void RemoveScriptByName(string scriptName)
         {
-            this.Scripts.RemoveAll(s => s.Name == scriptName);
+            this.Scripts.RemoveAll(s => s.Name.ToLowerInvariant() == scriptName.ToLowerInvariant());
         }
 
         /// <inheritdoc />
-        public void RemoveScriptByPath(string scriptPath)
+        public void RemoveScriptByPath(string scriptPath, string pathNameAlias)
         {
-            this.Scripts.RemoveAll(s => s.FilePath == scriptPath);
+            var key = this.ResolvePath(scriptPath, pathNameAlias).ToLowerInvariant();
+            this.Scripts.RemoveAll(s => s.Key == key);
+        }
+
+        /// <inheritdoc />
+        public string RenderDependencies(ResourceType resourceType, string provider)
+        {
+            var sortedList = new List<string>();
+            if (resourceType == ResourceType.Link || resourceType == ResourceType.All)
+            {
+                foreach (var link in this.Links.OrderBy(l => l.Priority))
+                {
+                    sortedList.Add(link.Render());
+                }
+            }
+            if (resourceType == ResourceType.Script || resourceType == ResourceType.All)
+            {
+                foreach (var script in this.Scripts.OrderBy(s => s.Priority))
+                {
+                    sortedList.Add(script.Render());
+                }
+            }
+            return string.Join("", sortedList);
+        }
+
+
+        private List<T> AddResource<T>(List<T> resources, T resource) where T : IResource
+        {
+            resource.Src = this.ResolvePath(resource.FilePath, resource.PathNameAlias);
+            resource.Key = resource.Src.ToLowerInvariant();
+            resources.RemoveAll(l => l.Key == resource.Key); // remove any existing link with the same key (i.e. exactly the same resolved path)
+            if (!string.IsNullOrEmpty(resource.Name))
+            {
+                // if a resource with the same name and force version is already present we ignore this one
+                if (resources.Exists(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && l.ForceVersion))
+                {
+                    return resources;
+                }
+
+                // If we are forcing the version, we need to remove any existing link with the same name
+                if (resource.ForceVersion)
+                {
+                    resources.RemoveAll(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant());
+                }
+
+                // If we have a version, we need to remove any existing link with the same name and a lower version
+                if (!string.IsNullOrEmpty(resource.Version))
+                {
+                    resources.RemoveAll(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && string.Compare(l.Version, resource.Version, System.StringComparison.InvariantCultureIgnoreCase) < 0);
+                    // If we have an existing link with the same name and a higher version, we do not add this link
+                    if (resources.Exists(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && string.Compare(l.Version, resource.Version, System.StringComparison.InvariantCultureIgnoreCase) >= 0))
+                    {
+                        return resources;
+                    }
+                }
+            }
+            resources.Add(resource);
+            return resources;
+        }
+
+        private string ResolvePathNameAlias(string pathNameAlias)
+        {
+            if (string.IsNullOrEmpty(pathNameAlias))
+            {
+                return string.Empty;
+            }
+            if (this.PathNameAliases.TryGetValue(pathNameAlias.ToLowerInvariant(), out var alias))
+            {
+                return alias;
+            }
+            return string.Empty;
+        }
+
+        private string ResolvePath(string filePath, string pathNameAlias)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return filePath;
+            }
+            if (filePath.ToLowerInvariant().StartsWith("http"))
+            {
+                // Path is already fully qualified
+                return filePath;
+            }
+            // Path is a relative path to the application root and pathNameAlias
+            filePath = filePath.Replace("\\", "/").TrimStart('~', '/');
+            var root = this.ResolvePathNameAlias(pathNameAlias);
+            return $"{root}/{filePath}";
         }
     }
 }

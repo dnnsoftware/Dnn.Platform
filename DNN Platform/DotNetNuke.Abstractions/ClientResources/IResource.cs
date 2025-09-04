@@ -21,6 +21,16 @@ public interface IResource
     string PathNameAlias { get; set; }
 
     /// <summary>
+    /// Gets or sets the resolved full src path.
+    /// </summary>
+    string Src { get; set; }
+
+    /// <summary>
+    /// Gets or sets the lowered src path to facilitate lookup.
+    /// </summary>
+    string Key { get; set; }
+
+    /// <summary>
     /// Gets or sets the priority of the client resource.
     /// </summary>
     int Priority { get; set; }
@@ -86,4 +96,10 @@ public interface IResource
     /// Registers the client resource.
     /// </summary>
     void Register();
+
+    /// <summary>
+    /// Renders the client resource as a string.
+    /// </summary>
+    /// <returns>Returns a HTML string.</returns>
+    string Render();
 }
