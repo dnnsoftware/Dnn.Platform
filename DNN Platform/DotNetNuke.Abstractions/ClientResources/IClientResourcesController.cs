@@ -7,10 +7,10 @@ namespace DotNetNuke.Abstractions.ClientResources;
 public interface IClientResourcesController
 {
     /// <summary>
-    /// Adds a link resource to the client resources controller.
+    /// Adds a font resource to the client resources controller.
     /// </summary>
-    /// <param name="link">The <see cref="ILinkResource"/> to add.</param>
-    void AddLink(ILinkResource link);
+    /// <param name="font">The <see cref="IFontResource"/> to add.</param>
+    void AddFont(IFontResource font);
 
     /// <summary>
     /// Adds a script resource to the client resources controller.
@@ -19,10 +19,16 @@ public interface IClientResourcesController
     void AddScript(IScriptResource script);
 
     /// <summary>
-    /// Creates a new link resource.
+    /// Adds a stylesheet resource to the client resources controller.
     /// </summary>
-    /// <returns>An <see cref="ILinkResource"/> instance representing the created link resource.</returns>
-    ILinkResource CreateLink();
+    /// <param name="stylesheet">The <see cref="IStylesheetResource"/> to add.</param>
+    void AddStylesheet(IStylesheetResource stylesheet);
+
+    /// <summary>
+    /// Create a new font resource.
+    /// </summary>
+    /// <returns>An <see cref="IFontResource"/> instance representing the created font resource.</returns>
+    IFontResource CreateFont();
 
     /// <summary>
     /// Create a new script resource.
@@ -31,10 +37,16 @@ public interface IClientResourcesController
     IScriptResource CreateScript();
 
     /// <summary>
-    /// Registers a link resource by its path.
+    /// Creates a new stylesheet resource.
     /// </summary>
-    /// <param name="linkPath">The path to the link resource to register.</param>
-    void RegisterLink(string linkPath);
+    /// <returns>An <see cref="IStylesheetResource"/> instance representing the created stylesheet resource.</returns>
+    IStylesheetResource CreateStylesheet();
+
+    /// <summary>
+    /// Registers a font resource by its path.
+    /// </summary>
+    /// <param name="fontPath">The path to the font resource to register.</param>
+    void RegisterFont(string fontPath);
 
     /// <summary>
     /// Registers a path name alias for resolving resource paths.
@@ -50,17 +62,23 @@ public interface IClientResourcesController
     void RegisterScript(string scriptPath);
 
     /// <summary>
-    /// Removes a link resource by its name.
+    /// Registers a stylesheet resource by its path.
     /// </summary>
-    /// <param name="linkName">The name of the link resource to remove.</param>
-    void RemoveLinkByName(string linkName);
+    /// <param name="stylesheetPath">The path to the stylesheet resource to register.</param>
+    void RegisterStylesheet(string stylesheetPath);
 
     /// <summary>
-    /// Removes a link resource by its path.
+    /// Removes a font resource by its name.
     /// </summary>
-    /// <param name="linkPath">The path of the link resource to remove.</param>
+    /// <param name="fontName">The name of the font resource to remove.</param>
+    void RemoveFontByName(string fontName);
+
+    /// <summary>
+    /// Removes a font resource by its path.
+    /// </summary>
+    /// <param name="fontPath">The path of the font resource to remove.</param>
     /// <param name="pathNameAlias">The name alias for the path to remove.</param>
-    void RemoveLinkByPath(string linkPath, string pathNameAlias);
+    void RemoveFontByPath(string fontPath, string pathNameAlias);
 
     /// <summary>
     /// Removes a script resource by its name.
@@ -74,6 +92,19 @@ public interface IClientResourcesController
     /// <param name="scriptPath">The path of the script resource to remove.</param>
     /// <param name="pathNameAlias">The name alias for the path to remove.</param>
     void RemoveScriptByPath(string scriptPath, string pathNameAlias);
+
+    /// <summary>
+    /// Removes a stylesheet resource by its name.
+    /// </summary>
+    /// <param name="stylesheetName">The name of the stylesheet resource to remove.</param>
+    void RemoveStylesheetByName(string stylesheetName);
+
+    /// <summary>
+    /// Removes a stylesheet resource by its path.
+    /// </summary>
+    /// <param name="stylesheetPath">The path of the stylesheet resource to remove.</param>
+    /// <param name="pathNameAlias">The name alias for the path to remove.</param>
+    void RemoveStylesheetByPath(string stylesheetPath, string pathNameAlias);
 
     /// <summary>
     /// Renders the dependencies for the specified resource type and provider.

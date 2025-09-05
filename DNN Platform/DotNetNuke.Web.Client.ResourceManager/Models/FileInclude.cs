@@ -16,14 +16,98 @@
         public FetchPriority FetchPriority { get; set; } = FetchPriority.Auto;
         public ReferrerPolicy ReferrerPolicy { get; set; } = ReferrerPolicy.None;
         public bool Preload { get; set; } = false;
-        public bool Blocking { get; set; } = false;
 
         /// <summary>
-        /// Contains inline metadata — a base64-encoded cryptographic hash of the resource (file) you're telling the browser to fetch. 
+        /// Contains inline metadata — a base64-encoded cryptographic hash of the resource (file) you're telling the browser to fetch.
         /// The browser can use this to verify that the fetched resource has been delivered without unexpected manipulation.
         /// </summary>
         public string Integrity { get; set; } = "";
 
+        public bool Blocking { get; set; } = false;
+
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
+
+        protected string RenderBlocking()
+        {
+            if (this.Blocking)
+            {
+                return " blocking=\"render\"";
+            }
+            return string.Empty;
+        }
+
+        protected string RenderCrossOriginAttribute()
+        {
+            if (this.CrossOrigin != CrossOrigin.None)
+            {
+                var crossOrigin = "anonymous";
+                if (this.CrossOrigin == CrossOrigin.UseCredentials)
+                {
+                    crossOrigin = "use-credentials";
+                }
+                return $" crossorigin=\"{crossOrigin}\"";
+            }
+            return string.Empty;
+        }
+
+        protected string RenderFetchPriority()
+        {
+            if (this.FetchPriority != FetchPriority.Auto)
+            {
+                var fetchPriority = "low";
+                if (this.FetchPriority == FetchPriority.High)
+                {
+                    fetchPriority = "high";
+                }
+                return $" fetchpriority=\"{fetchPriority}\"";
+            }
+            return string.Empty;
+        }
+
+        protected string RenderIntegrity()
+        {
+            if (!string.IsNullOrEmpty(this.Integrity))
+            {
+                return $" integrity=\"{this.Integrity}\"";
+            }
+            return string.Empty;
+        }
+
+        protected string RenderReferrerPolicy()
+        {
+            if (this.ReferrerPolicy != ReferrerPolicy.None)
+            {
+                switch (this.ReferrerPolicy)
+                {
+                    case ReferrerPolicy.NoReferrer:
+                        return " referrerpolicy=\"no-referrer\"";
+                    case ReferrerPolicy.NoReferrerWhenDowngrade:
+                        return " referrerpolicy=\"no-referrer-when-downgrade\"";
+                    case ReferrerPolicy.Origin:
+                        return " referrerpolicy=\"origin\"";
+                    case ReferrerPolicy.OriginWhenCrossOrigin:
+                        return " referrerpolicy=\"origin-when-cross-origin\"";
+                    case ReferrerPolicy.SameOrigin:
+                        return " referrerpolicy=\"same-origin\"";
+                    case ReferrerPolicy.StrictOrigin:
+                        return " referrerpolicy=\"strict-origin\"";
+                    case ReferrerPolicy.StrictOriginWhenCrossOrigin:
+                        return " referrerpolicy=\"strict-origin-when-cross-origin\"";
+                    case ReferrerPolicy.UnsafeUrl:
+                        return " referrerpolicy=\"unsafe-url\"";
+                }
+            }
+            return string.Empty;
+        }
+
+        protected string RenderAttributes()
+        {
+            var htmlString = string.Empty;
+            foreach (var attribute in this.Attributes)
+            {
+                htmlString += $" {attribute.Key}=\"{attribute.Value}\"";
+            }
+            return htmlString;
+        }
     }
 }

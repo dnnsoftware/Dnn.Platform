@@ -71,14 +71,14 @@ public interface IResource
     ReferrerPolicy ReferrerPolicy { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the client resource should be preloaded.
-    /// </summary>
-    bool Preload { get; set; }
-
-    /// <summary>
     /// Gets or sets a value indicating whether the client resource is blocking.
     /// </summary>
     bool Blocking { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the client resource should be preloaded.
+    /// </summary>
+    bool Preload { get; set; }
 
     /// <summary>
     /// Gets or sets the integrity attribute for the client resource.

@@ -3,8 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.ClientResources;
 
-/// <summary>Marker interface for link resources.</summary>
-public interface ILinkResource : IResource
+/// <summary>Marker interface for stylesheet resources.</summary>
+public interface IStylesheetResource : IResource
 {
     /// <summary>
     /// Gets or sets a value indicating whether the disabled attribute should be added to the link element.

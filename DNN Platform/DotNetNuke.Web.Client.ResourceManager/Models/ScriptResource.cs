@@ -11,6 +11,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public bool Defer { get; set; } = false;
 
         public bool NoModule { get; set; } = false;
+        public string Type { get; set; } = "";
+        public string Src { get; set; }
+        public string Key { get; set; }
 
         public ScriptResource(IClientResourcesController clientResourcesController)
         {
@@ -20,6 +23,37 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public void Register()
         {
             this._clientResourcesController.AddScript(this);
+        }
+
+        public string Render()
+        {
+            var htmlString = "<script";
+            htmlString += $" src=\"{this.Src}\"";
+            if (this.Async)
+            {
+                htmlString += " async";
+            }
+            if (this.Defer)
+            {
+                htmlString += " defer";
+            }
+            if (this.NoModule)
+            {
+                htmlString += " nomodule";
+            }
+            if (!string.IsNullOrEmpty(this.Type))
+            {
+                htmlString += $" type=\"{this.Type}\"";
+            }
+
+            htmlString += this.RenderBlocking();
+            htmlString += this.RenderCrossOriginAttribute();
+            htmlString += this.RenderFetchPriority();
+            htmlString += this.RenderIntegrity();
+            htmlString += this.RenderReferrerPolicy();
+            htmlString += this.RenderAttributes();
+            htmlString += " />";
+            return htmlString;
         }
     }
 }

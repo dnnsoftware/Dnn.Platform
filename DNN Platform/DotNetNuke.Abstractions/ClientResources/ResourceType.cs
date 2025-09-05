@@ -14,12 +14,17 @@ public enum ResourceType
     All,
 
     /// <summary>
+    /// Represents a font resource type.
+    /// </summary>
+    Font,
+
+    /// <summary>
     /// Represents a script resource type.
     /// </summary>
     Script,
 
     /// <summary>
-    /// Represents a link resource type such as a CSS file.
+    /// Represents a stylesheet resource type.
     /// </summary>
-    Link,
+    Stylesheet,
 }

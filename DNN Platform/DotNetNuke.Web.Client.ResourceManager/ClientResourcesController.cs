@@ -10,14 +10,15 @@ namespace DotNetNuke.Web.Client.ResourceManager
     /// <inheritdoc />
     public class ClientResourcesController : IClientResourcesController
     {
-        private List<ILinkResource> Links { get; set; } = new List<ILinkResource>();
+        private List<IFontResource> Fonts { get; set; } = new List<IFontResource>();
         private List<IScriptResource> Scripts { get; set; } = new List<IScriptResource>();
+        private List<IStylesheetResource> Stylesheets { get; set; } = new List<IStylesheetResource>();
         private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>();
 
         /// <inheritdoc />
-        public void AddLink(ILinkResource link)
+        public void AddFont(IFontResource font)
         {
-            this.Links = this.AddResource(this.Links, link);
+            this.Fonts = this.AddResource(this.Fonts, font);
         }
 
         /// <inheritdoc />
@@ -27,9 +28,15 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
-        public ILinkResource CreateLink()
+        public void AddStylesheet(IStylesheetResource stylesheet)
         {
-            return new Models.LinkResource(this);
+            this.Stylesheets = this.AddResource(this.Stylesheets, stylesheet);
+        }
+
+        /// <inheritdoc />
+        public IFontResource CreateFont()
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -39,9 +46,15 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
-        public void RegisterLink(string linkPath)
+        public IStylesheetResource CreateStylesheet()
         {
-            this.CreateLink().FromSrc(linkPath).Register();
+            return new Models.StylesheetResource(this);
+        }
+
+        /// <inheritdoc />
+        public void RegisterFont(string fontPath)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -57,16 +70,21 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
-        public void RemoveLinkByName(string linkName)
+        public void RegisterStylesheet(string stylesheetPath)
         {
-            this.Links.RemoveAll(l => l.Name.ToLowerInvariant() == linkName.ToLowerInvariant());
+            this.CreateStylesheet().FromSrc(stylesheetPath).Register();
         }
 
         /// <inheritdoc />
-        public void RemoveLinkByPath(string linkPath, string pathNameAlias)
+        public void RemoveFontByName(string fontName)
         {
-            var key = this.ResolvePath(linkPath, pathNameAlias).ToLowerInvariant();
-            this.Links.RemoveAll(l => l.Key == key);
+            throw new System.NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public void RemoveFontByPath(string fontPath, string pathNameAlias)
+        {
+            throw new System.NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -83,12 +101,25 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
+        public void RemoveStylesheetByName(string stylesheetName)
+        {
+            this.Stylesheets.RemoveAll(l => l.Name.ToLowerInvariant() == stylesheetName.ToLowerInvariant());
+        }
+
+        /// <inheritdoc />
+        public void RemoveStylesheetByPath(string stylesheetPath, string pathNameAlias)
+        {
+            var key = this.ResolvePath(stylesheetPath, pathNameAlias).ToLowerInvariant();
+            this.Stylesheets.RemoveAll(l => l.Key == key);
+        }
+
+        /// <inheritdoc />
         public string RenderDependencies(ResourceType resourceType, string provider)
         {
             var sortedList = new List<string>();
-            if (resourceType == ResourceType.Link || resourceType == ResourceType.All)
+            if (resourceType == ResourceType.Stylesheet || resourceType == ResourceType.All)
             {
-                foreach (var link in this.Links.OrderBy(l => l.Priority))
+                foreach (var link in this.Stylesheets.OrderBy(l => l.Priority))
                 {
                     sortedList.Add(link.Render());
                 }
