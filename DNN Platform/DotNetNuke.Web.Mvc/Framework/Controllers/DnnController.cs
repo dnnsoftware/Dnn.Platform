@@ -187,7 +187,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                         "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                         moduleInfo.DesktopModule.FolderName,
                         Localization.LocalResourceDirectory,
-                        this.RouteData.Values["ControllerName"]);
+                        this.RouteData.Values["controller"]);
 
                 var moduleApplication = new ModuleApplication(requestContext, true)
                 {
