@@ -228,7 +228,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                     }
                 }
                 */
-                if (!TabPermissionController.CanAdminPage() && !success)
+                if (!success && !TabPermissionController.CanAdminPage())
                 {
                     // only display the warning to non-administrators (administrators will see the errors)
                     this.AddPageMessage(ctlSkin, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
