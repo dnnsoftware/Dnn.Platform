@@ -158,7 +158,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
 		Build_Install_Package.bat = Build_Install_Package.bat
 		Build_Upgrade_Package.bat = Build_Upgrade_Package.bat
-		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
