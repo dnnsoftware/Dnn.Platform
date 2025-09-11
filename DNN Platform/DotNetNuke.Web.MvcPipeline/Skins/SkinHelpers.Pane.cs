@@ -88,9 +88,11 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                     paneDiv.AddCssClass("EditBarEmptyPane");
                 }
             }
-
+            
             if (model.IsEditMode)
             {
+                // Add support for drag and drop
+                paneDiv.AddCssClass(" dnnSortable");
                 editDiv.InnerHtml += paneDiv.ToString();
                 return MvcHtmlString.Create(editDiv.ToString());
             }

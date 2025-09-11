@@ -112,6 +112,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 this.PaneControl.Controls.AddAt(0, ctlLabel);
                 */
             }
+            /*
             else
             {
                 if (this.CanCollapsePane(pane))
@@ -126,7 +127,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                 }
             }
-
+            */
             return pane;
         }
 
