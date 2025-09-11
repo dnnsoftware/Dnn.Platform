@@ -6,11 +6,17 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+
     /// <summary>Registers a CSS resource.</summary>
-    public class DnnCssInclude : CssInclude
+    public class DnnCssInclude : ClientResourceInclude
     {
-        /// <summary>Initializes a new instance of the <see cref="DnnCssInclude"/> class.</summary>
-        public DnnCssInclude()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnCssInclude"/> class.
+        /// </summary>
+        /// <param name="clientResourcesController">The client resources controller.</param>
+        public DnnCssInclude(IClientResourcesController clientResourcesController)
+            : base(clientResourcesController)
         {
             this.ForceProvider = ClientResourceManager.DefaultCssProvider;
         }
@@ -18,9 +24,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            base.OnLoad(e);
-
             this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
+            base.OnLoad(e);
         }
 
         /// <inheritdoc/>
@@ -28,7 +33,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)
             {
-                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", this.DependencyType, this.FilePath, this.ForceProvider, this.Priority);
+                writer.Write("<!--CDF(Css|{0}|{1}|{2})-->", this.FilePath, this.ForceProvider, this.Priority);
             }
         }
     }

@@ -5,10 +5,31 @@
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions.ClientResources;
 
     /// <summary>The central control with which all client resources are registered.</summary>
-    public class ClientResourceLoader : ClientDependencyLoader
+    [ParseChildren(typeof(ClientResourcePath), ChildrenAsProperties = true)]
+    public class ClientResourceLoader : Control
     {
+        private readonly IClientResourcesController clientResourcesController;
+
+#pragma warning disable IDE0290
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientResourceLoader"/> class.
+        /// </summary>
+        /// <param name="clientResourcesController">The client resources controller to use for resource registration.</param>
+        public ClientResourceLoader(IClientResourcesController clientResourcesController)
+        {
+            this.clientResourcesController = clientResourcesController;
+            this.Paths = new ClientResourcePathCollection();
+        }
+#pragma warning restore IDE0290
+
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public ClientResourcePathCollection Paths { get; private set; }
+
         private bool AsyncPostBackHandlerEnabled
         {
             get
@@ -16,6 +37,26 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 return HttpContext.Current != null
                        && HttpContext.Current.Items.Contains("AsyncPostBackHandlerEnabled");
             }
+        }
+
+        protected override void OnInit(System.EventArgs e)
+        {
+            if (this.AsyncPostBackHandlerEnabled && ScriptManager.GetCurrent(this.Page) == null)
+            {
+                throw new System.Exception("The ClientResourceLoader control requires a ScriptManager on the page when AsyncPostBackHandlerEnabled is true.");
+            }
+
+            base.OnInit(e);
+        }
+
+        protected override void OnLoad(System.EventArgs e)
+        {
+            foreach (var path in this.Paths)
+            {
+                this.clientResourcesController.RegisterPathNameAlias(path.Name, path.Path);
+            }
+
+            base.OnLoad(e);
         }
 
         /// <inheritdoc/>

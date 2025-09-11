@@ -25,7 +25,7 @@ public interface IScriptResource : IResource
 
     /// <summary>
     /// Gets or sets a value indicating whether the noModule attribute should be added to the script element.
-    /// This Boolean attribute is set to indicate that the script should not be executed in browsers that support ES modules — in effect, 
+    /// This Boolean attribute is set to indicate that the script should not be executed in browsers that support ES modules — in effect,
     /// this can be used to serve fallback scripts to older browsers that do not support modular JavaScript code.
     /// </summary>
     bool NoModule { get; set; }

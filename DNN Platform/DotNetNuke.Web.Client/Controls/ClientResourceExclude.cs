@@ -7,38 +7,47 @@ namespace DotNetNuke.Web.Client.Controls
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Web.Client.Cdf;
+
+    /// <summary>
+    /// Represents a control that excludes a client resource from being included in the page.
+    /// </summary>
     public abstract class ClientResourceExclude : Control
     {
+        private readonly IClientResourcesController clientResourcesController;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientResourceExclude"/> class.
+        /// </summary>
+        /// <param name="clientResourcesController">The client resources controller.</param>
+        protected ClientResourceExclude(IClientResourcesController clientResourcesController)
+        {
+            this.clientResourcesController = clientResourcesController;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the client resource to exclude.
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets the dependency type of the client resource to exclude.
+        /// </summary>
         public ClientDependencyType DependencyType { get; internal set; }
 
-        /// <inheritdoc/>
-        protected override void OnPreRender(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-            base.OnPreRender(e);
-            var loader = this.Page.FindControl("ClientResourceIncludes");
-            this.Name = this.Name.ToLowerInvariant();
-
-            if (loader != null)
+            switch (this.DependencyType)
             {
-                ClientDependencyInclude ctlToRemove = null;
-                if (!string.IsNullOrEmpty(this.Name))
-                {
-                    foreach (ClientDependencyInclude ctl in loader.Controls)
-                    {
-                        if (ctl.Name.ToLowerInvariant() == this.Name && ctl.DependencyType == this.DependencyType)
-                        {
-                            ctlToRemove = ctl;
-                            break;
-                        }
-                    }
-                }
-
-                if (ctlToRemove != null)
-                {
-                    loader.Controls.Remove(ctlToRemove);
-                }
+                case ClientDependencyType.Css:
+                    this.clientResourcesController.RemoveStylesheetByName(this.Name);
+                    break;
+                case ClientDependencyType.Javascript:
+                    this.clientResourcesController.RemoveScriptByName(this.Name);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

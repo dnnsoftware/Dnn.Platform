@@ -12,6 +12,14 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
+        public static T FromSrc<T>(this T input, string scriptSrc, string pathNameAlias) where T : IResource
+        {
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            input.FilePath = scriptSrc;
+            input.PathNameAlias = pathNameAlias;
+            return input;
+        }
+
         public static T SetPriority<T>(this T input, int priority) where T : IResource
         {
             if (input == null) throw new ArgumentNullException(nameof(input));

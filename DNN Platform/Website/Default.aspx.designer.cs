@@ -114,22 +114,13 @@ namespace DotNetNuke.Framework
     protected global::System.Web.UI.HtmlControls.HtmlMeta MetaRobots;
 
     /// <summary>
-    /// ClientDependencyHeadCss control.
+    /// DnnResourcesPageHeader control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadCss;
-
-    /// <summary>
-    /// ClientDependencyHeadJs control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder ClientDependencyHeadJs;
+    protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnResources DnnResourcesPageHeader;
 
     /// <summary>
     /// CSS control.
@@ -168,13 +159,13 @@ namespace DotNetNuke.Framework
     protected global::DotNetNuke.Common.Controls.Form Form;
 
     /// <summary>
-    /// BodySCRIPTS control.
+    /// DnnResourcesBody control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder BodySCRIPTS;
+    protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnResources DnnResourcesBody;
 
     /// <summary>
     /// SkinError control.
@@ -213,13 +204,13 @@ namespace DotNetNuke.Framework
     protected global::System.Web.UI.HtmlControls.HtmlInputHidden @__dnnVariable;
 
     /// <summary>
-    /// ClientResourcesFormBottom control.
+    /// DnnResourcesFormBottom control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.PlaceHolder ClientResourcesFormBottom;
+    protected global::DotNetNuke.Web.Client.ClientResourceManagement.DnnResources DnnResourcesFormBottom;
 
     /// <summary>
     /// ClientResourceIncludes control.

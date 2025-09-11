@@ -4,11 +4,21 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Web.Client.Cdf;
+    using DotNetNuke.Web.Client.Controls;
+
+    /// <summary>Excludes a CSS resource.</summary>
     public class DnnCssExclude : ClientResourceExclude
     {
-        public DnnCssExclude()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DnnCssExclude"/> class.
+        /// </summary>
+        /// <param name="clientResourcesController">The controller used to manage client resources.</param>
+        public DnnCssExclude(IClientResourcesController clientResourcesController)
+            : base(clientResourcesController)
         {
-            this.DependencyType = ClientDependency.Core.ClientDependencyType.Css;
+            this.DependencyType = ClientDependencyType.Css;
         }
     }
 }

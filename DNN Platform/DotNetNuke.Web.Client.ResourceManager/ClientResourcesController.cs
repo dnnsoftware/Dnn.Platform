@@ -14,6 +14,9 @@ namespace DotNetNuke.Web.Client.ResourceManager
         private List<IScriptResource> Scripts { get; set; } = new List<IScriptResource>();
         private List<IStylesheetResource> Stylesheets { get; set; } = new List<IStylesheetResource>();
         private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>();
+        private List<string> FontsToExclude { get; set; } = new List<string>();
+        private List<string> ScriptsToExclude { get; set; } = new List<string>();
+        private List<string> StylesheetsToExclude { get; set; } = new List<string>();
 
         /// <inheritdoc />
         public void AddFont(IFontResource font)
@@ -36,7 +39,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc />
         public IFontResource CreateFont()
         {
-            throw new System.NotImplementedException();
+            return new Models.FontResource(this);
         }
 
         /// <inheritdoc />
@@ -54,7 +57,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc />
         public void RegisterFont(string fontPath)
         {
-            throw new System.NotImplementedException();
+            this.CreateFont().FromSrc(fontPath).Register();
         }
 
         /// <inheritdoc />
@@ -78,55 +81,63 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc />
         public void RemoveFontByName(string fontName)
         {
-            throw new System.NotImplementedException();
+            this.FontsToExclude.Add(fontName.ToLowerInvariant());
         }
 
         /// <inheritdoc />
         public void RemoveFontByPath(string fontPath, string pathNameAlias)
         {
-            throw new System.NotImplementedException();
+            var fullPath = this.ResolvePath(fontPath, pathNameAlias).ToLowerInvariant();
+            this.FontsToExclude.Add(fullPath.ToLowerInvariant());
         }
 
         /// <inheritdoc />
         public void RemoveScriptByName(string scriptName)
         {
-            this.Scripts.RemoveAll(s => s.Name.ToLowerInvariant() == scriptName.ToLowerInvariant());
+            this.ScriptsToExclude.Add(scriptName.ToLowerInvariant());
         }
 
         /// <inheritdoc />
         public void RemoveScriptByPath(string scriptPath, string pathNameAlias)
         {
-            var key = this.ResolvePath(scriptPath, pathNameAlias).ToLowerInvariant();
-            this.Scripts.RemoveAll(s => s.Key == key);
+            var fullPath = this.ResolvePath(scriptPath, pathNameAlias).ToLowerInvariant();
+            this.ScriptsToExclude.Add(fullPath.ToLowerInvariant());
         }
 
         /// <inheritdoc />
         public void RemoveStylesheetByName(string stylesheetName)
         {
-            this.Stylesheets.RemoveAll(l => l.Name.ToLowerInvariant() == stylesheetName.ToLowerInvariant());
+            this.StylesheetsToExclude.Add(stylesheetName.ToLowerInvariant());
         }
 
         /// <inheritdoc />
         public void RemoveStylesheetByPath(string stylesheetPath, string pathNameAlias)
         {
-            var key = this.ResolvePath(stylesheetPath, pathNameAlias).ToLowerInvariant();
-            this.Stylesheets.RemoveAll(l => l.Key == key);
+            var fullPath = this.ResolvePath(stylesheetPath, pathNameAlias).ToLowerInvariant();
+            this.StylesheetsToExclude.Add(fullPath.ToLowerInvariant());
         }
 
         /// <inheritdoc />
         public string RenderDependencies(ResourceType resourceType, string provider)
         {
             var sortedList = new List<string>();
+            if (resourceType == ResourceType.Font || resourceType == ResourceType.All)
+            {
+                foreach (var link in this.Fonts.Where(s => !this.FontsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
+                {
+                    sortedList.Add(link.Render());
+                }
+            }
             if (resourceType == ResourceType.Stylesheet || resourceType == ResourceType.All)
             {
-                foreach (var link in this.Stylesheets.OrderBy(l => l.Priority))
+                foreach (var link in this.Stylesheets.Where(s => !this.StylesheetsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
                 {
                     sortedList.Add(link.Render());
                 }
             }
             if (resourceType == ResourceType.Script || resourceType == ResourceType.All)
             {
-                foreach (var script in this.Scripts.OrderBy(s => s.Priority))
+                foreach (var script in this.Scripts.Where(s => !this.ScriptsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(s => s.Priority))
                 {
                     sortedList.Add(script.Render());
                 }

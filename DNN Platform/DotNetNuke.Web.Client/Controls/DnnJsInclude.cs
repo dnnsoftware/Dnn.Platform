@@ -6,14 +6,18 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+
     /// <summary>Registers a JavaScript resource.</summary>
-    public class DnnJsInclude : JsInclude
+    public class DnnJsInclude : ClientResourceInclude
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
         /// Sets up default settings for the control.
         /// </summary>
-        public DnnJsInclude()
+        /// <param name="clientResourcesController">The client resources controller.</param>
+        public DnnJsInclude(IClientResourcesController clientResourcesController)
+            : base(clientResourcesController)
         {
             this.ForceProvider = ClientResourceManager.DefaultJsProvider;
         }
@@ -21,9 +25,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            base.OnLoad(e);
-
             this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
+            base.OnLoad(e);
         }
 
         /// <inheritdoc/>
@@ -31,7 +34,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)
             {
-                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", this.DependencyType, this.FilePath, this.ForceProvider, this.Priority);
+                writer.Write("<!--CDF(Javascript|{0}|{1}|{2})-->", this.FilePath, this.ForceProvider, this.Priority);
             }
         }
     }
