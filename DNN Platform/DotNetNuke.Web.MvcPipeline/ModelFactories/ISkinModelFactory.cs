@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcPipeline.Framework
+namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Models;
 
-    public interface IPageModelFactory
+    public interface ISkinModelFactory
     {
-        PageModel CreatePageModel(DnnPageController page);
+        SkinModel CreateSkinModel(DnnPageController page);
     }
 }

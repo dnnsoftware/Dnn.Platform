@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcPipeline.Framework
+namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
 
@@ -30,63 +30,17 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
         private ContainerModel ProcessModule(ContainerModel container, PortalSettings portalSettings)
         {
-            /*
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"Container.ProcessModule Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
-            }
-            */
             // Process Content Pane Attributes
             container = this.ProcessContentPane(container, portalSettings);
-
-            // always add the actions menu as the first item in the content pane.
-            /*
-            if (this.InjectActionMenu && !ModuleHost.IsViewMode(this.ModuleConfiguration, this.PortalSettings) && this.Request.QueryString["dnnprintmode"] != "true")
-            {
-                MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                this.ContentPane.Controls.Add(this.LoadControl(this.PortalSettings.DefaultModuleActionMenu));
-
-                // register admin.css
-                MvcClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
-            }
-            */
 
             // Process Module Header
             container = this.ProcessHeader(container);
 
-            // Try to load the module control
-            // container.moduleHost = new ModuleHostModel(this.ModuleConfiguration, this.ParentSkin, this);
-            // container.moduleHost.OnPreRender();
-
-            /*
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this.moduleHost.ID})");
-            }
-
-            this.ContentPane.Controls.Add(this.ModuleHost);
-            */
-
             // Process Module Footer
             container = this.ProcessFooter(container);
 
-            /*
-            // Process the Action Controls
-            if (this.ModuleHost != null && this.ModuleControl != null)
-            {
-                this.ProcessChildControls(this);
-            }
-            */
-
             // Add Module Stylesheets
             container = this.ProcessStylesheets(container, container.ModuleHost != null);
-
-            /*
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
-            }
-            */
 
             return container;
         }
@@ -100,12 +54,12 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             container = this.SetBorder(container);
 
             // display visual indicator if module is only visible to administrators
-            string viewRoles = container.ModuleConfiguration.InheritViewPermissions
+            var viewRoles = container.ModuleConfiguration.InheritViewPermissions
                                    ? TabPermissionController.GetTabPermissions(container.ModuleConfiguration.TabID, container.ModuleConfiguration.PortalID).ToString("VIEW")
                                    : container.ModuleConfiguration.ModulePermissions.ToString("VIEW");
 
-            string pageEditRoles = TabPermissionController.GetTabPermissions(container.ModuleConfiguration.TabID, container.ModuleConfiguration.PortalID).ToString("EDIT");
-            string moduleEditRoles = container.ModuleConfiguration.ModulePermissions.ToString("EDIT");
+            var pageEditRoles = TabPermissionController.GetTabPermissions(container.ModuleConfiguration.TabID, container.ModuleConfiguration.PortalID).ToString("EDIT");
+            var moduleEditRoles = container.ModuleConfiguration.ModulePermissions.ToString("EDIT");
 
             viewRoles = viewRoles.Replace(";", string.Empty).Trim().ToLowerInvariant();
             pageEditRoles = pageEditRoles.Replace(";", string.Empty).Trim().ToLowerInvariant();
@@ -195,10 +149,10 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             // process the base class module properties
             if (includeModuleCss)
             {
-                string controlSrc = container.ModuleConfiguration.ModuleControl.ControlSrc;
-                string folderName = container.ModuleConfiguration.DesktopModule.FolderName;
+                var controlSrc = container.ModuleConfiguration.ModuleControl.ControlSrc;
+                var folderName = container.ModuleConfiguration.DesktopModule.FolderName;
 
-                string stylesheet = string.Empty;
+                var stylesheet = string.Empty;
                 if (string.IsNullOrEmpty(folderName) == false)
                 {
                     if (controlSrc.EndsWith(".mvc"))

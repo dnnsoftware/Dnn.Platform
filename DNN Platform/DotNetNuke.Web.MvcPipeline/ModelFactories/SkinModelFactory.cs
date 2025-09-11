@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcPipeline.Framework
+namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
     using System.IO;
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
         public SkinModel CreateSkinModel(DnnPageController page)
         {
             SkinModel skin = null;
-            string skinSource = Null.NullString;
+            var skinSource = Null.NullString;
 
             if (page.PortalSettings.EnablePopUps && UrlUtils.InPopUp())
             {
@@ -79,11 +79,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
                 // set skin path
                 page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
-
-                // set skin id to an explicit short name to reduce page payload and make it standards compliant
-                /*
-                skin.ID = "dnn";
-                */
             }
             else
             {
@@ -97,7 +92,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 // load user skin ( based on cookie )
                 if (skin == null)
                 {
-                    HttpCookie skinCookie = page.Request.Cookies["_SkinSrc" + page.PortalSettings.PortalId];
+                    var skinCookie = page.Request.Cookies["_SkinSrc" + page.PortalSettings.PortalId];
                     if (skinCookie != null)
                     {
                         if (!string.IsNullOrEmpty(skinCookie.Value))
@@ -112,7 +107,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 if (skin == null)
                 {
                     // DNN-6170 ensure skin value is culture specific
-                    // skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.page.PortalSettings.DefaultAdminSkin, page.page.PortalSettings) : page.page.PortalSettings.ActiveTab.SkinSrc;
                     skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId, Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
                     if (!string.IsNullOrEmpty(skinSource))
                     {
@@ -130,11 +124,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
                 // set skin path
                 page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
-
-                // set skin id to an explicit short name to reduce page payload and make it standards compliant
-                /*
-                skin.ID = "dnn";
-                */
             }
 
             if (page.PortalSettings.ActiveTab.DisableLink)
@@ -181,32 +170,20 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             SkinModel ctlSkin = null;
             try
             {
-                string skinSrc = skinPath;
+                var skinSrc = skinPath;
                 if (skinPath.IndexOf(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
                 }
 
-                /*
-                ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
-                */
                 ctlSkin = new SkinModel();
-
                 ctlSkin.SkinSrc = skinSrc;
-
-                // call databind so that any server logic in the skin is executed
-                /*
-                ctlSkin.DataBind();
-                */
 
                 // Load the Panes
                 this.LoadPanes(page.PortalSettings);
 
                 // Load the Module Control(s)
-                bool success = Globals.IsAdminControl() ? this.ProcessSlaveModule(page.PortalSettings, ctlSkin) : this.ProcessMasterModules(page.PortalSettings, ctlSkin);
-                /*
-                this.ProcessMasterModules();
-                */
+                var success = Globals.IsAdminControl() ? this.ProcessSlaveModule(page.PortalSettings, ctlSkin) : this.ProcessMasterModules(page.PortalSettings, ctlSkin);
 
                 // Load the Control Panel
                 this.InjectControlPanel(ctlSkin, page.Request);
@@ -235,8 +212,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 }
 
                 /*
-                this.InvokeSkinEvents(SkinEventType.OnSkinInit);
-
                 if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
                 {
                     var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
@@ -255,10 +230,9 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 // Process the Panes attributes
                 foreach (var key in ctlSkin.Panes.Keys)
                 {
-                    /*ctlSkin.Panes[key] =*/ this.paneModelFactory.ProcessPane(ctlSkin.Panes[key]);
+                    this.paneModelFactory.ProcessPane(ctlSkin.Panes[key]);
                 }
 
-                // this.InvokeSkinEvents(SkinEventType.OnSkinPreRender);
                 var isSpecialPageMode = UrlUtils.InPopUp() || page.Request.QueryString["dnnprintmode"] == "true";
                 if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
                 {
@@ -286,17 +260,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                     sb.AppendLine(" } (jQuery));");
 
                     var script = sb.ToString();
-                    /*
-                    if (ScriptManager.GetCurrent(this.Page) != null)
-                    {
-                        // respect MS AJAX
-                        ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "DragAndDrop", script, true);
-                    }
-                    else
-                    {
-                        this.Page.ClientScript.RegisterStartupScript(this.GetType(), "DragAndDrop", script, true);
-                    }
-                    */
                     MvcClientAPI.RegisterStartupScript("DragAndDrop", script);
                 }
             }
@@ -390,7 +353,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
         private bool ProcessMasterModules(PortalSettings portalSettings, SkinModel skin)
         {
-            bool success = true;
+            var success = true;
             if (TabPermissionController.CanViewPage())
             {
                 // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
@@ -423,7 +386,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 // check portal expiry date
                 if (!this.CheckExpired(portalSettings))
                 {
-                    if ((portalSettings.ActiveTab.StartDate < DateTime.Now && portalSettings.ActiveTab.EndDate > DateTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
+                    if (portalSettings.ActiveTab.StartDate < DateTime.Now && portalSettings.ActiveTab.EndDate > DateTime.Now || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
                     {
                         foreach (var objModule in PortalSettingsController.Instance().GetTabModules(portalSettings))
                         {
@@ -452,7 +415,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
 
                 // Current locale will use default if did'nt find any
-                Locale currentLocale = LocaleController.Instance.GetCurrentLocale(portalSettings.PortalId);
+                var currentLocale = LocaleController.Instance.GetCurrentLocale(portalSettings.PortalId);
                 if (portalSettings.ContentLocalizationEnabled &&
                     TabController.CurrentPage.CultureCode != currentLocale.Code)
                 {
@@ -541,7 +504,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
                 this.EnsureContentItemForModule(module);
 
-                PaneModel pane = this.GetPane(skin, module);
+                var pane = this.GetPane(skin, module);
 
                 if (pane != null)
                 {
@@ -562,7 +525,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
         private PaneModel GetPane(SkinModel skin, ModuleInfo module)
         {
             PaneModel pane;
-            bool found = skin.Panes.TryGetValue(module.PaneName.ToLowerInvariant(), out pane);
+            var found = skin.Panes.TryGetValue(module.PaneName.ToLowerInvariant(), out pane);
 
             if (!found)
             {
@@ -581,7 +544,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
         private bool CheckExpired(PortalSettings portalSettings)
         {
-            bool blnExpired = false;
+            var blnExpired = false;
             if (portalSettings.ExpiryDate != Null.NullDate)
             {
                 if (Convert.ToDateTime(portalSettings.ExpiryDate) < DateTime.Now && !Globals.IsHostTab(portalSettings.ActiveTab.TabID))
@@ -665,14 +628,14 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
         {
             if (!string.IsNullOrEmpty(message))
             {
-                ModuleMessageModel moduleMessage = this.GetModuleMessage(heading, message, moduleMessageType, iconSrc);
+                var moduleMessage = this.GetModuleMessage(heading, message, moduleMessageType, iconSrc);
                 skin.ModuleMessages.Insert(0, moduleMessage);
             }
         }
 
         private bool InjectModule(PortalSettings portalSettings, PaneModel pane, ModuleInfo module)
         {
-            bool bSuccess = true;
+            var bSuccess = true;
 
             // try to inject the module into the pane
             try
@@ -707,9 +670,9 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
 
         private IFileInfo GetPageStylesheetFileInfo(string styleSheet, int portalId)
         {
-            string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, portalId, "PageStylesheet" + styleSheet);
+            var cacheKey = string.Format(DataCache.PortalCacheKey, portalId, "PageStylesheet" + styleSheet);
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
-                new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority, styleSheet, portalId),
+                new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, styleSheet, portalId),
                 this.GetPageStylesheetInfoCallBack);
 
             return file;
@@ -731,7 +694,7 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 DataCache.PortalCachePriority,
                 portalStyles,
                 homeSystemDirectory);
-            string filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
+            var filePath = CBO.GetCachedObject<string>(cacheArgs, this.GetCssVariablesStylesheetCallback);
             return filePath;
         }
 
