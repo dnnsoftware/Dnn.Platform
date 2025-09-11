@@ -159,9 +159,6 @@
     <Compile Include="Components\HtmlTextUserController.cs" />
     <Compile Include="Components\HtmlTextUserInfo.cs" />
     <Compile Include="Controllers\DNN_HTMLController.cs" />
-    <Compile Include="Controllers\EditHTMLViewController.cs" />
-    <Compile Include="Controllers\HtmlModuleViewController.cs" />
-    <Compile Include="Controllers\MyWorkViewController.cs" />
     <Compile Include="Models\HtmlModuleSettingsModel.cs" />
     <Compile Include="Models\HtmlTextUserModel.cs" />
     <Compile Include="Models\MyWorkModel.cs" />
@@ -186,13 +183,6 @@
     <Compile Include="Mvc\HtmlModuleControl.cs" />
     <Compile Include="Mvc\MyWorkControl.cs" />
     <Compile Include="Mvc\RouteConfig.cs" />
-    <Compile Include="MyWorkOld.ascx.cs">
-      <DependentUpon>MyWorkOld.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MyWorkOld.ascx.designer.cs">
-      <DependentUpon>MyWorkOld.ascx</DependentUpon>
-    </Compile>
     <Compile Include="MyWork.ascx.cs">
       <DependentUpon>MyWork.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -231,7 +221,6 @@
     <Content Include="js\edit.js" />
     <Content Include="license.txt" />
     <Content Include="edit.css" />
-    <Content Include="MyWorkOld.ascx" />
     <Content Include="MyWork.ascx" />
     <Content Include="releaseNotes.txt" />
     <Content Include="Settings.ascx" />
