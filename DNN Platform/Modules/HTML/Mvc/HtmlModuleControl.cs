@@ -7,25 +7,27 @@ namespace DotNetNuke.Modules.Html
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class HtmlModuleControl : ModuleControlBase, IActionable
+    public class HtmlModuleControl : RazorModuleControlBase, IActionable
     {
         private readonly INavigationManager navigationManager;
+        private readonly HtmlTextController htmlTextController;
 
         public HtmlModuleControl()
         {
             this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
-            this.ControlPath = "DesktopModules/HTML";
-            this.ID = "HtmlModule.ascx";
+            this.htmlTextController = new HtmlTextController(this.navigationManager);
         }
 
         /// <summary>  Gets moduleActions is an interface property that returns the module actions collection for the module.</summary>
@@ -62,6 +64,23 @@ namespace DotNetNuke.Modules.Html
 
                 return actions;
             }
+        }
+
+        public override object ViewModel()
+        {
+            int workflowID = this.htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+            HtmlTextInfo content = this.htmlTextController.GetTopHtmlText(this.ModuleId, true, workflowID);
+
+            var html = string.Empty;
+            if (content != null)
+            {
+                html = System.Web.HttpUtility.HtmlDecode(content.Content);
+            }
+
+            return new HtmlModuleModel()
+            {
+                Html = html,
+            };
         }
     }
 }

@@ -22,6 +22,8 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.WebControls;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.Utils;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>  The HtmlModule Class provides the UI for displaying the Html.</summary>

@@ -126,7 +126,10 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             // Set Current Mode to Module Instance
             currentEditorSettings.SettingMode = SettingsMode.ModuleInstance;
             */
-            if (page.IsChildAction)
+
+            if (!page.HttpContext.Request.IsAjaxRequest())
+
+            //if (page.IsChildAction)
             {
                 MvcClientResourceManager.RegisterStyleSheet(page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
                 MvcClientResourceManager.RegisterStyleSheet(page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));

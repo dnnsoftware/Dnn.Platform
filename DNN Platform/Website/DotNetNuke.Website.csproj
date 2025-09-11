@@ -608,6 +608,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <Content Include="admin\Portal\Views\web.config" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -1278,7 +1279,7 @@
     <Content Include="Views\PrivacyView\Invoke.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_PermissionTriState.cshtml" />
-    <Content Include="Views\TermsView\Invoke.cshtml" />
+    <Content Include="admin\Portal\Views\Terms.cshtml" />
     <Content Include="Views\web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -3393,6 +3394,7 @@
   <ItemGroup>
     <Folder Include="Install\Provider\" />
     <Folder Include="Install\Temp\" />
+    <Folder Include="Views\TermsView\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

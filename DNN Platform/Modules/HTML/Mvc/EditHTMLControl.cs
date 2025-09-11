@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Modules.Html.Controllers
+namespace DotNetNuke.Modules.Html
 {
     using System;
     using System.Collections.Generic;
@@ -29,16 +29,17 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class EditHTMLViewController : ModuleViewControllerBase
+    public class EditHTMLControl : RazorModuleControlBase
     {
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly IContentSecurityPolicy contentSecurityPolicy;
 
-        public EditHTMLViewController(IContentSecurityPolicy csp)
+        public EditHTMLControl(IContentSecurityPolicy csp)
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = new HtmlTextController(this.navigationManager);
@@ -50,7 +51,7 @@ namespace DotNetNuke.Modules.Html.Controllers
 
         public override string ID => "EditHTML";
         */
-        protected override object ViewModel()
+        public override object ViewModel()
         {
             var model = new EditHtmlViewModel();
             try
@@ -114,10 +115,18 @@ namespace DotNetNuke.Modules.Html.Controllers
                 throw new Exception("EditHTML", exc);
             }
 
+            /*
+            this.RegisterScript("~/Resources/Shared/scripts/jquery/jquery.form.min.js");
+            this.RegisterStyleSheet("~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css");
+            this.RegisterStyleSheet("~/DesktopModules/HTML/edit.css");
+            this.RegisterScript("~/DesktopModules/HTML/js/edit.js");
+            */
+            /*
             MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/Resources/Shared/scripts/jquery/jquery.form.min.js");
             MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css");
             MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/DesktopModules/HTML/edit.css");
             MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/DesktopModules/HTML/js/edit.js");
+            */
 
             this.contentSecurityPolicy.StyleSource.AddInline();
             this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();

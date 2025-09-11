@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcWebsite.Controllers
+namespace DotNetNuke.Web.MvcWebsite.Controls
 {
     using System;
     using System.Collections.Generic;
@@ -21,22 +21,26 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
-    using DotNetNuke.UI;
-    using DotNetNuke.UI.Modules;
+    //using DotNetNuke.UI.Modules;
+    //using DotNetNuke.UI;
+
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using DotNetNuke.Web.MvcWebsite.Models;
 
-    public class ModuleActionsViewController : Controller
+    public class ModuleActionsControl : RazorModuleControlBase, IResourcable
     {
         private readonly List<int> validIDs = new List<int>();
         private ModuleAction actionRoot;
 
         private Dictionary<string, string> actionScripts = new Dictionary<string, string>();
 
-        public ModuleInstanceContext ModuleContext { get; private set; }
+        //public ModuleInstanceContext ModuleContext { get; private set; }
 
         public bool EditMode
         {
@@ -106,21 +110,9 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             }
         }
 
-        [ChildActionOnly]
-        public ActionResult Invoke(ControlViewModel input)
+        public override object ViewModel()
         {
-            var moduleInfo = ModuleController.Instance.GetModule(input.ModuleId, input.TabId, false);
-            if (moduleInfo.ModuleControlId != input.ModuleControlId)
-            {
-                moduleInfo = moduleInfo.Clone();
-                moduleInfo.ContainerPath = input.ContainerPath;
-                moduleInfo.ContainerSrc = input.ContainerSrc;
-                moduleInfo.ModuleControlId = input.ModuleControlId;
-                moduleInfo.PaneName = input.PanaName;
-                moduleInfo.IconFile = input.IconFile;
-            }
-
-            this.ModuleContext = new ModuleInstanceContext(/*new FakeModuleControl()*/) { Configuration = moduleInfo };
+            var moduleInfo = ModuleConfiguration;
             this.OnInit();
             this.OnLoad(moduleInfo);
 
@@ -143,12 +135,47 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 ActionScripts = this.actionScripts,
             };
 
-            return this.View(viewModel);
+            return viewModel;
         }
 
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, Localization.GlobalResourceFile);
+        }
+        public ModuleResources ModuleResources
+        {
+            get
+            {
+                return new ModuleResources()
+                {
+                    StyleSheets = new List<ModuleStyleSheet>()
+                    {
+                        new ModuleStyleSheet()
+                        {
+                            FilePath = "~/admin/menus/ModuleActions/ModuleActions.css",
+                            Priority = FileOrder.Css.ModuleCss,
+                        },
+                        new ModuleStyleSheet()
+                        {
+                            FilePath = "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css",
+                            Priority = FileOrder.Css.ModuleCss,
+                        },
+                    },
+                    Scripts = new List<ModuleScript>()
+                    {
+                        new ModuleScript()
+                        {
+                            FilePath = "~/admin/menus/ModuleActions/ModuleActions.js",
+                        },
+                    },
+                    Libraries = new List<string>()
+                    {
+                        CommonJs.DnnPlugins,
+                    },
+                    AjaxAntiForgery = true,
+
+                };
+            }
         }
 
         protected void OnInit()
@@ -156,41 +183,27 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // base.OnInit(e);
             // this.ID = "ModuleActions";
             // this.actionButton.Click += this.ActionButton_Click;
-            MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            // MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
-            MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/admin/menus/ModuleActions/ModuleActions.js");
+            // this.RegisterStyleSheet("~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
+            //this.RegisterStyleSheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
+            //this.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            //ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
         protected void OnLoad(ModuleInfo moduleInfo)
         {
             // base.OnLoad(e);
-            this.ModuleContext = new ModuleInstanceContext() { Configuration = moduleInfo };
+
             var moduleActions = new ModuleActionCollection();
-            var desktopModule = DesktopModuleController.GetDesktopModule(moduleInfo.DesktopModuleID, moduleInfo.PortalID);
-            if (!string.IsNullOrEmpty(desktopModule.BusinessControllerClass))
+
+            var moduleControl = MvcUtils.GetModuleControl(moduleInfo);
+
+            var actionable = moduleControl as IActionable;
+            if (actionable != null)
             {
-                var businessController = Reflection.CreateType(desktopModule.BusinessControllerClass);
-                var controlClass = businessController.Namespace + "." + System.IO.Path.GetFileNameWithoutExtension(moduleInfo.ModuleControl.ControlSrc) + "Control," + businessController.Assembly;
-                try
-                {
-                    var controller = Reflection.CreateObject(controlClass, controlClass);
-
-                    var control = controller as IModuleControl;
-                    control.ModuleContext.Configuration = moduleInfo;
-
-                    var actionable = controller as IActionable;
-                    if (actionable != null)
-                    {
-                        moduleActions = actionable.ModuleActions;
-                    }
-                }
-                catch (Exception)
-                {
-                }
+                moduleActions = actionable.ModuleActions;
             }
 
             this.ActionRoot.Actions.AddRange(this.Actions);
@@ -213,12 +226,12 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                     }
                     */
                     moduleSpecificActions.Actions.Add(action);
-                    
-                    if (!UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
+
+                    if (!DotNetNuke.UI.UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
                     {
                         action.ClientScript = UrlUtils.PopUpUrl(action.Url, null, this.PortalSettings, true, false);
                     }
-                    
+
                 }
             }
 
@@ -290,7 +303,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
 
                             if (string.IsNullOrEmpty(action.ClientScript) && !string.IsNullOrEmpty(action.Url) && action.Url.StartsWith("javascript:"))
                             {
-                                if (!UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId))
+                                if (!DotNetNuke.UI.UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId))
                                 {
                                     action.ClientScript = UrlUtils.PopUpUrl(action.Url, null, this.PortalSettings, true, false);
                                 }
@@ -330,6 +343,14 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             {
                 // Exceptions.ProcessModuleLoadException(this, exc);
                 throw exc;
+            }
+        }
+
+        public override string ViewName
+        {
+            get
+            {
+                return "ModuleActions";
             }
         }
     }

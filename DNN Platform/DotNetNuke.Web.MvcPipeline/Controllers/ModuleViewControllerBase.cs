@@ -199,7 +199,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
                 string fileRoot;
                 if (string.IsNullOrEmpty(this.localResourceFile))
                 {
-                    fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ID);
+                    fileRoot = "~/DesktopModules/" + this.FolderName + "/" + Localization.LocalResourceDirectory + "/" + this.ResourceName;
                 }
                 else
                 {
@@ -215,8 +215,20 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             }
         }
 
-        public abstract string ControlPath { get;  }
-        public abstract string ID { get; }
+        public virtual string FolderName
+        {
+            get
+            {
+                return this.moduleContext.Configuration.DesktopModule.FolderName;
+            }
+        }
+        public virtual string ResourceName
+        {
+            get
+            {
+                return this.GetType().Name.Replace("ViewController", "");
+            }
+        }
 
         public string EditUrl()
         {
@@ -268,7 +280,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         {
             this.moduleContext = new ModuleInstanceContext();
             var activeModule = ModuleController.Instance.GetModule(input.ModuleId, input.TabId, false);
-            
+
             if (activeModule.ModuleControlId != input.ModuleControlId)
             {
                 activeModule = activeModule.Clone();
@@ -294,6 +306,6 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         {
             return this.View(MvcUtils.GetControlViewName(module, viewName), model);
         }
-   
+
     }
 }

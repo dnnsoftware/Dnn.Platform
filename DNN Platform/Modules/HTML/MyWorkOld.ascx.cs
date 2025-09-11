@@ -18,22 +18,20 @@ namespace DotNetNuke.Modules.Html
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>  MyWork allows a user to view any outstanding workflow items.</summary>
-    public partial class MyWork : PortalModuleBase, IActionable
+    public partial class MyWorkOld : PortalModuleBase
     {
-        private readonly MvcModuleControlRenderer<MyWorkControl> renderer;
+        private readonly INavigationManager navigationManager;
 
-        /// <summary>Initializes a new instance of the <see cref="MyWork"/> class.</summary>
-        public MyWork()
+        /// <summary>Initializes a new instance of the <see cref="MyWorkOld"/> class.</summary>
+        public MyWorkOld()
         {
-            this.renderer = new MvcModuleControlRenderer<MyWorkControl>(this);
+            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        public ModuleActionCollection ModuleActions
+        public string FormatURL(object dataItem)
         {
-            get
-            {
-                return this.renderer.ModuleControl.ModuleActions;
-            }
+            var objHtmlTextUser = (HtmlTextUserInfo)dataItem;
+            return "<a href=\"" + this.navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
@@ -41,12 +39,16 @@ namespace DotNetNuke.Modules.Html
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            this.hlCancel.NavigateUrl = this.navigationManager.NavigateURL();
 
             try
             {
-                var html = this.renderer.RenderToString();
-                this.Controls.Add(new LiteralControl(html));
-                this.renderer.RegisterResources(this.renderer.ModuleControl);
+                if (!this.Page.IsPostBack)
+                {
+                    var objHtmlTextUsers = new HtmlTextUserController();
+                    this.dgTabs.DataSource = objHtmlTextUsers.GetHtmlTextUser(this.UserInfo.UserID);
+                    this.dgTabs.DataBind();
+                }
             }
             catch (Exception exc)
             {

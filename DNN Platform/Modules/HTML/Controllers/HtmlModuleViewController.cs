@@ -41,9 +41,11 @@ namespace DotNetNuke.Modules.Html.Controllers
             this.htmlTextController = new HtmlTextController(this.navigationManager);
         }
 
+        /*
         public override string ControlPath => "~/DesktopModules/Html/";
 
         public override string ID => "HtmlModule";
+        */
 
         protected override object ViewModel()
         {

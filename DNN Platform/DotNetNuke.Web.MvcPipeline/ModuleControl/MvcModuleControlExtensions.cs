@@ -1,0 +1,231 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Web.Mvc;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl;
+
+    /// <summary>
+    /// Extension methods for IMvcModuleControl interface.
+    /// </summary>
+    public static class MvcModuleControlExtensions
+    {
+        /*
+        /// <summary>
+        /// Registers a JavaScript file for the module control.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="filePath">The path to the JavaScript file.</param>
+        /// <param name="priority">The priority for loading the script.</param>
+        public static void RegisterScript(this IMvcModuleControl moduleControl, string filePath, FileOrder.Js priority = FileOrder.Js.DefaultPriority)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
+            }
+
+            if (moduleControl.ViewContext != null)
+            {
+                MvcClientResourceManager.RegisterScript(moduleControl.ViewContext.Controller.ControllerContext, filePath, priority);
+            }
+            else if (moduleControl.Control != null)
+            {
+                ClientResourceManager.RegisterScript(moduleControl.Control.Page, filePath, priority);
+            }
+        }
+
+        /// <summary>
+        /// Registers a CSS stylesheet for the module control.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="filePath">The path to the CSS file.</param>
+        /// <param name="priority">The priority for loading the stylesheet.</param>
+        public static void RegisterStyleSheet(this IMvcModuleControl moduleControl, string filePath, FileOrder.Css priority = FileOrder.Css.DefaultPriority)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
+            }
+
+            if (moduleControl.ViewContext != null)
+            {
+                MvcClientResourceManager.RegisterStyleSheet(moduleControl.ViewContext.Controller.ControllerContext, filePath, priority);
+            }
+            else if (moduleControl.Control != null)
+            {
+                ClientResourceManager.RegisterStyleSheet(moduleControl.Control.Page, filePath, priority);
+            }
+        }
+        */
+        /// <summary>
+        /// Gets a localized string for the module control.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized string.</returns>
+        public static string LocalizeString(this IMvcModuleControl moduleControl, string key)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                return string.Empty;
+            }
+
+            return Localization.GetString(key, moduleControl.LocalResourceFile);
+        }
+
+        /// <summary>
+        /// Gets a localized string formatted for safe JavaScript usage.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The JavaScript-safe localized string.</returns>
+        public static string LocalizeSafeJsString(this IMvcModuleControl moduleControl, string key)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            if (string.IsNullOrEmpty(key))
+            {
+                return string.Empty;
+            }
+
+            return Localization.GetSafeJSString(key, moduleControl.LocalResourceFile);
+        }
+
+        /// <summary>
+        /// Gets an edit URL for the module.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="controlKey">The control key for the edit page.</param>
+        /// <returns>The edit URL.</returns>
+        public static string EditUrl(this IMvcModuleControl moduleControl, string controlKey = "")
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            return string.IsNullOrEmpty(controlKey)
+                ? moduleControl.ModuleContext.EditUrl()
+                : moduleControl.ModuleContext.EditUrl(controlKey);
+        }
+
+        /// <summary>
+        /// Gets an edit URL for the module with specific parameters.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="keyName">The parameter key name.</param>
+        /// <param name="keyValue">The parameter key value.</param>
+        /// <param name="controlKey">The control key for the edit page.</param>
+        /// <returns>The edit URL with parameters.</returns>
+        public static string EditUrl(this IMvcModuleControl moduleControl, string keyName, string keyValue, string controlKey = "")
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            return string.IsNullOrEmpty(controlKey)
+                ? moduleControl.ModuleContext.EditUrl(keyName, keyValue)
+                : moduleControl.ModuleContext.EditUrl(keyName, keyValue, controlKey);
+        }
+
+        /// <summary>
+        /// Gets a module setting value with type conversion.
+        /// </summary>
+        /// <typeparam name="T">The type to convert the setting to.</typeparam>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="settingName">The setting name.</param>
+        /// <param name="defaultValue">The default value if setting is not found or conversion fails.</param>
+        /// <returns>The setting value converted to the specified type.</returns>
+        public static T GetModuleSetting<T>(this IMvcModuleControl moduleControl, string settingName, T defaultValue = default)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            if (string.IsNullOrEmpty(settingName))
+            {
+                return defaultValue;
+            }
+
+            var settings = moduleControl.ModuleContext.Settings;
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            try
+            {
+                var settingValue = settings[settingName]?.ToString();
+                if (string.IsNullOrEmpty(settingValue))
+                {
+                    return defaultValue;
+                }
+
+                return (T)Convert.ChangeType(settingValue, typeof(T));
+            }
+            catch (Exception)
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the current user is in edit mode for the module.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <returns>True if in edit mode; otherwise, false.</returns>
+        public static bool EditMode(this IMvcModuleControl moduleControl)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            return moduleControl.ModuleContext.EditMode;
+        }
+
+        /// <summary>
+        /// Checks if the module is editable by the current user.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <returns>True if editable; otherwise, false.</returns>
+        public static bool IsEditable(this IMvcModuleControl moduleControl)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+
+            return moduleControl.ModuleContext.IsEditable;
+        }        
+    }
+}

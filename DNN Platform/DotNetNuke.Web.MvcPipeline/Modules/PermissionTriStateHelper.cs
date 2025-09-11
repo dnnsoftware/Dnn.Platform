@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.MvcPipeline
+namespace DotNetNuke.Web.MvcPipeline.Modules
 {
     using System.Web.Mvc;
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.MvcPipeline
 
             LookupScriptValues(out grantImagePath, out denyImagePath, out nullImagePath, out lockImagePath, out grantAltText, out denyAltText, out nullAltText);
 
-            string script =
+            var script =
                     string.Format(
                         @"jQuery(document).ready(
                             function() {{
