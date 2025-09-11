@@ -51,32 +51,56 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             if (legacyMode)
             {
-                if (portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration ||
-                    (portalSettings.Users > portalSettings.UserQuota && portalSettings.UserQuota != 0))
+
+                if (helper.ViewContext.HttpContext.Request.IsAuthenticated == false)
                 {
+                    if (portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration ||
+                    (portalSettings.Users > portalSettings.UserQuota && portalSettings.UserQuota != 0))
+                    {
+                        return MvcHtmlString.Empty;
+                    }
+
+                    var registerLink = new TagBuilder("a");
+                    registerLink.AddCssClass("dnnRegisterLink");
+                    if (!string.IsNullOrEmpty(cssClass))
+                    {
+                        registerLink.AddCssClass(cssClass);
+                    }
+
+                    registerLink.Attributes.Add("rel", "nofollow");
+                    registerLink.InnerHtml = registerText;
+                    registerLink.Attributes.Add("href", !string.IsNullOrEmpty(url) ? url : Globals.RegisterURL(HttpUtility.UrlEncode(navigationManager.NavigateURL()), Null.NullString));
+
+                    string registerScript = string.Empty;
+                    if (portalSettings.EnablePopUps && portalSettings.RegisterTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(null))
+                    {
+                        // var clickEvent = "return " + UrlUtils.PopUpUrl(registerLink.Attributes["href"], portalSettings, true, false, 600, 950);
+                        // registerLink.Attributes.Add("onclick", clickEvent);
+                        registerScript = GetRegisterScript(registerLink.Attributes["href"], nonce);
+                    }
+                    return new MvcHtmlString(registerLink.ToString() + registerScript);
+                }
+                else
+                {
+                    var userInfo = UserController.Instance.GetCurrentUserInfo();
+                    if (userInfo.UserID != -1)
+                    {
+                        var userDisplayText = userInfo.DisplayName;
+                        var userDisplayTextUrl = Globals.UserProfileURL(userInfo.UserID);
+                        var userDisplayTextToolTip = Localization.GetString("VisitMyProfile", userResourceFile);
+                        var userLink = new TagBuilder("a");
+                        userLink.AddCssClass("dnnUserLink");
+                        if (!string.IsNullOrEmpty(cssClass))
+                        {
+                            userLink.AddCssClass(cssClass);
+                        }
+                        userLink.Attributes.Add("href", userDisplayTextUrl);
+                        userLink.Attributes.Add("title", userDisplayTextToolTip);
+                        userLink.InnerHtml = userDisplayText;
+                        return new MvcHtmlString(userLink.ToString());
+                    }
                     return MvcHtmlString.Empty;
                 }
-
-                var registerLink = new TagBuilder("a");
-                registerLink.AddCssClass("dnnRegisterLink");
-                if (!string.IsNullOrEmpty(cssClass))
-                {
-                    registerLink.AddCssClass(cssClass);
-                }
-
-                registerLink.Attributes.Add("rel", "nofollow");
-                registerLink.InnerHtml = registerText;
-                registerLink.Attributes.Add("href", !string.IsNullOrEmpty(url) ? url : Globals.RegisterURL(HttpUtility.UrlEncode(navigationManager.NavigateURL()), Null.NullString));
-
-                string registerScript = string.Empty;
-                if (portalSettings.EnablePopUps && portalSettings.RegisterTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(null))
-                {
-                    // var clickEvent = "return " + UrlUtils.PopUpUrl(registerLink.Attributes["href"], portalSettings, true, false, 600, 950);
-                    // registerLink.Attributes.Add("onclick", clickEvent);
-                    registerScript = GetRegisterScript(registerLink.Attributes["href"], nonce);
-                }
-
-                return new MvcHtmlString(registerLink.ToString() + registerScript);
             }
             else
             {
