@@ -23,17 +23,13 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
-    using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+    using DotNetNuke.Web.MvcPipeline.ModelFactories;
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
     public class DefaultController : DnnPageController
     {
-        private static readonly Regex HeaderTextRegex = new Regex(
-            "<meta([^>])+name=('|\")robots('|\")",
-            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-
         private readonly INavigationManager navigationManager;
         private readonly IContentSecurityPolicy contentSecurityPolicy;
         private readonly IPageModelFactory pageModelFactory;
@@ -158,13 +154,11 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                         }
                     }
 
-                    // this.Response.Redirect(this.NavigationManager.NavigateURL(tab.TabID, Null.NullString, parameters.ToArray()), true);
                     throw new MvcPageException("redirect to a specific tab based on name", this.navigationManager.NavigateURL(tab.TabID, Null.NullString, parameters.ToArray()));
                 }
                 else
                 {
                     // 404 Error - Redirect to ErrorPage
-                    // Exceptions.ProcessHttpException(this.Request);
                     throw new NotFoundException("redirect to a specific tab based on name - tab not found");
                 }
             }

@@ -5,15 +5,13 @@
 namespace DotNetNuke.Web.MvcPipeline.Containers
 {
     using System;
-    using System.IO;
     using System.Web;
     using System.Web.Mvc;
-    using System.Web.Mvc.Html;
 
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.MvcPipeline;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
 
@@ -38,6 +36,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (model.EditMode && model.ModuleConfiguration.ModuleID > 0)
                 {
+                    // render module actions
                     moduleContentPaneDiv.InnerHtml += htmlHelper.Control("ModuleActions", model.ModuleConfiguration);
                 }
 
@@ -57,90 +56,8 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 
             var moduleDiv = new TagBuilder("div");
             moduleDiv.AddCssClass(model.ModuleHost.CssClass);
-
-            /*
-           if (model.ModuleConfiguration.ModuleControl.ControlSrc.StartsWith("DesktopModules/RazorModules"))
-           {
-               var controlFolder = Path.GetDirectoryName(model.ModuleConfiguration.ModuleControl.ControlSrc);
-               var controlFileNameWithoutExtension = Path.GetFileNameWithoutExtension(model.ModuleConfiguration.ModuleControl.ControlSrc);
-               var srcPhysicalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, controlFolder, "_" + controlFileNameWithoutExtension + ".cshtml");
-               var scriptFile = Path.Combine("~/" + controlFolder, "Views/", "_" + controlFileNameWithoutExtension + ".cshtml");
-               if (File.Exists(srcPhysicalPath))
-               {
-                   try
-                   {
-                       moduleDiv.InnerHtml += htmlHelper.Partial(scriptFile, model.ModuleConfiguration);
-                   }
-                   catch (Exception ex2)
-                   {
-                       throw new Exception($"Error : {ex2.Message} ( razor : {scriptFile}, module : {model.ModuleConfiguration.ModuleID})", ex2);
-                   }
-               }
-               else
-               {
-                   throw new Exception($"Error : Razor file dous not exist ( razor : {scriptFile}, module : {model.ModuleConfiguration.ModuleID})");
-
-                   // moduleDiv.InnerHtml += $"Error : {ex.Message} (Controller : {model.ControllerName}, Action : {model.ActionName}, module : {model.ModuleConfiguration.ModuleTitle}) {ex.StackTrace}";
-               }
-           }
-           */
-
-            var controlFolder = Path.GetDirectoryName(model.ModuleConfiguration.ModuleControl.ControlSrc);
-            var controlFileNameWithoutExtension = Path.GetFileNameWithoutExtension(model.ModuleConfiguration.ModuleControl.ControlSrc);
-            var srcPhysicalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, controlFolder, "Partials", controlFileNameWithoutExtension + ".cshtml");
-            if (File.Exists(srcPhysicalPath))
-            {
-                var scriptFile = Path.Combine("~/" + controlFolder, "Partials", controlFileNameWithoutExtension + ".cshtml").Replace("\\", "/");
-                try
-                {
-                    moduleDiv.InnerHtml += htmlHelper.Partial(scriptFile, model.ModuleConfiguration);
-                }
-                catch (Exception ex2)
-                {
-                    throw new Exception($"Error : {ex2.Message} ( razor : {scriptFile}, module : {model.ModuleConfiguration.ModuleID})", ex2);
-                }
-            }
-            else
-            {
-                moduleDiv.InnerHtml += htmlHelper.Control(model.ModuleConfiguration);
-            }
-
-            /*
-            try
-            {
-                // module
-                moduleDiv.InnerHtml += htmlHelper.Control(model.ModuleConfiguration);
-            }
-            catch (HttpException ex)
-            {
-                var scriptFolder = Path.GetDirectoryName(model.ModuleConfiguration.ModuleControl.ControlSrc);
-                var fileRoot = Path.GetFileNameWithoutExtension(model.ModuleConfiguration.ModuleControl.ControlSrc);
-                var srcPhysicalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, scriptFolder, "_" + fileRoot + ".cshtml");
-                var scriptFile = Path.Combine("~/" + scriptFolder, "Views/", "_" + fileRoot + ".cshtml");
-                if (File.Exists(srcPhysicalPath))
-                {
-                    try
-                    {
-                        moduleDiv.InnerHtml += htmlHelper.Partial(scriptFile, model.ModuleConfiguration);
-                    }
-                    catch (Exception ex2)
-                    {
-                        throw new Exception($"Error : {ex2.Message} ( razor : {scriptFile}, module : {model.ModuleConfiguration.ModuleID})", ex2);
-                    }
-                }
-                else
-                {
-                    // moduleDiv.InnerHtml += $"Error : {ex.Message} (Controller : {model.ControllerName}, Action : {model.ActionName}, module : {model.ModuleConfiguration.ModuleTitle}) {ex.StackTrace}";
-                    throw new Exception($"Error : {ex.Message} (Controller : {model.ControllerName}, Action : {model.ActionName}, module : {model.ModuleConfiguration.ModuleID})", ex);
-                }
-            }
-            catch (Exception ex)
-            {
-                    // moduleDiv.InnerHtml += $"Error : {ex.Message} (Controller : {model.ControllerName}, Action : {model.ActionName}, module : {model.ModuleConfiguration.ModuleTitle}) {ex.StackTrace}";
-                    throw new Exception($"Error : {ex.Message} (Controller : {model.ControllerName}, Action : {model.ActionName}, module : {model.ModuleConfiguration.ModuleID})", ex);
-            }
-            */
-
+            // render module control
+            moduleDiv.InnerHtml += htmlHelper.Control(model.ModuleConfiguration);
             moduleContentPaneDiv.InnerHtml += moduleDiv.ToString();
             if (!string.IsNullOrEmpty(model.Footer))
             {

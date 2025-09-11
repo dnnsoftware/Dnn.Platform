@@ -169,12 +169,10 @@
                         break;
                     }
 
-                    // MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "MicrosoftAjax.js", 10);
                     MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "mvc.js", 11);
                     MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
                     HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
 
-                    // page.ClientScript.RegisterClientScriptBlock(page.GetType(), "dnn.js", string.Empty);
                     if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
                     {
                         MvcClientAPI.RegisterClientVariable("__scdoff", "1", true);

@@ -108,7 +108,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                 node.TabId = -1;
             }
 
-            node.Children.ForEach(this.LocaliseNode);
+            node.Children.ForEach(n => this.LocaliseNode(n, portalId));
         }
 
         private TabInfo LocaliseTab(TabInfo tab, int portalId)
