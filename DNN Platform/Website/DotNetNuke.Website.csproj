@@ -1439,39 +1439,6 @@
     <Content Include="DesktopModules\AuthenticationServices\DNN\Login.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx" />
     <Content Include="DNN.ico" />
-    <Content Include="Documentation\Contributors.txt" />
-    <Content Include="Documentation\License.txt" />
-    <Content Include="Documentation\Readme.txt" />
-    <Content Include="Documentation\StarterKit\Documents.css" />
-    <Content Include="Documentation\StarterKit\images\AddDatabase.jpg" />
-    <Content Include="Documentation\StarterKit\images\AppSetting.gif" />
-    <Content Include="Documentation\StarterKit\images\App_Data.jpg" />
-    <Content Include="Documentation\StarterKit\images\ConnectionString.gif" />
-    <Content Include="Documentation\StarterKit\images\Database2005Properties.jpg" />
-    <Content Include="Documentation\StarterKit\images\DatabaseProperties.jpg" />
-    <Content Include="Documentation\StarterKit\images\EditWeb.jpg" />
-    <Content Include="Documentation\StarterKit\images\FileSecurity.jpg" />
-    <Content Include="Documentation\StarterKit\images\IISPermissions.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005Database.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005Login.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005User.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewDatabase.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewLogin.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewUser.jpg" />
-    <Content Include="Documentation\StarterKit\images\NTFSPermissions.jpg" />
-    <Content Include="Documentation\StarterKit\images\User2005Properties.jpg" />
-    <Content Include="Documentation\StarterKit\images\UserProperties.jpg" />
-    <Content Include="Documentation\StarterKit\images\webconfig.jpg" />
-    <Content Include="Documentation\StarterKit\images\WebProperties1.jpg" />
-    <Content Include="Documentation\StarterKit\images\WebProperties2.jpg" />
-    <Content Include="Documentation\StarterKit\logo.gif" />
-    <Content Include="Documentation\StarterKit\NTFSConfig.html" />
-    <Content Include="Documentation\StarterKit\SQLServer2005Config.html" />
-    <Content Include="Documentation\StarterKit\SQLServerConfig.html" />
-    <Content Include="Documentation\StarterKit\SQLServerXpressConfig.html" />
-    <Content Include="Documentation\StarterKit\TemplateConfig.html" />
-    <Content Include="Documentation\StarterKit\WebServerConfig.html" />
-    <Content Include="Documentation\StarterKit\Welcome.html" />
     <Content Include="ErrorPage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -2882,7 +2849,6 @@
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\8.0.0\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
-    <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
     <Content Include="Portals\_default\Skins\_default\No Skin.ascx" />
     <Content Include="Portals\_default\Skins\_default\popUpSkin.ascx" />
@@ -3146,7 +3112,6 @@
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
     <None Include="development.config" />
-    <None Include="Documentation\TELERIK_EULA.pdf" />
     <Content Include="Install\Config\08.00.00.01.config" />
     <Content Include="Install\Config\08.00.00.02.config" />
     <Content Include="Install\Config\08.00.00.03.config" />
@@ -3376,10 +3341,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Resources\Shared\scripts\jquery\jquery.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Install\Provider\" />
-    <Folder Include="Install\Temp\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
