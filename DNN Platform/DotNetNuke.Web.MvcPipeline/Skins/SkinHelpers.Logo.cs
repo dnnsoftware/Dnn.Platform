@@ -39,6 +39,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             tbImage.Attributes.Add("alt", portalSettings.PortalName);
 
             TagBuilder tbLink = new TagBuilder("a");
+            tbLink.GenerateId("dnn_dnnLOGO_");
             if (!string.IsNullOrEmpty(linkCssClass))
             {
                 tbLink.AddCssClass(linkCssClass);
