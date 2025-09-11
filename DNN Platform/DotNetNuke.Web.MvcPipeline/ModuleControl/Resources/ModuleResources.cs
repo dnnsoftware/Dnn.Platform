@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DotNetNuke.Web.MvcPipeline.ModuleControl
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Resources
 {
     public class ModuleResources
     {

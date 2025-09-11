@@ -8,20 +8,14 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
 {
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
 
     public class TermsControl : RazorModuleControlBase
     {
-        public override object ViewModel()
+        public override IRazorModuleResult Invoke()
         {
-            return Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_TERMS");
+            return View("Terms", Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_TERMS"));
         }
 
-        public override string ViewName
-        {
-            get
-            {
-                return "Terms";
-            }
-        }
     }
 }

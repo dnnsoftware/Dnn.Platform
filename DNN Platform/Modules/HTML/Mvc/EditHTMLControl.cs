@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using Microsoft.Extensions.DependencyInjection;
 
     public class EditHTMLControl : RazorModuleControlBase
@@ -51,7 +52,7 @@ namespace DotNetNuke.Modules.Html
 
         public override string ID => "EditHTML";
         */
-        public override object ViewModel()
+        public override IRazorModuleResult Invoke()
         {
             var model = new EditHtmlViewModel();
             try
@@ -131,7 +132,7 @@ namespace DotNetNuke.Modules.Html
             this.contentSecurityPolicy.StyleSource.AddInline();
             this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();
             this.contentSecurityPolicy.ImgSource.AddScheme("data:");
-            return model;
+            return this.View(model);
         }
 
         private void PopulateModelWithContent(EditHtmlViewModel model, HtmlTextInfo htmlContent)

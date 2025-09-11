@@ -10,6 +10,7 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 using DotNetNuke.Web.MvcPipeline.Utils;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
@@ -21,7 +22,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         public MvcModuleControlRenderer(Control control, ModuleInstanceContext moduleContext)
         {
             this.moduleControl = new T();
-            moduleControl.ModuleContext = moduleContext;
+            moduleControl.ModuleContext.Configuration = moduleContext.Configuration;
             moduleControl.Control = control;
         }
 
@@ -34,42 +35,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         public string RenderToString()
         {
             var renderer = new ViewRenderer();
-            return renderer.RenderViewToString(moduleControl.ViewName, moduleControl.ViewModel());
+            var res = moduleControl.Invoke();
+            return renderer.RenderViewToString(res.ViewName, res.Model);
         }
 
         public T ModuleControl => this.moduleControl;
 
-        public void RegisterResources(IResourcable resourcable)
-        {
-            if (resourcable.ModuleResources.StyleSheets != null)
-            {
-                foreach (var styleSheet in resourcable.ModuleResources.StyleSheets)
-                {
-                    ClientResourceManager.RegisterStyleSheet(ModuleControl.Control.Page, styleSheet.FilePath, styleSheet.Priority, styleSheet.HtmlAttributes);
-                }
-            }
-            if (resourcable.ModuleResources.Scripts != null)
-            {
-                foreach (var javaScript in resourcable.ModuleResources.Scripts)
-                {
-                    ClientResourceManager.RegisterScript(ModuleControl.Control.Page, javaScript.FilePath, javaScript.Priority, javaScript.HtmlAttributes);
-                }
-            }
-            if (resourcable.ModuleResources.Libraries != null)
-            {
-                foreach (var lib in resourcable.ModuleResources.Libraries)
-                {
-                    JavaScript.RequestRegistration(lib);
-                }
-            }
-            if (resourcable.ModuleResources.AjaxScript)
-            {
-                ServicesFramework.Instance.RequestAjaxScriptSupport();
-            }
-            if (resourcable.ModuleResources.AjaxAntiForgery)
-            {
-                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            }
-        }
+       
     }
 }

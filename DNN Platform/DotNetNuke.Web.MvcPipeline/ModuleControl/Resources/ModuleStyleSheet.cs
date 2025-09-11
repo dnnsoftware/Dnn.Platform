@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DotNetNuke.Web.Client;
 
-namespace DotNetNuke.Web.MvcPipeline.ModuleControl
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Resources
 {
     public class ModuleStyleSheet
     {

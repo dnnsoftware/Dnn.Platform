@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using System.Collections.Generic;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
-
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -27,9 +26,10 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using DotNetNuke.Web.MvcWebsite.Models;
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
             }
         }
 
-        public override object ViewModel()
+        public override IRazorModuleResult Invoke()
         {
             var moduleInfo = ModuleConfiguration;
             this.OnInit();
@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
                 ActionScripts = this.actionScripts,
             };
 
-            return viewModel;
+            return View("ModuleActions", viewModel);
         }
 
         protected string LocalizeString(string key)
@@ -198,7 +198,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
 
             var moduleActions = new ModuleActionCollection();
 
-            var moduleControl = MvcUtils.GetModuleControl(moduleInfo);
+            var moduleControl = MvcUtils.CreateModuleControl(moduleInfo);
 
             var actionable = moduleControl as IActionable;
             if (actionable != null)
@@ -346,12 +346,5 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
             }
         }
 
-        public override string ViewName
-        {
-            get
-            {
-                return "ModuleActions";
-            }
-        }
     }
 }

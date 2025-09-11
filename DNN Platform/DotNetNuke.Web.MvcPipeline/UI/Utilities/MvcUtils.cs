@@ -47,7 +47,7 @@
             { "Admin/Portal/Privacy.ascx", "DotNetNuke.Web.MvcWebsite.Controls.PrivacyControl, DotNetNuke.Web.MvcWebsite" }
         };
 
-        public static IMvcModuleControl GetModuleControl(ModuleInfo module)
+        public static IMvcModuleControl CreateModuleControl(ModuleInfo module)
         {
             return GetModuleControl(module, module.ModuleControl.ControlSrc);
         }
@@ -85,20 +85,33 @@
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
+                    var controlSrcType = Reflection.CreateType(controlSrc);
+                    if (controlSrcType != null)
                     {
-                        throw new Exception("The BusinessControllerClass is not defined for the module " + module.ModuleDefinition.FriendlyName);
+                        var controlClass = controlSrcType.Namespace + "." + System.IO.Path.GetFileNameWithoutExtension(controlSrcType.Name) + "Control," + controlSrcType.Assembly;
+                        try
+                        {
+                            var controller = Reflection.CreateObject(Globals.DependencyProvider, controlClass, controlClass);
+                            control = controller as IMvcModuleControl;
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception("Could not create instance of " + controlClass, ex);
+                        }
                     }
-                    var businessController = Reflection.CreateType(module.DesktopModule.BusinessControllerClass);
-                    var controlClass = businessController.Namespace + "." + System.IO.Path.GetFileNameWithoutExtension(controlSrc) + "Control," + businessController.Assembly;
-                    try
+                    else
                     {
-                        var controller = Reflection.CreateObject(Globals.DependencyProvider, controlClass, controlClass);
-                        control = controller as IMvcModuleControl;
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception("Could not create instance of " + controlClass, ex);
+                        var businessController = Reflection.CreateType(module.DesktopModule.BusinessControllerClass);
+                        var controlClass = businessController.Namespace + "." + System.IO.Path.GetFileNameWithoutExtension(controlSrc) + "Control," + businessController.Assembly;
+                        try
+                        {
+                            var controller = Reflection.CreateObject(Globals.DependencyProvider, controlClass, controlClass);
+                            control = controller as IMvcModuleControl;
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new Exception("Could not create instance of " + controlClass, ex);
+                        }
                     }
                 }
             }

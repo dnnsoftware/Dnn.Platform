@@ -17,6 +17,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using Microsoft.Extensions.DependencyInjection;
 
     public class HtmlModuleControl : RazorModuleControlBase, IActionable
@@ -66,7 +67,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        public override object ViewModel()
+        public override IRazorModuleResult Invoke()
         {
             int workflowID = this.htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
             HtmlTextInfo content = this.htmlTextController.GetTopHtmlText(this.ModuleId, true, workflowID);
@@ -77,10 +78,10 @@ namespace DotNetNuke.Modules.Html
                 html = System.Web.HttpUtility.HtmlDecode(content.Content);
             }
 
-            return new HtmlModuleModel()
+            return this.View(new HtmlModuleModel()
             {
                 Html = html,
-            };
+            });
         }
     }
 }

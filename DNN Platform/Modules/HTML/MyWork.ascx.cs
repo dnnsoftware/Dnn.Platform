@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Html
             {
                 var html = this.renderer.RenderToString();
                 this.Controls.Add(new LiteralControl(html));
-                this.renderer.RegisterResources(this.renderer.ModuleControl);
+                this.renderer.ModuleControl.RegisterResources(this.Page);
             }
             catch (Exception exc)
             {

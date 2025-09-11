@@ -31,6 +31,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.UI.Modules.Html5;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using DotNetNuke.Web.MvcPipeline.Tokens;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -38,12 +39,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
 
-        public SpaModuleControl()
+        public SpaModuleControl(): base()
         {
             this.businessControllerProvider = Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
         }
 
-        public SpaModuleControl(IBusinessControllerProvider businessControllerProvider)
+        public SpaModuleControl(IBusinessControllerProvider businessControllerProvider) : base()
         {
             this.businessControllerProvider = businessControllerProvider;
         }
@@ -52,9 +53,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             get
             {
-                var controlSrc = ModuleConfiguration.ModuleControl.ControlSrc;
-
-                return controlSrc;
+                return ModuleConfiguration.ModuleControl.ControlSrc;
             }
         }
 
@@ -97,7 +96,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 return resource;
             }
         }
-
         public override IHtmlString Html(HtmlHelper htmlHelper)
         {
             var fileContent = string.Empty;

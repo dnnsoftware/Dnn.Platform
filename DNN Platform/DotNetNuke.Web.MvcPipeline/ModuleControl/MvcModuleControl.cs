@@ -32,6 +32,25 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
         private const string ExcludedRouteValues = "mid,ctl,popup";
 
+        public override string ControlName
+        {
+            get
+            {
+                return RouteActionName;
+            }
+        }
+
+
+        /// <summary>Gets or Sets the Path for this control (used primarily for UserControls).</summary>
+        /// <returns>A String.</returns>
+        public override string ControlPath
+        {
+            get
+            {
+                return string.Format("~/DesktopModules/MVC/{0}", ModuleConfiguration.DesktopModule.FolderName);
+            }
+        }
+
         /// <summary>Gets or sets the action name for the MVC route.</summary>
         /// <returns>A String.</returns>
         public string RouteActionName
@@ -87,26 +106,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             return this.ModuleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
         }
 
-        /// <summary>Gets the Name for this control.</summary>
-        /// <returns>A String.</returns>
-        public override string ControlName
-        {
-            get
-            {
-                return RouteActionName;
-            }
-        }
-
-        /// <summary>Gets or Sets the Path for this control (used primarily for UserControls).</summary>
-        /// <returns>A String.</returns>
-        public override string ControlPath
-        {
-            get
-            {
-                return string.Format("~/DesktopModules/MVC/{0}", ModuleConfiguration.DesktopModule.FolderName);
-            }
-        }
-
         public override IHtmlString Html(HtmlHelper htmlHelper)
         {
             var module = this.ModuleConfiguration;
@@ -127,13 +126,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             string actionName = string.Empty;
             var controlKey = module.ModuleControl.ControlKey;
 
-            /*
-            var localResourceFile = string.Format(
+            
+            this.LocalResourceFile = string.Format(
                 "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                 module.DesktopModule.FolderName,
                 Localization.LocalResourceDirectory,
                 RouteActionName);
-            */
 
             RouteValueDictionary values = new RouteValueDictionary
                     {

@@ -7,20 +7,13 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
 
     public class PrivacyControl : RazorModuleControlBase
     {
-        public override object ViewModel()
+        public override IRazorModuleResult Invoke()
         {
-            return Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_PRIVACY");
-        }
-
-        public override string ViewName
-        {
-            get
-            {
-                return "Terms";
-            }
+            return View("Privacy", Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_PRIVACY"));
         }
     }
 }

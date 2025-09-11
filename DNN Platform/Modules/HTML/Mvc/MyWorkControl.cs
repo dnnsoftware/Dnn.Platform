@@ -24,6 +24,8 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Web.Mvc;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using DotNetNuke.Website.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -78,12 +80,12 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        public override object ViewModel()
+        public override IRazorModuleResult Invoke()
         {
             var objHtmlTextUsers = new HtmlTextUserController();
             var lst = objHtmlTextUsers.GetHtmlTextUser(this.UserInfo.UserID).Cast<HtmlTextUserInfo>();
 
-            return new MyWorkModel()
+            return this.View(new MyWorkModel()
             {
                 LocalResourceFile = this.LocalResourceFile,
                 ModuleId = this.ModuleId,
@@ -96,7 +98,7 @@ namespace DotNetNuke.Modules.Html
                     ModuleTitle = u.ModuleTitle,
                     StateName = u.StateName,
                 }).ToList(),
-            };
+            });
         }
     }
 }
