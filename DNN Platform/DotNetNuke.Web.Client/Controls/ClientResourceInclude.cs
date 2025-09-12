@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         public bool ForceVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets the provider to force for this resource. This can be empty and will use default provider. 
+        /// Gets or sets the provider to force for this resource. This can be empty and will use default provider.
         /// If specified, it must match a provider registered in the Client Resource Management configuration.
         /// </summary>
         public string ForceProvider { get; set; }

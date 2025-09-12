@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     public class ClientResourcePath
     {
         public string Name { get; set; }
+
         public string Path { get; set; }
     }
 }

@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.IO;
     using System.Threading;
     using System.Web;
     using System.Web.Hosting;
@@ -319,7 +318,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         public static void RegisterStyleSheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, Constants.DefaultPriority, DefaultCssProvider, htmlAttributes: null);
+            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultPriority, DefaultCssProvider, htmlAttributes: null);
         }
 
         /// <summary>Requests that a CSS file be registered on the client browser.</summary>
@@ -328,7 +327,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
         public static void RegisterStyleSheet(Page page, string filePath, IDictionary<string, string> htmlAttributes)
         {
-            RegisterStyleSheet(page, filePath, Constants.DefaultPriority, DefaultCssProvider, htmlAttributes);
+            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultPriority, DefaultCssProvider, htmlAttributes);
         }
 
         /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
@@ -432,30 +431,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>Clear the default composite files so that it can be generated next time.</summary>
         public static void ClearCache()
         {
-            var provider = ClientDependencySettings.Instance.DefaultCompositeFileProcessingProvider;
-            if (!(provider is CompositeFileProcessingProvider))
-            {
-                return;
-            }
-
-            try
-            {
-                var folder = provider.CompositeFilePath;
-                if (!folder.Exists)
-                {
-                    return;
-                }
-
-                var files = folder.GetFiles("*.cd?");
-                foreach (var file in files)
-                {
-                    file.Delete();
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
         }
 
         /// <summary>Clears the cache used for file existence.</summary>
@@ -487,50 +462,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             {
                 HttpContext.Current.Items.Add("AsyncPostBackHandlerEnabled", true);
             }
-        }
-
-        private static bool FileExists(Page page, string filePath)
-        {
-            // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
-            filePath = RemoveQueryString(filePath);
-            var cacheKey = filePath.ToLowerInvariant();
-
-            // cache css file paths
-            if (!FileExistsCache.ContainsKey(cacheKey))
-            {
-                // apply lock after IF, locking is more expensive than worst case scenario (check disk twice)
-                LockFileExistsCache.EnterWriteLock();
-                try
-                {
-                    FileExistsCache[cacheKey] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
-                }
-                finally
-                {
-                    LockFileExistsCache.ExitWriteLock();
-                }
-            }
-
-            // return if file exists from cache
-            LockFileExistsCache.EnterReadLock();
-            try
-            {
-                return FileExistsCache[cacheKey];
-            }
-            finally
-            {
-                LockFileExistsCache.ExitReadLock();
-            }
-        }
-
-        private static bool IsAbsoluteUrl(string url)
-        {
-            return Uri.TryCreate(url, UriKind.Absolute, out _);
-        }
-
-        private static string RemoveQueryString(string filePath)
-        {
-            var queryStringPosition = filePath.IndexOf("?", StringComparison.Ordinal);
-            return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
         }
 
         private static IClientResourcesController GetClientResourcesController(Page page)

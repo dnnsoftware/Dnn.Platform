@@ -5,10 +5,18 @@
 namespace DotNetNuke.Web.Client.Cdf
 {
     /// <summary>
-    /// The type of client file
+    /// The type of client file.
     /// </summary>
     public enum ClientDependencyType
     {
-        Javascript, Css
+        /// <summary>
+        /// Represents a JavaScript client file.
+        /// </summary>
+        Javascript,
+
+        /// <summary>
+        /// Represents a CSS client file.
+        /// </summary>
+        Css,
     }
 }
