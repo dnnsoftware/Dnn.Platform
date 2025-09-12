@@ -28,6 +28,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);
+            writer.Write(this.clientResourcesController.RenderDependencies(ResourceType.All, this.Provider));
         }
     }
 }
