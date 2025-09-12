@@ -6,6 +6,7 @@
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
@@ -14,8 +15,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.Web.UI;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
+    using DotNetNuke.Web.Client.ResourceManager;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.</summary>
     public partial class ClientResourceManager
@@ -292,16 +297,21 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             string version,
             IDictionary<string, string> htmlAttributes)
         {
-            var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version, };
-            if (htmlAttributes != null)
+            var controller = GetClientResourcesController(page);
+            var script = controller.CreateScript()
+                .FromSrc(filePath)
+                .SetPriority(priority)
+                .SetProvider(provider)
+                .SetNameAndVersion(name, version, false);
+            if (htmlAttributes is not null)
             {
                 foreach (var attribute in htmlAttributes)
                 {
-                    include.HtmlAttributes[attribute.Key] = attribute.Value;
+                    script = script.AddAttribute(attribute.Key, attribute.Value);
                 }
             }
 
-            page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
+            script.Register();
         }
 
         /// <summary>Requests that a CSS file be registered on the client browser.</summary>
@@ -402,40 +412,21 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
         public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider, string name, string version, IDictionary<string, string> htmlAttributes)
         {
-            var fileExists = false;
-
-            // Some "legacy URLs" could be using their own query string versioning scheme (and we've forced them to use the new API through re-routing PageBase.RegisterStyleSheet
-            // Ensure that physical CSS files with query strings have their query strings removed
-            // Ignore absolute urls, they will not exist locally
-            if (!Uri.TryCreate(filePath, UriKind.Absolute, out _) && filePath.Contains(".css?"))
-            {
-                var filePathSansQueryString = RemoveQueryString(filePath);
-                if (File.Exists(page.Server.MapPath(filePathSansQueryString)))
-                {
-                    fileExists = true;
-                    filePath = filePathSansQueryString;
-                }
-            }
-            else if (filePath.Contains("WebResource.axd"))
-            {
-                fileExists = true;
-            }
-
-            if (!fileExists && !FileExists(page, filePath))
-            {
-                return;
-            }
-
-            var include = new DnnCssInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
-            if (htmlAttributes != null)
+            var controller = GetClientResourcesController(page);
+            var stylesheet = controller.CreateStylesheet()
+                .FromSrc(filePath)
+                .SetPriority(priority)
+                .SetProvider(provider)
+                .SetNameAndVersion(name, version, false);
+            if (htmlAttributes is not null)
             {
                 foreach (var attribute in htmlAttributes)
                 {
-                    include.HtmlAttributes[attribute.Key] = attribute.Value;
+                    stylesheet = stylesheet.AddAttribute(attribute.Key, attribute.Value);
                 }
             }
 
-            page.FindControl("ClientResourceIncludes")?.Controls.Add(include);
+            stylesheet.Register();
         }
 
         /// <summary>Clear the default composite files so that it can be generated next time.</summary>
@@ -540,6 +531,23 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             var queryStringPosition = filePath.IndexOf("?", StringComparison.Ordinal);
             return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
+        }
+
+        private static IClientResourcesController GetClientResourcesController(Page page)
+        {
+            var serviceProvider = GetCurrentServiceProvider(page.Request.RequestContext.HttpContext);
+            return serviceProvider.GetRequiredService<IClientResourcesController>();
+        }
+
+        private static IServiceProvider GetCurrentServiceProvider(HttpContextBase context)
+        {
+            return GetScope(context.Items).ServiceProvider;
+
+            // Copy of DotNetNuke.Common.Extensions.HttpContextDependencyInjectionExtensions.GetScope
+            static IServiceScope GetScope(IDictionary httpContextItems)
+            {
+                return httpContextItems[typeof(IServiceScope)] as IServiceScope;
+            }
         }
     }
 }
