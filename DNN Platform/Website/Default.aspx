@@ -13,19 +13,20 @@
     <meta id="MetaGenerator" runat="Server" name="generator" Visible="False"/>
     <meta id="MetaAuthor" runat="Server" name="author" Visible="False"/>
     <meta id="MetaRobots" runat="server" name="robots" Visible="False" />
-    <dnncrm:DnnResources runat="server" ID="DnnResourcesPageHeader" Provider="PageHeader" />
+    <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss"></asp:PlaceHolder>
+    <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs"></asp:PlaceHolder>
     <asp:placeholder id="CSS" runat="server" />
     <asp:placeholder id="SCRIPTS" runat="server" />
 </head>
 <body id="Body" runat="server">
 
     <dnn:Form ID="Form" runat="server" ENCTYPE="multipart/form-data">
-        <dnncrm:DnnResources runat="server" ID="DnnResourcesBody" Provider="Body" />
+        <asp:PlaceHolder ID="BodySCRIPTS" runat="server" />
         <asp:Label ID="SkinError" runat="server" CssClass="NormalRed" Visible="False"></asp:Label>
         <asp:PlaceHolder ID="SkinPlaceHolder" runat="server" />
         <input id="ScrollTop" runat="server" name="ScrollTop" type="hidden" />
         <input id="__dnnVariable" runat="server" name="__dnnVariable" type="hidden" autocomplete="off" />
-        <dnncrm:DnnResources runat="server" ID="DnnResourcesFormBottom" Provider="FormBottom" />
+        <asp:placeholder runat="server" ID="ClientResourcesFormBottom" />
     </dnn:Form>
     <asp:placeholder runat="server" id="ClientResourceIncludes" />
     <dnncrm:ClientResourceLoader runat="server" id="ClientResourceLoader">
