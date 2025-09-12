@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the package.</summary>
+        /// <summary>Gets or sets a value indicating whether the Packages files are deleted when uninstalling the package.</summary>
         /// <value>A Boolean value.</value>
         public bool DeleteFiles { get; set; }
 

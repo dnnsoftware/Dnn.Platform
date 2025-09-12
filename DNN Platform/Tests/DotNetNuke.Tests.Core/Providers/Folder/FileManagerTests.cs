@@ -956,7 +956,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             // Arrange
             this.fileInfo.Setup(fi => fi.Extension).Returns("zip");
-            this.mockFileManager.Setup(mfm => mfm.ExtractFiles(this.fileInfo.Object, this.folderInfo.Object, null)).Verifiable();
+            this.mockFileManager.Setup(mfm => mfm.ExtractFiles(this.fileInfo.Object, this.folderInfo.Object, null, true)).Verifiable();
             var stream = Constants.ValidZipFileContent;
             this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(stream);
 

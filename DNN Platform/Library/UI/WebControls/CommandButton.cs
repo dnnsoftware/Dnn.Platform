@@ -10,9 +10,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
 
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Project:    DotNetNuke
-    /// Class:      CommandButton
     /// <summary>The CommandButton Class provides an enhanced Button control for DotNetNuke.</summary>
     [ToolboxData("<{0}:CommandButton runat=server></{0}:CommandButton>")]
     public class CommandButton : WebControl, INamingContainer
@@ -43,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the control causes Validation to occur.</summary>
+        /// <summary>Gets or sets a value indicating whether the control causes Validation to occur.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool CausesValidation
@@ -98,7 +95,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the link is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether the link is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayLink
@@ -116,7 +113,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the icon is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether the icon is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayIcon

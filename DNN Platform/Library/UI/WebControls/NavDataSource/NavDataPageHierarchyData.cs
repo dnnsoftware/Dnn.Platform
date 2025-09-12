@@ -35,85 +35,37 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</summary>
+        /// <summary>Gets a value indicating whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</summary>
         /// <value>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</value>
-        public virtual bool HasChildren
-        {
-            get
-            {
-                return this.objNode.HasNodes;
-            }
-        }
+        public virtual bool HasChildren => this.objNode.HasNodes;
 
         /// <summary>Gets the hierarchical path of the node.</summary>
         /// <value>The hierarchical path of the node.</value>
-        public virtual string Path
-        {
-            get
-            {
-                return this.GetValuePath(this.objNode);
-            }
-        }
+        public virtual string Path => this.GetValuePath(this.objNode);
 
         /// <summary>Gets the hierarchical data node that the IHierarchyData object represents.</summary>
         /// <value>The hierarchical data node that the IHierarchyData object represents.</value>
-        public virtual object Item
-        {
-            get
-            {
-                return this.objNode;
-            }
-        }
+        public virtual object Item => this.objNode;
 
         /// <summary>Gets the name of the type of Object contained in the Item property.</summary>
         /// <value>The name of the type of Object contained in the Item property.</value>
-        public virtual string Type
-        {
-            get
-            {
-                return "NavDataPageHierarchyData";
-            }
-        }
+        public virtual string Type => "NavDataPageHierarchyData";
 
         /// <summary>Gets node name.</summary>
         /// <value>Returns node name.</value>
-        public virtual string Name
-        {
-            get
-            {
-                return this.GetSafeValue(this.objNode.Text, string.Empty);
-            }
-        }
+        public virtual string Name => this.GetSafeValue(this.objNode.Text, string.Empty);
 
         /// <summary>Gets value path of node.</summary>
         /// <value>Returns value path of node.</value>
-        public virtual string Value
-        {
-            get
-            {
-                return this.GetValuePath(this.objNode);
-            }
-        }
+        public virtual string Value => this.GetValuePath(this.objNode);
 
         /// <summary>Gets node navigation url.</summary>
         /// <value>Returns node navigation url.</value>
-        public virtual string NavigateUrl
-        {
-            get
-            {
-                return this.GetSafeValue(this.objNode.NavigateURL, string.Empty);
-            }
-        }
+        public virtual string NavigateUrl => this.GetSafeValue(this.objNode.NavigateURL, string.Empty);
 
         /// <summary>Gets node description.</summary>
         /// <value>Returns Node description.</value>
-        public virtual string Description
-        {
-            get
-            {
-                return this.GetSafeValue(this.objNode.ToolTip, string.Empty);
-            }
-        }
+        public virtual string Description => this.GetSafeValue(this.objNode.ToolTip, string.Empty);
 
         /// <summary>Gets an enumeration object that represents all the child nodes of the current hierarchical node.</summary>
         /// <returns>A collection of nodes.</returns>

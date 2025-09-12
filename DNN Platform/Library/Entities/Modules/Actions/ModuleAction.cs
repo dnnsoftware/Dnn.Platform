@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// the ID is used to link the child and parent actions.</remarks>
         public int ID { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the current action should be displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether the current action should be displayed.</summary>
         /// <value>A boolean value that determines if the current action should be displayed.</value>
         /// <remarks>If Visible is false, then the action is always hidden.  If Visible
         /// is true then the action may be visible depending on the security access rights
@@ -260,7 +260,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         public string ClientScript { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets a value that determines if a local ActionEvent is fired when the
+        /// Gets or sets a value indicating whether a local ActionEvent is fired when the
         /// <see cref="T:DotNetNuke.ModuleAction" /> contains a URL.
         /// </summary>
         /// <value>A boolean indicating whether to fire the ActionEvent.</value>
@@ -273,7 +273,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         public bool UseActionEvent { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets a value that determines if a new window is opened when the
+        /// Gets or sets a value indicating whether a new window is opened when the
         /// DoAction() method is called.
         /// </summary>
         /// <value>A boolean indicating whether to open a new window.</value>

@@ -78,13 +78,13 @@ namespace DotNetNuke.Web.UI.WebControls
         [DefaultValue("UserId")]
         public string SortBy { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets the sort direction.</summary>
+        /// <summary>Gets or sets a value indicating whether the sort is ascending.</summary>
         [DefaultValue(true)]
         public bool SortAscending { get; set; }
 
         /// <summary>Gets or sets the collection of filters to apply when getting the list of members.</summary>
         /// <remarks>
-        /// Posible keys are: RoleId, RelationshipTypeId, UserId, Profile:PropertyName, FirstName, LastName, DisplayName, Username, Email.
+        /// Possible keys are: RoleId, RelationshipTypeId, UserId, Profile:PropertyName, FirstName, LastName, DisplayName, Username, Email.
         /// </remarks>
         public IDictionary<string, string> Filters { get; set; }
 

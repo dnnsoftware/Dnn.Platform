@@ -11,8 +11,6 @@ namespace DotNetNuke.Services.Analytics
 
     using DotNetNuke.Instrumentation;
 
-    /// Namespace:  DotNetNuke.Services.Analytics
-    /// Module:     GoogleAnalytics
     /// <summary>  Controller class definition for GoogleTagManager which handles upgrades.</summary>
     public class GoogleTagManagerController
     {

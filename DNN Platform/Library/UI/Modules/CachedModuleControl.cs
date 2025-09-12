@@ -8,9 +8,6 @@ namespace DotNetNuke.UI.Modules
 
     using DotNetNuke.Services.Localization;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Modules
-    /// Class    : CachedModuleControl
     /// <summary>
     /// CachedModuleControl represents a cached "ModuleControl".  It inherits from
     /// Literal and implements the IModuleControl interface.

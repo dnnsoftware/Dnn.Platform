@@ -46,8 +46,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private Panel pnlRightDiv;
         private Image imgPreview;
         private bool localize = true;
-        private int maxHeight = 100;
-        private int maxWidth = 135;
 
         /// <summary>  Represents a possible mode for the File Control.</summary>
         protected enum FileControlMode
@@ -62,31 +60,9 @@ namespace DotNetNuke.Web.UI.WebControls
             Preview = 2,
         }
 
-        public int MaxHeight
-        {
-            get
-            {
-                return this.maxHeight;
-            }
+        public int MaxHeight { get; set; } = 100;
 
-            set
-            {
-                this.maxHeight = value;
-            }
-        }
-
-        public int MaxWidth
-        {
-            get
-            {
-                return this.maxWidth;
-            }
-
-            set
-            {
-                this.maxWidth = value;
-            }
-        }
+        public int MaxWidth { get; set; } = 135;
 
         /// <summary>  Gets or sets the class to be used for the Labels.</summary>
         /// <remarks>
@@ -111,7 +87,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <remarks>
         ///   Defaults to ''.
         /// </remarks>
-        /// <value>a comma seperated list of file extenstions no wildcards or periods e.g. "jpg,png,gif".</value>
+        /// <value>a comma seperated list of file extensions no wildcards or periods e.g. "jpg,png,gif".</value>
         public string FileFilter
         {
             get
@@ -177,7 +153,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether gets or sets whether to Include Personal Folder.</summary>
+        /// <summary>  Gets or sets a value indicating whether to Include Personal Folder.</summary>
         /// <remarks>
         ///   Defaults to false.
         /// </remarks>
@@ -225,7 +201,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether gets or sets whether the combos have a "Not Specified" option.</summary>
+        /// <summary>  Gets or sets a value indicating whether the combos have a "Not Specified" option.</summary>
         /// <remarks>
         ///   Defaults to True (ie no "Not Specified").
         /// </remarks>
@@ -256,7 +232,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether gets or sets whether to Show the Upload Button.</summary>
+        /// <summary>  Gets or sets a value indicating whether to Show the Upload Button.</summary>
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>
@@ -795,7 +771,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     try
                     {
-                        FileManager.Instance.AddFile(folder, fileName, this.txtFile.PostedFile.InputStream, true);
+                        FileManager.Instance.AddFile(folder, fileName, this.txtFile.PostedFile.InputStream, true, true, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)));
                     }
                     catch (PermissionsNotMetException)
                     {

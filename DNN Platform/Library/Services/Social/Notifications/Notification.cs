@@ -13,9 +13,6 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Notifications
-    /// Class:      Notification
     /// <summary>The Notification class describes the a notification received by a user as a consecuence of an action.</summary>
     [Serializable]
     public class Notification : BaseEntityInfo, IHydratable
