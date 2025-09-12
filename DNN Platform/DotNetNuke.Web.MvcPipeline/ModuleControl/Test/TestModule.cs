@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc.Html;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
@@ -35,16 +37,19 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Test {
         {
             base.OnInit(e);
             var mc = MvcUtils.CreateModuleControl(this.ModuleConfiguration);
+            html = ViewRenderer.RenderHtmlHelperToString(helper => mc.Html(helper));
+            /*
             if (mc is RazorModuleControlBase)
             {
                 var moduleControl = (RazorModuleControlBase)mc;
-                moduleControl.Control = this;
+                // moduleControl.Control = this;
                 // moduleControl.ModuleContext = this.ModuleContext;
+                moduleControl.ViewContext.HttpContext = new HttpContextWrapper(this.Context);
                 var res = moduleControl.Invoke();
-
                 var renderer = new ViewRenderer();
                 html = renderer.RenderViewToString(res.ViewName, res.Model);
             }
+            */
             if (mc is IActionable){
                 var moduleControl = (IActionable)mc;
                 this.ModuleActions = moduleControl.ModuleActions;

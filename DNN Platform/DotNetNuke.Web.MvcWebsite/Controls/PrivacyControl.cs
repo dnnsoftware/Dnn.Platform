@@ -11,9 +11,12 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
 
     public class PrivacyControl : RazorModuleControlBase
     {
+        public override string ControlName => "Privacy";
+
+        public override string ControlPath => "admin/Portal";
         public override IRazorModuleResult Invoke()
         {
-            return View("Privacy", Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_PRIVACY"));
+            return View(Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_PRIVACY"));
         }
     }
 }

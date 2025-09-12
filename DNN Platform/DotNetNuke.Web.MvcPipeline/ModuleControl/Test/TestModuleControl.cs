@@ -10,28 +10,34 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Test
 {
     public class TestModuleControl : RazorModuleControlBase
     {
-        public override string ControlName
-        {
-            get
-            {
-                return "TestModuleControl";
-            }
-        }
+        public override string ControlName => "TestModuleControl";
 
-        /// <summary>Gets or Sets the Path for this control (used primarily for UserControls).</summary>
-        /// <returns>A String.</returns>
-        public override string ControlPath
-        {
-            get
-            {
-
-                return "DesktopModules/mvcpl/mvcpl1";
-            }
-        }
+        public override string ControlPath => "DesktopModules/mvcpl/mvcpl1";
 
         public override IRazorModuleResult Invoke()
         {
-            return View("~/Views/Default/Terms.cshtml", "Hello from TestModuleControl");
+            if (Request.QueryString["view"] == "Terms")
+            {
+                return Terms();
+            }
+            else if (Request.QueryString["view"] == "Privacy")
+            {
+                return Privacy();
+            }
+            else
+            {
+                return View("~/admin/Portal/Views/Terms.cshtml", "Hello from TestModuleControl - Default view");
+            }
+        }
+
+        private IRazorModuleResult Privacy()
+        {
+            return View("~/admin/Portal/Views/Privacy.cshtml", "Hello from TestModuleControl - Privacy view");
+        }
+
+        private IRazorModuleResult Terms()
+        {
+            return View("~/Views/Default/Terms.cshtml", "Hello from TestModuleControl - Terms view");
         }
     }
 }

@@ -49,13 +49,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             this.businessControllerProvider = businessControllerProvider;
         }
 
-        public string html5File
-        {
-            get
-            {
-                return ModuleConfiguration.ModuleControl.ControlSrc;
-            }
-        }
+        public string html5File => ModuleConfiguration.ModuleControl.ControlSrc;
 
         public ModuleResources ModuleResources
         {
@@ -63,6 +57,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 var resource = new ModuleResources()
                 {
+                    // Register for Services Framework
                     AjaxScript = true
                 };
 
@@ -106,9 +101,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 var tokenReplace = new MvcHtml5ModuleTokenReplace(htmlHelper.ViewContext, this.businessControllerProvider, this.html5File, this.ModuleContext, ModuleActions);
                 fileContent = tokenReplace.ReplaceEnvironmentTokens(fileContent);
             }
-
-            // Register for Services Framework
-            //ServicesFramework.Instance.RequestAjaxScriptSupport();
+                        
             return new HtmlString(HttpUtility.HtmlDecode(fileContent));
         }
 

@@ -19,63 +19,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     /// </summary>
     public static class MvcModuleControlExtensions
     {
-        /*
-        /// <summary>
-        /// Registers a JavaScript file for the module control.
-        /// </summary>
-        /// <param name="moduleControl">The module control instance.</param>
-        /// <param name="filePath">The path to the JavaScript file.</param>
-        /// <param name="priority">The priority for loading the script.</param>
-        public static void RegisterScript(this IMvcModuleControl moduleControl, string filePath, FileOrder.Js priority = FileOrder.Js.DefaultPriority)
-        {
-            if (moduleControl == null)
-            {
-                throw new ArgumentNullException(nameof(moduleControl));
-            }
-
-            if (string.IsNullOrEmpty(filePath))
-            {
-                throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
-            }
-
-            if (moduleControl.ViewContext != null)
-            {
-                MvcClientResourceManager.RegisterScript(moduleControl.ViewContext.Controller.ControllerContext, filePath, priority);
-            }
-            else if (moduleControl.Control != null)
-            {
-                ClientResourceManager.RegisterScript(moduleControl.Control.Page, filePath, priority);
-            }
-        }
-
-        /// <summary>
-        /// Registers a CSS stylesheet for the module control.
-        /// </summary>
-        /// <param name="moduleControl">The module control instance.</param>
-        /// <param name="filePath">The path to the CSS file.</param>
-        /// <param name="priority">The priority for loading the stylesheet.</param>
-        public static void RegisterStyleSheet(this IMvcModuleControl moduleControl, string filePath, FileOrder.Css priority = FileOrder.Css.DefaultPriority)
-        {
-            if (moduleControl == null)
-            {
-                throw new ArgumentNullException(nameof(moduleControl));
-            }
-
-            if (string.IsNullOrEmpty(filePath))
-            {
-                throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
-            }
-
-            if (moduleControl.ViewContext != null)
-            {
-                MvcClientResourceManager.RegisterStyleSheet(moduleControl.ViewContext.Controller.ControllerContext, filePath, priority);
-            }
-            else if (moduleControl.Control != null)
-            {
-                ClientResourceManager.RegisterStyleSheet(moduleControl.Control.Page, filePath, priority);
-            }
-        }
-        */
+        
         /// <summary>
         /// Gets a localized string for the module control.
         /// </summary>

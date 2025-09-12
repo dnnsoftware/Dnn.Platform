@@ -242,6 +242,46 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
             renderer.RenderPartialView(viewPath, model, writer);
         }
 
+        /// <summary>
+        /// Renders an HtmlHelper delegate to a string. This method creates a temporary view context
+        /// and captures the output of the HtmlHelper function.
+        /// </summary>
+        /// <param name="htmlHelperFunc">A function that takes an HtmlHelper and returns MvcHtmlString or IHtmlString</param>
+        /// <param name="model">The model to attach to the view data</param>
+        /// <param name="controllerContext">Active controller context (optional)</param>
+        /// <returns>String representation of the rendered HTML helper output</returns>
+        public static string RenderHtmlHelperToString(Func<HtmlHelper, IHtmlString> htmlHelperFunc, object model = null, ControllerContext controllerContext = null)
+        {
+            if (htmlHelperFunc == null)
+                throw new ArgumentNullException(nameof(htmlHelperFunc));
+
+            ViewRenderer renderer = new ViewRenderer(controllerContext);
+            return renderer.RenderHtmlHelperToStringInternal(htmlHelperFunc, model);
+        }
+
+        /// <summary>
+        /// Renders an HtmlHelper delegate to a string with error handling. This method creates a temporary view context
+        /// and captures the output of the HtmlHelper function.
+        /// </summary>
+        /// <param name="htmlHelperFunc">A function that takes an HtmlHelper and returns MvcHtmlString or IHtmlString</param>
+        /// <param name="model">The model to attach to the view data</param>
+        /// <param name="controllerContext">Active controller context (optional)</param>
+        /// <param name="errorMessage">Output parameter that captures any error message instead of throwing</param>
+        /// <returns>String representation of the rendered HTML helper output or null on error</returns>
+        public static string RenderHtmlHelperToString(Func<HtmlHelper, IHtmlString> htmlHelperFunc, object model, ControllerContext controllerContext, out string errorMessage)
+        {
+            errorMessage = null;
+            try
+            {
+                return RenderHtmlHelperToString(htmlHelperFunc, model, controllerContext);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.GetBaseException().Message;
+                return null;
+            }
+        }
+
 
         /// <summary>
         /// Internal method that handles rendering of either partial or 
@@ -320,6 +360,37 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
             return result;
         }
 
+        /// <summary>
+        /// Internal method that handles rendering of HtmlHelper delegate to a string.
+        /// </summary>
+        /// <param name="htmlHelperFunc">A function that takes an HtmlHelper and returns MvcHtmlString or IHtmlString</param>
+        /// <param name="model">Model to attach to the view data</param>
+        /// <returns>String representation of the rendered HTML helper output</returns>
+        private string RenderHtmlHelperToStringInternal(Func<HtmlHelper, IHtmlString> htmlHelperFunc, object model = null)
+        {
+            // Set the model to view data
+            Context.Controller.ViewData.Model = model;
+
+            string result = null;
+
+            using (var sw = new StringWriter())
+            {
+                // Create a view data dictionary for the HtmlHelper
+                var viewDataContainer = new ViewDataContainer(Context.Controller.ViewData);
+                
+                // Create the HtmlHelper with the proper context
+                var htmlHelper = new HtmlHelper(
+                    new ViewContext(Context, new FakeView(), Context.Controller.ViewData, Context.Controller.TempData, sw),
+                    viewDataContainer);
+
+                // Execute the HtmlHelper function and capture the result
+                var htmlResult = htmlHelperFunc(htmlHelper);
+                result = htmlResult?.ToString() ?? string.Empty;
+            }
+
+            return result;
+        }
+
 
         /// <summary>
         /// Creates an instance of an MVC controller from scratch 
@@ -364,5 +435,29 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
     /// </summary>
     public class EmptyController : Controller
     {
+    }
+
+    /// <summary>
+    /// Simple ViewDataContainer implementation for HtmlHelper usage
+    /// </summary>
+    internal class ViewDataContainer : IViewDataContainer
+    {
+        public ViewDataDictionary ViewData { get; set; }
+
+        public ViewDataContainer(ViewDataDictionary viewData)
+        {
+            ViewData = viewData;
+        }
+    }
+
+    /// <summary>
+    /// Fake view implementation for HtmlHelper contexts that don't require actual view rendering
+    /// </summary>
+    internal class FakeView : IView
+    {
+        public void Render(ViewContext viewContext, TextWriter writer)
+        {
+            // No-op implementation since we're only using this for HtmlHelper context
+        }
     }
 }

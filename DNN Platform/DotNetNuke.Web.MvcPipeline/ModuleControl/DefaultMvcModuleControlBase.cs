@@ -283,21 +283,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
-        /// <summary>
-        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
-        /// Module Control.
-        /// </summary>
-        protected void AddActionHandler(ActionEventHandler e)
-        {
-            /*
-            UI.Skins.Skin parentSkin = UI.Skins.Skin.GetParentSkin(this);
-            if (parentSkin != null)
-            {
-                parentSkin.RegisterModuleActionEvent(this.ModuleId, e);
-            }
-            */
-        }
-
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);

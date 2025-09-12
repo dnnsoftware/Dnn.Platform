@@ -12,9 +12,13 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
 
     public class TermsControl : RazorModuleControlBase
     {
+        public override string ControlName => "Terms";
+
+        public override string ControlPath => "admin/Portal";
+
         public override IRazorModuleResult Invoke()
         {
-            return View("Terms", Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_TERMS"));
+            return View(Localization.GetSystemMessage(PortalSettings.Current, "MESSAGE_PORTAL_TERMS"));
         }
 
     }

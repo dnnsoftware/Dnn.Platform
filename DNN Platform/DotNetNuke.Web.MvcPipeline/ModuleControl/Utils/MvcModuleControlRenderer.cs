@@ -13,7 +13,7 @@ using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 using DotNetNuke.Web.MvcPipeline.Utils;
 
-namespace DotNetNuke.Web.MvcPipeline.ModuleControl
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Utils
 {
     public class MvcModuleControlRenderer<T> where T : RazorModuleControlBase, new()
     {
@@ -23,7 +23,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             this.moduleControl = new T();
             moduleControl.ModuleContext.Configuration = moduleContext.Configuration;
-            moduleControl.Control = control;
+            moduleControl.ViewContext.HttpContext = new System.Web.HttpContextWrapper(System.Web.HttpContext.Current);
+            //moduleControl.Control = control;
         }
 
         // Fix for CS0149: Replace the invalid constructor chaining syntax with a proper constructor call
