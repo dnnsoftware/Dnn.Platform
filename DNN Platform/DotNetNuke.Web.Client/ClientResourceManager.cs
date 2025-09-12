@@ -138,7 +138,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The path to the CSS stylesheet.</param>
         public static void RegisterAdminStylesheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, FileOrder.Css.AdminCss);
+            RegisterStyleSheet(page, filePath, Client.FileOrder.Css.AdminCss);
         }
 
         /// <summary>Registers the <c>default.css</c> stylesheet.</summary>
@@ -146,7 +146,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The path to the CSS stylesheet.</param>
         public static void RegisterDefaultStylesheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "10.0.0");
+            RegisterStyleSheet(page, filePath, (int)Client.FileOrder.Css.DefaultCss, DefaultCssProvider, "dnndefault", "10.0.0");
         }
 
         /// <summary>Registers a stylesheet for a specific feature.</summary>
@@ -154,7 +154,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The path to the CSS stylesheet.</param>
         public static void RegisterFeatureStylesheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, FileOrder.Css.FeatureCss);
+            RegisterStyleSheet(page, filePath, Client.FileOrder.Css.FeatureCss);
         }
 
         /// <summary>Registers a stylesheet specific for Internet Explorer.</summary>
@@ -166,7 +166,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var browser = HttpContext.Current.Request.Browser;
             if (browser.Browser == "Internet Explorer" || browser.Browser == "IE")
             {
-                RegisterStyleSheet(page, filePath, FileOrder.Css.IeCss);
+                RegisterStyleSheet(page, filePath, Client.FileOrder.Css.IeCss);
             }
         }
 
@@ -184,7 +184,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
         public static void RegisterScript(Page page, string filePath, IDictionary<string, string> htmlAttributes)
         {
-            RegisterScript(page, filePath, FileOrder.Js.DefaultPriority, htmlAttributes);
+            RegisterScript(page, filePath, Client.FileOrder.Js.DefaultPriority, htmlAttributes);
         }
 
         /// <summary>Requests that a JavaScript file be registered on the client browser.</summary>
@@ -210,7 +210,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
-        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority)
+        public static void RegisterScript(Page page, string filePath, Client.FileOrder.Js priority)
         {
             RegisterScript(page, filePath, priority, htmlAttributes: null);
         }
@@ -220,7 +220,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, IDictionary<string, string> htmlAttributes)
+        public static void RegisterScript(Page page, string filePath, Client.FileOrder.Js priority, IDictionary<string, string> htmlAttributes)
         {
             RegisterScript(page, filePath, (int)priority, DefaultJsProvider, htmlAttributes);
         }
@@ -230,7 +230,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider)
+        public static void RegisterScript(Page page, string filePath, Client.FileOrder.Js priority, string provider)
         {
             RegisterScript(page, filePath, priority, provider, htmlAttributes: null);
         }
@@ -241,7 +241,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
         /// /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>script</c> tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterScript(Page page, string filePath, FileOrder.Js priority, string provider, IDictionary<string, string> htmlAttributes)
+        public static void RegisterScript(Page page, string filePath, Client.FileOrder.Js priority, string provider, IDictionary<string, string> htmlAttributes)
         {
             RegisterScript(page, filePath, (int)priority, provider, htmlAttributes);
         }
@@ -318,7 +318,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         public static void RegisterStyleSheet(Page page, string filePath)
         {
-            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultPriority, DefaultCssProvider, htmlAttributes: null);
+            RegisterStyleSheet(page, filePath, (int)Client.FileOrder.Css.DefaultPriority, DefaultCssProvider, htmlAttributes: null);
         }
 
         /// <summary>Requests that a CSS file be registered on the client browser.</summary>
@@ -327,7 +327,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
         public static void RegisterStyleSheet(Page page, string filePath, IDictionary<string, string> htmlAttributes)
         {
-            RegisterStyleSheet(page, filePath, (int)FileOrder.Css.DefaultPriority, DefaultCssProvider, htmlAttributes);
+            RegisterStyleSheet(page, filePath, (int)Client.FileOrder.Css.DefaultPriority, DefaultCssProvider, htmlAttributes);
         }
 
         /// <summary>Requests that a CSS file be registered on the client browser. Defaults to rendering in the page header.</summary>
@@ -353,7 +353,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
-        public static void RegisterStyleSheet(Page page, string filePath, FileOrder.Css priority)
+        public static void RegisterStyleSheet(Page page, string filePath, Client.FileOrder.Css priority)
         {
             RegisterStyleSheet(page, filePath, (int)priority, DefaultCssProvider, htmlAttributes: null);
         }
@@ -363,7 +363,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
-        public static void RegisterStyleSheet(Page page, string filePath, FileOrder.Css priority, IDictionary<string, string> htmlAttributes)
+        public static void RegisterStyleSheet(Page page, string filePath, Client.FileOrder.Css priority, IDictionary<string, string> htmlAttributes)
         {
             RegisterStyleSheet(page, filePath, (int)priority, DefaultCssProvider, htmlAttributes);
         }

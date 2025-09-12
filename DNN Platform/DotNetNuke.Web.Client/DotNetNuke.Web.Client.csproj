@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Cdf\BasicFile.cs" />
     <Compile Include="Cdf\ClientDependencyType.cs" />
+    <Compile Include="Cdf\CssMediaType.cs" />
     <Compile Include="Controls\ClientResourceExclude.cs" />
     <Compile Include="Controls\DnnJsExclude.cs" />
     <Compile Include="Controls\DnnCssExclude.cs" />
