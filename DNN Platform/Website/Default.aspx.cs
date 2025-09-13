@@ -16,6 +16,7 @@ namespace DotNetNuke.Framework
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
@@ -59,11 +60,12 @@ namespace DotNetNuke.Framework
         private readonly IHostSettingsService hostSettingsService;
         private readonly IEventLogger eventLogger;
         private readonly IPortalSettingsController portalSettingsController;
+        private readonly IClientResourcesController clientResourcesController;
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -77,7 +79,18 @@ namespace DotNetNuke.Framework
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="portalSettingsController">The portal settings controller.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController)
+        /// <param name="clientResourcesController">The client resources controller.</param>
+        public DefaultPage(
+                INavigationManager navigationManager,
+                IApplicationInfo appInfo,
+                IApplicationStatusInfo appStatus,
+                IModuleControlPipeline moduleControlPipeline,
+                IHostSettings hostSettings,
+                IHostSettingsService hostSettingsService,
+                IEventLogger eventLogger,
+                IPortalController portalController,
+                IPortalSettingsController portalSettingsController,
+                IClientResourcesController clientResourcesController)
             : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -88,6 +101,7 @@ namespace DotNetNuke.Framework
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
+            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
         }
 
         public string CurrentSkinPath => ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
@@ -214,9 +228,8 @@ namespace DotNetNuke.Framework
 
             var ctlSkin = this.GetSkin();
 
-            // DataBind common paths for the client resource loader
-            this.ClientResourceLoader.DataBind();
-            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.hostSettings, this.hostSettingsService, this.appStatus, this.eventLogger, this.PortalSettings, this.Page);
+            this.clientResourcesController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
+            this.clientResourcesController.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
 
             // check for and read skin package level doctype
             this.SetSkinDoctype();
@@ -286,13 +299,13 @@ namespace DotNetNuke.Framework
 
             // add CSS links
             ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css"));
-            ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
-            ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss);
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), Web.Client.FileOrder.Css.SkinCss);
+            ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), Web.Client.FileOrder.Css.SpecificSkinCss);
 
             // add skin to page
             this.SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            ClientResourceManager.RegisterStyleSheet(this, string.Concat(this.PortalSettings.HomeDirectory, "portal.css"), FileOrder.Css.PortalCss);
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(this.PortalSettings.HomeDirectory, "portal.css"), Web.Client.FileOrder.Css.PortalCss);
 
             // add Favicon
             this.ManageFavicon();
@@ -621,7 +634,7 @@ namespace DotNetNuke.Framework
 
             // register css variables
             var cssVariablesStyleSheet = this.GetCssVariablesStylesheet();
-            ClientResourceManager.RegisterStyleSheet(this, cssVariablesStyleSheet, FileOrder.Css.DefaultCss);
+            ClientResourceManager.RegisterStyleSheet(this, cssVariablesStyleSheet, Web.Client.FileOrder.Css.DefaultCss);
 
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
@@ -648,9 +661,9 @@ namespace DotNetNuke.Framework
                 ClientAPI.RegisterClientVariable(this, "cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 ClientAPI.RegisterClientVariable(this, "cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
                 ClientAPI.RegisterClientVariable(this, "cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
-                ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
-                ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.cookieconsent.js", FileOrder.Js.DefaultPriority);
+                ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", Web.Client.FileOrder.Js.DnnControls);
+                ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", Web.Client.FileOrder.Css.ResourceCss);
+                ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.cookieconsent.js", Web.Client.FileOrder.Js.DefaultPriority);
             }
         }
 
@@ -720,7 +733,7 @@ namespace DotNetNuke.Framework
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
                                    : "~/js/dnn.modalpopup.js";
-                ClientResourceManager.RegisterScript(this, popupFilePath, FileOrder.Js.DnnModalPopup);
+                ClientResourceManager.RegisterScript(this, popupFilePath, Web.Client.FileOrder.Js.DnnModalPopup);
             }
         }
 

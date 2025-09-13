@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IClientResourcesController, ClientResourcesController>();
+            services.AddScoped<IClientResourcesController, ClientResourcesController>();
         }
     }
 }

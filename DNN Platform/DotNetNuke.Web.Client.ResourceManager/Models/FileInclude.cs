@@ -5,11 +5,20 @@
 
     public class FileInclude
     {
+        private string name;
+
         public string FilePath { get; set; }
         public string PathNameAlias { get; set; }
         public int Priority { get; set; }
-        public string Provider { get; set; }
-        public string Name { get; set; }
+        public string Provider { get; set; } = "DnnPageHeaderProvider";
+        public string Name
+        {
+            get
+            {
+                return string.IsNullOrEmpty(name) ? this.FilePath : name;
+            }
+            set => name = value;
+        }
         public string Version { get; set; }
         public bool ForceVersion { get; set; }
         public CrossOrigin CrossOrigin { get; set; } = CrossOrigin.None;

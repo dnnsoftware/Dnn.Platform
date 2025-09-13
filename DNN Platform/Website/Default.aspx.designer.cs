@@ -66,7 +66,7 @@ namespace DotNetNuke.Framework
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-        protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaDescription;
+    protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaDescription;
 
     /// <summary>
     /// MetaKeywords control.
@@ -75,7 +75,7 @@ namespace DotNetNuke.Framework
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-        protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaKeywords;
+    protected new global::System.Web.UI.HtmlControls.HtmlMeta MetaKeywords;
 
     /// <summary>
     /// MetaCopyright control.
@@ -256,14 +256,5 @@ namespace DotNetNuke.Framework
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
     protected global::System.Web.UI.WebControls.PlaceHolder ClientResourceIncludes;
-
-    /// <summary>
-    /// ClientResourceLoader control.
-    /// </summary>
-    /// <remarks>
-    /// Auto-generated field.
-    /// To modify move field declaration from designer file to code-behind file.
-    /// </remarks>
-    protected global::DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceLoader ClientResourceLoader;
   }
 }

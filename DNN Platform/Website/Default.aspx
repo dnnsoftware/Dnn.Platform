@@ -32,11 +32,5 @@
         <dnncrm:DnnResources runat="server" ID="DnnResources3" Provider="DnnFormBottomProvider" />
     </dnn:Form>
     <asp:placeholder runat="server" id="ClientResourceIncludes" />
-    <dnncrm:ClientResourceLoader runat="server" id="ClientResourceLoader">
-        <Paths>
-            <dnncrm:ClientResourcePath Name="SkinPath" Path="<%# CurrentSkinPath %>" />
-            <dnncrm:ClientResourcePath Name="SharedScripts" Path="~/Resources/Shared/Scripts/" />
-        </Paths>
-    </dnncrm:ClientResourceLoader>
 </body>
 </html>

@@ -123,21 +123,21 @@ namespace DotNetNuke.Web.Client.ResourceManager
             var sortedList = new List<string>();
             if (resourceType == ResourceType.Font || resourceType == ResourceType.All)
             {
-                foreach (var link in this.Fonts.Where(s => !this.FontsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
+                foreach (var link in this.Fonts.Where(s => s.Provider == provider && !this.FontsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
                 {
                     sortedList.Add(link.Render());
                 }
             }
             if (resourceType == ResourceType.Stylesheet || resourceType == ResourceType.All)
             {
-                foreach (var link in this.Stylesheets.Where(s => !this.StylesheetsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
+                foreach (var link in this.Stylesheets.Where(s => s.Provider == provider && !this.StylesheetsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
                 {
                     sortedList.Add(link.Render());
                 }
             }
             if (resourceType == ResourceType.Script || resourceType == ResourceType.All)
             {
-                foreach (var script in this.Scripts.Where(s => !this.ScriptsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(s => s.Priority))
+                foreach (var script in this.Scripts.Where(s => s.Provider == provider && !this.ScriptsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(s => s.Priority))
                 {
                     sortedList.Add(script.Render());
                 }

@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Web.Client.Cdf;
 
     /// <summary>Registers a CSS resource.</summary>
     public class DnnCssInclude : ClientResourceInclude
@@ -19,6 +20,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             : base(clientResourcesController)
         {
             this.ForceProvider = ClientResourceManager.DefaultCssProvider;
+            this.DependencyType = ClientDependencyType.Css;
         }
 
         /// <inheritdoc/>

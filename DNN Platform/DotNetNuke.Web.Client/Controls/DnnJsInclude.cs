@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Web.Client.Cdf;
 
     /// <summary>Registers a JavaScript resource.</summary>
     public class DnnJsInclude : ClientResourceInclude
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             : base(clientResourcesController)
         {
             this.ForceProvider = ClientResourceManager.DefaultJsProvider;
+            this.DependencyType = ClientDependencyType.Javascript;
         }
 
         /// <inheritdoc/>

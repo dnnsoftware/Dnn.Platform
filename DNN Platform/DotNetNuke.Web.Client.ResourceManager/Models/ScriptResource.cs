@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             htmlString += this.RenderIntegrity();
             htmlString += this.RenderReferrerPolicy();
             htmlString += this.RenderAttributes();
-            htmlString += " />";
+            htmlString += " type=\"text/javascript\"></script>";
             return htmlString;
         }
     }
