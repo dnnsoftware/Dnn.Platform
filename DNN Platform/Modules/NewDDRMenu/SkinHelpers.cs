@@ -72,15 +72,23 @@ namespace DotNetNuke.Web.NewDDRMenu
             var localiser = new Localiser();
             if (string.IsNullOrEmpty(nodeXmlPath))
             {
+                // Use cached nodes if available
+                DotNetNuke.UI.WebControls.DNNNodeCollection dnnNodes = htmlHelper.ViewContext.HttpContext.Items["DNNMenuNodes"] as DotNetNuke.UI.WebControls.DNNNodeCollection;
+                if (dnnNodes == null)
+                {
+                    dnnNodes = localiser.LocaliseDNNNodeCollection(
+                                Navigation.GetNavigationNodes(
+                                    clientID,
+                                    Navigation.ToolTipSource.None,
+                                    -1,
+                                    -1,
+                                    DNNAbstract.GetNavNodeOptions(true)));
+                    htmlHelper.ViewContext.HttpContext.Items["DNNMenuNodes"] = dnnNodes;
+                }
+
                 menu.RootNode =
                     new DDRMenu.MenuNode(
-                        localiser.LocaliseDNNNodeCollection(
-                            Navigation.GetNavigationNodes(
-                                clientID,
-                                Navigation.ToolTipSource.None,
-                                -1,
-                                -1,
-                                DNNAbstract.GetNavNodeOptions(true))));
+                        dnnNodes);
             }
 
             menu.PreRender();

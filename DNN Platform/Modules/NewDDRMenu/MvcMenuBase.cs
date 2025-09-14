@@ -126,7 +126,7 @@ namespace DotNetNuke.Web.NewDDRMenu
             {
 #pragma warning disable CS0618 // Type or member is obsolete
                 // TODO: In Dnn v11, replace this to use IPortalSettings private field instantiate in constructor
-                new Localiser().LocaliseNode(this.RootNode);
+                new Localiser().LocaliseNode(this.RootNode, this.HostPortalSettings.PortalId);
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
