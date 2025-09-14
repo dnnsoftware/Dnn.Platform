@@ -14,9 +14,9 @@ using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 using DotNetNuke.Web.MvcPipeline.Utils;
 
-namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Test { 
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Demo { 
 
-    public class TestModule : PortalModuleBase, IActionable
+    public class DemoModule : PortalModuleBase, IActionable
     {
         private string html = string.Empty;
 

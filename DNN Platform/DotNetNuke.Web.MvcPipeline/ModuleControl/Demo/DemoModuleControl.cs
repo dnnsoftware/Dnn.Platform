@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
 
-namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Test
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Demo
 {
-    public class TestModuleControl : RazorModuleControlBase
+    public class DemoModuleControl : RazorModuleControlBase
     {
-        public override string ControlName => "TestModuleControl";
+        public override string ControlName => "DemoModuleControl";
 
-        public override string ControlPath => "DesktopModules/mvcpl/mvcpl1";
+        public override string ControlPath => "DesktopModules/mvcpl/demo";
 
         public override IRazorModuleResult Invoke()
         {
