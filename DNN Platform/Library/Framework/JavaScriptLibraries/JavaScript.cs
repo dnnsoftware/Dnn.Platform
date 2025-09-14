@@ -25,7 +25,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-
     using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -539,11 +538,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (js.PreferredScriptLocation)
             {
                 case ScriptLocation.PageHead:
-                    return "DnnPageHeaderProvider";
+                    return Abstractions.ClientResources.ClientResourceProviders.DnnPageHeaderProvider;
                 case ScriptLocation.BodyBottom:
-                    return "DnnFormBottomProvider";
+                    return Abstractions.ClientResources.ClientResourceProviders.DnnFormBottomProvider;
                 case ScriptLocation.BodyTop:
-                    return "DnnBodyProvider";
+                    return Abstractions.ClientResources.ClientResourceProviders.DnnBodyProvider;
             }
 
             return string.Empty;

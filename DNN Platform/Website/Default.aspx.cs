@@ -346,6 +346,8 @@ namespace DotNetNuke.Framework
         {
             base.OnPreRender(evt);
 
+            JavaScript.Register(this.hostSettings, this.hostSettingsService, this.appStatus, this.eventLogger, this.PortalSettings, this.Page);
+
             // Set the Head tags
             this.metaPanel.Visible = !UrlUtils.InPopUp();
             if (!UrlUtils.InPopUp())
