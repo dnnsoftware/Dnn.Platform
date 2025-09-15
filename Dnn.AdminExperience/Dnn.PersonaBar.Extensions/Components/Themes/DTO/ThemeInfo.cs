@@ -19,7 +19,6 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
     public class ThemeInfo
     {
         [DataMember(Name = "level")]
-
         public ThemeLevel Level => ThemesController.GetThemeLevel(this.Path);
 
         [DataMember(Name = "packageName")]

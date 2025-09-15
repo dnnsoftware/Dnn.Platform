@@ -1,5 +1,5 @@
 ﻿const webpack = require("webpack");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require("eslint-webpack-plugin");
 const packageJson = require("./package.json");
 const path = require("path");
 const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
@@ -109,11 +109,11 @@ module.exports = (env, argv) => {
             : new webpack.DefinePlugin({
                 VERSION: JSON.stringify(packageJson.version),
             }),
-            new webpack.SourceMapDevToolPlugin({
-                filename: "users-bundle.js.map",
-                append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Users/scripts/bundles/users-bundle.js.map"
-            }),
-            new ESLintPlugin({fix: true}),
+        new webpack.SourceMapDevToolPlugin({
+            filename: "users-bundle.js.map",
+            append: "\n//# sourceMappingURL=/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Users/scripts/bundles/users-bundle.js.map"
+        }),
+        new ESLintPlugin({fix: true}),
         ],
         devtool: false,
     };

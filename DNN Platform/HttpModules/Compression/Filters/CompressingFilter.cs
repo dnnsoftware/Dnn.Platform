@@ -15,8 +15,6 @@ namespace DotNetNuke.HttpModules.Compression
     /// </remarks>
     public abstract class CompressingFilter : HttpOutputFilter
     {
-        private bool hasWrittenHeaders;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CompressingFilter"/> class.
         /// Protected constructor that sets up the underlying stream we're compressing into.
@@ -34,14 +32,8 @@ namespace DotNetNuke.HttpModules.Compression
         /// </remarks>
         public abstract string ContentEncoding { get; }
 
-        /// <summary>Gets a value indicating whether keeps track of whether or not we're written the compression headers.</summary>
-        protected bool HasWrittenHeaders
-        {
-            get
-            {
-                return this.hasWrittenHeaders;
-            }
-        }
+        /// <summary>Gets a value indicating whether keeps track of whether we've written the compression headers.</summary>
+        protected bool HasWrittenHeaders { get; private set; }
 
         /// <summary>Writes out the compression-related headers.  Subclasses should call this once before writing to the output stream.</summary>
         internal void WriteHeaders()
@@ -51,7 +43,7 @@ namespace DotNetNuke.HttpModules.Compression
             // Look for handling cases in PreRequestSendHeaders and Pre
             HttpContext.Current.Response.AppendHeader("Content-Encoding", this.ContentEncoding);
             HttpContext.Current.Response.AppendHeader("X-Compressed-By", "DotNetNuke-Compression");
-            this.hasWrittenHeaders = true;
+            this.HasWrittenHeaders = true;
         }
     }
 }

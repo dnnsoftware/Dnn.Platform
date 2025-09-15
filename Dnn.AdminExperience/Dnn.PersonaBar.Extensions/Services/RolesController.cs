@@ -31,7 +31,6 @@ namespace Dnn.PersonaBar.Roles.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RolesController));
 
         [HttpGet]
-
         public HttpResponseMessage GetRoles(int groupId, string keyword, int startIndex, int pageSize)
         {
             try
@@ -53,7 +52,6 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
-
         public HttpResponseMessage SaveRole(RoleDto roleDto, [FromUri] bool assignExistUsers)
         {
             try
@@ -82,7 +80,6 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
-
         public HttpResponseMessage DeleteRole(RoleDto roleDto)
         {
             KeyValuePair<HttpStatusCode, string> message;
@@ -92,7 +89,6 @@ namespace Dnn.PersonaBar.Roles.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetRoleGroups(bool reload = false)
         {
             try
@@ -118,7 +114,6 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
-
         public HttpResponseMessage SaveRoleGroup(RoleGroupDto roleGroupDto)
         {
             try
@@ -174,7 +169,6 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
-
         public HttpResponseMessage DeleteRoleGroup(RoleGroupDto roleGroupDto)
         {
             var roleGroup = RoleController.GetRoleGroup(this.PortalId, roleGroupDto.Id);
@@ -191,7 +185,6 @@ namespace Dnn.PersonaBar.Roles.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetSuggestUsers(string keyword, int roleId, int count)
         {
             try
@@ -229,7 +222,6 @@ namespace Dnn.PersonaBar.Roles.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetRoleUsers(string keyword, int roleId, int pageIndex, int pageSize)
         {
             try
@@ -281,7 +273,6 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
-
         public HttpResponseMessage AddUserToRole(UserRoleDto userRoleDto, bool notifyUser, bool isOwner)
         {
             try
@@ -359,7 +350,6 @@ namespace Dnn.PersonaBar.Roles.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
-
         public HttpResponseMessage RemoveUserFromRole(UserRoleDto userRoleDto)
         {
             try

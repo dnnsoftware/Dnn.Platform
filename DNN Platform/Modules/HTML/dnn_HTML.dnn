@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_HTML" type="Module" version="10.00.00">
+    <package name="DNN_HTML" type="Module" version="10.01.00">
       <friendlyName>HTML</friendlyName>
       <description>This module renders a block of HTML or Text content. The Html/Text module allows authorized users to edit the content either inline or in a separate administration page. Optional tokens can be used that get replaced dynamically during display. All versions of content are stored in the database including the ability to rollback to an older version.</description>
       <iconFile>DesktopModules\HTML\Images\html.png</iconFile>
@@ -100,6 +100,11 @@
               <name>10.00.00.SqlDataProvider</name>
               <version>10.00.00</version>
             </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>10.00.02.SqlDataProvider</name>
+              <version>10.00.02</version>
+            </script>
             <script type="UnInstall">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>Uninstall.SqlDataProvider</name>
@@ -175,7 +180,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.Html.HtmlTextController</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>05.01.02,06.00.00,06.02.00</upgradeVersionsList>
+              <upgradeVersionsList>05.01.02,06.00.00,06.02.00,10.00.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>

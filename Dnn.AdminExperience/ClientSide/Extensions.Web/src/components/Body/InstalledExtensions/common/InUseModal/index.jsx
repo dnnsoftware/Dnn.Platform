@@ -117,7 +117,7 @@ class InUseModal extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderUsageDetail() {
         const {props} = this;
         if (props.tabUrls) {
@@ -129,7 +129,7 @@ class InUseModal extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         return (

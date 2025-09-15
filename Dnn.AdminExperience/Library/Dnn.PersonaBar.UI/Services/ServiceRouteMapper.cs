@@ -13,13 +13,14 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Web.Api;
 
+    /// <summary>The <see cref="IServiceRouteMapper"/> for the Persona Bar API.</summary>
     public class ServiceRouteMapper : IServiceRouteMapper
     {
         /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute routeManager)
         {
             // get all persona bar services from persona bar modules.
-            var services = this.FindPersonaBarServices();
+            var services = FindPersonaBarServices();
 
             if (services.Count > 0)
             {
@@ -38,7 +39,7 @@ namespace Dnn.PersonaBar.UI.Services
                      typeof(PersonaBarApiController).IsAssignableFrom(t));
         }
 
-        private IList<string> FindPersonaBarServices()
+        private static IList<string> FindPersonaBarServices()
         {
             var controllerTypes = GetAllApiControllers();
             var namespaces = new List<string>();

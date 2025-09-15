@@ -8,7 +8,6 @@ namespace DotNetNuke.Modules.Html
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -20,7 +19,6 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.Content.Workflow;
-    using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Content.Workflow.Repositories;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -29,7 +27,6 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
@@ -89,8 +86,8 @@ namespace DotNetNuke.Modules.Html
             }
 
             // manage relative paths
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background", portalSettings.PortalId);
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src");
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background");
 
             return content;
         }
@@ -551,9 +548,13 @@ namespace DotNetNuke.Modules.Html
                 case "06.02.00":
                     this.AddNotificationTypes();
                     break;
+
+                case "10.00.00":
+                    MigrateHelper.MigrateHtmlWorkflows();
+                    break;
             }
 
-            return string.Empty;
+            return "Success";
         }
 
         private static void AddHtmlNotification(string subject, string body, UserInfo user)

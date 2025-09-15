@@ -16,16 +16,33 @@ namespace Dnn.PersonaBar.UI.Services
 
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
-    using DotNetNuke.Common;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using Newtonsoft.Json;
 
+    /// <summary>A Persona Bar API controller for localization.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class LocalizationController : PersonaBarApiController
     {
         private static object threadLocker = new object();
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="LocalizationController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public LocalizationController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="LocalizationController"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public LocalizationController(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus;
+        }
 
         /// <summary>Retrieve a list of CMX related Localization Keys with its values for the current culture.</summary>
         /// <param name="culture">The culture name.</param>
@@ -111,7 +128,7 @@ namespace Dnn.PersonaBar.UI.Services
             foreach (var resourcesFile in resourceFiles)
             {
                 var key = resourcesFile.Key;
-                var relativePath = resourcesFile.Value.Replace(Globals.ApplicationMapPath, "~").Replace("\\", "/");
+                var relativePath = resourcesFile.Value.Replace(this.appStatus.ApplicationMapPath, "~").Replace("\\", "/");
                 if (File.Exists(HttpContext.Current.Server.MapPath(relativePath)))
                 {
                     var keys = this.GetLocalizedDictionary(relativePath, culture);

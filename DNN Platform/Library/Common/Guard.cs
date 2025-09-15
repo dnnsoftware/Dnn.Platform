@@ -10,28 +10,28 @@ namespace DotNetNuke.Common
     public static class Guard
     {
         /// <summary>
-        ///     Indicates that the given <paramref name="condition" /> must not be <c>true</c>, throwing an
+        ///     Indicates that the given <paramref name="condition" /> must not be <see langword="true"/>, throwing an
         ///     <see cref="InvalidOperationException" /> if it is.
         /// </summary>
-        /// <param name="condition">if set to <c>true</c>, throws an <see cref="InvalidOperationException" />.</param>
+        /// <param name="condition">if set to <see langword="true"/>, throws an <see cref="InvalidOperationException" />.</param>
         /// <param name="message">
         ///     A message that describes the error condition, as a composite format string (i.e. with <c>{0}</c>
         ///     placeholders, like <see cref="string.Format(string,object[])" />).
         /// </param>
         /// <param name="args">An array of objects to fill in the placeholders in <paramref name="message" />.</param>
-        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <c>true</c>.</exception>
+        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <see langword="true"/>.</exception>
         public static void Against(bool condition, string message, params object[] args)
         {
             Against(condition, string.Format(CultureInfo.CurrentUICulture, message, args));
         }
 
         /// <summary>
-        ///     Indicates that the given <paramref name="condition" /> must not be <c>true</c>, throwing an
+        ///     Indicates that the given <paramref name="condition" /> must not be <see langword="true"/>, throwing an
         ///     <see cref="InvalidOperationException" /> if it is.
         /// </summary>
-        /// <param name="condition">if set to <c>true</c>, throws an <see cref="InvalidOperationException" />.</param>
+        /// <param name="condition">if set to <see langword="true"/>, throws an <see cref="InvalidOperationException" />.</param>
         /// <param name="message">A message that describes the error condition.</param>
-        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <c>true</c>.</exception>
+        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <see langword="true"/>.</exception>
         public static void Against(bool condition, string message)
         {
             if (condition)

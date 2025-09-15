@@ -45,7 +45,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         }
 
         [Test]
-
         public void Saving_Secure_Value_Encrypts_It()
         {
             // Act

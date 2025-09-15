@@ -5,7 +5,7 @@ import { GridCell } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
 import Theme from "./Theme";
-const NoDataIcon = require("!raw-loader!./../SvgIcon/nodata.svg").default;
+import noDataIcon from "./../SvgIcon/nodata.svg?raw";
 import "./style.less";
 
 class ThemeList extends Component {
@@ -14,7 +14,7 @@ class ThemeList extends Component {
         this.state = {};
     }
 
-    /*eslint-disable react/no-danger*/
+     
     render() {
         const { props } = this;
         let globalThemes = props.dataSource.filter(t => t.level === 4);
@@ -25,7 +25,7 @@ class ThemeList extends Component {
                     <div className="empty-state">
                         <div className="noThemes">{Localization.get("NoThemes")}</div>
                         <div className="noThemesMessage">{Localization.get("NoThemesMessage")}</div>
-                        <div className="noThemesIcon" dangerouslySetInnerHTML={{ __html: NoDataIcon }} />
+                        <div className="noThemesIcon" dangerouslySetInnerHTML={{ __html: noDataIcon }} />
                     </div>
                 }
                 {globalThemes.length > 0 &&

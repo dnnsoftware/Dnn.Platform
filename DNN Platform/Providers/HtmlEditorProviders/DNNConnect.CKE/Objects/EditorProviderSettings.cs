@@ -45,7 +45,7 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [override file on upload].</summary>
         /// <value>
-        /// <c>true</c> if [override file on upload]; otherwise, <c>false</c>.
+        /// <see langword="true"/> if [override file on upload]; otherwise, <see langword="false"/>.
         /// </value>
         public bool OverrideFileOnUpload { get; set; }
 
@@ -75,13 +75,13 @@ namespace DNNConnect.CKEditorProvider.Objects
 
         /// <summary>Gets or sets a value indicating whether [use anchor selector].</summary>
         /// <value>
-        ///  <c>true</c> if [use anchor selector]; otherwise, <c>false</c>.
+        ///  <see langword="true"/> if [use anchor selector]; otherwise, <see langword="false"/>.
         /// </value>
         public bool UseAnchorSelector { get; set; }
 
         /// <summary>Gets or sets a value indicating whether [show page links tab first].</summary>
         /// <value>
-        ///  <c>true</c> if [show page links tab first]; otherwise, <c>false</c>.
+        ///  <see langword="true"/> if [show page links tab first]; otherwise, <see langword="false"/>.
         /// </value>
         public bool ShowPageLinksTabFirst { get; set; }
 

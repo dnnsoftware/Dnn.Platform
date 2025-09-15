@@ -74,8 +74,8 @@
     <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
+    <Reference Include="ClientDependency.Core, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dnn.ClientDependency.1.10.0\lib\net48\ClientDependency.Core.dll</HintPath>
     </Reference>
     <Reference Include="ClientDependency.Core.Mvc">
       <HintPath>..\..\Refs\ClientDependency.Core.Mvc.dll</HintPath>
@@ -591,6 +591,7 @@
     </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
+    <Content Include="App_Data\Upgrade\PlaceHolder.txt" />
     <Content Include="Install\InstallWizard.aspx" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
@@ -1393,7 +1394,6 @@
     <Content Include="admin\Tabs\import.ascx" />
     <Content Include="admin\Tabs\module.css" />
     <Content Include="admin\Users\ViewProfile.ascx" />
-    <Content Include="App_Data\PlaceHolder.txt" />
     <Content Include="App_GlobalResources\TimeZones.xml" />
     <Content Include="Components\ResourceInstaller\template.dnn.txt" />
     <Content Include="Config\PlaceHolder.txt" />
@@ -3515,12 +3515,10 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>

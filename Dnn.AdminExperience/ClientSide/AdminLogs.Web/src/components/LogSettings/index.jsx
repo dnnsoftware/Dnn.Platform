@@ -27,7 +27,7 @@ class LogSettingsPanel extends Component {
         canEdit = util.settings.isHost || util.settings.permissions.LOG_SETTINGS_EDIT;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
         props.dispatch(LogSettingActions.getLogSettings());
         if (canEdit) {
@@ -78,7 +78,7 @@ class LogSettingsPanel extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedLogSettingList(logTypeOptions, portalOptions) {
         let validLogSettingList = this.props.logSettingList.filter(logSetting => !!logSetting);
         let i = 0;

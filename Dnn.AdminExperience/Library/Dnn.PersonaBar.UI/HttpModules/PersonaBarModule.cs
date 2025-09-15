@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.Skins.EventListeners;
 
+    /// <summary>An <see cref="IHttpModule"/> which registers components for the Persona Bar.</summary>
     public class PersonaBarModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarModule));

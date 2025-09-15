@@ -163,6 +163,8 @@
     <Compile Include="Models\HtmlTextUserModel.cs" />
     <Compile Include="Models\MyWorkModel.cs" />
     <Compile Include="Models\WorkflowType.cs" />
+    <Compile Include="Components\LocalizationHelper.cs" />
+    <Compile Include="Components\MigrateHelper.cs" />
     <Compile Include="EditHtml.ascx.cs">
       <DependentUpon>EditHtml.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -244,9 +246,10 @@
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.02.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\05.05.00.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\07.02.01.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\06.01.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\07.02.01.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\10.00.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <Content Include="web.config" />
     <Content Include="Views\EditHTML.cshtml" />

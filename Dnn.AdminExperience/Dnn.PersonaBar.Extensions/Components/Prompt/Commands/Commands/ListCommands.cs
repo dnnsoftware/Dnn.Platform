@@ -18,7 +18,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
     using DotNetNuke.Instrumentation;
 
     [ConsoleCommand("list-commands", Constants.GeneralCategory, "Prompt_ListCommands_Description")]
-
     public class ListCommands : ConsoleCommandBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));

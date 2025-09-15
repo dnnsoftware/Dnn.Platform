@@ -18,7 +18,6 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class RestoreUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         private IUserValidator userValidator;

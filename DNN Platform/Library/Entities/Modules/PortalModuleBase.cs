@@ -9,9 +9,11 @@ namespace DotNetNuke.Entities.Modules
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Threading;
+    using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -457,14 +459,37 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        protected string LocalizeString(string key)
+        /// <inheritdoc cref="Localization.GetString(string,string)"/>
+        [DnnDeprecated(10, 0, 2, "Use LocalizeText or LocalizeHtml")]
+        protected partial string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        protected string LocalizeSafeJsString(string key)
+        /// <inheritdoc cref="Localization.GetSafeJSString(string,string)"/>
+        [DnnDeprecated(10, 0, 2, "Use LocalizeJsString")]
+        protected partial string LocalizeSafeJsString(string key)
         {
             return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
+
+        /// <summary>Gets the text associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized text.</returns>
+        protected string LocalizeText(string key)
+            => Localization.GetString(key, this.LocalResourceFile);
+
+        /// <summary>Gets the HTML associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <returns>The localized text as HTML.</returns>
+        protected IHtmlString LocalizeHtml(string key)
+            => new HtmlString(Localization.GetString(key, this.LocalResourceFile));
+
+        /// <summary>Gets the text associated with the <paramref name="key"/> in this control's <see cref="LocalResourceFile"/>.</summary>
+        /// <param name="key">The resource key.</param>
+        /// <param name="addDoubleQuotes">A value that indicates whether double quotation marks will be included around the encoded string.</param>
+        /// <returns>The localized text encoded as a JavaScript string.</returns>
+        protected IHtmlString LocalizeJsString(string key, bool addDoubleQuotes = false)
+            => HtmlUtils.JavaScriptStringEncode(Localization.GetString(key, this.LocalResourceFile), addDoubleQuotes);
     }
 }

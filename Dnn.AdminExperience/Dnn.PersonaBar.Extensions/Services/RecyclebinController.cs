@@ -33,7 +33,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView)]
-
         public HttpResponseMessage GetDeletedPageList(int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var totalRecords = 0;
@@ -51,7 +50,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView)]
-
         public HttpResponseMessage GetDeletedModuleList(int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var totalRecords = 0;
@@ -68,7 +66,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView)]
-
         public HttpResponseMessage GetDeletedUserList(int pageIndex = -1, int pageSize = -1, string sortType = "", string sortDirection = "")
         {
             var totalRecords = 0;
@@ -157,7 +154,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinPagesView + "&" + Components.Constants.RecycleBinPagesEdit)]
-
         public HttpResponseMessage RestorePage(List<PageItem> pages)
         {
             var errors = new StringBuilder();
@@ -194,7 +190,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinModulesView + "&" + Components.Constants.RecycleBinModulesEdit)]
-
         public HttpResponseMessage RestoreModule(List<ModuleItem> modules)
         {
             // modules dic stores module.Key=moduleId, module.Value=pageId;
@@ -227,7 +222,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.RecycleBinUsersView + "&" + Components.Constants.RecycleBinUsersEdit)]
-
         public HttpResponseMessage RestoreUser(List<UserItem> users)
         {
             var errors = new StringBuilder();

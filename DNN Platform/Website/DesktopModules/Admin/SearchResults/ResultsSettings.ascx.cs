@@ -18,9 +18,27 @@ namespace DotNetNuke.Modules.SearchResults
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Search.Internals;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A settings control for the search results module.</summary>
     public partial class ResultsSettings : ModuleSettingsBase
     {
+        private readonly IPortalController portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="ResultsSettings"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public ResultsSettings()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ResultsSettings"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        public ResultsSettings(IPortalController portalController)
+        {
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+        }
+
         /// <inheritdoc/>
         public override void LoadSettings()
         {
@@ -88,8 +106,8 @@ namespace DotNetNuke.Modules.SearchResults
                     }
 
                     var scopeForRoles =
-                        PortalController.GetPortalSetting("SearchResult_ScopeForRoles", this.PortalId, string.Empty)
-                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        PortalController.GetPortalSetting(this.portalController, "SearchResult_ScopeForRoles", this.PortalId, string.Empty)
+                        .Split([','], StringSplitOptions.RemoveEmptyEntries);
                     var roles = RoleController.Instance.GetRoles(this.PortalId, r => !r.IsSystemRole || r.RoleName == "Registered Users");
                     roles.Insert(0, new RoleInfo() { RoleName = "Superusers" });
 

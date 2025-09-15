@@ -23,7 +23,7 @@ class AssignedSelector extends React.Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const assignedPortals = this.getPortalList(
             this.props.assignedPortals,
@@ -33,8 +33,8 @@ class AssignedSelector extends React.Component {
             this.props.unassignedPortals,
             "unassignedPortals"
         );
-        let leftSelected = this.props.unassignedPortals.find(p => p.selected) != null;
-        let rightSelected = this.props.assignedPortals.find(p => p.selected) != null;
+        let leftSelected = this.props.unassignedPortals.find(p => p.selected) !== null;
+        let rightSelected = this.props.assignedPortals.find(p => p.selected) !== null;
         return (
             <GridCell className={styles.assignedSelector}>
                 <GridCell columnSize={45} className="selector-box">

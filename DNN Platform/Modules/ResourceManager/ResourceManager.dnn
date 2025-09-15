@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="ResourceManager" type="Module" version="10.00.00">
+    <package name="ResourceManager" type="Module" version="10.01.00">
       <friendlyName>Resource Manager</friendlyName>
       <description>This module allows you to manage files on the server</description>
       <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>

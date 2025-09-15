@@ -209,7 +209,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// <summary>Determines whether the current portal has any Non-DNN authentication providers enabled.</summary>
         /// <param name="control">The control.</param>
-        /// <returns><c>true</c> if the portal has any Non-DNN authentication enabled, Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the portal has any Non-DNN authentication enabled, Otherwise <see langword="false"/>.</returns>
         public static bool HasSocialAuthenticationEnabled(UserControl control = null)
         {
             return (from a in GetEnabledAuthenticationServices()
@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>Determines whether the authentication is enabled for the specified portal.</summary>
         /// <param name="authentication">The authentication.</param>
         /// <param name="portalId">The portal ID.</param>
-        /// <returns><c>true</c> if OAuth Provider and it is enabled for the portal, Otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if OAuth Provider and it is enabled for the portal, Otherwise <see langword="false"/>.</returns>
         public static bool IsEnabledForPortal(AuthenticationInfo authentication, int portalId)
         {
             return !string.IsNullOrEmpty(PortalController.GetPortalSetting(authentication.AuthenticationType + "_Enabled", portalId, string.Empty))

@@ -10,10 +10,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
@@ -22,12 +22,34 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Localization;
 
+    /// <summary>The basic URL rewriter.</summary>
     internal class BasicUrlRewriter : UrlRewriterBase
     {
+        /// <summary>A regular expression matching a tab ID query string parameter.</summary>
         public static readonly Regex TabIdRegex = new Regex("&?tabid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        /// <summary>A regular expression matching a portal ID query string parameter.</summary>
         public static readonly Regex PortalIdRegex = new Regex("&?portalid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
+
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IServiceProvider serviceProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="BasicUrlRewriter"/> class.</summary>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public BasicUrlRewriter(IServiceProvider serviceProvider, IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
+            : base(hostSettings, portalAliasService, hostSettingsService, portalController)
+        {
+            this.portalAliasService = portalAliasService;
+            this.hostSettingsService = hostSettingsService;
+            this.serviceProvider = serviceProvider;
+        }
 
         /// <inheritdoc/>
         internal override void RewriteUrl(object sender, EventArgs e)
@@ -88,11 +110,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             }
 
             // from this point on we are dealing with a "standard" querystring ( ie. http://www.domain.com/default.aspx?tabid=## )
-            // if the portal/url was succesfully identified
+            // if the portal/url was successfully identified
             int tabId = Null.NullInteger;
             int portalId = Null.NullInteger;
             string portalAlias = null;
-            PortalAliasInfo portalAliasInfo = null;
+            IPortalAliasInfo portalAliasInfo = null;
             bool parsingError = false;
 
             // get TabId from querystring ( this is mandatory for maintaining portal context for child portals )
@@ -133,7 +155,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         childAlias = childAlias.Replace(":" + request.Url.Port, string.Empty);
                     }
 
-                    if (PortalAliasController.Instance.GetPortalAlias(childAlias) != null)
+                    if (this.portalAliasService.GetPortalAlias(childAlias) != null)
                     {
                         // check if the domain name contains the alias
                         if (childAlias.IndexOf(domainName, StringComparison.OrdinalIgnoreCase) == -1)
@@ -154,7 +176,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 {
                     if (portalId != Null.NullInteger)
                     {
-                        portalAlias = PortalAliasController.GetPortalAliasByPortal(portalId, domainName);
+                        portalAlias = this.portalAliasService.GetPortalAliasByPortal(portalId, domainName);
                     }
                 }
 
@@ -164,21 +186,21 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (tabId != Null.NullInteger)
                     {
                         // get the alias from the tabid, but only if it is for a tab in that domain
-                        portalAlias = PortalAliasController.GetPortalAliasByTab(tabId, domainName);
+                        portalAlias = this.portalAliasService.GetPortalAliasByTab(tabId, domainName);
                         if (string.IsNullOrEmpty(portalAlias))
                         {
                             // if the TabId is not for the correct domain
                             // see if the correct domain can be found and redirect it
-                            portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(domainName);
+                            portalAliasInfo = this.portalAliasService.GetPortalAlias(domainName);
                             if (portalAliasInfo != null && !request.Url.LocalPath.ToLowerInvariant().EndsWith("/linkclick.aspx"))
                             {
                                 if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    strURL = "https://" + portalAliasInfo.HTTPAlias.Replace("*.", string.Empty);
+                                    strURL = "https://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
                                 else
                                 {
-                                    strURL = "http://" + portalAliasInfo.HTTPAlias.Replace("*.", string.Empty);
+                                    strURL = "http://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
 
                                 if (strURL.IndexOf(domainName, StringComparison.InvariantCultureIgnoreCase) == -1)
@@ -200,10 +222,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 // using the DomainName above will find that alias that is the domainname portion of the Url
                 // ie. dotnetnuke.com will be found even if zzz.dotnetnuke.com was entered on the Url
-                portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias);
+                portalAliasInfo = this.portalAliasService.GetPortalAlias(portalAlias);
                 if (portalAliasInfo != null)
                 {
-                    portalId = portalAliasInfo.PortalID;
+                    portalId = portalAliasInfo.PortalId;
                 }
 
                 // if the portalid is not known
@@ -240,13 +262,13 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             if (portalId != -1)
             {
                 // load the PortalSettings into current context
-                var portalSettings = new PortalSettings(tabId, portalAliasInfo);
+                var portalSettings = new PortalSettings(tabId, portalAliasInfo as PortalAliasInfo);
                 app.Context.Items.Add("PortalSettings", portalSettings);
 
                 // load PortalSettings and HostSettings dictionaries into current context
                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
                 app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
-                app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
+                app.Context.Items.Add("HostSettingsDictionary", this.hostSettingsService.GetSettingsDictionary());
 
                 // don't redirect if no primary alias is defined
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect
@@ -257,7 +279,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     response.StatusCode = 301;
 
                     var redirectAlias = Globals.AddHTTP(portalSettings.DefaultPortalAlias);
-                    var checkAlias = Globals.AddHTTP(portalAliasInfo.HTTPAlias);
+                    var checkAlias = Globals.AddHTTP(portalAliasInfo.HttpAlias);
                     var redirectUrl = string.Concat(redirectAlias, request.RawUrl);
                     if (redirectUrl.StartsWith(checkAlias, StringComparison.InvariantCultureIgnoreCase))
                     {
@@ -375,7 +397,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 app.Context.Items.Remove("FirstRequest");
 
                 // Process any messages in the EventQueue for the Application_Start_FirstRequest event
-                EventQueueController.ProcessMessages("Application_Start_FirstRequest");
+                EventQueueController.ProcessMessages(this.serviceProvider, "Application_Start_FirstRequest");
             }
         }
 
@@ -403,10 +425,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
             // determine portal alias looking for longest possible match
             string myAlias = Globals.GetDomainName(app.Request, true);
-            PortalAliasInfo objPortalAlias;
+            IPortalAliasInfo objPortalAlias;
             do
             {
-                objPortalAlias = PortalAliasController.Instance.GetPortalAlias(myAlias);
+                objPortalAlias = this.portalAliasService.GetPortalAlias(myAlias);
 
                 if (objPortalAlias != null)
                 {
@@ -585,7 +607,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 {
                     if (objPortalAlias != null)
                     {
-                        int portalID = objPortalAlias.PortalID;
+                        int portalID = objPortalAlias.PortalId;
 
                         // Identify Tab Name
                         string tabPath = url;

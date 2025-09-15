@@ -95,8 +95,8 @@ namespace DotNetNuke.Services.Localization
         /// <param name="language">The locale code in lang-region format (e.g. "fr-FR").</param>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <param name="resourceType">Specifies whether to save as portal, host or system resource file.</param>
-        /// <param name="createFile">if set to <c>true</c> a new file will be created if it is not found.</param>
-        /// <param name="createKey">if set to <c>true</c> a new key will be created if not found.</param>
+        /// <param name="createFile">if set to <see langword="true"/> a new file will be created if it is not found.</param>
+        /// <param name="createKey">if set to <see langword="true"/> a new key will be created if not found.</param>
         /// <returns>If the value could be saved then true will be returned, otherwise false.</returns>
         /// <exception cref="System.Exception">Any file io error or similar will lead to exceptions.</exception>
         public bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, CustomizedLocale resourceType, bool createFile, bool createKey)

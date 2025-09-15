@@ -23,21 +23,21 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnPageDropDownList : DnnDropDownList
     {
         /// <summary>
-        /// Gets or sets a value indicating whether whether disabled pages are not selectable
+        /// Gets or sets a value indicating whether disabled pages are not selectable
         /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages.
         /// </summary>
         public bool DisabledNotSelectable { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include active page.</summary>
+        /// <summary>Gets or sets a value indicating whether include active page.</summary>
         public bool IncludeActiveTab { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include pages which are disabled.</summary>
+        /// <summary>Gets or sets a value indicating whether include pages which are disabled.</summary>
         public bool IncludeDisabledTabs { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include pages which tab type is not normal.</summary>
+        /// <summary>Gets or sets a value indicating whether include pages which tab type is not normal.</summary>
         public bool IncludeAllTabTypes { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether include Host Pages.</summary>
+        /// <summary>Gets or sets a value indicating whether include Host Pages.</summary>
         public bool IncludeHostPages { get; set; }
 
         public int PortalId

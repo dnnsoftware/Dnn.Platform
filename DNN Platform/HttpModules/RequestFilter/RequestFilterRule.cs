@@ -8,15 +8,10 @@ namespace DotNetNuke.HttpModules.RequestFilter
     using System.Text.RegularExpressions;
     using System.Web;
 
+    /// <summary>Represents a rule from <c>RequestFilter.Config</c>.</summary>
     [Serializable]
     public class RequestFilterRule
     {
-        private RequestFilterRuleType action;
-        private string location;
-        private RequestFilterOperatorType @operator;
-        private string serverVariable;
-        private List<string> values = new List<string>();
-
         /// <summary>Initializes a new instance of the <see cref="RequestFilterRule"/> class.</summary>
         /// <param name="serverVariable">The server variable name.</param>
         /// <param name="values">The values to filter.</param>
@@ -25,11 +20,11 @@ namespace DotNetNuke.HttpModules.RequestFilter
         /// <param name="location">The redirect location.</param>
         public RequestFilterRule(string serverVariable, string values, RequestFilterOperatorType op, RequestFilterRuleType action, string location)
         {
-            this.serverVariable = serverVariable;
+            this.ServerVariable = serverVariable;
             this.SetValues(values, op);
-            this.@operator = op;
-            this.action = action;
-            this.location = location;
+            this.Operator = op;
+            this.Action = action;
+            this.Location = location;
         }
 
         /// <summary>Initializes a new instance of the <see cref="RequestFilterRule"/> class.</summary>
@@ -37,111 +32,59 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
         }
 
-        public string RawValue
-        {
-            get
-            {
-                return string.Join(" ", this.values.ToArray());
-            }
-        }
+        /// <summary>Gets the raw value.</summary>
+        public string RawValue => string.Join(" ", this.Values.ToArray());
 
-        public string ServerVariable
-        {
-            get
-            {
-                return this.serverVariable;
-            }
+        /// <summary>Gets or sets the server variable.</summary>
+        public string ServerVariable { get; set; }
 
-            set
-            {
-                this.serverVariable = value;
-            }
-        }
+        /// <summary>Gets or sets the values.</summary>
+        public List<string> Values { get; set; } = new List<string>();
 
-        public List<string> Values
-        {
-            get
-            {
-                return this.values;
-            }
+        /// <summary>Gets or sets the rule action.</summary>
+        public RequestFilterRuleType Action { get; set; }
 
-            set
-            {
-                this.values = value;
-            }
-        }
+        /// <summary>Gets or sets the rule operator.</summary>
+        public RequestFilterOperatorType Operator { get; set; }
 
-        public RequestFilterRuleType Action
-        {
-            get
-            {
-                return this.action;
-            }
+        /// <summary>Gets or sets the redirection location.</summary>
+        public string Location { get; set; }
 
-            set
-            {
-                this.action = value;
-            }
-        }
-
-        public RequestFilterOperatorType Operator
-        {
-            get
-            {
-                return this.@operator;
-            }
-
-            set
-            {
-                this.@operator = value;
-            }
-        }
-
-        public string Location
-        {
-            get
-            {
-                return this.location;
-            }
-
-            set
-            {
-                this.location = value;
-            }
-        }
-
+        /// <summary>Parses the <paramref name="values"/> and sets <see cref="Values"/>.</summary>
+        /// <param name="values">The raw values.</param>
+        /// <param name="op">The operator.</param>
         public void SetValues(string values, RequestFilterOperatorType op)
         {
-            this.values.Clear();
+            this.Values.Clear();
             if (op != RequestFilterOperatorType.Regex)
             {
-                string[] vals = values.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string value in vals)
+                var vals = values.Split([' '], StringSplitOptions.RemoveEmptyEntries);
+                foreach (var value in vals)
                 {
-                    this.values.Add(value.ToUpperInvariant());
+                    this.Values.Add(value.ToUpperInvariant());
                 }
             }
             else
             {
-                this.values.Add(values);
+                this.Values.Add(values);
             }
         }
 
+        /// <summary>Determines whether the <paramref name="serverVariableValue"/> matches this rule.</summary>
+        /// <param name="serverVariableValue">The value of the server variable.</param>
+        /// <returns><see langword="true"/> if the values matches the rule, otherwise <see langword="false"/>.</returns>
         public bool Matches(string serverVariableValue)
         {
-            switch (this.Operator)
+            return this.Operator switch
             {
-                case RequestFilterOperatorType.Equal:
-                    return this.Values.Contains(serverVariableValue.ToUpperInvariant());
-                case RequestFilterOperatorType.NotEqual:
-                    return !this.Values.Contains(serverVariableValue.ToUpperInvariant());
-                case RequestFilterOperatorType.Regex:
-                    return Regex.IsMatch(serverVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-            }
-
-            return false;
+                RequestFilterOperatorType.Equal => this.Values.Contains(serverVariableValue.ToUpperInvariant()),
+                RequestFilterOperatorType.NotEqual => !this.Values.Contains(serverVariableValue.ToUpperInvariant()),
+                RequestFilterOperatorType.Regex => Regex.IsMatch(serverVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant),
+                _ => false,
+            };
         }
 
+        /// <summary>Executes the rule action on the current response.</summary>
         public void Execute()
         {
             HttpResponse response = HttpContext.Current.Response;

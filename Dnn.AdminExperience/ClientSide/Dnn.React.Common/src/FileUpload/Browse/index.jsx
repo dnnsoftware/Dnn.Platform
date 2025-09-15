@@ -210,7 +210,7 @@ export default class Browse extends Component {
     }
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         return <div className="file-upload-container">
             <h4>{this.props.folderText}</h4>
             <FolderPicker

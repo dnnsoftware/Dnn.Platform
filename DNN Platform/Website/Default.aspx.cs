@@ -58,10 +58,12 @@ namespace DotNetNuke.Framework
         private readonly IApplicationStatusInfo appStatus;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IEventLogger eventLogger;
+        private readonly IPortalSettingsController portalSettingsController;
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -73,7 +75,10 @@ namespace DotNetNuke.Framework
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger)
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalSettingsController">The portal settings controller.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController)
+            : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
@@ -82,15 +87,10 @@ namespace DotNetNuke.Framework
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
         }
 
-        public string CurrentSkinPath
-        {
-            get
-            {
-                return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
-            }
-        }
+        public string CurrentSkinPath => ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
 
         /// <summary>Gets or sets property to allow the programmatic assigning of ScrollTop position.</summary>
         /// <value>
@@ -406,7 +406,7 @@ namespace DotNetNuke.Framework
             }
 
             // Configure the ActiveTab with Skin/Container information
-            PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
+            this.portalSettingsController.ConfigureActiveTab(this.PortalSettings);
 
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
@@ -663,6 +663,7 @@ namespace DotNetNuke.Framework
         {
             string strLang = CultureInfo.CurrentCulture.ToString();
             string strDocType = this.PortalSettings.ActiveTab.SkinDoctype;
+            string strDir = CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? "rtl" : "ltr";
             if (strDocType.Contains("XHTML 1.0"))
             {
                 // XHTML 1.0
@@ -682,9 +683,19 @@ namespace DotNetNuke.Framework
                 this.HtmlAttributes.Add("lang", strLang);
             }
 
+            // Add "dir" attribute for text direction
+            this.HtmlAttributes.Add("dir", strDir);
+
             // Find the placeholder control and render the doctype
             this.skinDocType.Text = this.PortalSettings.ActiveTab.SkinDoctype;
             this.attributeList.Text = this.HtmlAttributeList;
+
+            // Add 'rtl' class to body for right-to-left language support
+            if (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft)
+            {
+                string existingClass = this.Body.Attributes["class"] ?? string.Empty;
+                this.Body.Attributes["class"] = (existingClass + " rtl").Trim();
+            }
         }
 
         private Skin GetSkin()

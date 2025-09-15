@@ -130,7 +130,7 @@
     <value>This functionality has not yet been implemented.</value>
   </data>
   <data name="Prompt_ServerError.Text" xml:space="preserve">
-    <value>The server has encoutered an issue and was unable to process your request. Please try again later.</value>
+    <value>The server has encountered an issue and was unable to process your request. Please try again later.</value>
   </data>
   <data name="Prompt_SessionTimedOut.Text" xml:space="preserve">
     <value>Your session may have timed-out. If so login again.</value>
@@ -792,7 +792,7 @@
     &lt;tr&gt;
       &lt;td&gt;Url&lt;/td&gt;
       &lt;td&gt;:&lt;/td&gt;
-      &lt;td&gt;http://www.dnnsoftware.com&lt;/td&gt;
+      &lt;td&gt;https://dnncommunity.org/&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;Email&lt;/td&gt;
@@ -847,7 +847,7 @@
     &lt;tr&gt;
       &lt;td&gt;PortalName&lt;/td&gt;
       &lt;td&gt;:&lt;/td&gt;
-      &lt;td&gt;dnnsoftware.com&lt;/td&gt;
+      &lt;td&gt;dnncommunity.org&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;CdfVersion&lt;/td&gt;
@@ -862,7 +862,7 @@
     &lt;tr&gt;
       &lt;td&gt;DefaultPortalAlias&lt;/td&gt;
       &lt;td&gt;:&lt;/td&gt;
-      &lt;td&gt;dnnsoftware.com&lt;/td&gt;
+      &lt;td&gt;dnncommunity.org&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;PageCount&lt;/td&gt;
@@ -922,7 +922,7 @@
     &lt;tr&gt;
       &lt;td&gt;PortalName&lt;/td&gt;
       &lt;td&gt;:&lt;/td&gt;
-      &lt;td&gt;dnnsoftware.com&lt;/td&gt;
+      &lt;td&gt;dnncommunity.org&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;CdfVersion&lt;/td&gt;
@@ -937,7 +937,7 @@
     &lt;tr&gt;
       &lt;td&gt;DefaultPortalAlias&lt;/td&gt;
       &lt;td&gt;:&lt;/td&gt;
-      &lt;td&gt;dnnsoftware.com&lt;/td&gt;
+      &lt;td&gt;dnncommunity.org&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
       &lt;td&gt;PageCount&lt;/td&gt;

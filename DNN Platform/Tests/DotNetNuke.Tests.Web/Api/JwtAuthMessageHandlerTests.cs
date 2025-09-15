@@ -182,7 +182,6 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-
         public void AuthorizationTokenWithoutResponse()
         {
             // Arrange

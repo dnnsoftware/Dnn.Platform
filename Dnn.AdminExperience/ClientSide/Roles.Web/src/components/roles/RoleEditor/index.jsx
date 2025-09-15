@@ -190,7 +190,7 @@ class RolesEditor extends Component {
     doNothing() {
 
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         let { state, props } = this;
         const columnOne = <div key="editor-container-columnOne" className="editor-container">
@@ -354,7 +354,7 @@ class RolesEditor extends Component {
         let children = [];
         children.push(columnOne);
         children.push(columnTwo);
-        /* eslint-disable react/no-danger */
+         
         return (
             <div className="role-details-editor">
                 <Grid numberOfColumns={2}>{children}</Grid>

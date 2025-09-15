@@ -37,7 +37,6 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
         }
 
         [Test]
-
         public void Page_Should_Able_To_Duplicate_With_Ddr_Menu_On_It()
         {
             // Create new page with DDR Menu on it

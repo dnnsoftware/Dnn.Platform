@@ -15,7 +15,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-host", Constants.HostCategory, "Prompt_GetHost_Description")]
-
     public class GetHost : ConsoleCommandBase
     {
         /// <inheritdoc/>

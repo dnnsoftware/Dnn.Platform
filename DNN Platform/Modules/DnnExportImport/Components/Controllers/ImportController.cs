@@ -98,7 +98,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="packageId">The package ID.</param>
         /// <param name="summary">The summary.</param>
         /// <param name="errorMessage">An error message.</param>
-        /// <returns><c>true</c> if the package is value, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the package is value, otherwise <see langword="false"/>.</returns>
         public bool VerifyImportPackage(string packageId, ImportExportSummary summary, out string errorMessage)
         {
             bool isValid;

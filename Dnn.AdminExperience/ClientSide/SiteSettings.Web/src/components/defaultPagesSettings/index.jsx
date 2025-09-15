@@ -115,7 +115,7 @@ class DefaultPagesSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         const noneSpecifiedText = "<" + resx.get("NoneSpecified") + ">";

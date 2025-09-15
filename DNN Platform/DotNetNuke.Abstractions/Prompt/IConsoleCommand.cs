@@ -18,8 +18,8 @@ namespace DotNetNuke.Abstractions.Prompt
         string ResultHtml { get; }
 
         /// <summary>
-        /// Initializes the command when invoked by the client. Note that you can opt to override this but you should
-        /// call base.Initialize() to ensure all base values are loaded.
+        /// Initializes the command when invoked by the client. Note that you can opt to override this, but you should
+        /// call <c>base.Initialize()</c> to ensure all base values are loaded.
         /// </summary>
         /// <param name="args">Raw argument list passed by the client.</param>
         /// <param name="portalSettings">PortalSettings for the portal we're operating under or if PortalId is specified, that portal.</param>

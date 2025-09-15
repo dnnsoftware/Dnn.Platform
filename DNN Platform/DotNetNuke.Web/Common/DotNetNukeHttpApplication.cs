@@ -33,7 +33,6 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.ModuleCache;
     using DotNetNuke.Services.OutputCache;
     using DotNetNuke.Services.Scheduling;
-    using DotNetNuke.Services.Search;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.Sitemap;
     using DotNetNuke.Services.Tokens;
@@ -44,10 +43,44 @@ namespace DotNetNuke.Web.Common.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
-        private static readonly string[] Endings =
-            {
-                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",
-            };
+        private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd"];
+
+        static DotNetNukeHttpApplication()
+        {
+            var dependencyProvider = new LazyServiceProvider();
+            Globals.DependencyProvider = dependencyProvider;
+            dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
+            ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
+            HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
+
+            ComponentFactory.Container = new ContainerWithServiceProviderFallback(new SimpleContainer(), Globals.DependencyProvider);
+
+            ComponentFactory.InstallComponents(new ProviderInstaller("databaseConnection", typeof(DatabaseConnectionProvider), typeof(SqlDatabaseConnectionProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("logging", typeof(LoggingProvider), typeof(DBLoggingProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("scheduling", typeof(SchedulingProvider), typeof(DNNScheduler)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("roles", typeof(RoleProvider), typeof(DNNRoleProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("profiles", typeof(ProfileProvider), typeof(DNNProfileProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("permissions", typeof(PermissionProvider), typeof(CorePermissionProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("outputCaching", typeof(OutputCachingProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("moduleCaching", typeof(ModuleCachingProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("sitemap", typeof(SitemapProvider), typeof(CoreSitemapProvider)));
+
+            ComponentFactory.InstallComponents(new ProviderInstaller("friendlyUrl", typeof(FriendlyUrlProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("folder", typeof(FolderProvider)));
+            RegisterIfNotAlreadyRegistered<FolderProvider, StandardFolderProvider>("StandardFolderProvider");
+            RegisterIfNotAlreadyRegistered<FolderProvider, SecureFolderProvider>("SecureFolderProvider");
+            RegisterIfNotAlreadyRegistered<FolderProvider, DatabaseFolderProvider>("DatabaseFolderProvider");
+
+            ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
+            ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
+            ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("mail", typeof(MailProvider)));
+        }
 
         private static void RegisterIfNotAlreadyRegistered<TConcrete>()
             where TConcrete : class, new()
@@ -140,40 +173,6 @@ namespace DotNetNuke.Web.Common.Internal
 
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
-
-            var dependencyProvider = new LazyServiceProvider();
-            Globals.DependencyProvider = dependencyProvider;
-            dependencyProvider.SetProvider(DependencyInjectionInitialize.BuildServiceProvider());
-            ServiceRequestScopeModule.SetServiceProvider(Globals.DependencyProvider);
-            HttpRuntime.WebObjectActivator = new WebFormsServiceProvider();
-
-            ComponentFactory.Container = new ContainerWithServiceProviderFallback(new SimpleContainer(), Globals.DependencyProvider);
-
-            ComponentFactory.InstallComponents(new ProviderInstaller("databaseConnection", typeof(DatabaseConnectionProvider), typeof(SqlDatabaseConnectionProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("data", typeof(DataProvider), typeof(SqlDataProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("logging", typeof(LoggingProvider), typeof(DBLoggingProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("scheduling", typeof(SchedulingProvider), typeof(DNNScheduler)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("roles", typeof(RoleProvider), typeof(DNNRoleProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("profiles", typeof(ProfileProvider), typeof(DNNProfileProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("permissions", typeof(PermissionProvider), typeof(CorePermissionProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("outputCaching", typeof(OutputCachingProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("moduleCaching", typeof(ModuleCachingProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("sitemap", typeof(SitemapProvider), typeof(CoreSitemapProvider)));
-
-            ComponentFactory.InstallComponents(new ProviderInstaller("friendlyUrl", typeof(FriendlyUrlProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("folder", typeof(FolderProvider)));
-            RegisterIfNotAlreadyRegistered<FolderProvider, StandardFolderProvider>("StandardFolderProvider");
-            RegisterIfNotAlreadyRegistered<FolderProvider, SecureFolderProvider>("SecureFolderProvider");
-            RegisterIfNotAlreadyRegistered<FolderProvider, DatabaseFolderProvider>("DatabaseFolderProvider");
-            RegisterIfNotAlreadyRegistered<PermissionProvider>();
-            ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
-            ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
-            ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("tokens", typeof(TokenProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("mail", typeof(MailProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();

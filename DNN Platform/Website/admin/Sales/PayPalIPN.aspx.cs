@@ -5,13 +5,14 @@ namespace DotNetNuke.Modules.Admin.Sales
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Net;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
@@ -20,12 +21,31 @@ namespace DotNetNuke.Modules.Admin.Sales
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
-    using Host = DotNetNuke.Entities.Host.Host;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A page which received messages from PayPal.</summary>
     [DnnDeprecated(10, 0, 2, "No replacement")]
     public partial class PayPalIPN : PageBase
     {
+        private readonly IHostSettingsService hostSettingsService;
+
+        /// <summary>Initializes a new instance of the <see cref="PayPalIPN"/> class.</summary>
+        public PayPalIPN()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PayPalIPN"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public PayPalIPN(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IHostSettingsService hostSettingsService)
+            : base(portalController, appStatus, hostSettings)
+        {
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        }
+
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
@@ -171,7 +191,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     if (intRoleID == intAdministratorRoleId)
                     {
                         // admin portal renewal
-                        strProcessorID = Host.ProcessorUserId.ToLowerInvariant();
+                        strProcessorID = this.hostSettingsService.GetString("ProcessorUserId").ToLowerInvariant();
                         float portalPrice = objPortalInfo.HostFee;
                         if ((portalPrice.ToString() == dblAmount.ToString()) && (HttpUtility.UrlDecode(strPayPalID.ToLowerInvariant()) == strProcessorID))
                         {

@@ -771,7 +771,7 @@ Thank you,
         &lt;li&gt;&lt;strong&gt;Web Server Processing&lt;/strong&gt;&lt;br /&gt;
             &lt;ul style="list-style-type: disc;"&gt;
                 &lt;li&gt;When a web server receives a request from a client browser, it compares the file name extension on the target URL resource to its Application Extension Mappings defined in IIS.&lt;/li&gt;
-                &lt;li&gt;Based on the corresponding match, IIS then sends the request to the defined Executable Path (aspnet_asapi.dll in the case of ASP.NET requests).&lt;/li&gt;
+                &lt;li&gt;Based on the corresponding match, IIS then sends the request to the defined Executable Path (aspnet_isapi.dll in the case of ASP.NET requests).&lt;/li&gt;
                 &lt;li&gt;The aspnet_isapi.dll engine processes the request in an ordered series of events beginning with Application_BeginRequest.&lt;/li&gt;
             &lt;/ul&gt;
         &lt;/li&gt;
@@ -789,7 +789,7 @@ Thank you,
                     URL: https://www.domain.com/directory/default.aspx = Domain Name: www.domain.com/directory&lt;br /&gt;
                     &lt;br /&gt;
                 &lt;/li&gt;
-                &lt;li&gt;Using the domain name, the application queries the database ( PortalAlias table - column HTTTPAlias) to locate a matching record.&lt;br /&gt;
+                &lt;li&gt;Using the domain name, the application queries the database ( PortalAlias table - column HTTPAlias) to locate a matching record.&lt;br /&gt;
                     &lt;br /&gt;
                     Note: If you are installing the application to a remote server you must modify the HTTPAlias field value in table PortalAlias for the record with proper PortalID, according to the rules defined above. &lt;/li&gt;
             &lt;/ul&gt;
@@ -1341,7 +1341,7 @@ Sincerely,
     <value>This extension requires Full Trust.</value>
   </data>
   <data name="ReflectionPermission.Text" xml:space="preserve">
-    <value>This extension requries Reflection permission.</value>
+    <value>This extension requires Reflection permission.</value>
   </data>
   <data name="WebPermission.Text" xml:space="preserve">
     <value>This extension requires Web permission.</value>

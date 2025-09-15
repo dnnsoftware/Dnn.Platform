@@ -28,7 +28,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
 
         [HttpGet]
-
         public HttpResponseMessage AdvancedSearch(int userId, int groupId, int pageIndex, int pageSize, string searchTerm1, string searchTerm2, string searchTerm3, string searchTerm4)
         {
             try
@@ -61,7 +60,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage BasicSearch(int groupId, string searchTerm, int pageIndex, int pageSize)
         {
             try
@@ -77,7 +75,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetMember(int userId)
         {
             try
@@ -96,7 +93,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         }
 
         [HttpGet]
-
         public HttpResponseMessage GetSuggestions(int groupId, string displayName)
         {
             try
@@ -116,7 +112,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage AcceptFriend(FriendDTO postData)
         {
             try
@@ -134,7 +129,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage AddFriend(FriendDTO postData)
         {
             try
@@ -152,7 +146,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage Follow(FollowDTO postData)
         {
             try
@@ -170,7 +163,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RemoveFriend(FriendDTO postData)
         {
             try
@@ -188,7 +180,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UnFollow(FollowDTO postData)
         {
             try

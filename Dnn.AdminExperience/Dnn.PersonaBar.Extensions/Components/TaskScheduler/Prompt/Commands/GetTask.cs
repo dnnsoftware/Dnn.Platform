@@ -17,11 +17,9 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Services.Scheduling;
 
     [ConsoleCommand("get-task", Constants.SchedulerCategory, "Prompt_GetTask_Description")]
-
     public class GetTask : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetTask_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GetTask));

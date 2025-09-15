@@ -5,6 +5,7 @@ import state from '../../store/store';
 import { FolderDetails, ItemsClient, SaveFolderDetailsRequest } from '../../services/ItemsClient';
 import { IPermissionDefinition, IPermissions,  IRolePermission, IUserPermission } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/permissions-interface';
 import { ISearchedUser } from '@dnncommunity/dnn-elements/dist/types/components/dnn-permissions-grid/searched-user-interface';
+
 @Component({
   tag: 'dnn-rm-edit-folder',
   styleUrl: 'dnn-rm-edit-folder.scss',
@@ -36,10 +37,10 @@ export class DnnRmEditFolder {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  componentWillLoad() {
-    this.itemsClient.getFolderDetails(this.folderId)
-      .then(data => {
-        this.folderDetails = {
+  async componentWillLoad() {
+    try {
+      const data = await this.itemsClient.getFolderDetails(this.folderId);
+      this.folderDetails = {
           ...data,
           permissions: {
             ...data.permissions,
@@ -92,43 +93,35 @@ export class DnnRmEditFolder {
           },
         };
         this.lastPermissions = {...this.folderDetails.permissions};
-      })
-      .catch(error => alert(error));
-    
-    this.itemsClient.getFolderIconUrl(this.folderId)
-      .then(data => this.folderIconUrl = data)
-      .catch(error => alert(error));
-
-    this.itemsClient.getRoleGroups()
-      .then(data => this.roleGroups = data)
-      .catch(error => alert(error));
-    
-    this.itemsClient.getRoles()
-      .then(data => this.roles = data)
-      .catch(error => alert(error));
+        this.folderIconUrl = await this.itemsClient.getFolderIconUrl(this.folderId);
+        this.roleGroups = await this.itemsClient.getRoleGroups();
+        this.roles = await this.itemsClient.getRoles();
+    } catch (error) {
+      alert (error);
+    }
   }
 
-  private closeModal(): void {
+  private async closeModal() {
     const modal = this.el.parentElement as HTMLDnnModalElement;
-    modal.hide().then(() => {
-      setTimeout(() => {
-        document.body.removeChild(modal);
-      }, 300);
-    });
+    await modal.hide();
+    setTimeout(() => {
+      document.body.removeChild(modal);
+    }, 300);
   }
 
-  private handleSave(): void {
-    const folderDetails: SaveFolderDetailsRequest = {
-      folderId: this.folderId,
-      folderName: this.folderDetails.folderName,
-      permissions: this.folderDetails.permissions,
-    };
-    this.itemsClient.saveFolderDetails(folderDetails)
-      .then(() => {
-        this.dnnRmFoldersChanged.emit();
-        this.closeModal();
-      })
-      .catch(error => alert(error));
+  private async handleSave() {
+    try {
+      const folderDetails: SaveFolderDetailsRequest = {
+        folderId: this.folderId,
+        folderName: this.folderDetails.folderName,
+        permissions: this.folderDetails.permissions,
+      };
+      await this.itemsClient.saveFolderDetails(folderDetails);
+      this.dnnRmFoldersChanged.emit();
+      await this.closeModal();
+    } catch (error) {
+      alert(error);
+    }
   }
 
   private handlePermissionsChanged(newPermissions: IPermissions): void {
@@ -172,22 +165,22 @@ export class DnnRmEditFolder {
 
     // If view permission is denied, then deny all other permissions
     if (viewChanged && !viewPermission.allowAccess) {
-      if (browsePermission) {
+      if (browsePermission != null) {
         browsePermission.allowAccess = false;
       }
-      if (writePermission) {
+      if (writePermission != null) {
         writePermission.allowAccess = false;
       }
     }
   
     // If browse was denied, then deny write
-    if (browseChanged && !browsePermission.allowAccess && writePermission) {
+    if (browseChanged && !browsePermission.allowAccess && writePermission != null) {
       writePermission.allowAccess = false;
     }
   
     // If browse was allowed, then allow view
     if (browseChanged && browsePermission.allowAccess) {
-      if (!viewPermission) {
+      if (viewPermission == null) {
         // Create a new list with all existing permissions plus the new view permission
         permission.permissions = [...permission.permissions, {
           permissionId: permissionIds.view,
@@ -230,13 +223,15 @@ export class DnnRmEditFolder {
 
   private hasPermissionChanged(lastPermissions: IPermissionDefinition[], currentPermission: IPermissionDefinition, permissionId: number): boolean {
     const lastPermission = lastPermissions.find(p => p.permissionId === permissionId)
-    return !lastPermission || JSON.stringify(lastPermission) !== JSON.stringify(currentPermission);
+    return lastPermission !=null || JSON.stringify(lastPermission) !== JSON.stringify(currentPermission);
   }
 
-  private handleUserSearchQueryChanged(detail: string): void {
-    this.itemsClient.searchUsers(detail)
-      .then(data => this.foundUsers = data)
-      .catch(error => alert(error));
+  private async handleUserSearchQueryChanged(detail: string) {
+    try {
+      this.foundUsers = await this.itemsClient.searchUsers(detail);
+    } catch (error) {
+      alert(error);
+    }
   }
 
   render() {
@@ -294,7 +289,7 @@ export class DnnRmEditFolder {
                 roles={this.roles}
                 foundUsers={this.foundUsers}
                 onPermissionsChanged={e => this.handlePermissionsChanged(e.detail)}
-                onUserSearchQueryChanged={e => this.handleUserSearchQueryChanged(e.detail)}
+                onUserSearchQueryChanged={e => void this.handleUserSearchQueryChanged(e.detail)}
               />
             }
           </dnn-tab>
@@ -303,13 +298,13 @@ export class DnnRmEditFolder {
           <dnn-button
             appearance="primary"
             reversed
-            onClick={() => this.closeModal()}
+            onClick={() => void this.closeModal()}
           >
             {state.localization.Cancel}
           </dnn-button>
           <dnn-button
             appearance="primary"
-            onClick={() => this.handleSave()}
+            onClick={() => void this.handleSave()}
           >
             {state.localization.Save}
           </dnn-button>

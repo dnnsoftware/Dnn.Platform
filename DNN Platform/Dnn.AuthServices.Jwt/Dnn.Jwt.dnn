@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNNJWT" type="Provider" version="10.00.00">
+    <package name="DNNJWT" type="Provider" version="10.01.00">
       <friendlyName>DNN JWT Auth Handler</friendlyName>
       <description>DNN Json Web Token Authentication (JWT) library for cookie-less Mobile authentication clients</description>
       <dependencies/>
@@ -103,6 +103,10 @@
               <name>Microsoft.Bcl.TimeProvider.dll</name>
               <version>8.0.123.58001</version>
             </assembly>
+            <assembly action="UnRegister">
+              <path>bin</path>            
+              <name>System.IdentityModel.Tokens.Jwt.dll</name>
+            </assembly>
           </assemblies>
         </component>
         <component type="Script">
@@ -146,14 +150,6 @@
               </configuration>
             </uninstall>
           </config>
-        </component>
-        <component type="Cleanup">
-          <files>
-            <file>
-              <path>bin</path>
-              <name>System.IdentityModel.Tokens.Jwt.dll</name>
-            </file>
-          </files>
         </component>
       </components>
     </package>

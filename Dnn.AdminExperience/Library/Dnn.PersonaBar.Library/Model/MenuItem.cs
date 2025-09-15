@@ -44,7 +44,6 @@ namespace Dnn.PersonaBar.Library.Model
         }
 
         [DataMember]
-
         public string DisplayName
         {
             get

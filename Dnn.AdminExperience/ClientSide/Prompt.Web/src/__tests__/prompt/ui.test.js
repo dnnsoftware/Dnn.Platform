@@ -5,7 +5,7 @@ jest.mock("../../utils/helpers");
 jest.mock("../../localization/Localization");
 
 import React from "react";
-import Enzyme, {mount, shallow, render} from "enzyme";
+import Enzyme, {mount, render} from "enzyme";
 import {Output} from "../../components/Output";
 import reducer from "../../reducers/promptReducers";
 import types from "../../constants/actionTypes";

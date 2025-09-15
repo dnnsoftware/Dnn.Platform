@@ -35,7 +35,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
-
         public void AnonymousUser_IsNotAllowed_If_AllowAnonymousAttribute_IsNotPresent()
         {
             // Arrange
@@ -58,7 +57,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
-
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAttribute_IsAtControllerLevel()
         {
             // Arrange
@@ -80,7 +78,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
-
         public void AnonymousUser_IsAllowed_If_AllowAnonymousAttribute_IsAtActionLevel()
         {
             // Arrange
@@ -101,7 +98,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
-
         public void RegisteredUser_IsAllowed_IfHasModuleAccess()
         {
             // Arrange
@@ -127,7 +123,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
         }
 
         [Test]
-
         public void RegisteredUser_IsDenied_IfHasNoModuleAccess()
         {
             // Arrange

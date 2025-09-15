@@ -1,12 +1,13 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
 import Label from "./index";
 
-storiesOf("Label", module).add("simple label", () => 
-    <Label label="Test" />
-);
+export default {
+    component: Label,
+};
 
-storiesOf("Label", module).add("with short tooltip", () =>
+export const SimpleLabel =  () => <Label label="Test" />;
+
+export const WithShortTooltip =  () => (
     <div style={{paddingTop:100,paddingLeft:100}}>
         <Label 
             label="Some field label:" 
@@ -16,7 +17,7 @@ storiesOf("Label", module).add("with short tooltip", () =>
     </div>
 );
 
-storiesOf("Label", module).add("with short tooltip on right", () =>
+export const WithShortTooltipOnRight =  () => (
     <div style={{paddingTop:100,paddingLeft:100}}>
         <Label 
             label="Some field label:"   
@@ -28,7 +29,7 @@ storiesOf("Label", module).add("with short tooltip on right", () =>
     </div>
 );
 
-storiesOf("Label", module).add("with short tooltip on bottom-right", () =>
+const WithShortTooltipOnBottomRight =  () => (
     <div style={{paddingTop:100,paddingLeft:100}}>
         <Label 
             label="Some field label:"   
@@ -40,7 +41,7 @@ storiesOf("Label", module).add("with short tooltip on bottom-right", () =>
     </div>
 );
 
-storiesOf("Label", module).add("Reproduces issue", () =>    
+export const WithTooltipStyle = () => (
     <div style={{paddingTop:100,paddingLeft:100}}>
         <p>This case reproduces the issue identified in <br />
             <a href="https://github.com/dnnsoftware/Dnn.AdminExperience/pull/320">https://github.com/dnnsoftware/Dnn.AdminExperience/pull/320</a><br /> and <br />
@@ -54,9 +55,6 @@ storiesOf("Label", module).add("Reproduces issue", () =>
         />
     </div>
 );
-
-
-
 
 
 // ---------------- Label available props -------------------

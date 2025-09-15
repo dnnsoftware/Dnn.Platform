@@ -5,21 +5,45 @@ namespace DotNetNuke.Modules.Admin.Users
 {
     using System;
     using System.Web;
-    using System.Web.UI;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
-    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control which handles a user's consent to the site's usage of their data.</summary>
     public partial class DataConsent : UserModuleBase
     {
+        private readonly INavigationManager navigationManager;
+
+        /// <summary>Initializes a new instance of the <see cref="DataConsent"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
+        public DataConsent()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DataConsent"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        public DataConsent(INavigationManager navigationManager)
+        {
+            this.navigationManager = navigationManager ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>A function which handles the <see cref="DataConsent.DataConsentCompleted"/> event.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         public delegate void DataConsentEventHandler(object sender, DataConsentEventArgs e);
 
+        /// <summary>An event which is triggered when the user takes a data consent action.</summary>
         public event DataConsentEventHandler DataConsentCompleted;
 
+        /// <summary>The options a user can take from the data consent screen.</summary>
         public enum DataConsentStatus
         {
             /// <summary>Consented.</summary>
@@ -35,6 +59,7 @@ namespace DotNetNuke.Modules.Admin.Users
             FailedToRemoveAccount = 3,
         }
 
+        /// <summary>Gets the confirmation text to display when a user chooses for their account to be deleted.</summary>
         public string DeleteMeConfirmString
         {
             get
@@ -42,17 +67,38 @@ namespace DotNetNuke.Modules.Admin.Users
                 switch (this.PortalSettings.DataConsentUserDeleteAction)
                 {
                     case PortalSettings.UserDeleteAction.Manual:
-                        return this.LocalizeString("ManualDelete.Confirm");
+                        return this.LocalizeText("ManualDelete.Confirm");
                     case PortalSettings.UserDeleteAction.DelayedHardDelete:
-                        return this.LocalizeString("DelayedHardDelete.Confirm");
+                        return this.LocalizeText("DelayedHardDelete.Confirm");
                     case PortalSettings.UserDeleteAction.HardDelete:
-                        return this.LocalizeString("HardDelete.Confirm");
+                        return this.LocalizeText("HardDelete.Confirm");
                 }
 
                 return string.Empty;
             }
         }
 
+        /// <summary>Gets the HTML to display with the statement agreeing to the terms and privacy policies.</summary>
+        protected IHtmlString DataConsentHtml
+        {
+            get
+            {
+                var termsUrl = this.PortalSettings.TermsTabId == Null.NullInteger
+                    ? this.navigationManager.NavigateURL(this.TabId, "Terms")
+                    : this.navigationManager.NavigateURL(this.PortalSettings.TermsTabId);
+                var privacyUrl = this.PortalSettings.PrivacyTabId == Null.NullInteger
+                    ? this.navigationManager.NavigateURL(this.TabId, "Privacy")
+                    : this.navigationManager.NavigateURL(this.PortalSettings.PrivacyTabId);
+                var dataConsentHtml = string.Format(
+                    Localization.GetString("DataConsent"),
+                    termsUrl,
+                    privacyUrl);
+                return new HtmlString(dataConsentHtml);
+            }
+        }
+
+        /// <summary>Called when any data consent action is completed.</summary>
+        /// <param name="e">The details of the action.</param>
         public void OnDataConsentComplete(DataConsentEventArgs e)
         {
             this.DataConsentCompleted?.Invoke(this, e);
@@ -128,16 +174,10 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// The DataConsentEventArgs class provides a customised EventArgs class for
-        /// the DataConsent Event.
-        /// </summary>
+        /// <summary>The DataConsentEventArgs class provides a customised EventArgs class for the <see cref="DataConsent.DataConsentCompleted"/> Event.</summary>
         public class DataConsentEventArgs
         {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="DataConsentEventArgs"/> class.
-            /// Constructs a new DataConsentEventArgs.
-            /// </summary>
+            /// <summary>Initializes a new instance of the <see cref="DataConsentEventArgs"/> class.</summary>
             /// <param name="status">The Data Consent Status.</param>
             public DataConsentEventArgs(DataConsentStatus status)
             {

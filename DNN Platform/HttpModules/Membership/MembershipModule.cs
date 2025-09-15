@@ -4,18 +4,15 @@
 namespace DotNetNuke.HttpModules.Membership
 {
     using System;
-    using System.Globalization;
     using System.Linq;
     using System.Security.Principal;
-    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Web;
     using System.Web.Security;
 
-    using DotNetNuke.Application;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -24,29 +21,47 @@ namespace DotNetNuke.HttpModules.Membership
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.UserRequest;
+    using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Skins.EventListeners;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Information about membership.</summary>
     public class MembershipModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MembershipModule));
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
+        private readonly IUserRequestIPAddressController ipAddressController;
+        private readonly IRoleController roleController;
+        private readonly IUserController userController;
 
-        private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
+        /// <summary>Initializes a new instance of the <see cref="MembershipModule"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
+        public MembershipModule()
+            : this(null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MembershipModule"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="ipAddressController">The IP address controller.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="userController">The user controller.</param>
+        public MembershipModule(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, IUserController userController)
+        {
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.ipAddressController = ipAddressController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserRequestIPAddressController>();
+            this.roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
+            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+        }
 
         /// <summary>Gets the name of the module.</summary>
-        /// <value>
-        /// The name of the module: "DNNMembershipModule".
-        /// </value>
-        public string ModuleName
-        {
-            get
-            {
-                return "DNNMembershipModule";
-            }
-        }
+        public string ModuleName => "DNNMembershipModule";
 
         /// <summary>Called when unverified user skin initialize.</summary>
         /// <param name="sender">The sender.</param>
@@ -59,8 +74,25 @@ namespace DotNetNuke.HttpModules.Membership
 
         /// <summary>Authenticates the request.</summary>
         /// <param name="context">The context.</param>
-        /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensinons.</param>
+        /// <param name="allowUnknownExtensions">if set to <see langword="true"/> to allow unknown extensions.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
         public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
+            => AuthenticateRequest(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IUserRequestIPAddressController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>(),
+                context,
+                allowUnknownExtensions);
+
+        /// <summary>Authenticates the request.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="ipAddressController">The user request IP address controller.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensions.</param>
+        public static void AuthenticateRequest(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, HttpContextBase context, bool allowUnknownExtensions)
         {
             HttpRequestBase request = context.Request;
             HttpResponseBase response = context.Response;
@@ -72,7 +104,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
 
             // Obtain PortalSettings from Current Context
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = portalController.GetCurrentSettings();
 
             if (request.IsAuthenticated && !IsActiveDirectoryAuthHeaderPresent() && portalSettings != null)
             {
@@ -85,7 +117,7 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 // authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set )
-                if (RequireLogout(context, user))
+                if (RequireLogout(hostSettingsService, context, user))
                 {
                     var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
@@ -101,23 +133,26 @@ namespace DotNetNuke.HttpModules.Membership
                     return;
                 }
 
-                // if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
-                if (DateTime.Compare(user.Membership.LastActivityDate.AddMinutes(Host.UsersOnlineTimeWindow), DateTime.Now) < 0)
+                // if users LastActivityDate is outside the UsersOnlineTimeWindow then record user activity
+    #pragma warning disable CS0618 // Type or member is obsolete
+                var usersOnlineTimeWindow = Host.UsersOnlineTimeWindow;
+    #pragma warning restore CS0618 // Type or member is obsolete
+                if (user != null && DateTime.Compare(user.Membership.LastActivityDate.AddMinutes(usersOnlineTimeWindow), DateTime.Now) < 0)
                 {
                     // update LastActivityDate and IP Address for user
                     user.Membership.LastActivityDate = DateTime.Now;
-                    user.LastIPAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
+                    user.LastIPAddress = ipAddressController.GetUserRequestIPAddress(request);
                     UserController.UpdateUser(portalSettings.PortalId, user, false, false);
                 }
 
                 // check for RSVP code
-                if (request.QueryString["rsvp"] != null && !string.IsNullOrEmpty(request.QueryString["rsvp"]))
+                if (user != null && request.QueryString["rsvp"] != null && !string.IsNullOrEmpty(request.QueryString["rsvp"]))
                 {
-                    foreach (var role in RoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
+                    foreach (var role in roleController.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
                     {
                         if (role.RSVPCode == request.QueryString["rsvp"])
                         {
-                            RoleController.Instance.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID, RoleStatus.Approved, false, false);
+                            roleController.UpdateUserRole(portalSettings.PortalId, user.UserID, role.RoleID, RoleStatus.Approved, false, false);
                         }
                     }
                 }
@@ -133,7 +168,7 @@ namespace DotNetNuke.HttpModules.Membership
                 }
 
                 // Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
-                if (request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
+                if (user != null && request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
                     Localization.SetLanguage(user.Profile.PreferredLocale);
                 }
@@ -173,7 +208,7 @@ namespace DotNetNuke.HttpModules.Membership
             return false;
         }
 
-        private static bool RequireLogout(HttpContextBase context, UserInfo user)
+        private static bool RequireLogout(IHostSettingsService hostSettingsService, HttpContextBase context, UserInfo user)
         {
             try
             {
@@ -184,7 +219,7 @@ namespace DotNetNuke.HttpModules.Membership
                     return true;
                 }
 
-                var forceLogout = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged");
+                var forceLogout = hostSettingsService.GetBoolean("ForceLogoutAfterPasswordChanged");
                 if (!forceLogout)
                 {
                     return false;
@@ -209,7 +244,7 @@ namespace DotNetNuke.HttpModules.Membership
         private void OnAuthenticateRequest(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
-            AuthenticateRequest(new HttpContextWrapper(application.Context), false);
+            AuthenticateRequest(this.hostSettingsService, this.portalController, this.ipAddressController, this.roleController, new HttpContextWrapper(application.Context), false);
         }
 
         // DNN-6973: if the authentication cookie set by cookie slide in membership,
@@ -218,12 +253,12 @@ namespace DotNetNuke.HttpModules.Membership
         {
             var application = (HttpApplication)sender;
 
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = this.portalController.GetCurrentSettings();
             var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
                                     && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
             if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
             {
-                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(this.portalController, portalSettings.PortalId);
                 if (isInPortalGroup)
                 {
                     var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
@@ -238,21 +273,24 @@ namespace DotNetNuke.HttpModules.Membership
 
         private void Context_PreRequestHandlerExecute(object sender, EventArgs e)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = this.portalController.GetCurrentSettings();
             var request = HttpContext.Current.Request;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            if (request.IsAuthenticated && !IsActiveDirectoryAuthHeaderPresent() && portalSettings != null)
+            var user = this.userController.GetCurrentUserInfo();
+            if (!request.IsAuthenticated || IsActiveDirectoryAuthHeaderPresent() || portalSettings == null)
             {
-                if (!user.IsSuperUser && user.IsInRole("Unverified Users") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
-                {
-                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
-                }
+                return;
+            }
 
-                if (!user.IsSuperUser && HttpContext.Current.Request.QueryString.AllKeys.Contains("VerificationSuccess") && !HttpContext.Current.Items.Contains(DotNetNuke.UI.Skins.Skin.OnInitMessage))
-                {
-                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
-                    HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
-                }
+            var contextItems = HttpContext.Current.Items;
+            if (!user.IsSuperUser && user.IsInRole("Unverified Users") && !contextItems.Contains(Skin.OnInitMessage))
+            {
+                contextItems.Add(Skin.OnInitMessage, Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
+            }
+
+            if (!user.IsSuperUser && request.QueryString.AllKeys.Contains("VerificationSuccess") && !contextItems.Contains(Skin.OnInitMessage))
+            {
+                contextItems.Add(Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
+                contextItems.Add(Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
             }
         }
     }

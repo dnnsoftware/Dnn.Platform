@@ -46,51 +46,51 @@ namespace Dnn.ExportImport.Components.Dto
         public string[] ItemsToExport { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether whether to include deleted items in the export.
+        /// Gets or sets a value indicating whether to include deleted items in the export.
         /// Note that these will be deleted on the imported site.
         /// </summary>
         public bool IncludeDeletions { get; set; }
 
         /// <summary>
-        ///  Gets or sets a value indicating whether whether to include the content items in the exported file.
+        ///  Gets or sets a value indicating whether to include the content items in the exported file.
         /// This applies to items such as pages/tabs and the content of their modules.
         /// </summary>
         public bool IncludeContent { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether whether to include item files in the exported file.
+        /// Gets or sets a value indicating whether to include item files in the exported file.
         /// This applies for user files and content files.
         /// In case the folder's and files were included in the
         /// <see cref="ItemsToExport"/> then, this flag will be set to false.
         /// </summary>
         public bool IncludeFiles { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether to include users in the export file or not.</summary>
+        /// <summary>Gets or sets a value indicating whether to include users in the export file or not.</summary>
         public bool IncludeUsers { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether to include vocabularies in the export file or not.</summary>
+        /// <summary>Gets or sets a value indicating whether to include vocabularies in the export file or not.</summary>
         public bool IncludeVocabularies { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether to include page templates in export file or not.</summary>
+        /// <summary>Gets or sets a value indicating whether to include page templates in export file or not.</summary>
         public bool IncludeTemplates { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether whether to include profile properties in exported file.
+        /// Gets or sets a value indicating whether to include profile properties in exported file.
         /// When this flag is enabled only then userprofile would be exported.
         /// </summary>
         public bool IncludeProperfileProperties { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether to include modules packages in exported file.</summary>
+        /// <summary>Gets or sets a value indicating whether to include modules packages in exported file.</summary>
         public bool IncludeExtensions { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether whether to include roles or not in export file.
+        /// Gets or sets a value indicating whether to include roles or not in export file.
         /// If this flag is disabled, User Roles won't be exported.
         /// If this flag is disabled, Assets permissions won't be exported.
         /// </summary>
         public bool IncludeRoles { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether to incldue permissions with each entity in export file or not.</summary>
+        /// <summary>Gets or sets a value indicating whether to incldue permissions with each entity in export file or not.</summary>
         public bool IncludePermissions { get; set; }
 
         /// <summary>Gets or sets export mode. Differential or Complete.</summary>
@@ -118,7 +118,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public PageToExport[] Pages { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether whether to run the job immediately or not.</summary>
+        /// <summary>Gets or sets a value indicating whether to run the job immediately or not.</summary>
         public bool RunNow { get; set; }
 
         /// <summary>Gets or sets a value indicating whether used to determine if the DB file needs cleanup before starting import or not.</summary>

@@ -1,4 +1,4 @@
-/* eslint-disable spellcheck/spell-checker */
+ 
 const timeZones = [{
     value: "Dateline Standard Time",
     label: "(UTC-12:00) International Date Line West",

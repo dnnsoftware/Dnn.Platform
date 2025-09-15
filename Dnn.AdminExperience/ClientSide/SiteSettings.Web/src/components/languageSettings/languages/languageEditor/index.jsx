@@ -374,10 +374,10 @@ class LanguageEditor extends Component {
         );
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         let {state, props} = this;
-        /* eslint-disable react/no-danger */
+         
         if (state.languageDetail !== undefined || props.id === "add") {
             if (props.openMode === 1) {
                 if (props.id === "add") {

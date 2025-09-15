@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Tests.Utilities.Mocks
 {
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
@@ -16,7 +17,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
 
     public class MockComponentProvider
     {
-        public static Mock<T> CreateNew<T>()
+        public static Mock<T> CreateNew<T>(params object[] args)
             where T : class
         {
             if (ComponentFactory.Container == null)
@@ -30,7 +31,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
 
             if (mockComp == null)
             {
-                mockComp = new Mock<T>();
+                mockComp = new Mock<T>(args);
                 ComponentFactory.RegisterComponentInstance<Mock<T>>(mockComp);
             }
 
@@ -42,7 +43,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
             return mockComp;
         }
 
-        public static Mock<T> CreateNew<T>(string name)
+        public static Mock<T> CreateNew<T>(string name, params object[] args)
             where T : class
         {
             if (ComponentFactory.Container == null)
@@ -56,7 +57,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
 
             if (mockComp == null)
             {
-                mockComp = new Mock<T>();
+                mockComp = new Mock<T>(args);
                 ComponentFactory.RegisterComponentInstance<Mock<T>>(mockComp);
             }
 
@@ -68,9 +69,9 @@ namespace DotNetNuke.Tests.Utilities.Mocks
             return mockComp;
         }
 
-        public static Mock<CachingProvider> CreateDataCacheProvider()
+        public static Mock<CachingProvider> CreateDataCacheProvider(IHostSettings hostSettings = null)
         {
-            return CreateNew<CachingProvider>();
+            return CreateNew<CachingProvider>(hostSettings ?? Mock.Of<IHostSettings>());
         }
 
         public static Mock<EventLogController> CreateEventLogController()

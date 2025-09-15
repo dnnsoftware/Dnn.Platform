@@ -256,7 +256,8 @@ Performance.propTypes = {
     onChangePerformanceSettingsValue: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     onIncrementVersion: PropTypes.func.isRequired,
-    infoMessage: PropTypes.string
+    infoMessage: PropTypes.string,
+    isLoading: PropTypes.bool,
 };
 
 function mapStateToProps(state) {

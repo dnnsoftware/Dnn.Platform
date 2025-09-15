@@ -13,7 +13,7 @@ class Modules extends Component {
         super();
 
         this.state = {
-            editType: ''
+            editType: ""
         };
     }
 
@@ -51,8 +51,8 @@ class Modules extends Component {
                     key={index}
                     module={module} 
                     onDelete={this.onDeleteModule.bind(this)}
-                    onEditing={this.onEditingModule.bind(this, 'content')}
-                    onSetting={this.onEditingModule.bind(this, 'settings')}
+                    onEditing={this.onEditingModule.bind(this, "content")}
+                    onSetting={this.onEditingModule.bind(this, "settings")}
                     isEditingModule={isEditingModule}
                     onCopyChange={onModuleCopyChange}
                     showCopySettings={showCopySettings} />
@@ -66,7 +66,7 @@ class Modules extends Component {
         const moduleRows = this.getModules();
         const editingModule = modules.find(m => m.id === editingSettingModuleId);
         return (
-            /* eslint-disable react/no-danger */
+             
             <div className={styles.moduleContainer}>
                 <div className="module-title">
                     <div className="module-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ModuleIcon }} />
@@ -87,7 +87,7 @@ class Modules extends Component {
                     {moduleRows}
                 </div>
                 <Modal 
-                    isOpen={editingModule && state.editType !== ''} 
+                    isOpen={editingModule && state.editType !== ""} 
                     header={state.editType === "content" ? Localization.get("EditContent") : Localization.get("ModuleSettings")} 
                     onRequestClose={onCancelEditingModule}>
                     {editingModule && 
@@ -99,7 +99,7 @@ class Modules extends Component {
                         /> }
                 </Modal>      
             </div>      
-            /* eslint-enable react/no-danger */
+             
         );
     }
 }

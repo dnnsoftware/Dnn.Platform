@@ -523,7 +523,7 @@
     <value>Password answer is invalid.</value>
   </data>
   <data name="RegisterationFailed.Text" xml:space="preserve">
-    <value>Registeration failed. Please try later.</value>
+    <value>Registration failed. Please try later.</value>
   </data>
   <data name="UserDeleteError.Text" xml:space="preserve">
     <value>Failed to delete the user.</value>
@@ -544,7 +544,7 @@
     <value>Cannot assign a role which is not approved.</value>
   </data>
   <data name="UserUnlockError.Text" xml:space="preserve">
-    <value>Failed to unlcok the user.</value>
+    <value>Failed to unlock the user.</value>
   </data>
   <data name="cmUnlockUser.Text" xml:space="preserve">
     <value>Unlock User</value>

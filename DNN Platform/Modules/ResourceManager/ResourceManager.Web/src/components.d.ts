@@ -11,30 +11,57 @@ export { GetFolderContentResponse, Item } from "./services/ItemsClient";
 export { FolderTreeItem } from "./services/InternalServicesClient";
 export namespace Components {
     interface DnnActionCopyUrl {
+        /**
+          * The list of items to copy.
+         */
         "items": Item[];
     }
     interface DnnActionCreateFolder {
+        /**
+          * The ID of the parent folder
+         */
         "parentFolderId": number;
     }
     interface DnnActionDeleteItems {
+        /**
+          * The list of items to delete.
+         */
         "items": Item[];
     }
     interface DnnActionDownloadItem {
+        /**
+          * The item to download.
+         */
         "item": Item;
     }
     interface DnnActionEditItem {
+        /**
+          * The item to edit.
+         */
         "item": Item;
     }
     interface DnnActionMoveItems {
+        /**
+          * The list of items to move.
+         */
         "items": Item[];
     }
     interface DnnActionOpenFile {
+        /**
+          * The item to open.
+         */
         "item": Item;
     }
     interface DnnActionUnlinkItems {
+        /**
+          * The list of items selected.
+         */
         "items": Item[];
     }
     interface DnnActionUploadFile {
+        /**
+          * The ID of the parent folder.
+         */
         "parentFolderId": number;
     }
     interface DnnResourceManager {
@@ -74,6 +101,7 @@ export namespace Components {
     interface DnnRmFilesPane {
         /**
           * Defines how much more pixels to load under the fold.
+          * @default 5000
          */
         "preloadOffset": number;
     }
@@ -88,6 +116,7 @@ export namespace Components {
     interface DnnRmFolderListItem {
         /**
           * If true, this node will be expanded on load.
+          * @default false
          */
         "expanded": boolean;
         /**
@@ -128,16 +157,19 @@ export namespace Components {
     interface DnnRmProgressBar {
         /**
           * Defines the max progress value.
+          * @default 100
          */
         "max": number;
         /**
           * Defines the current progress value.
+          * @default 0
          */
         "value": number;
     }
     interface DnnRmQueuedFile {
         /**
           * Whether to extract uploaded zip files.
+          * @default false
          */
         "extract": boolean;
         /**
@@ -586,27 +618,51 @@ declare global {
 }
 declare namespace LocalJSX {
     interface DnnActionCopyUrl {
+        /**
+          * The list of items to copy.
+         */
         "items": Item[];
     }
     interface DnnActionCreateFolder {
+        /**
+          * The ID of the parent folder
+         */
         "parentFolderId"?: number;
     }
     interface DnnActionDeleteItems {
+        /**
+          * The list of items to delete.
+         */
         "items": Item[];
     }
     interface DnnActionDownloadItem {
+        /**
+          * The item to download.
+         */
         "item": Item;
     }
     interface DnnActionEditItem {
+        /**
+          * The item to edit.
+         */
         "item": Item;
     }
     interface DnnActionMoveItems {
+        /**
+          * The list of items to move.
+         */
         "items": Item[];
     }
     interface DnnActionOpenFile {
+        /**
+          * The item to open.
+         */
         "item": Item;
     }
     interface DnnActionUnlinkItems {
+        /**
+          * The list of items selected.
+         */
         "items": Item[];
     }
     interface DnnActionUploadFile {
@@ -614,6 +670,9 @@ declare namespace LocalJSX {
           * Fires when there is a possibility that some folders have changed. Can be used to force parts of the UI to refresh.
          */
         "onDnnRmFoldersChanged"?: (event: DnnActionUploadFileCustomEvent<void>) => void;
+        /**
+          * The ID of the parent folder.
+         */
         "parentFolderId"?: number;
     }
     interface DnnResourceManager {
@@ -669,6 +728,7 @@ declare namespace LocalJSX {
     interface DnnRmFilesPane {
         /**
           * Defines how much more pixels to load under the fold.
+          * @default 5000
          */
         "preloadOffset"?: number;
     }
@@ -691,6 +751,7 @@ declare namespace LocalJSX {
     interface DnnRmFolderListItem {
         /**
           * If true, this node will be expanded on load.
+          * @default false
          */
         "expanded"?: boolean;
         /**
@@ -759,16 +820,19 @@ declare namespace LocalJSX {
     interface DnnRmProgressBar {
         /**
           * Defines the max progress value.
+          * @default 100
          */
         "max"?: number;
         /**
           * Defines the current progress value.
+          * @default 0
          */
         "value"?: number;
     }
     interface DnnRmQueuedFile {
         /**
           * Whether to extract uploaded zip files.
+          * @default false
          */
         "extract"?: boolean;
         /**

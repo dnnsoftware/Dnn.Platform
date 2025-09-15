@@ -8,6 +8,7 @@ namespace DotNetNuke.Prompt
     using DotNetNuke.Abstractions.Prompt;
     using Newtonsoft.Json;
 
+    /// <summary>This contains information about a Prompt command available in the installation.</summary>
     [Serializable]
     [JsonObject]
     public class Command : ICommand

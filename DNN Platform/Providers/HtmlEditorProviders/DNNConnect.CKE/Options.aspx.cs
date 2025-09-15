@@ -5,11 +5,8 @@ namespace DNNConnect.CKEditorProvider
 {
     using System;
     using System.Globalization;
-    using System.IO;
     using System.Web;
     using System.Web.UI;
-
-    using DNNConnect.CKEditorProvider.Controls;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
@@ -37,25 +34,22 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
         public Options()
-            : this(null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public Options(IHostSettings hostSettings)
+        public Options(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+            : base(portalController, appStatus, hostSettings)
         {
             this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>  Gets Current Language from Url.</summary>
-        protected string LangCode
-        {
-            get
-            {
-                return this.request.QueryString["langCode"];
-            }
-        }
+        protected string LangCode => this.request.QueryString["langCode"];
 
         /// <summary>  Gets the Name for the Current Resource file name.</summary>
         protected string ResXFile

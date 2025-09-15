@@ -181,7 +181,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
-
         public HttpResponseMessage ChangePassword(ChangePasswordDto changePasswordDto)
         {
             try
@@ -215,7 +214,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
-
         public HttpResponseMessage ForceChangePassword([FromUri] int userId)
         {
             try
@@ -249,7 +247,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManagePassword)]
-
         public HttpResponseMessage SendPasswordResetLink([FromUri] int userId)
         {
             try
@@ -307,7 +304,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AuthorizeUnAuthorizeUser)]
-
         public HttpResponseMessage UpdateAuthorizeStatus([FromUri] int userId, [FromUri] bool authorized)
         {
             try
@@ -344,7 +340,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
-
         public HttpResponseMessage SoftDeleteUser([FromUri] int userId)
         {
             try
@@ -374,7 +369,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
-
         public HttpResponseMessage HardDeleteUser([FromUri] int userId)
         {
             try
@@ -402,7 +396,6 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RemoveDeletedUsers()
         {
             if (!this.UserInfo.IsSuperUser)
@@ -426,7 +419,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.DeleteUser)]
-
         public HttpResponseMessage RestoreDeletedUser([FromUri] int userId)
         {
             try
@@ -455,7 +447,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
-
         public HttpResponseMessage UpdateSuperUserStatus([FromUri] int userId, [FromUri] bool setSuperUser)
         {
             try
@@ -485,7 +476,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.EditSettings)]
-
         public HttpResponseMessage UpdateUserBasicInfo(UserBasicDto userBasicDto)
         {
             try
@@ -519,7 +509,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.AuthorizeUnAuthorizeUser)]
-
         public HttpResponseMessage UnlockUser([FromUri] int userId)
         {
             try
@@ -553,7 +542,6 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
-
         public HttpResponseMessage GetSuggestRoles(string keyword, int count)
         {
             try
@@ -593,7 +581,6 @@ namespace Dnn.PersonaBar.Users.Services
 
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
-
         public HttpResponseMessage GetUserRoles(string keyword, int userId, int pageIndex, int pageSize)
         {
             try
@@ -621,7 +608,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
-
         public HttpResponseMessage SaveUserRole(UserRoleDto userRoleDto, [FromUri] bool notifyUser, [FromUri] bool isOwner)
         {
             try
@@ -653,7 +639,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
-
         public HttpResponseMessage RemoveUserRole(UserRoleDto userRoleDto)
         {
             try
@@ -704,7 +689,6 @@ namespace Dnn.PersonaBar.Users.Services
         [HttpGet]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
-
         public HttpResponseMessage PasswordStrengthOptions()
         {
             var settings = new MembershipPasswordSettings(this.PortalId);

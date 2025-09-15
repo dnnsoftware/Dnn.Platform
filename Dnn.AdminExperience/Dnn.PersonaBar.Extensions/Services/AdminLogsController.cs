@@ -269,7 +269,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns>List of log settings.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
-
         public HttpResponseMessage GetLogSettings()
         {
             try
@@ -315,7 +314,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
         /// <returns>A response with the log setting info.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.LogSettingsView, CheckPermissionForAdmin = true)]
-
         public HttpResponseMessage GetLogSetting(string logTypeConfigId)
         {
             try

@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <param name="ascending">if set to <see langword="true"/> [ascending].</param>
         /// <param name="readStatus">The read status.</param>
         /// <param name="archivedStatus">The archived status.</param>
         /// <returns>A <see cref="MessageBoxView"/>.</returns>
@@ -91,7 +91,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <param name="sortAscending">if set to <see langword="true"/> [sort ascending].</param>
         /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <param name="ascending">if set to <see langword="true"/> [ascending].</param>
         /// <param name="readStatus">The read status.</param>
         /// <param name="archivedStatus">The archived status.</param>
         /// <returns>A <see cref="MessageBoxView"/>.</returns>
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <param name="sortAscending">if set to <see langword="true"/> [sort ascending].</param>
         /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="ascending">if set to <c>true</c> [ascending].</param>
+        /// <param name="ascending">if set to <see langword="true"/> [ascending].</param>
         /// <param name="totalRecords">The total records.</param>
         /// <returns>A <see cref="MessageThreadsView"/>.</returns>
         MessageThreadsView GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool ascending, ref int totalRecords);

@@ -37,7 +37,6 @@ namespace Dnn.PersonaBar.Servers.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage RestartApplication()
         {
             try
@@ -57,7 +56,6 @@ namespace Dnn.PersonaBar.Servers.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage ClearCache()
         {
             try

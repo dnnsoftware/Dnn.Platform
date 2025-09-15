@@ -212,7 +212,7 @@
                 &lt;tr&gt;
                     &lt;td&gt;Wild&lt;/td&gt;
                     &lt;td&gt;cat*&lt;/td&gt;
-                    &lt;td&gt;Contain terms that begin with &lt;i&gt;cat&lt;/i&gt;, such as &lt;i&gt;category&lt;/i&gt; and the extact term &lt;i&gt;cat&lt;/i&gt; itself&lt;/td&gt;
+                    &lt;td&gt;Contain terms that begin with &lt;i&gt;cat&lt;/i&gt;, such as &lt;i&gt;category&lt;/i&gt; and the exact term &lt;i&gt;cat&lt;/i&gt; itself&lt;/td&gt;
                 &lt;/tr&gt;
 
                 &lt;tr&gt;

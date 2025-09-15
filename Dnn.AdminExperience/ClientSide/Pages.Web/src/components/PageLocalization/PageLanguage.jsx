@@ -57,7 +57,7 @@ class PageLanguage extends Component {
     }
 
     onSettingPage(url, e) {
-        let panelId = window.$('.socialpanel:visible').attr('id');
+        let panelId = window.$(".socialpanel:visible").attr("id");
         utils.getUtilities().panelViewData(panelId, {tab: [0]});
         window.parent.location = url;
         
@@ -80,7 +80,7 @@ class PageLanguage extends Component {
         e.stopPropagation();
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const iconSrc = this.props.local && this.props.local.Icon ? this.props.local.Icon : "";
         const cultureCode = this.props.local && this.props.local.CultureCode ? this.props.local.CultureCode : "";

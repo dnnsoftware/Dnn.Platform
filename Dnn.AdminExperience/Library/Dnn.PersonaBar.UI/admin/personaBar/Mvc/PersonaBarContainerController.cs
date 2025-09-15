@@ -29,24 +29,49 @@ namespace DotNetNuke.Framework.Controllers
 
     using Globals = DotNetNuke.Common.Globals;
 
+    /// <summary>
+    /// Controller for managing the Persona Bar container in the DNN platform.
+    /// </summary>
     public class PersonaBarContainerController : Controller
     {
+#pragma warning disable CS0618 // Type or member is obsolete
         private readonly IPersonaBarContainer personaBarContainer = Dnn.PersonaBar.Library.Containers.PersonaBarContainer.Instance;
+#pragma warning restore CS0618 // Type or member is obsolete
 
+        /// <summary>
+        /// Gets the Persona Bar settings as a JSON string.
+        /// </summary>
         public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
 
+        /// <summary>
+        /// Gets the application path.
+        /// </summary>
         public string AppPath => Globals.ApplicationPath;
 
+        /// <summary>
+        /// Gets the build number of the application.
+        /// </summary>
+#pragma warning disable CS0618 // Type or member is obsolete
         public string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
+#pragma warning restore CS0618 // Type or member is obsolete
 
+        /// <summary>
+        /// Gets the current portal settings.
+        /// </summary>
         protected PortalSettings PortalSettings
         {
             get
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 return PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
+        /// <summary>
+        /// Returns the default view for the Persona Bar container.
+        /// </summary>
+        /// <returns>An <see cref="ActionResult"/> representing the view.</returns>
         public ActionResult Index()
         {
             return this.View(new PersonaBarContainerModel()

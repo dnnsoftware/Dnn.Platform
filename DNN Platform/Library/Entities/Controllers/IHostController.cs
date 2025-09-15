@@ -92,13 +92,13 @@ namespace DotNetNuke.Entities.Controllers
 
         /// <summary>Updates the specified config, optionally clearing the cache.</summary>
         /// <param name="config">The configuration setting.</param>
-        /// <param name="clearCache">If set to <c>true</c>, will clear the cache after updating the setting.</param>
+        /// <param name="clearCache">If set to <see langword="true"/>, will clear the cache after updating the setting.</param>
         void Update(ConfigurationSetting config, bool clearCache);
 
         /// <summary>Updates the setting for a specific key.</summary>
         /// <param name="key">The setting key string.</param>
         /// <param name="value">The value to update.</param>
-        /// <param name="clearCache">If set to <c>true</c>, will clear the cache after updating the setting.</param>
+        /// <param name="clearCache">If set to <see langword="true"/>, will clear the cache after updating the setting.</param>
         void Update(string key, string value, bool clearCache);
 
         /// <summary>Updates the setting for a specific key.</summary>

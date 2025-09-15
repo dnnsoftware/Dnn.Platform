@@ -71,7 +71,7 @@ export default class FilePicker extends Component {
 
     getItem(isMatchSearch, child) {
         if (isMatchSearch) {
-            /* eslint-disable react/no-danger */
+             
             return <li>
                 <div className="icon" dangerouslySetInnerHTML={{ __html: fileIcon }} onClick={this.onFileNameClick.bind(this, child) }/>
                 <div className="item-name" onClick={this.onFileNameClick.bind(this, child) }>{child.data.value}</div>
@@ -100,7 +100,7 @@ export default class FilePicker extends Component {
 
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         const selectedFileText = this.props.selectedFile ? this.props.selectedFile.value : this.props.notSpecifiedText;
 
         const files = this.getFiles();

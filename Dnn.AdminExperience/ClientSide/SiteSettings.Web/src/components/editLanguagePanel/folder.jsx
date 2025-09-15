@@ -19,7 +19,7 @@ class Folder extends Component {
             });
         }
     }
-    /*eslint-disable react/no-danger*/
+     
     render() {
         const { props } = this;
         const isFolder = props.folder.NewValue.indexOf(".resx") === -1;

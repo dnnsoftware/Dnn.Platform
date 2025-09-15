@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -38,16 +39,27 @@ namespace DotNetNuke.Modules.Admin.Users
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IHostSettings hostSettings;
+        private readonly IPortalController portalController;
 
+        /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditUser()
-            : this(null, null)
+            : this(null, null, null, null)
         {
         }
 
-        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+        /// <summary>Initializes a new instance of the <see cref="EditUser"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public EditUser(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IPortalController portalController)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
         }
 
         /// <summary>Gets or sets the current Page No.</summary>
@@ -370,7 +382,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.userForm.DataSource = this.UserInfo;
 
                 // hide username field in UseEmailAsUserName mode
-                bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
+                bool disableUsername = PortalController.GetPortalSettingAsBoolean(this.portalController, "Registration_UseEmailAsUserName", this.PortalId, false);
                 if (disableUsername)
                 {
                     this.userForm.Items[0].Visible = false;
@@ -408,18 +420,17 @@ namespace DotNetNuke.Modules.Admin.Users
                     if (string.IsNullOrEmpty(this.UserInfo.VanityUrl))
                     {
                         // Clean Display Name
-                        bool modified;
                         var options = UrlRewriterUtils.GetOptionsFromSettings(urlSettings);
-                        var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.UserInfo.DisplayName, options, out modified);
-                        var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified).ToLowerInvariant();
+                        var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.UserInfo.DisplayName, options, out _);
+                        var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out _).ToLowerInvariant();
 
-                        this.VanityUrlAlias.Text = string.Format("{0}/{1}/", this.CurrentPortalAlias.HttpAlias, urlSettings.VanityUrlPrefix);
+                        this.VanityUrlAlias.Text = $"{this.CurrentPortalAlias.HttpAlias}/{urlSettings.VanityUrlPrefix}/";
                         this.VanityUrlTextBox.Text = uniqueUrl;
                         this.ShowVanityUrl = true;
                     }
                     else
                     {
-                        this.VanityUrl.Text = string.Format("{0}/{1}/{2}", this.CurrentPortalAlias.HttpAlias, urlSettings.VanityUrlPrefix, this.UserInfo.VanityUrl);
+                        this.VanityUrl.Text = $"{this.CurrentPortalAlias.HttpAlias}/{urlSettings.VanityUrlPrefix}/{this.UserInfo.VanityUrl}";
                         this.ShowVanityUrl = false;
                     }
                 }
@@ -583,10 +594,10 @@ namespace DotNetNuke.Modules.Admin.Users
             ProfilePropertyDefinition localeProperty = this.UserInfo.Profile.GetProperty("PreferredLocale");
             if (localeProperty.IsDirty)
             {
-                // store preferredlocale in cookie, if none specified set to portal default.
+                // store PreferredLocale in cookie, if none specified set to portal default.
                 if (this.UserInfo.Profile.PreferredLocale == string.Empty)
                 {
-                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.UserInfo.PortalID));
+                    Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.hostSettings, this.UserInfo.PortalID));
                 }
                 else
                 {

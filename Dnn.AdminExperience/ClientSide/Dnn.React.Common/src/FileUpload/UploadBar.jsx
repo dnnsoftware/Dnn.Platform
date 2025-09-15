@@ -40,7 +40,7 @@ export default class UploadBar extends Component {
     }
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         let percent = this.props.errorText ? 0 : this.state.percent;
         let text = this.props.uploadComplete ? this.props.uploadCompleteText : this.props.uploadingText;
         text = this.props.errorText ? this.props.errorText : text;

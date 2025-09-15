@@ -58,7 +58,6 @@ namespace DotNetNuke.Tests.Core
         [TestCase("\\Test\\mmm\\..\\..\\")]
         [TestCase("\\Test\\")]
         [TestCase("..\\")]
-
         public void DeleteFiles_Should_Not_Able_To_Delete_Root_Folder(string path)
         {
             // Action

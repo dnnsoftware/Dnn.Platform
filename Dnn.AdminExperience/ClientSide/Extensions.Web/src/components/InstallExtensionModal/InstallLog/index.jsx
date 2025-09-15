@@ -16,7 +16,7 @@ class EditExtension extends Component {
     render() {
         const {props} = this;
         let errorCount = props.logs.filter((log) => { return log.Type === "Failure" || log.Type === "Error"; }).length;
-        /* eslint-disable react/no-danger */
+         
         return (
             <GridCell style={{ padding: 50 }} className={"extension-install-logs" + (errorCount > 0 ? " with-error" : "")}>
                 <h6>{Localization.get("InstallExtension_Logs.Header")}</h6>

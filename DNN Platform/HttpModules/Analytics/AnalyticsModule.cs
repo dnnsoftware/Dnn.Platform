@@ -8,6 +8,8 @@ namespace DotNetNuke.HttpModules.Analytics
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Framework;
     using DotNetNuke.HttpModules.Config;
@@ -15,24 +17,37 @@ namespace DotNetNuke.HttpModules.Analytics
     using DotNetNuke.Services.Analytics;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>This module contains functionality for injecting web analytics scripts into the page.</summary>
     public class AnalyticsModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsModule));
+        private readonly IEventLogger eventLogger;
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="AnalyticsModule"/> class.</summary>
+        public AnalyticsModule()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AnalyticsModule"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="appStatus">The application status.</param>
+        public AnalyticsModule(IEventLogger eventLogger, IApplicationStatusInfo appStatus)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         /// <summary>Gets the HttpModule module name.</summary>
-        public string ModuleName
-        {
-            get
-            {
-                return "AnalyticsModule";
-            }
-        }
+        public string ModuleName => "AnalyticsModule";
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)
         {
-            application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
+            application.PreRequestHandlerExecute += this.OnPreRequestHandlerExecute;
         }
 
         /// <inheritdoc/>
@@ -40,7 +55,7 @@ namespace DotNetNuke.HttpModules.Analytics
         {
         }
 
-        private static void OnPreRequestHandlerExecute(object sender, EventArgs e)
+        private void OnPreRequestHandlerExecute(object sender, EventArgs e)
         {
             try
             {
@@ -59,7 +74,6 @@ namespace DotNetNuke.HttpModules.Analytics
                 }
 
                 var context = HttpContext.Current;
-
                 if (context == null)
                 {
                     return;
@@ -71,34 +85,34 @@ namespace DotNetNuke.HttpModules.Analytics
                     return;
                 }
 
-                page.InitComplete += OnPageInitComplete;
-                page.PreRender += OnPagePreRender;
+                page.InitComplete += this.OnPageInitComplete;
+                page.PreRender += this.OnPagePreRender;
             }
             catch (Exception ex)
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT) };
                 log.AddProperty("Analytics.AnalyticsModule", "OnPreRequestHandlerExecute");
                 log.AddProperty("ExceptionMessage", ex.Message);
-                LogController.Instance.AddLog(log);
+                this.eventLogger.AddLog(log);
                 Logger.Error(log);
             }
         }
 
-        private static void OnPageInitComplete(object sender, EventArgs e)
+        private void OnPageInitComplete(object sender, EventArgs e)
         {
-            InitializeAnalyticsControls(sender as Page, true);
+            this.InitializeAnalyticsControls(sender as Page, true);
         }
 
-        private static void OnPagePreRender(object sender, EventArgs e)
+        private void OnPagePreRender(object sender, EventArgs e)
         {
-            InitializeAnalyticsControls(sender as Page, false);
+            this.InitializeAnalyticsControls(sender as Page, false);
         }
 
-        private static void InitializeAnalyticsControls(Page page, bool injectTop)
+        private void InitializeAnalyticsControls(Page page, bool injectTop)
         {
             try
             {
-                var analyticsEngines = AnalyticsEngineConfiguration.GetConfig().AnalyticsEngines;
+                var analyticsEngines = AnalyticsEngineConfiguration.GetConfig(this.appStatus, this.eventLogger).AnalyticsEngines;
                 if (analyticsEngines == null || analyticsEngines.Count == 0)
                 {
                     return;
@@ -170,10 +184,10 @@ namespace DotNetNuke.HttpModules.Analytics
             }
             catch (Exception ex)
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT) };
                 log.AddProperty("Analytics.AnalyticsModule", "OnPagePreRender");
                 log.AddProperty("ExceptionMessage", ex.Message);
-                LogController.Instance.AddLog(log);
+                this.eventLogger.AddLog(log);
                 Logger.Error(ex);
             }
         }

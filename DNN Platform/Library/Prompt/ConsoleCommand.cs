@@ -14,6 +14,7 @@ namespace DotNetNuke.Prompt
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>The implementation of a Prompt command.</summary>
     public abstract class ConsoleCommand : IConsoleCommand
     {
         /// <inheritdoc/>
@@ -22,19 +23,25 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         public string ValidationMessage { get; private set; }
 
-        /// <summary>Gets resource key for the result html.</summary>
+        /// <summary>Gets the result html.</summary>
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
 
+        /// <summary>Gets the portal settings.</summary>
         protected IPortalSettings PortalSettings { get; private set; }
 
+        /// <summary>Gets the current user.</summary>
         protected IUserInfo User { get; private set; }
 
+        /// <summary>Gets the portal ID.</summary>
         protected int PortalId { get; private set; }
 
+        /// <summary>Gets the tab ID.</summary>
         protected int TabId { get; private set; }
 
+        /// <summary>Gets the raw arguments.</summary>
         protected string[] Args { get; private set; }
 
+        /// <summary>Gets the flag values parsed from <see cref="Args"/>.</summary>
         protected IDictionary<string, string> Flags { get; private set; }
 
         private static ISerializationManager SerializationManager =>
@@ -61,17 +68,25 @@ namespace DotNetNuke.Prompt
             return string.IsNullOrEmpty(this.ValidationMessage);
         }
 
+        /// <summary>Gets the localized string corresponding to the <paramref name="key"/>.</summary>
+        /// <param name="key">The resource key to find.</param>
+        /// <returns>The localized Text.</returns>
         protected string LocalizeString(string key)
         {
             var localizedText = Localization.GetString(key, this.LocalResourceFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
 
+        /// <summary>Adds a validation message.</summary>
+        /// <param name="message">The message to add.</param>
         protected void AddMessage(string message)
         {
             this.ValidationMessage += message;
         }
 
+        /// <summary>Sets the properties from the values in <see cref="Flags"/>.</summary>
+        /// <param name="myCommand">This command.</param>
+        /// <typeparam name="T">The type of this command.</typeparam>
         protected void ParseParameters<T>(T myCommand)
             where T : class, new()
         {
@@ -81,15 +96,16 @@ namespace DotNetNuke.Prompt
             {
                 var attribute = mapping.Attribute;
                 var property = mapping.Property;
-                var settingValue = this.Flags.ContainsKey(attribute.Name) ? this.Flags[attribute.Name] : null;
+                var settingValue = this.Flags.TryGetValue(attribute.Name, out var flag) ? flag : null;
                 if (settingValue != null && property.CanWrite)
                 {
-                    var tp = property.PropertyType;
                     SerializationManager.DeserializeProperty(myCommand, property, settingValue);
                 }
             });
         }
 
+        /// <summary>Create a mapping of the command parameters to their properties.</summary>
+        /// <returns>A list of parameters mapped to their corresponding attributes.</returns>
         protected virtual IList<ParameterMapping> CreateMapping()
         {
             var mapping = new List<ParameterMapping>();
@@ -155,10 +171,13 @@ namespace DotNetNuke.Prompt
             }
         }
 
+        /// <summary>A mapping between a <see cref="ConsoleCommandParameterAttribute"/> and its corresponding <see cref="PropertyInfo"/>.</summary>
         public struct ParameterMapping
         {
+            /// <summary>Gets or sets the attribute.</summary>
             public ConsoleCommandParameterAttribute Attribute { get; set; }
 
+            /// <summary>Gets or sets the property.</summary>
             public PropertyInfo Property { get; set; }
         }
     }

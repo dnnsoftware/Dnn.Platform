@@ -42,7 +42,7 @@ export function createPortalOptions(actionPortalList) {
     let portalOptions = [];
     if (actionPortalList !== undefined) {
         portalOptions = actionPortalList.map((item) => {
-            return { label: item.PortalName, value: item.PortalID };
+            return { label: item.PortalName, value: item.PortalId };
         });
     }
     return portalOptions;

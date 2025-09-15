@@ -29,20 +29,24 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "UserAndLogin.ascx";
         private readonly INavigationManager navigationManager;
         private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="UserAndLogin"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public UserAndLogin()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="UserAndLogin"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
-        public UserAndLogin(INavigationManager navigationManager, IHostSettingsService hostSettingsService)
+        /// <param name="portalController">The portal controller.</param>
+        public UserAndLogin(INavigationManager navigationManager, IHostSettingsService hostSettingsService, IPortalController portalController)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         }
 
         /// <summary>Gets or sets a value indicating whether set this to true to show in custom 404/500 page.</summary>
@@ -260,10 +264,9 @@ namespace DotNetNuke.UI.Skins.Controls
         private bool AlwaysShowCount()
         {
             const string SettingKey = "UserAndLogin_AlwaysShowCount";
-            var alwaysShowCount = false;
 
-            var portalSetting = PortalController.GetPortalSetting(SettingKey, this.PortalSettings.PortalId, string.Empty);
-            if (!string.IsNullOrEmpty(portalSetting) && bool.TryParse(portalSetting, out alwaysShowCount))
+            var portalSetting = PortalController.GetPortalSetting(this.portalController, SettingKey, this.PortalSettings.PortalId, string.Empty);
+            if (!string.IsNullOrEmpty(portalSetting) && bool.TryParse(portalSetting, out var alwaysShowCount))
             {
                 return alwaysShowCount;
             }

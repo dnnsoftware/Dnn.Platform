@@ -111,7 +111,7 @@ export default class IconButton extends Component {
 
         props.onClick(event);
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
 

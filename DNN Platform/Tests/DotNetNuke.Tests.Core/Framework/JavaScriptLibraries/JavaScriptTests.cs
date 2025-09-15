@@ -70,7 +70,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByName()
         {
             // Arrange
@@ -90,7 +89,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameWithMismatchedCase()
         {
             // Arrange
@@ -110,7 +108,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameAndVersion()
         {
             // Arrange
@@ -130,7 +127,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameAndExactVersion()
         {
             // Arrange
@@ -150,7 +146,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameWithMismatchedCaseAndExactVersion()
         {
             // Arrange
@@ -170,7 +165,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void FailToRegisterLibraryByNameAndMismatchedVersion()
         {
             // Arrange
@@ -190,7 +184,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void FailToRegisterLibraryByNameAndMismatchedExactVersion()
         {
             // Arrange
@@ -210,7 +203,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameAndSameMinorVersion()
         {
             // Arrange
@@ -230,7 +222,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameWithMismatchedCaseAndSameMinorVersion()
         {
             // Arrange
@@ -250,7 +241,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void FallbackToHighestVersionLibraryWhenDifferentMinorVersion()
         {
             // Arrange
@@ -281,7 +271,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void FallbackToHighestVersionLibraryWhenDifferentMinorVersionWithMismatchedCase()
         {
             // Arrange
@@ -312,7 +301,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameAndSameMajorVersion()
         {
             // Arrange
@@ -332,7 +320,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void CanRegisterLibraryByNameWithMismatchedCaseAndSameMajorVersion()
         {
             // Arrange
@@ -352,7 +339,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void FallbackToHighestVersionLibraryWhenDifferentMajorVersion()
         {
             // Arrange
@@ -383,7 +369,6 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         }
 
         [Test]
-
         public void FallbackToHighestVersionLibraryWhenDifferentMajorVersionWithMismatchedCase()
         {
             // Arrange

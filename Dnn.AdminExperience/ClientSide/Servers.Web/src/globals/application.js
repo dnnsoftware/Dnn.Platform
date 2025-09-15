@@ -1,22 +1,15 @@
 import utilities from "../utils";
+import "../less/style.less";
+
 const serverTabsList = [];
 
-function init(initCallback) {
-    // This setting is required and define the public path 
-    // to allow the web application to download assets on demand 
-    // eslint-disable-next-line no-undef
-    // __webpack_public_path__ = options.publicPath;        
+function init(initCallback) { 
     let options = window.dnn[initCallback]();
-
     utilities.init(options);
     utilities.getPanelIdFromPath = options.utilities.getPanelIdFromPath;
     utilities.updatePanelTabView = options.utilities.updatePanelTabView;
     utilities.panelViewData = options.utilities.panelViewData;
     utilities.path = options.path;
-
-    // delay the styles loading after the __webpack_public_path__ is set
-    // this allows the fonts associated to be loaded properly in production
-    require("../less/style.less");
 }
 
 function dispatch() {

@@ -58,7 +58,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-
         public void GetSubscriptionTypes_ShouldCallDataService_WhenNoError()
         {
             // Arrange
@@ -79,7 +78,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-
         public void GetSubscriptionTypes_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
             // Act, Arrange
@@ -87,7 +85,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-
         public void GetSubscriptionType_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
             // Act, Assert

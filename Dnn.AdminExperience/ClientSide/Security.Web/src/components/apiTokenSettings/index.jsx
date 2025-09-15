@@ -5,7 +5,6 @@ import { security as SecurityActions } from "../../actions";
 import {
     Dropdown,
     InputGroup,
-    SingleLineInputWithError,
     Switch,
     Label,
     Button,
@@ -14,7 +13,7 @@ import {
 import "./style.less";
 import util from "../../utils";
 import resx from "../../resources";
-import styles from "./style.less";
+import "./style.less";
 
 let timespanSiteOptions = [];
 let timespanUserOptions = [];
@@ -45,7 +44,7 @@ class ApiTokenSettingsPanelBody extends Component {
     }
 
     getUserTimespanOptions() {
-        if (timespanUserOptions.length == 0) {
+        if (timespanUserOptions.length === 0) {
             const max = this.state.apiTokenSettings.MaximumSiteTimespan;
             timespanUserOptions = timespanSiteOptions.filter((item) => {
                 return item.value <= max;
@@ -111,11 +110,10 @@ class ApiTokenSettingsPanelBody extends Component {
         return /^([0-9]+)$/.test(value);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { state } = this;
         const isHost = util.settings.isHost;
-        const isAdmin = isHost || util.settings.isAdmin;
 
         if (state.apiTokenSettings) {
             let warningBox = <div />;

@@ -79,8 +79,8 @@ define([
         }
 
         var portalChanged = function(data) {
-            if (data != null && data.PortalID != curPortalId) {
-                curPortalId = data.PortalID;
+            if (data != null && data.PortalId != curPortalId) {
+                curPortalId = data.PortalId;
                 getStyleSheet();
             }
         }

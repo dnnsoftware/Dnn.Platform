@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
@@ -45,7 +46,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Client ID of the hidden input containing the Telerik anti-forgery token.</summary>
         protected static readonly string TelerikAntiForgeryTokenClientID = "telerikAntiForgeryToken";
 
-        /// <summary>Client Id of the Telerik uninstall radio buttons.</summary>
+        /// <summary>Client ID of the Telerik uninstall radio buttons.</summary>
         protected static readonly string TelerikUninstallOptionClientID = DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey;
 
         /// <summary>Form value when user selects Yes.</summary>
@@ -54,9 +55,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Form value when user selects No.</summary>
         protected static readonly string OptionNo = "N";
 
-        /// <summary>
-        /// The upgrade status filename.
-        /// </summary>
+        /// <summary>The upgrade status filename.</summary>
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
 
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
@@ -85,6 +84,7 @@ namespace DotNetNuke.Services.Install
 
         private readonly IApplicationStatusInfo applicationStatus;
         private readonly IHostSettings hostSettings;
+        private readonly IApplicationInfo application;
 
         static UpgradeWizard()
         {
@@ -93,48 +93,30 @@ namespace DotNetNuke.Services.Install
 
         /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
         public UpgradeWizard()
-            : this(null, null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="UpgradeWizard"/> class.</summary>
-        /// <param name="applicationStatus">The application status info.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public UpgradeWizard(IApplicationStatusInfo applicationStatus, IHostSettings hostSettings)
+        /// <param name="application">The application info.</param>
+        public UpgradeWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IApplicationInfo application)
+            : base(portalController, appStatus, hostSettings)
         {
-            this.applicationStatus = applicationStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.applicationStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.application = application ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
         }
 
-        /// <summary>
-        /// Gets the application version.
-        /// </summary>
-        protected Version ApplicationVersion
-        {
-            get
-            {
-                return DotNetNukeContext.Current.Application.Version;
-            }
-        }
+        /// <summary>Gets the application version.</summary>
+        protected Version ApplicationVersion => this.application.Version;
 
-        /// <summary>
-        /// Gets the current version.
-        /// </summary>
-        protected Version CurrentVersion
-        {
-            get
-            {
-                return DotNetNukeContext.Current.Application.CurrentVersion;
-            }
-        }
+        /// <summary>Gets the current version.</summary>
+        protected Version CurrentVersion => this.application.CurrentVersion;
 
-        private static string StatusFile
-        {
-            get
-            {
-                return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", StatusFilename);
-            }
-        }
+        private static string StatusFile => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", StatusFilename);
 
         private static bool IsAuthenticated { get; set; }
 
@@ -156,7 +138,6 @@ namespace DotNetNuke.Services.Install
         /// <param name="accountInfo">Username and password to validate host user.</param>
         /// <returns>An instance of <see cref="SecurityTabResult"/>.</returns>
         [WebMethod]
-
         public static Tuple<bool, string, SecurityTabResult> GetSecurityTab(Dictionary<string, string> accountInfo)
         {
             if (!VerifyHostUser(accountInfo, out var errorMsg))

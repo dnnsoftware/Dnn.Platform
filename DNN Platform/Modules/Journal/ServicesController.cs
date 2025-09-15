@@ -44,7 +44,6 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
-
         public HttpResponseMessage Create(CreateDTO postData)
         {
             try
@@ -80,7 +79,6 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
-
         public HttpResponseMessage Delete(JournalIdDTO postData)
         {
             try
@@ -111,7 +109,6 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
-
         public HttpResponseMessage SoftDelete(JournalIdDTO postData)
         {
             try
@@ -142,7 +139,6 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize]
-
         public HttpResponseMessage PreviewUrl(PreviewDTO postData)
         {
             try
@@ -159,7 +155,6 @@ namespace DotNetNuke.Modules.Journal
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage GetListForProfile(GetListForProfileDTO postData)
         {
             try
@@ -177,7 +172,6 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
-
         public HttpResponseMessage Like(JournalIdDTO postData)
         {
             try
@@ -200,7 +194,6 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
-
         public HttpResponseMessage CommentSave(CommentSaveDTO postData)
         {
             try
@@ -232,7 +225,6 @@ namespace DotNetNuke.Modules.Journal
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
-
         public HttpResponseMessage CommentDelete(CommentDeleteDTO postData)
         {
             try
@@ -267,7 +259,6 @@ namespace DotNetNuke.Modules.Journal
 
         [HttpGet]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
-
         public HttpResponseMessage GetSuggestions(string keyword)
         {
             try

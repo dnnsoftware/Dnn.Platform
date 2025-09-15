@@ -24,7 +24,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="node">The node to add the element to.</param>
         /// <param name="elementName">Name of the element.</param>
         /// <param name="elementValue">The element value.</param>
-        /// <param name="useCData">if set to <c>true</c> use a CData encapsulation.</param>
+        /// <param name="useCData">if set to <see langword="true"/> use a CData encapsulation.</param>
         /// <returns>
         /// The added element.
         /// </returns>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="node">The node to add the element to.</param>
         /// <param name="elementName">Name of the element (without the abbreviated prefix).</param>
         /// <param name="elementValue">The element value.</param>
-        /// <param name="useCData">if set to <c>true</c> use a CData encapsulation.</param>
+        /// <param name="useCData">if set to <see langword="true"/> use a CData encapsulation.</param>
         /// <param name="namespaceUri">The namespace URI.</param>
         /// <param name="namespaceAbbr">The namespace abbreviation.</param>
         /// <returns>

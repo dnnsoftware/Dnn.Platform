@@ -18,7 +18,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
         private const string TestViewName = "Foo";
 
         [Test]
-
         public void ActivePage_Property_Is_Null_If_PortalSettings_Not_Set_In_Context()
         {
             // Arrange
@@ -32,7 +31,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
         }
 
         [Test]
-
         public void PortalSettings_Property_Is_Null_If_Not_Set_In_Context()
         {
             // Arrange
@@ -61,7 +59,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
         }
 
         [Test]
-
         public void User_Property_Is_Null_If_PortalSettings_Not_Set_In_Context()
         {
             // Arrange

@@ -166,7 +166,7 @@ class IgnoreWordsPanel extends Component {
         return options;
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderedIgnoreWords() {
         const {props} = this;
         if (props.ignoreWords && props.ignoreWords.StopWords) {

@@ -8,6 +8,7 @@ namespace DotNetNuke.Prompt
     using DotNetNuke.Abstractions.Prompt;
     using Newtonsoft.Json;
 
+    /// <summary>This is used in the <see cref="CommandHelp"/> to send a list of command parameters to the client for explanatory help.</summary>
     [Serializable]
     [JsonObject]
     public class CommandOption : ICommandOption

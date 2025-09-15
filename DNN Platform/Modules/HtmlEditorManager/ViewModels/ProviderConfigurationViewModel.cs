@@ -18,7 +18,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.ViewModels
         public string SelectedEditor { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the provider can be saved.</summary>
-        /// <value><c>true</c> if this instance can save; otherwise, <c>false</c>.</value>
+        /// <value><see langword="true"/> if this instance can save; otherwise, <see langword="false"/>.</value>
         public bool CanSave { get; set; }
     }
 }

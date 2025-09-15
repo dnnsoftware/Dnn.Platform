@@ -76,7 +76,7 @@ class LocalizedContent extends Component {
         this.setState({ allPagesTranslatable });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         
         const defaultLanguage = this.getDefaultLanguage() || {};

@@ -63,7 +63,6 @@ namespace Dnn.PersonaBar.ConfigConsole.Tests
         [TestCase("Random.config", BadConfigXml, 0, false)]
         [TestCase("Random.config", BadXml, 0, false)]
         [TestCase("Random.file", "Random content", 0, false)]
-
         public void ValidateConfigFile(string fileName, string fileContent, int expectedErrorCount, bool shouldThrow)
         {
             // arrange

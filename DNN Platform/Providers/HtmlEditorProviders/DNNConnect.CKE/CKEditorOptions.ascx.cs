@@ -90,7 +90,7 @@ namespace DNNConnect.CKEditorProvider
         private ModuleInfo currentModule;
 
         /// <summary>Gets or sets a value indicating whether this instance is host mode.</summary>
-        /// <value><c>true</c> if this instance is host mode; otherwise, <c>false</c>.</value>
+        /// <value><see langword="true"/> if this instance is host mode; otherwise, <see langword="false"/>.</value>
         public bool IsHostMode
         {
             get
@@ -105,7 +105,7 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>Gets or sets a value indicating whether [current portal only].</summary>
-        /// <value><c>true</c> if [current portal only]; otherwise, <c>false</c>.</value>
+        /// <value><see langword="true"/> if [current portal only]; otherwise, <see langword="false"/>.</value>
         public bool CurrentPortalOnly { get; set; }
 
         /// <summary>Gets or sets the Current or selected Tab ID.</summary>
@@ -221,7 +221,7 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>Gets a value indicating whether this instance is all instances.</summary>
-        /// <value><c>true</c> if this instance is all instances; otherwise, <c>false</c>.</value>
+        /// <value><see langword="true"/> if this instance is all instances; otherwise, <see langword="false"/>.</value>
         private bool IsAllInstances => this.IsHostMode && !this.CurrentPortalOnly;
 
         /// <summary>Gets the home directory.</summary>
@@ -229,7 +229,7 @@ namespace DNNConnect.CKEditorProvider
         private string HomeDirectory => this.portalSettings?.HomeDirectoryMapPath ?? Globals.HostMapPath;
 
         /// <summary>Binds the options data.</summary>
-        /// <param name="reloadOptionsfromModule">if set to <c>true</c> [reload options from module].</param>
+        /// <param name="reloadOptionsfromModule">if set to <see langword="true"/> [reload options from module].</param>
         internal void BindOptionsData(bool reloadOptionsfromModule = false)
         {
             // Check if Options Window is in Host Page
@@ -489,7 +489,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Imports the XML file.</summary>
         /// <param name="xmlFilePath">The XML file path.</param>
-        /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
+        /// <param name="changeMode">if set to <see langword="true"/> [change mode].</param>
         private void ImportXmlFile(string xmlFilePath, bool changeMode = true)
         {
             var serializer = new XmlSerializer(typeof(EditorProviderSettings));
@@ -569,7 +569,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Fills the setting controls with the loaded Setting Values.</summary>
         /// <param name="importedSettings">The imported settings.</param>
-        /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
+        /// <param name="changeMode">if set to <see langword="true"/> [change mode].</param>
         private void FillSettings(EditorProviderSettings importedSettings, bool changeMode = true)
         {
             // Editor config settings
@@ -1807,7 +1807,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Load All Editor Settings.</summary>
         /// <param name="currentMode">The current mode.</param>
-        /// <param name="changeMode">if set to <c>true</c> [change mode].</param>
+        /// <param name="changeMode">if set to <see langword="true"/> [change mode].</param>
         private void LoadSettings(int currentMode, bool changeMode = true)
         {
             this.moduleInstanceName = this.request.QueryString["minc"];
@@ -3063,7 +3063,7 @@ namespace DNNConnect.CKEditorProvider
         }
 
         /// <summary>Renders the URL controls.</summary>
-        /// <param name="reloadControls">if set to <c>true</c> [reload controls].</param>
+        /// <param name="reloadControls">if set to <see langword="true"/> [reload controls].</param>
         private void RenderUrlControls(bool reloadControls = false)
         {
             // Assign Url Controls on the Page the Correct Portal Id

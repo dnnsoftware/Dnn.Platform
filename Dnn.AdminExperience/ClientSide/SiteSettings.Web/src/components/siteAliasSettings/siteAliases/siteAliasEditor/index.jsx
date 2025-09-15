@@ -156,9 +156,9 @@ class SiteAliasEditor extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
-        /* eslint-disable react/no-danger */
+         
         if (this.state.aliasDetail !== undefined || this.props.id === "add") {
             const columnOne = <div key="column-one" className="left-column">
                 <InputGroup>

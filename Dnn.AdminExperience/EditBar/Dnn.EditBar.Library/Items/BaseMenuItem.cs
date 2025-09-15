@@ -58,7 +58,7 @@ namespace Dnn.EditBar.Library.Items
         public virtual IDictionary<string, object> Settings { get; } = new Dictionary<string, object>();
 
         /// <summary>whether the menu is visible in current context.</summary>
-        /// <returns><c>true</c> if this menu item is visible, otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if this menu item is visible, otherwise <see langword="false"/>.</returns>
         public virtual bool Visible()
         {
             return true;

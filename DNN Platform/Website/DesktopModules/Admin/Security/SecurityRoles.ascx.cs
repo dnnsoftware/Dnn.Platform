@@ -5,7 +5,6 @@
 namespace DotNetNuke.Modules.Admin.Security
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -14,9 +13,12 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
@@ -28,7 +30,6 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
 
-    using Calendar = DotNetNuke.Common.Utilities.Calendar;
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The SecurityRoles PortalModuleBase is used to manage the users and roles they have.</summary>
@@ -36,28 +37,48 @@ namespace DotNetNuke.Modules.Admin.Security
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
         private readonly INavigationManager navigationManager;
+        private readonly RoleProvider roleProvider;
+        private readonly IRoleController roleController;
+        private readonly IEventManager eventManager;
+        private readonly IPortalController portalController;
+        private readonly IUserController userController;
+        private readonly IEventLogger eventLogger;
+
         private int roleId = Null.NullInteger;
         private int userId = Null.NullInteger;
         private RoleInfo role;
-        private int selectedUserID = Null.NullInteger;
+        private int selectedUserId = Null.NullInteger;
         private UserInfo user;
-
-        private int totalPages = 1;
         private int totalRecords;
 
+        /// <summary>Initializes a new instance of the <see cref="SecurityRoles"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public SecurityRoles()
+            : this(null, null, null, null, null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SecurityRoles"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public SecurityRoles(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.roleProvider = roleProvider ?? this.DependencyProvider.GetRequiredService<RoleProvider>();
+            this.roleController = roleController ?? this.DependencyProvider.GetRequiredService<IRoleController>();
+            this.eventManager = eventManager ?? this.DependencyProvider.GetRequiredService<IEventManager>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.userController = userController ?? this.DependencyProvider.GetRequiredService<IUserController>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <inheritdoc/>
-        public ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                return new ModuleActionCollection();
-            }
-        }
+        public ModuleActionCollection ModuleActions => new();
 
         /// <summary>Gets or sets the ParentModule (if one exists).</summary>
         public PortalModuleBase ParentModule { get; set; }
@@ -103,11 +124,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.roleId != Null.NullInteger)
                     {
-                        this.role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == this.roleId);
+                        this.role = this.roleController.GetRole(this.PortalId, r => r.RoleID == this.roleId);
                     }
                     else if (this.cboRoles.SelectedItem != null)
                     {
-                        this.role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == Convert.ToInt32(this.cboRoles.SelectedItem.Value));
+                        this.role = this.roleController.GetRole(this.PortalId, r => r.RoleID == Convert.ToInt32(this.cboRoles.SelectedItem.Value));
                     }
                 }
 
@@ -162,12 +183,12 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                return this.selectedUserID;
+                return this.selectedUserId;
             }
 
             set
             {
-                this.selectedUserID = value;
+                this.selectedUserId = value;
             }
         }
 
@@ -249,11 +270,11 @@ namespace DotNetNuke.Modules.Admin.Security
             try
             {
                 var cmdDeleteUserRole = (ImageButton)sender;
-                int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
-                int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
+                var roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
+                var userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
 
-                RoleInfo role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
-                if (!RoleController.DeleteUserRole(UserController.GetUserById(this.PortalId, userId), role, this.PortalSettings, this.chkNotify.Checked))
+                var role = this.roleController.GetRole(this.PortalId, r => r.RoleID == roleId);
+                if (!RoleController.DeleteUserRole(this.roleProvider, this.roleController, this.eventManager, this.portalController, this.userController, this.eventLogger, this.userController.GetUserById(this.PortalId, userId), role, this.PortalSettings, this.chkNotify.Checked))
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 }
@@ -375,7 +396,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 if (this.cboRoles.Items.Count == 0)
                 {
-                    var roles = RoleController.Instance.GetRoles(this.PortalId, x => x.Status == RoleStatus.Approved);
+                    var roles = this.roleController.GetRoles(this.PortalId, x => x.Status == RoleStatus.Approved);
 
                     // Remove access to Admin Role if use is not a member of the role
                     int roleIndex = Null.NullInteger;
@@ -507,39 +528,37 @@ namespace DotNetNuke.Modules.Admin.Security
             var roleName = this.roleId != Null.NullInteger ? this.Role.RoleName : Null.NullString;
             var userName = this.userId != Null.NullInteger ? this.User.Username : Null.NullString;
 
-            var userList = RoleController.Instance.GetUserRoles(this.PortalId, userName, roleName);
+            var userList = this.roleController.GetUserRoles(this.PortalId, userName, roleName);
             this.totalRecords = userList.Count;
-            this.totalPages = this.totalRecords % this.PageSize == 0 ? this.totalRecords / this.PageSize : (this.totalRecords / this.PageSize) + 1;
 
             return userList.Skip((this.CurrentPage - 1) * this.PageSize).Take(this.PageSize).ToList();
         }
 
         /// <summary>GetDates gets the expiry/effective Dates of a Users Role membership.</summary>
-        /// <param name="userId">The Id of the User.</param>
-        /// <param name="roleId">The Id of the Role.</param>
+        /// <param name="userId">The ID of the User.</param>
+        /// <param name="roleId">The ID of the Role.</param>
         private void GetDates(int userId, int roleId)
         {
             DateTime? expiryDate = null;
             DateTime? effectiveDate = null;
 
-            UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(this.PortalId, userId, roleId);
-            if (objUserRole != null)
+            var userRole = this.roleController.GetUserRole(this.PortalId, userId, roleId);
+            if (userRole != null)
             {
-                if (Null.IsNull(objUserRole.EffectiveDate) == false)
+                if (Null.IsNull(userRole.EffectiveDate) == false)
                 {
-                    effectiveDate = objUserRole.EffectiveDate;
+                    effectiveDate = userRole.EffectiveDate;
                 }
 
-                if (Null.IsNull(objUserRole.ExpiryDate) == false)
+                if (Null.IsNull(userRole.ExpiryDate) == false)
                 {
-                    expiryDate = objUserRole.ExpiryDate;
+                    expiryDate = userRole.ExpiryDate;
                 }
             }
             else
             {
                 // new role assignment
-                RoleInfo objRole = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
-
+                var objRole = this.roleController.GetRole(this.PortalId, r => r.RoleID == roleId);
                 if (objRole.BillingPeriod > 0)
                 {
                     switch (objRole.BillingFrequency)
@@ -654,7 +673,7 @@ namespace DotNetNuke.Modules.Admin.Security
                             isOwner = this.chkIsOwner.Checked;
                         }
 
-                        RoleController.AddUserRole(this.User, this.Role, this.PortalSettings, RoleStatus.Approved, datEffectiveDate, datExpiryDate, this.chkNotify.Checked, isOwner);
+                        RoleController.AddUserRole(this.roleController, this.userController, this.eventLogger, this.User, this.Role, this.PortalSettings, RoleStatus.Approved, datEffectiveDate, datExpiryDate, this.chkNotify.Checked, isOwner);
                         this.chkIsOwner.Checked = false; // reset the checkbox
                     }
                 }

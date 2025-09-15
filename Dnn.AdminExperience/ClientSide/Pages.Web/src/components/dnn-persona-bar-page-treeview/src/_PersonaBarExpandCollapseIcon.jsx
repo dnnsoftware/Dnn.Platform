@@ -7,7 +7,7 @@ export default class PersonaBarExpandCollapseIcon extends Component {
 
     render() {
         const {isOpen, item} = this.props;
-        /*eslint-disable react/no-danger*/
+         
         return (
             <div className="parent-expand-icon">
                 {isOpen ? <div id={`collapse-${item.name}`} className="treeview-parent-collapse-button" dangerouslySetInnerHTML={{ __html: SvgIcons.CollapseTree }} /> : <div id={`expand-${item.name}`} className="treeview-parent-expand-button" dangerouslySetInnerHTML={{ __html: SvgIcons.ExpandTree }} /> }

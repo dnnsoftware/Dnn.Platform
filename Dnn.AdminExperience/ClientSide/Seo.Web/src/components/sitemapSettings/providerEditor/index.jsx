@@ -63,7 +63,7 @@ class ProviderEditor extends Component {
         this.props.onUpdate(state.settings);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {state} = this;
         if (state.settings) {
@@ -97,7 +97,7 @@ class ProviderEditor extends Component {
                 </InputGroup>
             </div>;
 
-            /* eslint-disable react/no-danger */
+             
             return (
                 <div className={styles.providerSettingEditor}>
                     <div style={{ height: "15px" }} />

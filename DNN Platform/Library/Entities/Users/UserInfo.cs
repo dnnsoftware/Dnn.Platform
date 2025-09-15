@@ -25,9 +25,6 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      UserInfo
     /// <summary>The UserInfo class provides Business Layer model for Users.</summary>
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess, IUserInfo

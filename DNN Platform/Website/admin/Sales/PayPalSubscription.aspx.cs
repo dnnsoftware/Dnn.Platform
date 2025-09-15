@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.Admin.Sales
     using System.Collections.Generic;
     using System.Globalization;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Portals;
@@ -22,6 +23,21 @@ namespace DotNetNuke.Modules.Admin.Sales
     public partial class PayPalSubscription : PageBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PayPalSubscription));
+
+        /// <summary>Initializes a new instance of the <see cref="PayPalSubscription"/> class.</summary>
+        public PayPalSubscription()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PayPalSubscription"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public PayPalSubscription(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+            : base(portalController, appStatus, hostSettings)
+        {
+        }
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)

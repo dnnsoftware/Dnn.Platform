@@ -65,43 +65,41 @@ export class DnnRmActionsBar {
     }
   }
 
-  private syncFolderContent(recursive: boolean = false): void {
-    this.itemsClient.syncFolderContent(
-      state.currentItems.folder.folderId,
-      0,
-      state.sortField,
-      recursive)
-      .then(() => {
-        this.getFolderContent();
-      })
-      .catch(error => console.log(error));
+  private async syncFolderContent(recursive: boolean = false) {
+    try {
+      await this.itemsClient.syncFolderContent(
+        state.currentItems.folder.folderId,
+        0,
+        state.sortField,
+        recursive);
+      await this.getFolderContent();
+    } catch (error) {
+      alert(error);
+    }
   }
 
 
-  private getFolderContent() {
-    this.getFolders()
-    .then(() => {
-      this.itemsClient.getFolderContent(
+  private async getFolderContent() {
+    try {
+      await this.getFolders();
+      state.currentItems = await this.itemsClient.getFolderContent(
         state.currentItems.folder.folderId,
         0,
         state.pageSize,
         state.sortField,
-        state.sortOrder)
-      .then(data => state.currentItems = data)
-      .catch(error => console.error(error));
-    })
-    .catch(error => alert(error.Message));
+        state.sortOrder);
+      
+    } catch (error) {
+      alert(error);
+    }
   }
 
-  private getFolders() {
-    return new Promise((resolve, reject) => {
-      this.internalServicesClient.getFolders(state.settings.HomeFolderId)
-      .then(data => {
-        state.rootFolders = data;
-        resolve(data);
-      })
-      .catch(reason => reject(reason));
-    });
+  private async getFolders() {
+    try {
+      state.rootFolders = await this.internalServicesClient.getFolders(state.settings.HomeFolderId);
+    } catch (error) {
+      alert(error);
+    }
   }
 
   private toggleSortOrder() {
@@ -172,7 +170,7 @@ export class DnnRmActionsBar {
               onClick={() =>
                 {
                      this.toggleSortOrder();
-                     this.getFolderContent();
+                     void this.getFolderContent();
                 }
               }
             >
@@ -208,7 +206,7 @@ export class DnnRmActionsBar {
                 <button
                   onClick={() =>
                   {
-                    this.getFolderContent();
+                    void this.getFolderContent();
                     this.syncDropdownExpanded = !this.syncDropdownExpanded;
                   }}
                 >
@@ -217,7 +215,7 @@ export class DnnRmActionsBar {
                 <button
                   onClick={() =>
                   {
-                    this.syncFolderContent();
+                    void this.syncFolderContent();
                     this.syncDropdownExpanded = !this.syncDropdownExpanded;
                   }}
                 >
@@ -226,7 +224,7 @@ export class DnnRmActionsBar {
                 <button
                   onClick={() =>
                   {
-                    this.syncFolderContent(true);
+                    void this.syncFolderContent(true);
                     this.syncDropdownExpanded = !this.syncDropdownExpanded;
                   }}
                 >

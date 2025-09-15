@@ -40,7 +40,7 @@ class UrlRow extends Component {
         const opened = editedUrl && editedUrl.id === url.id;
 
         return (
-            /* eslint-disable react/no-danger */
+             
             <div className={styles.urlRow + (opened ? " row-opened" : "")} >
                 <GridCell columnSize={50} className="url-path">
                     {url.path}
@@ -73,7 +73,7 @@ class UrlRow extends Component {
                         primaryAliasId={primaryAliasId}
                         className="newUrlContainer" />}
             </div>
-            /* eslint-enable react/no-danger */
+             
         );
     }
 }

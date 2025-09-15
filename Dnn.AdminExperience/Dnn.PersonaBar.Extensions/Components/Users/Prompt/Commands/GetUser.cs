@@ -15,25 +15,21 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-user", Constants.UsersCategory, "Prompt_GetUser_Description")]
-
     public class GetUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetUser_FlagId", "Integer")]
-
         private const string FlagId = "id";
 
         [FlagParameter("email", "Prompt_GetUser_FlagEmail", "String")]
-
         private const string FlagEmail = "email";
 
         [FlagParameter("username", "Prompt_GetUser_FlagUsername", "String")]
-
         private const string FlagUsername = "username";
 
         private const int UserIdZero = 0;
 
-        private IUserValidator userValidator;
-        private IUserControllerWrapper userControllerWrapper;
+        private readonly IUserValidator userValidator;
+        private readonly IUserControllerWrapper userControllerWrapper;
 
         /// <summary>Initializes a new instance of the <see cref="GetUser"/> class.</summary>
         public GetUser()

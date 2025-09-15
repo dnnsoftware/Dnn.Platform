@@ -9,10 +9,10 @@ export default class StylesClient {
     constructor() {
         const dnnStyles = window.dnn as unknown as IDnnWrapper;
         this.config = dnnStyles.initStyles();
-        if (!this.config) {
+        if (this.config == undefined) {
             throw new Error("dnn.initStyles() is not defined.");
         }
-        if (!this.config.utility) {
+        if (this.config.utility == undefined) {
             throw new Error("dnn.initStyles().utility is not defined.");
         }
 
@@ -46,10 +46,10 @@ export default class StylesClient {
                 return response.json();
             })
             .then((response) => {
-                resolve(response);
+                resolve(response as IPortalStyles);
             })
-            .catch((error) => {
-                reject(error);
+            .catch(error => {
+                reject(Error(error as string));
             });
         });
     }
@@ -68,7 +68,7 @@ export default class StylesClient {
                 resolve();
             })
             .catch((error) => {
-                reject(error);
+                reject(new Error(error as string));
             });
         });
     }
@@ -86,10 +86,10 @@ export default class StylesClient {
                 return response.json();
             })
             .then((response) => {
-                resolve(response);
+                resolve(response as IPortalStyles);
             })
             .catch((error) => {
-                reject(error);
+                reject(Error(error as string));
             });
         });
     }

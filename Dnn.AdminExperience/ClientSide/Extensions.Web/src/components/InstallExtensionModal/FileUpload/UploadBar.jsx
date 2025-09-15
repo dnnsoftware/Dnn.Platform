@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+/* eslint-disable no-undef */
 const upload = require("!raw-loader!./img/upload.svg").default;
 const checkmark = require("!raw-loader!./img/checkmark.svg").default;
 const errorIcon = require("!raw-loader!./img/x.svg").default;
+/* eslint-enable no-undef */
 
 export default class UploadBar extends Component {
     constructor() {
@@ -52,7 +54,7 @@ export default class UploadBar extends Component {
 
     render() {
         const { props } = this;
-        /* eslint-disable react/no-danger */
+         
         let percent = props.errorText ? 0 : this.state.percent;
         let text = props.uploadComplete ? props.uploadCompleteText : props.uploadingText;
         text = props.errorText ? props.errorText : text;

@@ -14,13 +14,8 @@ namespace DotNetNuke.HttpModules.UsersOnline
     [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
     public partial class UsersOnlineModule : IHttpModule
     {
-        public string ModuleName
-        {
-            get
-            {
-                return "UsersOnlineModule";
-            }
-        }
+        /// <summary>Gets the HttpModule module name.</summary>
+        public string ModuleName => "UsersOnlineModule";
 
         /// <inheritdoc/>
         public void Init(HttpApplication application)
@@ -33,6 +28,9 @@ namespace DotNetNuke.HttpModules.UsersOnline
         {
         }
 
+        /// <summary>Handles the <see cref="HttpApplication.AuthorizeRequest"/> event.</summary>
+        /// <param name="s">The sender.</param>
+        /// <param name="e">The event args.</param>
         public void OnAuthorizeRequest(object s, EventArgs e)
         {
             // First check if we are upgrading/installing

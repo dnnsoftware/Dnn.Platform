@@ -2,10 +2,8 @@ import React, {Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./style.module.less";
 import resx from "../../../resources";
-
-/*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./../taskStatusItemRow/svg/clock_stop.svg`).default;
-const svgIcon2 = require(`!raw-loader!./../taskStatusItemRow/svg/cycle.svg`).default;
+import clockStopIcon from "./../taskStatusItemRow/svg/clock_stop.svg?raw";
+import cycleIcon from "./../taskStatusItemRow/svg/cycle.svg?raw";
 
 class LeftPane extends Component {
     constructor() {
@@ -15,13 +13,13 @@ class LeftPane extends Component {
         const {props} = this;
         props.onEnter(key, value, props.index);
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         return (
             <div className={styles.taskStatusItemLeftPane}>
-                <div hidden={!this.props.nextStart} className="taskIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>
-                <div hidden={!this.props.startDate} className="taskIconProcessing" dangerouslySetInnerHTML={{ __html: svgIcon2 }}></div>
+                <div hidden={!this.props.nextStart} className="taskIcon" dangerouslySetInnerHTML={{ __html: clockStopIcon }}></div>
+                <div hidden={!this.props.startDate} className="taskIconProcessing" dangerouslySetInnerHTML={{ __html: cycleIcon }}></div>
                 <div className="taskDetail">
                     <div className="taskDetail-name">{props.friendlyName}</div>
                     <div hidden={!this.props.startDate} className="taskDetail-common">

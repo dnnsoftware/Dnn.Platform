@@ -20,31 +20,24 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Security.Roles;
 
     [ConsoleCommand("set-role", Constants.RolesCategory, "Prompt_SetRole_Description")]
-
     public class SetRole : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_SetRole_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("public", "Prompt_SetRole_FlagIsPublic", "Boolean")]
-
         private const string FlagIsPublic = "public";
 
         [FlagParameter("autoassign", "Prompt_SetRole_FlagAutoAssign", "Boolean")]
-
         private const string FlagAutoAssign = "autoassign";
 
         [FlagParameter("name", "Prompt_SetRole_FlagRoleName", "String")]
-
         private const string FlagRoleName = "name";
 
         [FlagParameter("description", "Prompt_SetRole_FlagDescription", "String")]
-
         private const string FlagDescription = "description";
 
         [FlagParameter("status", "Prompt_SetRole_FlagStatus", "Boolean")]
-
         private const string FlagStatus = "status";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));

@@ -33,14 +33,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         }
 
         /// <summary>Gets cache key for this class. Used for parameter mapping storage as well as entire class persistence.</summary>
-        protected virtual string MappingCacheKey
-        {
-            get
-            {
-                var type = typeof(T);
-                return "SettingsRepository_" + type.FullName.Replace(".", "_");
-            }
-        }
+        protected virtual string MappingCacheKey => "SettingsRepository_" + typeof(T).FullName.Replace(".", "_");
 
         private static ISerializationManager SerializationManager => Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 

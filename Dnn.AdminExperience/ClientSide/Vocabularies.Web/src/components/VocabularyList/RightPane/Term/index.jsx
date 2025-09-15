@@ -50,7 +50,7 @@ class Term extends Component {
         const {props, state} = this;
         const className = styles.termLi + (props.children.length > 0 ? " has-children" : "") + (state.isOpened ? " opened" : "") + (props.term.selected ? " selected" : "");
 
-        /* eslint-disable react/no-danger */
+         
         return (
             <li className={className}>
                 <div>
@@ -75,7 +75,8 @@ Term.propTypes = {
     term: PropTypes.object,
     children: PropTypes.node,
     isEditable: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    closeAll: PropTypes.bool
 };
 
 export default Term;

@@ -26,7 +26,6 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.FileSystem.Internal;
@@ -44,13 +43,7 @@ namespace DotNetNuke.Services.FileSystem
         private static readonly object ThreadLocker = new object();
 
         /// <summary>Gets the localization key for MyFolderName.</summary>
-        public virtual string MyFolderName
-        {
-            get
-            {
-                return Localization.GetString("MyFolderName");
-            }
-        }
+        public virtual string MyFolderName => Localization.GetString("MyFolderName");
 
         /// <summary>Creates a new folder using the provided folder path.</summary>
         /// <param name="folderMapping">The folder mapping to use.</param>
@@ -2009,23 +2002,26 @@ namespace DotNetNuke.Services.FileSystem
 
         private IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, Regex regex, bool recursive)
         {
-            var fileCollection =
-                CBO.Instance.FillCollection<FileInfo>(DataProvider.Instance().GetFiles(folder.FolderID, false, false));
+            // Get all files in one DB call
+            var fileCollection = CBO.Instance.FillCollection<FileInfo>(
+                DataProvider.Instance().GetFiles(folder.FolderID, false, recursive));
 
-            var files = (from f in fileCollection where regex.IsMatch(f.FileName) select f).Cast<IFileInfo>().ToList();
-
-            if (recursive)
+            if (!recursive)
             {
-                foreach (var subFolder in this.GetFolders(folder))
-                {
-                    if (FolderPermissionController.Instance.CanViewFolder(subFolder))
-                    {
-                        files.AddRange(this.SearchFiles(subFolder, regex, true));
-                    }
-                }
+                return fileCollection.Where(f => regex.IsMatch(f.FileName)).Cast<IFileInfo>();
             }
 
-            return files;
+            // Pre-compute allowed folders once
+            var allowedFolderPaths = this.GetFolders(folder.PortalID)
+                .Where(f => f.FolderPath.StartsWith(folder.FolderPath) &&
+                           FolderPermissionController.Instance.CanViewFolder(f))
+                .Select(f => f.FolderPath)
+                .ToHashSet();
+
+            // Simple filter with folder permission lookup
+            return fileCollection
+                .Where(f => allowedFolderPaths.Contains(f.Folder) && regex.IsMatch(f.FileName))
+                .Cast<IFileInfo>();
         }
 
         private IFolderInfo UpdateFolderInternal(IFolderInfo folder, bool clearCache)

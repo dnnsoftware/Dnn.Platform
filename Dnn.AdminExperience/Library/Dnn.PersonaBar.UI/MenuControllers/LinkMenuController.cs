@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Model;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -18,6 +19,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     using DotNetNuke.Entities.Tabs;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// <summary>An <see cref="IMenuItemController"/> for menu items that link to other pages.</summary>
     public class LinkMenuController : IMenuItemController
     {
         /// <summary>Initializes a new instance of the <see cref="LinkMenuController"/> class.</summary>
@@ -26,39 +28,42 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
+        /// <summary>Gets the navigation manager.</summary>
         protected INavigationManager NavigationManager { get; }
 
         /// <inheritdoc/>
         public void UpdateParameters(MenuItem menuItem)
         {
-            if (this.Visible(menuItem))
+            if (!this.Visible(menuItem))
             {
-                var query = this.GetPathQuery(menuItem);
-
-                int tabId, portalId;
-                if (query.ContainsKey("path"))
-                {
-                    portalId = query.ContainsKey("portalId") ? Convert.ToInt32(query["portalId"]) : PortalSettings.Current.PortalId;
-                    tabId = TabController.GetTabByTabPath(portalId, query["path"], string.Empty);
-                }
-                else
-                {
-                    portalId = Convert.ToInt32(query["portalId"]);
-                    tabId = Convert.ToInt32(query["tabId"]);
-                }
-
-                var tabUrl = this.NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
-                var alias = Globals.AddHTTP(PortalSettings.Current.PortalAlias.HTTPAlias);
-                tabUrl = tabUrl.Replace(alias, string.Empty).TrimStart('/');
-
-                menuItem.Link = tabUrl;
+                return;
             }
+
+            var query = GetPathQuery(menuItem);
+
+            int tabId, portalId;
+            if (query.TryGetValue("path", out var path))
+            {
+                portalId = query.TryGetValue("portalId", out var queryPortalId) ? Convert.ToInt32(queryPortalId) : PortalSettings.Current.PortalId;
+                tabId = TabController.GetTabByTabPath(portalId, path, string.Empty);
+            }
+            else
+            {
+                portalId = Convert.ToInt32(query["portalId"]);
+                tabId = Convert.ToInt32(query["tabId"]);
+            }
+
+            var tabUrl = this.NavigationManager.NavigateURL(tabId, portalId == Null.NullInteger);
+            var alias = Globals.AddHTTP(((IPortalAliasInfo)PortalSettings.Current.PortalAlias).HttpAlias);
+            tabUrl = tabUrl.Replace(alias, string.Empty).TrimStart('/');
+
+            menuItem.Link = tabUrl;
         }
 
         /// <inheritdoc/>
         public bool Visible(MenuItem menuItem)
         {
-            var query = this.GetPathQuery(menuItem);
+            var query = GetPathQuery(menuItem);
             if (PortalSettings.Current == null || query == null)
             {
                 return false;
@@ -75,7 +80,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             int tabId, portalId;
             if (query.ContainsKey("path") && !string.IsNullOrEmpty(query["path"]))
             {
-                portalId = query.ContainsKey("portalId") ? Convert.ToInt32(query["portalId"]) : PortalSettings.Current.PortalId;
+                portalId = query.TryGetValue("portalId", out var queryPortalId) ? Convert.ToInt32(queryPortalId) : PortalSettings.Current.PortalId;
                 tabId = TabController.GetTabByTabPath(portalId, query["path"], string.Empty);
 
                 if (tabId == Null.NullInteger)
@@ -96,7 +101,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
 
             var tab = TabController.Instance.GetTab(tabId, portalId);
             return (portalId == Null.NullInteger || portalId == PortalSettings.Current.PortalId)
-                    && tab != null && !tab.IsDeleted && !tab.DisableLink && tab.IsVisible;
+                   && tab is { IsDeleted: false, DisableLink: false, IsVisible: true };
         }
 
         /// <inheritdoc/>
@@ -105,7 +110,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             return null;
         }
 
-        private IDictionary<string, string> GetPathQuery(MenuItem menuItem)
+        private static IDictionary<string, string> GetPathQuery(MenuItem menuItem)
         {
             var path = menuItem.Path;
             if (!path.Contains("?"))

@@ -7,11 +7,10 @@ import {
 import resx from "../../resources";
 import styles from "./style.module.less";
 
-/*eslint-disable quotes*/
-const dnnTechnologyEditorialIcon = require(`!raw-loader!./../svg/dnn_technology_editorial.svg`).default;
-const githubIcon = require(`!raw-loader!./../svg/github.svg`).default;
-const dnnIcon = require(`!raw-loader!./../svg/dnn_logo_primary.svg`).default;
-const docsIcon = require(`!raw-loader!./../svg/dnn_docs_logo.svg`).default;
+import dnnTechnologyEditorialIcon from "./../svg/dnn_technology_editorial.svg?raw";
+import githubIcon from "./../svg/github.svg?raw";
+import dnnIcon from "./../svg/dnn_logo_primary.svg?raw";
+import docsIcon from "./../svg/dnn_docs_logo.svg?raw";
 
 class Platform extends Component {
     constructor() {
@@ -34,7 +33,7 @@ class Platform extends Component {
         window.open("https://docs.dnncommunity.org", "_blank");
     }
 
-    /* eslint-disable react/no-danger */
+     
     renderLinks() {
         return (
             <div className="links-wrapper">

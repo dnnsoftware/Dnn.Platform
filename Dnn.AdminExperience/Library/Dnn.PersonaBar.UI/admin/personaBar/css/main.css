@@ -469,34 +469,27 @@ span.dnnFormError:after {
     background-color: var(--dnn-color-pb-menu-background-hover);
 }
 
-.personabar .personabarLogo a.update {
+.personabar .personabarLogo .update {
     text-decoration: none;
     text-transform: uppercase;
     font-size: 10px;
     font-family: pb_semibold;
-    display: none;
     position: absolute;
     bottom: 8px;
     width: 50px;
+    border: none;
     background-color: var(--dnn-color-tertiary-light, #21a3da);
     border-radius: var(--dnn-controls-radius, 3px);
     color: var(--dnn-color-tertiary-contrast, #fff);
-    display: block;
+    display: none;
     padding: 2px;
 }
 
-.personabar .personabarLogo a.update.critical {
+.personabar .personabarLogo.updateLogo .update {
+    display: block;
+}
+.personabar .personabarLogo .update.critical {
     background-color: var(--dnn-color-danger, #d63333);
-}
-
-.personabar .personabarLogo a.update.normal-update {
-    color: var(--dnn-color-tertiary-light, #21a3da);
-    display: block;
-}
-
-.personabar .personabarLogo a.update.critical-update {
-    color: var(--dnn-color-danger, #d63333);
-    display: block;
 }
 
 .personabarnav {

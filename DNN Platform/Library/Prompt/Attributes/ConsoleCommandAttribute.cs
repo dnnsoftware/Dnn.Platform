@@ -5,6 +5,7 @@ namespace DotNetNuke.Prompt
 {
     using System;
 
+    /// <summary>An attribute decorating a Prompt command.</summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class ConsoleCommandAttribute : Attribute
     {

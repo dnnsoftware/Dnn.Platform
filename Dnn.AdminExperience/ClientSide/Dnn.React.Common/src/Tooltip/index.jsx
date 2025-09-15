@@ -18,7 +18,7 @@ const getTooltipText = function (messages) {
     return "- " + messages.join("<br />- ");
 };
 
-/*eslint-disable react/no-danger*/
+ 
 function getIconComponent(type) {
     switch (type) {
         case "info": return InfoIcon;

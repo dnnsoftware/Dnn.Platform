@@ -8,6 +8,8 @@ import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import utilities from "utils";
 import * as dayjs from "dayjs";
 import styles from "./style.module.less";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 class ListView extends Component {
     constructor() {
@@ -129,7 +131,7 @@ class ListView extends Component {
             ]);
         }
 
-        /*eslint-disable react/no-danger*/
+         
         let i = 0;
         return portalButtons.map((_button) => {
             let element = <div key={`portalButton_${i}`} dangerouslySetInnerHTML={{ __html: _button.icon }} title={_button.title} onClick={_button.onClick}></div>;
@@ -138,10 +140,9 @@ class ListView extends Component {
         });
     }
     getPortalMapping(portal) {
-        const localizedFormat = require("dayjs/plugin/localizedFormat");
         dayjs.extend(localizedFormat);
-        const relativeTime = require("dayjs/plugin/relativeTime");
         dayjs.extend(relativeTime);
+         
         require("dayjs/locale/" + this.props.culture.substring(0,2));
 
         return [

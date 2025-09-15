@@ -30,6 +30,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
 {
     private readonly IHostSettingsService hostSettingsService;
     private readonly IPortalAliasService portalAliasService;
+    private readonly IPortalController portalController;
     private readonly IHostSettings hostSettings;
 
     /// <summary>Initializes a new instance of the <see cref="ExchangeOnlineOAuthProvider"/> class.</summary>
@@ -37,7 +38,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <param name="portalAliasService">The portal alias service.</param>
     [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public ExchangeOnlineOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService)
-        : this(hostSettingsService, portalAliasService, null)
+        : this(hostSettingsService, portalAliasService, null, null)
     {
     }
 
@@ -45,11 +46,13 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="portalAliasService">The portal alias service.</param>
     /// <param name="hostSettings">The host settings.</param>
-    public ExchangeOnlineOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings)
+    /// <param name="portalController">The portal controller.</param>
+    public ExchangeOnlineOAuthProvider(IHostSettingsService hostSettingsService, IPortalAliasService portalAliasService, IHostSettings hostSettings, IPortalController portalController)
     {
         this.hostSettingsService = hostSettingsService;
         this.portalAliasService = portalAliasService;
         this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(hostSettingsService);
+        this.portalController = portalController ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
     }
 
     /// <inheritdoc />
@@ -61,7 +64,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <inheritdoc />
     public bool IsAuthorized(int portalId)
     {
-        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, portalId);
+        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, this.portalController, portalId);
         if (clientApplication == null)
         {
             return false;
@@ -75,7 +78,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <inheritdoc />
     public async Task<bool> IsAuthorizedAsync(int portalId, CancellationToken cancellationToken = default)
     {
-        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, portalId);
+        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, this.portalController, portalId);
         if (clientApplication == null)
         {
             return false;
@@ -145,7 +148,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
             return;
         }
 
-        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, portalId);
+        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, this.portalController, portalId);
         var account = clientApplication.GetAccountsAsync().Result.First();
         var scopes = GetAuthenticationScopes();
         var result = clientApplication.AcquireTokenSilent(scopes, account).ExecuteAsync().Result;
@@ -166,7 +169,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
             return;
         }
 
-        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, portalId);
+        var clientApplication = CreateClientApplication(this, this.hostSettingsService, this.hostSettings, this.portalController, portalId);
         var accounts = await clientApplication.GetAccountsAsync(cancellationToken);
         var account = accounts.First();
         var scopes = GetAuthenticationScopes();
@@ -184,11 +187,12 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
     /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="hostSettings">The host settings.</param>
-    /// <param name="portalId">The portal id.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="portalId">The portal ID.</param>
     /// <returns>The client application.</returns>
-    internal static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings, int portalId)
+    internal static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController, int portalId)
     {
-        return CreateClientApplication(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, hostSettings, portalId);
+        return CreateClientApplication(smtpOAuthController.GetOAuthProvider(Constants.Name), hostSettingsService, hostSettings, portalController, portalId);
     }
 
     /// <summary>Get the authentication scopes list.</summary>
@@ -198,7 +202,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         return new[] { "https://outlook.office365.com/.default", };
     }
 
-    private static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, IHostSettings hostSettings, int portalId)
+    private static ConfidentialClientApplication CreateClientApplication(ISmtpOAuthProvider authProvider, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController, int portalId)
     {
         var settings = authProvider.GetSettings(portalId);
         var tenantId = settings.FirstOrDefault(i => i.Name == Constants.TenantIdSettingName)?.Value ?? string.Empty;
@@ -231,7 +235,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
             .CreateWithApplicationOptions(options)
             .Build();
 
-        var tokenCacheHelper = new TokenCacheHelper(portalId, hostSettingsService, hostSettings);
+        var tokenCacheHelper = new TokenCacheHelper(portalId, hostSettingsService, hostSettings, portalController);
         tokenCacheHelper.EnableSerialization(clientApplication.UserTokenCache);
 
         return clientApplication;
@@ -366,20 +370,20 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         var changed = false;
         if (settings.ContainsKey(Constants.TenantIdSettingName) && settings[Constants.TenantIdSettingName] != tenantId)
         {
-            PortalController.UpdatePortalSetting(portalId, Constants.TenantIdSettingName, settings[Constants.TenantIdSettingName], false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.TenantIdSettingName, settings[Constants.TenantIdSettingName], false);
             changed = true;
         }
 
         if (settings.ContainsKey(Constants.ClientIdSettingName) && settings[Constants.ClientIdSettingName] != clientId)
         {
-            PortalController.UpdatePortalSetting(portalId, Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientIdSettingName, settings[Constants.ClientIdSettingName], false);
             changed = true;
         }
 
         if (settings.ContainsKey(Constants.ClientSecretSettingName) && settings[Constants.ClientSecretSettingName] != clientSecret)
         {
             var encryptedSecret = PortalSecurity.Instance.Encrypt(Config.GetDecryptionkey(), settings[Constants.ClientSecretSettingName]);
-            PortalController.UpdatePortalSetting(portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, Constants.ClientSecretSettingName, encryptedSecret, false);
             changed = true;
         }
 
@@ -407,7 +411,7 @@ public class ExchangeOnlineOAuthProvider : ISmtpOAuthProvider
         }
         else
         {
-            PortalController.UpdatePortalSetting(portalId, settingName, string.Empty, false);
+            PortalController.UpdatePortalSetting(this.portalController, portalId, settingName, string.Empty, false);
         }
     }
 }

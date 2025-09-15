@@ -653,8 +653,8 @@ namespace DotNetNuke.Modules.Html
         private string FormatContent(string htmlContent)
         {
             var strContent = HttpUtility.HtmlDecode(htmlContent);
-            strContent = HtmlTextController.ManageRelativePaths(strContent, this.PortalSettings.HomeDirectory, "src", this.PortalId);
-            strContent = HtmlTextController.ManageRelativePaths(strContent, this.PortalSettings.HomeDirectory, "background", this.PortalId);
+            strContent = HtmlTextController.ManageRelativePaths(strContent, this.PortalSettings.HomeDirectory, "src");
+            strContent = HtmlTextController.ManageRelativePaths(strContent, this.PortalSettings.HomeDirectory, "background");
             return HttpUtility.HtmlEncode(strContent);
         }
 

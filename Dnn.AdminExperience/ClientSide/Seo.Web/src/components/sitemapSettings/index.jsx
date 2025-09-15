@@ -273,7 +273,7 @@ class SitemapSettingsPanelBody extends Component {
         props.dispatch(SeoActions.createVerification(state.verification));
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         if (state.sitemapSettings) {

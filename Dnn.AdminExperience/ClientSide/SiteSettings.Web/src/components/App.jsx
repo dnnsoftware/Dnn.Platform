@@ -110,9 +110,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const {state, props} = this;
-
-        // // Listen for the event.
+        // Listen for the event.
         document.addEventListener("portalIdChanged", (e) => {
             this.changePortalId(e.portalId);
             this.updateReferrerInfo(e);

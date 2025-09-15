@@ -36,7 +36,7 @@ class MessageBox extends Component {
         props.onClose();
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         return (

@@ -16,11 +16,9 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-role", Constants.RolesCategory, "Prompt_GetRole_Description")]
-
     public class GetRole : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetRole_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         /// <inheritdoc/>

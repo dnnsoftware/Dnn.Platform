@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Cache
     using System.Text;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
@@ -21,6 +22,20 @@ namespace DotNetNuke.Services.Cache
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal static string CachingDirectory = "Cache\\";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
+
+        /// <summary>Initializes a new instance of the <see cref="FBCachingProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public FBCachingProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FBCachingProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public FBCachingProvider(IHostSettings hostSettings)
+            : base(hostSettings)
+        {
+        }
 
         /// <inheritdoc/>
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,                                    CacheItemRemovedCallback onRemoveCallback)

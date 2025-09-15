@@ -5,9 +5,7 @@ import { security as SecurityActions } from "../../actions";
 import BulletinItemRow from "./bulletinItemRow";
 import resx from "../../resources";
 import styles from "./style.module.less";
-
-/*eslint-disable quotes*/
-const warningIcon = require(`!raw-loader!./../svg/error.svg`).default;
+import warningIcon from "./../svg/error.svg?raw";
 
 class SecurityBulletinsPanelBody extends Component {
     constructor() {
@@ -77,7 +75,7 @@ class SecurityBulletinsPanelBody extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         if (state.error) {

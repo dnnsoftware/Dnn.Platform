@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Localization from "../../localization";
-import utils from "../../utils";
 import cloneDeep from "lodash/cloneDeep";
 import securityService from "../../services/securityService";
 import { TextOverflowWrapper, GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
@@ -93,7 +92,7 @@ class SearchResultCard extends Component {
         this.thumbRendered = true;                             
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         let visibleMenus = [];
         this.props.item.canViewPage && visibleMenus.push(<li key={"visible-menu-item-can-view-page"} onClick={() => this.props.onViewPage(this.props.item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} /></li>);
@@ -113,7 +112,7 @@ class SearchResultCard extends Component {
             <GridCell columnSize={100}>
                 <div className="search-item-card">
                     {this.renderCustomComponent()}
-                    <div className={`search-item-details`}>
+                    <div className={"search-item-details"}>
                         <div className="search-item-details-left">
                             <h1 onClick={() => this.onNameClick(this.props.item)}><TextOverflowWrapper text={this.props.item ? this.props.item.name : ""} /></h1>
                             <div title={tabPath}>{tabPath}</div>

@@ -30,7 +30,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<CachingProvider> mockCacheProvider;
 
         [SetUp]
-
         public void SetUp()
         {
             // Setup Mocks and Stub
@@ -82,7 +81,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-
         public void GetUserPreference_ShouldReturnNullObject_WhenUserDoesNotHavePreference()
         {
             // Arrange
@@ -99,7 +97,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
 
         [Test]
-
         public void GetUserPreference_ShouldReturnUserPreference_WhenUserHasPreference()
         {
             // Arrange

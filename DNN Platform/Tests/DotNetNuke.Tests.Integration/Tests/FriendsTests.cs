@@ -52,7 +52,6 @@ namespace DotNetNuke.Tests.Integration.Tests
         }
 
         [Test]
-
         public void Friend_Request_Should_Match_Target_User_Culture()
         {
             this.PrepareSecondLanguage();

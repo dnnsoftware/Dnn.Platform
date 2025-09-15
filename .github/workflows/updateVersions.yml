@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.ref_type == 'branch' && startsWith(github.event.ref, 'release/') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Get the release branch version
         uses: valadas/get-release-branch-version@v1.1.0

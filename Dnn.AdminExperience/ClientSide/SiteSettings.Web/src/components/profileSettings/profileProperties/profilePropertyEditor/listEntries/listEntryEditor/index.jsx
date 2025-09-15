@@ -56,7 +56,7 @@ class ListEntryEditor extends Component {
         props.Collapse();
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         if (this.state.entryDetail !== undefined || this.props.id === "add") {
             const columnOne = <div className="left-column">

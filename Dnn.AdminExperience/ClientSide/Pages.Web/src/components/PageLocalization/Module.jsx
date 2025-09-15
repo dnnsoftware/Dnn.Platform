@@ -26,7 +26,7 @@ class Module extends Component {
         this.onUpdateModules("IsLocalized", value);
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {module} = this.props;
         const {isDefault} = this.props;

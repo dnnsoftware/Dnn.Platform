@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Services.FileSystem.Internal;
 
     public class DatabaseFolderProvider : SecureFolderProvider
     {

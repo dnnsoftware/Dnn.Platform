@@ -16,27 +16,31 @@ using DotNetNuke.Abstractions.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Extensions;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Mail.OAuth;
 using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>Exchange OAuth callback.</summary>
 public abstract class Authorize : Page
 {
+    private readonly IPortalController portalController;
     private readonly ISmtpOAuthController smtpOAuthController;
     private readonly IHostSettingsService hostSettingsService;
     private readonly IHostSettings hostSettings;
 
     /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
+    [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     protected Authorize()
-        : this(null, null, null)
+        : this(null, null, null, null)
     {
     }
 
     /// <summary>Initializes a new instance of the <see cref="Authorize"/> class.</summary>
     /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
+    [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService)
-        : this(smtpOAuthController, hostSettingsService, null)
+        : this(smtpOAuthController, hostSettingsService, null, null)
     {
     }
 
@@ -44,11 +48,13 @@ public abstract class Authorize : Page
     /// <param name="smtpOAuthController">The SMTP OAuth controller.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="hostSettings">The host settings.</param>
-    protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings)
+    /// <param name="portalController">The portal controller.</param>
+    protected Authorize(ISmtpOAuthController smtpOAuthController, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController)
     {
         this.smtpOAuthController = smtpOAuthController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ISmtpOAuthController>();
         this.hostSettingsService = hostSettingsService ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettingsService>();
         this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        this.portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
     }
 
     /// <summary>OnLoad event.</summary>
@@ -72,7 +78,7 @@ public abstract class Authorize : Page
         }
 
         var authProvider = this.smtpOAuthController.GetOAuthProvider(Constants.Name);
-        var clientApplication = ExchangeOnlineOAuthProvider.CreateClientApplication(this.smtpOAuthController, this.hostSettingsService, this.hostSettings, portalId);
+        var clientApplication = ExchangeOnlineOAuthProvider.CreateClientApplication(this.smtpOAuthController, this.hostSettingsService, this.hostSettings, this.portalController, portalId);
 
         if (clientApplication == null || await authProvider.IsAuthorizedAsync(portalId, cancellationToken))
         {

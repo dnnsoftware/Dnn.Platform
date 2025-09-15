@@ -64,9 +64,9 @@ export default class FolderSelector extends Component {
     }
 
     getSearchIcon() {
-        /* eslint-disable react/no-danger */
+         
         return (<div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIconImage }} />);
-        /* eslint-enable react/no-danger */
+         
     }
 
     render() {

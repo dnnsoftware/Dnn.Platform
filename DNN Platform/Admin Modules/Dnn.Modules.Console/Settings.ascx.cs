@@ -260,16 +260,16 @@ namespace Dnn.Modules.Console
 
                 visibilityDropDown.Items.Clear();
 
-                visibilityDropDown.AddItem(this.LocalizeString("AllUsers"), "AllUsers");
+                visibilityDropDown.AddItem(this.LocalizeText("AllUsers"), "AllUsers");
                 if (this.modeList.SelectedValue == "Profile")
                 {
-                    visibilityDropDown.AddItem(this.LocalizeString("Friends"), "Friends");
-                    visibilityDropDown.AddItem(this.LocalizeString("User"), "User");
+                    visibilityDropDown.AddItem(this.LocalizeText("Friends"), "Friends");
+                    visibilityDropDown.AddItem(this.LocalizeText("User"), "User");
                 }
                 else
                 {
-                    visibilityDropDown.AddItem(this.LocalizeString("Owner"), "Owner");
-                    visibilityDropDown.AddItem(this.LocalizeString("Members"), "Members");
+                    visibilityDropDown.AddItem(this.LocalizeText("Owner"), "Owner");
+                    visibilityDropDown.AddItem(this.LocalizeText("Members"), "Members");
                 }
 
                 tabLabel.Text = tab.TabName;

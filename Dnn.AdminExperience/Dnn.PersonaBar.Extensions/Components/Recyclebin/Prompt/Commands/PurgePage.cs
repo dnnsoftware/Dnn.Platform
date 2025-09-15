@@ -20,11 +20,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class PurgePage : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_PurgePage_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("deletechildren", "Prompt_PurgePage_FlagDeleteChildren", "Boolean", "false")]
-
         private const string FlagDeleteChildren = "deletechildren";
 
         private readonly ITabController tabController;

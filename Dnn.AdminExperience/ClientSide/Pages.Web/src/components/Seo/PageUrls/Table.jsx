@@ -47,7 +47,7 @@ class Table extends Component {
             newFormOpened, onChange, editedUrl, siteAliases, primaryAliasId } = this.props;
         const urlRows = this.getUrlRows(pageUrls);
 
-        /* eslint-disable react/no-danger */
+         
         return (
             <div>
                 <div className={styles.addItemRow}>

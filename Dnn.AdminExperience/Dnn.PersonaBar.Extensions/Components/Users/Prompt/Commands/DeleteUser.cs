@@ -14,19 +14,16 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("delete-user", Constants.UsersCategory, "Prompt_DeleteUser_Description")]
-
     public class DeleteUser : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_DeleteUser_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("notify", "Prompt_DeleteUser_FlagNotify", "Boolean", "false")]
-
         private const string FlagNotify = "notify";
 
-        private IUserValidator userValidator;
-        private IUserControllerWrapper userControllerWrapper;
+        private readonly IUserValidator userValidator;
+        private readonly IUserControllerWrapper userControllerWrapper;
 
         /// <summary>Initializes a new instance of the <see cref="DeleteUser"/> class.</summary>
         public DeleteUser()

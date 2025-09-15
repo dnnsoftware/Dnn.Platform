@@ -1,9 +1,11 @@
 import React from "react";
-import { storiesOf } from "@storybook/react";
 import * as SvgIcons from "./index";
-import GridSystem from "../GridSystem";
 
-storiesOf("SvgIcons", module).add("with content", () => (
+export default {
+    component: SvgIcons,
+};
+
+export const WithContent =  () => (
     <div>
         <div>ActivityIcon <div style={{width: "24px" }} dangerouslySetInnerHTML={{ __html: SvgIcons.ActivityIcon }}></div></div>
         <div>AddIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}></div></div>
@@ -88,4 +90,4 @@ storiesOf("SvgIcons", module).add("with content", () => (
         <div>PagesSearchIcon <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.PagesSearchIcon }}></div></div>
         <div>PagesVerticalMore <div style={{width: "24px"}} dangerouslySetInnerHTML={{ __html: SvgIcons.PagesVerticalMore }}></div></div>
     </div>
-));
+);

@@ -5,7 +5,6 @@ import Input from "components/Input";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Localization from "localization/Localization";
-import { util, formatString } from "utils/helpers";
 import "components/Prompt.less";
 import * as PromptActionsCreators from "actions/prompt";
 import { PersonaBarPage } from "@dnnsoftware/dnn-react-common";
@@ -207,6 +206,7 @@ App.propTypes = {
     resultHtml: PropTypes.string,
     error: PropTypes.string,
     dispatch: PropTypes.func,
+    paging: PropTypes.object,
 };
 
 function mapStateToProps(state) {
@@ -228,7 +228,7 @@ function mapStateToProps(state) {
         options: state.options,
         resultHtml: state.resultHtml,
         error: state.error,
-        nextPageCommand: state.nextPageCommand
+        nextPageCommand: state.nextPageCommand,
     };
 }
 

@@ -14,14 +14,42 @@ namespace Dnn.PersonaBar.UI.Services
     using Dnn.PersonaBar.Library.Attributes;
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.Library.Dto;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A Persona Bar API controller for user settings.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class UserSettingsController : PersonaBarApiController
     {
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
+
+        /// <summary>Initializes a new instance of the <see cref="UserSettingsController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public UserSettingsController()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UserSettingsController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public UserSettingsController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        {
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        }
+
         /// <summary>Update Persona Bar's User Settings.</summary>
         /// <param name="settings">The user settings.</param>
         /// <returns>A response with an empty object.</returns>
@@ -32,7 +60,7 @@ namespace Dnn.PersonaBar.UI.Services
             try
             {
                 var controller = PersonaBarUserSettingsController.Instance;
-                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, this.PortalSettings.PortalId);
 
                 var userSettings = new UserSettings();
                 settings.ForEach(kvp =>

@@ -4,27 +4,27 @@
 
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <inheritdoc/>
     public class AdvancedPermissionProvider : PermissionProvider
     {
-        /// <summary>
-        /// Content Editors Advanced Role Name.
-        /// </summary>
+        /// <summary>Content Editors Advanced Role Name.</summary>
         public const string ContentEditors = "Content Editors";
 
-        /// <summary>
-        /// Content Managers Advanced Role Name.
-        /// </summary>
+        /// <summary>Content Managers Advanced Role Name.</summary>
         public const string ContentManagers = "Content Managers";
 
         // Constants representing various permission keys for folders, modules, and tabs. These keys are used to check specific permissions.
@@ -65,13 +65,33 @@ namespace DotNetNuke.Security.Permissions
         private const string ViewPagePermissionKey = "VIEW";
 
         // A list of advanced roles such as "Content Editors" and "Content Managers" that are checked and created if necessary.
-        private readonly List<string> advancedRoles = new List<string>() { ContentEditors, ContentManagers };
+        private readonly List<string> advancedRoles = [ContentEditors, ContentManagers];
 
         // Dependencies
-        private readonly IModuleController moduleController = ModuleController.Instance;
-        private readonly IPermissionDefinitionService permissionDefinitions = new PermissionController();
-        private readonly IRoleController roleController = RoleController.Instance;
-        private readonly ITabController tabController = TabController.Instance;
+        private readonly IPermissionDefinitionService permissionDefinitions;
+        private readonly IModuleController moduleController;
+        private readonly IRoleController roleController;
+        private readonly ITabController tabController;
+
+        /// <summary>Initializes a new instance of the <see cref="AdvancedPermissionProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
+        public AdvancedPermissionProvider()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AdvancedPermissionProvider"/> class.</summary>
+        /// <param name="permissionDefinitions">The permission definition service.</param>
+        /// <param name="moduleController">The module controller.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="tabController">The tab controller.</param>
+        public AdvancedPermissionProvider(IPermissionDefinitionService permissionDefinitions, IModuleController moduleController, IRoleController roleController, ITabController tabController)
+        {
+            this.permissionDefinitions = permissionDefinitions ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+            this.moduleController = moduleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleController>();
+            this.roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+        }
 
         /// <inheritdoc/>
         public override bool IsPortalEditor()
@@ -80,19 +100,19 @@ namespace DotNetNuke.Security.Permissions
 
         /// <inheritdoc/>
         public override bool CanAddFolder(FolderInfo folder)
-            => this.CanDoOnFolder(folder, AddFolderPermissionKey);
+            => CanDoOnFolder(folder, AddFolderPermissionKey);
 
         /// <inheritdoc/>
         public override bool CanCopyFolder(FolderInfo folder)
-            => this.CanDoOnFolder(folder, CopyFolderPermissionKey);
+            => CanDoOnFolder(folder, CopyFolderPermissionKey);
 
         /// <inheritdoc/>
         public override bool CanDeleteFolder(FolderInfo folder)
-            => this.CanDoOnFolder(folder, DeleteFolderPermissionKey);
+            => CanDoOnFolder(folder, DeleteFolderPermissionKey);
 
         /// <inheritdoc/>
         public override bool CanManageFolder(FolderInfo folder)
-            => this.CanDoOnFolder(folder, ManageFolderPermissionKey);
+            => CanDoOnFolder(folder, ManageFolderPermissionKey);
 
         /// <inheritdoc/>
         public override IEnumerable<RoleInfo> ImplicitRolesForFolders(int portalId)
@@ -128,23 +148,23 @@ namespace DotNetNuke.Security.Permissions
 
         /// <inheritdoc/>
         public override bool CanEditModuleContent(ModuleInfo module)
-            => this.CanDoOnModule(module, ContentModulePermissionKey);
+            => CanDoOnModule(module, ContentModulePermissionKey);
 
         /// <inheritdoc/>
         public override bool CanDeleteModule(ModuleInfo module)
-            => this.CanDoOnModule(module, DeleteModulePermissionKey);
+            => CanDoOnModule(module, DeleteModulePermissionKey);
 
         /// <inheritdoc/>
         public override bool CanExportModule(ModuleInfo module)
-            => this.CanDoOnModule(module, ExportModulePermissionKey);
+            => CanDoOnModule(module, ExportModulePermissionKey);
 
         /// <inheritdoc/>
         public override bool CanImportModule(ModuleInfo module)
-            => this.CanDoOnModule(module, ImportModulePermissionKey);
+            => CanDoOnModule(module, ImportModulePermissionKey);
 
         /// <inheritdoc/>
         public override bool CanManageModule(ModuleInfo module)
-            => this.CanDoOnModule(module, ManageModulePermissionKey);
+            => CanDoOnModule(module, ManageModulePermissionKey);
 
         /// <inheritdoc/>
         public override bool CanViewModule(ModuleInfo module)
@@ -194,63 +214,63 @@ namespace DotNetNuke.Security.Permissions
         /// <inheritdoc/>
         public override bool CanAddContentToPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, ContentPagePermissionKey)
+            || CanDoOnPage(tab, ContentPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanAdminPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, AdminPagePermissionKey)
+            || CanDoOnPage(tab, AdminPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanAddPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, AddPagePermissionKey)
+            || CanDoOnPage(tab, AddPagePermissionKey)
             || (tab.TabID == Null.NullInteger && this.CanAddTopLevel(tab.PortalID))
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanCopyPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, CopyPagePermissionKey)
+            || CanDoOnPage(tab, CopyPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanDeletePage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, DeletePagePermissionKey)
+            || CanDoOnPage(tab, DeletePagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanExportPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, ExportPagePermissionKey)
+            || CanDoOnPage(tab, ExportPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanImportPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, ImportPagePermissionKey)
+            || CanDoOnPage(tab, ImportPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanManagePage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, ManagePagePermissionKey)
+            || CanDoOnPage(tab, ManagePagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanNavigateToPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, NavigatePagePermissionKey)
-            || this.CanDoOnPage(tab, ViewPagePermissionKey)
+            || CanDoOnPage(tab, NavigatePagePermissionKey)
+            || CanDoOnPage(tab, ViewPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
         public override bool CanViewPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
-            || this.CanDoOnPage(tab, ViewPagePermissionKey)
+            || CanDoOnPage(tab, ViewPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
         /// <inheritdoc/>
@@ -318,12 +338,43 @@ namespace DotNetNuke.Security.Permissions
             => folderPermissions.FirstOrDefault()?.FolderPath ?? Null.NullString;
 
         private static int GetFolderId(List<FolderPermissionInfo> folderPermissions)
-            => folderPermissions.FirstOrDefault()?.FolderID ?? Null.NullInteger;
+            => folderPermissions.Cast<IFolderPermissionInfo>().Select(p => (int?)p.FolderId).FirstOrDefault() ?? Null.NullInteger;
+
+        private static bool HasPermission(string rolesOfExactKey, string editRoles)
+        {
+            // first check for explicit Deny permissions
+            if (PortalSecurity.IsDenied(rolesOfExactKey))
+            {
+                return false;
+            }
+
+            // last check for Allowed permissions
+            return PortalSecurity.IsInRoles(rolesOfExactKey)
+                   || PortalSecurity.IsInRoles(editRoles);
+        }
+
+        private static bool CanDoOnFolder(FolderInfo folder, string exactKey)
+        {
+            return folder != null
+                   && HasPermission(folder.FolderPermissions.ToString(exactKey), folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+        }
+
+        private static bool CanDoOnModule(ModuleInfo module, string exactKey)
+        {
+            return module != null
+                   && HasPermission(module.ModulePermissions.ToString(exactKey), module.ModulePermissions.ToString(AdminModulePermissionKey));
+        }
+
+        private static bool CanDoOnPage(TabInfo tab, string exactKey)
+        {
+            return tab != null
+                   && HasPermission(tab.TabPermissions.ToString(exactKey), tab.TabPermissions.ToString(AdminPagePermissionKey));
+        }
 
         private IEnumerable<RoleInfo> GetOrCreateAdvancedRoles(int portalId)
             => portalId >= 0
             ? this.advancedRoles.Select(roleName => this.GetOrCreateAdvancedRole(portalId, roleName)).ToList()
-            : new List<RoleInfo>();
+            : [];
 
         private RoleInfo GetOrCreateAdvancedRole(int portalId, string roleName)
         {
@@ -358,37 +409,6 @@ namespace DotNetNuke.Security.Permissions
             return role;
         }
 
-        private bool CanDoOnFolder(FolderInfo folder, string exactKey)
-        {
-            return folder != null
-                && this.HasPermission(folder.FolderPermissions.ToString(exactKey), folder.FolderPermissions.ToString(AdminFolderPermissionKey));
-        }
-
-        private bool CanDoOnModule(ModuleInfo module, string exactKey)
-        {
-            return module != null
-                && this.HasPermission(module.ModulePermissions.ToString(exactKey), module.ModulePermissions.ToString(AdminModulePermissionKey));
-        }
-
-        private bool CanDoOnPage(TabInfo tab, string exactKey)
-        {
-            return tab != null
-                && this.HasPermission(tab.TabPermissions.ToString(exactKey), tab.TabPermissions.ToString(AdminPagePermissionKey));
-        }
-
-        private bool HasPermission(string rolesOfExactKey, string editRoles)
-        {
-            // first check for explicit Deny permissions
-            if (PortalSecurity.IsDenied(rolesOfExactKey))
-            {
-                return false;
-            }
-
-            // last check for Allowed permissions
-            return PortalSecurity.IsInRoles(rolesOfExactKey)
-                || PortalSecurity.IsInRoles(editRoles);
-        }
-
         private bool ForAdvancedRoles(ModuleInfo module)
             => this.ForAdvancedRoles(module.ParentTab);
 
@@ -404,36 +424,48 @@ namespace DotNetNuke.Security.Permissions
 
         private List<FolderPermissionInfo> GenerateVirtualFolderPermissions(List<PermissionInfoBase> permissions, int portalId, int folderId, string folderPath)
             => this.GenerateVirtualPermissions(permissions, portalId, this.permissionDefinitions.GetDefinitionsByFolder()) // get list of all possible permissions for this folder type e.g.ADD, COPY
-                .Select(set => new FolderPermissionInfo(set.PermissionInfo)
+                .Select(set =>
                 {
-                    AllowAccess = true,
-                    FolderID = folderId,
-                    FolderPath = folderPath,
-                    RoleID = set.RoleInfo.RoleID,
-                    RoleName = set.RoleInfo.RoleName,
-                    UserID = Null.NullInteger,
+                    var info = new FolderPermissionInfo(set.PermissionInfo)
+                    {
+                        AllowAccess = true,
+                        FolderPath = folderPath,
+                        RoleName = set.RoleInfo.RoleName,
+                    };
+                    ((IFolderPermissionInfo)info).FolderId = folderId;
+                    ((IFolderPermissionInfo)info).RoleId = set.RoleInfo.RoleID;
+                    ((IFolderPermissionInfo)info).UserId = Null.NullInteger;
+                    return info;
                 }).ToList();
 
         private List<ModulePermissionInfo> GenerateVirtualModulePermissions(List<PermissionInfoBase> permissions, int portalId, int tabId, int moduleId)
             => this.GenerateVirtualPermissions(permissions, portalId, this.permissionDefinitions.GetDefinitionsByModule(moduleId, tabId)) // get list of all possible permissions for this module type e.g. CONTENT, DELETE
-                .Select(set => new ModulePermissionInfo(set.PermissionInfo)
+                .Select(set =>
                 {
-                    AllowAccess = true,
-                    ModuleID = moduleId,
-                    RoleID = set.RoleInfo.RoleID,
-                    RoleName = set.RoleInfo.RoleName,
-                    UserID = Null.NullInteger,
+                    var info = new ModulePermissionInfo(set.PermissionInfo)
+                    {
+                        AllowAccess = true,
+                        ModuleID = moduleId,
+                        RoleName = set.RoleInfo.RoleName,
+                    };
+                    ((IPermissionInfo)info).UserId = Null.NullInteger;
+                    ((IPermissionInfo)info).RoleId = set.RoleInfo.RoleID;
+                    return info;
                 }).ToList();
 
         private List<TabPermissionInfo> GenerateVirtualTabPermissions(List<PermissionInfoBase> permissions, int portalId, int tabId)
             => this.GenerateVirtualPermissions(permissions, portalId, this.permissionDefinitions.GetDefinitionsByTab()) // get list of all possible permissions for this tab type e.g. ADD, CONTENT
-                .Select(set => new TabPermissionInfo(set.PermissionInfo)
+                .Select(set =>
                 {
-                    AllowAccess = true,
-                    RoleID = set.RoleInfo.RoleID,
-                    RoleName = set.RoleInfo.RoleName,
-                    TabID = tabId,
-                    UserID = Null.NullInteger,
+                    var info = new TabPermissionInfo(set.PermissionInfo)
+                    {
+                        AllowAccess = true,
+                        RoleName = set.RoleInfo.RoleName,
+                        TabID = tabId,
+                    };
+                    ((IPermissionInfo)info).RoleId = set.RoleInfo.RoleID;
+                    ((IPermissionInfo)info).UserId = Null.NullInteger;
+                    return info;
                 }).ToList();
 
         private List<(PermissionInfo PermissionInfo, RoleInfo RoleInfo)> GenerateVirtualPermissions(
@@ -442,7 +474,7 @@ namespace DotNetNuke.Security.Permissions
             IEnumerable<IPermissionDefinitionInfo> possiblePermissions)
             => this.GetOrCreateAdvancedRoles(portalId)
                 .SelectMany(role => possiblePermissions
-                    .Where(ep => !permissions.Any(p => p.PermissionKey == ep.PermissionKey && p.RoleID == role.RoleID))
+                    .Where(ep => !permissions.Any((IPermissionInfo p) => p.PermissionKey == ep.PermissionKey && p.RoleId == role.RoleID))
                     .Select(permissionInfo => ((PermissionInfo)permissionInfo, role))).ToList();
     }
 }

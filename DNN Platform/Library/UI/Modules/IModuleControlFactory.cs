@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.Modules
         /// <summary>Validates if the factory supports the given configuration and <see cref="controlSrc"/>.</summary>
         /// <param name="moduleConfiguration">Module configuration.</param>
         /// <param name="controlSrc">Control source.</param>
-        /// <returns><c>true</c> if the factory supports the control; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the factory supports the control; otherwise, <see langword="false"/>.</returns>
         bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc);
 
         /// <summary>Creates a new instance of a control.</summary>

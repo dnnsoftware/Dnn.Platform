@@ -72,7 +72,7 @@ namespace DotNetNuke.Collections
 
         /// <summary>
         /// Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.
-        /// Considers the value <c>true</c> if it is one of the following (case-insensitive):
+        /// Considers the value <see langword="true"/> if it is one of the following (case-insensitive):
         /// <list type="bullet">
         /// <item><term>true</term></item>
         /// <item><term>on</term></item>
@@ -87,7 +87,7 @@ namespace DotNetNuke.Collections
         }
 
         /// <summary>Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.</summary>
-        /// <param name="trueValues">The <see cref="string"/> values (case-insensitive) which should be parsed as <c>true</c>.</param>
+        /// <param name="trueValues">The <see cref="string"/> values (case-insensitive) which should be parsed as <see langword="true"/>.</param>
         /// <returns>A <see cref="Func{String,Boolean}" /> instance.</returns>
         public static Func<string, bool> GetFlexibleBooleanParsingFunction(params string[] trueValues)
         {
@@ -822,7 +822,7 @@ namespace DotNetNuke.Collections
 
         /// <summary>Converts the <paramref name="collection" /> to an <see cref="ILookup{TKey,TElement}" />.</summary>
         /// <param name="collection">The collection.</param>
-        /// <param name="splitValues">If <c>true</c>, treats values in the <paramref name="collection"/> as comma-delimited lists of items (e.g. from a <see cref="NameValueCollection"/>).</param>
+        /// <param name="splitValues">If <see langword="true"/>, treats values in the <paramref name="collection"/> as comma-delimited lists of items (e.g. from a <see cref="NameValueCollection"/>).</param>
         /// <returns>An <see cref="ILookup{TKey,TElement}" /> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="collection" /> is <c>null</c>.</exception>
         public static ILookup<string, string> ToLookup(this NameValueCollection collection, bool splitValues)
@@ -935,7 +935,7 @@ namespace DotNetNuke.Collections
         /// <summary>Wraps the <paramref name="values"/> into <see cref="KeyValuePair{TKey,TValue}"/> instances.</summary>
         /// <param name="key">The key.</param>
         /// <param name="values">The values.</param>
-        /// <param name="splitSingleValue">If <c>true</c>, treats a single item in <paramref name="values"/> as a comma-delimited list of items (e.g. from a <see cref="NameValueCollection"/>).</param>
+        /// <param name="splitSingleValue">If <see langword="true"/>, treats a single item in <paramref name="values"/> as a comma-delimited list of items (e.g. from a <see cref="NameValueCollection"/>).</param>
         /// <returns>A sequence of <see cref="KeyValuePair{TKey,TValue}"/> instances.</returns>
         private static IEnumerable<KeyValuePair<string, string>> ParseValues(string key, string[] values, bool splitSingleValue)
         {

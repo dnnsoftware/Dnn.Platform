@@ -9,6 +9,7 @@ namespace Dnn.PersonaBar.UI.Components.EventHandlers
     using Dnn.PersonaBar.UI.Components.Controllers;
     using DotNetNuke.Entities.Tabs.Actions;
 
+    /// <summary>The default <see cref="ITabEventHandler"/> implementation.</summary>
     [Export(typeof(ITabEventHandler))]
     public class TabEventsHandler : ITabEventHandler
     {

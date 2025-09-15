@@ -21,6 +21,7 @@ using Microsoft.Identity.Client;
 public class TokenCacheHelper
 {
     private readonly IHostSettingsService hostSettingsService;
+    private readonly IPortalController portalController;
     private readonly IHostSettings hostSettings;
     private readonly int portalId;
 
@@ -29,20 +30,21 @@ public class TokenCacheHelper
     /// <param name="hostSettingsService">The host settings service.</param>
     [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public TokenCacheHelper(int portalId, IHostSettingsService hostSettingsService)
+        : this(portalId, hostSettingsService, null, null)
     {
-        this.portalId = portalId;
-        this.hostSettingsService = hostSettingsService;
     }
 
     /// <summary>Initializes a new instance of the <see cref="TokenCacheHelper"/> class.</summary>
     /// <param name="portalId">The portal ID.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="hostSettings">The host settings.</param>
-    public TokenCacheHelper(int portalId, IHostSettingsService hostSettingsService, IHostSettings hostSettings)
+    /// <param name="portalController">The portal controller.</param>
+    public TokenCacheHelper(int portalId, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController)
     {
         this.portalId = portalId;
         this.hostSettingsService = hostSettingsService;
         this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(hostSettingsService);
+        this.portalController = portalController ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
     }
 
     /// <summary>Enable the token cache.</summary>
@@ -78,7 +80,7 @@ public class TokenCacheHelper
             return this.hostSettingsService.GetEncryptedString(Constants.AuthenticationSettingName, Config.GetDecryptionkey());
         }
 
-        return PortalController.GetEncryptedString(this.hostSettings, Constants.AuthenticationSettingName, this.portalId, Config.GetDecryptionkey());
+        return PortalController.GetEncryptedString(this.hostSettings, this.portalController, Constants.AuthenticationSettingName, this.portalId, Config.GetDecryptionkey());
     }
 
     private void UpdateAuthenticationData(byte[] data)

@@ -16,7 +16,7 @@ const licenseBoxStyle = {
 class LogDisplay extends Component {
     render() {
         const {props} = this;
-        /* eslint-disable react/no-danger */
+         
         return (
             <GridCell style={{ padding: 0 }} className="install-failure-logs">
                 <Scrollbars style={licenseBoxStyle}>

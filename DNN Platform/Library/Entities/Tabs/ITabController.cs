@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Deletes a tab permanently from the database.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="deleteDescendants">if set to <c>true</c> will delete all child tabs.</param>
+        /// <param name="deleteDescendants">if set to <see langword="true"/> will delete all child tabs.</param>
         void DeleteTab(int tabId, int portalId, bool deleteDescendants);
 
         /// <summary>Delete a Setting of a tab instance.</summary>
@@ -146,7 +146,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the tab.</summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
-        /// <param name="ignoreCache">if set to <c>true</c> will get tab info directly from database.</param>
+        /// <param name="ignoreCache">if set to <see langword="true"/> will get tab info directly from database.</param>
         /// <returns>tab info.</returns>
         TabInfo GetTab(int tabId, int portalId, bool ignoreCache);
 
@@ -178,7 +178,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets the tabs which use the package.</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="packageID">The package ID.</param>
-        /// <param name="forHost">if set to <c>true</c> [for host].</param>
+        /// <param name="forHost">if set to <see langword="true"/> [for host].</param>
         /// <returns>tab collection.</returns>
         IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost);
 
@@ -312,7 +312,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Updates the translation status.</summary>
         /// <param name="localizedTab">The localized tab.</param>
-        /// <param name="isTranslated">if set to <c>true</c> means the tab has already been translated.</param>
+        /// <param name="isTranslated">if set to <see langword="true"/> means the tab has already been translated.</param>
         void UpdateTranslationStatus(TabInfo localizedTab, bool isTranslated);
 
         /// <summary>Refresh the tabinfo in cache object of portal tabs collection, use this instead of clear the whole cache to improve performance.</summary>

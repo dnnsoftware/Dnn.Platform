@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.UI.Services
 {
     using System;
 
+    /// <summary>An empty value to put into the cache.</summary>
     [Serializable]
     public class CacheDto
     {

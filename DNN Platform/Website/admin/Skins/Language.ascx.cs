@@ -11,6 +11,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Linq;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -20,10 +21,13 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>The Language skinobject allows the visitor to select the language of the page.</summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The Language SkinObject allows the visitor to select the language of the page.</summary>
     public partial class Language : SkinObjectBase
     {
         private const string MyFileName = "Language.ascx";
+        private readonly IPortalController portalController;
         private string selectedItemTemplate;
         private string alternateTemplate;
         private string commonFooterTemplate;
@@ -35,6 +39,20 @@ namespace DotNetNuke.UI.Skins.Controls
         private LanguageTokenReplace localTokenReplace;
         private string separatorTemplate;
         private bool showMenu = true;
+
+        /// <summary>Initializes a new instance of the <see cref="Language"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public Language()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Language"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        public Language(IPortalController portalController)
+        {
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        }
 
         public string AlternateTemplate
         {
@@ -205,21 +223,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool UseCurrentCultureForTemplate { get; set; }
 
-        protected string CurrentCulture
-        {
-            get
-            {
-                return CultureInfo.CurrentCulture.ToString();
-            }
-        }
+        protected string CurrentCulture => CultureInfo.CurrentCulture.ToString();
 
-        protected string TemplateCulture
-        {
-            get
-            {
-                return this.UseCurrentCultureForTemplate ? this.CurrentCulture : "en-US";
-            }
-        }
+        protected string TemplateCulture => this.UseCurrentCultureForTemplate ? this.CurrentCulture : "en-US";
 
         protected string LocalResourceFile
         {
@@ -258,10 +264,10 @@ namespace DotNetNuke.UI.Skins.Controls
             try
             {
                 var locales = new Dictionary<string, Locale>();
-                IEnumerable<ListItem> cultureListItems = DotNetNuke.Services.Localization.Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentCulture, string.Empty, false);
+                IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentCulture, string.Empty, false);
                 foreach (Locale loc in LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).Values)
                 {
-                    string defaultRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", loc.Code), this.PortalSettings.PortalId, "Administrators");
+                    string defaultRoles = PortalController.GetPortalSetting(this.portalController, $"DefaultTranslatorRoles-{loc.Code}", this.PortalSettings.PortalId, "Administrators");
                     if (!this.PortalSettings.ContentLocalizationEnabled ||
                         (this.LocaleIsAvailable(loc) &&
                             (PortalSecurity.IsInRoles(this.PortalSettings.AdministratorRoleName) || loc.IsPublished || PortalSecurity.IsInRoles(defaultRoles))))

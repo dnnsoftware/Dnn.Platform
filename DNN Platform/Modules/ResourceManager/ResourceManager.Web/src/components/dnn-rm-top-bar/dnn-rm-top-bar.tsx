@@ -14,44 +14,43 @@ export class DnnRmTopBar {
     this.itemsClient = new ItemsClient(state.moduleId);
   }
 
-  private handleSearchChanged(e: CustomEvent<any>): void {
+  private async handleSearchChanged(e: CustomEvent<string>) {
     if (e.detail != ""){
-      state.itemsSearchTerm = e.detail;
-      this.itemsClient.search(
-        state.currentItems.folder.folderId, e.detail,
-        0,
-        state.pageSize,
-        state.sortField)
-      .then(data =>{
+      try {
+        state.itemsSearchTerm = e.detail;
+        const data = await this.itemsClient.search(
+          state.currentItems.folder.folderId, e.detail,
+          0,
+          state.pageSize,
+          state.sortField);
         state.currentItems = {
           ...state.currentItems,
           totalCount: data.totalCount,
           items: data.items,
-        };
+        }
         state.lastSearchRequestedPage = 1;
-      })
-      .catch(reason => console.error(reason));
+      } catch (error) {
+        alert(error);
+      }
     }
     else
     {
-      this.itemsClient.getFolderContent(
+      const data = await this.itemsClient.getFolderContent(
         state.currentItems.folder.folderId,
         0,
         state.pageSize,
         state.sortField,
-        state.sortOrder)
-      .then(data => {
-        state.lastSearchRequestedPage = 1;
-        state.itemsSearchTerm = undefined;
-        state.currentItems = data;
-      })
+        state.sortOrder);
+      state.lastSearchRequestedPage = 1;
+      state.itemsSearchTerm = undefined;
+      state.currentItems = data;
     }
   }
 
   render() {
     return (
       <Host>
-        <dnn-searchbox onQueryChanged={e => this.handleSearchChanged(e)}></dnn-searchbox>
+        <dnn-searchbox onQueryChanged={e => void this.handleSearchChanged(e)}></dnn-searchbox>
       </Host>
     );
   }

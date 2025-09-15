@@ -25,6 +25,7 @@ public class GoogleCredentialDataStore : IDataStore
 {
     private readonly IHostSettingsService hostSettingsService;
     private readonly IHostSettings hostSettings;
+    private readonly IPortalController portalController;
     private readonly int portalId;
 
     /// <summary>Initializes a new instance of the <see cref="GoogleCredentialDataStore"/> class.</summary>
@@ -32,7 +33,7 @@ public class GoogleCredentialDataStore : IDataStore
     /// <param name="hostSettingsService">The host settings service.</param>
     [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public GoogleCredentialDataStore(int portalId, IHostSettingsService hostSettingsService)
-        : this(portalId, hostSettingsService, null)
+        : this(portalId, hostSettingsService, null, null)
     {
     }
 
@@ -40,11 +41,13 @@ public class GoogleCredentialDataStore : IDataStore
     /// <param name="portalId">The portal id.</param>
     /// <param name="hostSettingsService">The host settings service.</param>
     /// <param name="hostSettings">The host settings.</param>
-    public GoogleCredentialDataStore(int portalId, IHostSettingsService hostSettingsService, IHostSettings hostSettings)
+    /// <param name="portalController">The portal controller.</param>
+    public GoogleCredentialDataStore(int portalId, IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController)
     {
         this.portalId = portalId;
         this.hostSettingsService = hostSettingsService;
         this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(hostSettingsService);
+        this.portalController = portalController ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
     }
 
     /// <inheritdoc />
@@ -57,7 +60,7 @@ public class GoogleCredentialDataStore : IDataStore
         }
         else
         {
-            PortalController.UpdatePortalSetting(this.portalId, settingName, null, true);
+            PortalController.UpdatePortalSetting(this.portalController, this.portalId, settingName, null, true);
         }
 
         return Task.CompletedTask;
@@ -146,7 +149,7 @@ public class GoogleCredentialDataStore : IDataStore
         }
         else
         {
-            settingValue = PortalController.GetEncryptedString(this.hostSettings, settingName, this.portalId, Config.GetDecryptionkey());
+            settingValue = PortalController.GetEncryptedString(this.hostSettings, this.portalController, settingName, this.portalId, Config.GetDecryptionkey());
         }
 
         if (string.IsNullOrWhiteSpace(settingValue))

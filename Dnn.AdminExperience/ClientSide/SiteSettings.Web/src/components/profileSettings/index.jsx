@@ -93,7 +93,7 @@ class ProfileSettingsPanelBody extends Component {
         });
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         if (state.profileSettings) {

@@ -12,6 +12,8 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     using Dnn.PersonaBar.Library.Model;
     using Dnn.PersonaBar.Library.Permissions;
     using Dnn.PersonaBar.Library.Repository;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Installer;
@@ -94,9 +96,9 @@ namespace Dnn.PersonaBar.UI.Components.Installers
         {
             foreach (var menuItem in this.menuItems.Where(x => !string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
             {
-                if (this.parentMaps.ContainsKey(menuItem.Identifier))
+                if (this.parentMaps.TryGetValue(menuItem.Identifier, out var parentId))
                 {
-                    var parentItem = PersonaBarRepository.Instance.GetMenuItem(this.parentMaps[menuItem.Identifier]);
+                    var parentItem = PersonaBarRepository.Instance.GetMenuItem(parentId);
                     if (parentItem != null)
                     {
                         menuItem.ParentId = parentItem.MenuId;
@@ -211,9 +213,9 @@ namespace Dnn.PersonaBar.UI.Components.Installers
         private void SaveMenuPermission(MenuItem menuItem, string roleName)
         {
             var portals = PortalController.Instance.GetPortals();
-            foreach (PortalInfo portal in portals)
+            foreach (IPortalInfo portal in portals)
             {
-                var portalId = portal.PortalID;
+                var portalId = portal.PortalId;
 
                 // when default permission already initialized, then package need to save default permission immediately.
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
@@ -225,23 +227,25 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SaveMenuPermissions(MenuItem menuItem)
         {
-            if (this.menuRoles.ContainsKey(menuItem.Identifier))
+            if (!this.menuRoles.TryGetValue(menuItem.Identifier, out var role))
             {
-                var defaultPermissions = this.menuRoles[menuItem.Identifier].Split(',');
-                if (menuItem?.MenuId <= 0)
-                {
-                    menuItem = PersonaBarRepository.Instance.GetMenuItem(menuItem.Identifier);
-                }
+                return;
+            }
 
-                PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
-                PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, this.menuRoles[menuItem.Identifier]);
+            var defaultPermissions = role.Split(',');
+            if (menuItem.MenuId <= 0)
+            {
+                menuItem = PersonaBarRepository.Instance.GetMenuItem(menuItem.Identifier);
+            }
 
-                foreach (var roleName in defaultPermissions)
+            PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
+            PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, this.menuRoles[menuItem.Identifier]);
+
+            foreach (var roleName in defaultPermissions)
+            {
+                if (!string.IsNullOrEmpty(roleName.Trim()))
                 {
-                    if (!string.IsNullOrEmpty(roleName.Trim()))
-                    {
-                        this.SaveMenuPermission(menuItem, roleName.Trim());
-                    }
+                    this.SaveMenuPermission(menuItem, roleName.Trim());
                 }
             }
         }

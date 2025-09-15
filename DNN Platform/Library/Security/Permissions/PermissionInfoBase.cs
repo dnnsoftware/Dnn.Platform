@@ -11,9 +11,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : PermissionInfoBase
     /// <summary>PermissionInfoBase provides a base class for PermissionInfo classes.</summary>
     /// <remarks>All Permission classes have  a common set of properties
     ///   - AllowAccess

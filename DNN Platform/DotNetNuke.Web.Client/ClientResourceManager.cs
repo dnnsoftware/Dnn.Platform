@@ -159,7 +159,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>Registers a stylesheet specific for Internet Explorer.</summary>
         /// <param name="page">The page on which to register the style.</param>
         /// <param name="filePath">The path to the CSS stylesheet.</param>
-        public static void RegisterIEStylesheet(Page page, string filePath)
+        [DnnDeprecated(10, 0, 2, "Internet Explorer is no longer supported.")]
+        public static partial void RegisterIEStylesheet(Page page, string filePath)
         {
             var browser = HttpContext.Current.Request.Browser;
             if (browser.Browser == "Internet Explorer" || browser.Browser == "IE")

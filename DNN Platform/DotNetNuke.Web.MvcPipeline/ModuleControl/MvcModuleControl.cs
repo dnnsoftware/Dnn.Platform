@@ -25,6 +25,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common.Internal;
 
     public class MvcModuleControl : DefaultMvcModuleControlBase
     {
@@ -126,7 +127,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             string actionName = string.Empty;
             var controlKey = module.ModuleControl.ControlKey;
 
-            
+
             this.LocalResourceFile = string.Format(
                 "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                 module.DesktopModule.FolderName,
@@ -198,12 +199,27 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                     // routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
                 }
             }
+            
+            string[] routeValues = { $"moduleId={ModuleConfiguration.ModuleID}", $"controller={RouteControllerName}", $"action={RouteActionName}" };
 
-            return htmlHelper.Action(
-                    actionName,
-                    controllerName,
-                    values);
+            var request = htmlHelper.ViewContext.HttpContext.Request;
+            var req = request.Params;
+            var isMyRoute = req["MODULEID"] != null && req["CONTROLLER"] != null && int.TryParse(req["MODULEID"], out var modId) && modId == ModuleConfiguration.ModuleID;
 
+            var url = isMyRoute ? 
+                    request.Url.ToString() : 
+                    TestableGlobals.Instance.NavigateURL(ModuleConfiguration.TabID, TestableGlobals.Instance.IsHostTab(ModuleConfiguration.TabID), PortalSettings, string.Empty, routeValues);
+
+            var formTag = new TagBuilder("form");
+            formTag.Attributes.Add("action", url);
+            formTag.Attributes.Add("method", "post");
+            formTag.InnerHtml += htmlHelper.AntiForgeryToken().ToHtmlString();
+
+            formTag.InnerHtml += htmlHelper.Action(
+                                            actionName,
+                                            controllerName,
+                                            values);
+             return new MvcHtmlString(formTag.ToString());
         }
     }
 }

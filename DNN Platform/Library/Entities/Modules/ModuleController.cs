@@ -483,7 +483,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="sourceModule">The source module.</param>
         /// <param name="destinationTab">The destination tab.</param>
         /// <param name="toPaneName">Name of to pane.</param>
-        /// <param name="includeSettings">if set to <c>true</c> include settings.</param>
+        /// <param name="includeSettings">if set to <see langword="true"/> include settings.</param>
         public void CopyModule(ModuleInfo sourceModule, TabInfo destinationTab, string toPaneName, bool includeSettings)
         {
             PortalInfo portal = PortalController.Instance.GetPortal(destinationTab.PortalID);
@@ -590,7 +590,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Copies all modules in source page to a new page.</summary>
         /// <param name="sourceTab">The source tab.</param>
         /// <param name="destinationTab">The destination tab.</param>
-        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
+        /// <param name="asReference">if set to <see langword="true"/> will use source module directly, else will create new module info by source module.</param>
         public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference)
         {
             this.CopyModules(sourceTab, destinationTab, asReference, false);
@@ -599,8 +599,8 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>Copies all modules in source page to a new page.</summary>
         /// <param name="sourceTab">The source tab.</param>
         /// <param name="destinationTab">The destination tab.</param>
-        /// <param name="asReference">if set to <c>true</c> will use source module directly, else will create new module info by source module.</param>
-        /// <param name="includeAllTabsMobules">if set to <c>true</c> will include modules which shown on all pages, this is used when create localized copy.</param>
+        /// <param name="asReference">if set to <see langword="true"/> will use source module directly, else will create new module info by source module.</param>
+        /// <param name="includeAllTabsMobules">if set to <see langword="true"/> will include modules which shown on all pages, this is used when create localized copy.</param>
         public void CopyModules(TabInfo sourceTab, TabInfo destinationTab, bool asReference, bool includeAllTabsMobules)
         {
             foreach (KeyValuePair<int, ModuleInfo> kvp in this.GetTabModules(sourceTab.TabID))
@@ -1592,7 +1592,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>Updates the translation status.</summary>
         /// <param name="localizedModule">The localized module.</param>
-        /// <param name="isTranslated">if set to <c>true</c> will mark the module as translated].</param>
+        /// <param name="isTranslated">if set to <see langword="true"/> will mark the module as translated].</param>
         public void UpdateTranslationStatus(ModuleInfo localizedModule, bool isTranslated)
         {
             if (isTranslated && (localizedModule.DefaultLanguageModule != null))

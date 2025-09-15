@@ -94,8 +94,8 @@
     <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
       <HintPath>..\..\packages\BouncyCastle.Cryptography.2.5.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
     </Reference>
-    <Reference Include="ClientDependency.Core, Version=1.9.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Dnn.ClientDependency.1.9.10\lib\net45\ClientDependency.Core.dll</HintPath>
+    <Reference Include="ClientDependency.Core, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dnn.ClientDependency.1.10.0\lib\net48\ClientDependency.Core.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebControls">
       <SpecificVersion>False</SpecificVersion>
@@ -326,7 +326,9 @@
     <Compile Include="Prompt\ConsoleCommand.cs" />
     <Compile Include="Prompt\Output\ConsoleErrorResultModel.cs" />
     <Compile Include="Prompt\Output\ConsoleResultModel.cs" />
+    <Compile Include="Prompt\Output\HtmlOutput.cs" />
     <Compile Include="Prompt\Output\PagingInfo.cs" />
+    <Compile Include="Prompt\Output\TextOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Collections\IIndexable.cs" />
@@ -816,6 +818,12 @@
     <Compile Include="Services\FileSystem\Internal\FileSecurityController.cs" />
     <Compile Include="Services\FileSystem\Internal\SecurityCheckers\SvgFileChecker.cs" />
     <Compile Include="Services\FileSystem\Internal\UserSecurityController.cs" />
+    <Compile Include="Services\FileSystem\Internal\Wrappers\DirectoryWrapper.cs" />
+    <Compile Include="Services\FileSystem\Internal\Wrappers\FileWrapper.cs" />
+    <Compile Include="Services\FileSystem\Internal\Wrappers\IconControllerWrapper.cs" />
+    <Compile Include="Services\FileSystem\Internal\Wrappers\IDirectory.cs" />
+    <Compile Include="Services\FileSystem\Internal\Wrappers\IFile.cs" />
+    <Compile Include="Services\FileSystem\Internal\Wrappers\IIconController.cs" />
     <Compile Include="Services\FileSystem\LinkClickPortalSettings.cs" />
     <Compile Include="Services\FileSystem\SyncFolderData.cs" />
     <Compile Include="Services\GeneratedImage\IImageStore.cs" />
@@ -850,9 +858,12 @@
     <Compile Include="Services\Installer\Blocker\InstallBlocker.cs" />
     <Compile Include="Services\Installer\Dependencies\IManagedPackageDependency.cs" />
     <Compile Include="Services\Installer\Dependencies\ManagedPackageDependency.cs" />
+    <Compile Include="Services\Installer\ILocalUpgradeService.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptFileInstaller.cs" />
     <Compile Include="Services\Installer\Installers\JavaScriptLibraryInstaller.cs" />
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
+    <Compile Include="Services\Installer\LocalUpgradeInfo.cs" />
+    <Compile Include="Services\Installer\LocalUpgradeService.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
     <Compile Include="Services\Installer\Packages\PackageTypeMemberNameFixer.cs" />
@@ -1294,8 +1305,6 @@
     <Compile Include="Services\FileSystem\Exceptions\FolderAlreadyExistsException.cs" />
     <Compile Include="Services\FileSystem\Exceptions\NoNetworkAvailableException.cs" />
     <Compile Include="Services\FileSystem\Internal\DefaultFolderProviders.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IconControllerWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IIconController.cs" />
     <Compile Include="Services\ClientCapability\ClientCapabilityProvider.cs" />
     <Compile Include="Services\ClientCapability\IClientCapability.cs" />
     <Compile Include="Services\Mobile\IMatchRule.cs" />
@@ -1337,11 +1346,7 @@
     <Compile Include="Services\FileSystem\IFileManager.cs" />
     <Compile Include="Services\FileSystem\IFolderInfo.cs" />
     <Compile Include="Services\FileSystem\IFolderManager.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\DirectoryWrapper.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\FileWrapper.cs" />
     <Compile Include="Common\Utilities\ICBO.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IDirectory.cs" />
-    <Compile Include="Services\FileSystem\Wrappers\IFile.cs" />
     <Compile Include="Services\FileSystem\Providers\DatabaseFolderProvider.cs" />
     <Compile Include="Services\FileSystem\Exceptions\FileAlreadyExistsException.cs" />
     <Compile Include="Services\FileSystem\FileInfo.cs" />

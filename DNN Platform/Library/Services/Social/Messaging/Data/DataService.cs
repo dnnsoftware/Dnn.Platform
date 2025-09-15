@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <param name="sortAscending">if set to <see langword="true"/> [sort ascending].</param>
         /// <param name="readStatus">The read status.</param>
         /// <param name="archivedStatus">The archived status.</param>
         /// <param name="sentStatus">The sent status.</param>
@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <param name="sortAscending">if set to <see langword="true"/> [sort ascending].</param>
         /// <returns>A <see cref="IDataReader"/> containing the sent message box data.</returns>
         public IDataReader GetSentBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending)
         {
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <param name="sortAscending">if set to <see langword="true"/> [sort ascending].</param>
         /// <returns>A <see cref="IDataReader"/> containing the archived messages data.</returns>
         public IDataReader GetArchiveBoxView(int userId, int portalId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending)
         {
@@ -176,7 +176,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
-        /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
+        /// <param name="sortAscending">if set to <see langword="true"/> [sort ascending].</param>
         /// <param name="totalRecords">The total records.</param>
         /// <returns>A <see cref="IDataReader"/> containing the message thread data.</returns>
         public IDataReader GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool @sortAscending, ref int totalRecords)
@@ -187,7 +187,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <summary>Updates the message read status for a given conversation.</summary>
         /// <param name="conversationId">The conversation identifier.</param>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="read">if read is set to <c>true</c> otherwise false.</param>
+        /// <param name="read">if read is set to <see langword="true"/> otherwise false.</param>
         public void UpdateMessageReadStatus(int conversationId, int userId, bool read)
         {
             this.provider.ExecuteNonQuery("CoreMessaging_UpdateMessageReadStatus", conversationId, userId, read);
@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <summary>Updates the message archived status.</summary>
         /// <param name="conversationId">The conversation identifier.</param>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="archived">if set to <c>true</c> archived.</param>
+        /// <param name="archived">if set to <see langword="true"/> archived.</param>
         public void UpdateMessageArchivedStatus(int conversationId, int userId, bool archived)
         {
             this.provider.ExecuteNonQuery("CoreMessaging_UpdateMessageArchivedStatus", conversationId, userId, archived);

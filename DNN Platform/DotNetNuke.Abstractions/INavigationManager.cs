@@ -19,7 +19,7 @@ namespace DotNetNuke.Abstractions
 
         /// <summary>Gets the URL to the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
         string NavigateURL(int tabID, bool isSuperTab);
 
@@ -57,7 +57,7 @@ namespace DotNetNuke.Abstractions
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
@@ -66,7 +66,7 @@ namespace DotNetNuke.Abstractions
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="language">The language code.</param>
@@ -76,7 +76,7 @@ namespace DotNetNuke.Abstractions
 
         /// <summary>Gets the URL to show the given page.</summary>
         /// <param name="tabID">The tab ID.</param>
-        /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
+        /// <param name="isSuperTab">if set to <see langword="true"/> the page is a "super-tab," i.e. a host-level page.</param>
         /// <param name="settings">The portal settings.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="language">The language code.</param>

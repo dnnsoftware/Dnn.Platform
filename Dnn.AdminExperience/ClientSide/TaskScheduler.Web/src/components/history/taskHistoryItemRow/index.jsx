@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styles from "./style.module.less";
-
-/*eslint-disable quotes*/
-const svgIcon = require(`!raw-loader!./svg/checkmark.svg`).default;
+import checkmarkIcon from "./svg/checkmark.svg?raw";
+ 
 
 class TaskHistoryItemRow extends Component {
     constructor() {
@@ -47,15 +46,15 @@ class TaskHistoryItemRow extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getSucceededDisplay() {
         if (this.props.succeeded) {
-            return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: svgIcon }}></div>;
+            return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: checkmarkIcon }}></div>;
         }
         else return <span>&nbsp; </span>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     getLogNotesDisplay() {
         if (this.props.friendlyName.length > 0 || this.props.logNotes.length > 0) {
             return (

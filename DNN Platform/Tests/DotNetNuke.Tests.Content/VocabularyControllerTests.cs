@@ -29,10 +29,9 @@ namespace DotNetNuke.Tests.Content
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
-            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            this.mockCache = MockComponentProvider.CreateDataCacheProvider();
             var dataProvider = MockComponentProvider.CreateDataProvider();
             dataProvider.Setup(c => c.GetProviderPath()).Returns(string.Empty);
             this.serviceProvider = FakeServiceProvider.Setup(
@@ -51,7 +50,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_AddVocabulary_Throws_On_Null_Vocabulary()
         {
             // Arrange
@@ -63,7 +61,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_AddVocabulary_Throws_On_Invalid_Name()
         {
             // Arrange
@@ -78,7 +75,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_AddVocabulary_Throws_On_Negative_ScopeTypeID()
         {
             // Arrange
@@ -93,7 +89,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_AddVocabulary_Calls_DataService_On_Valid_Arguments()
         {
             // Arrange
@@ -110,7 +105,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_AddVocabulary_Returns_ValidId_On_Valid_Vocabulary()
         {
             // Arrange
@@ -128,7 +122,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_AddVocabulary_Sets_ValidId_On_Valid_Vocabulary()
         {
             // Arrange
@@ -146,7 +139,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_AddVocabulary_Clears_Vocabulary_Cache_On_Valid_Vocabulary()
         {
             // Arrange
@@ -174,7 +166,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_DeleteVocabulary_Throws_On_Negative_VocabularyId()
         {
             // Arrange
@@ -189,7 +180,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_DeleteVocabulary_Calls_DataService_On_Valid_Arguments()
         {
             // Arrange
@@ -207,7 +197,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_DeleteVocabulary_Clears_Vocabulary_Cache_On_Valid_Vocabulary()
         {
             // Arrange
@@ -225,7 +214,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_GetVocabularies_Calls_DataService()
         {
             // Arrange
@@ -241,7 +229,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_GetVocabularies_Returns_List_Of_Vocabularies()
         {
             // Arrange
@@ -257,7 +244,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_UpdateVocabulary_Throws_On_Null_Vocabulary()
         {
             // Arrange
@@ -269,7 +255,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_UpdateVocabulary_Throws_On_Negative_VocabularyId()
         {
             // Arrange
@@ -284,7 +269,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_UpdateVocabulary_Throws_On_Invalid_Name()
         {
             // Arrange
@@ -299,7 +283,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_UpdateVocabulary_Throws_On_Negative_ScopeTypeID()
         {
             // Arrange
@@ -314,7 +297,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController_UpdateVocabulary_Calls_DataService_On_Valid_Arguments()
         {
             // Arrange
@@ -332,7 +314,6 @@ namespace DotNetNuke.Tests.Content
         }
 
         [Test]
-
         public void VocabularyController__UpdateVocabulary_Clears_Vocabulary_Cache_On_Valid_Vocabulary()
         {
             // Arrange

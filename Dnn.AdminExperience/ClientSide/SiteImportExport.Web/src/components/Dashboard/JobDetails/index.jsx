@@ -33,7 +33,7 @@ class JobDetails extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     getSummaryItem(category) {
         const { props, state } = this;
         if (props.jobDetail.Summary) {
@@ -320,7 +320,7 @@ class JobDetails extends Component {
         </div>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props } = this;
         if (props.jobDetail !== undefined) {

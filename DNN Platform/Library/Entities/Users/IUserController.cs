@@ -9,8 +9,8 @@ namespace DotNetNuke.Entities.Users
     /// <summary>Provides access to manage users.</summary>
     public interface IUserController
     {
-        /// <summary>Gets the current logged in user's information.</summary>
-        /// <returns>The logged in user's <see cref="UserInfo"/> object or an empty <see cref="UserInfo"/> if the current user is not logged in.</returns>
+        /// <summary>Gets the current logged-in user's information.</summary>
+        /// <returns>The logged-in user's <see cref="UserInfo"/> object or an empty <see cref="UserInfo"/> if the current user is not logged in.</returns>
         UserInfo GetCurrentUserInfo();
 
         /// <summary>Gets a specific user information.</summary>

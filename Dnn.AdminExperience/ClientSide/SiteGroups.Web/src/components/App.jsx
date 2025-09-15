@@ -93,7 +93,7 @@ export default class SiteGroupApp extends React.Component {
                         unassignedSites={
                             this.state.currentGroup ? [] : this.state.unassignedSites
                         }
-                        disabled={this.state.currentGroup != null}
+                        disabled={this.state.currentGroup !== null}
                         onNewGroup={siteId => this.editNewGroup(Number(siteId))}
                     />
                 </PersonaBarPageHeader>

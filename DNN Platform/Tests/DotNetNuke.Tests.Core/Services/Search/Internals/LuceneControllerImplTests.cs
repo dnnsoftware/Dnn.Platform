@@ -21,7 +21,6 @@ namespace DotNetNuke.Tests.Core.Services.Search.Internals
     public class LuceneControllerImplTests
     {
         [Test]
-
         public void GetCustomAnalyzer_WithTheProvidedAnalyzer_ReturnsTheAnalyzerCorrectly()
         {
             FakeServiceProvider serviceProvider = null;

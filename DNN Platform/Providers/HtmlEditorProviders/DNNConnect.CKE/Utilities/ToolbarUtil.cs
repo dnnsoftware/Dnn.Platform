@@ -114,7 +114,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
         /// <summary>Converts the toolbar set to string.</summary>
         /// <param name="toolbarSet">The toolbar set.</param>
-        /// <param name="convertRowBreak">if set to <c>true</c> [convert row break].</param>
+        /// <param name="convertRowBreak">if set to <see langword="true"/> [convert row break].</param>
         /// <returns>
         /// Returns the Toolbar set as string.
         /// </returns>

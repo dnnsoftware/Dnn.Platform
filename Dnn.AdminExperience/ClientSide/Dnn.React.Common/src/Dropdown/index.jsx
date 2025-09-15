@@ -284,7 +284,7 @@ class Dropdown extends Component {
         return options && options[index] !== undefined ? options[index] : null;
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props, state} = this;
         return (

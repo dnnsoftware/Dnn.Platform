@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Installer
         /// <remarks>The ZipInputStream is read into a byte array (Buffer), and the ZipEntry is used to
         /// set up the properties of the InstallFile class.</remarks>
         /// <param name="entry">The ZipEntry.</param>
-        /// <param name="info">An INstallerInfo instance.</param>
+        /// <param name="info">An <see cref="InstallerInfo"/> instance.</param>
         public InstallFile(ZipArchiveEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Installer
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
-        /// <param name="info">An INstallerInfo instance.</param>
+        /// <param name="info">An <see cref="InstallerInfo"/> instance.</param>
         public InstallFile(string fileName, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
         /// <param name="sourceFileName">Source file name.</param>
-        /// <param name="info">An INstallerInfo instance.</param>
+        /// <param name="info">An <see cref="InstallerInfo"/> instance.</param>
         public InstallFile(string fileName, string sourceFileName, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Installer
             this.Path = filePath;
         }
 
-        [Obsolete("Deprecated in DotNetNuke 9.11.0. Replaced with .NET compresstion types. Scheduled for removal in v11.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 9.11.0. Replaced with .NET compression types. Scheduled for removal in v11.0.0.")]
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
         {
             this.Encoding = TextEncoding.UTF8;
@@ -96,23 +96,11 @@ namespace DotNetNuke.Services.Installer
 
         /// <summary>Gets the location of the backup file.</summary>
         /// <value>A string.</value>
-        public string BackupFileName
-        {
-            get
-            {
-                return System.IO.Path.Combine(this.BackupPath, this.Name + ".config");
-            }
-        }
+        public string BackupFileName => System.IO.Path.Combine(this.BackupPath, this.Name + ".config");
 
         /// <summary>Gets the location of the backup folder.</summary>
         /// <value>A string.</value>
-        public virtual string BackupPath
-        {
-            get
-            {
-                return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", this.Path));
-            }
-        }
+        public virtual string BackupPath => System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, System.IO.Path.Combine("Backup", this.Path));
 
         /// <summary>Gets the File Extension of the file.</summary>
         /// <value>A string.</value>
@@ -132,13 +120,7 @@ namespace DotNetNuke.Services.Installer
 
         /// <summary>Gets the Full Name of the file.</summary>
         /// <value>A string.</value>
-        public string FullName
-        {
-            get
-            {
-                return System.IO.Path.Combine(this.Path, this.Name);
-            }
-        }
+        public string FullName => System.IO.Path.Combine(this.Path, this.Name);
 
         /// <summary>Gets the location of the temporary file.</summary>
         /// <value>A string.</value>

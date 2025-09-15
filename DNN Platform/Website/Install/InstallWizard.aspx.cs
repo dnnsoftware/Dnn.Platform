@@ -99,14 +99,17 @@ namespace DotNetNuke.Services.Install
 
         /// <summary>Initializes a new instance of the <see cref="InstallWizard"/> class.</summary>
         public InstallWizard()
-            : this(null, null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="InstallWizard"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
         /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalTemplateController">The portal template controller.</param>
-        public InstallWizard(IApplicationStatusInfo appStatus, IPortalTemplateController portalTemplateController)
+        public InstallWizard(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IPortalTemplateController portalTemplateController)
+            : base(portalController, appStatus, hostSettings)
         {
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.portalTemplateController = portalTemplateController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalTemplateController>();

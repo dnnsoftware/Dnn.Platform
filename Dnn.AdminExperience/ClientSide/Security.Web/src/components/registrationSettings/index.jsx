@@ -168,7 +168,7 @@ class RegistrationSettingsPanelBody extends Component {
         props.dispatch(SecurityActions.registrationSettingsClientModified(registrationSettings));
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         const { props, state } = this;
         const ToolTipStyle = {

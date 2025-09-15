@@ -28,7 +28,7 @@ class SearchPageInput extends Component {
     }
 
     render() {
-        /* eslint-disable react/no-danger */
+         
         return (
             <div className="search-container">
                 {this.props.inSearch ?

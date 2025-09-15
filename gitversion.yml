@@ -34,9 +34,8 @@ branches:
     is-release-branch: true
     source-branches: []
   pull-request:
-    regex: (pull|pull\-requests|pr)[/-]
-    label: 'pr'
-    label-number-pattern: '[/-](?<number>\d+)[-/]'
+    regex: ^(pull-requests|pull|pr)[\/-](?<Number>\d*)
+    label: 'pr{Number}'
     increment: Patch
     prevent-increment:
         of-merged-branch: true

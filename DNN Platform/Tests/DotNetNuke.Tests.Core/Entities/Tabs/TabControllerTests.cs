@@ -53,7 +53,6 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         [TestCase("ErrorPage")]
         [TestCase("Login")]
         [TestCase("Register")]
-
         public void IsValidadTab_Returns_False_For_Forbidden_PageNames(string tabName)
         {
             // Arrange
@@ -71,7 +70,6 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         }
 
         [Test]
-
         public void IsValidadTab_Returns_False_For_Empty_PageNames()
         {
             // Arrange
@@ -92,7 +90,6 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
         [TestCase("test")]
         [TestCase("mypage")]
         [TestCase("products")]
-
         public void IsValidadTab_Returns_True_For_Regular_PageNames(string tabName)
         {
             // Arrange

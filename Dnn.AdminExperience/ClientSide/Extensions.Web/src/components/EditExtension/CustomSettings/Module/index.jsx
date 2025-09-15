@@ -82,7 +82,7 @@ class Module extends Component {
         const { props } = this;
         props.onChange(key, option.value);
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         let { extensionBeingEdited } = props;

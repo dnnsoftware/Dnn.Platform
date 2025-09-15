@@ -32,7 +32,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void SetUp()
         {
             ComponentFactory.RegisterComponentInstance<TokenProvider>(new CoreTokenProvider());
@@ -74,7 +73,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [Test]
         [TestCase("var myArray = [{ foo: 'bar' }]")]
         [TestCase("This is just plain text")]
-
         public void TextInputIsReturnedUnModified(string sourceText)
         {
             // Arrange
@@ -92,7 +90,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("[Resx:{key:\"Email\"}]")]
         [TestCase("[Css: { path: \"~/DesktopModules/Dnn/ContactList/stylesheets/bootstrap.min.css\"}]")]
         [TestCase("[JavaScript:{ jsname: \"Knockout\" }] [JavaScript:{ path: \"~/DesktopModules/Dnn/ContactList/ClientScripts/contacts.js\"}]")]
-
         public void ObjectInputIsReturnedBlank(string sourceText)
         {
             // Arrange

@@ -46,7 +46,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc].</param>
         /// <returns>The sorted and paged list of subscriptions.</returns>
         [HttpGet]
-
         public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize, string sortExpression)
         {
             try
@@ -105,7 +104,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns><see cref="UserPreference"/>.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage UpdateSystemSubscription(InboxSubscriptionViewModel post)
         {
             try
@@ -135,7 +133,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>"unsubscribed" or an InternalServerError.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public HttpResponseMessage DeleteContentSubscription(Subscription subscription)
         {
             try
@@ -162,7 +159,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <returns>A dictionnary of localization keys and their localized values.</returns>
         [HttpGet]
         [AllowAnonymous]
-
         public HttpResponseMessage GetLocalizationTable(string culture)
         {
             try

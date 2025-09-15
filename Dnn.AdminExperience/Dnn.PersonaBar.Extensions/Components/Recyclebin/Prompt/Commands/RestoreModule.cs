@@ -15,11 +15,9 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     public class RestoreModule : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_RestoreModule_FlagId", "Integer", true)]
-
         private const string FlagId = "id";
 
         [FlagParameter("pageid", "Prompt_RestoreModule_FlagPageId", "Integer", true)]
-
         private const string FlagPageId = "pageid";
 
         /// <inheritdoc/>

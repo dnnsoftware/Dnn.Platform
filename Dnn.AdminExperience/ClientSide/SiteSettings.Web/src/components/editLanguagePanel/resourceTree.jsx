@@ -12,7 +12,7 @@ const parentTermTreeStyle = {
     boxSizing: "border-box"
 };
 
-/*eslint-disable react/no-danger*/
+ 
 function mapChildFolders(folders, getChildFolders, getResxEntries, resxBeingEdited) {
     return folders.map((folder, i) => {
         const isResxFile = folder.NewValue.indexOf(".resx") !== -1;

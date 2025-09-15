@@ -1720,7 +1720,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
         /// <summary>Imports the old SettingsBase Xml File.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
-        /// <param name="isDefaultXmlFile">if set to <c>true</c> [is default XML file].</param>
+        /// <param name="isDefaultXmlFile">if set to <see langword="true"/> [is default XML file].</param>
         internal static void ImportSettingBaseXml(string homeDirPath, bool isDefaultXmlFile = false)
         {
             var oldXmlPath = Path.Combine(homeDirPath, SettingConstants.XmlDefaultFileName);

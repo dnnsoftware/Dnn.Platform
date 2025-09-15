@@ -39,7 +39,7 @@ class LanguageRow extends Component {
         else return <span>-</span>;
     }
 
-    /* eslint-disable react/no-danger */
+     
     getActiveDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop && this.props.isLocalized) {
@@ -144,7 +144,7 @@ class LanguageRow extends Component {
         }
         return name;
     }
-    /* eslint-disable react/no-danger */
+     
     render() {
         const {props} = this;
         const isAddMode = props.openId === "add";

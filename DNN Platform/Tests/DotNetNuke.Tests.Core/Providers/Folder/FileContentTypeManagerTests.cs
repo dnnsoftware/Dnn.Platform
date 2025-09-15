@@ -23,7 +23,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
-
         public void Setup()
         {
             var mockData = MockComponentProvider.CreateDataProvider();

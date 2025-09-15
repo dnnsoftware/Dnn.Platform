@@ -31,7 +31,7 @@ export class DnnRmFolderList {
 
   @Listen("dnnRmFoldersChanged", {target: "document"})
   handleFoldersChanged(){
-    this.getFolders();
+    void this.getFolders();
   }
 
   @Listen("dnnRmcontextMenuOpened", {target: "body"})
@@ -41,25 +41,19 @@ export class DnnRmFolderList {
     }
   }
 
-  componentWillLoad() {
-    this.getFolders()
-    .then(() => {
-      this.itemsClient.getFolderContent(
+  async componentWillLoad() {
+    try {
+      await this.getFolders();
+      state.currentItems = await this.itemsClient.getFolderContent(
         state.settings.HomeFolderId,
         0,
         state.pageSize,
         state.sortField,
-        state.sortOrder)
-      .then(data => state.currentItems = data)
-      .catch(error => console.error(error));
-    })
-    .catch(error => {
-      console.error(error);
-      if (error.Message){
-        alert(error.Message);
-      }
-    });
+        state.sortOrder);  
       
+    } catch (error) {
+      alert(error);
+    }
   }
 
   private dismissContextMenu() {
@@ -67,15 +61,13 @@ export class DnnRmFolderList {
     existingMenus?.forEach(contextMenu => this.el.shadowRoot.removeChild(contextMenu));
   }
 
-  private getFolders() {
-    return new Promise((resolve, reject) => {
-      this.internalServicesClient.getFolders(state.settings.HomeFolderId)
-      .then(data => {
-        state.rootFolders = data;
-        resolve(data);
-      })
-      .catch(reason => reject(reason));
-    });
+  private async getFolders() {
+    try {
+      const data = await this.internalServicesClient.getFolders(state.settings.HomeFolderId)
+      state.rootFolders = data;
+    } catch (error) {
+      alert(error);
+    }
   }
 
   private handleFolderPicked(e: CustomEvent<FolderTreeItem>): void {
@@ -96,12 +88,12 @@ export class DnnRmFolderList {
     this.dnnRmFolderListFolderPicked.emit(item);
   }
 
-  private handleContextMenu(e: MouseEvent): void {
+  private async handleContextMenu(e: MouseEvent) {
     e.preventDefault();
-    this.dismissContextMenu();
-
-    this.itemsClient.getFolderItem(state.settings.HomeFolderId)
-    .then(item => {
+    try {
+      this.dismissContextMenu();
+  
+      const item = await this.itemsClient.getFolderItem(state.settings.HomeFolderId)
       const collapsible = document.createElement("dnn-collapsible");
       const folderContextMenu = document.createElement("dnn-rm-folder-context-menu");
       collapsible.appendChild(folderContextMenu);
@@ -115,8 +107,9 @@ export class DnnRmFolderList {
         collapsible.expanded = true;
       }, 100);
       this.dnnRmcontextMenuOpened.emit(state.settings.HomeFolderId);
-    })
-    .catch(reason => console.error(reason));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   render() {
@@ -124,7 +117,7 @@ export class DnnRmFolderList {
       <Host>
         <button
           onClick={() => this.handleRootClicked()}
-          onContextMenu={e => this.handleContextMenu(e)}
+          onContextMenu={e => void this.handleContextMenu(e)}
         >
           <strong>{state.settings.HomeFolderName}</strong>
         </button>

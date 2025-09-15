@@ -232,7 +232,7 @@
     <value>Add New Container</value>
   </data>
   <data name="PackageUpdated.Text" xml:space="preserve">
-    <value>Extension updated succesfully.</value>
+    <value>Extension updated successfully.</value>
   </data>
   <data name="UpgradeMessage.Text" xml:space="preserve">
     <value>Click Here to Get the Upgrade</value>

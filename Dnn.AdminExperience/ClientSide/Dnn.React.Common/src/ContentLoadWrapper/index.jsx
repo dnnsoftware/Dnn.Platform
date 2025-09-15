@@ -80,7 +80,7 @@ export default class ContentLoadWrapper extends Component {
         }
     }
 
-    /* eslint-disable react/no-danger */
+     
     render() {
         let {percent} = this.state;
         const className = "dnn-content-load-wrapper" + (this.props.loadComplete ? " complete" : "") + (this.props.loadError ? " upload-error" : "");

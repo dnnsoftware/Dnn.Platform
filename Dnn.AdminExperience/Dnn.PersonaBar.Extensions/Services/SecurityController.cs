@@ -693,7 +693,7 @@ namespace Dnn.PersonaBar.Security.Services
                 Stream oStream = null;
                 try
                 {
-                    HttpWebRequest oRequest = Globals.GetExternalRequest(sRequest);
+                    HttpWebRequest oRequest = Globals.GetExternalRequest(this.hostSettings, sRequest);
                     oRequest.Timeout = 10000; // 10 seconds
                     WebResponse oResponse = oRequest.GetResponse();
                     oStream = oResponse.GetResponseStream();
@@ -767,6 +767,8 @@ namespace Dnn.PersonaBar.Security.Services
                             this.hostSettings.ShowCriticalErrors,
                             this.hostSettings.DebugMode,
                             this.hostSettings.RememberCheckbox,
+                            this.hostSettings.AllowOverrideThemeViaQueryString,
+                            this.hostSettings.AllowRichTextModuleTitle,
                             AutoAccountUnlockDuration = this.hostSettings.AutoAccountUnlockDuration.TotalMinutes,
                             AsyncTimeout = this.hostSettings.AsyncTimeout.TotalMinutes,
                             MaxUploadSize = Config.GetMaxUploadSize(this.applicationStatusInfo) / 1024 / 1024,
@@ -800,6 +802,8 @@ namespace Dnn.PersonaBar.Security.Services
                 this.hostSettingsService.Update("ShowCriticalErrors", request.ShowCriticalErrors ? "Y" : "N", false);
                 this.hostSettingsService.Update("DebugMode", request.DebugMode ? "True" : "False", false);
                 this.hostSettingsService.Update("RememberCheckbox", request.RememberCheckbox ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowOverrideThemeViaQueryString", request.AllowOverrideThemeViaQueryString ? "Y" : "N", false);
+                this.hostSettingsService.Update("AllowRichTextModuleTitle", request.AllowRichTextModuleTitle ? "Y" : "N", false);
                 this.hostSettingsService.Update("AutoAccountUnlockDuration", request.AutoAccountUnlockDuration.ToString(), false);
                 this.hostSettingsService.Update("AsyncTimeout", request.AsyncTimeout.ToString(), false);
                 var oldExtensionList = this.hostSettings.AllowedExtensionAllowList.ToStorageString();
@@ -1160,7 +1164,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>A paged list of `ApiToken` objects for the specified portal and page.</returns>
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage GetApiTokens(int portalId, int filter, string apiKey, int scope, int pageIndex, int pageSize)
         {
             if (portalId < 0)
@@ -1256,7 +1259,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>A new <see cref="ApiToken"/> object.</returns>
         [HttpPost]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage CreateApiToken(CreateApiTokenRequest data)
         {
             var settings = ApiTokenSettings.GetSettings(this.PortalId);
@@ -1333,7 +1335,6 @@ namespace Dnn.PersonaBar.Security.Services
         /// <returns>An HTTP response message with a boolean value indicating whether the token was successfully revoked or deleted.</returns>
         [HttpPost]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageApiTokens)]
-
         public HttpResponseMessage RevokeOrDeleteApiToken(RevokeDeleteApiTokenRequest data)
         {
             var token = this.apiTokenController.GetApiToken(data.ApiTokenId);

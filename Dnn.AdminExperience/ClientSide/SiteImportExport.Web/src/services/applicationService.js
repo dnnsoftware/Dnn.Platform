@@ -3,7 +3,7 @@ import util from "../utils";
 function serializeQueryStringParameters(obj) {
     let s = [];
     // p is used in the loop but eslist is not seeting that.
-    // eslint-disable-next-line no-unused-vars
+     
     for (let p in obj) {
         if (Object.prototype.hasOwnProperty.call(obj, p)) {
             s.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));

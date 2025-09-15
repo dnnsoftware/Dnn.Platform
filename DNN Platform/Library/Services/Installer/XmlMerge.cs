@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Installer
         public string Version { get; private set; }
 
         /// <summary>Gets a value indicating whether the last update performed by this instance resulted in any changes.</summary>
-        /// <value><c>true</c> if there were changes, <c>false</c> if no changes were made to the target document.</value>
+        /// <value><see langword="true"/> if there were changes, <see langword="false"/> if no changes were made to the target document.</value>
         public bool ConfigUpdateChangedNodes { get; private set; }
 
         /// <summary>

@@ -7,15 +7,16 @@ namespace DotNetNuke.Framework
     using System.Collections;
     using System.Collections.Specialized;
     using System.Globalization;
+    using System.Net;
     using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -25,6 +26,8 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>PageBase provides a custom DotNetNuke base class for pages.</summary>
     public abstract class PageBase : Page
     {
@@ -32,43 +35,39 @@ namespace DotNetNuke.Framework
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private readonly NameValueCollection htmlAttributes = new NameValueCollection();
-        private readonly ArrayList localizedControls;
+        private readonly ILog traceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly ArrayList localizedControls = [];
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettings hostSettings;
 
         private PageStatePersister persister;
         private CultureInfo pageCulture;
         private string localResourceFile;
 
         /// <summary>Initializes a new instance of the <see cref="PageBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         protected PageBase()
+            : this(null, null, null)
         {
-            this.localizedControls = new ArrayList();
         }
 
-        public PortalSettings PortalSettings
+        /// <summary>Initializes a new instance of the <see cref="PageBase"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        protected PageBase(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
         {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        public NameValueCollection HtmlAttributes
-        {
-            get
-            {
-                return this.htmlAttributes;
-            }
-        }
+        public PortalSettings PortalSettings => this.portalController.GetCurrentPortalSettings();
 
-        public CultureInfo PageCulture
-        {
-            get
-            {
-                return this.pageCulture ?? (this.pageCulture = Localization.GetPageLocale(this.PortalSettings));
-            }
-        }
+        public NameValueCollection HtmlAttributes { get; } = [];
+
+        public CultureInfo PageCulture => this.pageCulture ?? (this.pageCulture = Localization.GetPageLocale(this.PortalSettings));
 
         public string LocalResourceFile
         {
@@ -110,9 +109,9 @@ namespace DotNetNuke.Framework
                 {
                     this.persister = base.PageStatePersister;
 
-                    if (Globals.Status == Globals.UpgradeStatus.None)
+                    if (this.appStatus.Status == UpgradeStatus.None)
                     {
-                        switch (Host.PageStatePersister)
+                        switch (this.hostSettings.PageStatePersister)
                         {
                             case "M":
                                 this.persister = new CachePageStatePersister(this);
@@ -127,6 +126,14 @@ namespace DotNetNuke.Framework
                 return this.persister;
             }
         }
+
+        /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string)"/>
+        public static IHtmlString JavaScriptStringEncode(string value)
+            => HtmlUtils.JavaScriptStringEncode(value);
+
+        /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string,bool)"/>
+        public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
+            => HtmlUtils.JavaScriptStringEncode(value, addDoubleQuotes);
 
         /// <summary>
         /// <para>RemoveKeyAttribute remove the key attribute from the control. If this isn't done, then the HTML output will have
@@ -162,24 +169,21 @@ namespace DotNetNuke.Framework
             string key = null;
             if (!(control is LiteralControl))
             {
-                var webControl = control as WebControl;
-                if (webControl != null)
+                if (control is WebControl webControl)
                 {
                     attributeCollection = webControl.Attributes;
                     key = attributeCollection[attributeName];
                 }
                 else
                 {
-                    var htmlControl = control as HtmlControl;
-                    if (htmlControl != null)
+                    if (control is HtmlControl htmlControl)
                     {
                         attributeCollection = htmlControl.Attributes;
                         key = attributeCollection[attributeName];
                     }
                     else
                     {
-                        var userControl = control as UserControl;
-                        if (userControl != null)
+                        if (control is UserControl userControl)
                         {
                             attributeCollection = userControl.Attributes;
                             key = attributeCollection[attributeName];
@@ -206,7 +210,7 @@ namespace DotNetNuke.Framework
             return key;
         }
 
-        /// <summary><para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para></summary>
+        /// <summary><para>ProcessControl performs the high level localization for a single control and optionally it's children.</para></summary>
         /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="includeChildren">If true, causes this method to process children of this controls.</param>
@@ -227,9 +231,8 @@ namespace DotNetNuke.Framework
                 this.LocalizeControl(control, value);
             }
 
-            // Translate listcontrol items here
-            var listControl = control as ListControl;
-            if (listControl != null)
+            // Translate ListControl items here
+            if (control is ListControl listControl)
             {
                 for (var i = 0; i <= listControl.Items.Count - 1; i++)
                 {
@@ -253,8 +256,7 @@ namespace DotNetNuke.Framework
 
             // UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
             // Manual Override to ResolveUrl
-            var image = control as Image;
-            if (image != null)
+            if (control is Image image)
             {
                 if (image.ImageUrl.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
@@ -273,8 +275,7 @@ namespace DotNetNuke.Framework
 
             // UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
             // Manual Override to ResolveUrl
-            var htmlImage = control as HtmlImage;
-            if (htmlImage != null)
+            if (control is HtmlImage htmlImage)
             {
                 if (htmlImage.Src.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
@@ -293,8 +294,7 @@ namespace DotNetNuke.Framework
 
             // UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
             // Manual Override to ResolveUrl
-            var ctrl = control as HyperLink;
-            if (ctrl != null)
+            if (control is HyperLink ctrl)
             {
                 if (ctrl.NavigateUrl.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
@@ -322,8 +322,7 @@ namespace DotNetNuke.Framework
                 return;
             }
 
-            var objModuleControl = control as IModuleControl;
-            if (objModuleControl == null)
+            if (control is not IModuleControl objModuleControl)
             {
                 // Cache results from reflection calls for performance
                 var pi = control.GetType().GetProperty("LocalResourceFile");
@@ -364,12 +363,12 @@ namespace DotNetNuke.Framework
             Logger.Fatal("An error has occurred while loading page.", exc);
 
             string strURL = Globals.ApplicationURL();
-            if (exc is HttpException && !this.IsViewStateFailure(exc))
+            if (exc is HttpException exception && !this.IsViewStateFailure(exception))
             {
                 try
                 {
                     // if the exception's status code set to 404, we need display 404 page if defined or show no found info.
-                    var statusCode = (exc as HttpException).GetHttpCode();
+                    var statusCode = exception.GetHttpCode();
                     if (statusCode == 404)
                     {
                         UrlUtils.Handle404Exception(this.Response, this.PortalSettings);
@@ -377,7 +376,7 @@ namespace DotNetNuke.Framework
 
                     if (this.PortalSettings?.ErrorPage500 != -1)
                     {
-                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc, false);
+                        var url = this.GetErrorUrl($"~/Default.aspx?tabid={this.PortalSettings.ErrorPage500}", exception, false);
                         HttpContext.Current.Response.Redirect(url);
                     }
                     else
@@ -389,8 +388,8 @@ namespace DotNetNuke.Framework
                 catch (Exception)
                 {
                     HttpContext.Current.Response.Clear();
-                    var errorMessage = HttpUtility.UrlEncode(Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile));
-                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error=" + errorMessage);
+                    var errorMessage = Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile);
+                    HttpContext.Current.Server.Transfer($"~/ErrorPage.aspx?status=503&error={HttpUtility.UrlEncode(errorMessage)}");
                 }
             }
 
@@ -464,20 +463,20 @@ namespace DotNetNuke.Framework
 
         private string GetErrorUrl(string url, Exception exc, bool hideContent = true)
         {
+            var separator = url.IndexOf('?') == -1 ? '?' : '&';
             if (this.Request.QueryString["error"] != null)
             {
-                url += string.Concat(url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&", "error=terminate");
+                return $"{url}{separator}error=terminate";
             }
-            else
+
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var errorMessage = exc == null || user is not { IsSuperUser: true }
+                    ? "An unexpected error has occurred"
+                    : exc.Message;
+            url = $"{url}{separator}error={WebUtility.UrlEncode(errorMessage)}";
+            if (!Globals.IsAdminControl() && hideContent)
             {
-                url += string.Concat(
-                    url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&",
-                    "error=",
-                    exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message));
-                if (!Globals.IsAdminControl() && hideContent)
-                {
-                    url += "&content=0";
-                }
+                return $"{url}&content=0";
             }
 
             return url;
@@ -485,7 +484,7 @@ namespace DotNetNuke.Framework
 
         private bool IsViewStateFailure(Exception e)
         {
-            return !this.User.Identity.IsAuthenticated && e != null && e.InnerException is ViewStateException;
+            return !this.User.Identity.IsAuthenticated && e?.InnerException is ViewStateException;
         }
 
         private void IterateControls(ControlCollection controls, ArrayList affectedControls, string resourceFileRoot)
@@ -505,9 +504,9 @@ namespace DotNetNuke.Framework
                 tabId = this.PortalSettings.ActiveTab.TabID;
             }
 
-            if (this.tracelLogger.IsDebugEnabled)
+            if (this.traceLogger.IsDebugEnabled)
             {
-                this.tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
+                this.traceLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
             }
         }
 
@@ -518,23 +517,20 @@ namespace DotNetNuke.Framework
                 return;
             }
 
-            var validator = control as BaseValidator;
-            if (validator != null)
+            if (control is BaseValidator validator)
             {
                 validator.ErrorMessage = value;
                 validator.Text = value;
                 return;
             }
 
-            var label = control as Label;
-            if (label != null)
+            if (control is Label label)
             {
                 label.Text = value;
                 return;
             }
 
-            var linkButton = control as LinkButton;
-            if (linkButton != null)
+            if (control is LinkButton linkButton)
             {
                 var imgMatches = LinkItemMatchRegex.Matches(value);
                 foreach (Match match in imgMatches)
@@ -557,51 +553,44 @@ namespace DotNetNuke.Framework
                 return;
             }
 
-            var hyperLink = control as HyperLink;
-            if (hyperLink != null)
+            if (control is HyperLink hyperLink)
             {
                 hyperLink.Text = value;
                 return;
             }
 
-            var button = control as Button;
-            if (button != null)
+            if (control is Button button)
             {
                 button.Text = value;
                 return;
             }
 
-            var htmlButton = control as HtmlButton;
-            if (htmlButton != null)
+            if (control is HtmlButton htmlButton)
             {
                 htmlButton.Attributes["Title"] = value;
                 return;
             }
 
-            var htmlImage = control as HtmlImage;
-            if (htmlImage != null)
+            if (control is HtmlImage htmlImage)
             {
                 htmlImage.Alt = value;
                 return;
             }
 
-            var checkBox = control as CheckBox;
-            if (checkBox != null)
+            if (control is CheckBox checkBox)
             {
                 checkBox.Text = value;
                 return;
             }
 
-            var image = control as Image;
-            if (image != null)
+            if (control is Image image)
             {
                 image.AlternateText = value;
                 image.ToolTip = value;
                 return;
             }
 
-            var textBox = control as TextBox;
-            if (textBox != null)
+            if (control is TextBox textBox)
             {
                 textBox.ToolTip = value;
             }

@@ -14,11 +14,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     using DotNetNuke.Entities.Users;
 
     [ConsoleCommand("get-portal", Constants.PortalCategory, "Prompt_GetPortal_Description")]
-
     public class GetPortal : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
-
         private const string FlagId = "id";
 
         /// <inheritdoc/>

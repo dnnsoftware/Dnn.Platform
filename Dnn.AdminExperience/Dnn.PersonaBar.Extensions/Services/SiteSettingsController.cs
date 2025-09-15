@@ -514,7 +514,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns>profile settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetProfileSettings(int? portalId)
         {
             try
@@ -2127,7 +2126,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage AddIgnoreWords(UpdateIgnoreWordsRequest request)
         {
             try
@@ -2235,7 +2233,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// <returns>language settings.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-
         public HttpResponseMessage GetLanguageSettings(int? portalId)
         {
             try

@@ -13,67 +13,23 @@ namespace DotNetNuke.Services.Installer.Installers
     /// <summary>The FileInstaller installs File Components to a DotNetNuke site.</summary>
     public class FileInstaller : ComponentInstallerBase
     {
-        private readonly List<InstallFile> files = new List<InstallFile>();
-        private bool deleteFiles = Null.NullBoolean;
-
         /// <summary>Gets a value indicating whether the Installer supports Manifest only installs.</summary>
-        public override bool SupportsManifestOnlyInstall
-        {
-            get
-            {
-                return Null.NullBoolean;
-            }
-        }
+        public override bool SupportsManifestOnlyInstall => Null.NullBoolean;
 
         /// <summary>Gets or sets a value indicating whether the Packages files are deleted when uninstalling the package.</summary>
-        public bool DeleteFiles
-        {
-            get
-            {
-                return this.deleteFiles;
-            }
-
-            set
-            {
-                this.deleteFiles = value;
-            }
-        }
+        public bool DeleteFiles { get; set; } = Null.NullBoolean;
 
         /// <summary>Gets the name of the Collection Node (<c>files</c>).</summary>
-        protected virtual string CollectionNodeName
-        {
-            get
-            {
-                return "files";
-            }
-        }
+        protected virtual string CollectionNodeName => "files";
 
         /// <summary>Gets a Dictionary of Files that are included in this component.</summary>
-        protected List<InstallFile> Files
-        {
-            get
-            {
-                return this.files;
-            }
-        }
+        protected List<InstallFile> Files { get; } = [];
 
         /// <summary>Gets the default Path for the file - if not present in the manifest.</summary>
-        protected virtual string DefaultPath
-        {
-            get
-            {
-                return Null.NullString;
-            }
-        }
+        protected virtual string DefaultPath { get; } = Null.NullString;
 
         /// <summary>Gets the name of the Item Node (<c>file</c>).</summary>
-        protected virtual string ItemNodeName
-        {
-            get
-            {
-                return "file";
-            }
-        }
+        protected virtual string ItemNodeName => "file";
 
         /// <summary>Gets the PhysicalBasePath for the files.</summary>
         protected virtual string PhysicalBasePath

@@ -20,7 +20,7 @@ class ModuleRow extends Component {
         const { module, onDelete, onEditing, onSetting, isEditingModule, showCopySettings, onCopyChange } = this.props;
         const editClassName = "extension-action" + (isEditingModule ? " selected" : "");
         return (
-            /* eslint-disable react/no-danger */
+             
             <div className={styles.moduleRow} >
                 {showCopySettings &&
                     <GridCell columnSize={10}>
@@ -58,7 +58,7 @@ class ModuleRow extends Component {
                     </GridCell>
                 }
             </div>
-            /* eslint-enable react/no-danger */
+             
         );
     }
 }
