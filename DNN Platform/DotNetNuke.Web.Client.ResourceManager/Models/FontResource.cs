@@ -10,8 +10,6 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             this._clientResourcesController = clientResourcesController;
         }
 
-        public string ResolvedPath { get; set; }
-
         public void Register()
         {
             this._clientResourcesController.AddFont(this);

@@ -12,7 +12,6 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
 
         public bool NoModule { get; set; } = false;
         public string Type { get; set; } = "";
-        public string ResolvedPath { get; set; }
 
         public ScriptResource(IClientResourcesController clientResourcesController)
         {

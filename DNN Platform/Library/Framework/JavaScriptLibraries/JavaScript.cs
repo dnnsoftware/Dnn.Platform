@@ -4,6 +4,7 @@
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -11,6 +12,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
@@ -23,8 +25,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -385,7 +387,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             var library = GetHighestVersionLibrary(appStatus, jsname);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, false);
             }
             else
             {
@@ -404,7 +406,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                                               .FirstOrDefault(isValidLibrary);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, false);
                 return true;
             }
 
@@ -412,7 +414,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             library = GetHighestVersionLibrary(appStatus, jsname);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, false);
                 LogCollision(eventLogger, portalSettings, $"Requested:{jsname}:{version}:{specific}.Resolved:{library.Version}");
                 return true;
             }
@@ -425,7 +427,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, true);
             }
             else
             {
@@ -434,9 +436,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static void AddItemRequest(int javaScriptLibraryId)
+        private static void AddItemRequest(JavaScriptLibrary library, bool forceVersion)
         {
-            HttpContextSource.Current.Items[ScriptPrefix + javaScriptLibraryId] = true;
+            HttpContextSource.Current.Items[ScriptPrefix + library.JavaScriptLibraryID] = true;
+            var controller = GetClientResourcesController(HttpContextSource.Current);
+            controller.CreateScript()
+                .FromSrc(GetScriptPath(null, null, library.LibraryName))
+                .SetNameAndVersion(library.LibraryName, library.Version.ToString(), forceVersion)
+                .SetProvider(GetScriptLocation(library))
+                .Register();
         }
 
         private static void AddPreInstallOrLegacyItemRequest(string jsl)
@@ -551,8 +559,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static IEnumerable<string> GetScriptVersions(IApplicationStatusInfo appStatus)
         {
             var orderedScripts = (from object item in HttpContextSource.Current.Items.Keys
-                                           where item.ToString().StartsWith(ScriptPrefix)
-                                           select item.ToString().Substring(4)).ToList();
+                                  where item.ToString().StartsWith(ScriptPrefix)
+                                  select item.ToString().Substring(4)).ToList();
             orderedScripts.Sort();
             var finalScripts = orderedScripts.ToList();
             foreach (var libraryId in orderedScripts)
@@ -652,15 +660,32 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (jsl.LibraryName)
             {
                 case CommonJs.jQuery:
-                    return (int)FileOrder.Js.jQuery;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.jQuery;
                 case CommonJs.jQueryMigrate:
-                    return (int)FileOrder.Js.jQueryMigrate;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.jQueryMigrate;
                 case CommonJs.jQueryUI:
-                    return (int)FileOrder.Js.jQueryUI;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.jQueryUI;
                 case CommonJs.HoverIntent:
-                    return (int)FileOrder.Js.HoverIntent;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.HoverIntent;
                 default:
-                    return jsl.PackageID + (int)FileOrder.Js.DefaultPriority;
+                    return jsl.PackageID + (int)Abstractions.ClientResources.FileOrder.Js.DefaultPriority;
+            }
+        }
+
+        private static IClientResourcesController GetClientResourcesController(HttpContextBase context)
+        {
+            var serviceProvider = GetCurrentServiceProvider(context);
+            return serviceProvider.GetRequiredService<IClientResourcesController>();
+        }
+
+        private static IServiceProvider GetCurrentServiceProvider(HttpContextBase context)
+        {
+            return GetScope(context.Items).ServiceProvider;
+
+            // Copy of DotNetNuke.Common.Extensions.HttpContextDependencyInjectionExtensions.GetScope
+            static IServiceScope GetScope(IDictionary httpContextItems)
+            {
+                return httpContextItems[typeof(IServiceScope)] as IServiceScope;
             }
         }
     }
