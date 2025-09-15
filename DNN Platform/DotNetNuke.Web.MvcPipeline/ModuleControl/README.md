@@ -231,7 +231,7 @@ public class DemoModuleControl : RazorModuleControlBase
 ```
 
 **Usage Scenarios:**
-- **Migration Testing**: Use DemoModule to test MVC controls within WebForms pages
+- **Migration**: Use DemoModule to run MVC controls within WebForms pages
 - **Development Reference**: DemoModuleControl shows best practices for Razor module implementation
 - **Integration Patterns**: Demonstrates how to handle multiple interfaces (`IActionable`, `IResourcable`)
 - **View Management**: Shows flexible view path configuration and model binding
@@ -263,7 +263,4 @@ This implementation provides several key advantages:
 - **No Legacy Modifications**: No modifications required to the existing module pipeline
 - **Custom Module Patterns**: Open to custom module control patterns
 
-### 4. Future-Proof Architecture
-- **Configuration-Based**: Uses class config in module manifest rather than simple boolean flags
-- **.NET Core Preparation**: Architecture aligns with .NET Core patterns where there's no separate module pipeline
-- **Extensible Design**: Open to custom module control patterns and future enhancements
+

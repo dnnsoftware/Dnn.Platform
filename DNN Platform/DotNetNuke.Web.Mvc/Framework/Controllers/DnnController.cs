@@ -150,7 +150,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         {
             base.Initialize(requestContext);
 
-            if (requestContext.RouteData.Values.ContainsKey("mvcpage"))
+            if (requestContext.RouteData != null && requestContext.RouteData.Values.ContainsKey("mvcpage"))
             {
                 var values = requestContext.RouteData.Values;
                 var moduleContext = new ModuleInstanceContext();
@@ -168,20 +168,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
                 moduleContext.Configuration = moduleInfo;
 
-                /*
-                var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(moduleInfo.DesktopModuleID, moduleInfo.PortalID);
-                var moduleRequestContext = new ModuleRequestContext
-                {
-                    HttpContext = httpContext,
-                    ModuleContext = moduleContext,
-                    ModuleApplication = new ModuleApplication(this.RequestContext, DisableMvcResponseHeader)
-                    {
-                        ModuleName = desktopModule.ModuleName,
-                        FolderPath = desktopModule.FolderName,
-                    },
-                };
-                */
-
                 this.ModuleContext = new ModuleInstanceContext() { Configuration = moduleInfo };
                 this.LocalResourceFile = string.Format(
                         "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
@@ -196,8 +182,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 };
                 moduleApplication.Init();
 
-                // var viewEngines = new ViewEngineCollection();
-                // viewEngines.Add(new ModuleDelegatingViewEngine());
                 this.ViewEngineCollectionEx = moduleApplication.ViewEngines;
             }
 
