@@ -2,7 +2,7 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
-    public class ScriptResource : FileInclude, IScriptResource
+    public class ScriptResource : ResourceBase, IScriptResource
     {
         private readonly IClientResourcesController _clientResourcesController;
 
@@ -12,8 +12,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
 
         public bool NoModule { get; set; } = false;
         public string Type { get; set; } = "";
-        public string Src { get; set; }
-        public string Key { get; set; }
+        public string ResolvedPath { get; set; }
 
         public ScriptResource(IClientResourcesController clientResourcesController)
         {
@@ -25,10 +24,10 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             this._clientResourcesController.AddScript(this);
         }
 
-        public string Render()
+        public string Render(int crmVersion, bool useCdn)
         {
             var htmlString = "<script";
-            htmlString += $" src=\"{this.Src}\"";
+            htmlString += $" src=\"{this.GetVersionedPath(crmVersion, useCdn)}\"";
             if (this.Async)
             {
                 htmlString += " async";

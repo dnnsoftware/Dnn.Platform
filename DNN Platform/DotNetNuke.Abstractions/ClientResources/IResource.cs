@@ -21,14 +21,20 @@ public interface IResource
     string PathNameAlias { get; set; }
 
     /// <summary>
-    /// Gets or sets the resolved full src path.
+    /// Gets or sets the resolved full path.
     /// </summary>
-    string Src { get; set; }
+    string ResolvedPath { get; set; }
 
     /// <summary>
     /// Gets or sets the lowered src path to facilitate lookup.
     /// </summary>
     string Key { get; set; }
+
+    /// <summary>
+    /// Gets or sets the CDN url to be used if host settings specify CDN should be used.
+    /// Note, if you only wish to use an external path, then use the FilePath property.
+    /// </summary>
+    string CdnUrl { get; set; }
 
     /// <summary>
     /// Gets or sets the priority of the client resource.
@@ -100,6 +106,8 @@ public interface IResource
     /// <summary>
     /// Renders the client resource as a string.
     /// </summary>
+    /// <param name="crmVersion">The current CRM version.</param>
+    /// <param name="useCdn">Whether to use the CDN url if available.</param>
     /// <returns>Returns a HTML string.</returns>
-    string Render();
+    string Render(int crmVersion, bool useCdn);
 }

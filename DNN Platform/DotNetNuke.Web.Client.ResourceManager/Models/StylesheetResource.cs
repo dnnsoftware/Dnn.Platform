@@ -2,7 +2,7 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
-    public class StylesheetResource : FileInclude, IStylesheetResource
+    public class StylesheetResource : ResourceBase, IStylesheetResource
     {
         private readonly IClientResourcesController _clientResourcesController;
         public StylesheetResource(IClientResourcesController clientResourcesController)
@@ -11,18 +11,16 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         }
 
         public bool Disabled { get; set; } = false;
-        public string Src { get; set; }
-        public string Key { get; set; }
 
         public void Register()
         {
             this._clientResourcesController.AddStylesheet(this);
         }
 
-        public string Render()
+        public string Render(int crmVersion, bool useCdn)
         {
             var htmlString = "<link";
-            htmlString += $" href=\"{this.Src}\"";
+            htmlString += $" href=\"{this.GetVersionedPath(crmVersion, useCdn)}\"";
             if (this.Preload)
             {
                 htmlString += $" rel=\"preload\" as=\"style\"";

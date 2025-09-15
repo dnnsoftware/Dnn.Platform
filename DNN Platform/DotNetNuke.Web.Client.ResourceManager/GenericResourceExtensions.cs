@@ -36,6 +36,13 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
+        public static T SetCdnUrl<T>(this T input, string cdnUrl) where T : IResource
+        {
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            input.CdnUrl = cdnUrl;
+            return input;
+        }
+
         public static T SetProvider<T>(this T input, string provider) where T : IResource
         {
             if (input == null) throw new ArgumentNullException(nameof(input));

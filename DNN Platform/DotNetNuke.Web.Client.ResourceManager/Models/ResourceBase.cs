@@ -3,14 +3,17 @@
     using System.Collections.Generic;
     using DotNetNuke.Abstractions.ClientResources;
 
-    public class FileInclude
+    public abstract class ResourceBase : IResource
     {
         private string name;
 
         public string FilePath { get; set; }
         public string PathNameAlias { get; set; }
+        public string ResolvedPath { get; set; }
+        public string Key { get; set; }
+        public string CdnUrl { get; set; }
         public int Priority { get; set; }
-        public string Provider { get; set; } = "DnnPageHeaderProvider";
+        public string Provider { get; set; } = ClientResourceProviders.DnnPageHeaderProvider;
         public string Name
         {
             get
@@ -117,6 +120,26 @@
                 htmlString += $" {attribute.Key}=\"{attribute.Value}\"";
             }
             return htmlString;
+        }
+
+        internal string GetVersionedPath(int crmVersion, bool useCdn)
+        {
+            var path = this.ResolvedPath;
+            if (useCdn && !string.IsNullOrEmpty(this.CdnUrl))
+            {
+                path = this.CdnUrl;
+            }
+            return path;
+        }
+
+        public void Register()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string Render(int crmVersion, bool useCdn)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

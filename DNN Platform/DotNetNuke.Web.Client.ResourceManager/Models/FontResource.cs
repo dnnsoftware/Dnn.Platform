@@ -2,7 +2,7 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
-    public class FontResource : FileInclude, IFontResource
+    public class FontResource : ResourceBase, IFontResource
     {
         private readonly IClientResourcesController _clientResourcesController;
         public FontResource(IClientResourcesController clientResourcesController)
@@ -10,18 +10,17 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             this._clientResourcesController = clientResourcesController;
         }
 
-        public string Src { get; set; }
-        public string Key { get; set; }
+        public string ResolvedPath { get; set; }
 
         public void Register()
         {
             this._clientResourcesController.AddFont(this);
         }
 
-        public string Render()
+        public string Render(int crmVersion, bool useCdn)
         {
             var htmlString = "<link";
-            htmlString += $" href=\"{this.Src}\"";
+            htmlString += $" href=\"{this.GetVersionedPath(crmVersion, useCdn)}\"";
             if (this.Preload)
             {
                 htmlString += $" rel=\"preload\" as=\"font\"";
