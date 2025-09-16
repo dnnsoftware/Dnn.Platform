@@ -22,11 +22,11 @@ public enum CacheControlHeader
     Server = 3,
 
     /// <summary>Applies the settings of both <see cref="Server" /> and <see cref="NoCache" /> to indicate that the content is cached at the server but all others are explicitly denied the ability to cache the response.</summary>
-    ServerAndNoCache = 3,
+    ServerAndNoCache = 4,
 
     /// <summary>Sets <c>Cache-Control: public</c> to specify that the response is cacheable by clients and shared (proxy) caches.</summary>
-    Public = 4,
+    Public = 5,
 
     /// <summary>Indicates that the response is cached at the server and at the client but nowhere else. Proxy servers are not allowed to cache the response.</summary>
-    ServerAndPrivate = 5,
+    ServerAndPrivate = 6,
 }

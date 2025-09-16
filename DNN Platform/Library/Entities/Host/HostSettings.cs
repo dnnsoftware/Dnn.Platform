@@ -404,12 +404,12 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
     private static CacheControlHeader ToCacheControlHeader(string headerId)
         => headerId switch
         {
-            "0" => CacheControlHeader.NoCache,
-            "1" => CacheControlHeader.Private,
-            "2" => CacheControlHeader.Public,
+            "1" => CacheControlHeader.NoCache,
+            "2" => CacheControlHeader.Private,
             "3" => CacheControlHeader.Server,
             "4" => CacheControlHeader.ServerAndNoCache,
-            "5" => CacheControlHeader.ServerAndPrivate,
+            "5" => CacheControlHeader.Public,
+            "6" => CacheControlHeader.ServerAndPrivate,
             _ => CacheControlHeader.Unknown,
         };
 }

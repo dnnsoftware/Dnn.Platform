@@ -1,0 +1,37 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+
+/* Fix Cacheability Settings */
+/************************************************************/
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='6'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='5'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='5'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='2'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='2'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='1'
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}HostSettings]
+SET SettingValue='1'
+WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
+AND SettingValue='0'
+GO
