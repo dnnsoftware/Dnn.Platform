@@ -444,6 +444,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 .FromSrc(GetScriptPath(null, null, library.LibraryName))
                 .SetNameAndVersion(library.LibraryName, library.Version.ToString(), forceVersion)
                 .SetProvider(GetScriptLocation(library))
+                .SetPriority(GetFileOrder(library))
                 .Register();
         }
 

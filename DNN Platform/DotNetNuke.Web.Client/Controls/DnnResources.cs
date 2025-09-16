@@ -20,11 +20,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         public string Provider { get; set; }
 
-        protected override void OnInit(System.EventArgs e)
-        {
-            base.OnInit(e);
-        }
-
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);

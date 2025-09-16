@@ -129,7 +129,7 @@
             {
                 path = this.CdnUrl;
             }
-            return path;
+            return $"{path}?cdv={crmVersion}";
         }
 
         public void Register()
