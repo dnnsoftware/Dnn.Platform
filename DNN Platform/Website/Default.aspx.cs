@@ -447,11 +447,14 @@ namespace DotNetNuke.Framework
                 case CacheControlHeader.Private:
                     this.Response.Cache.SetCacheability(HttpCacheability.Private);
                     break;
-                case CacheControlHeader.Public:
-                    this.Response.Cache.SetCacheability(HttpCacheability.Public);
+                case CacheControlHeader.Server:
+                    this.Response.Cache.SetCacheability(HttpCacheability.Server);
                     break;
                 case CacheControlHeader.ServerAndNoCache:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
+                    break;
+                case CacheControlHeader.Public:
+                    this.Response.Cache.SetCacheability(HttpCacheability.Public);
                     break;
                 case CacheControlHeader.ServerAndPrivate:
                     this.Response.Cache.SetCacheability(HttpCacheability.ServerAndPrivate);
