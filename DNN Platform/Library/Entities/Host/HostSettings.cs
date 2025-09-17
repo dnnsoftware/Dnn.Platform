@@ -27,11 +27,11 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
 
     /// <inheritdoc />
     public CacheControlHeader AuthenticatedCacheability =>
-        ToCacheControlHeader(hostSettingsService.GetString("AuthenticatedCacheability", "4"));
+        ToCacheControlHeader(hostSettingsService.GetString("AuthenticatedCacheability"));
 
     /// <inheritdoc />
     public CacheControlHeader UnauthenticatedCacheability =>
-        ToCacheControlHeader(hostSettingsService.GetString("UnauthenticatedCacheability", "4"));
+        ToCacheControlHeader(hostSettingsService.GetString("UnauthenticatedCacheability"));
 
     /// <inheritdoc />
     public bool CdnEnabled => hostSettingsService.GetBoolean("CDNEnabled", false);
@@ -401,15 +401,15 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
         return hostSettingsService.GetString("GUID");
     }
 
-    private static CacheControlHeader ToCacheControlHeader(string headerId)
-        => headerId switch
+    private static CacheControlHeader ToCacheControlHeader(string header)
+        => header switch
         {
-            "0" => CacheControlHeader.NoCache,
-            "1" => CacheControlHeader.Private,
-            "2" => CacheControlHeader.Public,
-            "3" => CacheControlHeader.Server,
-            "4" => CacheControlHeader.ServerAndNoCache,
-            "5" => CacheControlHeader.ServerAndPrivate,
+            "NoCache" => CacheControlHeader.NoCache,
+            "Private" => CacheControlHeader.Private,
+            "Public" => CacheControlHeader.Public,
+            "Server" => CacheControlHeader.Server,
+            "ServerAndNoCache" => CacheControlHeader.ServerAndNoCache,
+            "ServerAndPrivate" => CacheControlHeader.ServerAndPrivate,
             _ => CacheControlHeader.Unknown,
         };
 }
