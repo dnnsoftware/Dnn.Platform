@@ -184,7 +184,7 @@
     <Compile Include="Controls\EditHTMLControl.cs" />
     <Compile Include="Controls\HtmlModuleControl.cs" />
     <Compile Include="Controls\MyWorkControl.cs" />
-    <Compile Include="Controls\RouteConfig.cs" />
+    <Compile Include="Mvc\RouteConfig.cs" />
     <Compile Include="MyWork.ascx.cs">
       <DependentUpon>MyWork.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -249,7 +249,6 @@
     <None Include="Providers\DataProviders\SqlDataProvider\06.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\07.02.01.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
-    <Content Include="Providers\DataProviders\SqlDataProvider\10.01.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\10.00.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
     <Content Include="web.config" />

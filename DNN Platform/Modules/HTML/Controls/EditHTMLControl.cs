@@ -31,9 +31,10 @@ namespace DotNetNuke.Modules.Html.Controls
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class EditHTMLControl : RazorModuleControlBase
+    public class EditHTMLControl : RazorModuleControlBase, IResourcable
     {
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
@@ -47,11 +48,32 @@ namespace DotNetNuke.Modules.Html.Controls
             this.contentSecurityPolicy = csp;
         }
 
-        /*
-        public override string ControlPath => "~/DesktopModules/Html/";
+        public ModuleResources ModuleResources => new ModuleResources()
+        {
+            StyleSheets = new List<ModuleStyleSheet>()
+            {
+                new ModuleStyleSheet()
+                {
+                    FilePath = "~/DesktopModules/HTML/edit.css",
+                },
+                new ModuleStyleSheet()
+                {
+                    FilePath = "~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css",
+                },
+            },
+            Scripts = new List<ModuleScript>()
+            {
+                new ModuleScript()
+                {
+                    FilePath = "~/Resources/Shared/scripts/jquery/jquery.form.min.js",
+                },
+                new ModuleScript()
+                {
+                    FilePath = "~/DesktopModules/HTML/js/edit.js",
+                },
+            },
+        };
 
-        public override string ID => "EditHTML";
-        */
         public override IRazorModuleResult Invoke()
         {
             var model = new EditHtmlViewModel();
