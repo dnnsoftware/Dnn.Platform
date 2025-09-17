@@ -174,8 +174,11 @@ namespace Dnn.PersonaBar.Servers.Services
                 Enum.TryParse(request.CacheSetting, false, out PerformanceSettings perfSetting);
                 this.hostSettings.PerformanceSetting = perfSetting;
 
-                this.hostSettingsService.Update("AuthenticatedCacheability", request.AuthCacheability, false);
-                this.hostSettingsService.Update("UnauthenticatedCacheability", request.UnauthCacheability, false);
+                Enum.TryParse(request.AuthCacheability, false, out CacheControlHeader authCacheability);
+                this.hostSettingsService.Update("AuthenticatedCacheability", authCacheability.ToString(), false);
+
+                Enum.TryParse(request.UnauthCacheability, false, out CacheControlHeader unAuthCacheability);
+                this.hostSettingsService.Update("UnauthenticatedCacheability", unAuthCacheability.ToString(), false);
 
                 this.hostSettingsService.Update(UseSSLKey, request.SslForCacheSynchronization.ToString(), true);
 
