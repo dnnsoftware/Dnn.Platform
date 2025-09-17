@@ -27,11 +27,11 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
 
     /// <inheritdoc />
     public CacheControlHeader AuthenticatedCacheability =>
-        ToCacheControlHeader(hostSettingsService.GetString("AuthenticatedCacheability"));
+        ToCacheControlHeader(hostSettingsService.GetString("AuthenticatedCacheability", "Public"));
 
     /// <inheritdoc />
     public CacheControlHeader UnauthenticatedCacheability =>
-        ToCacheControlHeader(hostSettingsService.GetString("UnauthenticatedCacheability"));
+        ToCacheControlHeader(hostSettingsService.GetString("UnauthenticatedCacheability", "Public"));
 
     /// <inheritdoc />
     public bool CdnEnabled => hostSettingsService.GetBoolean("CDNEnabled", false);
@@ -407,7 +407,6 @@ public class HostSettings(IHostSettingsService hostSettingsService) : IHostSetti
             "NoCache" => CacheControlHeader.NoCache,
             "Private" => CacheControlHeader.Private,
             "Public" => CacheControlHeader.Public,
-            "Server" => CacheControlHeader.Server,
             "ServerAndNoCache" => CacheControlHeader.ServerAndNoCache,
             "ServerAndPrivate" => CacheControlHeader.ServerAndPrivate,
             _ => CacheControlHeader.Unknown,
