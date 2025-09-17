@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Host
         /// <item><c>"5"</c> - <see cref="HttpCacheability.ServerAndPrivate"/></item>
         /// </list>
         /// </remarks>
-        public static string AuthenticatedCacheability => HostController.Instance.GetString("AuthenticatedCacheability", "4");
+        public static string AuthenticatedCacheability => HostController.Instance.GetString("AuthenticatedCacheability", "ServerAndNoCache");
 
         /// <summary>Gets the <see cref="HttpCacheability"/> value for unauthenticated requests.</summary>
         /// <remarks>The following mapping is used:
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Host
         /// <item><c>"5"</c> - <see cref="HttpCacheability.ServerAndPrivate"/></item>
         /// </list>
         /// </remarks>
-        public static string UnauthenticatedCacheability => HostController.Instance.GetString("UnauthenticatedCacheability", "4");
+        public static string UnauthenticatedCacheability => HostController.Instance.GetString("UnauthenticatedCacheability", "ServerAndNoCache");
 
         /// <summary>Gets a value indicating whether CDN has been enabled for all registered javascript libraries.</summary>
         public static bool CdnEnabled => HostController.Instance.GetBoolean("CDNEnabled", false);
