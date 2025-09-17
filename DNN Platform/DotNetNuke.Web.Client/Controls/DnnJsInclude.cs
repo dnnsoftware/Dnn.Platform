@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
+            this.PathNameAlias = string.IsNullOrEmpty(this.PathNameAlias) ? string.Empty : this.PathNameAlias.ToLowerInvariant();
             base.OnLoad(e);
         }
 

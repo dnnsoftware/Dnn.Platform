@@ -141,10 +141,20 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             portalSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>().GetCurrentSettings();
 
             // handle case where script has no javascript library
+            // also handle known dependencies
             switch (jsname)
             {
                 case CommonJs.jQuery:
                     RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQueryMigrate);
+                    break;
+                case CommonJs.KnockoutMapping:
+                    RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.Knockout);
+                    break;
+                case CommonJs.DnnPlugins:
+                    RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQueryUI);
+                    break;
+                case CommonJs.jQueryUI:
+                    RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQuery);
                     break;
             }
 
