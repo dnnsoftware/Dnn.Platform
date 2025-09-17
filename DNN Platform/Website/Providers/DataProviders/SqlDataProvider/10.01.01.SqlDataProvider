@@ -31,7 +31,7 @@ AND SettingValue='2'
 GO
 
 UPDATE {databaseOwner}[{objectQualifier}HostSettings]
-SET SettingValue='Server'
+SET SettingValue='ServerAndNoCache'
 WHERE SettingName IN ('AuthenticatedCacheability', 'UnauthenticatedCacheability')
 AND SettingValue='3'
 GO
