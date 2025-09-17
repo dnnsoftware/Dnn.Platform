@@ -32,6 +32,61 @@ Modules specify their MVC compatibility through:
 - **Optional Interfaces**: Can implement `IActionable` for unified action handling
 - **Pipeline Detection**: System can determine module compatibility and show appropriate messages
 
+## Class Diagram
+
+```mermaid
+classDiagram
+    %% Interfaces
+    class IMvcModuleControl {
+        <<interface>>
+        +Html(helper) IHtmlString
+    }
+
+    class IModuleControl {
+        <<interface>>
+        
+        +string ControlPath
+        +string ControlName
+        +ModuleInstanceContext ModuleContext
+        +string LocalResourceFile
+    }
+    
+
+     %% Concrete Classes
+     class MvcModuleControl {
+         +Html(helper) IHtmlString
+     }
+     note for MvcModuleControl "MVC controller"
+
+    class SpaModuleControl {
+        +Html(helper) IHtmlString
+    }
+    note for SpaModuleControl "Html with tokens"
+
+    %% Abstract Classes
+    
+    class DefaultMvcModuleControlBase {
+        +Html(helper) IHtmlString
+    }
+
+    class RazorModuleControlBase {
+        
+        +Invoke() IRazorModuleResult
+    }
+    note for RazorModuleControlBase "Razor view from model"
+
+    %% Relationships
+    IMvcModuleControl ..|> IModuleControl : extends
+
+    DefaultMvcModuleControlBase ..|> IMvcModuleControl : implements
+    
+    MvcModuleControl --|> DefaultMvcModuleControlBase : extends
+    RazorModuleControlBase --|> DefaultMvcModuleControlBase : extends
+    SpaModuleControl --|> DefaultMvcModuleControlBase : extends
+    
+
+```
+
 ## Core Components
 
 ### 1. IMvcModuleControl Interface

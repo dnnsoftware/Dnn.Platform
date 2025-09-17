@@ -30,6 +30,10 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>A String.</returns>
         public string ControlSrc { get; set; }
 
+        /// <summary>Gets or sets the Mvc Control Class.</summary>
+        /// <returns>A String.</returns>
+        public string MvcControlClass { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets a flag that determines whether the control support the AJAX
         /// Update Panel.
@@ -45,6 +49,7 @@ namespace DotNetNuke.Entities.Modules
             base.FillInternal(dr);
             this.ControlKey = Null.SetNullString(dr["ControlKey"]);
             this.ControlSrc = Null.SetNullString(dr["ControlSrc"]);
+            this.MvcControlClass = Null.SetNullString(dr["MvcControlClass"]);
             this.SupportsPartialRendering = Null.SetNullBoolean(dr["SupportsPartialRendering"]);
         }
 
@@ -57,6 +62,9 @@ namespace DotNetNuke.Entities.Modules
                     break;
                 case "controlSrc":
                     this.ControlSrc = reader.ReadElementContentAsString();
+                    break;
+                case "mvcControlClass":
+                    this.MvcControlClass = reader.ReadElementContentAsString();
                     break;
                 case "supportsPartialRendering":
                     string elementvalue = reader.ReadElementContentAsString();
@@ -74,6 +82,7 @@ namespace DotNetNuke.Entities.Modules
             // write out properties
             writer.WriteElementString("controlKey", this.ControlKey);
             writer.WriteElementString("controlSrc", this.ControlSrc);
+            writer.WriteElementString("mvcControlClass", this.MvcControlClass);
             writer.WriteElementString("supportsPartialRendering", this.SupportsPartialRendering.ToString());
         }
     }

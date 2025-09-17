@@ -138,8 +138,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             get
             {
-
-                return Path.GetDirectoryName(this.ModuleConfiguration.ModuleControl.ControlSrc);
+                if (this.ModuleConfiguration.DesktopModule == null)
+                {
+                    return Path.GetDirectoryName(this.ModuleConfiguration.ModuleControl.ControlSrc);
+                }
+                else
+                {
+                    return this.ModuleConfiguration.DesktopModule.FolderName;
+                }
             }
         }
 

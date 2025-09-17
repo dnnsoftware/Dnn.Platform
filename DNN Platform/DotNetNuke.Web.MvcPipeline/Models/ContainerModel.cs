@@ -94,14 +94,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
             }
         }
 
-        public string RazorFile
-        {
-            get
-            {
-                return this.moduleConfiguration.ModuleControl.ControlSrc.Replace(".ascx", string.Empty);
-            }
-        }
-
         public string ContainerRazorFile
         {
             get

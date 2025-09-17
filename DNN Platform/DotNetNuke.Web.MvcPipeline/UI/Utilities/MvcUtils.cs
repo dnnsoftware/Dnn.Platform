@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.InteropServices;
+    using System.Security.AccessControl;
     using System.Web.UI;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
@@ -43,8 +44,8 @@
 
         static private IDictionary<string, string> _moduleClasses = new Dictionary<string, string>() {
             { "ModuleActions", "DotNetNuke.Web.MvcWebsite.Controls.ModuleActionsControl, DotNetNuke.Web.MvcWebsite" },
-            { "Admin/Portal/Terms.ascx", "DotNetNuke.Web.MvcWebsite.Controls.TermsControl, DotNetNuke.Web.MvcWebsite" },
-            { "Admin/Portal/Privacy.ascx", "DotNetNuke.Web.MvcWebsite.Controls.PrivacyControl, DotNetNuke.Web.MvcWebsite" }
+            // { "Admin/Portal/Terms.ascx", "DotNetNuke.Web.MvcWebsite.Controls.TermsControl, DotNetNuke.Web.MvcWebsite" },
+            // { "Admin/Portal/Privacy.ascx", "DotNetNuke.Web.MvcWebsite.Controls.PrivacyControl, DotNetNuke.Web.MvcWebsite" }
         };
 
         public static IMvcModuleControl CreateModuleControl(ModuleInfo module)
@@ -70,12 +71,31 @@
             }
             else
             {
-                if (module.DesktopModule == null)
+                //if (module.DesktopModule == null)
+                //{
+                //    throw new Exception("No DesktopModule is not defined for the module " + module.ModuleTitle);
+                //}
+                if (!string.IsNullOrEmpty(module.ModuleControl.MvcControlClass))
                 {
-                    throw new Exception("No DesktopModule is not defined for the module " + module.ModuleTitle);
+                    var controlClass = module.ModuleControl.MvcControlClass;
+                    try
+                    {
+                        var obj = Reflection.CreateObject(Globals.DependencyProvider, controlClass, controlClass);
+                        if (obj is IMvcModuleControl)
+                        {
+                            control = obj as IMvcModuleControl;
+                        }
+                        else
+                        {
+                            throw new Exception("Mvc Control needs to implement IMvcModuleControl : " + controlClass);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Could not create instance of " + controlClass, ex);
+                    }
                 }
-
-                if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
+                else if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
                 {
                     control = new MvcModuleControl();
                 }
@@ -85,34 +105,7 @@
                 }
                 else
                 {
-                    var controlSrcType = Reflection.CreateType(controlSrc);
-                    if (controlSrcType != null)
-                    {
-                        var controlClass = controlSrcType.Namespace + "." + System.IO.Path.GetFileNameWithoutExtension(controlSrcType.Name) + "Control," + controlSrcType.Assembly;
-                        try
-                        {
-                            var controller = Reflection.CreateObject(Globals.DependencyProvider, controlClass, controlClass);
-                            control = controller as IMvcModuleControl;
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("Could not create instance of " + controlClass, ex);
-                        }
-                    }
-                    else
-                    {
-                        var businessController = Reflection.CreateType(module.DesktopModule.BusinessControllerClass);
-                        var controlClass = businessController.Namespace + "." + System.IO.Path.GetFileNameWithoutExtension(controlSrc) + "Control," + businessController.Assembly;
-                        try
-                        {
-                            var controller = Reflection.CreateObject(Globals.DependencyProvider, controlClass, controlClass);
-                            control = controller as IMvcModuleControl;
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new Exception("Could not create instance of " + controlClass, ex);
-                        }
-                    }
+                    throw new Exception("The module control dous not support MVC pipeline : " + module.ModuleTitle + " / " + module.ModuleControl.ControlTitle);
                 }
             }
             control.ModuleContext.Configuration = module;
