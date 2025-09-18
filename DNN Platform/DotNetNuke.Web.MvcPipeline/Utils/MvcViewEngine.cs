@@ -13,8 +13,9 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
     /// 
     /// Requires that ASP.NET HttpContext is present to
     /// work, but works outside of the context of MVC
+    /// credits to https://weblog.west-wind.com/posts/2012/may/30/rendering-aspnet-mvc-views-to-string
     /// </summary>
-    public class ViewRenderer
+    public class MvcViewEngine
     {
         /// <summary>
         /// Required Controller Context
@@ -29,7 +30,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
         /// the controller's context. 
         /// Only leave out the context if no context is otherwise available.
         /// </param>
-        public ViewRenderer(ControllerContext controllerContext = null)
+        public MvcViewEngine(ControllerContext controllerContext = null)
         {
             // Create a known controller from HttpContext if no context is passed
             if (controllerContext == null)
@@ -121,7 +122,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
         public static string RenderView(string viewPath, object model = null,
                                         ControllerContext controllerContext = null)
         {
-            ViewRenderer renderer = new ViewRenderer(controllerContext);
+            MvcViewEngine renderer = new MvcViewEngine(controllerContext);
             return renderer.RenderViewToString(viewPath, model);
         }
 
@@ -140,7 +141,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
         public static void RenderView(string viewPath, TextWriter writer, object model,
                                         ControllerContext controllerContext)
         {
-            ViewRenderer renderer = new ViewRenderer(controllerContext);
+            MvcViewEngine renderer = new MvcViewEngine(controllerContext);
             renderer.RenderView(viewPath, model, writer);
         }
 
@@ -163,7 +164,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
             errorMessage = null;
             try
             {
-                ViewRenderer renderer = new ViewRenderer(controllerContext);
+                MvcViewEngine renderer = new MvcViewEngine(controllerContext);
                 return renderer.RenderViewToString(viewPath, model);
             }
             catch (Exception ex)
@@ -193,7 +194,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
             errorMessage = null;
             try
             {
-                ViewRenderer renderer = new ViewRenderer(controllerContext);
+                MvcViewEngine renderer = new MvcViewEngine(controllerContext);
                 renderer.RenderView(viewPath, model, writer);
             }
             catch (Exception ex)
@@ -218,7 +219,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
         public static string RenderPartialView(string viewPath, object model = null,
                                                 ControllerContext controllerContext = null)
         {
-            ViewRenderer renderer = new ViewRenderer(controllerContext);
+            MvcViewEngine renderer = new MvcViewEngine(controllerContext);
             return renderer.RenderPartialViewToString(viewPath, model);
         }
 
@@ -238,7 +239,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
         public static void RenderPartialView(string viewPath, TextWriter writer, object model = null,
                                                 ControllerContext controllerContext = null)
         {
-            ViewRenderer renderer = new ViewRenderer(controllerContext);
+            MvcViewEngine renderer = new MvcViewEngine(controllerContext);
             renderer.RenderPartialView(viewPath, model, writer);
         }
 
@@ -255,7 +256,7 @@ namespace DotNetNuke.Web.MvcPipeline.Utils
             if (htmlHelperFunc == null)
                 throw new ArgumentNullException(nameof(htmlHelperFunc));
 
-            ViewRenderer renderer = new ViewRenderer(controllerContext);
+            MvcViewEngine renderer = new MvcViewEngine(controllerContext);
             return renderer.RenderHtmlHelperToStringInternal(htmlHelperFunc, model);
         }
 

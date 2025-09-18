@@ -9,14 +9,13 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Web.MvcPipeline.ModuleControl;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 using DotNetNuke.Web.MvcPipeline.Utils;
 
-namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Demo { 
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms { 
 
-    public class DemoModule : PortalModuleBase, IActionable
+    public class WrapperModule : PortalModuleBase, IActionable
     {
         private string html = string.Empty;
 
@@ -37,7 +36,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Demo {
         {
             base.OnInit(e);
             var mc = MvcUtils.CreateModuleControl(this.ModuleConfiguration);
-            html = ViewRenderer.RenderHtmlHelperToString(helper => mc.Html(helper));
+            html = MvcViewEngine.RenderHtmlHelperToString(helper => mc.Html(helper));
             /*
             if (mc is RazorModuleControlBase)
             {
