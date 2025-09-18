@@ -131,7 +131,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
-
         /// <summary>Gets or Sets the Path for this control (used primarily for UserControls).</summary>
         /// <returns>A String.</returns>
         public virtual string ControlPath
@@ -144,7 +143,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 }
                 else
                 {
-                    return this.ModuleConfiguration.DesktopModule.FolderName;
+                    return "DesktopModules/"+this.ModuleConfiguration.DesktopModule.FolderName;
                 }
             }
         }
@@ -162,12 +161,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 
                 return this.moduleContext;
             }
-            //internal set
-            //{
-            //    this.moduleContext = value;
-            //}
         }
-
 
         public ModuleActionCollection Actions
         {
