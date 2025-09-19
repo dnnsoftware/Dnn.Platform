@@ -204,19 +204,19 @@ Modules can implement this interface to automatically manage CSS and JavaScript 
 #### MvcModuleControlRenderer<T>
 Provides rendering capabilities for Razor-based module controls outside of the normal MVC pipeline.
 
-#### ViewRenderer
+#### MvcViewEngine
 A powerful utility class for rendering MVC views to strings outside of the standard MVC request pipeline. This class is essential for the MVC module control system as it enables view rendering in non-controller contexts.
 
 **Core Methods:**
 ```csharp
 // Render full view with layout
-string html = ViewRenderer.RenderView("~/Views/MyView.cshtml", model);
+string html = MvcViewEngine.RenderView("~/Views/MyView.cshtml", model);
 
 // Render partial view without layout
-string partial = ViewRenderer.RenderPartialView("~/Views/_MyPartial.cshtml", model);
+string partial = MvcViewEngine.RenderPartialView("~/Views/_MyPartial.cshtml", model);
 
 // Render HtmlHelper delegates
-string html = ViewRenderer.RenderHtmlHelperToString(helper => 
+string html = MvcViewEngine.RenderHtmlHelperToString(helper => 
     helper.Action("MyAction", "MyController"), model);
 ```
 
@@ -224,27 +224,27 @@ string html = ViewRenderer.RenderHtmlHelperToString(helper =>
 
 The Demo folder includes demonstration classes that show practical implementation examples:
 
-### DemoModule.cs
+### WrapperModule.cs
 A WebForms-compatible module that bridges to the MVC pipeline, demonstrating how to integrate MVC module controls within the traditional DNN WebForms infrastructure.
 
 **Key Features:**
 - **Hybrid Bridge Pattern**: Inherits from `PortalModuleBase` to maintain WebForms compatibility
 - **MVC Integration**: Uses `MvcUtils.CreateModuleControl()` to instantiate MVC module controls
-- **ViewRenderer Integration**: Demonstrates `ViewRenderer.RenderHtmlHelperToString()` usage
+- **MvcViewEngine Integration**: Demonstrates `MvcViewEngine.RenderHtmlHelperToString()` usage
 - **Interface Support**: Handles `IActionable` and `IResourcable` interfaces automatically
 - **Lifecycle Management**: Proper ASP.NET control lifecycle implementation
 
 **Implementation Pattern:**
 ```csharp
-public class DemoModule : PortalModuleBase, IActionable
+public class WrapperModule : PortalModuleBase, IActionable
 {
     protected override void OnInit(EventArgs e)
     {
         // Create MVC module control
         var mc = MvcUtils.CreateModuleControl(this.ModuleConfiguration);
         
-        // Render using ViewRenderer
-        html = ViewRenderer.RenderHtmlHelperToString(helper => mc.Html(helper));
+        // Render using MvcViewEngine
+        html = MvcViewEngine.RenderHtmlHelperToString(helper => mc.Html(helper));
         
         // Handle optional interfaces
         if (mc is IActionable actionable)
@@ -286,13 +286,13 @@ public class DemoModuleControl : RazorModuleControlBase
 ```
 
 **Usage Scenarios:**
-- **Migration**: Use DemoModule to run MVC controls within WebForms pages
+- **Migration**: Use WrapperModule to run MVC controls within WebForms pages
 - **Development Reference**: DemoModuleControl shows best practices for Razor module implementation
 - **Integration Patterns**: Demonstrates how to handle multiple interfaces (`IActionable`, `IResourcable`)
 - **View Management**: Shows flexible view path configuration and model binding
 
 **Bridge Pattern Benefits:**
-The DemoModule demonstrates the bridge pattern that allows:
+The WrapperModule demonstrates the bridge pattern that allows:
 - Gradual migration from WebForms to MVC
 - Using MVC controls within existing WebForms infrastructure
 - Maintaining compatibility with existing DNN module architecture
