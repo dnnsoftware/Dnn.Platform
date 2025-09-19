@@ -138,19 +138,6 @@ namespace DotNetNuke.Modules.Html.Controls
                 throw new Exception("EditHTML", exc);
             }
 
-            /*
-            this.RegisterScript("~/Resources/Shared/scripts/jquery/jquery.form.min.js");
-            this.RegisterStyleSheet("~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css");
-            this.RegisterStyleSheet("~/DesktopModules/HTML/edit.css");
-            this.RegisterScript("~/DesktopModules/HTML/js/edit.js");
-            */
-            /*
-            MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/Resources/Shared/scripts/jquery/jquery.form.min.js");
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css");
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/DesktopModules/HTML/edit.css");
-            MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/DesktopModules/HTML/js/edit.js");
-            */
-
             this.contentSecurityPolicy.StyleSource.AddInline();
             this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();
             this.contentSecurityPolicy.ImgSource.AddScheme("data:");

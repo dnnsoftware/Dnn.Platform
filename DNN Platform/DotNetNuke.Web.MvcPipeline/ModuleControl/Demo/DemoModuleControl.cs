@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Demo
     {
         public override string ControlName => "DemoModuleControl";
 
-        public override string ControlPath => "DesktopModules/mvcpl/demo";
+        public override string ControlPath => "DesktopModules/Demo";
 
         public override IRazorModuleResult Invoke()
         {
@@ -26,18 +26,18 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Demo
             }
             else
             {
-                return View("~/admin/Portal/Views/Terms.cshtml", "Hello from TestModuleControl - Default view");
+                return View("~/admin/Portal/Views/Terms.cshtml", "Hello from DemoModuleControl - Default view");
             }
         }
 
         private IRazorModuleResult Privacy()
         {
-            return View("~/admin/Portal/Views/Privacy.cshtml", "Hello from TestModuleControl - Privacy view");
+            return View("~/admin/Portal/Views/Privacy.cshtml", "Hello from DemoModuleControl - Privacy view");
         }
 
         private IRazorModuleResult Terms()
         {
-            return View("~/Views/Default/Terms.cshtml", "Hello from TestModuleControl - Terms view");
+            return View("~/Views/Default/Terms.cshtml", "Hello from DemoModuleControl - Terms view");
         }
     }
 }

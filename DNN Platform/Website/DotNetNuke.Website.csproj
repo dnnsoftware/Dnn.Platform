@@ -1282,6 +1282,16 @@
     <Content Include="Views\Shared\_PermissionTriState.cshtml" />
     <Content Include="admin\Portal\Views\Terms.cshtml" />
     <Content Include="Views\web.config" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.01.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.12.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.00.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.03.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\09.13.09.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.01.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.02.SqlDataProvider" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.03.SqlDataProvider" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

@@ -7,7 +7,6 @@ namespace DotNetNuke.Modules.Html.Models
     using System.Collections.Generic;
     using System.Web.Mvc;
 
-    using DotNetNuke.Web.Mvc.Page;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public class EditHtmlViewModel : ModuleModelBase

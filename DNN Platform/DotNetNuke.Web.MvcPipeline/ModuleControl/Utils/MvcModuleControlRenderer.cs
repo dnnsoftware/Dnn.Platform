@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Utils
 
         public string RenderToString()
         {
-            var renderer = new ViewRenderer();
+            var renderer = new MvcViewEngine();
             var res = moduleControl.Invoke();
             return renderer.RenderViewToString(res.ViewName, res.Model);
         }
