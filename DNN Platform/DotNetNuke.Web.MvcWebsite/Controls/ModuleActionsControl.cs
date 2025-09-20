@@ -20,17 +20,12 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
-    //using DotNetNuke.UI.Modules;
-    //using DotNetNuke.UI;
 
     using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
-    using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
-    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using DotNetNuke.Web.MvcPipeline.Utils;
     using DotNetNuke.Web.MvcWebsite.Models;
 
     public class ModuleActionsControl : RazorModuleControlBase, IResourcable

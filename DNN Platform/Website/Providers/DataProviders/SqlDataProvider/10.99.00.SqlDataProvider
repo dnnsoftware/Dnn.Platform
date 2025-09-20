@@ -1,0 +1,135 @@
+/************************************************************/
+/* MVC Pipeline */
+/************************************************************/
+
+/* Add MvcControlClass Column to ModuleControls Table */
+/*****************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}ModuleControls' AND COLUMN_NAME='MvcControlClass')
+	BEGIN
+		-- Add new Column
+		ALTER TABLE {databaseOwner}{objectQualifier}ModuleControls
+			ADD MvcControlClass [nvarchar] (256) NULL
+	END
+GO
+
+/* Update AddModuleControl */
+/***************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}AddModuleControl]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}AddModuleControl]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddModuleControl]
+	
+	@ModuleDefID                int,
+	@ControlKey                 nvarchar(50),
+	@ControlTitle               nvarchar(50),
+	@ControlSrc                 nvarchar(256),
+    @MvcControlClass            nvarchar(256) = null,
+	@IconFile                   nvarchar(100),
+	@ControlType                int,
+	@ViewOrder                  int,
+	@HelpUrl                    nvarchar(200),
+	@SupportsPartialRendering   bit,
+	@SupportsPopUps				bit,
+	@CreatedByUserID			int
+
+AS
+	INSERT INTO {databaseOwner}{objectQualifier}ModuleControls (
+		ModuleDefID,
+		ControlKey,
+		ControlTitle,
+		ControlSrc,
+        MvcControlClass,
+		IconFile,
+		ControlType,
+		ViewOrder,
+		HelpUrl,
+		SupportsPartialRendering,
+		SupportsPopUps,
+		CreatedByUserID,
+		CreatedOnDate,
+		LastModifiedByUserID,
+		LastModifiedOnDate
+	)
+	VALUES (
+		@ModuleDefID,
+		@ControlKey,
+		@ControlTitle,
+		@ControlSrc,
+        @MvcControlClass,
+		@IconFile,
+		@ControlType,
+		@ViewOrder,
+		@HelpUrl,
+		@SupportsPartialRendering,
+		@SupportsPopUps,
+		@CreatedByUserID,
+		getdate(),
+		@CreatedByUserID,
+		getdate()
+	)
+
+	SELECT SCOPE_IDENTITY()
+GO
+
+/* Update UpdateModuleControl */
+/******************************/
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}UpdateModuleControl]') AND type in (N'P', N'PC'))
+	DROP PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleControl]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateModuleControl]
+	@ModuleControlId				int,
+	@ModuleDefID					int,
+	@ControlKey						nvarchar(50),
+	@ControlTitle					nvarchar(50),
+	@ControlSrc						nvarchar(256),
+    @MvcControlClass                nvarchar(256) = null,
+	@IconFile						nvarchar(100),
+	@ControlType					int,
+	@ViewOrder						int,
+	@HelpUrl						nvarchar(200),
+	@SupportsPartialRendering		bit,
+	@SupportsPopUps					bit,
+	@LastModifiedByUserID  			int
+
+AS
+	UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET    
+		ModuleDefId = @ModuleDefId,
+		ControlKey = @ControlKey,
+		ControlTitle = @ControlTitle,
+		ControlSrc = @ControlSrc,
+        MvcControlClass = @MvcControlClass,
+		IconFile = @IconFile,
+		ControlType = @ControlType,
+		ViewOrder = ViewOrder,
+		HelpUrl = @HelpUrl,
+		SupportsPartialRendering = @SupportsPartialRendering,
+		SupportsPopUps = @SupportsPopUps,
+		LastModifiedByUserID = @LastModifiedByUserID,
+		LastModifiedOnDate = getdate()
+	WHERE  ModuleControlId = @ModuleControlId
+GO
+
+/* Update Terms and privacy  */
+/************************************************/
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET    
+		MvcControlClass = 'DotNetNuke.Web.MvcWebsite.Controls.PrivacyControl, DotNetNuke.Web.MvcWebsite'
+	WHERE ControlSrc = 'Admin/Portal/Privacy.ascx'
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET    
+		MvcControlClass = 'DotNetNuke.Web.MvcWebsite.Controls.TermsControl, DotNetNuke.Web.MvcWebsite'
+	WHERE ControlSrc = 'Admin/Portal/Terms.ascx'        
+
+
+UPDATE {databaseOwner}{objectQualifier}ModuleControls
+	SET    
+		MvcControlClass = 'DotNetNuke.Web.MvcWebsite.Controls.TermsControl, DotNetNuke.Web.MvcWebsite'
+	WHERE ControlSrc = 'Admin/Portal/Terms.ascx' 

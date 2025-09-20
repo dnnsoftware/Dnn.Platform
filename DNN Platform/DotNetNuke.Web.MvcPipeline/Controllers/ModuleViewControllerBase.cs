@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.MvcPipeline.Models;
-    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using DotNetNuke.Web.MvcPipeline.Utils;
 
     public abstract class ModuleViewControllerBase : Controller, IMvcController
     {

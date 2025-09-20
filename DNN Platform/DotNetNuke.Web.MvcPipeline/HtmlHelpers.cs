@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
-    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using DotNetNuke.Web.MvcPipeline.Utils;
 
     public static partial class HtmlHelpers
     {

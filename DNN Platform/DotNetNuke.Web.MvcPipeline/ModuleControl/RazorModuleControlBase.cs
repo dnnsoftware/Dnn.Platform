@@ -18,7 +18,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         private RazorModuleViewContext _viewContext;
         public override IHtmlString Html(HtmlHelper htmlHelper)
         {
-            this.ViewContext.HttpContext = htmlHelper.ViewContext.HttpContext;            
+            this.ViewContext.HttpContext = htmlHelper.ViewContext.HttpContext;      
+            this.ViewContext.ViewData = new ViewDataDictionary(htmlHelper.ViewData);
+            this.ViewContext.ViewData["ModuleContext"] = this.ModuleContext;
+            this.ViewContext.ViewData["LocalResourceFile"] = this.LocalResourceFile;
             var res = this.Invoke();
             return res.Execute(htmlHelper);
         }
@@ -88,6 +91,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// Gets the <see cref="HttpRequest"/>.
         /// </summary>
         public HttpRequestBase Request => ViewContext.HttpContext.Request;
+
+        /// <summary>
+        /// Gets the <see cref="ViewDataDictionary"/>.
+        /// </summary>
+        public ViewDataDictionary ViewData => ViewContext.ViewData;
 
     }
 }

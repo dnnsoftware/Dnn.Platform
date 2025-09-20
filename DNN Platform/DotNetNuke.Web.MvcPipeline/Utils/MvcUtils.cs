@@ -1,4 +1,4 @@
-﻿namespace DotNetNuke.Web.MvcPipeline.UI.Utilities
+﻿namespace DotNetNuke.Web.MvcPipeline.Utils
 {
     using System;
     using System.Collections.Generic;
@@ -95,10 +95,10 @@
                         throw new Exception("Could not create instance of " + controlClass, ex);
                     }
                 }
-                else if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
-                {
-                    control = new MvcModuleControl();
-                }
+                //else if (controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase))
+                //{
+                //    control = new MvcModuleControl();
+                //}
                 else if (controlSrc.EndsWith(".html", System.StringComparison.OrdinalIgnoreCase))
                 {
                     control = new SpaModuleControl();

@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.MvcPipeline.Routing;
-    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using DotNetNuke.Web.MvcPipeline.Utils;
 
     public class ModuleControllerBase : Controller, IMvcController
     {
