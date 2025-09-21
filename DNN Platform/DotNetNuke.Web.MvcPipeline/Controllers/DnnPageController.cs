@@ -5,12 +5,8 @@
 namespace DotNetNuke.Web.MvcPipeline.Controllers
 {
     using System.Web.Mvc;
-    using System.Web.Routing;
 
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.MvcPipeline.Framework;
 
     public abstract class DnnPageController : Controller, IMvcController
     {

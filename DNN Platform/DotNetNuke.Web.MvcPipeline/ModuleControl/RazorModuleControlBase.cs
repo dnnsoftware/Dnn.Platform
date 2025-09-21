@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             this.ViewContext.HttpContext = htmlHelper.ViewContext.HttpContext;      
             this.ViewContext.ViewData = new ViewDataDictionary(htmlHelper.ViewData);
             this.ViewContext.ViewData["ModuleContext"] = this.ModuleContext;
+            this.ViewContext.ViewData["ModuleId"] = this.ModuleId;
             this.ViewContext.ViewData["LocalResourceFile"] = this.LocalResourceFile;
             var res = this.Invoke();
             return res.Execute(htmlHelper);
@@ -56,7 +57,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 viewName= this.DefaultViewName;
             }
-            return new ViewRazorModuleResult(viewName, model);
+            return new ViewRazorModuleResult(viewName, model, ViewData);
         }
 
         public RazorModuleViewContext ViewContext

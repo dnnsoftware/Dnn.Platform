@@ -9,14 +9,21 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Installer.Log;
+using DotNetNuke.UI.Skins;
+using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 using DotNetNuke.Web.MvcPipeline.Utils;
 
-namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms { 
+namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms
+{
 
     public class WrapperModule : PortalModuleBase, IActionable
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WrapperModule));
+
         private string html = string.Empty;
 
         public ModuleActionCollection ModuleActions { get; private set; } = new ModuleActionCollection();
@@ -35,30 +42,27 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms {
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            var mc = MvcUtils.CreateModuleControl(this.ModuleConfiguration);
-            html = MvcViewEngine.RenderHtmlHelperToString(helper => mc.Html(helper));
-            /*
-            if (mc is RazorModuleControlBase)
+            try
             {
-                var moduleControl = (RazorModuleControlBase)mc;
-                // moduleControl.Control = this;
-                // moduleControl.ModuleContext = this.ModuleContext;
-                moduleControl.ViewContext.HttpContext = new HttpContextWrapper(this.Context);
-                var res = moduleControl.Invoke();
-                var renderer = new ViewRenderer();
-                html = renderer.RenderViewToString(res.ViewName, res.Model);
+                var mc = MvcUtils.CreateModuleControl(this.ModuleConfiguration);
+                html = MvcViewEngine.RenderHtmlHelperToString(helper => mc.Html(helper));
+                if (mc is IActionable)
+                {
+                    var moduleControl = (IActionable)mc;
+                    this.ModuleActions = moduleControl.ModuleActions;
+                }
+                if (mc is IResourcable)
+                {
+                    var moduleControl = (IResourcable)mc;
+                    moduleControl.RegisterResources(this.Page);
+                }
             }
-            */
-            if (mc is IActionable){
-                var moduleControl = (IActionable)mc;
-                this.ModuleActions = moduleControl.ModuleActions;
-            }
-            if (mc is IResourcable)
+            catch (Exception ex)
             {
-                var moduleControl = (IResourcable)mc;
-                moduleControl.RegisterResources(this.Page);
+                Logger.Error(ex);
+                Skin.AddModuleMessage(this, "An error occurred while loading the module. Please contact the site administrator.", ModuleMessage.ModuleMessageType.RedError);
+                html = "<div class=\"dnnFormMessage dnnFormError\">" + ex.Message + "</div>";
             }
-
             EnsureChildControls();
         }
     }

@@ -143,7 +143,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 }
                 else
                 {
-                    return "DesktopModules/"+this.ModuleConfiguration.DesktopModule.FolderName;
+                    return "DesktopModules/" + this.ModuleConfiguration.DesktopModule.FolderName;
                 }
             }
         }
@@ -240,32 +240,52 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             if (mvc)
             {
-                return this.ModuleContext.EditUrl(controlKey, "mvcpage", "yes");
+                return this.EditUrl(controlKey, "mvcpage", "yes");
             }
             else
             {
-                return this.ModuleContext.EditUrl(controlKey);
+                return this.EditUrl(controlKey);
             }
         }
 
         public string EditUrl(string keyName, string keyValue)
         {
-            return this.ModuleContext.EditUrl(keyName, keyValue);
+            return this.EditUrl(keyName, keyValue, string.Empty);
         }
 
         public string EditUrl(string keyName, string keyValue, string controlKey)
         {
-            return this.ModuleContext.EditUrl(keyName, keyValue, controlKey);
+            var parameters = new string[] { };
+            return this.EditUrl(keyName, keyValue, controlKey, parameters);
         }
 
         public string EditUrl(string keyName, string keyValue, string controlKey, params string[] additionalParameters)
         {
-            return this.ModuleContext.EditUrl(keyName, keyValue, controlKey, additionalParameters);
+            var parameters = this.GetParameters(additionalParameters);
+            return this.moduleContext.EditUrl(keyName, keyValue, controlKey, parameters);
+        }
+
+        private string[] GetParameters(string[] additionalParameters)
+        {
+            string[] parameters;
+            if (!string.IsNullOrEmpty(this.moduleContext.Configuration.ModuleControl.MvcControlClass))
+            {
+                parameters = new string[1 + additionalParameters.Length];
+                parameters[0] = "mvcpage=yes";
+                Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
+            }
+            else
+            {
+                parameters = additionalParameters;
+            }
+
+            return parameters;
         }
 
         public string EditUrl(int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
         {
-            return this.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, additionalParameters);
+            var parameters = this.GetParameters(additionalParameters);
+            return this.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, parameters);
         }
 
         public int GetNextActionID()
