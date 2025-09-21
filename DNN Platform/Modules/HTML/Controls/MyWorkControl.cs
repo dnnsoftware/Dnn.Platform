@@ -9,24 +9,15 @@ namespace DotNetNuke.Modules.Html.Controls
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
-    using DotNetNuke.Entities.Modules.Settings;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Modules.Html;
-    using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
-    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.Mvc;
-    using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
-    using DotNetNuke.Website.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
     public class MyWorkControl : RazorModuleControlBase, IActionable, IResourcable
