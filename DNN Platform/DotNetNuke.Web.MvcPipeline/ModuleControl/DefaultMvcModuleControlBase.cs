@@ -223,31 +223,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// The Dependency Service.
         /// </value>
         protected IServiceProvider DependencyProvider => this.serviceScopeContainer.Value.ServiceScope.ServiceProvider;
-
-        public string EditUrl(bool mvc = true)
-        {
-            if (mvc)
-            {
-                return this.ModuleContext.EditUrl("mvcpage", "yes");
-            }
-            else
-            {
-                return this.ModuleContext.EditUrl();
-            }
-        }
-
-        public string EditUrl(string controlKey, bool mvc = true)
-        {
-            if (mvc)
-            {
-                return this.EditUrl(controlKey, "mvcpage", "yes");
-            }
-            else
-            {
-                return this.EditUrl(controlKey);
-            }
-        }
-
+        
         public string EditUrl(string keyName, string keyValue)
         {
             return this.EditUrl(keyName, keyValue, string.Empty);
@@ -261,30 +237,30 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 
         public string EditUrl(string keyName, string keyValue, string controlKey, params string[] additionalParameters)
         {
-            var parameters = this.GetParameters(additionalParameters);
+            var parameters = this.GetParameters(controlKey, additionalParameters);
             return this.moduleContext.EditUrl(keyName, keyValue, controlKey, parameters);
         }
 
-        private string[] GetParameters(string[] additionalParameters)
+        private string[] GetParameters(string controlKey, string[] additionalParameters)
         {
-            string[] parameters;
-            if (!string.IsNullOrEmpty(this.moduleContext.Configuration.ModuleControl.MvcControlClass))
+            if (this.moduleContext.Configuration.ModuleDefinition.ModuleControls.ContainsKey(controlKey))
             {
-                parameters = new string[1 + additionalParameters.Length];
-                parameters[0] = "mvcpage=yes";
-                Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
-            }
-            else
-            {
-                parameters = additionalParameters;
+                var moduleControl = this.moduleContext.Configuration.ModuleDefinition.ModuleControls[controlKey];
+                if (!string.IsNullOrEmpty(moduleControl.MvcControlClass))
+                {
+                    var parameters = new string[1 + additionalParameters.Length];
+                    parameters[0] = "mvcpage=yes";
+                    Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
+                    return parameters;
+                }
             }
 
-            return parameters;
+            return additionalParameters;
         }
 
         public string EditUrl(int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
         {
-            var parameters = this.GetParameters(additionalParameters);
+            var parameters = this.GetParameters(controlKey, additionalParameters);
             return this.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, parameters);
         }
 
