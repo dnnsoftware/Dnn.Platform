@@ -57,7 +57,17 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             var moduleDiv = new TagBuilder("div");
             moduleDiv.AddCssClass(model.ModuleHost.CssClass);
             // render module control
-            moduleDiv.InnerHtml += htmlHelper.Control(model.ModuleConfiguration);
+            try
+            {
+                moduleDiv.InnerHtml += htmlHelper.Control(model.ModuleConfiguration);
+            }
+            catch (Exception ex)
+            {
+                if (model.EditMode)
+                {
+                    moduleDiv.InnerHtml += "<div class=\"dnnFormMessage dnnFormError\"> Error loading module: " + ex.Message + "</div>";
+                }
+            }
             moduleContentPaneDiv.InnerHtml += moduleDiv.ToString();
             if (!string.IsNullOrEmpty(model.Footer))
             {

@@ -16,8 +16,10 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
 
@@ -30,6 +32,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
 
     public class ModuleActionsControl : RazorModuleControlBase, IResourcable
     {
+        private ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleActionsControl));
         private readonly List<int> validIDs = new List<int>();
         private ModuleAction actionRoot;
 
@@ -192,13 +195,19 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
             // base.OnLoad(e);
 
             var moduleActions = new ModuleActionCollection();
-
-            var moduleControl = MvcUtils.CreateModuleControl(moduleInfo);
-
-            var actionable = moduleControl as IActionable;
-            if (actionable != null)
+            try
             {
-                moduleActions = actionable.ModuleActions;
+                var moduleControl = MvcUtils.CreateModuleControl(moduleInfo);
+
+                var actionable = moduleControl as IActionable;
+                if (actionable != null)
+                {
+                    moduleActions = actionable.ModuleActions;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error loading module actions for module " + moduleInfo.ModuleID, ex);
             }
 
             this.ActionRoot.Actions.AddRange(this.Actions);

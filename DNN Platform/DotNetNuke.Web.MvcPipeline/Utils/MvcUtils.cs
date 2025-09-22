@@ -105,7 +105,7 @@
                 }
                 else
                 {
-                    throw new Exception("The module control dous not support MVC pipeline : " + module.ModuleTitle + " / " + module.ModuleControl.ControlTitle);
+                    throw new Exception("The module control dous not support the MVC pipeline : " + module.ModuleTitle + " " + module.ModuleControl.ControlTitle);
                 }
             }
             control.ModuleContext.Configuration = module;
