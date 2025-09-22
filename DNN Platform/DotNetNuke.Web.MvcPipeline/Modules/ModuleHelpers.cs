@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
-
+    using System.Web.Mvc.Html;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
@@ -80,6 +80,32 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             }
             var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
             return MvcHtmlString.Create(moduleContext.EditUrl(keyName, keyValue, controlKey, additionalParameters));
+        }
+
+        public static MvcHtmlString ModulePartial(this HtmlHelper htmlHelper, string partialViewName, object model = null)
+        {
+            if (htmlHelper.ViewContext.ViewData["ModuleContext"] == null)
+            {
+                throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
+            }
+            var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
+
+            var viewPath = string.Format("~/DesktopModules/{0}/Views/{1}.cshtml", moduleContext.Configuration.DesktopModule.FolderName, partialViewName);
+
+            return htmlHelper.Partial(viewPath, model);
+        }
+
+        public static MvcHtmlString ModulePartial(this HtmlHelper htmlHelper, string partialViewName, object model, ViewDataDictionary dic)
+        {
+            if (htmlHelper.ViewContext.ViewData["ModuleContext"] == null)
+            {
+                throw new InvalidOperationException("The ModuleContext must be set in the ViewData to use this helper.");
+            }
+            var moduleContext = (ModuleInstanceContext)htmlHelper.ViewContext.ViewData["ModuleContext"];
+
+            var viewPath = string.Format("~/DesktopModules/{0}/Views/{1}.cshtml", moduleContext.Configuration.DesktopModule.FolderName, partialViewName);
+
+            return htmlHelper.Partial(viewPath, model, dic);
         }
     }
 }
