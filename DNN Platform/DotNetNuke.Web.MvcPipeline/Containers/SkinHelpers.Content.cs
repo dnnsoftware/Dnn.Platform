@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 
     using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
@@ -63,7 +64,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             }
             catch (Exception ex)
             {
-                if (model.EditMode)
+                if (TabPermissionController.CanAdminPage())
                 {
                     moduleDiv.InnerHtml += "<div class=\"dnnFormMessage dnnFormError\"> Error loading module: " + ex.Message + "</div>";
                 }
