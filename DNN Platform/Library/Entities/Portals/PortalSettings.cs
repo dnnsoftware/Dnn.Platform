@@ -588,6 +588,9 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <inheritdoc/>
+        public string PagePipeline { get; internal set; }
+
+        /// <inheritdoc/>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             var outputFormat = string.Empty;

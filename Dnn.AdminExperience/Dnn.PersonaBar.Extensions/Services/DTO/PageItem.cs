@@ -86,5 +86,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "workflowName")]
         public string WorkflowName { get; set; }
+
+        [DataMember(Name = "pagePipeline")]
+        public string PagePipeline { get; set; }
     }
 }

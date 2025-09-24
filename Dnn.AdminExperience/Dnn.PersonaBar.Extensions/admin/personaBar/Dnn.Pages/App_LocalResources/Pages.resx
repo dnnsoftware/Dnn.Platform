@@ -1849,4 +1849,22 @@
   <data name="PermissionEditTabDescription.Text" xml:space="preserve">
     <value>Allows full control including adding modules and changing permissions.</value>
   </data>
+  <data name="PipelineSettings.Text" xml:space="preserve">
+    <value>Pipeline Settings</value>
+  </data>
+  <data name="PagePipeline.Text" xml:space="preserve">
+    <value>Page rendering pipeline</value>
+  </data>
+  <data name="WebForms.Text" xml:space="preserve">
+    <value>WebForms</value>
+  </data>
+  <data name="Mvc.Text" xml:space="preserve">
+    <value>Mvc</value>
+  </data>
+  <data name="Inherited.Text" xml:space="preserve">
+    <value>Inherited</value>
+  </data>
+  <data name="PagePipeline_tooltip.Text" xml:space="preserve">
+    <value>The type of pipeline to use for the page. If you select "Inherited", the pipeline type will be inherited from the Portal Settings.</value>
+  </data>
 </root>

@@ -817,6 +817,7 @@ namespace Dnn.PersonaBar.Pages.Components
             page.HasBeenPublished = tab.HasBeenPublished;
             page.IsWorkflowCompleted = WorkflowHelper.IsWorkflowCompleted(tab);
             page.IsWorkflowOnDraft = WorkflowEngine.Instance.IsWorkflowOnDraft(tab);
+            page.PagePipeline = tab.PagePipeline;
 
             return page;
         }
@@ -981,6 +982,7 @@ namespace Dnn.PersonaBar.Pages.Components
             pageSettings.EnabledVersioning = tabVersionSettings.IsVersioningEnabled(portalSettings.PortalId);
             pageSettings.WorkflowEnabled = tabWorkflowSettings.IsWorkflowEnabled(portalSettings.PortalId);
             pageSettings.WorkflowId = tabWorkflowSettings.GetDefaultTabWorkflowId(portalSettings.PortalId);
+            pageSettings.PagePipeline = string.Empty;
 
             return pageSettings;
         }
@@ -1307,6 +1309,8 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 tab.IconFileLarge = null;
             }
+
+            tab.TabSettings["PagePipeline"] = pageSettings.PagePipeline;
         }
 
         protected void UpdateTabWorkflowFromPageSettings(TabInfo tab, PageSettings pageSettings)

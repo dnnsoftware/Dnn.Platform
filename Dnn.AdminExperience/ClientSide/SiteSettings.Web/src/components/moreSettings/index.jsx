@@ -302,6 +302,13 @@ class MoreSettingsPanelBody extends Component {
         }
         return options;
     }
+
+    getPagePipelineOptions() {
+        const options = [];
+        options.push({ value: "webforms", label: resx.get("WebForms") });
+        options.push({ value: "mvc", label: resx.get("Mvc") });
+        return options;
+    }
     
     onDropDownChange(key, option) {
         let { state, props } = this;
@@ -503,6 +510,25 @@ class MoreSettingsPanelBody extends Component {
                             }
                         </GridSystem></>
                     }
+                    <div className="title sectionTitle">
+                    {resx.get("PipelineSettings")}
+                    </div>
+
+                    <GridSystem>
+                        <div key="column-two-left" className="left-column">
+                            <Label
+                                labelType="block"
+                                tooltipMessage={resx.get("PagePipeline_tooltip") }
+                                label={resx.get("PagePipeline") } />
+                            <Dropdown options={this.getPagePipelineOptions() }
+                                value={state.otherSettings.PagePipeline}                                    
+                                onSelect={this.onDropDownChange.bind(this, "PagePipeline")}
+                                withBorder={true} />
+                        </div>
+                        <div key="column-two-right" className="right-column">
+
+                        </div>
+                    </GridSystem>
                     <div className="buttons-box">
                         <Button
                             type="neutral"

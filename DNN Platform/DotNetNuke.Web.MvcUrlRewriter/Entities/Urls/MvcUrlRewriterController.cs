@@ -3,6 +3,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
 using System.Web;
+using DotNetNuke.Abstractions.Portals;
 
 namespace DotNetNuke.Web.MvcUrlRewriter.Entities.Urls
 {
@@ -56,7 +57,18 @@ namespace DotNetNuke.Web.MvcUrlRewriter.Entities.Urls
                     tab = TabController.Instance.GetTab(tabId, portalId, false);
                     if (tab != null)
                     {
-                        mvcCtl = tab.GetTags().Contains("mvc");
+                        // mvcCtl = tab.GetTags().Contains("mvc");
+                        var tabPipeline = tab.PagePipeline;
+                        if (!string.IsNullOrEmpty(tabPipeline))
+                        {
+                            mvcCtl = tabPipeline == PagePipelineConstants.Mvc;
+                        }
+                        else
+                        {
+
+                            var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                            mvcCtl = portalPipeline == PagePipelineConstants.Mvc;
+                        }
                     }
                 }
             }
