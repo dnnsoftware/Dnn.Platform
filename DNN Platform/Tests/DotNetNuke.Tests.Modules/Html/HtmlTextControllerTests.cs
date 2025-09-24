@@ -15,8 +15,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "<p>Hello</p>",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("<p>Hello</p>"));
         }
 
@@ -26,8 +25,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "<img src=\"image.jpg\"/>",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("<img src=\"/portals/0/image.jpg\"/>"));
         }
 
@@ -37,8 +35,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "<img src=\"/Portals/0/image.jpg\"/>",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("<img src=\"/portals/0/image.jpg\"/>"));
         }
 
@@ -48,8 +45,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "<img src=\"https://example.com/image.jpg\"/>",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("<img src=\"https://example.com/image.jpg\"/>"));
         }
 
@@ -59,8 +55,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "src=\"https://example.com/image.jpg\" is how you indicate a URL",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("src=\"https://example.com/image.jpg\" is how you indicate a URL"));
         }
 
@@ -70,8 +65,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "src=\"image.jpg\"",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("src=\"image.jpg\""));
         }
 
@@ -81,8 +75,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "src=\"image.jpg",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("src=\"image.jpg"));
         }
 
@@ -93,8 +86,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "src=\"image.jpg\" is how you indicate a URL",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("src=\"/portals/0/image.jpg\" is how you indicate a URL"));
         }
 
@@ -104,8 +96,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 "<img src=\"data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7\"/>",
                 "/portals/0/",
-                "src",
-                0);
+                "src");
             Assert.That(actual, Is.EqualTo("<img src=\"data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7\"/>"));
         }
 
@@ -125,8 +116,7 @@ namespace DotNetNuke.Tests.Modules.Html
             var actual = HtmlTextController.ManageRelativePaths(
                 HtmlContent,
                 "/portals/0/",
-                "src",
-                0);
+                "src");
 
             const string Expected = @"
 <img alt=""a data URI"" src=""data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7""/>

@@ -13,9 +13,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.WebControls
-    /// Class    : ActionLink
     /// <summary>ActionLink provides a button for a single action.</summary>
     /// <remarks>
     /// ActionBase inherits from HyperLink.

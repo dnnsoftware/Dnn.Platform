@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.ExchangeOnlineAuthProvider" type="Library" isSystem="false" version="10.00.00">
+        <package name="Dnn.ExchangeOnlineAuthProvider" type="Library" isSystem="false" version="10.01.00">
             <friendlyName>Exchange Online SMTP OAuth Provider</friendlyName>
             <description>The provider allows you to config the SMTP client to send emails with Microsoft exchange online service.</description>
             <iconFile>~/Icons/Sigma/Extensions_32x32_Standard.png</iconFile>

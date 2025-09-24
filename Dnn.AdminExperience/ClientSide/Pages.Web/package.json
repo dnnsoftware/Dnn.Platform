@@ -1,6 +1,6 @@
 {
   "name": "pages",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "private": true,
   "scripts": {
     "start": "npm run webpack",
@@ -23,7 +23,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
-    "@dnnsoftware/dnn-react-common": "10.0.0",
+    "@dnnsoftware/dnn-react-common": "10.1.0",
     "@types/knockout": "^3.4.72",
     "@types/redux": "3.6.31",
     "babel-eslint": "^10.1.0",
@@ -55,7 +55,7 @@
     "react-test-renderer": "^17.0.2",
     "react-widgets": "5.8.4",
     "string.prototype.startswith": "1.0.1",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "throttle-debounce": "^5.0.0",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "1.1.2",

@@ -3925,7 +3925,7 @@ Q\n";
     	},
     	    createDataURIFromElement = function createDataURIFromElement(element, format, angle) {
 
-    		//if element is an image which uses data url defintion, just return the dataurl
+    		//if element is an image which uses data url definition, just return the dataurl
     		if (element.nodeName === 'IMG' && element.hasAttribute('src')) {
     			var src = '' + element.getAttribute('src');
     			if (!angle && src.indexOf('data:image/') === 0) return src;

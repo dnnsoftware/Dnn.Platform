@@ -1,6 +1,6 @@
 {
   "name": "dnn-users-exportables",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "DNN Users Exportables",
   "scripts": {
     "start": "npm run webpack",
@@ -16,7 +16,7 @@
     "@babel/plugin-transform-react-jsx": "^7.25.9",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
-    "@dnnsoftware/dnn-react-common": "10.0.0",
+    "@dnnsoftware/dnn-react-common": "10.1.0",
     "babel-loader": "8.3.0",
     "create-react-class": "^15.7.0",
     "css-loader": "^7.1.2",
@@ -39,7 +39,7 @@
     "react-redux": "^8.1.1",
     "react-widgets": "^5.8.4",
     "redux": "4.2.1",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "throttle-debounce": "^5.0.0",
     "utils": "^0.3.1",
     "webpack": "5.94.0",

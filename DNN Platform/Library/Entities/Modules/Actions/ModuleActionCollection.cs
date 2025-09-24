@@ -7,8 +7,6 @@ namespace DotNetNuke.Entities.Modules.Actions
 
     using DotNetNuke.Security;
 
-    /// Project     : DotNetNuke
-    /// Class       : ModuleActionCollection
     /// <summary>Represents a collection of <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> objects.</summary>
     /// <remarks>The ModuleActionCollection is a custom collection of ModuleActions.
     /// Each ModuleAction in the collection has it's own <see cref="P:DotNetNuke.ModuleAction.Actions" />

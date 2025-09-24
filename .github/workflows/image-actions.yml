@@ -6,6 +6,7 @@ on:
       - "**.jpeg"
       - "**.png"
       - "**.webp"
+      - "**.avif"
   push:
     branches:
       - development # merging PRs from other forks (will open a new PR)
@@ -22,13 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Compress Images
         id: compress_images
-        uses: calibreapp/image-actions@1.1.0
+        uses: calibreapp/image-actions@1.4.1
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: ${{ github.event_name != 'pull_request' }} # For non-Pull Requests, run in compressOnly mode and we'll PR after.
 
       - name: Create Pull Request

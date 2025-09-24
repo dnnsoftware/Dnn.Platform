@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Authentication
         /// <summary>Gets or sets the PackageID for the Authentication System.</summary>
         public int PackageID { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets and Sets a flag that determines whether the Authentication System is enabled.</summary>
+        /// <summary>Gets or sets a value indicating whether the Authentication System is enabled.</summary>
         public bool IsEnabled { get; set; }
 
         /// <summary>Gets or sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID).</summary>

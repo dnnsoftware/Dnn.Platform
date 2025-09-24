@@ -10,9 +10,6 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionCommandButton
     /// <summary>ActionCommandButton provides a button for a single action.</summary>
     /// <remarks>
     /// ActionBase inherits from CommandButton, and implements the IActionControl Interface.

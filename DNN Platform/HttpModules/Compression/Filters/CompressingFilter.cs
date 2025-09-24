@@ -32,7 +32,7 @@ namespace DotNetNuke.HttpModules.Compression
         /// </remarks>
         public abstract string ContentEncoding { get; }
 
-        /// <summary>Gets a value indicating whether keeps track of whether we've written the compression headers.</summary>
+        /// <summary>Gets a value indicating whether we've written the compression headers.</summary>
         protected bool HasWrittenHeaders { get; private set; }
 
         /// <summary>Writes out the compression-related headers.  Subclasses should call this once before writing to the output stream.</summary>

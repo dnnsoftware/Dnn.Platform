@@ -42,7 +42,7 @@ class ApiTokensPanelBody extends Component {
         if (isHost) {
             props.dispatch(SecurityActions.getPortalList(util.settings.isHost, (dataPortal) => {
                 let portalList = Object.assign([], dataPortal.Results);
-                let currentPortalId = portalList[0].PortalID;
+                let currentPortalId = portalList[0].PortalId;
                 let currentPortal = portalList[0].PortalName;
                 this.setState({
                     portalList,
@@ -249,12 +249,12 @@ class ApiTokensPanelBody extends Component {
                                     value={state.currentPortalId}
                                     style={{ width: "100%" }}
                                     options={state.portalList.map((item) => {
-                                        return { label: item.PortalName, value: item.PortalID };
+                                        return { label: item.PortalName, value: item.PortalId };
                                     })}
                                     withBorder={false}
                                     onSelect={(value) => {
                                         let currentPortal = state.portalList.filter((item) => {
-                                            return item.PortalID === value.value;
+                                            return item.PortalId === value.value;
                                         })[0].PortalName;
                                         this.setState({
                                             currentPortalId: value.value,

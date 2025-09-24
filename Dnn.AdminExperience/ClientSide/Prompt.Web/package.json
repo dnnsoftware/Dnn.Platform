@@ -1,6 +1,6 @@
 {
   "name": "prompt",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "DNN Prompt",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
-    "@dnnsoftware/dnn-react-common": "10.0.0",
+    "@dnnsoftware/dnn-react-common": "10.1.0",
     "array.prototype.find": "2.2.3",
     "array.prototype.findindex": "2.2.4",
     "babel-eslint": "^10.1.0",
@@ -59,7 +59,7 @@
     "redux-immutable-state-invariant": "2.1.0",
     "redux-mock-store": "^1.5.4",
     "redux-thunk": "2.4.2",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "throttle-debounce": "^5.0.0",
     "url-loader": "1.1.2",
     "webpack": "5.94.0",

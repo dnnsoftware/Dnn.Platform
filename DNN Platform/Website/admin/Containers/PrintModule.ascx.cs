@@ -13,9 +13,6 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Personalization;
 
-    /// Project  : DotNetNuke
-    /// Class    : Containers.Icon
-    ///
     /// <summary>
     /// Contains the attributes of an Icon.
     /// These are read into the PortalModuleBase collection as attributes for the icons within the module controls.

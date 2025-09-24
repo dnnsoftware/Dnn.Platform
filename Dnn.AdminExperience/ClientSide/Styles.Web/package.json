@@ -1,6 +1,6 @@
 {
   "name": "styles",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "private": true,
   "description": "Allows managing DNN css variables for styles",
   "main": "dist/index.cjs.js",

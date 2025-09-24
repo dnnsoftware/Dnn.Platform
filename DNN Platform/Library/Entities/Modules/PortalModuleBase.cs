@@ -44,126 +44,50 @@ namespace DotNetNuke.Entities.Modules
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Control ContainerControl
-        {
-            get
-            {
-                return Globals.FindControlRecursive(this, "ctr" + this.ModuleId);
-            }
-        }
+        public Control ContainerControl => Globals.FindControlRecursive(this, "ctr" + this.ModuleId);
 
-        /// <summary>
-        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
-        /// Administrator role
-        /// Cache.
-        /// </summary>
-        public bool EditMode
-        {
-            get
-            {
-                return this.ModuleContext.EditMode;
-            }
-        }
+        /// <summary>Gets a value indicating whether the user is in the Administrator role.</summary>
+        public bool EditMode => this.ModuleContext.EditMode;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public bool IsEditable
-        {
-            get
-            {
-                return this.ModuleContext.IsEditable;
-            }
-        }
+        public bool IsEditable => this.ModuleContext.IsEditable;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int PortalId
-        {
-            get
-            {
-                return this.ModuleContext.PortalId;
-            }
-        }
+        public int PortalId => this.ModuleContext.PortalId;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int TabId
-        {
-            get
-            {
-                return this.ModuleContext.TabId;
-            }
-        }
+        public int TabId => this.ModuleContext.TabId;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public UserInfo UserInfo
-        {
-            get
-            {
-                return this.PortalSettings.UserInfo;
-            }
-        }
+        public UserInfo UserInfo => this.PortalSettings.UserInfo;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public int UserId
-        {
-            get
-            {
-                return this.PortalSettings.UserId;
-            }
-        }
+        public int UserId => this.PortalSettings.UserId;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public PortalAliasInfo PortalAlias
-        {
-            get
-            {
-                return this.PortalSettings.PortalAlias;
-            }
-        }
+        public PortalAliasInfo PortalAlias => this.PortalSettings.PortalAlias;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Hashtable Settings
-        {
-            get
-            {
-                return this.ModuleContext.Settings;
-            }
-        }
+        public Hashtable Settings => this.ModuleContext.Settings;
 
         /// <summary>Gets the underlying base control for this ModuleControl.</summary>
         /// <returns>A String.</returns>
-        public Control Control
-        {
-            get
-            {
-                return this;
-            }
-        }
+        public Control Control => this;
 
         /// <summary>Gets the Path for this control (used primarily for UserControls).</summary>
         /// <returns>A String.</returns>
-        public string ControlPath
-        {
-            get
-            {
-                return this.TemplateSourceDirectory + "/";
-            }
-        }
+        public string ControlPath => this.TemplateSourceDirectory + "/";
 
         /// <summary>Gets the Name for this control.</summary>
         /// <returns>A String.</returns>
-        public string ControlName
-        {
-            get
-            {
-                return this.GetType().Name.Replace("_", ".");
-            }
-        }
+        public string ControlName => this.GetType().Name.Replace("_", ".");
 
         /// <summary>Gets the Module Context for this control.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
@@ -227,73 +151,38 @@ namespace DotNetNuke.Entities.Modules
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleActionCollection Actions
         {
-            get
-            {
-                return this.ModuleContext.Actions;
-            }
-
-            set
-            {
-                this.ModuleContext.Actions = value;
-            }
+            get => this.ModuleContext.Actions;
+            set => this.ModuleContext.Actions = value;
         }
 
         public string HelpURL
         {
-            get
-            {
-                return this.ModuleContext.HelpURL;
-            }
-
-            set
-            {
-                this.ModuleContext.HelpURL = value;
-            }
+            get => this.ModuleContext.HelpURL;
+            set => this.ModuleContext.HelpURL = value;
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleInfo ModuleConfiguration
         {
-            get
-            {
-                return this.ModuleContext.Configuration;
-            }
-
-            set
-            {
-                this.ModuleContext.Configuration = value;
-            }
+            get => this.ModuleContext.Configuration;
+            set => this.ModuleContext.Configuration = value;
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TabModuleId
         {
-            get
-            {
-                return this.ModuleContext.TabModuleId;
-            }
-
-            set
-            {
-                this.ModuleContext.TabModuleId = value;
-            }
+            get => this.ModuleContext.TabModuleId;
+            set => this.ModuleContext.TabModuleId = value;
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ModuleId
         {
-            get
-            {
-                return this.ModuleContext.ModuleId;
-            }
-
-            set
-            {
-                this.ModuleContext.ModuleId = value;
-            }
+            get => this.ModuleContext.ModuleId;
+            set => this.ModuleContext.ModuleId = value;
         }
 
         /// <summary>Gets or sets the local resource file for this control.</summary>

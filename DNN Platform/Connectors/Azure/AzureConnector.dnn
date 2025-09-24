@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Dnn.AzureConnector" type="Connector" isSystem="false" version="10.00.00">
+        <package name="Dnn.AzureConnector" type="Connector" isSystem="false" version="10.01.00">
             <friendlyName>Dnn Azure Connector</friendlyName>
             <description>The Azure Connector allows you to create folders mapped to Azure Storage accounts.</description>
             <iconFile>~/DesktopModules/Connectors/Azure/Images/icon-azure-32px.png</iconFile>

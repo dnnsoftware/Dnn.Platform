@@ -25,9 +25,6 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Tokens;
     using Newtonsoft.Json;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules
-    /// Class    : ModuleInfo
     /// <summary>ModuleInfo provides the Entity Layer for Modules.</summary>
     [XmlRoot("module", IsNullable = false)]
     [Serializable]

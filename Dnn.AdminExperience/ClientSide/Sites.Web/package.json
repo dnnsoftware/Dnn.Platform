@@ -1,6 +1,6 @@
 {
   "name": "sites",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
@@ -15,7 +15,7 @@
     "@babel/plugin-transform-object-assign": "7.25.9",
     "@babel/preset-env": "7.26.0",
     "@babel/preset-react": "7.25.9",
-    "@dnnsoftware/dnn-react-common": "10.0.0",
+    "@dnnsoftware/dnn-react-common": "10.1.0",
     "babel-loader": "8.3.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-polyfill": "6.26.0",
@@ -33,7 +33,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-hot-loader": "4.13.1",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "url-loader": "1.1.2",
     "webpack": "5.94.0",
     "webpack-bundle-size-analyzer": "3.1.0",

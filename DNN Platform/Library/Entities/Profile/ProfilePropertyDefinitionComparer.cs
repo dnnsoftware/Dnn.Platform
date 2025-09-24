@@ -6,9 +6,6 @@ namespace DotNetNuke.Entities.Profile
     using System.Collections;
     using System.Collections.Generic;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Profile
-    /// Class:      ProfilePropertyDefinitionComparer
     /// <summary>
     /// The ProfilePropertyDefinitionComparer class provides an implementation of
     /// <see cref="IComparer"/> to sort the <see cref="ProfilePropertyDefinition"/> instances by <see cref="ProfilePropertyDefinition.ViewOrder"/>.

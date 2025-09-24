@@ -1,6 +1,6 @@
 {
   "name": "users",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "private": true,
   "scripts": {
     "start": "npm run webpack",
@@ -42,7 +42,7 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.4.2",
     "services": "^0.0.3",
-    "style-loader": "^0.23.1",
+    "style-loader": "^4.0.0",
     "throttle-debounce": "^5.0.0",
     "url-loader": "1.1.2",
     "utils": "^0.3.1",
@@ -52,7 +52,7 @@
     "webpack-dev-server": "5.2.1"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "10.0.0",
+    "@dnnsoftware/dnn-react-common": "10.1.0",
     "localization": "^1.0.2",
     "react-widgets": "^5.8.4"
   }

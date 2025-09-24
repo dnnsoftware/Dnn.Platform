@@ -23,23 +23,11 @@ namespace DotNetNuke.UI.WebControls
 
         public event PropertyChangedEventHandler ValueChanged;
 
-        /// <summary>Gets a value indicating whether returns whether the.</summary>
+        /// <summary>Gets a value indicating whether the control is valid.</summary>
         /// <value>A boolean.</value>
-        public virtual bool IsValid
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public virtual bool IsValid => true;
 
-        public virtual string EditControlClientId
-        {
-            get
-            {
-                return this.ClientID;
-            }
-        }
+        public virtual string EditControlClientId => this.ClientID;
 
         /// <summary>Gets or sets the Custom Attributes for this Control.</summary>
         /// <value>An array of Attributes.</value>

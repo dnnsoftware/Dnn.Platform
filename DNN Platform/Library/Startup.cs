@@ -36,17 +36,20 @@ namespace DotNetNuke
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
+    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -121,6 +124,9 @@ namespace DotNetNuke
             services.AddTransient<IUserController, UserController>();
             services.AddTransient<IEventManager, EventManager>();
             services.AddTransient<ILocalUpgradeService, LocalUpgradeService>();
+            services.AddTransient<IJournalDataService, JournalDataServiceImpl>();
+            services.AddTransient<IFileContentTypeManager, FileContentTypeManager>();
+            services.AddTransient<ISearchHelper, SearchHelperImpl>();
 
             services.AddTransient<IDataContext>(serviceProvider =>
             {
@@ -132,6 +138,7 @@ namespace DotNetNuke
 
             services.AddTransient<ModuleInjectionManager>();
             services.AddTransient<PersonalizationController>();
+            services.AddTransient(_ => PortalSecurity.Instance);
             RegisterModuleInjectionFilters(services);
         }
 
