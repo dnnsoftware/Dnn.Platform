@@ -2294,7 +2294,14 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                        if (this.IsMvc(result, queryStringCol, context, result.TabId, result.PortalId))
+                        {
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath.Replace(Globals.glbDefaultPage, "DesktopModules/Default/Page/" + result.TabId + "/" + result.CultureCode));
+                        }
+                        else
+                        {
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                        }
                     }
                 }
 
@@ -3142,6 +3149,44 @@ namespace DotNetNuke.Entities.Urls
             {
                 throw new HttpException(404, "Not Found");
             }
+        }
+
+        private bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
+        {
+            var mvcCtls = new[] { "Terms", "Privacy" };
+            bool mvcCtl = false;
+            if (result.RewritePath.Contains("&ctl="))
+            {
+                foreach (var item in mvcCtls)
+                {
+                    mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
+                }
+            }
+            else
+            {
+                TabInfo tab = null;
+                if (tabId > 0 && portalId > -1)
+                {
+                    tab = TabController.Instance.GetTab(tabId, portalId, false);
+                    if (tab != null)
+                    {
+                        var tabPipeline = tab.PagePipeline;
+                        if (!string.IsNullOrEmpty(tabPipeline))
+                        {
+                            mvcCtl = tabPipeline == PagePipelineConstants.Mvc;
+                        }
+                        else
+                        {
+                            var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                            mvcCtl = portalPipeline == PagePipelineConstants.Mvc;
+                        }
+                    }
+                }
+            }
+
+            mvcCtl = mvcCtl && !result.RewritePath.Contains("mvcpage=no") && queryStringCol["mvcpage"] != "no";
+            mvcCtl = mvcCtl || result.RewritePath.Contains("mvcpage=yes") || queryStringCol["mvcpage"] == "yes";
+            return mvcCtl;
         }
     }
 }

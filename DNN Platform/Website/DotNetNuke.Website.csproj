@@ -3449,10 +3449,6 @@
       <Project>{aa3ee19b-81a0-3766-e8f4-424c2425a8d3}</Project>
       <Name>DotNetNuke.Web.MvcPipeline</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Web.MvcUrlRewriter\DotNetNuke.Web.MvcUrlRewriter.csproj">
-      <Project>{d245c674-08ca-4b72-94e4-d609949a5fad}</Project>
-      <Name>DotNetNuke.Web.MvcUrlRewriter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Web.MvcWebsite\DotNetNuke.Web.MvcWebsite.csproj">
       <Project>{78ca212d-b471-a777-9c3d-b4e43280181e}</Project>
       <Name>DotNetNuke.Web.MvcWebsite</Name>
