@@ -15,10 +15,10 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             this._clientResourcesController.AddFont(this);
         }
 
-        public string Render(int crmVersion, bool useCdn)
+        public string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             var htmlString = "<link";
-            htmlString += $" href=\"{this.GetVersionedPath(crmVersion, useCdn)}\"";
+            htmlString += $" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"";
             if (this.Preload)
             {
                 htmlString += $" rel=\"preload\" as=\"font\"";

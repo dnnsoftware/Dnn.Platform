@@ -18,12 +18,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.clientResourcesController = clientResourcesController;
         }
 
+        public string ApplicationPath { get; set; }
+
         public string Provider { get; set; }
 
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);
-            writer.Write(this.clientResourcesController.RenderDependencies(ResourceType.All, this.Provider));
+            writer.Write(this.clientResourcesController.RenderDependencies(ResourceType.All, this.Provider, this.ApplicationPath));
         }
     }
 }

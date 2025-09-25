@@ -24,6 +24,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
         public ClientResourcesController(IHostSettings hostSettings)
         {
             this.hostSettings = hostSettings;
+            this.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
         }
 
         /// <inheritdoc />
@@ -126,28 +127,28 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
-        public string RenderDependencies(ResourceType resourceType, string provider)
+        public string RenderDependencies(ResourceType resourceType, string provider, string applicationPath)
         {
             var sortedList = new List<string>();
             if (resourceType == ResourceType.Font || resourceType == ResourceType.All)
             {
                 foreach (var link in this.Fonts.Where(s => s.Provider == provider && !this.FontsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
                 {
-                    sortedList.Add(link.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled));
+                    sortedList.Add(link.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled, applicationPath));
                 }
             }
             if (resourceType == ResourceType.Stylesheet || resourceType == ResourceType.All)
             {
                 foreach (var link in this.Stylesheets.Where(s => s.Provider == provider && !this.StylesheetsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
                 {
-                    sortedList.Add(link.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled));
+                    sortedList.Add(link.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled, applicationPath));
                 }
             }
             if (resourceType == ResourceType.Script || resourceType == ResourceType.All)
             {
                 foreach (var script in this.Scripts.Where(s => s.Provider == provider && !this.ScriptsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(s => s.Priority))
                 {
-                    sortedList.Add(script.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled));
+                    sortedList.Add(script.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled, applicationPath));
                 }
             }
             return string.Join("", sortedList);
@@ -188,19 +189,6 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return resources;
         }
 
-        private string ResolvePathNameAlias(string pathNameAlias)
-        {
-            if (string.IsNullOrEmpty(pathNameAlias))
-            {
-                return string.Empty;
-            }
-            if (this.PathNameAliases.TryGetValue(pathNameAlias.ToLowerInvariant(), out var alias))
-            {
-                return alias;
-            }
-            return string.Empty;
-        }
-
         private string ResolvePath(string filePath, string pathNameAlias)
         {
             if (string.IsNullOrEmpty(filePath))
@@ -212,10 +200,16 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 // Path is already fully qualified
                 return filePath;
             }
-            // Path is a relative path to the application root and pathNameAlias
-            filePath = filePath.Replace("\\", "/").TrimStart('~', '/');
-            var root = this.ResolvePathNameAlias(pathNameAlias);
-            return $"{root}/{filePath}";
+            // Path is either a relative path including the application path or a path starting with a tilde or a path relative to the path name alias
+            filePath = filePath.Replace("\\", "/");
+            if (!string.IsNullOrEmpty(pathNameAlias))
+            {
+                if (this.PathNameAliases.TryGetValue(pathNameAlias.ToLowerInvariant(), out var alias))
+                {
+                    return $"{alias}/{filePath.TrimStart('/')}";
+                }
+            }
+            return filePath;
         }
     }
 }

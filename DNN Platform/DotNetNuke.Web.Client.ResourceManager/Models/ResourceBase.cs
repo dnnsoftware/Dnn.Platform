@@ -122,9 +122,13 @@
             return htmlString;
         }
 
-        internal string GetVersionedPath(int crmVersion, bool useCdn)
+        internal string GetVersionedPath(int crmVersion, bool useCdn, string applicationPath)
         {
             var path = this.ResolvedPath;
+            if (path.StartsWith("~") && !string.IsNullOrEmpty(applicationPath))
+            {
+                path = path.Replace("~", applicationPath);
+            }
             if (useCdn && !string.IsNullOrEmpty(this.CdnUrl))
             {
                 path = this.CdnUrl;
@@ -137,7 +141,7 @@
             throw new System.NotImplementedException();
         }
 
-        public string Render(int crmVersion, bool useCdn)
+        public string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             throw new System.NotImplementedException();
         }

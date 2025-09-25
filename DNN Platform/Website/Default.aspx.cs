@@ -228,9 +228,6 @@ namespace DotNetNuke.Framework
 
             var ctlSkin = this.GetSkin();
 
-            this.clientResourcesController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
-            this.clientResourcesController.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
-
             // check for and read skin package level doctype
             this.SetSkinDoctype();
 
@@ -324,6 +321,10 @@ namespace DotNetNuke.Framework
             {
                 AJAX.GetScriptManager(this).AsyncPostBackTimeout = (int)this.hostSettings.AsyncTimeout.TotalSeconds;
             }
+
+            this.DnnResources1.ApplicationPath = Globals.ApplicationPath;
+            this.DnnResources2.ApplicationPath = Globals.ApplicationPath;
+            this.DnnResources3.ApplicationPath = Globals.ApplicationPath;
         }
 
         /// <summary>Initialize the Scrolltop html control which controls the open / closed nature of each module.</summary>
@@ -420,6 +421,8 @@ namespace DotNetNuke.Framework
 
             // Configure the ActiveTab with Skin/Container information
             this.portalSettingsController.ConfigureActiveTab(this.PortalSettings);
+
+            this.clientResourcesController.RegisterPathNameAlias("SkinPath", this.CurrentSkinPath);
 
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))

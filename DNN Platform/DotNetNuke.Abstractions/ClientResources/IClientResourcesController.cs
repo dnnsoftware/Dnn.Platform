@@ -111,6 +111,7 @@ public interface IClientResourcesController
     /// </summary>
     /// <param name="resourceType">The type of resource to render dependencies for.</param>
     /// <param name="provider">The provider to use for rendering dependencies.</param>
+    /// <param name="applicationPath">The application path to use for resolving resource paths.</param>
     /// <returns>A string containing the rendered dependencies.</returns>
-    string RenderDependencies(ResourceType resourceType, string provider);
+    string RenderDependencies(ResourceType resourceType, string provider, string applicationPath);
 }

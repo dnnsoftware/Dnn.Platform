@@ -23,10 +23,10 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             this._clientResourcesController.AddScript(this);
         }
 
-        public string Render(int crmVersion, bool useCdn)
+        public string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             var htmlString = "<script";
-            htmlString += $" src=\"{this.GetVersionedPath(crmVersion, useCdn)}\"";
+            htmlString += $" src=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"";
             if (this.Async)
             {
                 htmlString += " async";

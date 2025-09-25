@@ -108,6 +108,7 @@ public interface IResource
     /// </summary>
     /// <param name="crmVersion">The current CRM version.</param>
     /// <param name="useCdn">Whether to use the CDN url if available.</param>
+    /// <param name="applicationPath">The application path to use for resolving relative paths.</param>
     /// <returns>Returns a HTML string.</returns>
-    string Render(int crmVersion, bool useCdn);
+    string Render(int crmVersion, bool useCdn, string applicationPath);
 }
