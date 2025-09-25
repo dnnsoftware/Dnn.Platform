@@ -125,22 +125,31 @@
         internal string GetVersionedPath(int crmVersion, bool useCdn, string applicationPath)
         {
             var path = this.ResolvedPath;
-            if (path.StartsWith("~"))
+            if (useCdn && !string.IsNullOrEmpty(this.CdnUrl))
+            {
+                return this.CdnUrl;
+            }
+            else if (path.ToLowerInvariant().StartsWith("http"))
+            {
+                return path;
+            }
+            else if (path.StartsWith("~"))
             {
                 if (string.IsNullOrEmpty(applicationPath))
                 {
-                    path = path.TrimStart('~');
+                    return path.TrimStart('~');
                 }
                 else
                 {
-                    path = path.Replace("~", applicationPath);
+                    return path.Replace("~", applicationPath);
                 }
             }
-            if (useCdn && !string.IsNullOrEmpty(this.CdnUrl))
+            else if (path.StartsWith("/"))
             {
-                path = this.CdnUrl;
+                return $"{path}?cdv={crmVersion}";
             }
-            return $"{path}?cdv={crmVersion}";
+
+            return $"{applicationPath}/{path}?cdv={crmVersion}";
         }
 
         public void Register()
