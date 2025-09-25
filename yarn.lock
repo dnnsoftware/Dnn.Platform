@@ -1703,7 +1703,7 @@ __metadata:
     redux-undo: "npm:^1.0.0-beta9"
     scroll: "npm:^3.0.1"
     storybook: "npm:9.0.4"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
@@ -1747,184 +1747,184 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esbuild/aix-ppc64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/aix-ppc64@npm:0.25.6"
+"@esbuild/aix-ppc64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/aix-ppc64@npm:0.25.8"
   conditions: os=aix & cpu=ppc64
   languageName: node
   linkType: hard
 
-"@esbuild/android-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/android-arm64@npm:0.25.6"
+"@esbuild/android-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/android-arm64@npm:0.25.8"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/android-arm@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/android-arm@npm:0.25.6"
+"@esbuild/android-arm@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/android-arm@npm:0.25.8"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@esbuild/android-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/android-x64@npm:0.25.6"
+"@esbuild/android-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/android-x64@npm:0.25.8"
   conditions: os=android & cpu=x64
   languageName: node
   linkType: hard
 
-"@esbuild/darwin-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/darwin-arm64@npm:0.25.6"
+"@esbuild/darwin-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/darwin-arm64@npm:0.25.8"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/darwin-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/darwin-x64@npm:0.25.6"
+"@esbuild/darwin-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/darwin-x64@npm:0.25.8"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@esbuild/freebsd-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/freebsd-arm64@npm:0.25.6"
+"@esbuild/freebsd-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/freebsd-arm64@npm:0.25.8"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/freebsd-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/freebsd-x64@npm:0.25.6"
+"@esbuild/freebsd-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/freebsd-x64@npm:0.25.8"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@esbuild/linux-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-arm64@npm:0.25.6"
+"@esbuild/linux-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-arm64@npm:0.25.8"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/linux-arm@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-arm@npm:0.25.6"
+"@esbuild/linux-arm@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-arm@npm:0.25.8"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@esbuild/linux-ia32@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-ia32@npm:0.25.6"
+"@esbuild/linux-ia32@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-ia32@npm:0.25.8"
   conditions: os=linux & cpu=ia32
   languageName: node
   linkType: hard
 
-"@esbuild/linux-loong64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-loong64@npm:0.25.6"
+"@esbuild/linux-loong64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-loong64@npm:0.25.8"
   conditions: os=linux & cpu=loong64
   languageName: node
   linkType: hard
 
-"@esbuild/linux-mips64el@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-mips64el@npm:0.25.6"
+"@esbuild/linux-mips64el@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-mips64el@npm:0.25.8"
   conditions: os=linux & cpu=mips64el
   languageName: node
   linkType: hard
 
-"@esbuild/linux-ppc64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-ppc64@npm:0.25.6"
+"@esbuild/linux-ppc64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-ppc64@npm:0.25.8"
   conditions: os=linux & cpu=ppc64
   languageName: node
   linkType: hard
 
-"@esbuild/linux-riscv64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-riscv64@npm:0.25.6"
+"@esbuild/linux-riscv64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-riscv64@npm:0.25.8"
   conditions: os=linux & cpu=riscv64
   languageName: node
   linkType: hard
 
-"@esbuild/linux-s390x@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-s390x@npm:0.25.6"
+"@esbuild/linux-s390x@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-s390x@npm:0.25.8"
   conditions: os=linux & cpu=s390x
   languageName: node
   linkType: hard
 
-"@esbuild/linux-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/linux-x64@npm:0.25.6"
+"@esbuild/linux-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-x64@npm:0.25.8"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"@esbuild/netbsd-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/netbsd-arm64@npm:0.25.6"
+"@esbuild/netbsd-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/netbsd-arm64@npm:0.25.8"
   conditions: os=netbsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/netbsd-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/netbsd-x64@npm:0.25.6"
+"@esbuild/netbsd-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/netbsd-x64@npm:0.25.8"
   conditions: os=netbsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@esbuild/openbsd-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/openbsd-arm64@npm:0.25.6"
+"@esbuild/openbsd-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/openbsd-arm64@npm:0.25.8"
   conditions: os=openbsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/openbsd-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/openbsd-x64@npm:0.25.6"
+"@esbuild/openbsd-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/openbsd-x64@npm:0.25.8"
   conditions: os=openbsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@esbuild/openharmony-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/openharmony-arm64@npm:0.25.6"
+"@esbuild/openharmony-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/openharmony-arm64@npm:0.25.8"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/sunos-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/sunos-x64@npm:0.25.6"
+"@esbuild/sunos-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/sunos-x64@npm:0.25.8"
   conditions: os=sunos & cpu=x64
   languageName: node
   linkType: hard
 
-"@esbuild/win32-arm64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/win32-arm64@npm:0.25.6"
+"@esbuild/win32-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/win32-arm64@npm:0.25.8"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@esbuild/win32-ia32@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/win32-ia32@npm:0.25.6"
+"@esbuild/win32-ia32@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/win32-ia32@npm:0.25.8"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@esbuild/win32-x64@npm:0.25.6":
-  version: 0.25.6
-  resolution: "@esbuild/win32-x64@npm:0.25.6"
+"@esbuild/win32-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/win32-x64@npm:0.25.8"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -5043,7 +5043,7 @@ __metadata:
     redux-devtools-log-monitor: "npm:2.1.0"
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-thunk: "npm:2.4.2"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
@@ -7122,9 +7122,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001702, caniuse-lite@npm:^1.0.30001726":
-  version: 1.0.30001727
-  resolution: "caniuse-lite@npm:1.0.30001727"
-  checksum: 10/6155a4141332c337d6317325bea58a09036a65f45bd9bd834ec38978b40c27d214baa04d25b21a5661664f3fbd00cb830e2bdb7eee8df09970bdd98a71f4dabf
+  version: 1.0.30001741
+  resolution: "caniuse-lite@npm:1.0.30001741"
+  checksum: 10/d2fbc09f0941653d40b591e5460c4eb0b6838790d4adac7890a453dfb3b5e6bb84a64de2aded96cb4c6636816ef613614e07d9efb5818adaba566321feb95ffd
   languageName: node
   linkType: hard
 
@@ -8744,7 +8744,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -8783,7 +8783,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     webpack: "npm:5.94.0"
     webpack-cli: "npm:5.1.4"
     webpack-dev-server: "npm:5.2.1"
@@ -8822,7 +8822,7 @@ __metadata:
     react-redux: "npm:^8.1.1"
     react-widgets: "npm:^5.8.4"
     redux: "npm:4.2.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.0"
     utils: "npm:^0.3.1"
     webpack: "npm:5.94.0"
@@ -9627,35 +9627,35 @@ __metadata:
   linkType: hard
 
 "esbuild@npm:^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0, esbuild@npm:^0.25.0, esbuild@npm:~0.25.0":
-  version: 0.25.6
-  resolution: "esbuild@npm:0.25.6"
+  version: 0.25.8
+  resolution: "esbuild@npm:0.25.8"
   dependencies:
-    "@esbuild/aix-ppc64": "npm:0.25.6"
-    "@esbuild/android-arm": "npm:0.25.6"
-    "@esbuild/android-arm64": "npm:0.25.6"
-    "@esbuild/android-x64": "npm:0.25.6"
-    "@esbuild/darwin-arm64": "npm:0.25.6"
-    "@esbuild/darwin-x64": "npm:0.25.6"
-    "@esbuild/freebsd-arm64": "npm:0.25.6"
-    "@esbuild/freebsd-x64": "npm:0.25.6"
-    "@esbuild/linux-arm": "npm:0.25.6"
-    "@esbuild/linux-arm64": "npm:0.25.6"
-    "@esbuild/linux-ia32": "npm:0.25.6"
-    "@esbuild/linux-loong64": "npm:0.25.6"
-    "@esbuild/linux-mips64el": "npm:0.25.6"
-    "@esbuild/linux-ppc64": "npm:0.25.6"
-    "@esbuild/linux-riscv64": "npm:0.25.6"
-    "@esbuild/linux-s390x": "npm:0.25.6"
-    "@esbuild/linux-x64": "npm:0.25.6"
-    "@esbuild/netbsd-arm64": "npm:0.25.6"
-    "@esbuild/netbsd-x64": "npm:0.25.6"
-    "@esbuild/openbsd-arm64": "npm:0.25.6"
-    "@esbuild/openbsd-x64": "npm:0.25.6"
-    "@esbuild/openharmony-arm64": "npm:0.25.6"
-    "@esbuild/sunos-x64": "npm:0.25.6"
-    "@esbuild/win32-arm64": "npm:0.25.6"
-    "@esbuild/win32-ia32": "npm:0.25.6"
-    "@esbuild/win32-x64": "npm:0.25.6"
+    "@esbuild/aix-ppc64": "npm:0.25.8"
+    "@esbuild/android-arm": "npm:0.25.8"
+    "@esbuild/android-arm64": "npm:0.25.8"
+    "@esbuild/android-x64": "npm:0.25.8"
+    "@esbuild/darwin-arm64": "npm:0.25.8"
+    "@esbuild/darwin-x64": "npm:0.25.8"
+    "@esbuild/freebsd-arm64": "npm:0.25.8"
+    "@esbuild/freebsd-x64": "npm:0.25.8"
+    "@esbuild/linux-arm": "npm:0.25.8"
+    "@esbuild/linux-arm64": "npm:0.25.8"
+    "@esbuild/linux-ia32": "npm:0.25.8"
+    "@esbuild/linux-loong64": "npm:0.25.8"
+    "@esbuild/linux-mips64el": "npm:0.25.8"
+    "@esbuild/linux-ppc64": "npm:0.25.8"
+    "@esbuild/linux-riscv64": "npm:0.25.8"
+    "@esbuild/linux-s390x": "npm:0.25.8"
+    "@esbuild/linux-x64": "npm:0.25.8"
+    "@esbuild/netbsd-arm64": "npm:0.25.8"
+    "@esbuild/netbsd-x64": "npm:0.25.8"
+    "@esbuild/openbsd-arm64": "npm:0.25.8"
+    "@esbuild/openbsd-x64": "npm:0.25.8"
+    "@esbuild/openharmony-arm64": "npm:0.25.8"
+    "@esbuild/sunos-x64": "npm:0.25.8"
+    "@esbuild/win32-arm64": "npm:0.25.8"
+    "@esbuild/win32-ia32": "npm:0.25.8"
+    "@esbuild/win32-x64": "npm:0.25.8"
   dependenciesMeta:
     "@esbuild/aix-ppc64":
       optional: true
@@ -9711,7 +9711,7 @@ __metadata:
       optional: true
   bin:
     esbuild: bin/esbuild
-  checksum: 10/b1c94893d53e39f3be02493c3a082bc9d090ca1702bf6017967ace1391d31e596da4dfd87e02efef3b7b4f0426918dbc5aa6909420a6ba42d51a872266ab6f2e
+  checksum: 10/9897411732768e652d90fa5dfadae965e8f420d24e5f23fa0604331a1441769e2c7ee4e41ca53e926f1fb51a53af52e01fc9070fdc1a4edf3e9ec9208ee41273
   languageName: node
   linkType: hard
 
@@ -10325,7 +10325,6 @@ __metadata:
     json-loader: "npm:^0.5.7"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
-    moment: "npm:^2.29.4"
     prop-types: "npm:^15.8.1"
     raw-loader: "npm:4.0.2"
     react: "npm:^16.14.0"
@@ -10347,7 +10346,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-thunk: "npm:2.4.2"
     source-map-loader: "npm:^0.2.4"
-    style-loader: "npm:0.23.1"
+    style-loader: "npm:4.0.0"
     throttle-debounce: "npm:5.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
@@ -10458,7 +10457,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -11799,20 +11798,20 @@ __metadata:
   linkType: hard
 
 "html-react-parser@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "html-react-parser@npm:5.2.5"
+  version: 5.2.6
+  resolution: "html-react-parser@npm:5.2.6"
   dependencies:
     domhandler: "npm:5.0.3"
     html-dom-parser: "npm:5.1.1"
     react-property: "npm:2.0.2"
-    style-to-js: "npm:1.1.16"
+    style-to-js: "npm:1.1.17"
   peerDependencies:
     "@types/react": 0.14 || 15 || 16 || 17 || 18 || 19
     react: 0.14 || 15 || 16 || 17 || 18 || 19
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10/22852dc4826d3be9506e238e37a05c23b432675aac33f22bd5741caa195a32e99de99d2b99037fda532f198afbcdeacfc0b27627d6e529143a98c8f191e99c52
+  checksum: 10/be2903fd932d44ff6cae66bd18b025d318879e16eb1e67c0ae6dc640e5c77509da41b61948c0d404a43b5362b57b7cfa3963df242b9773d4c7a16f410db7f2ac
   languageName: node
   linkType: hard
 
@@ -14080,7 +14079,7 @@ __metadata:
     raw-loader: "npm:4.0.2"
     react-hot-loader: "npm:4.13.1"
     react-modal: "npm:3.16.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -15095,13 +15094,6 @@ __metadata:
   version: 1.0.1
   resolution: "modify-values@npm:1.0.1"
   checksum: 10/16fa93f7ddb2540a8e82c99738ae4ed0e8e8cae57c96e13a0db9d68dfad074fd2eec542929b62ebbb18b357bbb3e4680b92d3a4099baa7aeb32360cb1c8f0247
-  languageName: node
-  linkType: hard
-
-"moment@npm:^2.29.4":
-  version: 2.30.1
-  resolution: "moment@npm:2.30.1"
-  checksum: 10/ae42d876d4ec831ef66110bdc302c0657c664991e45cf2afffc4b0f6cd6d251dde11375c982a5c0564ccc0fa593fc564576ddceb8c8845e87c15f58aa6baca69
   languageName: node
   linkType: hard
 
@@ -16298,7 +16290,7 @@ __metadata:
     react-test-renderer: "npm:^17.0.2"
     react-widgets: "npm:5.8.4"
     string.prototype.startswith: "npm:1.0.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.0"
     uglifyjs-webpack-plugin: "npm:^2.2.0"
     url-loader: "npm:1.1.2"
@@ -17332,7 +17324,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-mock-store: "npm:^1.5.4"
     redux-thunk: "npm:2.4.2"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
@@ -18822,7 +18814,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     react-widgets: "npm:^5.8.4"
-    style-loader: "npm:0.23.1"
+    style-loader: "npm:4.0.0"
     throttle-debounce: "npm:5.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
@@ -19292,7 +19284,7 @@ __metadata:
     redux: "npm:^4.2.1"
     redux-immutable-state-invariant: "npm:^2.1.0"
     redux-thunk: "npm:^2.4.2"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -19419,7 +19411,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     react-modal: "npm:3.16.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -19522,7 +19514,7 @@ __metadata:
     react-custom-scrollbars: "npm:^4.2.1"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -19801,7 +19793,7 @@ __metadata:
     redux-devtools-log-monitor: "npm:2.1.0"
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-thunk: "npm:2.4.2"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     svg-url-loader: "npm:^8.0.0"
     throttle-debounce: "npm:^5.0.0"
     url-loader: "npm:1.1.2"
@@ -19850,7 +19842,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:^2.1.0"
     redux-thunk: "npm:^2.4.2"
     source-map-loader: "npm:^0.2.4"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -19886,7 +19878,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -20599,13 +20591,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-loader@npm:0.23.1, style-loader@npm:^0.23.1":
-  version: 0.23.1
-  resolution: "style-loader@npm:0.23.1"
-  dependencies:
-    loader-utils: "npm:^1.1.0"
-    schema-utils: "npm:^1.0.0"
-  checksum: 10/189717817b65691c6319229fd05b84f335bb8a10fc9ffa7c336b4efeab9b0295b365141663b51f95e933873ef1d4d6a501f5ac97062efe0b024388b69cba3a63
+"style-loader@npm:4.0.0, style-loader@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "style-loader@npm:4.0.0"
+  peerDependencies:
+    webpack: ^5.27.0
+  checksum: 10/93f25b7e70cfca9d1d8427170384262b59a5b0e84e7191a5a26636a77799caeed46d9a3e45ee7b9afa0f69176e3b98d5a6c5e81593ff1fd0946f1c5682fd2a68
   languageName: node
   linkType: hard
 
@@ -20618,21 +20609,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"style-to-js@npm:1.1.16":
-  version: 1.1.16
-  resolution: "style-to-js@npm:1.1.16"
+"style-to-js@npm:1.1.17":
+  version: 1.1.17
+  resolution: "style-to-js@npm:1.1.17"
   dependencies:
-    style-to-object: "npm:1.0.8"
-  checksum: 10/a876cc49a29ac90c7723b4d6f002ac6c1ac5ccc6b5bc963d9c607cfc74b15927b704c9324df6f824f576c65689fe4b4ff79caabcd44a13d8a02641f721f1b316
+    style-to-object: "npm:1.0.9"
+  checksum: 10/431f2fca8a55a61939a83ff0f58638e2996621ad93a97cf93f2be5115f411330d4e506ccf18621bd45607ec161546b763bb6961ad08238ad939b6261ff377230
   languageName: node
   linkType: hard
 
-"style-to-object@npm:1.0.8":
-  version: 1.0.8
-  resolution: "style-to-object@npm:1.0.8"
+"style-to-object@npm:1.0.9":
+  version: 1.0.9
+  resolution: "style-to-object@npm:1.0.9"
   dependencies:
     inline-style-parser: "npm:0.2.4"
-  checksum: 10/530b067325e3119bfaf75bdbe25cc86b02b559db00d881a74b98a2d5bb10ac953d1b455ed90c825963cf3b4bdaa1bda45f406d78d987391434b8d8ab3835df4e
+  checksum: 10/fd0c131a83103fe4025afd8e0fd90c605054d485ad80f2ab402e7afa79f482f4b05fff40b6aa661cb1b835e5c56bb0644dc38cbf9b3d2982fc552435db3dae50
   languageName: node
   linkType: hard
 
@@ -20864,7 +20855,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     react-modal: "npm:3.16.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -20905,7 +20896,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -21013,7 +21004,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -21934,7 +21925,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:^2.1.0"
     redux-thunk: "npm:^2.4.2"
     services: "npm:^0.0.3"
-    style-loader: "npm:^0.23.1"
+    style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.0"
     url-loader: "npm:1.1.2"
     utils: "npm:^0.3.1"

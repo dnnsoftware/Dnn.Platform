@@ -14,9 +14,6 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.UI.WebControls;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Profile
-    /// Class:      ProfilePropertyDefinition
     /// <summary>
     /// The ProfilePropertyDefinition class provides a Business Layer entity for
     /// property Definitions.
@@ -135,7 +132,7 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets the Deleted.</summary>
+        /// <summary>Gets or sets a value indicating whether the property is Deleted.</summary>
         [Browsable(false)]
         [XmlIgnore]
         [JsonIgnore]

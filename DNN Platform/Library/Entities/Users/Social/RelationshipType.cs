@@ -10,9 +10,6 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      RelationshipType
     /// <summary>The RelationshipType defines the core relationship types (Friend (2-way), Follower (1-way)).</summary>
     [Serializable]
     public class RelationshipType : BaseEntityInfo, IHydratable

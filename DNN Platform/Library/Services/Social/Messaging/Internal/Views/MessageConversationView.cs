@@ -11,9 +11,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging.Views
-    /// Class:      MessageConversationView
     /// <summary>The MessageConversationView class contains details of the latest message in a Conversation.</summary>
     public class MessageConversationView : IHydratable
     {

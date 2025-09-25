@@ -73,12 +73,12 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the icon is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether the icon is displayed.</summary>
         /// <remarks>Defaults to False.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayIcon { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether the link is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether the link is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool DisplayLink

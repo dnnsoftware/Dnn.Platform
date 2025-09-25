@@ -512,14 +512,11 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// Project  : DotNetNuke
-        /// Class    : SkinFileProcessor.ObjectParser
-        ///
         /// <summary>    Parsing functionality for token replacement in new skin files.</summary>
         /// <remarks>
         ///     This class encapsulates the data and methods necessary to appropriately
         ///     handle all the object parsing needs for new skin files (which is appropriate
-        ///     only for HTML files).  The parser accomodates some ill formatting of objects
+        ///     only for HTML files).  The parser accommodates some ill formatting of objects
         ///     (ignoring whitespace and casing) and allows for naming of object instances
         ///     if more than one instance of a particular control is desired on a skin.  The
         ///     proper syntax for an instance is: "[OBJECT:INSTANCE]" where the instance can
@@ -775,9 +772,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// Project  : DotNetNuke
-        /// Class    : SkinFileProcessor.PathParser
-        ///
         /// <summary>    Parsing functionality for path replacement in new skin files.</summary>
         /// <remarks>
         ///     This class encapsulates the data and methods necessary to appropriately

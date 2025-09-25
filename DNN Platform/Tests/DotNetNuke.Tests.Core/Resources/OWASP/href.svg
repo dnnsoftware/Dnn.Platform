@@ -1,0 +1,4 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg">
+    <animation xlink:href="javascript:alert(1)"/>
+</svg>
+<!-- from https://owasp.org/www-chapter-oslo/assets/files/The_image_that_called_me.pdf -->

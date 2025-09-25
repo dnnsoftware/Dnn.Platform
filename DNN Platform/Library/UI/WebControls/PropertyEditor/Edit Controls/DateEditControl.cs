@@ -16,9 +16,6 @@ namespace DotNetNuke.UI.WebControls
 
     using Calendar = DotNetNuke.Common.Utilities.Calendar;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DateEditControl
     /// <summary>
     /// The DateEditControl control provides a standard UI component for editing
     /// date properties.

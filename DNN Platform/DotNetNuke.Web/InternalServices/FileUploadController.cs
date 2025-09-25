@@ -23,6 +23,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
@@ -362,7 +363,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static SavedFileDTO SaveFile(
             Stream stream,
-            PortalSettings portalSettings,
+            IPortalSettings portalSettings,
             UserInfo userInfo,
             string folder,
             string filter,
@@ -388,9 +389,8 @@ namespace DotNetNuke.Web.InternalServices
 
                 // Check if this is a User Folder
                 var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
-                int userId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
-                if (IsUserFolder(folder, out userId))
+                if (IsUserFolder(folder, out var userId))
                 {
                     var user = UserController.GetUserById(effectivePortalId, userId);
                     if (user != null)
@@ -399,6 +399,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
+                var alreadyCheckedPermissions = false;
                 if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
                     && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
                 {
@@ -406,6 +407,7 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
+                alreadyCheckedPermissions = true;
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     errorMessage = GetLocalizedString("AlreadyExists");
@@ -415,9 +417,9 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, contentType, userInfo.UserID);
+                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !alreadyCheckedPermissions, contentType, userInfo.UserID);
 
-                if (extract && extension.ToLowerInvariant() == "zip")
+                if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
                 {
                     FileManager.Instance.UnzipFile(file);
                     FileManager.Instance.DeleteFile(file);
@@ -526,9 +528,7 @@ namespace DotNetNuke.Web.InternalServices
                 var effectivePortalId = isHostPortal ? Null.NullInteger : portalId;
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
 
-                int userId;
-
-                if (folderInfo == null && IsUserFolder(folder, out userId))
+                if (folderInfo == null && IsUserFolder(folder, out var userId))
                 {
                     var user = UserController.GetUserById(effectivePortalId, userId);
                     if (user != null)
@@ -537,6 +537,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
+                bool alreadyCheckedPermssions = false;
                 if (!FolderPermissionController.HasFolderPermission(portalId, folder, "WRITE")
                     && !FolderPermissionController.HasFolderPermission(portalId, folder, "ADD"))
                 {
@@ -544,8 +545,9 @@ namespace DotNetNuke.Web.InternalServices
                     return result;
                 }
 
-                IFileInfo file;
+                alreadyCheckedPermssions = true;
 
+                IFileInfo file;
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     result.Message = GetLocalizedString("AlreadyExists");
@@ -555,8 +557,8 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, false, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
-                    if (extract && extension.ToLowerInvariant() == "zip")
+                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !alreadyCheckedPermssions, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
+                    if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
                     {
                         var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
                         var invalidFiles = new List<string>();

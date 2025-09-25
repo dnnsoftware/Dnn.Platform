@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Portals
     [DnnDeprecated(9, 7, 2, "use IDictionary<string, IPortalAliasInfo> instead")]
     public partial class PortalAliasCollection : DictionaryBase
     {
-        /// <summary>Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.</summary>
+        /// <summary>Gets a value indicating whether the collection contains keys that are not null.</summary>
         public bool HasKeys
         {
             get

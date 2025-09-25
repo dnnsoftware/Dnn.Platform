@@ -95,7 +95,7 @@ namespace DotNetNuke.Framework
 
         public string CanonicalLinkUrl { get; set; }
 
-        /// <summary>Gets a value indicating whether indicate whether http headers has been sent to client.</summary>
+        /// <summary>Gets a value indicating whether HTTP headers has been sent to client.</summary>
         public bool HeaderIsWritten { get; internal set; }
 
         /// <summary>Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.</summary>

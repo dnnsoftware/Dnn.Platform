@@ -24,8 +24,8 @@
     <invoiceNumber></invoiceNumber>
   </license>
   <settings>
-    <AuthenticatedCacheability>4</AuthenticatedCacheability>
-    <UnauthenticatedCacheability>4</UnauthenticatedCacheability>
+    <AuthenticatedCacheability>ServerAndNoCache</AuthenticatedCacheability>
+    <UnauthenticatedCacheability>ServerAndNoCache</UnauthenticatedCacheability>
     <AutoAccountUnlockDuration>10</AutoAccountUnlockDuration>
     <AutoAddPortalAlias>N</AutoAddPortalAlias>
     <CheckUpgrade>Y</CheckUpgrade>

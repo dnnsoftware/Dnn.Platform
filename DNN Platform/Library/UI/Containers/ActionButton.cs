@@ -6,9 +6,6 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Internal.SourceGenerators;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.UI.Containers
-    /// Class    : ActionButton
     /// <summary>  ActionButton provides a button (or group of buttons) for action(s).</summary>
     /// <remarks>
     ///   ActionBase inherits from UserControl, and implements the IActionControl Interface.
@@ -58,7 +55,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether gets or sets whether the link is displayed.</summary>
+        /// <summary>  Gets or sets a value indicating whether the link is displayed.</summary>
         /// <remarks>
         ///   Defaults to True.
         /// </remarks>
@@ -78,7 +75,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>  Gets or sets a value indicating whether gets or sets whether the icon is displayed.</summary>
+        /// <summary>  Gets or sets a value indicating whether the icon is displayed.</summary>
         /// <remarks>
         ///   Defaults to False.
         /// </remarks>

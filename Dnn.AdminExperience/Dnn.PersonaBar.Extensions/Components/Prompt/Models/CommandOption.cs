@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         /// <summary>Gets or sets the type of the flag value expected.</summary>
         public string Type { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets of sets a value indicating whether the flag is required or not.</summary>
+        /// <summary>Gets or sets a value indicating whether the flag is required or not.</summary>
         public bool Required { get; set; }
 
         /// <summary>Gets or sets the default value of the flag.</summary>

@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Modules
             /// <summary>Gets or sets the New User.</summary>
             public UserInfo NewUser { get; set; }
 
-            /// <summary>Gets or sets a value indicating whether gets and sets a flag whether to Notify the new User of the Creation.</summary>
+            /// <summary>Gets or sets a value indicating whether to Notify the new User of the Creation.</summary>
             public bool Notify { get; set; }
         }
 
