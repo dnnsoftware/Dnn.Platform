@@ -1,29 +1,47 @@
-﻿using DotNetNuke.Abstractions.ClientResources;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using DotNetNuke.Abstractions.ClientResources;
+
+    /// <summary>
+    /// Represents a script resource that can be registered and rendered in the client resources system.
+    /// </summary>
     public class ScriptResource : ResourceBase, IScriptResource
     {
-        private readonly IClientResourcesController _clientResourcesController;
+        private readonly IClientResourcesController clientResourcesController;
 
-        public bool Async { get; set; } = false;
-
-        public bool Defer { get; set; } = false;
-
-        public bool NoModule { get; set; } = false;
-        public string Type { get; set; } = "";
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScriptResource"/> class.
+        /// </summary>
+        /// <param name="clientResourcesController">The client resources controller.</param>
         public ScriptResource(IClientResourcesController clientResourcesController)
         {
-            this._clientResourcesController = clientResourcesController;
+            this.clientResourcesController = clientResourcesController;
         }
 
-        public void Register()
+        /// <inheritdoc />
+        public bool Async { get; set; } = false;
+
+        /// <inheritdoc />
+        public bool Defer { get; set; } = false;
+
+        /// <inheritdoc />
+        public bool NoModule { get; set; } = false;
+
+        /// <inheritdoc />
+        public string Type { get; set; } = string.Empty;
+
+        /// <inheritdoc />
+        public new void Register()
         {
-            this._clientResourcesController.AddScript(this);
+            this.clientResourcesController.AddScript(this);
         }
 
-        public string Render(int crmVersion, bool useCdn, string applicationPath)
+        /// <inheritdoc />
+        public new string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             var htmlString = "<script";
             htmlString += $" src=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"";
@@ -31,14 +49,17 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 htmlString += " async";
             }
+
             if (this.Defer)
             {
                 htmlString += " defer";
             }
+
             if (this.NoModule)
             {
                 htmlString += " nomodule";
             }
+
             if (!string.IsNullOrEmpty(this.Type))
             {
                 htmlString += $" type=\"{this.Type}\"";

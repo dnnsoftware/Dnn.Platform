@@ -1,10 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.Client.ResourceManager
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
 
@@ -12,20 +14,30 @@ namespace DotNetNuke.Web.Client.ResourceManager
     public class ClientResourcesController : IClientResourcesController
     {
         private readonly IHostSettings hostSettings;
-        private List<IFontResource> Fonts { get; set; } = new List<IFontResource>();
-        private List<IScriptResource> Scripts { get; set; } = new List<IScriptResource>();
-        private List<IStylesheetResource> Stylesheets { get; set; } = new List<IStylesheetResource>();
-        private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>();
-        private List<string> FontsToExclude { get; set; } = new List<string>();
-        private List<string> ScriptsToExclude { get; set; } = new List<string>();
-        private List<string> StylesheetsToExclude { get; set; } = new List<string>();
 
-        /// <summary>Initializes a new instance of the <see cref="ClientResourcesController"/> class.</summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientResourcesController"/> class.
+        /// </summary>
+        /// <param name="hostSettings">The host settings.</param>
         public ClientResourcesController(IHostSettings hostSettings)
         {
             this.hostSettings = hostSettings;
             this.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
         }
+
+        private List<IFontResource> Fonts { get; set; } = new List<IFontResource>();
+
+        private List<IScriptResource> Scripts { get; set; } = new List<IScriptResource>();
+
+        private List<IStylesheetResource> Stylesheets { get; set; } = new List<IStylesheetResource>();
+
+        private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>();
+
+        private List<string> FontsToExclude { get; set; } = new List<string>();
+
+        private List<string> ScriptsToExclude { get; set; } = new List<string>();
+
+        private List<string> StylesheetsToExclude { get; set; } = new List<string>();
 
         /// <inheritdoc />
         public void AddFont(IFontResource font)
@@ -134,28 +146,31 @@ namespace DotNetNuke.Web.Client.ResourceManager
             {
                 foreach (var link in this.Fonts.Where(s => s.Provider == provider && !this.FontsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
                 {
-                    sortedList.Add(link.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled, applicationPath));
+                    sortedList.Add(link.Render(this.hostSettings.CrmVersion, this.hostSettings.CdnEnabled, applicationPath));
                 }
             }
+
             if (resourceType == ResourceType.Stylesheet || resourceType == ResourceType.All)
             {
                 foreach (var link in this.Stylesheets.Where(s => s.Provider == provider && !this.StylesheetsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
                 {
-                    sortedList.Add(link.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled, applicationPath));
+                    sortedList.Add(link.Render(this.hostSettings.CrmVersion, this.hostSettings.CdnEnabled, applicationPath));
                 }
             }
+
             if (resourceType == ResourceType.Script || resourceType == ResourceType.All)
             {
                 foreach (var script in this.Scripts.Where(s => s.Provider == provider && !this.ScriptsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(s => s.Priority))
                 {
-                    sortedList.Add(script.Render(hostSettings.CrmVersion, hostSettings.CdnEnabled, applicationPath));
+                    sortedList.Add(script.Render(this.hostSettings.CrmVersion, this.hostSettings.CdnEnabled, applicationPath));
                 }
             }
-            return string.Join("", sortedList);
+
+            return string.Join(string.Empty, sortedList);
         }
 
-
-        private List<T> AddResource<T>(List<T> resources, T resource) where T : IResource
+        private List<T> AddResource<T>(List<T> resources, T resource)
+            where T : IResource
         {
             resource.ResolvedPath = this.ResolvePath(resource.FilePath, resource.PathNameAlias);
             resource.Key = resource.ResolvedPath.ToLowerInvariant();
@@ -178,6 +193,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 if (!string.IsNullOrEmpty(resource.Version))
                 {
                     resources.RemoveAll(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && string.Compare(l.Version, resource.Version, System.StringComparison.InvariantCultureIgnoreCase) < 0);
+
                     // If we have an existing link with the same name and a higher version, we do not add this link
                     if (resources.Exists(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && string.Compare(l.Version, resource.Version, System.StringComparison.InvariantCultureIgnoreCase) >= 0))
                     {
@@ -185,6 +201,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
                     }
                 }
             }
+
             resources.Add(resource);
             return resources;
         }
@@ -195,11 +212,13 @@ namespace DotNetNuke.Web.Client.ResourceManager
             {
                 return filePath;
             }
+
             if (filePath.ToLowerInvariant().StartsWith("http"))
             {
                 // Path is already fully qualified
                 return filePath;
             }
+
             // Path is either a relative path including the application path or a path starting with a tilde or a path relative to the path name alias
             filePath = filePath.Replace("\\", "/");
             if (!string.IsNullOrEmpty(pathNameAlias))
@@ -209,6 +228,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
                     return $"{alias}/{filePath.TrimStart('/')}";
                 }
             }
+
             return filePath;
         }
     }
