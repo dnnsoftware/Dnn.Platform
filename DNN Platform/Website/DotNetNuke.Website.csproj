@@ -832,6 +832,11 @@
     <Content Include="Licenses\Cake LongPath Module %28MIT%29.txt.resources" />
     <Content Include="Licenses\CodeMirror %28MIT%29.txt.resources" />
     <Content Include="Licenses\Effority Ealo %28Ms-RL%29.txt.resources" />
+    <None Include="Portals\_default\Containers\_default\Views\No Container.cshtml" />
+    <None Include="Portals\_default\Containers\_default\Views\popUpContainer.cshtml" />
+    <Content Include="Portals\_default\Containers\_default\Views\web.config" />
+    <None Include="Portals\_default\Skins\_default\Views\No Skin.cshtml" />
+    <None Include="Portals\_default\Skins\_default\Views\popUpSkin.cshtml" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
@@ -1293,6 +1298,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.03.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.99.00.SqlDataProvider" />
+    <Content Include="Portals\_default\Skins\_default\Views\web.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

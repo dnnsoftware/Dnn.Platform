@@ -109,6 +109,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
 
         public List<RegisteredStylesheet> RegisteredStylesheets { get; set; } = new List<RegisteredStylesheet>();
 
-        public List<string> RegisteredScripts { get; set; } = new List<string>();
+        public List<RegisteredScript> RegisteredScripts { get; set; } = new List<RegisteredScript>();
     }
 }

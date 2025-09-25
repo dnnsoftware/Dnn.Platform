@@ -162,6 +162,15 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
             }
 
+            if (page.PortalSettings.EnablePopUps)
+            {
+                MvcJavaScript.RequestRegistration(CommonJs.jQueryUI);
+                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
+                                   ? "~/js/Debug/dnn.modalpopup.js"
+                                   : "~/js/dnn.modalpopup.js";
+                skin.RegisteredScripts.Add(new RegisteredScript() { Script = popupFilePath, FileOrder = FileOrder.Js.DnnModalPopup });
+            }
+
             return skin;
         }
 
@@ -243,7 +252,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     ctlSkin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder = FileOrder.Css.FeatureCss });
 
                     // MvcClientResourceManager.RegisterScript(page.ControllerContext, "~/resources/shared/scripts/dnn.dragDrop.js");
-                    ctlSkin.RegisteredScripts.Add("~/resources/shared/scripts/dnn.dragDrop.js");
+                    ctlSkin.RegisteredScripts.Add(new RegisteredScript() { Script = "~/resources/shared/scripts/dnn.dragDrop.js" });
 
                     // Register Client Script
                     var sb = new StringBuilder();

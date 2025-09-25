@@ -127,7 +127,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
 
             foreach (var script in page.Skin.RegisteredScripts)
             {
-                MvcClientResourceManager.RegisterScript(this.ControllerContext, script);
+                MvcClientResourceManager.RegisterScript(this.ControllerContext, script.Script, script.FileOrder);
             }
         }
 

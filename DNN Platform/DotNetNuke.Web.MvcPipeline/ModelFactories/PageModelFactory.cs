@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Threading;
+    using System.Web;
     using System.Web.Helpers;
 
     using DotNetNuke.Abstractions;
@@ -20,12 +21,17 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Internals;
     using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
+    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public class PageModelFactory : IPageModelFactory
@@ -232,7 +238,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             return pageModel;
         }
-
+        
         private IFileInfo GetBackgroundFileInfo(PortalSettings portalSettings)
         {
             var cacheKey = string.Format(DataCache.PortalCacheKey, portalSettings.PortalId, "BackgroundFile");
