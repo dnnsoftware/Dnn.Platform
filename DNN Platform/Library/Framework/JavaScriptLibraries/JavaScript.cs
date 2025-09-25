@@ -141,20 +141,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             portalSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>().GetCurrentSettings();
 
             // handle case where script has no javascript library
-            // also handle known dependencies
             switch (jsname)
             {
                 case CommonJs.jQuery:
                     RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQueryMigrate);
-                    break;
-                case CommonJs.KnockoutMapping:
-                    RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.Knockout);
-                    break;
-                case CommonJs.DnnPlugins:
-                    RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQueryUI);
-                    break;
-                case CommonJs.jQueryUI:
-                    RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQuery);
                     break;
             }
 
@@ -456,6 +446,19 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 .SetProvider(GetScriptLocation(library))
                 .SetPriority(GetFileOrder(library))
                 .Register();
+            var dependencies = GetAllDependencies(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), library);
+            foreach (var dependency in dependencies)
+            {
+                if (HttpContextSource.Current.Items[ScriptPrefix + dependency.JavaScriptLibraryID] == null)
+                {
+                    controller.CreateScript()
+                        .FromSrc(GetScriptPath(null, null, dependency.LibraryName))
+                        .SetNameAndVersion(dependency.LibraryName, dependency.Version.ToString(), false)
+                        .SetProvider(GetScriptLocation(dependency))
+                        .SetPriority(GetFileOrder(dependency))
+                        .Register();
+                }
+            }
         }
 
         private static void AddPreInstallOrLegacyItemRequest(string jsl)

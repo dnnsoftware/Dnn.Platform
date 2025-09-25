@@ -101,7 +101,6 @@ namespace DotNetNuke.Admin.Containers
             this.actionButton.Click += this.ActionButton_Click;
 
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
-            this.javaScript.RequestRegistration(CommonJs.HoverIntent);
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
