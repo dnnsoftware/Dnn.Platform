@@ -1,4 +1,4 @@
-@model DotNetNuke.Web.MvcWebsite.Models.ModuleActionsModel
+@model DotNetNuke.Web.MvcPipeline.Models.ModuleActionsModel
 
 @using DotNetNuke.Web.MvcPipeline
 @using DotNetNuke.UI.Modules
@@ -83,7 +83,7 @@
                         var token = '@Html.AntiForgeryToken()';
                         token = $(token).val();
 
-                        $.post('@Url.Action("Delete", "ModuleActions")', {
+                        $.post('/DesktopModules/ModuleActions/Delete', {
                             moduleId: moduleId,
                             tabId: @Model.ModuleContext.TabID,
                             __RequestVerificationToken: token,
@@ -105,11 +105,6 @@
                 });
 
             }, "200");
-
-            //menu.find("#moduleActions-" + moduleId + "-Delete a").click(function() {
-            //    alert("del")
-            //    return false;
-            //});
         }
         var actionScripts = {}
         @foreach (var a in Model.ActionScripts)

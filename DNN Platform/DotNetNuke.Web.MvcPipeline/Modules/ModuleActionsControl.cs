@@ -2,11 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.MvcWebsite.Controls
+namespace DotNetNuke.Web.MvcPipeline.Modules
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Mvc;
     using System.Web.Script.Serialization;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -14,12 +13,9 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
@@ -27,19 +23,15 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
-    using DotNetNuke.Web.MvcPipeline.Utils;
-    using DotNetNuke.Web.MvcWebsite.Models;
+
 
     public class ModuleActionsControl : RazorModuleControlBase, IResourcable
     {
         private ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleActionsControl));
         private readonly List<int> validIDs = new List<int>();
-        
-        private ModuleAction actionRoot;        
+        private ModuleAction actionRoot;
 
         private Dictionary<string, string> actionScripts = new Dictionary<string, string>();
-
-        //public ModuleInstanceContext ModuleContext { get; private set; }
 
         public bool EditMode
         {
@@ -109,18 +101,18 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
             }
         }
 
+        public IModuleControl ModuleControl { get; set; }
+
         public override IRazorModuleResult Invoke()
         {
             var moduleInfo = ModuleConfiguration;
-            this.OnInit();
             this.OnLoad(moduleInfo);
 
-            var viewModel = new ModuleActionsModel
+            var viewModel = new Models.ModuleActionsModel
             {
                 ModuleContext = moduleInfo,
                 SupportsQuickSettings = this.SupportsQuickSettings,
                 DisplayQuickSettings = this.DisplayQuickSettings,
-
                 // QuickSettingsModel = this.qu,
                 CustomActionsJSON = this.CustomActionsJSON,
                 AdminActionsJSON = this.AdminActionsJSON,
@@ -172,81 +164,13 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
                         CommonJs.DnnPlugins,
                     },
                     AjaxAntiForgery = true,
-
                 };
             }
         }
 
-        public IModuleControl ModuleControl { get; set; }
-
-        protected void OnInit()
-        {
-            // base.OnInit(e);
-            // this.ID = "ModuleActions";
-            // this.actionButton.Click += this.ActionButton_Click;
-            // MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-            // this.RegisterStyleSheet("~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            //this.RegisterStyleSheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
-            //this.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
-
-            //ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-        }
-
         protected void OnLoad(ModuleInfo moduleInfo)
         {
-            // base.OnLoad(e);
-
-            var moduleActions = new ModuleActionCollection();
-            try
-            {
-                ModuleControl = MvcUtils.CreateModuleControl(moduleInfo);
-
-                var actionable = ModuleControl as IActionable;
-                if (actionable != null)
-                {
-                    moduleActions = actionable.ModuleActions;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Error loading module actions for module " + moduleInfo.ModuleID, ex);
-            }
-
             this.ActionRoot.Actions.AddRange(this.Actions);
-
-            var moduleSpecificActions = new ModuleAction(this.ModuleContext.GetNextActionID(), Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
-
-            foreach (ModuleAction action in moduleActions)
-            {
-                if (ModulePermissionController.HasModuleAccess(action.Secure, "CONTENT", this.ModuleContext.Configuration))
-                {
-                    if (string.IsNullOrEmpty(action.Icon))
-                    {
-                        action.Icon = "edit.gif";
-                    }
-
-                    /*
-                    if (action.ID > maxActionId)
-                    {
-                        maxActionId = action.ID;
-                    }
-                    */
-                    moduleSpecificActions.Actions.Add(action);
-
-                    if (!DotNetNuke.UI.UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
-                    {
-                        action.ClientScript = UrlUtils.PopUpUrl(action.Url, null, this.PortalSettings, true, false);
-                    }
-
-                }
-            }
-
-            if (moduleSpecificActions.Actions.Count > 0)
-            {
-                this.ActionRoot.Actions.Add(moduleSpecificActions);
-            }
-
             this.AdminActionsJSON = "[]";
             this.CustomActionsJSON = "[]";
             this.Panes = "[]";
@@ -273,7 +197,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
                     */
                 }
 
-                if (this.ActionRoot.Visible)
+                if (this.ActionRoot.Visible && Globals.IsAdminControl() == false)
                 {
                     // Add Menu Items
                     foreach (ModuleAction rootAction in this.ActionRoot.Actions)
@@ -335,7 +259,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
                             }
                             else
                             {
-                                this.SupportsMove = true; // actions.Count > 0;
+                                this.SupportsMove = actions.Count > 0;
                                 this.Panes = oSerializer.Serialize(this.PortalSettings.ActiveTab.Panes);
                             }
                         }
@@ -344,7 +268,10 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
                     this.IsShared = this.ModuleContext.Configuration.AllTabs
                         || PortalGroupController.Instance.IsModuleShared(this.ModuleContext.ModuleId, PortalController.Instance.GetPortal(this.PortalSettings.PortalId))
                         || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;
+
+                    this.SupportsMove = true;
                 }
+                
             }
             catch (Exception exc)
             {

@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using DotNetNuke.Web.MvcPipeline.Utils;
 
@@ -28,35 +29,7 @@ namespace DotNetNuke.Web.MvcPipeline
             if (moduleControl is IResourcable)
             {
                 var resourcable = (IResourcable)moduleControl;
-                if (resourcable.ModuleResources.StyleSheets != null)
-                {
-                    foreach (var styleSheet in resourcable.ModuleResources.StyleSheets)
-                    {
-                        MvcClientResourceManager.RegisterStyleSheet(htmlHelper.ViewContext.Controller.ControllerContext, styleSheet.FilePath, styleSheet.Priority, styleSheet.HtmlAttributes);
-                    }
-                }
-                if (resourcable.ModuleResources.Scripts != null)
-                {
-                    foreach (var javaScript in resourcable.ModuleResources.Scripts)
-                    {
-                        MvcClientResourceManager.RegisterScript(htmlHelper.ViewContext.Controller.ControllerContext, javaScript.FilePath, javaScript.Priority, javaScript.HtmlAttributes);
-                    }
-                }
-                if (resourcable.ModuleResources.Libraries != null)
-                {
-                    foreach (var lib in resourcable.ModuleResources.Libraries)
-                    {
-                        MvcJavaScript.RequestRegistration(lib);
-                    }
-                }
-                if (resourcable.ModuleResources.AjaxScript)
-                {
-                    ServicesFramework.Instance.RequestAjaxScriptSupport();
-                }
-                if (resourcable.ModuleResources.AjaxAntiForgery)
-                {
-                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-                }
+                resourcable.RegisterResources(htmlHelper.ViewContext.Controller.ControllerContext);
             }
             return moduleControl.Html(htmlHelper);
         }

@@ -1299,6 +1299,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.00.00.03.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.99.00.SqlDataProvider" />
     <Content Include="Portals\_default\Skins\_default\Views\web.config" />
+    <Content Include="Views\Default\ModuleActions.cshtml" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

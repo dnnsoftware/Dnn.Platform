@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     using DotNetNuke.Web.MvcPipeline;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Web.MvcPipeline.Modules;
 
     public static partial class SkinHelpers
     {
@@ -38,7 +39,8 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 if (model.EditMode && model.ModuleConfiguration.ModuleID > 0)
                 {
                     // render module actions
-                    moduleContentPaneDiv.InnerHtml += htmlHelper.Control("ModuleActions", model.ModuleConfiguration);
+                    //moduleContentPaneDiv.InnerHtml += htmlHelper.Control("ModuleActions", model.ModuleConfiguration);
+                    moduleContentPaneDiv.InnerHtml += htmlHelper.ModuleActions(model.ModuleConfiguration);
                 }
 
                 // register admin.css
