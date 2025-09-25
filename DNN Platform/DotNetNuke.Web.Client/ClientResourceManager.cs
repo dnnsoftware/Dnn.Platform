@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.IO;
     using System.Threading;
     using System.Web;
     using System.Web.Hosting;
@@ -411,6 +412,30 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="htmlAttributes">A dictionary of HTML attributes to use for the <c>link</c> tag. The key being the attribute name and the value its value.</param>
         public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider, string name, string version, IDictionary<string, string> htmlAttributes)
         {
+            var fileExists = false;
+
+            // Some "legacy URLs" could be using their own query string versioning scheme (and we've forced them to use the new API through re-routing PageBase.RegisterStyleSheet
+            // Ensure that physical CSS files with query strings have their query strings removed
+            // Ignore absolute urls, they will not exist locally
+            if (!Uri.TryCreate(filePath, UriKind.Absolute, out _) && filePath.Contains(".css?"))
+            {
+                var filePathSansQueryString = RemoveQueryString(filePath);
+                if (File.Exists(page.Server.MapPath(filePathSansQueryString)))
+                {
+                    fileExists = true;
+                    filePath = filePathSansQueryString;
+                }
+            }
+            else if (filePath.Contains("WebResource.axd"))
+            {
+                fileExists = true;
+            }
+
+            if (!fileExists && !FileExists(page, filePath))
+            {
+                return;
+            }
+
             var controller = GetClientResourcesController(page);
             var stylesheet = controller.CreateStylesheet()
                 .FromSrc(filePath)
@@ -462,6 +487,50 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             {
                 HttpContext.Current.Items.Add("AsyncPostBackHandlerEnabled", true);
             }
+        }
+
+        private static bool FileExists(Page page, string filePath)
+        {
+            // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
+            filePath = RemoveQueryString(filePath);
+            var cacheKey = filePath.ToLowerInvariant();
+
+            // cache css file paths
+            if (!FileExistsCache.ContainsKey(cacheKey))
+            {
+                // apply lock after IF, locking is more expensive than worst case scenario (check disk twice)
+                LockFileExistsCache.EnterWriteLock();
+                try
+                {
+                    FileExistsCache[cacheKey] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+                }
+                finally
+                {
+                    LockFileExistsCache.ExitWriteLock();
+                }
+            }
+
+            // return if file exists from cache
+            LockFileExistsCache.EnterReadLock();
+            try
+            {
+                return FileExistsCache[cacheKey];
+            }
+            finally
+            {
+                LockFileExistsCache.ExitReadLock();
+            }
+        }
+
+        private static bool IsAbsoluteUrl(string url)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out _);
+        }
+
+        private static string RemoveQueryString(string filePath)
+        {
+            var queryStringPosition = filePath.IndexOf("?", StringComparison.Ordinal);
+            return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
         }
 
         private static IClientResourcesController GetClientResourcesController(Page page)
