@@ -8,4 +8,9 @@
     <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
   </ItemGroup>
 
+  <Import Project="..\..\DNN_Platform.build" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\$(ConfigurationName)\netstandard2.0\DotNetNuke.Web.Client.ResourceManager*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
+  </Target>
+
 </Project>
