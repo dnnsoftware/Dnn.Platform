@@ -125,9 +125,16 @@
         internal string GetVersionedPath(int crmVersion, bool useCdn, string applicationPath)
         {
             var path = this.ResolvedPath;
-            if (path.StartsWith("~") && !string.IsNullOrEmpty(applicationPath))
+            if (path.StartsWith("~"))
             {
-                path = path.Replace("~", applicationPath);
+                if (string.IsNullOrEmpty(applicationPath))
+                {
+                    path = path.TrimStart('~');
+                }
+                else
+                {
+                    path = path.Replace("~", applicationPath);
+                }
             }
             if (useCdn && !string.IsNullOrEmpty(this.CdnUrl))
             {
