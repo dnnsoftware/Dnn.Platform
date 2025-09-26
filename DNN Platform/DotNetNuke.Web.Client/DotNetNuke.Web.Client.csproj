@@ -50,6 +50,9 @@
     <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClientDependency.Core, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dnn.ClientDependency.1.10.0\lib\net48\ClientDependency.Core.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetNuke.Instrumentation">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DotNetNuke.Instrumentation\bin\DotNetNuke.Instrumentation.dll</HintPath>
@@ -97,6 +100,11 @@
     <Compile Include="Controls\DnnJsInclude.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ClientResourceSettings.cs" />
+    <Compile Include="Providers\DnnBodyProvider.cs" />
+    <Compile Include="Providers\DnnCompositeFileProcessingProvider.cs" />
+    <Compile Include="Providers\DnnFileRegistrationProvider.cs" />
+    <Compile Include="Providers\DnnFormBottomProvider.cs" />
+    <Compile Include="Providers\DnnPageHeaderProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
