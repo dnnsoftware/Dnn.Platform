@@ -12,9 +12,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNPageEditControl
     /// <summary>
     /// The DNNPageEditControl control provides a standard UI component for selecting
     /// a DNN Page.

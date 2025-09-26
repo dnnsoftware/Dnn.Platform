@@ -11,9 +11,6 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DateTimeEditControl
     /// <summary>
     /// The DateTimeEditControl control provides a standard UI component for editing
     /// date and time properties.

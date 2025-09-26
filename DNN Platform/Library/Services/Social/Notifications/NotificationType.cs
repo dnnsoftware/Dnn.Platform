@@ -13,9 +13,6 @@ namespace DotNetNuke.Services.Social.Notifications
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Services.Social.Notifications
-    /// Class:      NotificationType
     /// <summary>
     /// The NotificationType class describes a single notification type that can be associated to a message.
     /// This message could be a notification or a standard message sent between users.

@@ -30,8 +30,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private readonly INavigationManager navigationManager;
 
-        private bool showSite = true;
-        private bool showWeb = true;
         private bool enableWildSearch = true;
         private string siteIconURL;
         private string siteText;
@@ -92,37 +90,15 @@ namespace DotNetNuke.UI.Skins.Controls
         /// elements without requiring a custom CssClass.</remarks>
         public string CssClass { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to site based searchs.</summary>
-        /// <remarks>Set this value to false to hide the "Site" radio button.  This setting has no effect
-        /// if UseDropDownList is true.</remarks>
-        public bool ShowSite
-        {
-            get
-            {
-                return this.showSite;
-            }
+        /// <summary>Gets or sets a value indicating whether the visibility setting for the radio button corresponding to site based searches.</summary>
+        /// <remarks>Set this value to <see langword="false"/> to hide the "Site" radio button.  This setting has no effect
+        /// if <see cref="UseDropDownList"/> is <see langword="true"/>.</remarks>
+        public bool ShowSite { get; set; } = true;
 
-            set
-            {
-                this.showSite = value;
-            }
-        }
-
-        /// <summary>Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to web based searchs.</summary>
-        /// <remarks>Set this value to false to hide the "Web" radio button.  This setting has no effect
-        /// if UseDropDownList is true.</remarks>
-        public bool ShowWeb
-        {
-            get
-            {
-                return this.showWeb;
-            }
-
-            set
-            {
-                this.showWeb = value;
-            }
-        }
+        /// <summary>Gets or sets a value indicating whether the visibility setting for the radio button corresponding to web based searches.</summary>
+        /// <remarks>Set this value to <see langword="false"/> to hide the "Web" radio button.  This setting has no effect
+        /// if <see cref="UseDropDownList"/> is <see langword="true"/>.</remarks>
+        public bool ShowWeb { get; set; } = true;
 
         /// <summary>Gets or sets the site icon URL.</summary>
         /// <value>The site icon URL.</value>

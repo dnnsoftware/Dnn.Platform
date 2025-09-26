@@ -156,9 +156,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}"
 	ProjectSection(SolutionItems) = preProject
 		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
-		Build_Install_Package.bat = Build_Install_Package.bat
-		Build_Upgrade_Package.bat = Build_Upgrade_Package.bat
-		Build\BuildScripts\DNN_Package.build = Build\BuildScripts\DNN_Package.build
 		DNN_Platform.build = DNN_Platform.build
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
@@ -237,11 +234,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Data", "App_Data", "{2F
 		DNN Platform\Website\App_Data\Database.mdf = DNN Platform\Website\App_Data\Database.mdf
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RadSpell", "RadSpell", "{207FD10B-58FA-4892-BED0-2077D02CEDDF}"
-	ProjectSection(SolutionItems) = preProject
-		DNN Platform\Website\App_Data\RadSpell\en-US.tdf = DNN Platform\Website\App_Data\RadSpell\en-US.tdf
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{5467AF88-258B-48A4-B2AA-FE57CC156D98}"
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\Website\Config\DotNetNuke.config = DNN Platform\Website\Config\DotNetNuke.config
@@ -303,31 +295,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cleanup", "Cleanup", "{3ABA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE268D-2073-4489-9BB2-26E34D65A8DC}"
 	ProjectSection(SolutionItems) = preProject
-		DNN Platform\Website\Install\Config\04.06.00.config = DNN Platform\Website\Install\Config\04.06.00.config
-		DNN Platform\Website\Install\Config\04.07.00.config = DNN Platform\Website\Install\Config\04.07.00.config
-		DNN Platform\Website\Install\Config\04.08.00.config = DNN Platform\Website\Install\Config\04.08.00.config
-		DNN Platform\Website\Install\Config\04.09.00.config = DNN Platform\Website\Install\Config\04.09.00.config
-		DNN Platform\Website\Install\Config\05.01.00.config = DNN Platform\Website\Install\Config\05.01.00.config
-		DNN Platform\Website\Install\Config\05.02.00.config = DNN Platform\Website\Install\Config\05.02.00.config
-		DNN Platform\Website\Install\Config\05.02.01.config = DNN Platform\Website\Install\Config\05.02.01.config
-		DNN Platform\Website\Install\Config\05.03.00.config = DNN Platform\Website\Install\Config\05.03.00.config
-		DNN Platform\Website\Install\Config\05.05.00.config = DNN Platform\Website\Install\Config\05.05.00.config
-		DNN Platform\Website\Install\Config\05.06.00.config = DNN Platform\Website\Install\Config\05.06.00.config
-		DNN Platform\Website\Install\Config\05.06.01.config = DNN Platform\Website\Install\Config\05.06.01.config
-		DNN Platform\Website\Install\Config\05.06.03.config = DNN Platform\Website\Install\Config\05.06.03.config
-		DNN Platform\Website\Install\Config\06.00.00.config = DNN Platform\Website\Install\Config\06.00.00.config
-		DNN Platform\Website\Install\Config\06.01.00.config = DNN Platform\Website\Install\Config\06.01.00.config
-		DNN Platform\Website\Install\Config\06.01.01.config = DNN Platform\Website\Install\Config\06.01.01.config
-		DNN Platform\Website\Install\Config\06.02.00.config = DNN Platform\Website\Install\Config\06.02.00.config
-		DNN Platform\Website\Install\Config\07.00.00.config = DNN Platform\Website\Install\Config\07.00.00.config
-		DNN Platform\Website\Install\Config\07.00.05.config = DNN Platform\Website\Install\Config\07.00.05.config
-		DNN Platform\Website\Install\Config\07.00.06.config = DNN Platform\Website\Install\Config\07.00.06.config
-		DNN Platform\Website\Install\Config\07.01.01.config = DNN Platform\Website\Install\Config\07.01.01.config
-		DNN Platform\Website\Install\Config\07.01.02.config = DNN Platform\Website\Install\Config\07.01.02.config
-		DNN Platform\Website\Install\Config\07.02.00.config = DNN Platform\Website\Install\Config\07.02.00.config
-		DNN Platform\Website\Install\Config\07.02.01.config = DNN Platform\Website\Install\Config\07.02.01.config
-		DNN Platform\Website\Install\Config\07.03.00.config = DNN Platform\Website\Install\Config\07.03.00.config
-		DNN Platform\Website\Install\Config\07.04.01.config = DNN Platform\Website\Install\Config\07.04.01.config
 		DNN Platform\Website\Install\Config\08.00.00.01.config = DNN Platform\Website\Install\Config\08.00.00.01.config
 		DNN Platform\Website\Install\Config\08.00.00.02.config = DNN Platform\Website\Install\Config\08.00.00.02.config
 		DNN Platform\Website\Install\Config\08.00.00.03.config = DNN Platform\Website\Install\Config\08.00.00.03.config
@@ -348,17 +315,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{15EE26
 		DNN Platform\Website\Install\Config\09.07.00.config = DNN Platform\Website\Install\Config\09.07.00.config
 		DNN Platform\Website\Install\Config\09.07.03.config = DNN Platform\Website\Install\Config\09.07.03.config
 		DNN Platform\Website\Install\Config\BindingRedirect.config = DNN Platform\Website\Install\Config\BindingRedirect.config
-		DNN Platform\Website\Install\Config\Net35.config = DNN Platform\Website\Install\Config\Net35.config
-		DNN Platform\Website\Install\Config\Net40.config = DNN Platform\Website\Install\Config\Net40.config
 		DNN Platform\Website\Install\Config\RemoveBindingRedirect.config = DNN Platform\Website\Install\Config\RemoveBindingRedirect.config
 	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Provider", "Provider", "{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20}"
-	ProjectSection(SolutionItems) = preProject
-		DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_01.00.01_Install.zip = DNN Platform\Website\Install\Provider\DNNConnect.CKEditorProvider_01.00.01_Install.zip
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skin", "Skin", "{140B6176-E045-4F86-ABCA-6C493068F6FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Skins", "Skins", "{C885195F-A9B0-4397-926C-E62CEB9FC5E3}"
 EndProject
@@ -542,11 +500,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Newtonsoft", "Newtonsoft", 
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn = DNN Platform\Components\Newtonsoft\DotNetNuke.Newtonsoft.Json.dnn
 		DNN Platform\Components\Newtonsoft\License.txt = DNN Platform\Components\Newtonsoft\License.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Telerik", "Telerik", "{6395573E-D778-4DBE-BD22-A39273DBF0C9}"
-	ProjectSection(SolutionItems) = preProject
-		DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn = DNN Platform\Components\Telerik\DotNetNuke.Telerik.Web.dnn
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.Extensions.FileSystemGlobbing", "Microsoft.Extensions.FileSystemGlobbing", "{890623E0-F6C8-4011-9FAF-00939601EBE8}"
@@ -2481,13 +2434,10 @@ Global
 		{3B2FA1D9-EC7D-4CEC-8FF5-A7700CF5CB40} = {8978D97A-03F5-4BFA-A0A6-BC6E93804C88}
 		{FAEC4667-B1E7-403A-92EC-CEFA85542D8B} = {FBD3B3FB-C9A6-43D2-8FE7-6A0A19DF0D0C}
 		{2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8} = {5467AF88-258B-48A4-B2AA-FE57CC156D98}
-		{207FD10B-58FA-4892-BED0-2077D02CEDDF} = {2F6F56E0-87B6-4E74-82F6-4C9B7FFB51E8}
 		{5467AF88-258B-48A4-B2AA-FE57CC156D98} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
 		{22307C17-79AA-48AF-B0DF-6EDDC13048F5} = {FAEC4667-B1E7-403A-92EC-CEFA85542D8B}
 		{3ABA7D78-1F99-45C6-BBFB-B53BA0C1DD2E} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 		{15EE268D-2073-4489-9BB2-26E34D65A8DC} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
-		{4D913D2C-28CF-4F4D-AE5D-4B756EAE6F20} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
-		{140B6176-E045-4F86-ABCA-6C493068F6FA} = {22307C17-79AA-48AF-B0DF-6EDDC13048F5}
 		{C885195F-A9B0-4397-926C-E62CEB9FC5E3} = {29273BE6-1AA8-4970-98A0-41BFFEEDA67B}
 		{FC9953A0-E403-4129-AF4F-3398E58F8ACF} = {886DB964-63D4-4841-81D1-5A7360C98230}
 		{946F0EA1-6187-4878-A32F-B7BF70E13CE5} = {2E2CA195-01E2-4754-8F3C-1598B894C2C9}
@@ -2536,7 +2486,6 @@ Global
 		{881A75D6-DA09-4ADD-9B5B-ACAFE8962D3B} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{F3E526A3-3420-4B0B-9C31-FD813CCD83F7} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{CBBA26D2-68FF-4FDB-BD9E-17D4C2CE717F} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
-		{6395573E-D778-4DBE-BD22-A39273DBF0C9} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{890623E0-F6C8-4011-9FAF-00939601EBE8} = {A193D0F9-C722-44BD-B209-2AA2F25C9816}
 		{21ACF0F1-2A5F-47D2-A0F4-09C95ACF8ABA} = {FDDC95FE-3341-4AED-A93E-7A5DF85A55C2}
 		{EEFFEA77-4FA5-4498-9A9C-1BDBD6436E43} = {88E649D7-1379-430F-B794-1F3B9B442C80}

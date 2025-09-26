@@ -10,9 +10,6 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      UserRelationship
     /// <summary>
     /// The UserRelationship class defines the membership of the relationship.
     /// The user initiating the relationship is UserId.

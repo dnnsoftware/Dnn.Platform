@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.FileSystem
         private const string SettingsControlId = "Settings.ascx";
         private string providerName;
 
-        /// <summary>Gets a value indicating whether gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.</summary>
+        /// <summary>Gets a value indicating whether the provider ensures the files/folders it manages are secure from outside access.</summary>
         /// <remarks>
         /// Some providers (e.g. Standard) store their files/folders in a way that allows for anonymous access that bypasses DotNetNuke.
         /// These providers cannot guarantee that files are only accessed by authorized users and must return false.
@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <summary>Gets a value indicating whether gets a value indicating if the provider requires network connectivity to do its tasks.</summary>
+        /// <summary>Gets a value indicating whether the provider requires network connectivity to do its tasks.</summary>
         public virtual bool RequiresNetworkConnectivity
         {
             get

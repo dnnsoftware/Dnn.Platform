@@ -6,9 +6,6 @@ namespace DotNetNuke.Entities.Profile
     using System;
     using System.Collections;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Profile
-    /// Class:      ProfilePropertyDefinitionCollection
     /// <summary>
     /// The ProfilePropertyDefinitionCollection class provides Business Layer methods for
     /// a collection of property Definitions.

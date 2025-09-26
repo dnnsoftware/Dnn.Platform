@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Host
         /// <item><c>"5"</c> - <see cref="HttpCacheability.ServerAndPrivate"/></item>
         /// </list>
         /// </remarks>
-        public static string AuthenticatedCacheability => HostController.Instance.GetString("AuthenticatedCacheability", "4");
+        public static string AuthenticatedCacheability => HostController.Instance.GetString("AuthenticatedCacheability", "ServerAndNoCache");
 
         /// <summary>Gets the <see cref="HttpCacheability"/> value for unauthenticated requests.</summary>
         /// <remarks>The following mapping is used:
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Host
         /// <item><c>"5"</c> - <see cref="HttpCacheability.ServerAndPrivate"/></item>
         /// </list>
         /// </remarks>
-        public static string UnauthenticatedCacheability => HostController.Instance.GetString("UnauthenticatedCacheability", "4");
+        public static string UnauthenticatedCacheability => HostController.Instance.GetString("UnauthenticatedCacheability", "ServerAndNoCache");
 
         /// <summary>Gets a value indicating whether CDN has been enabled for all registered javascript libraries.</summary>
         public static bool CdnEnabled => HostController.Instance.GetBoolean("CDNEnabled", false);
@@ -73,13 +73,13 @@ namespace DotNetNuke.Entities.Host
         /// </summary>
         public static bool AllowControlPanelToDetermineVisibility => HostController.Instance.GetBoolean("AllowControlPanelToDetermineVisibility", Globals.glbAllowControlPanelToDetermineVisibility);
 
-        /// <summary>Gets a value indicating whether indicates whether Composite Files are enabled at the host level.</summary>
+        /// <summary>Gets a value indicating whether Composite Files are enabled at the host level.</summary>
         public static bool CrmEnableCompositeFiles => HostController.Instance.GetBoolean(ClientResourceSettings.EnableCompositeFilesKey, false);
 
-        /// <summary>Gets a value indicating whether indicates whether CSS Minification is enabled at the host level.</summary>
+        /// <summary>Gets a value indicating whether CSS Minification is enabled at the host level.</summary>
         public static bool CrmMinifyCss => HostController.Instance.GetBoolean(ClientResourceSettings.MinifyCssKey);
 
-        /// <summary>Gets a value indicating whether indicates whether JS Minification is enabled at the host level.</summary>
+        /// <summary>Gets a value indicating whether JS Minification is enabled at the host level.</summary>
         public static bool CrmMinifyJs => HostController.Instance.GetBoolean(ClientResourceSettings.MinifyJsKey);
 
         /// <summary>Gets the Client Resource Management version number.</summary>
@@ -215,7 +215,7 @@ namespace DotNetNuke.Entities.Host
         /// <summary>Gets a value indicating whether File AutoSync is Enabled.</summary>
         public static bool EnableFileAutoSync => HostController.Instance.GetBoolean("EnableFileAutoSync", false);
 
-        /// <summary>Gets a value indicating whether enable whether the IP address of the user is checked against a list during login.</summary>
+        /// <summary>Gets a value indicating whether the IP address of the user is checked against a list during login.</summary>
         public static bool EnableIPChecking => HostController.Instance.GetBoolean("EnableIPChecking", false);
 
         /// <summary>Gets a value indicating whether Module Online Help is Enabled.</summary>
@@ -224,10 +224,10 @@ namespace DotNetNuke.Entities.Host
         /// <summary>Gets a value indicating whether the Request Filters are Enabled.</summary>
         public static bool EnableRequestFilters => HostController.Instance.GetBoolean("EnableRequestFilters", false);
 
-        /// <summary>Gets a value indicating whether enable whether a client-side password strength meter is shown on registration screen.</summary>
+        /// <summary>Gets a value indicating whether a client-side password strength meter is shown on registration screen.</summary>
         public static bool EnableStrengthMeter => HostController.Instance.GetBoolean("EnableStrengthMeter", false);
 
-        /// <summary>Gets a value indicating whether enable whether a previous passwords are stored to check if user is reusing them.</summary>
+        /// <summary>Gets a value indicating whether a previous passwords are stored to check if user is reusing them.</summary>
         public static bool EnablePasswordHistory => HostController.Instance.GetBoolean("EnablePasswordHistory", true);
 
         /// <summary>Gets a value indicating whether to use the Language in the Url.</summary>

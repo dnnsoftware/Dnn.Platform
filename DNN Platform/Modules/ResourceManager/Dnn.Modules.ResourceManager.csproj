@@ -188,10 +188,10 @@
     <Content Include="Images\folder-hover.png" />
     <Content Include="Images\folder.png" />
     <Content Include="Images\icon-add-folder.png" />
-    <Content Include="Images\icon-asset-manager-azure-folder.png" />
-    <Content Include="Images\icon-asset-manager-secure-folder.png" />
-    <Content Include="Images\icon-asset-manager-database-folder.png" />
-    <Content Include="Images\icon-asset-manager-standard-folder.png" />
+    <Content Include="Images\icon-asset-manager-azure-folder.svg" />
+    <Content Include="Images\icon-asset-manager-database-folder.svg" />
+    <Content Include="Images\icon-asset-manager-secure-folder.svg" />
+    <Content Include="Images\icon-asset-manager-standard-folder.svg" />
     <Content Include="Images\link.svg" />
     <Content Include="Images\loader_failed.svg" />
     <Content Include="Images\loading.gif" />

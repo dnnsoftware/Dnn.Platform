@@ -12,9 +12,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging
-    /// Class:      MessageRecipient
     /// <summary>The MessageRecipient class is used to store the details of all recipients of a particular message.</summary>
     [Serializable]
     public class MessageRecipient : BaseEntityInfo, IHydratable
