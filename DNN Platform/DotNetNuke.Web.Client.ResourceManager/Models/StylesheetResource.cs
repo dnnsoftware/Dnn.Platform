@@ -20,6 +20,8 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public StylesheetResource(IClientResourcesController clientResourcesController)
         {
             this.clientResourcesController = clientResourcesController;
+            this.Provider = ClientResourceProviders.DefaultCssProvider;
+            this.Priority = (int)FileOrder.Css.DefaultPriority;
         }
 
         /// <inheritdoc />

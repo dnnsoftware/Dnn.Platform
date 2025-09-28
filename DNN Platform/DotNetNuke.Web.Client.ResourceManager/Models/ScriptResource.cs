@@ -20,6 +20,8 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public ScriptResource(IClientResourcesController clientResourcesController)
         {
             this.clientResourcesController = clientResourcesController;
+            this.Provider = ClientResourceProviders.DefaultJsProvider;
+            this.Priority = (int)FileOrder.Js.DefaultPriority;
         }
 
         /// <inheritdoc />

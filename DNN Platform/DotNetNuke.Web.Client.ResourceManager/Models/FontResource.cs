@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public FontResource(IClientResourcesController clientResourcesController)
         {
             this.clientResourcesController = clientResourcesController;
+            this.Provider = ClientResourceProviders.DnnPageHeaderProvider;
         }
 
         /// <inheritdoc />

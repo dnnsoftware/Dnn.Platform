@@ -682,7 +682,7 @@ Namespace DotNetNuke.UI.Utilities
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
                 Case ClientNamespaceReferences.dnn_dom_positioning
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    controller.CreateScript().FromSrc(ScriptPath & "dnn.dom.positioning.js").Register()
+                    controller.CreateScript().FromSrc(ScriptPath & "dnn.dom.positioning.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnDomPositioning).Register()
 
                 Case ClientNamespaceReferences.dnn_xml
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)

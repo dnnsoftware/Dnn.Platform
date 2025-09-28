@@ -107,11 +107,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 if (string.IsNullOrEmpty(applicationPath))
                 {
-                    return path.TrimStart('~');
+                    return $"{path.TrimStart('~')}?cdv={crmVersion}";
                 }
                 else
                 {
-                    return path.Replace("~", applicationPath);
+                    return $"{path.Replace("~", applicationPath)}?cdv={crmVersion}";
                 }
             }
             else if (path.StartsWith("/"))
