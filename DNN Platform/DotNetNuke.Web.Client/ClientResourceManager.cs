@@ -118,6 +118,67 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             xmlDoc.Save(configPath);
         }
 
+        public static void RemoveConfiguration()
+        {
+            Logger.Info("Removing ClientDependency from web.config");
+
+            var configPath = HostingEnvironment.MapPath("~/web.config");
+            if (string.IsNullOrEmpty(configPath))
+            {
+                return;
+            }
+
+            var xmlDoc = new XmlDocument { XmlResolver = null };
+            xmlDoc.Load(configPath);
+
+            // Config Sections
+            var sectionsConfig = xmlDoc.DocumentElement?.SelectSingleNode("configSections");
+            if (sectionsConfig != null)
+            {
+                var clientDependencySectionConfig = sectionsConfig.SelectSingleNode("section[@name='clientDependency']");
+                if (clientDependencySectionConfig != null)
+                {
+                    Logger.Info("Removing configSections/clientDependency");
+                    sectionsConfig.RemoveChild(clientDependencySectionConfig);
+                }
+            }
+
+            // Module Config
+            var systemWebServerModulesConfig = xmlDoc.DocumentElement?.SelectSingleNode("system.webServer/modules");
+            if (systemWebServerModulesConfig != null)
+            {
+                var moduleConfig = systemWebServerModulesConfig.SelectSingleNode("add[@name=\"ClientDependencyModule\"]");
+                if (moduleConfig != null)
+                {
+                    Logger.Info("Removing system.webServer/modules/ClientDependencyModule");
+                    systemWebServerModulesConfig.RemoveChild(moduleConfig);
+                }
+            }
+
+            // Handler Config
+            var systemWebServerHandlersConfig = xmlDoc.DocumentElement?.SelectSingleNode("system.webServer/handlers");
+            if (systemWebServerHandlersConfig != null)
+            {
+                var handlerConfig = systemWebServerHandlersConfig.SelectSingleNode("add[@name=\"ClientDependencyHandler\"]");
+                if (handlerConfig != null)
+                {
+                    Logger.Info("Removing system.webServer/handlers/ClientDependencyHandler");
+                    systemWebServerHandlersConfig.RemoveChild(handlerConfig);
+                }
+            }
+
+            // ClientDependency Config
+            var clientDependencyConfig = xmlDoc.DocumentElement?.SelectSingleNode("clientDependency");
+            if (clientDependencyConfig != null)
+            {
+                Logger.Info("Removing clientDependency");
+                xmlDoc.DocumentElement?.RemoveChild(clientDependencyConfig);
+            }
+
+            // Save Config
+            xmlDoc.Save(configPath);
+        }
+
         /// <summary>Checks if ClientDependency is installed.</summary>
         /// <returns>A value indicating whether the ClientDependency provider is installed.</returns>
         public static bool IsInstalled()

@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
@@ -46,7 +45,7 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
-
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
     using Assembly = System.Reflection.Assembly;
@@ -1611,6 +1610,9 @@ namespace DotNetNuke.Services.Upgrade
                 // execute config file updates
                 UpdateConfig(providerPath, ver, true);
             }
+
+            // Removing ClientDependency Resources config from web.config
+            ClientResourceManager.RemoveConfiguration();
 
             DataProvider.Instance().SetCorePackageVersions();
 
