@@ -3376,6 +3376,10 @@
       <Project>{1D5A98BD-F8E0-45F7-B26D-270D9023629D}</Project>
       <Name>DotNetNuke.Maintenance</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj">
+      <Project>{039bafbd-e2db-40c4-b565-c27467d9b5e1}</Project>
+      <Name>DotNetNuke.Web.Client.ResourceManager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>

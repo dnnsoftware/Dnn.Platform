@@ -29,5 +29,15 @@ namespace DotNetNuke.Abstractions.ClientResources
         /// In the page body at the bottom of the main form (when using webforms).
         /// </summary>
         public const string DnnFormBottomProvider = "DnnFormBottomProvider";
+
+        /// <summary>
+        /// The default css provider.
+        /// </summary>
+        public const string DefaultCssProvider = "DnnPageHeaderProvider";
+
+        /// <summary>
+        /// The default javascript provider.
+        /// </summary>
+        public const string DefaultJsProvider = "DnnBodyProvider";
     }
 }

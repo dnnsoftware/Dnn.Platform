@@ -9,16 +9,15 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Net;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -29,6 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "Search.ascx";
 
         private readonly INavigationManager navigationManager;
+        private readonly IClientResourcesController clientResourcesController;
 
         private bool enableWildSearch = true;
         private string siteIconURL;
@@ -42,15 +42,17 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
         public Search()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
-        public Search(INavigationManager navigationManager)
+        /// <param name="clientResourcesController">The client resources controller.</param>
+        public Search(INavigationManager navigationManager, IClientResourcesController clientResourcesController)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
         }
 
         public string SeeMoreText
@@ -384,8 +386,8 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
 
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Search/SearchSkinObjectPreview.js");
+            this.clientResourcesController.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
+            this.clientResourcesController.RegisterScript("~/Resources/Search/SearchSkinObjectPreview.js");
 
             this.cmdSearch.Click += this.CmdSearchClick;
             this.cmdSearchNew.Click += this.CmdSearchNewClick;
@@ -464,7 +466,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-                ClientResourceManager.RegisterScript(this.Page, "~/Resources/Search/Search.js", FileOrder.Js.DefaultPriority, "DnnFormBottomProvider");
+                this.clientResourcesController.CreateScript().FromSrc("~/Resources/Search/Search.js").SetPriority((int)FileOrder.Js.DefaultPriority).SetProvider(ClientResourceProviders.DnnFormBottomProvider).Register();
 
                 this.txtSearchNew.Attributes.Add("autocomplete", "off");
                 this.txtSearchNew.Attributes.Add("placeholder", this.PlaceHolderText);

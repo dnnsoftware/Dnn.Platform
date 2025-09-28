@@ -14,9 +14,11 @@ namespace Dnn.PersonaBar.UI.UserControls
     using Dnn.PersonaBar.Library.Controllers;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -34,10 +36,11 @@ namespace Dnn.PersonaBar.UI.UserControls
         private readonly IPersonaBarController personaBarController;
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourcesController clientResourcesController;
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarContainer"/> class.</summary>
         public PersonaBarContainer()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -46,12 +49,14 @@ namespace Dnn.PersonaBar.UI.UserControls
         /// <param name="personaBarController">The Persona Bar controller.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        public PersonaBarContainer(IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
+        /// <param name="clientResourcesController">The client resources controller.</param>
+        public PersonaBarContainer(IPersonaBarContainer personaBarContainer, IPersonaBarController personaBarController, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
         {
             this.personaBarContainer = personaBarContainer ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarContainer>();
             this.personaBarController = personaBarController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPersonaBarController>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
         }
 
         /// <summary>Gets a JSON representation of <see cref="IPersonaBarContainer.GetConfiguration"/>.</summary>
@@ -121,15 +126,15 @@ namespace Dnn.PersonaBar.UI.UserControls
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+            this.clientResourcesController.RegisterScript("~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
+            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
 
             return true;
         }
 
         private void RegisterPersonaBarStyleSheet()
         {
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
+            this.clientResourcesController.RegisterStylesheet("~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
         }
 
         private void RemovedAdminStyleSheet()

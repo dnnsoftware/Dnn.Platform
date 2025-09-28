@@ -23,6 +23,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.</summary>
+    [Obsolete("Deprecated in DotNetNuke 10.2.0. Please use IClientResourcesController instead. Scheduled removal in v12.0.0.")]
     public partial class ClientResourceManager
     {
         /// <summary>The default css provider.</summary>

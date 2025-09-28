@@ -76,27 +76,9 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
-        public void RegisterFont(string fontPath)
-        {
-            this.CreateFont().FromSrc(fontPath).Register();
-        }
-
-        /// <inheritdoc />
         public void RegisterPathNameAlias(string pathNameAlias, string resolvedPath)
         {
             this.PathNameAliases[pathNameAlias.ToLowerInvariant()] = resolvedPath;
-        }
-
-        /// <inheritdoc />
-        public void RegisterScript(string scriptPath)
-        {
-            this.CreateScript().FromSrc(scriptPath).Register();
-        }
-
-        /// <inheritdoc />
-        public void RegisterStylesheet(string stylesheetPath)
-        {
-            this.CreateStylesheet().FromSrc(stylesheetPath).Register();
         }
 
         /// <inheritdoc />

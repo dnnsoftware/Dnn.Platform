@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.CoreMessaging
     using System.Web.Configuration;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -20,15 +21,24 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Social.Messaging;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implementes the logic of the Subscription view.</summary>
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
+        private readonly IClientResourcesController clientResourcesController;
+
+        /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
+        /// <param name="clientResourcesController">The client resources controller.</param>
+        public Subscriptions(IClientResourcesController clientResourcesController)
+        {
+            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+        }
 
         /// <summary>Gets or sets the module context.</summary>
         public ModuleInstanceContext ModuleContext { get; set; }
@@ -80,10 +90,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             if (this.Request.IsAuthenticated)
             {
-                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
-                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
-                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
+                this.clientResourcesController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
+                this.clientResourcesController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
+                this.clientResourcesController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
+                this.clientResourcesController.RegisterStylesheet("~/DesktopModules/CoreMessaging/subscriptions.css");
             }
             else
             {

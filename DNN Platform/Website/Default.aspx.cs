@@ -26,6 +26,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
@@ -37,8 +38,8 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using Microsoft.Extensions.DependencyInjection;
 
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
@@ -295,14 +296,19 @@ namespace DotNetNuke.Framework
             }
 
             // add CSS links
-            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css"));
-            ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), Web.Client.FileOrder.Css.SkinCss);
-            ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), Web.Client.FileOrder.Css.SpecificSkinCss);
+            this.clientResourcesController.CreateStylesheet()
+                .FromSrc("~/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css")
+                .SetNameAndVersion("dnndefault", "10.0.0", false)
+                .SetPriority((int)FileOrder.Css.DefaultCss)
+                .Register();
+
+            this.clientResourcesController.RegisterStylesheet(string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss, true);
+            this.clientResourcesController.RegisterStylesheet(ctlSkin.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss, true);
 
             // add skin to page
             this.SkinPlaceHolder.Controls.Add(ctlSkin);
 
-            ClientResourceManager.RegisterStyleSheet(this, string.Concat(this.PortalSettings.HomeDirectory, "portal.css"), Web.Client.FileOrder.Css.PortalCss);
+            this.clientResourcesController.RegisterStylesheet(string.Concat(this.PortalSettings.HomeDirectory, "portal.css"), FileOrder.Css.PortalCss, true);
 
             // add Favicon
             this.ManageFavicon();
@@ -637,7 +643,7 @@ namespace DotNetNuke.Framework
 
             // register css variables
             var cssVariablesStyleSheet = this.GetCssVariablesStylesheet();
-            ClientResourceManager.RegisterStyleSheet(this, cssVariablesStyleSheet, Web.Client.FileOrder.Css.DefaultCss);
+            this.clientResourcesController.RegisterStylesheet(cssVariablesStyleSheet, FileOrder.Css.DefaultCss);
 
             // register the custom stylesheet of current page
             if (this.PortalSettings.ActiveTab.TabSettings.ContainsKey("CustomStylesheet") && !string.IsNullOrEmpty(this.PortalSettings.ActiveTab.TabSettings["CustomStylesheet"].ToString()))
@@ -648,11 +654,11 @@ namespace DotNetNuke.Framework
                 var stylesheetFile = this.GetPageStylesheetFileInfo(styleSheet);
                 if (stylesheetFile != null)
                 {
-                    ClientResourceManager.RegisterStyleSheet(this, FileManager.Instance.GetUrl(stylesheetFile));
+                    this.clientResourcesController.RegisterStylesheet(FileManager.Instance.GetUrl(stylesheetFile));
                 }
                 else
                 {
-                    ClientResourceManager.RegisterStyleSheet(this, styleSheet);
+                    this.clientResourcesController.RegisterStylesheet(styleSheet);
                 }
             }
 
@@ -664,9 +670,9 @@ namespace DotNetNuke.Framework
                 ClientAPI.RegisterClientVariable(this, "cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 ClientAPI.RegisterClientVariable(this, "cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
                 ClientAPI.RegisterClientVariable(this, "cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
-                ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", Web.Client.FileOrder.Js.DnnControls);
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", Web.Client.FileOrder.Css.ResourceCss);
-                ClientResourceManager.RegisterScript(this.Page, "~/js/dnn.cookieconsent.js", Web.Client.FileOrder.Js.DefaultPriority);
+                this.clientResourcesController.RegisterScript("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
+                this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
+                this.clientResourcesController.RegisterStylesheet("~/js/dnn.cookieconsent.js");
             }
         }
 
@@ -736,7 +742,7 @@ namespace DotNetNuke.Framework
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
                                    : "~/js/dnn.modalpopup.js";
-                ClientResourceManager.RegisterScript(this, popupFilePath, Web.Client.FileOrder.Js.DnnModalPopup);
+                this.clientResourcesController.RegisterScript(popupFilePath, FileOrder.Js.DnnModalPopup);
             }
         }
 

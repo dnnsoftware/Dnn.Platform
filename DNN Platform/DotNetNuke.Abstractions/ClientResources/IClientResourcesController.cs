@@ -43,29 +43,11 @@ public interface IClientResourcesController
     IStylesheetResource CreateStylesheet();
 
     /// <summary>
-    /// Registers a font resource by its path.
-    /// </summary>
-    /// <param name="fontPath">The path to the font resource to register.</param>
-    void RegisterFont(string fontPath);
-
-    /// <summary>
     /// Registers a path name alias for resolving resource paths.
     /// </summary>
     /// <param name="pathNameAlias">The path name alias.</param>
     /// <param name="resolvedPath">The resolved path corresponding to the alias.</param>
     void RegisterPathNameAlias(string pathNameAlias, string resolvedPath);
-
-    /// <summary>
-    /// Registers a script resource by its path.
-    /// </summary>
-    /// <param name="scriptPath">The path to the script resource to register.</param>
-    void RegisterScript(string scriptPath);
-
-    /// <summary>
-    /// Registers a stylesheet resource by its path.
-    /// </summary>
-    /// <param name="stylesheetPath">The path to the stylesheet resource to register.</param>
-    void RegisterStylesheet(string stylesheetPath);
 
     /// <summary>
     /// Removes a font resource by its name.

@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         public DnnCssInclude(IClientResourcesController clientResourcesController)
             : base(clientResourcesController)
         {
-            this.ForceProvider = ClientResourceManager.DefaultCssProvider;
+            this.ForceProvider = ClientResourceProviders.DefaultCssProvider;
             this.DependencyType = ClientDependencyType.Css;
         }
 

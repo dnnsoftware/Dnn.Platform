@@ -9,6 +9,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -17,8 +18,8 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A skin/theme object which allows the display of toast messages.</summary>
@@ -30,16 +31,18 @@ namespace DotNetNuke.UI.Skins.Controls
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourcesController clientResourcesController;
 
         public Toast()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
-        public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+        public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
         }
 
         protected string ServiceModuleName { get; private set; }
@@ -80,8 +83,8 @@ namespace DotNetNuke.UI.Skins.Controls
             this.javaScript.RequestRegistration(CommonJs.jQueryUI);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
+            this.clientResourcesController.RegisterScript("~/Resources/Shared/components/Toast/jquery.toastmessage.js", FileOrder.Js.jQuery);
+            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/components/Toast/jquery.toastmessage.css", FileOrder.Css.DefaultCss);
 
             this.InitializeConfig();
         }

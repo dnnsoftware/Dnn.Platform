@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         public DnnJsInclude(IClientResourcesController clientResourcesController)
             : base(clientResourcesController)
         {
-            this.ForceProvider = ClientResourceManager.DefaultJsProvider;
+            this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
             this.DependencyType = ClientDependencyType.Javascript;
         }
 
