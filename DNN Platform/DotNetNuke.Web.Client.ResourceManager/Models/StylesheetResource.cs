@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using System.Text;
+
     using DotNetNuke.Abstractions.ClientResources;
 
     /// <summary>
@@ -36,31 +38,31 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public new string Render(int crmVersion, bool useCdn, string applicationPath)
         {
-            var htmlString = "<link";
-            htmlString += $" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"";
+            var htmlString = new StringBuilder("<link");
+            htmlString.Append($" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
             if (this.Preload)
             {
-                htmlString += $" rel=\"preload\" as=\"style\"";
+                htmlString.Append($" rel=\"preload\" as=\"style\"");
             }
             else
             {
-                htmlString += $" rel=\"stylesheet\"";
+                htmlString.Append($" rel=\"stylesheet\"");
             }
 
             if (this.Disabled)
             {
-                htmlString += " disabled";
+                htmlString.Append(" disabled");
             }
 
-            htmlString += this.RenderMimeType();
-            htmlString += this.RenderBlocking();
-            htmlString += this.RenderCrossOriginAttribute();
-            htmlString += this.RenderFetchPriority();
-            htmlString += this.RenderIntegrity();
-            htmlString += this.RenderReferrerPolicy();
-            htmlString += this.RenderAttributes();
-            htmlString += " />";
-            return htmlString;
+            this.RenderType(htmlString);
+            this.RenderBlocking(htmlString);
+            this.RenderCrossOriginAttribute(htmlString);
+            this.RenderFetchPriority(htmlString);
+            this.RenderIntegrity(htmlString);
+            this.RenderReferrerPolicy(htmlString);
+            this.RenderAttributes(htmlString);
+            htmlString.Append(" />");
+            return htmlString.ToString();
         }
     }
 }

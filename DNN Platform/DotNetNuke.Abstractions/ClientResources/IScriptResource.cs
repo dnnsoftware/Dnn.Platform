@@ -29,13 +29,4 @@ public interface IScriptResource : IResource
     /// this can be used to serve fallback scripts to older browsers that do not support modular JavaScript code.
     /// </summary>
     bool NoModule { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating the type of script element.
-    /// The value of this attribute indicates the type of data represented by the script, and will be one of the following:
-    /// - Empty string or "text/javascript" (default): classic script.
-    /// - "module": module script.
-    /// - "importmap": import map.
-    /// </summary>
-    string Type { get; set; }
 }

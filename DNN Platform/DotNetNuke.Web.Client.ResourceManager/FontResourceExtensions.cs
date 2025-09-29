@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             }
 
             input.FilePath = scriptSrc;
-            input.MimeType = mimeType;
+            input.Type = mimeType;
             return input;
         }
     }

@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using System.Text;
+
     using DotNetNuke.Abstractions.ClientResources;
 
     /// <summary>
@@ -34,9 +36,6 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public bool NoModule { get; set; } = false;
 
         /// <inheritdoc />
-        public string Type { get; set; } = string.Empty;
-
-        /// <inheritdoc />
         public new void Register()
         {
             this.clientResourcesController.AddScript(this);
@@ -45,37 +44,32 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public new string Render(int crmVersion, bool useCdn, string applicationPath)
         {
-            var htmlString = "<script";
-            htmlString += $" src=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"";
+            var htmlString = new StringBuilder("<script");
+            htmlString.Append($" src=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
             if (this.Async)
             {
-                htmlString += " async";
+                htmlString.Append(" async");
             }
 
             if (this.Defer)
             {
-                htmlString += " defer";
+                htmlString.Append(" defer");
             }
 
             if (this.NoModule)
             {
-                htmlString += " nomodule";
+                htmlString.Append(" nomodule");
             }
 
-            if (!string.IsNullOrEmpty(this.Type))
-            {
-                htmlString += $" type=\"{this.Type}\"";
-            }
-
-            htmlString += this.RenderMimeType();
-            htmlString += this.RenderBlocking();
-            htmlString += this.RenderCrossOriginAttribute();
-            htmlString += this.RenderFetchPriority();
-            htmlString += this.RenderIntegrity();
-            htmlString += this.RenderReferrerPolicy();
-            htmlString += this.RenderAttributes();
-            htmlString += " type=\"text/javascript\"></script>";
-            return htmlString;
+            this.RenderType(htmlString);
+            this.RenderBlocking(htmlString);
+            this.RenderCrossOriginAttribute(htmlString);
+            this.RenderFetchPriority(htmlString);
+            this.RenderIntegrity(htmlString);
+            this.RenderReferrerPolicy(htmlString);
+            this.RenderAttributes(htmlString);
+            htmlString.Append(" type=\"text/javascript\"></script>");
+            return htmlString.ToString();
         }
     }
 }

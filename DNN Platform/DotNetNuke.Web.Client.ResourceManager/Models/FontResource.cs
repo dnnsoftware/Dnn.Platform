@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using System.Text;
+
     using DotNetNuke.Abstractions.ClientResources;
 
     /// <summary>
@@ -32,25 +34,25 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public new string Render(int crmVersion, bool useCdn, string applicationPath)
         {
-            var htmlString = "<link";
-            htmlString += $" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"";
+            var htmlString = new StringBuilder("<link");
+            htmlString.Append($" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
             if (this.Preload)
             {
-                htmlString += $" rel=\"preload\" as=\"font\"";
+                htmlString.Append($" rel=\"preload\" as=\"font\"");
             }
             else
             {
-                htmlString += $" rel=\"font\"";
+                htmlString.Append($" rel=\"font\"");
             }
 
-            htmlString += this.RenderMimeType();
-            htmlString += this.RenderCrossOriginAttribute();
-            htmlString += this.RenderFetchPriority();
-            htmlString += this.RenderIntegrity();
-            htmlString += this.RenderReferrerPolicy();
-            htmlString += this.RenderAttributes();
-            htmlString += " />";
-            return htmlString;
+            this.RenderType(htmlString);
+            this.RenderCrossOriginAttribute(htmlString);
+            this.RenderFetchPriority(htmlString);
+            this.RenderIntegrity(htmlString);
+            this.RenderReferrerPolicy(htmlString);
+            this.RenderAttributes(htmlString);
+            htmlString.Append(" />");
+            return htmlString.ToString();
         }
     }
 }

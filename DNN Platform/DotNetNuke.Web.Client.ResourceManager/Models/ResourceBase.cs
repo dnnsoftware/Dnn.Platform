@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
     using System.Collections.Generic;
+    using System.Text;
 
     using DotNetNuke.Abstractions.ClientResources;
 
@@ -65,7 +66,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public string Integrity { get; set; } = string.Empty;
 
         /// <inheritdoc />
-        public string MimeType { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
 
         /// <inheritdoc />
         public bool Blocking { get; set; } = false;
@@ -125,130 +126,125 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <summary>
         /// Renders the blocking attribute.
         /// </summary>
-        /// <returns>The blocking attribute.</returns>
-        protected string RenderBlocking()
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderBlocking(StringBuilder htmlString)
         {
             if (this.Blocking)
             {
-                return " blocking=\"render\"";
+                htmlString.Append(" blocking=\"render\"");
             }
-
-            return string.Empty;
         }
 
         /// <summary>
         /// Renders the cross origin attribute.
         /// </summary>
-        /// <returns>The cross origin attribute.</returns>
-        protected string RenderCrossOriginAttribute()
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderCrossOriginAttribute(StringBuilder htmlString)
         {
             if (this.CrossOrigin != CrossOrigin.None)
             {
-                var crossOrigin = "anonymous";
                 if (this.CrossOrigin == CrossOrigin.UseCredentials)
                 {
-                    crossOrigin = "use-credentials";
+                    htmlString.Append($" crossorigin=\"use-credentials\"");
                 }
-
-                return $" crossorigin=\"{crossOrigin}\"";
+                else
+                {
+                    htmlString.Append($" crossorigin=\"anonymous\"");
+                }
             }
-
-            return string.Empty;
         }
 
         /// <summary>
         /// Renders the fetch priority attribute.
         /// </summary>
-        /// <returns>The fetch priority attribute.</returns>
-        protected string RenderFetchPriority()
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderFetchPriority(StringBuilder htmlString)
         {
             if (this.FetchPriority != FetchPriority.Auto)
             {
-                var fetchPriority = "low";
                 if (this.FetchPriority == FetchPriority.High)
                 {
-                    fetchPriority = "high";
+                    htmlString.Append($" fetchpriority=\"high\"");
                 }
-
-                return $" fetchpriority=\"{fetchPriority}\"";
+                else if (this.FetchPriority == FetchPriority.Low)
+                {
+                    htmlString.Append($" fetchpriority=\"low\"");
+                }
             }
-
-            return string.Empty;
         }
 
         /// <summary>
         /// Renders the integrity attribute.
         /// </summary>
-        /// <returns>The integrity attribute.</returns>
-        protected string RenderIntegrity()
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderIntegrity(StringBuilder htmlString)
         {
             if (!string.IsNullOrEmpty(this.Integrity))
             {
-                return $" integrity=\"{this.Integrity}\"";
+                htmlString.Append($" integrity=\"{this.Integrity}\"");
             }
-
-            return string.Empty;
         }
 
         /// <summary>
         /// Renders the referrer policy attribute.
         /// </summary>
-        /// <returns>The referrer policy attribute.</returns>
-        protected string RenderReferrerPolicy()
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderReferrerPolicy(StringBuilder htmlString)
         {
             if (this.ReferrerPolicy != ReferrerPolicy.None)
             {
                 switch (this.ReferrerPolicy)
                 {
                     case ReferrerPolicy.NoReferrer:
-                        return " referrerpolicy=\"no-referrer\"";
+                        htmlString.Append(" referrerpolicy=\"no-referrer\"");
+                        break;
                     case ReferrerPolicy.NoReferrerWhenDowngrade:
-                        return " referrerpolicy=\"no-referrer-when-downgrade\"";
+                        htmlString.Append(" referrerpolicy=\"no-referrer-when-downgrade\"");
+                        break;
                     case ReferrerPolicy.Origin:
-                        return " referrerpolicy=\"origin\"";
+                        htmlString.Append(" referrerpolicy=\"origin\"");
+                        break;
                     case ReferrerPolicy.OriginWhenCrossOrigin:
-                        return " referrerpolicy=\"origin-when-cross-origin\"";
+                        htmlString.Append(" referrerpolicy=\"origin-when-cross-origin\"");
+                        break;
                     case ReferrerPolicy.SameOrigin:
-                        return " referrerpolicy=\"same-origin\"";
+                        htmlString.Append(" referrerpolicy=\"same-origin\"");
+                        break;
                     case ReferrerPolicy.StrictOrigin:
-                        return " referrerpolicy=\"strict-origin\"";
+                        htmlString.Append(" referrerpolicy=\"strict-origin\"");
+                        break;
                     case ReferrerPolicy.StrictOriginWhenCrossOrigin:
-                        return " referrerpolicy=\"strict-origin-when-cross-origin\"";
+                        htmlString.Append(" referrerpolicy=\"strict-origin-when-cross-origin\"");
+                        break;
                     case ReferrerPolicy.UnsafeUrl:
-                        return " referrerpolicy=\"unsafe-url\"";
+                        htmlString.Append(" referrerpolicy=\"unsafe-url\"");
+                        break;
                 }
             }
-
-            return string.Empty;
         }
 
         /// <summary>
         /// Renders the mimetype attribute.
         /// </summary>
-        /// <returns>The mimetype attribute.</returns>
-        protected string RenderMimeType()
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderType(StringBuilder htmlString)
         {
-            if (!string.IsNullOrEmpty(this.MimeType))
+            if (!string.IsNullOrEmpty(this.Type))
             {
-                return $" type=\"{this.MimeType}\"";
+                htmlString.Append($" type=\"{this.Type}\"");
             }
-
-            return string.Empty;
         }
 
         /// <summary>
         /// Renders the attributes.
         /// </summary>
-        /// <returns>The attributes.</returns>
-        protected string RenderAttributes()
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderAttributes(StringBuilder htmlString)
         {
-            var htmlString = string.Empty;
             foreach (var attribute in this.Attributes)
             {
-                htmlString += $" {attribute.Key}=\"{attribute.Value}\"";
+                htmlString.Append($" {attribute.Key}=\"{attribute.Value}\"");
             }
-
-            return htmlString;
         }
     }
 }

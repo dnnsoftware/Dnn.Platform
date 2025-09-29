@@ -89,9 +89,14 @@ public interface IResource
     string Integrity { get; set; }
 
     /// <summary>
-    /// Gets or sets the MIME type of the client resource.
+    /// Gets or sets a value indicating the type of script or link element.
+    /// In the case of a link, this should be a mime type.
+    /// In the case of a script, the value of this attribute indicates the type of data represented by the script, and will be one of the following:
+    /// - Empty string or "text/javascript" (default): classic script.
+    /// - "module": module script.
+    /// - "importmap": import map.
     /// </summary>
-    string MimeType { get; set; }
+    string Type { get; set; }
 
     /// <summary>
     /// Gets or sets additional attributes for the client resource.
