@@ -13,11 +13,6 @@ namespace DotNetNuke.Abstractions.ClientResources
         /// <summary>
         /// In the page header.
         /// </summary>
-        public const string Default = "";
-
-        /// <summary>
-        /// In the page header.
-        /// </summary>
         public const string DnnPageHeaderProvider = "DnnPageHeaderProvider";
 
         /// <summary>
@@ -29,6 +24,11 @@ namespace DotNetNuke.Abstractions.ClientResources
         /// In the page body at the bottom of the main form (when using webforms).
         /// </summary>
         public const string DnnFormBottomProvider = "DnnFormBottomProvider";
+
+        /// <summary>
+        /// In the page header.
+        /// </summary>
+        public const string Default = "DnnPageHeaderProvider";
 
         /// <summary>
         /// The default css provider.

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Abstractions.ClientResources
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>Contains enumerations that define the relative loading order of both JavaScript and CSS files within the framework's registration system.</summary>
@@ -76,6 +77,7 @@ namespace DotNetNuke.Abstractions.ClientResources
             FeatureCss = 7,
 
             /// <summary>The ie.css file has a priority of 8.</summary>
+            [Obsolete("Deprecated in DotNetNuke 10.2.0. Scheduled removal in v12.0.0.")]
             IeCss = 8,
 
             /// <summary>Module CSS files have a priority of 10.</summary>
