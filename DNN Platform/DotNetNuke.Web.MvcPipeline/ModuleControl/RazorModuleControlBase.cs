@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
+using DotNetNuke.Web.MvcPipeline.Modules;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
@@ -36,6 +37,31 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         }
 
         public abstract IRazorModuleResult Invoke();
+
+        /// <summary>
+        /// Returns a result which will render HTML encoded text.
+        /// </summary>
+        /// <param name="content">The content, will be HTML encoded before output.</param>
+        /// <returns>A <see cref="IRazorModuleResult"/>.</returns>
+        public IRazorModuleResult Content(string content)
+        {
+            if (content == null)
+            {
+                throw new ArgumentNullException("content");
+            }
+
+            return new ContentRazorModuleResult(content);
+        }
+
+        public IRazorModuleResult Error(string heading, string message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentNullException("message");
+            }
+
+            return new ErrorRazorModuleResult(heading, message); 
+        }
 
         public IRazorModuleResult View()
         {

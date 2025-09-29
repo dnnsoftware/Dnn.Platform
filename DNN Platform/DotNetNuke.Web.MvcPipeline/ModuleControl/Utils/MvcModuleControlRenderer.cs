@@ -27,7 +27,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Utils
             //moduleControl.Control = control;
         }
 
-        // Fix for CS0149: Replace the invalid constructor chaining syntax with a proper constructor call
         public MvcModuleControlRenderer(PortalModuleBase control)
             : this(control, control.ModuleContext)
         {
@@ -35,13 +34,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Utils
 
         public string RenderToString()
         {
-            var renderer = new MvcViewEngine();
-            var res = moduleControl.Invoke();
-            return renderer.RenderViewToString(res.ViewName, res.Model);
+            return MvcViewEngine.RenderHtmlHelperToString(helper => moduleControl.Html(helper));
         }
 
         public T ModuleControl => this.moduleControl;
-
        
     }
 }

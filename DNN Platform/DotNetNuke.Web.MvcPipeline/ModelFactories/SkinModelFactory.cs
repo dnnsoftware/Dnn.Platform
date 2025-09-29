@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -26,6 +27,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Pages;
     using DotNetNuke.UI;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Modules;
@@ -44,11 +46,13 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     {
         private readonly INavigationManager navigationManager;
         private readonly IPaneModelFactory paneModelFactory;
+        private readonly IPageService PageService;
 
-        public SkinModelFactory(INavigationManager navigationManager, IPaneModelFactory paneModelFactory)
+        public SkinModelFactory(INavigationManager navigationManager, IPaneModelFactory paneModelFactory, IPageService pageService)
         {
             this.navigationManager = navigationManager;
             this.paneModelFactory = paneModelFactory;
+            this.PageService = pageService;
         }
 
         public SkinModel CreateSkinModel(DnnPageController page)
@@ -132,12 +136,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-
+                    this.PageService.AddWarningMessage(heading, message);
+                    /*
                     this.AddPageMessage(
                         skin,
                         heading,
                         message,
                         ModuleMessage.ModuleMessageType.YellowWarning);
+                    */
                 }
             }
 
@@ -170,7 +176,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                                    : "~/js/dnn.modalpopup.js";
                 skin.RegisteredScripts.Add(new RegisteredScript() { Script = popupFilePath, FileOrder = FileOrder.Js.DnnModalPopup });
             }
-
             return skin;
         }
 
@@ -217,7 +222,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (!success && !TabPermissionController.CanAdminPage())
                 {
                     // only display the warning to non-administrators (administrators will see the errors)
-                    this.AddPageMessage(ctlSkin, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
+                    this.PageService.AddWarningMessage(Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email));
                 }
 
                 /*
@@ -625,20 +630,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     }
                     */
                 }
-            }
-        }
-
-        private void AddPageMessage(SkinModel skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
-        {
-            this.AddPageMessage(skin, heading, message, moduleMessageType, Null.NullString);
-        }
-
-        private void AddPageMessage(SkinModel skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
-        {
-            if (!string.IsNullOrEmpty(message))
-            {
-                var moduleMessage = this.GetModuleMessage(heading, message, moduleMessageType, iconSrc);
-                skin.ModuleMessages.Insert(0, moduleMessage);
             }
         }
 

@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -47,6 +48,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         private readonly IApplicationInfo applicationInfo;
         private readonly ISkinModelFactory skinModelFactory;
         private readonly IHostSettings hostSettings;
+        private readonly IPageService pageService;
 
         public PageModelFactory(
             IContentSecurityPolicy contentSecurityPolicy,
@@ -55,7 +57,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             IModuleControlPipeline moduleControlPipeline,
             IApplicationInfo applicationInfo,
             ISkinModelFactory skinModelFactory,
-            IHostSettings hostSettings)
+            IHostSettings hostSettings,
+            IPageService pageService)
         {
             this.contentSecurityPolicy = contentSecurityPolicy;
             this.navigationManager = navigationManager;
@@ -64,6 +67,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             this.applicationInfo = applicationInfo;
             this.skinModelFactory = skinModelFactory;
             this.hostSettings = hostSettings;
+            this.pageService = pageService;
         }
 
         public PageModel CreatePageModel(DnnPageController controller)
@@ -78,6 +82,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 Language = Thread.CurrentThread.CurrentCulture.Name,
                 ContentSecurityPolicy = this.contentSecurityPolicy,
                 NavigationManager = this.navigationManager,
+                PageService = this.pageService,
                 FavIconLink = FavIcon.GetHeaderLink(hostSettings, controller.PortalSettings.PortalId),
             };
             if (controller.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())

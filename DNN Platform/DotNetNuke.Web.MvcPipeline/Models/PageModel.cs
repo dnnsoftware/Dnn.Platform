@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using System.Collections.Generic;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.ContentSecurityPolicy;
 
     public class PageModel
@@ -53,5 +54,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         public IContentSecurityPolicy ContentSecurityPolicy { get; set; }
 
         public INavigationManager NavigationManager { get; set; }
+
+        public IPageService PageService { get; set; }
     }
 }

@@ -121,6 +121,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         public string ContentPaneStyle { get; internal set; }
 
         public List<RegisteredStylesheet> RegisteredStylesheets { get; set; } = new List<RegisteredStylesheet>();
+        
 
         private string ModuleName
         {

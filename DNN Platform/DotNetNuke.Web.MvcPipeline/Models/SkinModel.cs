@@ -14,39 +14,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     {
         private Dictionary<string, PaneModel> panes;
 
-        public SkinModel()
-        {
-            this.PageMessages = new List<ModuleMessageModel>();
-            this.ModuleMessages = new List<ModuleMessageModel>();
-        }
-
-        /*
-        private PageModel pageModel;
-
-        public SkinModel(DnnPageController page, PageModel pageModel)
-        {
-            this.Page = page;
-            this.pageModel = pageModel;
-            this.PageMessages = new List<ModuleMessageModel>();
-            this.ModuleMessages = new List<ModuleMessageModel>();
-            this.NavigationManager = this.pageModel.NavigationManager;
-        }
-        */
-        /*
-        public DnnPageController Page { get; private set; }
-        */
-
         public string SkinSrc { get; set; }
-
-        /*
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
-        */
 
         public Dictionary<string, PaneModel> Panes
         {
@@ -102,10 +70,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         }
 
         public string SkinError { get; set; }
-
-        public List<ModuleMessageModel> PageMessages { get; private set; }
-
-        public List<ModuleMessageModel> ModuleMessages { get; private set; }
 
         public List<RegisteredStylesheet> RegisteredStylesheets { get; set; } = new List<RegisteredStylesheet>();
 
