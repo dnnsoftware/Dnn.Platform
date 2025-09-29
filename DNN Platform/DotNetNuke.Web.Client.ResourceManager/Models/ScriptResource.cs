@@ -67,6 +67,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                 htmlString += $" type=\"{this.Type}\"";
             }
 
+            htmlString += this.RenderMimeType();
             htmlString += this.RenderBlocking();
             htmlString += this.RenderCrossOriginAttribute();
             htmlString += this.RenderFetchPriority();

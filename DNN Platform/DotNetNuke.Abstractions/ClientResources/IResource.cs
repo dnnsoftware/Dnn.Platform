@@ -89,6 +89,11 @@ public interface IResource
     string Integrity { get; set; }
 
     /// <summary>
+    /// Gets or sets the MIME type of the client resource.
+    /// </summary>
+    string MimeType { get; set; }
+
+    /// <summary>
     /// Gets or sets additional attributes for the client resource.
     /// </summary>
     Dictionary<string, string> Attributes { get; set; }

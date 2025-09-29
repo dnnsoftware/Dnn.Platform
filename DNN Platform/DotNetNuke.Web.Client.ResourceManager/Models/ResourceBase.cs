@@ -65,6 +65,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public string Integrity { get; set; } = string.Empty;
 
         /// <inheritdoc />
+        public string MimeType { get; set; } = string.Empty;
+
+        /// <inheritdoc />
         public bool Blocking { get; set; } = false;
 
         /// <inheritdoc />
@@ -214,6 +217,20 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                     case ReferrerPolicy.UnsafeUrl:
                         return " referrerpolicy=\"unsafe-url\"";
                 }
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Renders the mimetype attribute.
+        /// </summary>
+        /// <returns>The mimetype attribute.</returns>
+        protected string RenderMimeType()
+        {
+            if (!string.IsNullOrEmpty(this.MimeType))
+            {
+                return $" type=\"{this.MimeType}\"";
             }
 
             return string.Empty;

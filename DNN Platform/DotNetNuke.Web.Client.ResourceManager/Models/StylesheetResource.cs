@@ -52,6 +52,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                 htmlString += " disabled";
             }
 
+            htmlString += this.RenderMimeType();
             htmlString += this.RenderBlocking();
             htmlString += this.RenderCrossOriginAttribute();
             htmlString += this.RenderFetchPriority();

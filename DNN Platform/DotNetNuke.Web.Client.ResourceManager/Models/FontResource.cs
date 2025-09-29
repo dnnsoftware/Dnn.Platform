@@ -43,6 +43,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                 htmlString += $" rel=\"font\"";
             }
 
+            htmlString += this.RenderMimeType();
             htmlString += this.RenderCrossOriginAttribute();
             htmlString += this.RenderFetchPriority();
             htmlString += this.RenderIntegrity();
