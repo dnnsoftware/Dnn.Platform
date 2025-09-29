@@ -9,7 +9,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     /// <summary>
     /// Represents a font resource that can be registered and rendered for client use.
     /// </summary>
-    public class FontResource : ResourceBase, IFontResource
+    public class FontResource : LinkResource, IFontResource
     {
         private readonly IClientResourcesController clientResourcesController;
 

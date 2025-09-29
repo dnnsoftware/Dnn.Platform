@@ -4,7 +4,7 @@
 namespace DotNetNuke.Abstractions.ClientResources;
 
 /// <summary>Marker interface for stylesheet resources.</summary>
-public interface IStylesheetResource : IResource
+public interface IStylesheetResource : ILinkResource
 {
     /// <summary>
     /// Gets or sets a value indicating whether the disabled attribute should be added to the link element.

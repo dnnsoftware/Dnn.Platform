@@ -9,7 +9,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     /// <summary>
     /// Represents a stylesheet resource that can be registered and rendered in the client resources controller.
     /// </summary>
-    public class StylesheetResource : ResourceBase, IStylesheetResource
+    public class StylesheetResource : LinkResource, IStylesheetResource
     {
         private readonly IClientResourcesController clientResourcesController;
 

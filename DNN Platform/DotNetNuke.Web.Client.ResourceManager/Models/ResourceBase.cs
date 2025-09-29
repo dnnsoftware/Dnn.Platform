@@ -62,9 +62,6 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public ReferrerPolicy ReferrerPolicy { get; set; } = ReferrerPolicy.None;
 
         /// <inheritdoc />
-        public bool Preload { get; set; } = false;
-
-        /// <inheritdoc />
         public string Integrity { get; set; } = string.Empty;
 
         /// <inheritdoc />

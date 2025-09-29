@@ -4,6 +4,6 @@
 namespace DotNetNuke.Abstractions.ClientResources;
 
 /// <summary>Marker interface for font resources.</summary>
-public interface IFontResource : IResource
+public interface IFontResource : ILinkResource
 {
 }

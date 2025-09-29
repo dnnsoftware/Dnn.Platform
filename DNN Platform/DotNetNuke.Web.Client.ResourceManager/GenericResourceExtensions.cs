@@ -134,24 +134,6 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <summary>
-        /// Marks the resource for preload.
-        /// </summary>
-        /// <param name="input">The resource to mark for preload.</param>
-        /// <returns>The resource marked for preload.</returns>
-        /// <typeparam name="T">The type of resource, which must implement <see cref="IResource"/>.</typeparam>
-        public static T SetPreload<T>(this T input)
-            where T : IResource
-        {
-            if (input == null)
-            {
-                throw new ArgumentNullException(nameof(input));
-            }
-
-            input.Preload = true;
-            return input;
-        }
-
-        /// <summary>
         /// Marks the resource as blocking.
         /// </summary>
         /// <param name="input">The resource to mark as blocking.</param>

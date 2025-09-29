@@ -82,11 +82,6 @@ public interface IResource
     bool Blocking { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether the client resource should be preloaded.
-    /// </summary>
-    bool Preload { get; set; }
-
-    /// <summary>
     /// Gets or sets the integrity attribute for the client resource.
     /// Contains inline metadata — a base64-encoded cryptographic hash of the resource (file) you're telling the browser to fetch.
     /// The browser can use this to verify that the fetched resource has been delivered without unexpected manipulation.
