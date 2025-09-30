@@ -14,6 +14,46 @@ namespace DotNetNuke.Web.Client.ResourceManager
     public static class ScriptResourceExtensions
     {
         /// <summary>
+        /// Sets the source URL of the resource.
+        /// </summary>
+        /// <param name="input">The resource to set the source URL for.</param>
+        /// <param name="sourcePath">The source URL to set.</param>
+        /// <returns>The resource with the source URL set.</returns>
+        /// <typeparam name="T">The type of resource, which must implement <see cref="IScriptResource"/>.</typeparam>
+        public static T FromSrc<T>(this T input, string sourcePath)
+            where T : IScriptResource
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            input.FilePath = sourcePath;
+            return input;
+        }
+
+        /// <summary>
+        /// Sets the source URL and path alias of the resource.
+        /// </summary>
+        /// <param name="input">The resource to set the source URL and path alias for.</param>
+        /// <param name="sourcePath">The source URL to set.</param>
+        /// <param name="pathNameAlias">The path alias to set.</param>
+        /// <returns>The resource with the source URL and path alias set.</returns>
+        /// <typeparam name="T">The type of resource, which must implement <see cref="IScriptResource"/>.</typeparam>
+        public static T FromSrc<T>(this T input, string sourcePath, string pathNameAlias)
+            where T : IScriptResource
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            input.FilePath = sourcePath;
+            input.PathNameAlias = pathNameAlias;
+            return input;
+        }
+
+        /// <summary>
         /// Sets the async attribute of the script resource.
         /// </summary>
         /// <param name="input">The script resource to set the async attribute for.</param>
