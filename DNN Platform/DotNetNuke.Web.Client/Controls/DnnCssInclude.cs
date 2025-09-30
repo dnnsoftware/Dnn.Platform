@@ -15,9 +15,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnCssInclude"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public DnnCssInclude(IClientResourcesController clientResourcesController)
-            : base(clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public DnnCssInclude(IClientResourceController clientResourceController)
+            : base(clientResourceController)
         {
             this.ForceProvider = ClientResourceProviders.DefaultCssProvider;
             this.DependencyType = ClientDependencyType.Css;

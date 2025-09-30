@@ -16,9 +16,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
         /// Sets up default settings for the control.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public DnnJsInclude(IClientResourcesController clientResourcesController)
-            : base(clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public DnnJsInclude(IClientResourceController clientResourceController)
+            : base(clientResourceController)
         {
             this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
             this.DependencyType = ClientDependencyType.Javascript;

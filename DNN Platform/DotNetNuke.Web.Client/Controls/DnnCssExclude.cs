@@ -14,9 +14,9 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnCssExclude"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The controller used to manage client resources.</param>
-        public DnnCssExclude(IClientResourcesController clientResourcesController)
-            : base(clientResourcesController)
+        /// <param name="clientResourceController">The controller used to manage client resources.</param>
+        public DnnCssExclude(IClientResourceController clientResourceController)
+            : base(clientResourceController)
         {
             this.DependencyType = ClientDependencyType.Css;
         }

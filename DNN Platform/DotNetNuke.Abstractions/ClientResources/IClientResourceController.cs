@@ -4,7 +4,7 @@
 namespace DotNetNuke.Abstractions.ClientResources;
 
 /// <summary>Provides an interface for managing client resources.</summary>
-public interface IClientResourcesController
+public interface IClientResourceController
 {
     /// <summary>
     /// Adds a font resource to the client resources controller.

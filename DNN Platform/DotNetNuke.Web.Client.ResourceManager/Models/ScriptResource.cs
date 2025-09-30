@@ -13,15 +13,15 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     /// </summary>
     public class ScriptResource : ResourceBase, IScriptResource
     {
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptResource"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public ScriptResource(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public ScriptResource(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
             this.Provider = ClientResourceProviders.DefaultJsProvider;
             this.Priority = (int)FileOrder.Js.DefaultPriority;
         }
@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public new void Register()
         {
-            this.clientResourcesController.AddScript(this);
+            this.clientResourceController.AddScript(this);
         }
 
         /// <inheritdoc />

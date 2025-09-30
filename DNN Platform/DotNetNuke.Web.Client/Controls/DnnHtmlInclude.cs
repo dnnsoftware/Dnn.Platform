@@ -25,11 +25,11 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         private static readonly Regex LinkTagRegex = new Regex(string.Format(TagPattern, "link"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex ScriptTagRegex = new Regex(string.Format(TagPattern, "script"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
-        public DnnHtmlInclude(IClientResourcesController clientResourcesController)
+        public DnnHtmlInclude(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 switch (dependencyType)
                 {
                     case ClientDependencyType.Css:
-                        var styleSheet = this.clientResourcesController.CreateStylesheet()
+                        var styleSheet = this.clientResourceController.CreateStylesheet()
                                                         .FromSrc(file.FilePath)
                                                         .SetProvider(file.ForceProvider)
                                                         .SetPriority(file.Priority);
@@ -79,7 +79,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                         styleSheet.Register();
                         break;
                     case ClientDependencyType.Javascript:
-                        var script = this.clientResourcesController.CreateScript()
+                        var script = this.clientResourceController.CreateScript()
                                                         .FromSrc(file.FilePath)
                                                         .SetProvider(file.ForceProvider)
                                                         .SetPriority(file.Priority);

@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         private string ipAddress;
 
@@ -52,15 +52,15 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="portalController">The portal controller.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
-            this.clientResourcesController = clientResourcesController ?? this.DependencyProvider.GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         private string ResetToken
@@ -76,12 +76,12 @@ namespace DotNetNuke.Modules.Admin.Security
             this.ipAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
 
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-            this.clientResourcesController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             if (this.PortalSettings.LoginTabId != -1 && this.PortalSettings.ActiveTab.TabID != this.PortalSettings.LoginTabId)
             {

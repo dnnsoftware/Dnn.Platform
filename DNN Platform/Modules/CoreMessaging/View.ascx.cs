@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.CoreMessaging
     {
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -46,12 +46,12 @@ namespace DotNetNuke.Modules.CoreMessaging
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="portalController">The portal controller.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController)
         {
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
-            this.clientResourcesController = clientResourcesController ?? this.DependencyProvider.GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets the user id from the request parameters.</summary>
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
             this.javaScript.RequestRegistration(CommonJs.Knockout);
-            this.clientResourcesController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
             this.javaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             this.AddIe7StyleSheet();
 

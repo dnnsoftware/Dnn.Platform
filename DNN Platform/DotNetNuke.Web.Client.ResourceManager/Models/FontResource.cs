@@ -13,22 +13,22 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     /// </summary>
     public class FontResource : LinkResource, IFontResource
     {
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FontResource"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller used to manage font resources.</param>
-        public FontResource(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller used to manage font resources.</param>
+        public FontResource(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
             this.Provider = ClientResourceProviders.DnnPageHeaderProvider;
         }
 
         /// <inheritdoc />
         public new void Register()
         {
-            this.clientResourcesController.AddFont(this);
+            this.clientResourceController.AddFont(this);
         }
 
         /// <inheritdoc />

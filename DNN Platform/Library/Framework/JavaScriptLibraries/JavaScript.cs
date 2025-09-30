@@ -686,10 +686,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static IClientResourcesController GetClientResourcesController(HttpContextBase context)
+        private static IClientResourceController GetClientResourcesController(HttpContextBase context)
         {
             var serviceProvider = GetCurrentServiceProvider(context);
-            return serviceProvider.GetRequiredService<IClientResourcesController>();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
 
         private static IServiceProvider GetCurrentServiceProvider(HttpContextBase context)

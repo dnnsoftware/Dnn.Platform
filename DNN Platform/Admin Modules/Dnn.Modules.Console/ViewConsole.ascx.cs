@@ -35,7 +35,7 @@ namespace Dnn.Modules.Console
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         private string defaultSize = string.Empty;
         private string defaultView = string.Empty;
@@ -51,12 +51,12 @@ namespace Dnn.Modules.Console
         /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public ViewConsole(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public ViewConsole(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourcesController = clientResourcesController ?? this.DependencyProvider.GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets a value indicating whether the module settings allow size change.</summary>
@@ -217,7 +217,7 @@ namespace Dnn.Modules.Console
             {
                 this.javaScript.RequestRegistration(CommonJs.jQuery);
 
-                this.clientResourcesController.RegisterScript("~/desktopmodules/admin/console/scripts/jquery.console.js");
+                this.clientResourceController.RegisterScript("~/desktopmodules/admin/console/scripts/jquery.console.js");
 
                 this.DetailView.ItemDataBound += this.RepeaterItemDataBound;
 

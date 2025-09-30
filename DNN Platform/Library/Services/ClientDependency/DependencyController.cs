@@ -14,10 +14,10 @@ namespace DotNetNuke.Services.ClientDependency
 
     internal class DependencyController
     {
-        internal static IClientResourcesController GetClientResourcesController(Page page)
+        internal static IClientResourceController GetClientResourcesController(Page page)
         {
             var serviceProvider = GetCurrentServiceProvider(page.Request.RequestContext.HttpContext);
-            return serviceProvider.GetRequiredService<IClientResourcesController>();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
 
         internal static IServiceProvider GetCurrentServiceProvider(HttpContextBase context)

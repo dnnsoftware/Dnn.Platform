@@ -11,15 +11,15 @@ namespace DotNetNuke.Web.Client.ResourceManager
     using DotNetNuke.Abstractions.ClientResources;
 
     /// <inheritdoc />
-    public class ClientResourcesController : IClientResourcesController
+    public class ClientResourceController : IClientResourceController
     {
         private readonly IHostSettings hostSettings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientResourcesController"/> class.
+        /// Initializes a new instance of the <see cref="ClientResourceController"/> class.
         /// </summary>
         /// <param name="hostSettings">The host settings.</param>
-        public ClientResourcesController(IHostSettings hostSettings)
+        public ClientResourceController(IHostSettings hostSettings)
         {
             this.hostSettings = hostSettings;
             this.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");

@@ -14,15 +14,15 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// <summary>Represents an included client resource.</summary>
     public abstract class ClientResourceInclude : Control
     {
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientResourceInclude"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        protected ClientResourceInclude(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        protected ClientResourceInclude(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             switch (this.DependencyType)
             {
                 case ClientDependencyType.Css:
-                    this.clientResourcesController.CreateStylesheet()
+                    this.clientResourceController.CreateStylesheet()
                                 .FromSrc(this.FilePath, this.PathNameAlias)
                                 .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
                                 .SetProvider(this.ForceProvider)
@@ -89,7 +89,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                                 .Register();
                     break;
                 case ClientDependencyType.Javascript:
-                    this.clientResourcesController.CreateScript()
+                    this.clientResourceController.CreateScript()
                                 .FromSrc(this.FilePath, this.PathNameAlias)
                                 .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
                                 .SetProvider(this.ForceProvider)

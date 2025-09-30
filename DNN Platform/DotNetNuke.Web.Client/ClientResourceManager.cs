@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.</summary>
-    [Obsolete("Deprecated in DotNetNuke 10.2.0. Please use IClientResourcesController instead. Scheduled removal in v12.0.0.")]
+    [Obsolete("Deprecated in DotNetNuke 10.2.0. Please use IClientResourceController instead. Scheduled removal in v12.0.0.")]
     public partial class ClientResourceManager
     {
         /// <summary>The default css provider.</summary>
@@ -595,10 +595,10 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
         }
 
-        private static IClientResourcesController GetClientResourcesController(Page page)
+        private static IClientResourceController GetClientResourcesController(Page page)
         {
             var serviceProvider = GetCurrentServiceProvider(page.Request.RequestContext.HttpContext);
-            return serviceProvider.GetRequiredService<IClientResourcesController>();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
 
         private static IServiceProvider GetCurrentServiceProvider(HttpContextBase context)

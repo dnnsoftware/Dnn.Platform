@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IServiceProvider serviceProvider;
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
         public Register()
@@ -70,14 +70,14 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
             this.navigationManager = navigationManager ?? this.serviceProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? this.serviceProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.serviceProvider.GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourcesController = clientResourcesController ?? this.serviceProvider.GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? this.serviceProvider.GetRequiredService<IClientResourceController>();
         }
 
         protected string ExcludeTerms
@@ -140,9 +140,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            this.clientResourcesController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
             if (this.PortalSettings.Registration.RegistrationFormType == 0)
             {

@@ -664,7 +664,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Sub RegisterClientReference(ByVal objPage As Page, ByVal eRef As ClientNamespaceReferences)
-            Dim controller As IClientResourcesController = GetClientResourcesController(objPage)
+            Dim controller As IClientResourceController = GetClientResourcesController(objPage)
             Select Case eRef
                 Case ClientNamespaceReferences.dnn
                     If Not IsClientScriptBlockRegistered(objPage, "dnn.js") Then
@@ -862,7 +862,7 @@ Namespace DotNetNuke.UI.Utilities
             If BrowserSupportsFunctionality(ClientFunctionality.DHTML) Then
 
                 RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom)
-                Dim controller As IClientResourcesController = GetClientResourcesController(objPage)
+                Dim controller As IClientResourceController = GetClientResourcesController(objPage)
                 controller.CreateScript().FromSrc(ScriptPath & "dnn.util.tablereorder.js").Register()
 
                 AddAttribute(objButton, "onclick", "if (dnn.util.tableReorderMove(this," & CInt(blnUp) & ",'" & strKey & "')) return false;")
@@ -1088,9 +1088,9 @@ Namespace DotNetNuke.UI.Utilities
 
 #End Region
 
-        Friend Shared Function GetClientResourcesController(ByVal page As Page) As IClientResourcesController
+        Friend Shared Function GetClientResourcesController(ByVal page As Page) As IClientResourceController
             Dim serviceProvider As IServiceProvider = GetCurrentServiceProvider(page.Request.RequestContext.HttpContext)
-            Return serviceProvider.GetRequiredService(Of IClientResourcesController)()
+            Return serviceProvider.GetRequiredService(Of IClientResourceController)()
         End Function
 
         Friend Shared Function GetCurrentServiceProvider(ByVal context As HttpContextBase) As IServiceProvider

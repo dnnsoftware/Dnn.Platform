@@ -13,16 +13,16 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     [ParseChildren(typeof(ClientResourcePath), ChildrenAsProperties = true)]
     public class ClientResourceLoader : Control
     {
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
 #pragma warning disable IDE0290
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientResourceLoader"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller to use for resource registration.</param>
-        public ClientResourceLoader(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller to use for resource registration.</param>
+        public ClientResourceLoader(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
             this.Paths = new ClientResourcePathCollection();
         }
 #pragma warning restore IDE0290
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             foreach (var path in this.Paths)
             {
-                this.clientResourcesController.RegisterPathNameAlias(path.Name, path.Path);
+                this.clientResourceController.RegisterPathNameAlias(path.Name, path.Path);
             }
 
             base.OnLoad(e);

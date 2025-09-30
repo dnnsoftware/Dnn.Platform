@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IEventLogger eventLogger;
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
         public Password()
@@ -46,13 +46,13 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public Password(IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Password(IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.hostSettings = hostSettings ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourcesController = clientResourcesController ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>A function which handles an event with <see cref="PasswordUpdatedEventArgs"/>.</summary>
@@ -255,12 +255,12 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-            this.clientResourcesController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 

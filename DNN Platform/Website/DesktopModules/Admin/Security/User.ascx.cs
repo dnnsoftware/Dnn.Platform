@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;
         private readonly DataProvider dataProvider;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="User"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -58,14 +58,14 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="dataProvider">The data provider.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public User(IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, DataProvider dataProvider, IClientResourceController clientResourceController)
         {
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
-            this.clientResourcesController = clientResourcesController ?? this.DependencyProvider.GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets a value indicating whether the User is valid.</summary>
@@ -286,12 +286,12 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <inheritdoc/>
         protected override void OnPreRender(EventArgs e)
         {
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.PasswordStrength.js");
-            this.clientResourcesController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.PasswordStrength.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
-            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 

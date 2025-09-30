@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc/>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IClientResourcesController, ClientResourcesController>();
+            services.AddScoped<IClientResourceController, ClientResourceController>();
         }
     }
 }

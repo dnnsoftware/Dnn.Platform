@@ -15,15 +15,15 @@ namespace DotNetNuke.Web.Client.Controls
     /// </summary>
     public abstract class ClientResourceExclude : Control
     {
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientResourceExclude"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        protected ClientResourceExclude(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        protected ClientResourceExclude(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
         }
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace DotNetNuke.Web.Client.Controls
             switch (this.DependencyType)
             {
                 case ClientDependencyType.Css:
-                    this.clientResourcesController.RemoveStylesheetByName(this.Name);
+                    this.clientResourceController.RemoveStylesheetByName(this.Name);
                     break;
                 case ClientDependencyType.Javascript:
-                    this.clientResourcesController.RemoveScriptByName(this.Name);
+                    this.clientResourceController.RemoveScriptByName(this.Name);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

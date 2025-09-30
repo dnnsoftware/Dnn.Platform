@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "Search.ascx";
 
         private readonly INavigationManager navigationManager;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         private bool enableWildSearch = true;
         private string siteIconURL;
@@ -48,11 +48,11 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public Search(INavigationManager navigationManager, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Search(INavigationManager navigationManager, IClientResourceController clientResourceController)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         public string SeeMoreText
@@ -386,8 +386,8 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
 
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            this.clientResourcesController.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
-            this.clientResourcesController.RegisterScript("~/Resources/Search/SearchSkinObjectPreview.js");
+            this.clientResourceController.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterScript("~/Resources/Search/SearchSkinObjectPreview.js");
 
             this.cmdSearch.Click += this.CmdSearchClick;
             this.cmdSearchNew.Click += this.CmdSearchNewClick;
@@ -466,7 +466,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-                this.clientResourcesController.CreateScript().FromSrc("~/Resources/Search/Search.js").SetPriority((int)FileOrder.Js.DefaultPriority).SetProvider(ClientResourceProviders.DnnFormBottomProvider).Register();
+                this.clientResourceController.CreateScript().FromSrc("~/Resources/Search/Search.js").SetPriority((int)FileOrder.Js.DefaultPriority).SetProvider(ClientResourceProviders.DnnFormBottomProvider).Register();
 
                 this.txtSearchNew.Attributes.Add("autocomplete", "off");
                 this.txtSearchNew.Attributes.Add("placeholder", this.PlaceHolderText);

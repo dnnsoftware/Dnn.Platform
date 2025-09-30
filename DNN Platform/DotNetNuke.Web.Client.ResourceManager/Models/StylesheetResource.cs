@@ -13,15 +13,15 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     /// </summary>
     public class StylesheetResource : LinkResource, IStylesheetResource
     {
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StylesheetResource"/> class.
         /// </summary>
-        /// <param name="clientResourcesController">The client resources controller used to register the stylesheet.</param>
-        public StylesheetResource(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller used to register the stylesheet.</param>
+        public StylesheetResource(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
             this.Provider = ClientResourceProviders.DefaultCssProvider;
             this.Priority = (int)FileOrder.Css.DefaultPriority;
         }
@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public new void Register()
         {
-            this.clientResourcesController.AddStylesheet(this);
+            this.clientResourceController.AddStylesheet(this);
         }
 
         /// <inheritdoc />

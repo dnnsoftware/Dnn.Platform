@@ -39,7 +39,7 @@ namespace DotNetNuke.Admin.Containers
         private readonly List<int> validIDs = new List<int>();
         private readonly IModuleControlPipeline moduleControlPipeline;
         private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
         public ModuleActions()
@@ -50,12 +50,12 @@ namespace DotNetNuke.Admin.Containers
         /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public ModuleActions(IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public ModuleActions(IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         protected string AdminText
@@ -105,9 +105,9 @@ namespace DotNetNuke.Admin.Containers
 
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            this.clientResourcesController.RegisterStylesheet("~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
-            this.clientResourcesController.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
+            this.clientResourceController.RegisterStylesheet("~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
@@ -143,7 +143,7 @@ namespace DotNetNuke.Admin.Containers
                         ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "QS_FirstLoad", "False");
                     }
 
-                    this.clientResourcesController.RegisterScript("~/admin/menus/ModuleActions/dnnQuickSettings.js");
+                    this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
                 if (this.ActionRoot.Visible)

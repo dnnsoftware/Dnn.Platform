@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.SearchResults
         private const string MyFileName = "SearchResults.ascx";
 
         private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
         private IList<string> searchContentSources;
         private IList<int> searchPortalIds;
 
@@ -43,11 +43,11 @@ namespace DotNetNuke.Modules.SearchResults
 
         /// <summary>Initializes a new instance of the <see cref="SearchResults"/> class.</summary>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public SearchResults(IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public SearchResults(IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         protected string SearchTerm
@@ -362,9 +362,9 @@ namespace DotNetNuke.Modules.SearchResults
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/scripts/dnn.searchBox.js");
-            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.searchBox.css", Abstractions.ClientResources.FileOrder.Css.ModuleCss);
-            this.clientResourcesController.RegisterScript("~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.searchBox.js");
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnn.searchBox.css", Abstractions.ClientResources.FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterScript("~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
 
             this.CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
 

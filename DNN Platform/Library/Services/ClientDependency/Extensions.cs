@@ -14,10 +14,10 @@ namespace DotNetNuke.Services.ClientDependency
         /// <summary>
         /// Registers a font resource by its path.
         /// </summary>
-        /// <param name="controller">The <see cref="IClientResourcesController"/> to extend.</param>
+        /// <param name="controller">The <see cref="IClientResourceController"/> to extend.</param>
         /// <param name="fontPath">The path to the font resource to register.</param>
         /// <param name="checkIfExists">Whether to check if the script already exists before registering.</param>
-        public static void RegisterFont(this IClientResourcesController controller, string fontPath, bool checkIfExists = false)
+        public static void RegisterFont(this IClientResourceController controller, string fontPath, bool checkIfExists = false)
         {
             if (controller == null)
             {
@@ -44,10 +44,10 @@ namespace DotNetNuke.Services.ClientDependency
         /// <summary>
         /// Registers a script resource by its path.
         /// </summary>
-        /// <param name="controller">The <see cref="IClientResourcesController"/> to extend.</param>
+        /// <param name="controller">The <see cref="IClientResourceController"/> to extend.</param>
         /// <param name="scriptPath">The path to the script resource to register.</param>
         /// <param name="checkIfExists">Whether to check if the script already exists before registering.</param>
-        public static void RegisterScript(this IClientResourcesController controller, string scriptPath, bool checkIfExists = false)
+        public static void RegisterScript(this IClientResourceController controller, string scriptPath, bool checkIfExists = false)
         {
             if (controller == null)
             {
@@ -74,11 +74,11 @@ namespace DotNetNuke.Services.ClientDependency
         /// <summary>
         /// Registers a script resource by its path.
         /// </summary>
-        /// <param name="controller">The <see cref="IClientResourcesController"/> to extend.</param>
+        /// <param name="controller">The <see cref="IClientResourceController"/> to extend.</param>
         /// <param name="scriptPath">The path to the script resource to register.</param>
         /// <param name="priority">The priority for loading the script.</param>
         /// <param name="checkIfExists">Whether to check if the script already exists before registering.</param>
-        public static void RegisterScript(this IClientResourcesController controller, string scriptPath, FileOrder.Js priority, bool checkIfExists = false)
+        public static void RegisterScript(this IClientResourceController controller, string scriptPath, FileOrder.Js priority, bool checkIfExists = false)
         {
             if (controller == null)
             {
@@ -108,10 +108,10 @@ namespace DotNetNuke.Services.ClientDependency
         /// <summary>
         /// Registers a stylesheet resource by its path.
         /// </summary>
-        /// <param name="controller">The <see cref="IClientResourcesController"/> to extend.</param>
+        /// <param name="controller">The <see cref="IClientResourceController"/> to extend.</param>
         /// <param name="stylesheetPath">The path to the stylesheet resource to register.</param>
         /// <param name="checkIfExists">Whether to check if the script already exists before registering.</param>
-        public static void RegisterStylesheet(this IClientResourcesController controller, string stylesheetPath, bool checkIfExists = false)
+        public static void RegisterStylesheet(this IClientResourceController controller, string stylesheetPath, bool checkIfExists = false)
         {
             if (controller == null)
             {
@@ -138,11 +138,11 @@ namespace DotNetNuke.Services.ClientDependency
         /// <summary>
         /// Registers a stylesheet resource by its path.
         /// </summary>
-        /// <param name="controller">The <see cref="IClientResourcesController"/> to extend.</param>
+        /// <param name="controller">The <see cref="IClientResourceController"/> to extend.</param>
         /// <param name="stylesheetPath">The path to the stylesheet resource to register.</param>
         /// <param name="priority">The priority for loading the stylesheet.</param>
         /// <param name="checkIfExists">Whether to check if the script already exists before registering.</param>
-        public static void RegisterStylesheet(this IClientResourcesController controller, string stylesheetPath, FileOrder.Css priority, bool checkIfExists = false)
+        public static void RegisterStylesheet(this IClientResourceController controller, string stylesheetPath, FileOrder.Css priority, bool checkIfExists = false)
         {
             if (controller == null)
             {

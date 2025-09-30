@@ -32,16 +32,16 @@ namespace DotNetNuke.UI.Containers
     public class Container : UserControl
     {
         private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
         private HtmlContainerControl contentPane;
         private ModuleInfo moduleConfiguration;
         private ModuleHost moduleHost;
 
         /// <summary>Initializes a new instance of the <see cref="Container"/> class.</summary>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public Container(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Container(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets the ModuleControl object that this container is displaying.</summary>
@@ -323,7 +323,7 @@ namespace DotNetNuke.UI.Containers
                     this.ContentPane.Controls.Add(this.LoadControl(this.PortalSettings.DefaultModuleActionMenu));
 
                     // register admin.css
-                    this.clientResourcesController.RegisterStylesheet(Globals.HostPath + "admin.css", FileOrder.Css.AdminCss, true);
+                    this.clientResourceController.RegisterStylesheet(Globals.HostPath + "admin.css", FileOrder.Css.AdminCss, true);
                 }
 
                 // Process Module Header
@@ -363,8 +363,8 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessStylesheets(bool includeModuleCss)
         {
-            this.clientResourcesController.RegisterStylesheet(this.ContainerPath + "container.css", FileOrder.Css.ContainerCss, true);
-            this.clientResourcesController.RegisterStylesheet(this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss, true);
+            this.clientResourceController.RegisterStylesheet(this.ContainerPath + "container.css", FileOrder.Css.ContainerCss, true);
+            this.clientResourceController.RegisterStylesheet(this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss, true);
 
             // process the base class module properties
             if (includeModuleCss)
@@ -384,14 +384,14 @@ namespace DotNetNuke.UI.Containers
                         stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
                     }
 
-                    this.clientResourcesController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
+                    this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
                 }
 
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
                 if (ix >= 0)
                 {
                     stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
-                    this.clientResourcesController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
+                    this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
                 }
             }
         }

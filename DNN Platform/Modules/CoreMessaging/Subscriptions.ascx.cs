@@ -31,13 +31,13 @@ namespace DotNetNuke.Modules.CoreMessaging
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="Subscriptions"/> class.</summary>
-        /// <param name="clientResourcesController">The client resources controller.</param>
-        public Subscriptions(IClientResourcesController clientResourcesController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Subscriptions(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets or sets the module context.</summary>
@@ -90,10 +90,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             if (this.Request.IsAuthenticated)
             {
-                this.clientResourcesController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
-                this.clientResourcesController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
-                this.clientResourcesController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
-                this.clientResourcesController.RegisterStylesheet("~/DesktopModules/CoreMessaging/subscriptions.css");
+                this.clientResourceController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
+                this.clientResourceController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
+                this.clientResourceController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
+                this.clientResourceController.RegisterStylesheet("~/DesktopModules/CoreMessaging/subscriptions.css");
             }
             else
             {

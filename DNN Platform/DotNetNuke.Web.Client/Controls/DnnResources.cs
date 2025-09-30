@@ -11,11 +11,11 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     public class DnnResources : Literal
     {
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
-        public DnnResources(IClientResourcesController clientResourcesController)
+        public DnnResources(IClientResourceController clientResourceController)
         {
-            this.clientResourcesController = clientResourcesController;
+            this.clientResourceController = clientResourceController;
         }
 
         public string ApplicationPath { get; set; }
@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);
-            writer.Write(this.clientResourcesController.RenderDependencies(ResourceType.All, this.Provider, this.ApplicationPath));
+            writer.Write(this.clientResourceController.RenderDependencies(ResourceType.All, this.Provider, this.ApplicationPath));
         }
     }
 }

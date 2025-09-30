@@ -31,18 +31,18 @@ namespace DotNetNuke.UI.Skins.Controls
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourcesController clientResourcesController;
+        private readonly IClientResourceController clientResourceController;
 
         public Toast()
             : this(null, null, null)
         {
         }
 
-        public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourcesController clientResourcesController)
+        public Toast(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourcesController = clientResourcesController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourcesController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         protected string ServiceModuleName { get; private set; }
@@ -83,8 +83,8 @@ namespace DotNetNuke.UI.Skins.Controls
             this.javaScript.RequestRegistration(CommonJs.jQueryUI);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            this.clientResourcesController.RegisterScript("~/Resources/Shared/components/Toast/jquery.toastmessage.js", FileOrder.Js.jQuery);
-            this.clientResourcesController.RegisterStylesheet("~/Resources/Shared/components/Toast/jquery.toastmessage.css", FileOrder.Css.DefaultCss);
+            this.clientResourceController.RegisterScript("~/Resources/Shared/components/Toast/jquery.toastmessage.js", FileOrder.Js.jQuery);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/components/Toast/jquery.toastmessage.css", FileOrder.Css.DefaultCss);
 
             this.InitializeConfig();
         }
