@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
@@ -44,6 +45,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
     public class SkinModelFactory : ISkinModelFactory
     {
+        public const string OnInitMessage = "Skin_InitMessage";
+        public const string OnInitMessageType = "Skin_InitMessageType";
+
         private readonly INavigationManager navigationManager;
         private readonly IPaneModelFactory paneModelFactory;
         private readonly IPageService PageService;
@@ -202,11 +206,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 // Load the Control Panel
                 this.InjectControlPanel(ctlSkin, page.Request);
 
-                /*
+                
                 // Register any error messages on the Skin
-                if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
+                if (page.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
                 {
-                    AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
+                    this.PageService.AddErrorMessage(" ", Localization.GetString("CriticalError.Error"));
 
                     if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                     {
@@ -214,32 +218,32 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
                         JavaScript.RequestRegistration(CommonJs.jQueryUI);
-                        JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
-                        ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.logViewer.js");
+                        MvcJavaScript.RegisterClientReference(page.ControllerContext, DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn_dom);
+                        MvcClientResourceManager.RegisterScript(page.ControllerContext, "~/resources/shared/scripts/dnn.logViewer.js");
                     }
                 }
-                */
+                
                 if (!success && !TabPermissionController.CanAdminPage())
                 {
                     // only display the warning to non-administrators (administrators will see the errors)
                     this.PageService.AddWarningMessage(Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email));
                 }
 
-                /*
+                
                 if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
                 {
-                    var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                    var messageType = PageMessageType.Warning;
                     if (HttpContext.Current.Items.Contains(OnInitMessageType))
                     {
-                        messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
+                        messageType = (PageMessageType)Enum.Parse(typeof(PageMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
                     }
 
-                    AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+                    this.PageService.AddMessage(string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
 
                     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 }
-                */
+                
 
                 // Process the Panes attributes
                 foreach (var key in ctlSkin.Panes.Keys)

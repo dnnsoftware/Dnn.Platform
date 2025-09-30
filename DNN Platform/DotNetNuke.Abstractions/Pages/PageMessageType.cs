@@ -31,43 +31,43 @@ namespace DotNetNuke.Abstractions.Pages
     public enum PageMessageType
     {
         /// <summary>
-        /// Success message type (value: 1).
+        /// Success message type.
         /// Used for messages indicating successful completion of operations.
         /// Typically displayed with green styling and success icons.
         /// </summary>
         /// <example>
         /// Use for: Data saved, user created, operation completed, etc.
         /// </example>
-        Success = 1,
+        Success = 0,
 
         /// <summary>
-        /// Warning message type (value: 2).
+        /// Warning message type.
         /// Used for messages indicating potential issues or important notices that require user attention.
         /// Typically displayed with yellow/orange styling and warning icons.
         /// </summary>
         /// <example>
         /// Use for: Validation warnings, deprecation notices, cautionary information, etc.
         /// </example>
-        Warning = 2,
+        Warning = 1,
 
         /// <summary>
-        /// Error message type (value: 3).
+        /// Error message type.
         /// Used for messages indicating failed operations or critical issues.
         /// Typically displayed with red styling and error icons.
         /// </summary>
         /// <example>
         /// Use for: Validation errors, operation failures, system errors, etc.
         /// </example>
-        Error = 3,
+        Error = 2,
 
         /// <summary>
-        /// Informational message type (value: 4).
+        /// Informational message type.
         /// Used for general notifications and informational content.
         /// Typically displayed with blue styling and info icons.
         /// </summary>
         /// <example>
         /// Use for: General notifications, tips, system status updates, etc.
         /// </example>
-        Info = 4,
+        Info = 3,
     }
 }
