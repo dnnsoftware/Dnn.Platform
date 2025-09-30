@@ -17,6 +17,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -59,11 +60,12 @@ namespace DotNetNuke.Framework
         private readonly IHostSettingsService hostSettingsService;
         private readonly IEventLogger eventLogger;
         private readonly IPortalSettingsController portalSettingsController;
+        private readonly IPageService pageService;
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -77,7 +79,8 @@ namespace DotNetNuke.Framework
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="portalSettingsController">The portal settings controller.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController)
+        /// <param name="pageService">The page service.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController, IPageService pageService)
             : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -88,6 +91,7 @@ namespace DotNetNuke.Framework
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         public string CurrentSkinPath => ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
@@ -284,6 +288,8 @@ namespace DotNetNuke.Framework
                 }
             }
 
+            this.pageService.SetCanonicalLinkUrl(this.CanonicalLinkUrl, PagePriority.Page);
+
             // add CSS links
             ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css"));
             ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
@@ -337,6 +343,10 @@ namespace DotNetNuke.Framework
             this.metaPanel.Visible = !UrlUtils.InPopUp();
             if (!UrlUtils.InPopUp())
             {
+                this.Title = this.pageService.GetTitle();
+                this.Description = this.pageService.GetDescription();
+                this.KeyWords = this.pageService.GetKeyWords();
+
                 this.MetaGenerator.Content = this.Generator;
                 this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
@@ -352,6 +362,7 @@ namespace DotNetNuke.Framework
                 this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
             }
 
+            this.CanonicalLinkUrl = this.pageService.GetCanonicalLinkUrl();
             if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
             {
                 // Add Canonical <link> using the primary alias
@@ -361,6 +372,40 @@ namespace DotNetNuke.Framework
 
                 // Add the HtmlLink to the Head section of the page.
                 this.Page.Header.Controls.Add(canonicalLink);
+            }
+
+            foreach (var item in this.pageService.GetHeadTags())
+            {
+                this.Page.Header.Controls.Add(new LiteralControl(item.Value));
+            }
+
+            foreach (var item in this.pageService.GetMetaTags())
+            {
+                this.Page.Header.Controls.Add(new Meta() { Name = item.Name, Content = item.Content });
+            }
+
+            foreach (var item in this.pageService.GetMessages())
+            {
+                ModuleMessage.ModuleMessageType moduleMessageType = ModuleMessage.ModuleMessageType.BlueInfo;
+
+                switch (item.MessageType)
+                {
+                    case PageMessageType.Success:
+                        moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
+                        break;
+                    case PageMessageType.Warning:
+                        moduleMessageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                        break;
+                    case PageMessageType.Error:
+                        moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
+                        break;
+                    case PageMessageType.Info:
+                    default:
+                        moduleMessageType = ModuleMessage.ModuleMessageType.BlueInfo;
+                        break;
+                }
+
+                Skin.AddPageMessage(this, item.Heading, item.Message, moduleMessageType);
             }
         }
 
@@ -567,6 +612,8 @@ namespace DotNetNuke.Framework
                 this.Description = this.PortalSettings.Description;
             }
 
+            this.pageService.SetDescription(this.Description, PagePriority.Page);
+
             // META keywords
             if (!string.IsNullOrEmpty(this.PortalSettings.ActiveTab.KeyWords))
             {
@@ -576,6 +623,8 @@ namespace DotNetNuke.Framework
             {
                 this.KeyWords = this.PortalSettings.KeyWords;
             }
+
+            this.pageService.SetKeyWords(this.KeyWords, PagePriority.Page);
 
             // META copyright
             if (!string.IsNullOrEmpty(this.PortalSettings.FooterText))
@@ -618,6 +667,8 @@ namespace DotNetNuke.Framework
                 string versionString = $" ({this.appInfo.Status} Version: {this.appInfo.Version})";
                 this.Title += versionString;
             }
+
+            this.pageService.SetTitle(this.Title, PagePriority.Page);
 
             // register css variables
             var cssVariablesStyleSheet = this.GetCssVariablesStylesheet();
