@@ -225,7 +225,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             if (!string.IsNullOrEmpty(this.Type))
             {
-                htmlString.Append($" type=\"{this.Type}\"");
+                htmlString.Append($" type=\"{WebUtility.HtmlEncode(this.Type)}\"");
             }
         }
 
