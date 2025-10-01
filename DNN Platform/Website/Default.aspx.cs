@@ -299,7 +299,7 @@ namespace DotNetNuke.Framework
             this.clientResourceController.CreateStylesheet()
                 .FromSrc("~/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css")
                 .SetNameAndVersion("dnndefault", "10.0.0", false)
-                .SetPriority((int)FileOrder.Css.DefaultCss)
+                .SetPriority(FileOrder.Css.DefaultCss)
                 .Register();
 
             this.clientResourceController.RegisterStylesheet(string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss, true);

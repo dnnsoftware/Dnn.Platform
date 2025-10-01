@@ -466,7 +466,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-                this.clientResourceController.CreateScript().FromSrc("~/Resources/Search/Search.js").SetPriority((int)FileOrder.Js.DefaultPriority).SetProvider(ClientResourceProviders.DnnFormBottomProvider).Register();
+                this.clientResourceController.CreateScript().FromSrc("~/Resources/Search/Search.js").SetPriority(FileOrder.Js.DefaultPriority).SetProvider(ClientResourceProviders.DnnFormBottomProvider).Register();
 
                 this.txtSearchNew.Attributes.Add("autocomplete", "off");
                 this.txtSearchNew.Attributes.Add("placeholder", this.PlaceHolderText);

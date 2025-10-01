@@ -54,6 +54,25 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <summary>
+        /// Sets the priority of the resource.
+        /// </summary>
+        /// <param name="input">The resource to set the priority for.</param>
+        /// <param name="priority">The priority value to set.</param>
+        /// <returns>The resource with the priority set.</returns>
+        /// <typeparam name="T">The type of resource, which must implement <see cref="IResource"/>.</typeparam>
+        public static T SetPriority<T>(this T input, FileOrder.Css priority)
+            where T : IStylesheetResource
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            input.Priority = (int)priority;
+            return input;
+        }
+
+        /// <summary>
         /// Sets the disabled attribute of the stylesheet resource.
         /// </summary>
         /// <param name="input">The stylesheet resource to set the disabled attribute for.</param>

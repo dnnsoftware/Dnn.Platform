@@ -30,13 +30,13 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public bool Disabled { get; set; } = false;
 
         /// <inheritdoc />
-        public new void Register()
+        public override void Register()
         {
             this.clientResourceController.AddStylesheet(this);
         }
 
         /// <inheritdoc />
-        public new string Render(int crmVersion, bool useCdn, string applicationPath)
+        public override string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             var htmlString = new StringBuilder("<link");
             htmlString.Append($" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");

@@ -26,13 +26,13 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         }
 
         /// <inheritdoc />
-        public new void Register()
+        public override void Register()
         {
             this.clientResourceController.AddFont(this);
         }
 
         /// <inheritdoc />
-        public new string Render(int crmVersion, bool useCdn, string applicationPath)
+        public override string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             var htmlString = new StringBuilder("<link");
             htmlString.Append($" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");

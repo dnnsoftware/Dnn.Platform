@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.ClientDependency
 
             controller.CreateScript()
                 .FromSrc(scriptPath)
-                .SetPriority((int)priority)
+                .SetPriority(priority)
                 .Register();
         }
 
@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.ClientDependency
 
             controller.CreateStylesheet()
                 .FromSrc(stylesheetPath)
-                .SetPriority((int)priority)
+                .SetPriority(priority)
                 .Register();
         }
     }
