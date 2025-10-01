@@ -75,16 +75,10 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
 
         /// <inheritdoc />
-        public void Register()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void Register();
 
         /// <inheritdoc />
-        public string Render(int crmVersion, bool useCdn, string applicationPath)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract string Render(int crmVersion, bool useCdn, string applicationPath);
 
         /// <summary>
         /// Gets the versioned path.
