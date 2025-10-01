@@ -7,18 +7,17 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Web;
-
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Tests.Instance.Utilities;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Utilities.Mocks;
-
+    using DotNetNuke.Web.Client.ResourceManager;
     using Microsoft.Extensions.DependencyInjection;
 
     using Moq;
@@ -33,6 +32,7 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
 
         private HttpContextBase httpContext;
         private FakeServiceProvider serviceProvider;
+        private Mock<CachingProvider> cachingProvider;
 
         [SetUp]
         public void Setup()
@@ -50,16 +50,23 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             dataProviderMock.Setup(dp => dp.GetProviderPath()).Returns(string.Empty);
             dataProviderMock.Setup(dp => dp.GetVersion()).Returns(dnnContext.Application.Version);
 
+            this.cachingProvider = MockComponentProvider.CreateDataCacheProvider();
+
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
                 {
                     services.AddSingleton(mockApplicationStatusInfo.Object);
                     services.AddSingleton(mockApplication.Object);
+                    services.AddSingleton(this.cachingProvider.Object);
                     services.AddSingleton<IDnnContext>(dnnContext);
                     services.AddSingleton(dataProviderMock.Object);
+                    services.AddSingleton(Mock.Of<IHostSettings>());
+                    services.AddSingleton<IClientResourceController, ClientResourceController>();
                 });
 
             this.httpContext = HttpContextSource.Current;
+
+            this.SetupPackageController();
         }
 
         [TearDown]
@@ -402,9 +409,23 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
         {
             var libraryController = new Mock<IJavaScriptLibraryController>();
             libraryController.Setup(lc => lc.GetLibraries()).Returns(libraries);
-            libraryController.Setup(lc => lc.GetLibrary(It.IsAny<Func<JavaScriptLibrary, bool>>())).Returns((Func<JavaScriptLibrary, bool> predicate) => libraries.SingleOrDefault(predicate));
+            libraryController.Setup(lc => lc.GetLibrary(It.IsAny<Func<JavaScriptLibrary, bool>>())).Returns((Func<JavaScriptLibrary, bool> predicate) => libraries.Where(predicate).OrderByDescending(l => l.Version).FirstOrDefault());
             libraryController.Setup(lc => lc.GetLibraries(It.IsAny<Func<JavaScriptLibrary, bool>>())).Returns((Func<JavaScriptLibrary, bool> predicate) => libraries.Where(predicate));
             JavaScriptLibraryController.SetTestableInstance(libraryController.Object);
+        }
+
+        private void SetupPackageController(params PackageInfo[] packages)
+        {
+            var packageController = new Mock<IPackageController>();
+            // Fix: Provide a portalId argument (e.g., 0) to match the required signature
+            packageController.Setup(pc => pc.GetExtensionPackages(It.IsAny<int>()))
+                .Returns(packages.ToList());
+            packageController.Setup(pc => pc.GetExtensionPackage(It.IsAny<int>(), It.IsAny<Func<PackageInfo, bool>>()))
+                .Returns((int portalId, Func<PackageInfo, bool> predicate) => new PackageInfo());
+            // Fix: Correct the type of the predicate to match the method signature
+            packageController.Setup(pc => pc.GetPackageDependencies(It.IsAny<Func<PackageDependencyInfo, bool>>()))
+                .Returns(new List<PackageDependencyInfo>());
+            PackageController.SetTestableInstance(packageController.Object);
         }
     }
 }
