@@ -66,3 +66,35 @@ pageService.AddMessage(new PageMessage(
 
 
 
+
+#### Convenience extensions (`Library/Services/Pages/PageExtensions.cs`)
+These helpers provide simpler overloads for common operations:
+
+```csharp
+// Head content
+void IPageService.AddToHead(string tag, int priority = PagePriority.Default);
+void IPageService.AddMeta(string name, string content, int priority = PagePriority.Default);
+
+// Messages with explicit type
+void IPageService.AddMessage(string heading, string message, PageMessageType messageType, int priority = PagePriority.Default);
+void IPageService.AddMessage(string heading, string message, PageMessageType messageType, string iconSrc, int priority = PagePriority.Default);
+
+// Convenience by type
+void IPageService.AddSuccessMessage(string heading, string message, int priority = PagePriority.Default);
+void IPageService.AddErrorMessage(string heading, string message, int priority = PagePriority.Default);
+void IPageService.AddWarningMessage(string heading, string message, int priority = PagePriority.Default);
+void IPageService.AddInfoMessage(string heading, string message, int priority = PagePriority.Default);
+
+// Mapping helper for UI layer
+DotNetNuke.UI.Skins.Controls.ModuleMessage.ModuleMessageType PageMessageType.ToModuleMessageType();
+```
+
+Example:
+```csharp
+pageService.AddToHead("<link rel=\"preload\" href=\"/fonts/ui.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>", PagePriority.Site);
+pageService.AddMeta("robots", "max-image-preview:large", PagePriority.Page);
+
+pageService.AddSuccessMessage("Saved", "Settings updated successfully.");
+pageService.AddWarningMessage("Heads up", "This feature is experimental.", PagePriority.Page);
+```
+

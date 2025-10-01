@@ -49,21 +49,7 @@ namespace DotNetNuke.Services.Pages
         {
             var priorityMessage = new PageMessage(heading, message, PageMessageType.Info, string.Empty, priority);
             pageService.AddMessage(priorityMessage);
-        }
-
-        /// <summary>
-        /// Adds a message using simple parameters with specified message type.
-        /// </summary>
-        /// <param name="pageService">The page service instance.</param>
-        /// <param name="heading">The heading text for the message.</param>
-        /// <param name="message">The message text content.</param>
-        /// <param name="messageType">The type/severity of the message.</param>
-        /// <param name="priority">The priority of this message. Defaults to <see cref="PagePriority.Default"/>.</param>
-        public static void AddMessage(this IPageService pageService, string heading, string message, PageMessageType messageType, int priority = PagePriority.Default)
-        {
-            var priorityMessage = new PageMessage(heading, message, messageType, string.Empty, priority);
-            pageService.AddMessage(priorityMessage);
-        }
+        }       
 
         /// <summary>
         /// Adds a message using simple parameters with specified message type and icon.
