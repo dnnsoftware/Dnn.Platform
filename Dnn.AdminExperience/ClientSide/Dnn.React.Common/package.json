@@ -55,7 +55,7 @@
     "@eslint/compat": "^1.2.9",
     "@storybook/addon-docs": "9.0.4",
     "@storybook/addon-onboarding": "9.0.4",
-    "@storybook/addon-webpack5-compiler-swc": "3.0.0",
+    "@storybook/addon-webpack5-compiler-swc": "4.0.1",
     "@storybook/react-webpack5": "9.0.4",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.3.0",
