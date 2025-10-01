@@ -175,7 +175,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             if (!string.IsNullOrEmpty(this.Integrity))
             {
-                htmlString.Append($" integrity=\"{this.Integrity}\"");
+                htmlString.Append($" integrity=\"{WebUtility.HtmlEncode(this.Integrity)}\"");
             }
         }
 
