@@ -237,7 +237,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             foreach (var attribute in this.Attributes)
             {
-                htmlString.Append($" {attribute.Key}=\"{attribute.Value}\"");
+                htmlString.Append($" {attribute.Key}=\"{WebUtility.HtmlEncode(attribute.Value)}\"");
             }
         }
     }
