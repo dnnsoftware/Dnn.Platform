@@ -1413,6 +1413,61 @@ namespace Dnn.PersonaBar.Security.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, true);
         }
 
+        /// GET: api/Security/GetCspSettings
+        /// <summary>Gets CSP settings.</summary>
+        /// <returns>CSP settings.</returns>
+        [HttpGet]
+        [RequireAdmin]
+        public HttpResponseMessage GetCspSettings()
+        {
+            try
+            {
+                var response = new
+                {
+                    Success = true,
+                    Results = new
+                    {
+                        Settings = new
+                        {
+                            this.PortalSettings.CspHeaderMode,
+                            this.PortalSettings.CspHeader,
+                            this.PortalSettings.CspReportingHeader,
+                        },
+                    },
+                };
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        /// POST: api/Security/UpdateCspSettings
+        /// <summary>Updates CSP settings.</summary>
+        /// <param name="request">The CSP settings.</param>
+        /// <returns>CSP settings.</returns>
+        [HttpPost]
+        [RequireAdmin]
+        public HttpResponseMessage UpdateCspSettings(UpdateCspSettingsRequest request)
+        {
+           try
+            {
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderMode",  request.CspHeaderMode.ToString().ToUpper());
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeader", request.CspHeader);
+                PortalController.UpdatePortalSetting(this.PortalId, "CspReportingHeader", request.CspReportingHeader);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         /// <summary>
         /// Adds a portal alias.
         /// </summary>

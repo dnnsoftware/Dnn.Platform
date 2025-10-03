@@ -1,0 +1,80 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+
+#cspSettings-container {
+    margin: 30px 30px;
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .dnn-ui-common-input-group {
+        label {
+            font-weight: bolder;
+            float: left;
+        }
+
+        .sectionLabel {
+            border-top: 1px solid @alto;
+            padding-top: 20px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+
+            label {
+                color: #000;
+                text-transform: uppercase;
+            }
+        }
+
+        .dnn-dropdown {
+            width: 100%;
+            margin-bottom: 32px;
+        }
+
+        .dnn-single-line-input-with-error {
+            width: 100%;
+        }
+        .dnn-multi-line-input-with-error {
+            width: 100%;
+            .dnn-ui-common-multi-line-input  {
+                margin-bottom: 0 !important;
+            }
+        }       
+    }
+
+    .buttons-box {
+        width: 100%;
+        text-align: center;
+        margin: 0 0 10px 0;
+
+        .dnn-ui-common-button {
+            margin: 5px;
+        }
+    }
+
+    .warningBox {
+        border: 1px solid @alto;
+        background-color: @gallery;
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 20px;
+
+        .warningText {
+            font-weight: bolder;
+            color: @thunder;
+        }
+
+        .warningButton {
+            width: 100%;
+
+            .dnn-ui-common-button {
+                width: 100%;
+                padding-top: 6px;
+                padding-bottom: 6px;
+
+                &:first-child {
+                    margin-top: 15px;
+                }
+            }
+        }
+    }
+}

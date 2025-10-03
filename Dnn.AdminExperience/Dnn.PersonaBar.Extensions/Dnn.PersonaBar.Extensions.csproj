@@ -483,6 +483,7 @@
     <Compile Include="Services\SystemInfoWebController.cs" />
     <Compile Include="Services\TaskSchedulerController.cs" />
     <Compile Include="Services\ThemesController.cs" />
+    <Compile Include="Services\Dto\UpdateCspSettingsRequest.cs" />
     <Compile Include="Services\UsersController.cs" />
     <Compile Include="Services\VocabulariesController.cs" />
     <Compile Include="Startup.cs" />

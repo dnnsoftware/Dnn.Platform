@@ -1432,4 +1432,46 @@
   <data name="plAllowRichTextModuleTitle.Help" xml:space="preserve">
     <value>If enabled, HTML content will be allowed as module titles.</value>
   </data>
+  <data name="plCspHeader.Text" xml:space="preserve">
+    <value>CSP Header (Content-Security-Policy or Content-Security-Policy-Report-Only)</value>
+  </data>
+  <data name="plCspHeader.Help" xml:space="preserve">
+    <value>The CSP header to be added to the http response.</value>
+  </data>
+  <data name="plCspReportingHeader.Text" xml:space="preserve">
+    <value>CSP Reporting Header (Reporting-Endpoints)</value>
+  </data>
+  <data name="plCspReportingHeader.Help" xml:space="preserve">
+    <value>The CSP reporting header to be added to the http response (example: csp-endpoint="https://example.com/csp-reports" ).</value>
+  </data>
+  <data name="plCspHeaderMode.Text" xml:space="preserve">
+    <value>Content Security Policy</value>
+  </data>
+  <data name="plCspHeaderMode.Help" xml:space="preserve">
+    <value>The CSP mode to be used (Off, Report Only, On).</value>
+  </data>
+  <data name="CspHeaderModeOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="CspHeaderModeReportOnly.Text" xml:space="preserve">
+    <value>Report Only</value>
+  </data>
+  <data name="CspHeaderModeOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="CspHeaderModeOff.Help" xml:space="preserve">
+    <value>The CSP header will not be added to the response.</value>
+  </data>
+  <data name="CspHeaderModeReportOnly.Help" xml:space="preserve">
+    <value>The CSP header will be added to the response, but will not be enforced.</value>
+  </data>
+  <data name="CspHeaderModeOn.Help" xml:space="preserve">
+    <value>The CSP header will be added to the http response and enforced.</value>
+  </data>
+  <data name="CspSettings.Help" xml:space="preserve">
+    <value>For webforms script-src 'unsafe-inline' and 'unsafe-eval' will be added automatically to the CSP header. Skins and modules can add additional sources to the CSP header.</value>
+  </data>
+  <data name="TabCspSettings.Text" xml:space="preserve">
+    <value>CSP SETTINGS</value>
+  </data>
 </root>

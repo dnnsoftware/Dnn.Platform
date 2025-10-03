@@ -275,6 +275,23 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
+
+            setting = settings.GetValueOrDefault("CspHeaderMode", "OFF");
+            switch (setting.ToUpperInvariant())
+            {
+                case "ON":
+                    portalSettings.CspHeaderMode = PortalSettings.CspMode.On;
+                    break;
+                case "REPORTONLY":
+                    portalSettings.CspHeaderMode = PortalSettings.CspMode.ReportOnly;
+                    break;
+                default:
+                    portalSettings.CspHeaderMode = PortalSettings.CspMode.Off;
+                    break;
+            }
+
+            portalSettings.CspHeader = settings.GetValueOrDefault("CspHeader", "default-src 'self'; script-src 'self' 'report-sample';  style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; connect-src 'self';");
+            portalSettings.CspReportingHeader = settings.GetValueOrDefault("CspReportingHeader", string.Empty);
         }
 
         protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)

@@ -186,6 +186,15 @@ class ApplicationService {
         const sf = this.getServiceFramework("Portals");
         sf.get("GetPortals?addAll=" + addAll, {}, callback);
     }
+
+    getCspSettings(callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.get("GetCspSettings", {}, callback);
+    }
+    updateCspSettings(payload, callback) {
+        const sf = this.getServiceFramework("Security");
+        sf.post("UpdateCspSettings", payload, callback);
+    }
 }
 const applicationService = new ApplicationService();
 export default applicationService;

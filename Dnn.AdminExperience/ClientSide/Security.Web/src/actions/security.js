@@ -566,6 +566,45 @@ const securityActions = {
                 }
             });
         };
+    },
+    getCspSettings(callback) {
+        return (dispatch) => {
+            ApplicationService.getCspSettings(data => {
+                dispatch({
+                    type: ActionTypes.RETRIEVED_SECURITY_CSP_SETTINGS,
+                    data: {
+                        cspSettings: data.Results.Settings,
+                        cspSettingsClientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            });
+        };
+    },
+    updateCspSettings(payload, callback) {
+        return (dispatch) => {
+            ApplicationService.updateCspSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SECURITY_CSP_SETTINGS,
+                    data: {
+                        cspSettingsClientModified: false
+                    }
+                });
+            });
+        };
+    },
+    cspSettingsClientModified(parameter) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SECURITY_CSP_SETTINS_CLIENT_MODIFIED,
+                data: {
+                    cspSettings: parameter,
+                    cspSettingsClientModified: true
+                }
+            });
+        };
     }
 };
 

@@ -186,6 +186,23 @@ export default function securitySettings(state = {
                 apiTokenSettings: action.data.apiTokenSettings,
                 apiTokenSettingsClientModified: action.data.apiTokenSettingsClientModified
             };
+        case ActionTypes.RETRIEVED_SECURITY_CSP_SETTINGS:
+            return {
+                ...state,
+                cspSettings: action.data.cspSettings,
+                cspSettingsClientModified: false
+            };
+        case ActionTypes.SECURITY_CSP_SETTINS_CLIENT_MODIFIED:
+            return {
+                ...state,
+                cspSettings: action.data.cspSettings,
+                cspSettingsClientModified: action.data.cspSettingsClientModified
+            };
+        case ActionTypes.UPDATED_SECURITY_CSP_SETTINGS:
+            return {
+                ...state,
+                cspSettingsClientModified: action.data.cspSettingsClientModified
+            };
         default:
             return {
                 ...state

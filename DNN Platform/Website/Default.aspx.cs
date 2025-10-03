@@ -19,6 +19,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
@@ -63,7 +64,7 @@ namespace DotNetNuke.Framework
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -77,7 +78,8 @@ namespace DotNetNuke.Framework
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="portalSettingsController">The portal settings controller.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController)
+        /// <param name="contentSecurityPolicy">The content security policy.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController, IContentSecurityPolicy contentSecurityPolicy)
             : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -88,6 +90,7 @@ namespace DotNetNuke.Framework
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
+            this.ContentSecurityPolicy = contentSecurityPolicy ?? Globals.GetCurrentServiceProvider().GetRequiredService<IContentSecurityPolicy>();
         }
 
         public string CurrentSkinPath => ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
@@ -115,6 +118,9 @@ namespace DotNetNuke.Framework
                 this.ScrollTop.Value = value.ToString();
             }
         }
+
+        /// <summary>Gets a service that provides ContentSecurityPolicy features.</summary>
+        protected IContentSecurityPolicy ContentSecurityPolicy { get; }
 
         /// <summary>Gets a service that provides navigation features.</summary>
         protected INavigationManager NavigationManager { get; }
@@ -161,6 +167,11 @@ namespace DotNetNuke.Framework
         private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
         private IPortalAliasInfo PrimaryPortalAlias => this.PortalSettings.PrimaryAlias;
+
+        public void AddCsp(string policy)
+        {
+            this.ContentSecurityPolicy.AddHeaders(policy);
+        }
 
         /// <inheritdoc/>
         public string RaiseClientAPICallbackEvent(string eventArgument)
@@ -211,6 +222,19 @@ namespace DotNetNuke.Framework
 
             // set global page settings
             this.InitializePage();
+
+            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
+                this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+            {
+                // this.contentSecurityPolicy.AddHeaders("default-src 'self'; script-src 'self' 'report-sample';  style-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; connect-src 'self';");
+                if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+                {
+                    this.ContentSecurityPolicy.AddHeaders(this.PortalSettings.CspHeader);
+                }
+
+                this.ContentSecurityPolicy.ScriptSource.AddInline();
+                this.ContentSecurityPolicy.ScriptSource.AddEval();
+            }
 
             var ctlSkin = this.GetSkin();
 
@@ -350,6 +374,29 @@ namespace DotNetNuke.Framework
             if (!string.IsNullOrEmpty(this.PortalSettings.AddCompatibleHttpHeader) && !this.HeaderIsWritten)
             {
                 this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
+            }
+
+            if ((this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly ||
+                    this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On) &&
+                    !this.HeaderIsWritten)
+            {
+                var header = "Content-Security-Policy";
+                if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+                {
+                    header = "Content-Security-Policy-Report-Only";
+                }
+
+                var policy = this.ContentSecurityPolicy.GeneratePolicy();
+                if (!string.IsNullOrEmpty(policy))
+                {
+                    this.Page.Response.AddHeader(header, policy);
+                }
+
+                policy = this.ContentSecurityPolicy.GenerateReportingEndpoints();
+                if (!string.IsNullOrEmpty(policy))
+                {
+                    this.Page.Response.AddHeader("Reporting-Endpoints", policy);
+                }
             }
 
             if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
