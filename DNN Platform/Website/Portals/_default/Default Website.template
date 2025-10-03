@@ -651,7 +651,7 @@
                     &amp;lt;div class=&amp;quot;aperture-bg-tertiary-light&amp;quot; id=&amp;quot;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.DivId.Text]&amp;quot;&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-container&amp;quot;&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-d-flex aperture-flex-column aperture-justify-content-center aperture-mx-1 aperture-mx-lg-5 aperture-text-center&amp;quot;&amp;gt;
-                    &amp;lt;div class=&amp;quot;aperture-mb-4 aperture-mt-5 aperture-text-foreground-contrast aperture-w-100&amp;quot; style=&amp;quot;background-image:url(/portals/0/images/dot-wreath.png); background-position:center 23%; background-repeat:no-repeat; background-size:contain; object-fit:cover; width:100%&amp;quot;&amp;gt;
+                    &amp;lt;div class=&amp;quot;aperture-mb-4 aperture-mt-5 aperture-text-foreground-contrast aperture-w-100&amp;quot; style=&amp;quot;background-image:url({{PortalRoot}}images/dot-wreath.png); background-position:center 23%; background-repeat:no-repeat; background-size:contain; object-fit:cover; width:100%&amp;quot;&amp;gt;
                     &amp;lt;h2&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.H2.Text]&amp;lt;/h2&amp;gt;
                     &amp;lt;div class=&amp;quot;lead&amp;quot;&amp;gt;[Tab.Home.FluidPane.Module.HomeContent.Content.Participate.Lead.Text]&amp;lt;/div&amp;gt;
                     &amp;lt;div class=&amp;quot;aperture-align-items-center aperture-d-flex aperture-flex-column aperture-flex-xl-row aperture-justify-content-xl-center aperture-mb-4 aperture-mt-5&amp;quot;&amp;gt;
