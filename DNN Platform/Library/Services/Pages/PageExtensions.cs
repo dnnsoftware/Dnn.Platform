@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Pages
         {
             var priorityMessage = new PageMessage(heading, message, PageMessageType.Info, string.Empty, priority);
             pageService.AddMessage(priorityMessage);
-        }       
+        }
 
         /// <summary>
         /// Adds a message using simple parameters with specified message type and icon.
