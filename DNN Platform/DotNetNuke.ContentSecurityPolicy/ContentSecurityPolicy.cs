@@ -94,7 +94,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Gets the connect frame ancestors for managing connect-src directives.
+        /// Gets the frame ancestors contributor for managing frame-ancestors directives.
         /// </summary>
         public SourceCspContributor FrameAncestors
         {
@@ -149,7 +149,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Gets the Form Action source contributor for managing frame-src directives.
+        /// Gets the form action source contributor for managing form-action directives.
         /// </summary>
         public SourceCspContributor FormAction
         {
@@ -171,12 +171,12 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Gets collection of CSP contributors.
+        /// Gets collection of CSP contributors for content security policy directives.
         /// </summary>
         private List<BaseCspContributor> ContentSecurityPolicyContributors { get; } = new List<BaseCspContributor>();
 
         /// <summary>
-        /// Gets collection of CSP contributors.
+        /// Gets collection of CSP contributors for reporting endpoints directives.
         /// </summary>
         private List<BaseCspContributor> ReportingEndpointsContributors { get; } = new List<BaseCspContributor>();
 
@@ -186,7 +186,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <param name="cspHeader">The CSP header string to parse.</param>
         /// <returns>A ContentSecurityPolicy object representing the parsed header.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the CSP header is invalid or cannot be parsed.</exception>
-        public IContentSecurityPolicy AddHeaders(string cspHeader)
+        public IContentSecurityPolicy AddHeader(string cspHeader)
         {
             var parser = new ContentSecurityPolicyParser(this);
             parser.Parse(cspHeader);
@@ -194,74 +194,90 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Supprime les sources de script du type spécifié de la politique CSP.
+        /// Adds a reporting directive to the policy.
         /// </summary>
-        /// <param name="cspSourceType">Le type de source CSP à supprimer.</param>
+        /// <param name="header">The reporting directive to add.</param>
+        /// <returns>A ContentSecurityPolicy object representing the parsed header.</returns>
+        public IContentSecurityPolicy AddReportEndpointHeader(string header)
+        {
+            if (!string.IsNullOrEmpty(header))
+            {
+                var parser = new ContentSecurityPolicyParser(this);
+                parser.ParseReportingEndpoints(header);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Removes script sources of the specified type from the CSP policy.
+        /// </summary>
+        /// <param name="cspSourceType">The CSP source type to remove.</param>
         public void RemoveScriptSources(CspSourceType cspSourceType)
         {
             this.RemoveSources(CspDirectiveType.ScriptSrc, cspSourceType);
         }
 
         /// <summary>
-        /// Ajoute des types de plugins autorisés à la politique CSP.
+        /// Adds allowed plugin types to the CSP policy.
         /// </summary>
-        /// <param name="value">Le type de plugin à autoriser.</param>
+        /// <param name="value">The plugin type to allow.</param>
         public void AddPluginTypes(string value)
         {
             this.AddDocumentDirective(CspDirectiveType.PluginTypes, value);
         }
 
         /// <summary>
-        /// Ajoute une directive sandbox à la politique CSP.
+        /// Adds a sandbox directive to the CSP policy.
         /// </summary>
-        /// <param name="value">La valeur de la directive sandbox.</param>
-        public void AddSandboxDirective(string value)
+        /// <param name="value">The sandbox directive value.</param>
+        public void AddSandbox(string value)
         {
             this.SetDocumentDirective(CspDirectiveType.SandboxDirective, value);
         }
 
         /// <summary>
-        /// Ajoute une directive form-action à la politique CSP.
+        /// Adds a form-action directive to the CSP policy.
         /// </summary>
-        /// <param name="sourceType">Le type de source CSP à ajouter.</param>
-        /// <param name="value">La valeur associée à la source.</param>
+        /// <param name="sourceType">The CSP source type to add.</param>
+        /// <param name="value">The value associated with the source.</param>
         public void AddFormAction(CspSourceType sourceType, string value)
         {
             this.AddSource(CspDirectiveType.FormAction, sourceType, value);
         }
 
         /// <summary>
-        /// Ajoute une directive frame-ancestors à la politique CSP.
+        /// Adds a frame-ancestors directive to the CSP policy.
         /// </summary>
-        /// <param name="sourceType">Le type de source CSP à ajouter.</param>
-        /// <param name="value">La valeur associée à la source.</param>
+        /// <param name="sourceType">The CSP source type to add.</param>
+        /// <param name="value">The value associated with the source.</param>
         public void AddFrameAncestors(CspSourceType sourceType, string value)
         {
             this.AddSource(CspDirectiveType.FrameAncestors, sourceType, value);
         }
 
         /// <summary>
-        /// Ajoute une URI de rapport à la politique CSP.
+        /// Adds a report URI to the CSP policy.
         /// </summary>
-        /// <param name="name">Le nom où les rapports de violation seront envoyés.</param>
-        /// <param name="value">L'URI où les rapports de violation seront envoyés.</param>
+        /// <param name="name">The name where violation reports will be sent.</param>
+        /// <param name="value">The URI where violation reports will be sent.</param>
         public void AddReportEndpoint(string name, string value)
         {
-            this.AddReportingDirective(CspDirectiveType.ReportUri, value);
+            // this.AddReportingDirective(CspDirectiveType.ReportUri, value);
             this.AddReportingEndpointsDirective(name, value);
         }
 
         /// <summary>
-        /// Ajoute un endpoint de rapport à la politique CSP.
+        /// Adds a report endpoint to the CSP policy.
         /// </summary>
-        /// <param name="value">L'endpoint où les rapports seront envoyés.</param>
+        /// <param name="value">The endpoint where reports will be sent.</param>
         public void AddReportTo(string value)
         {
             this.AddReportingDirective(CspDirectiveType.ReportTo, value);
         }
 
         /// <summary>
-        /// Upgrade Insecure Requests.
+        /// Adds the upgrade-insecure-requests directive to upgrade HTTP requests to HTTPS.
         /// </summary>
         public void UpgradeInsecureRequests()
         {
@@ -282,9 +298,9 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Génère la politique de sécurité complète.
+        /// Generates the complete security policy.
         /// </summary>
-        /// <returns>Reporting Endpoints sous forme de chaîne.</returns>
+        /// <returns>Reporting Endpoints as a string.</returns>
         public string GenerateReportingEndpoints()
         {
             return string.Join(
@@ -294,6 +310,11 @@ namespace DotNetNuke.ContentSecurityPolicy
                       .Where(d => !string.IsNullOrEmpty(d)));
         }
 
+        /// <summary>
+        /// Gets an existing directive contributor or creates a new one if it doesn't exist.
+        /// </summary>
+        /// <param name="directiveType">The type of directive to get or create.</param>
+        /// <returns>A SourceCspContributor for the specified directive type.</returns>
         private SourceCspContributor GetOrCreateDirective(CspDirectiveType directiveType)
         {
             var directive = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
@@ -307,8 +328,9 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Adds a contributor to the policy.
+        /// Adds a contributor to the content security policy.
         /// </summary>
+        /// <param name="contributor">The contributor to add to the policy.</param>
         private void AddContributor(BaseCspContributor contributor)
         {
             // Remove any existing contributor of the same directive type
@@ -317,8 +339,9 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Adds a contributor to the policy.
+        /// Adds a contributor to the reporting endpoints collection.
         /// </summary>
+        /// <param name="contributor">The contributor to add to the reporting endpoints.</param>
         private void AddReportingEndpointsContributors(BaseCspContributor contributor)
         {
             // Remove any existing contributor of the same directive type
@@ -326,6 +349,12 @@ namespace DotNetNuke.ContentSecurityPolicy
             this.ReportingEndpointsContributors.Add(contributor);
         }
 
+        /// <summary>
+        /// Adds a source to the specified directive type.
+        /// </summary>
+        /// <param name="directiveType">The directive type to add the source to.</param>
+        /// <param name="sourceType">The type of source to add.</param>
+        /// <param name="value">The value associated with the source. If null and sourceType is Nonce, uses the generated nonce.</param>
         private void AddSource(CspDirectiveType directiveType, CspSourceType sourceType, string value = null)
         {
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
@@ -343,6 +372,11 @@ namespace DotNetNuke.ContentSecurityPolicy
             contributor.AddSource(new CspSource(sourceType, value));
         }
 
+        /// <summary>
+        /// Removes sources of the specified type from the directive.
+        /// </summary>
+        /// <param name="directiveType">The directive type to remove sources from.</param>
+        /// <param name="sourceType">The type of sources to remove.</param>
         private void RemoveSources(CspDirectiveType directiveType, CspSourceType sourceType)
         {
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
@@ -355,6 +389,11 @@ namespace DotNetNuke.ContentSecurityPolicy
             contributor.RemoveSources(sourceType);
         }
 
+        /// <summary>
+        /// Sets a document directive value, replacing any existing value.
+        /// </summary>
+        /// <param name="directiveType">The directive type to set.</param>
+        /// <param name="value">The value to set for the directive.</param>
         private void SetDocumentDirective(CspDirectiveType directiveType, string value)
         {
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
@@ -367,6 +406,11 @@ namespace DotNetNuke.ContentSecurityPolicy
             contributor.SetDirectiveValue(value);
         }
 
+        /// <summary>
+        /// Adds a document directive with the specified value.
+        /// </summary>
+        /// <param name="directiveType">The directive type to add.</param>
+        /// <param name="value">The value for the directive.</param>
         private void AddDocumentDirective(CspDirectiveType directiveType, string value)
         {
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
@@ -379,6 +423,11 @@ namespace DotNetNuke.ContentSecurityPolicy
             contributor.SetDirectiveValue(value);
         }
 
+        /// <summary>
+        /// Adds a reporting directive with the specified value.
+        /// </summary>
+        /// <param name="directiveType">The directive type to add.</param>
+        /// <param name="value">The value for the reporting directive.</param>
         private void AddReportingDirective(CspDirectiveType directiveType, string value)
         {
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as ReportingCspContributor;
@@ -391,6 +440,11 @@ namespace DotNetNuke.ContentSecurityPolicy
             contributor.AddReportingEndpoint(value);
         }
 
+        /// <summary>
+        /// Adds a reporting endpoints directive with the specified name and value.
+        /// </summary>
+        /// <param name="name">The name of the reporting endpoint.</param>
+        /// <param name="value">The URI value for the reporting endpoint.</param>
         private void AddReportingEndpointsDirective(string name, string value)
         {
             var contributor = this.ReportingEndpointsContributors.FirstOrDefault(c => c.DirectiveType == CspDirectiveType.ReportUri) as ReportingEndpointContributor;

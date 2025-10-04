@@ -65,6 +65,28 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
+        /// Parses a reporting endpoints header string into the provided ContentSecurityPolicy object.
+        /// </summary>
+        /// <param name="cspHeader">The CSP header string to parse.</param>
+        public void ParseReportingEndpoints(string cspHeader)
+        {
+            if (string.IsNullOrWhiteSpace(cspHeader))
+            {
+                return;
+            }
+
+            // Split the header into individual directives
+            var directives = cspHeader.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                           .Select(d => d.Trim())
+                           .Where(d => !string.IsNullOrEmpty(d));
+
+            foreach (var directive in directives)
+            {
+                this.ParseReportingEndpointsDirective(directive);
+            }
+        }
+
+        /// <summary>
         /// Splits the CSP header into individual directive strings.
         /// </summary>
         private static IEnumerable<string> SplitDirectives(string cspHeader)
@@ -169,10 +191,35 @@ namespace DotNetNuke.ContentSecurityPolicy
             if (!CspDirectiveNameMapper.TryGetDirectiveType(directiveName, out var directiveType))
             {
                 // Unknown directive - ignore for now
-                return;
+                throw new ($"Unknown directive: {directiveName}");
             }
 
             this.ApplyDirectiveToPolicy(directiveType, sources);
+        }
+
+        /// <summary>
+        /// Parses a reporting endpoints directive string into the provided ContentSecurityPolicy object.
+        /// </summary>
+        /// <param name="directive">The reporting endpoints directive string to parse.</param>
+        private void ParseReportingEndpointsDirective(string directive)
+        {
+            if (string.IsNullOrWhiteSpace(directive))
+            {
+                return;
+            }
+
+            // Split directive into name=value pairs
+            var parts = directive.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length != 2)
+            {
+                throw new ArgumentException("Invalid reporting endpoint format. Expected format: name=\"value\"");
+            }
+
+            var name = parts[0].Trim();
+            var value = parts[1].Trim().Trim('"');
+
+            // Add the reporting endpoint to the policy
+            this.policy.AddReportEndpoint(name, value);
         }
 
         /// <summary>
@@ -183,7 +230,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             switch (directiveType)
             {
                 case CspDirectiveType.SandboxDirective:
-                    this.policy.AddSandboxDirective(string.Join(" ", sources));
+                    this.policy.AddSandbox(string.Join(" ", sources));
                     break;
 
                 case CspDirectiveType.PluginTypes:

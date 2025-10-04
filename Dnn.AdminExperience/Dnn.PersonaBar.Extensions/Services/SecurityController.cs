@@ -33,6 +33,7 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -1450,12 +1451,58 @@ namespace Dnn.PersonaBar.Security.Services
         /// <param name="request">The CSP settings.</param>
         /// <returns>CSP settings.</returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [RequireAdmin]
         public HttpResponseMessage UpdateCspSettings(UpdateCspSettingsRequest request)
         {
-           try
+            try
             {
-                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderMode",  request.CspHeaderMode.ToString().ToUpper());
+                var policy = new ContentSecurityPolicy();
+                var parser = new ContentSecurityPolicyParser(policy);
+                try
+                {
+                    parser.Parse(request.CspHeader);
+                }
+                catch (Exception ex)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new
+                    {
+                        Success = false,
+                        Message = "Bad CspHeader - " + ex.Message,
+                        Error = new
+                        {
+                            CspHeader = true,
+                            CspHeaderErrors = new[] { ex.Message },
+                            CspReportingHeader = false,
+                            CspReportingHeaderErrors = new string[0],
+                        },
+                    });
+                }
+
+                if (!string.IsNullOrEmpty(request.CspReportingHeader))
+                {
+                    try
+                    {
+                        policy.AddReportEndpointHeader(request.CspReportingHeader);
+                    }
+                    catch (Exception ex)
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new
+                        {
+                            Success = false,
+                            Message = "Bad CspReportingHeader - " + ex.Message,
+                            Error = new
+                            {
+                                CspHeader = false,
+                                CspHeaderErrors = new string[0],
+                                CspReportingHeader = true,
+                                CspReportingHeaderErrors = new[] { ex.Message },
+                            },
+                        });
+                    }
+                }
+
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderMode", request.CspHeaderMode.ToString().ToUpper());
                 PortalController.UpdatePortalSetting(this.PortalId, "CspHeader", request.CspHeader);
                 PortalController.UpdatePortalSetting(this.PortalId, "CspReportingHeader", request.CspReportingHeader);
 

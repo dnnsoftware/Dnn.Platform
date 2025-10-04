@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         public void Parse_ComplexPolicy_ShouldReturnValidPolicy()
         {
             // Arrange
-            var cspHeader = "default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' wss:; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report";
+            var cspHeader = "default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' wss:; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests; report-uri http://csp-report";
             var policy = new ContentSecurityPolicy();
             var parser = new ContentSecurityPolicyParser(policy);
 
@@ -306,28 +306,6 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             // Act & Assert
             var exception = Assert.ThrowsException<ArgumentException>(() => parser.Parse(cspHeader));
             exception.Message.Should().Contain("CSP header cannot be null or empty");
-        }
-
-        /// <summary>
-        /// Tests that parsing ignores unknown directives gracefully.
-        /// </summary>
-        [TestMethod]
-        public void Parse_UnknownDirective_ShouldIgnoreUnknownDirectiveAndParseKnownOnes()
-        {
-            // Arrange
-            var cspHeader = "default-src 'self'; unknown-directive something; script-src 'self'";
-            var policy = new ContentSecurityPolicy();
-            var parser = new ContentSecurityPolicyParser(policy);
-
-            // Act
-            parser.Parse(cspHeader);
-
-            // Assert
-            policy.Should().NotBeNull();
-            var generatedPolicy = policy.GeneratePolicy();
-            generatedPolicy.Should().Contain("default-src 'self'");
-            generatedPolicy.Should().Contain("script-src 'self'");
-            generatedPolicy.Should().NotContain("unknown-directive");
         }
 
         /// <summary>

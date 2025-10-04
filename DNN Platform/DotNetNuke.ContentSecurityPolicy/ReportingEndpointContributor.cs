@@ -106,7 +106,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
 
             // URL validation regex
-            var urlRegex = new Regex(@"^(https?://)?([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*)?(:\d+)?(/.*)?$");
+            var urlRegex = new Regex(@"^(https?://)([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*)?(:\d+)?(/.*)?$");
             if (!urlRegex.IsMatch(endpoint))
             {
                 throw new ArgumentException($"Invalid reporting endpoint: {endpoint}");

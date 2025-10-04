@@ -586,13 +586,19 @@ const securityActions = {
     updateCspSettings(payload, callback) {
         return (dispatch) => {
             ApplicationService.updateCspSettings(payload, data => {
-                dispatch({
-                    type: ActionTypes.UPDATED_SECURITY_CSP_SETTINGS,
-                    data: {
-                        cspSettingsClientModified: false
-                    }
-                });
+                if (data.Success) {
+                    dispatch({
+                        type: ActionTypes.UPDATED_SECURITY_CSP_SETTINGS,
+                        data: {
+                            cspSettingsClientModified: false
+                        }
+                    });
+                }
+                if (callback) {
+                    callback(data);
+                }
             });
+            
         };
     },
     cspSettingsClientModified(parameter) {

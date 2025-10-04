@@ -25,7 +25,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         public void ParseExample_CompleteWorkflow_ShouldWorkAsExpected()
         {
             // Arrange - Example CSP header string from CspParsingExample
-            var cspHeader = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.example.com 'nonce-abc123'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; report-uri /csp-report";
+            var cspHeader = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.example.com 'nonce-abc123'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; report-uri http://csp-report";
             var policy = new ContentSecurityPolicy();
             var parser = new ContentSecurityPolicyParser(policy);
 
@@ -44,27 +44,6 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             var modifiedPolicy = policy.GeneratePolicy();
             modifiedPolicy.Should().Contain("newcdn.example.com");
             modifiedPolicy.Should().Contain("'sha256-abc123def456'");
-        }
-
-        /// <summary>
-        /// Tests TryParse functionality from CspParsingExample.
-        /// </summary>
-        [TestMethod]
-        public void TryParseExample_InvalidDirective_ShouldHandleGracefully()
-        {
-            // Arrange - Invalid CSP header from CspParsingExample
-            var invalidCspHeader = "invalid-directive something";
-            var policy = new ContentSecurityPolicy();
-            var parser = new ContentSecurityPolicyParser(policy);
-
-            // Act
-            var result = parser.TryParse(invalidCspHeader);
-
-            // Assert - Should succeed because unknown directives are ignored (correct CSP behavior)
-            result.Should().BeTrue();
-            policy.Should().NotBeNull();
-            // The generated policy should be empty since the unknown directive was ignored
-            policy.GeneratePolicy().Should().BeEmpty();
         }
 
         /// <summary>
@@ -89,7 +68,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
                 "style-src 'self' 'sha256-abc123def456789'",
 
                 // Complex policy
-                "default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' wss:; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests; report-uri /csp-report",
+                "default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' wss:; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests; report-uri http://csp-report",
 
                 // Policy with sandbox
                 "sandbox allow-forms allow-scripts; script-src 'self'",

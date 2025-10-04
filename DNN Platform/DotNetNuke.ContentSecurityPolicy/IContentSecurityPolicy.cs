@@ -92,7 +92,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// Ajoute une directive sandbox à la politique.
         /// </summary>
         /// <param name="value">Les options de la directive sandbox.</param>
-        void AddSandboxDirective(string value);
+        void AddSandbox(string value);
 
         /// <summary>
         /// Ajoute une action de formulaire à la politique.
@@ -127,7 +127,14 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <param name="cspHeader">The CSP header string to parse.</param>
         /// <returns>A ContentSecurityPolicy object representing the parsed header.</returns>
         /// <exception cref="System.ArgumentException">Thrown when the CSP header is invalid or cannot be parsed.</exception>
-        IContentSecurityPolicy AddHeaders(string cspHeader);
+        IContentSecurityPolicy AddHeader(string cspHeader);
+
+        /// <summary>
+        /// Ajoute une directive de rapport à la politique.
+        /// </summary>
+        /// <param name="header">La directive de rapport à ajouter.</param>
+        /// <returns>A ContentSecurityPolicy object representing the parsed header.</returns>
+        IContentSecurityPolicy AddReportEndpointHeader(string header);
 
         /// <summary>
         /// Génère la politique de sécurité complète.

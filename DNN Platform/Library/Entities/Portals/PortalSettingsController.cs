@@ -290,7 +290,7 @@ namespace DotNetNuke.Entities.Portals
                     break;
             }
 
-            portalSettings.CspHeader = settings.GetValueOrDefault("CspHeader", "default-src 'self'; script-src 'self' 'report-sample';  style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; connect-src 'self';");
+            portalSettings.CspHeader = settings.GetValueOrDefault("CspHeader", "default-src 'self'; script-src 'self';  style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; connect-src 'self';");
             portalSettings.CspReportingHeader = settings.GetValueOrDefault("CspReportingHeader", string.Empty);
         }
 

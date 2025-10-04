@@ -1474,4 +1474,19 @@
   <data name="TabCspSettings.Text" xml:space="preserve">
     <value>CSP SETTINGS</value>
   </data>
+  <data name="CspHeader.Message" xml:space="preserve">
+    <value>Invalid CSP header</value>
+  </data>
+  <data name="CspReportingHeader.Message" xml:space="preserve">
+    <value>Invalid CSP reporting header</value>
+  </data>
+  <data name="CspSettingsUpdateSuccess.Text" xml:space="preserve">
+    <value>CSP settings updated</value>
+  </data>
+  <data name="CspSettingsError.Text" xml:space="preserve">
+    <value>An error has occurred. The CSP settings could not be updated. Please consult the admin log to determine the cause of this error.</value>
+  </data>
+  <data name="CspSettingsRestoreWarning.Text" xml:space="preserve">
+    <value>The changes to the CSP settings will be discarded. Do you wish to continue?</value>
+  </data>
 </root>

@@ -25,7 +25,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                     .AddHost("https://trusted-cdn.com");
 
             // Add a document-based contributor for sandbox
-            csp.AddSandboxDirective("allow-scripts allow-same-origin");
+            csp.AddSandbox("allow-scripts allow-same-origin");
 
             // Add a reporting contributor
             csp.AddReportEndpoint("name", "https://example.com/csp-report");

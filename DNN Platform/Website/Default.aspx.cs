@@ -170,7 +170,7 @@ namespace DotNetNuke.Framework
 
         public void AddCsp(string policy)
         {
-            this.ContentSecurityPolicy.AddHeaders(policy);
+            this.ContentSecurityPolicy.AddHeader(policy);
         }
 
         /// <inheritdoc/>
@@ -226,14 +226,18 @@ namespace DotNetNuke.Framework
             if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
                 this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
             {
-                // this.contentSecurityPolicy.AddHeaders("default-src 'self'; script-src 'self' 'report-sample';  style-src 'self'; img-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; connect-src 'self';");
                 if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
                 {
-                    this.ContentSecurityPolicy.AddHeaders(this.PortalSettings.CspHeader);
+                    this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
                 }
 
                 this.ContentSecurityPolicy.ScriptSource.AddInline();
                 this.ContentSecurityPolicy.ScriptSource.AddEval();
+
+                if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+                {
+                    this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+                }
             }
 
             var ctlSkin = this.GetSkin();

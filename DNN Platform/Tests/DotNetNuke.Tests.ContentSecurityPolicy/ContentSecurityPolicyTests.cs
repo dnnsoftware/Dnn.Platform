@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -24,7 +24,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         public void Parse_ValidInput_ShouldReturnValidPolicy()
         {
             // Arrange
-            var cspHeader = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.example.com 'nonce-abc123'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; report-uri /csp-report";
+            var cspHeader = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.example.com 'nonce-abc123'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; report-uri http://csp-report";
             var policy = new ContentSecurityPolicy();
             var parser = new ContentSecurityPolicyParser(policy);
 
@@ -207,7 +207,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         public void Parse_PolicyWithReporting_ShouldParseCorrectly()
         {
             // Arrange
-            var cspHeader = "default-src 'self'; report-uri /csp-report; report-to csp-endpoint";
+            var cspHeader = "default-src 'self'; report-uri http:///csp-report; report-to csp-endpoint";
             var policy = new ContentSecurityPolicy();
             var parser = new ContentSecurityPolicyParser(policy);
 

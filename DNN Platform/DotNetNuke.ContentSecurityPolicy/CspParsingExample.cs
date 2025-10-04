@@ -22,7 +22,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             try
             {
                 // Parse the CSP header
-                policy.AddHeaders(cspHeader);
+                policy.AddHeader(cspHeader);
 
                 // Access parsed directives
                 Console.WriteLine("Parsed CSP Policy:");
@@ -44,7 +44,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var invalidCspHeader = "invalid-directive something";
             try
             {
-                policy.AddHeaders(invalidCspHeader);
+                policy.AddHeader(invalidCspHeader);
                 Console.WriteLine("Successfully parsed invalid header");
             }
             catch (Exception)
@@ -91,7 +91,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 var policy = new ContentSecurityPolicy();
                 try
                 {
-                    policy.AddHeaders(example);
+                    policy.AddHeader(example);
                     Console.WriteLine($"Success: {policy.GeneratePolicy()}");
                 }
                 catch (Exception)

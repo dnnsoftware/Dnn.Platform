@@ -21,6 +21,12 @@ class CspSettingsPanelBody extends Component {
         super();
         this.state = {
             cspSettings: undefined,
+            error: {
+                CspHeader: false,
+                CspHeaderErrors: [],
+                CspReportingHeader: false,
+                CspReportingHeaderErrors: [],
+            },
         };        
     }
 
@@ -29,6 +35,12 @@ class CspSettingsPanelBody extends Component {
         if (props.cspSettings) {
             this.setState({
                 cspSettings: props.cspSettings,
+                error: {
+                    CspHeader: false,
+                    CspHeaderErrors: [],
+                    CspReportingHeader: false,
+                    CspReportingHeaderErrors: [],
+                },
             });
             return;
         }
@@ -44,14 +56,26 @@ class CspSettingsPanelBody extends Component {
         return cspHeaderModeOptions;
     }
 
+    onCspHeaderValueChange(key, event) {        
+        this.onSettingChange(key, event);
+    }
+
+    onCspReportingHeaderValueChange(key, event) {
+        this.onSettingChange(key, event);
+    }
+
     onSettingChange(key, event) {
         const { state, props } = this;
         let cspSettings = Object.assign({}, state.cspSettings);
         cspSettings[key] = typeof event === "object" ? event.target.value : event;
+        let error = Object.assign({}, state.error);
+        error[key] = false;
+        error[key + "Errors"] = [];
         this.setState({
             cspSettings: cspSettings,
+            error: error,
         }, () => {
-            
+           
         });
         props.dispatch(SecurityActions.cspSettingsClientModified(cspSettings));
     }
@@ -63,9 +87,18 @@ class CspSettingsPanelBody extends Component {
         props.dispatch(
             SecurityActions.updateCspSettings(
                 state.cspSettings,
-                () => {
-                    util.utilities.notify(resx.get("CspSettingsUpdateSuccess"));
-                    this.getSettings();
+                (data) => {
+                    if (data.Success) {
+                        util.utilities.notify(resx.get("CspSettingsUpdateSuccess"));
+                        this.getSettings();
+                    }
+                    else {
+                        util.utilities.notifyError(data.Message);
+                        this.setState({
+                            cspSettings: state.cspSettings,
+                            error: data.Error,
+                        });
+                    }
                 },
                 () => {
                     util.utilities.notifyError(resx.get("CspSettingsError"));
@@ -92,6 +125,12 @@ class CspSettingsPanelBody extends Component {
                 let cspSettings = Object.assign({}, data.Results.Settings);
                 this.setState({
                     cspSettings: cspSettings,
+                    error: {
+                        CspHeader: false,
+                        CspHeaderErrors: [],
+                        CspReportingHeader: false,
+                        CspReportingHeaderErrors: [],
+                    },
                 });
             })
         );
@@ -102,7 +141,10 @@ class CspSettingsPanelBody extends Component {
 
         if (state.cspSettings) {              
             return (
-                <div id="cspSettings-container">                                          
+                <div id="cspSettings-container">   
+                     <div className="warningBox">
+                        <div className="warningText">{resx.get("CspSettings.Help")}</div>
+                    </div>                                       
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plCspHeaderMode.Help")}
@@ -122,20 +164,22 @@ class CspSettingsPanelBody extends Component {
                             label={resx.get("plCspHeader")}
                         />
                          <MultiLineInputWithError
+                            error={state.error["CspHeader"]}                            
                             value={state.cspSettings.CspHeader}
-                            onChange={this.onSettingChange.bind(this, "CspHeader")} />
+                            errorMessage={state.error["CspHeaderErrors"].join(", ")}
+                            onChange={this.onCspHeaderValueChange.bind(this, "CspHeader")} />
                     </InputGroup>
-                    <div className="warningBox">
-                        <div className="warningText">{resx.get("CspSettings.Help")}</div>
-                    </div>
+                   
                     <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plCspReportingHeader.Help")}
                             label={resx.get("plCspReportingHeader")}
                         />
                          <MultiLineInputWithError
+                            error={state.error["CspReportingHeader"]}
+                            errorMessage={state.error["CspReportingHeaderErrors"].join(", ")}
                             value={state.cspSettings.CspReportingHeader}
-                            onChange={this.onSettingChange.bind(this, "CspReportingHeader")} />
+                            onChange={this.onCspReportingHeaderValueChange.bind(this, "CspReportingHeader")} />
                     </InputGroup>
                     <div className="buttons-box">
                         <Button
