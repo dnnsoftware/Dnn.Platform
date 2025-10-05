@@ -226,17 +226,24 @@ namespace DotNetNuke.Framework
             if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
                 this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
             {
-                if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+                try
                 {
-                    this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+                    if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+                    {
+                        this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+                    }
+
+                    this.ContentSecurityPolicy.ScriptSource.AddInline();
+                    this.ContentSecurityPolicy.ScriptSource.AddEval();
+
+                    if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+                    {
+                        this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+                    }
                 }
-
-                this.ContentSecurityPolicy.ScriptSource.AddInline();
-                this.ContentSecurityPolicy.ScriptSource.AddEval();
-
-                if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+                catch (Exception ex)
                 {
-                    this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+                    Logger.Error("CSP error", ex);
                 }
             }
 
