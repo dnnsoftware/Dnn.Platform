@@ -1,5 +1,5 @@
 'use strict';
-define(['jquery'], function ($) {
+define(['jquery', 'purify.min'], function ($, DOMPurify) {
     var initializedModules = {};
     return {
         init: function (config) {
@@ -127,15 +127,15 @@ define(['jquery'], function ($) {
 
                 confirm: function (text, confirmBtn, cancelBtn, confirmHandler, cancelHandler) {
                     setDialogClass($('#confirmation-dialog'));
-                    $('#confirmation-dialog > p').html(text);
-                    $('#confirmation-dialog a#confirmbtn').html(confirmBtn).unbind('click').bind('click', function () {
+                    $('#confirmation-dialog > p').html(DOMPurify.sanitize(text));
+                    $('#confirmation-dialog a#confirmbtn').html(DOMPurify.sanitize(confirmBtn)).unbind('click').bind('click', function () {
                         if (typeof confirmHandler === 'function') confirmHandler.apply();
                         $('#confirmation-dialog').fadeOut(200, 'linear', function () { $('#mask').hide(); });
                     });
 					
 					if (cancelBtn != '') {
 						$('#confirmation-dialog a#cancelbtn').show();
-						$('#confirmation-dialog a#cancelbtn').html(cancelBtn).unbind('click').bind('click', function () {
+						$('#confirmation-dialog a#cancelbtn').html(DOMPurify.sanitize(cancelBtn)).unbind('click').bind('click', function () {
 							if (typeof cancelHandler === 'function') cancelHandler.apply();
 							$('#confirmation-dialog').fadeOut(200, 'linear', function () { $('#mask').hide(); });
 						});
@@ -174,7 +174,7 @@ define(['jquery'], function ($) {
                     clearTimeout(self.fadeTimeout);
 
                     setDialogClass(notificationDialog);
-                    notificationMessage.removeClass().html(text);
+                    notificationMessage.removeClass().html(DOMPurify.sanitize(text));
                     if (size) {
                         notificationDialog.addClass(size);
                     }
@@ -190,7 +190,7 @@ define(['jquery'], function ($) {
                     else {
                         notificationDialog.removeClass('errorMessage');
                     }
-                    closeNotification.html(closeButtonText)
+                    closeNotification.html(DOMPurify.sanitize(closeButtonText))
                     closeNotification.on('click', function () {
                         notificationDialog.fadeOut(200, 'linear');
                         if (notificationMessageContainer.data('jsp')) {

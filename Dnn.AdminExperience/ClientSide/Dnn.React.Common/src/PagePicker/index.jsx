@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Collapse from "react-collapse";
 import SearchBox from "../SearchBox";
 import {ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon} from "../SvgIcons";
+import Html from "../Html";
 import "./style.less";
 import Service from "./Service";
 import PagePickerScrollbar from "./PagePickerScrollbar";
@@ -602,13 +603,13 @@ class PagePicker extends Component {
                                     />
                                 }
                                 {picker}
-                                {props.ShowCount && <div className="count" dangerouslySetInnerHTML={{ __html: this.getCountText() }}></div>}
+                                {props.ShowCount && <div className="count"><Html html={this.getCountText()} /></div>}
                             </Collapse>
                         </div>
                     }
                     {
                         !props.IsInDropDown && <div className="page-picker-content">{ picker }
-                            {props.ShowCount && <div className="count" dangerouslySetInnerHTML={{ __html: this.getCountText() }}></div>}
+                            {props.ShowCount && <div className="count"><Html html={this.getCountText()} /></div>}
                         </div>
                     }
 

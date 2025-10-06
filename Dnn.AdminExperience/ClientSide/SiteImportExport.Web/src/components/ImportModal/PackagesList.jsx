@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Localization from "localization";
 import PackageCard from "./PackageCard";
 import PackageCardOverlay from "./PackageCardOverlay";
+import Html from "../Html";
 
 import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 
@@ -47,9 +48,8 @@ class PackagesList extends Component {
                             pkg.Description &&
                             <div 
                                 className="package-card-tooltip"
-                                dangerouslySetInnerHTML={{ __html : this.renderTooltipMessage(pkg.Description)}}
                                 onClick={this.onSelect.bind(this, pkg)}
-                            />
+                            ><Html html={this.renderTooltipMessage(pkg.Description)} /></div>
                         }
                     </div>;
                 })}

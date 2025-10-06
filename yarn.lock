@@ -1443,7 +1443,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-typescript@npm:^7.27.1, @babel/plugin-transform-typescript@npm:^7.28.5":
+"@babel/plugin-transform-typescript@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/plugin-transform-typescript@npm:7.28.5"
   dependencies:
@@ -1710,7 +1710,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-typescript@npm:^7.21.0":
+"@babel/preset-typescript@npm:^7.21.0, @babel/preset-typescript@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/preset-typescript@npm:7.28.5"
   dependencies:
@@ -1722,21 +1722,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 10/72c03e01c34906041b1813542761a283c52da1751e7ddf63191bc5fb2a0354eca30a00537c5a92951688bec3975bdc0e50ef4516b5e94cfd6d4cf947f2125bdc
-  languageName: node
-  linkType: hard
-
-"@babel/preset-typescript@npm:^7.27.1":
-  version: 7.27.1
-  resolution: "@babel/preset-typescript@npm:7.27.1"
-  dependencies:
-    "@babel/helper-plugin-utils": "npm:^7.27.1"
-    "@babel/helper-validator-option": "npm:^7.27.1"
-    "@babel/plugin-syntax-jsx": "npm:^7.27.1"
-    "@babel/plugin-transform-modules-commonjs": "npm:^7.27.1"
-    "@babel/plugin-transform-typescript": "npm:^7.27.1"
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 10/9d8e75326b3c93fa016ba7aada652800fc77bc05fcc181888700a049935e8cf1284b549de18a5d62ef3591d02f097ea6de1111f7d71a991aaf36ba74657bd145
   languageName: node
   linkType: hard
 
@@ -1904,6 +1889,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@eslint/compat": "npm:^1.4.0"
     "@storybook/addon-docs": "npm:9.1.13"
     "@storybook/addon-onboarding": "npm:9.1.13"
@@ -1917,6 +1903,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.18"
+    dompurify: "npm:^3.3.0"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     enzyme-to-json: "npm:^3.6.2"
@@ -1930,6 +1917,7 @@ __metadata:
     eslint-plugin-storybook: "npm:9.1.13"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
+    html-react-parser: "npm:^5.2.10"
     interact.js: "npm:^1.2.8"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
@@ -1958,6 +1946,7 @@ __metadata:
     storybook: "npm:9.1.13"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -6280,6 +6269,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -6288,12 +6278,14 @@ __metadata:
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
+    dompurify: "npm:^3.3.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     i18n-webpack-plugin: "npm:1.0.0"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
@@ -6312,6 +6304,7 @@ __metadata:
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -11377,6 +11370,7 @@ __metadata:
     "@babel/core": "npm:^7.28.4"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     babel-loader: "npm:10.0.0"
@@ -11386,11 +11380,13 @@ __metadata:
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
+    dompurify: "npm:^3.3.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
     prop-types: "npm:^15.8.1"
@@ -11399,6 +11395,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -12544,6 +12541,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-dom-parser@npm:5.1.2":
+  version: 5.1.2
+  resolution: "html-dom-parser@npm:5.1.2"
+  dependencies:
+    domhandler: "npm:5.0.3"
+    htmlparser2: "npm:10.0.0"
+  checksum: 10/d54fcdafbc0b2881c441a396965ad285072d2e4df62bebe7074d7aaa2a1fffc95e9286bcb81d6f241c4cdb10a84435fa623738985b635574acb3c84e994e8bb6
+  languageName: node
+  linkType: hard
+
 "html-element-map@npm:^1.2.0":
   version: 1.3.1
   resolution: "html-element-map@npm:1.3.1"
@@ -12591,6 +12598,24 @@ __metadata:
   bin:
     html-minifier-terser: cli.js
   checksum: 10/a244fa944e002b57c66cc829a3f2dfdb9514b1833c2d838ada624964bf8c0afaf61d36c371758c7e44dedae95cea740a84d8d1067b916ed204f35175184d0e27
+  languageName: node
+  linkType: hard
+
+"html-react-parser@npm:^5.2.10":
+  version: 5.2.10
+  resolution: "html-react-parser@npm:5.2.10"
+  dependencies:
+    domhandler: "npm:5.0.3"
+    html-dom-parser: "npm:5.1.2"
+    react-property: "npm:2.0.2"
+    style-to-js: "npm:1.1.21"
+  peerDependencies:
+    "@types/react": 0.14 || 15 || 16 || 17 || 18 || 19
+    react: 0.14 || 15 || 16 || 17 || 18 || 19
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/3b0debac58e4b39d853731fd117b323a5d9582482cdc0b6dc5179d0c469acf63e64b8fdb3b678e758673633c579b09fd21d75d256c32104c65355f4434ba7f59
   languageName: node
   linkType: hard
 
@@ -12999,6 +13024,13 @@ __metadata:
   version: 0.2.4
   resolution: "inline-style-parser@npm:0.2.4"
   checksum: 10/80814479d1f3c9cbd102f9de4cd6558cf43cc2e48640e81c4371c3634f1e8b6dfeb2f21063cfa31d46cc83e834c20cd59ed9eeed9bfd45ef5bc02187ad941faf
+  languageName: node
+  linkType: hard
+
+"inline-style-parser@npm:0.2.7":
+  version: 0.2.7
+  resolution: "inline-style-parser@npm:0.2.7"
+  checksum: 10/cdfe719bd694b53bfbad20a645a9a4dda89c3ff56ee2b95945ad4eea86c541501f49f852d23bc2f73cd8127b6b62ea9027f697838e323a7f7d0d9b760e27a632
   languageName: node
   linkType: hard
 
@@ -16754,6 +16786,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     "@types/knockout": "npm:^3.4.77"
@@ -16770,6 +16803,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.18"
+    dompurify: "npm:^3.3.0"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     eslint: "npm:^9.38.0"
@@ -16777,6 +16811,7 @@ __metadata:
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     jest: "npm:^30.2.0"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
@@ -16794,6 +16829,7 @@ __metadata:
     string.prototype.startswith: "npm:1.0.1"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
+    typescript: "npm:^5.9.3"
     uglifyjs-webpack-plugin: "npm:^2.2.0"
     url-loader: "npm:4.1.1"
     url-parse: "npm:^1.5.10"
@@ -17731,6 +17767,7 @@ __metadata:
     "@babel/core": "npm:^7.28.4"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -17776,6 +17813,7 @@ __metadata:
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-cli: "npm:6.0.1"
@@ -19800,17 +19838,20 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     babel-loader: "npm:10.0.0"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
+    dompurify: "npm:^3.3.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
     prop-types: "npm:^15.8.1"
@@ -19824,6 +19865,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:^2.1.0"
     redux-thunk: "npm:^2.4.2"
     style-loader: "npm:^4.0.0"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -20026,7 +20068,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
-    "@babel/preset-typescript": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     "@types/react": "npm:^19.2.2"
@@ -20040,11 +20082,13 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.18"
+    dompurify: "npm:^3.3.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
     null-loader: "npm:^4.0.1"
@@ -20290,6 +20334,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     babel-eslint: "npm:^10.1.0"
@@ -20301,10 +20346,12 @@ __metadata:
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
+    dompurify: "npm:^3.3.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     i18n-webpack-plugin: "npm:1.0.0"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
@@ -20326,6 +20373,7 @@ __metadata:
     style-loader: "npm:^4.0.0"
     svg-url-loader: "npm:^8.0.0"
     throttle-debounce: "npm:^5.0.2"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     utils: "npm:^0.3.1"
     webpack: "npm:5.102.1"
@@ -20344,6 +20392,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
@@ -20352,12 +20401,14 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
+    dompurify: "npm:^3.3.0"
     eslint: "npm:9.38.0"
     eslint-plugin-jest: "npm:^29.0.1"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     jest: "npm:^30.2.0"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
@@ -20374,6 +20425,7 @@ __metadata:
     redux-thunk: "npm:^2.4.2"
     source-map-loader: "npm:^5.0.0"
     style-loader: "npm:^4.0.0"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -21050,12 +21102,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"style-to-js@npm:1.1.21":
+  version: 1.1.21
+  resolution: "style-to-js@npm:1.1.21"
+  dependencies:
+    style-to-object: "npm:1.0.14"
+  checksum: 10/5e30b4c52ed4e0294324adab2a43a0438b5495a77a72a6b1258637eebfc4dc8e0614f5ac7bf38a2f514879b3b448215d01fecf1f8d7468b8b95d90bed1d05d57
+  languageName: node
+  linkType: hard
+
 "style-to-object@npm:1.0.11":
   version: 1.0.11
   resolution: "style-to-object@npm:1.0.11"
   dependencies:
     inline-style-parser: "npm:0.2.4"
   checksum: 10/8a201b1dd2a1cc5418deed4fc4b16d1383ba5bf57672b0be3955b5281eb6485b89ecdd85be59557d6e79ff842c65f65a84c0465e78cf761ae27e9b3d9ea2e5ba
+  languageName: node
+  linkType: hard
+
+"style-to-object@npm:1.0.14":
+  version: 1.0.14
+  resolution: "style-to-object@npm:1.0.14"
+  dependencies:
+    inline-style-parser: "npm:0.2.7"
+  checksum: 10/06b86a5cf435dafac908d19082842983f9052d8cf3682915b1bd9251e3fe9b8065dbd2aef060dc5dfa0fa2ee24d717b587a5205f571513a10f30e3947f9d28ff
   languageName: node
   linkType: hard
 
@@ -21286,6 +21356,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
@@ -21297,12 +21368,14 @@ __metadata:
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
+    dompurify: "npm:^3.3.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
     prop-types: "npm:^15.8.1"
@@ -21312,6 +21385,7 @@ __metadata:
     react-hot-loader: "npm:4.13.1"
     react-modal: "npm:3.16.3"
     style-loader: "npm:^4.0.0"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -21328,6 +21402,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
+    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
@@ -21339,12 +21414,14 @@ __metadata:
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
+    dompurify: "npm:^3.3.0"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
+    html-react-parser: "npm:^5.2.10"
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
     object-path: "npm:0.11.8"
@@ -21354,6 +21431,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
+    typescript: "npm:^5.9.3"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"

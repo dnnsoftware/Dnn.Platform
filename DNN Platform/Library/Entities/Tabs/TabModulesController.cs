@@ -47,6 +47,12 @@ namespace DotNetNuke.Entities.Tabs
 
             foreach (ModuleInfo module in configuredModules)
             {
+                if (PortalSettings.Current != null)
+                {
+                    module.Header = HtmlUtils.SanitizeHtmlIfNeeded(module.Header, PortalSettings.Current.AllowJsInModuleHeaders);
+                    module.Footer = HtmlUtils.SanitizeHtmlIfNeeded(module.Footer, PortalSettings.Current.AllowJsInModuleFooters);
+                }
+
                 module.PaneModuleCount = objPaneModules[module.PaneName];
             }
 

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { GridCell, MultiLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
+import Html from "../../Html";
 import "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -29,7 +30,7 @@ class ReleaseNotes extends Component {
                     onChange={props.onChange && props.onChange.bind(this, "releaseNotes")} />}
                 {props.readOnly &&
                     <Scrollbars style={releaseBoxStyle}>
-                        <div className="read-only-release-notes" dangerouslySetInnerHTML={{ __html: value }}></div>
+                        <div className="read-only-release-notes"><Html html={value } /></div>
                     </Scrollbars>
                 }
                 {!props.buttonsAreHidden && <GridCell columnSize={100} className="modal-footer">

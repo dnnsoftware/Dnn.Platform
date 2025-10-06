@@ -14,7 +14,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
-    "@babel/preset-typescript": "^7.27.1",
+    "@babel/preset-typescript": "^7.28.5",
     "@dnnsoftware/dnn-react-common": "10.1.0",
     "@svgr/webpack": "^8.1.0",
     "@types/react": "^19.2.2",
@@ -50,6 +50,8 @@
     "webpack-dev-server": "5.2.2"
   },
   "dependencies": {
+    "dompurify": "^3.3.0",
+    "html-react-parser": "^5.2.10",
     "react-custom-scrollbars": "^4.2.1"
   }
 }
