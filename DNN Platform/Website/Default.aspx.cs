@@ -288,8 +288,6 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            this.pageService.SetCanonicalLinkUrl(this.CanonicalLinkUrl, PagePriority.Page);
-
             // add CSS links
             ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css"));
             ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
@@ -343,8 +341,11 @@ namespace DotNetNuke.Framework
             this.metaPanel.Visible = !UrlUtils.InPopUp();
             if (!UrlUtils.InPopUp())
             {
+                this.pageService.SetTitle(this.Title, PagePriority.Page);
                 this.Title = this.pageService.GetTitle();
+                this.pageService.SetDescription(this.Description, PagePriority.Page);
                 this.Description = this.pageService.GetDescription();
+                this.pageService.SetKeyWords(this.KeyWords, PagePriority.Page);
                 this.KeyWords = this.pageService.GetKeyWords();
 
                 this.MetaGenerator.Content = this.Generator;
@@ -362,6 +363,7 @@ namespace DotNetNuke.Framework
                 this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
             }
 
+            this.pageService.SetCanonicalLinkUrl(this.CanonicalLinkUrl, PagePriority.Page);
             this.CanonicalLinkUrl = this.pageService.GetCanonicalLinkUrl();
             if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
             {
@@ -612,8 +614,6 @@ namespace DotNetNuke.Framework
                 this.Description = this.PortalSettings.Description;
             }
 
-            this.pageService.SetDescription(this.Description, PagePriority.Page);
-
             // META keywords
             if (!string.IsNullOrEmpty(this.PortalSettings.ActiveTab.KeyWords))
             {
@@ -623,8 +623,6 @@ namespace DotNetNuke.Framework
             {
                 this.KeyWords = this.PortalSettings.KeyWords;
             }
-
-            this.pageService.SetKeyWords(this.KeyWords, PagePriority.Page);
 
             // META copyright
             if (!string.IsNullOrEmpty(this.PortalSettings.FooterText))
@@ -667,8 +665,6 @@ namespace DotNetNuke.Framework
                 string versionString = $" ({this.appInfo.Status} Version: {this.appInfo.Version})";
                 this.Title += versionString;
             }
-
-            this.pageService.SetTitle(this.Title, PagePriority.Page);
 
             // register css variables
             var cssVariablesStyleSheet = this.GetCssVariablesStylesheet();
