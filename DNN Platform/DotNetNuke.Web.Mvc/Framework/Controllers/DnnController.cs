@@ -201,8 +201,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 this.ViewEngineCollectionEx = moduleApplication.ViewEngines;
             }
 
-
             this.Url = new DnnUrlHelper(requestContext, this);
         }
     }
 }
+
