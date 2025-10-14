@@ -150,7 +150,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         {
             base.Initialize(requestContext);
 
-            if (requestContext.RouteData.Values.ContainsKey("mvcpage"))
+            if (requestContext.RouteData != null && requestContext.RouteData.Values.ContainsKey("mvcpage"))
             {
                 var values = requestContext.RouteData.Values;
                 var moduleContext = new ModuleInstanceContext();
@@ -200,6 +200,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
                 // viewEngines.Add(new ModuleDelegatingViewEngine());
                 this.ViewEngineCollectionEx = moduleApplication.ViewEngines;
             }
+
 
             this.Url = new DnnUrlHelper(requestContext, this);
         }
