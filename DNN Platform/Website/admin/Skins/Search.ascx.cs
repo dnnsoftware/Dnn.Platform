@@ -356,7 +356,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                         else
                         {
-                            this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId, "Search=" + WebUtility.UrlEncode(searchText)));
+                            this.Response.Redirect(this.navigationManager.NavigateURL(searchTabId, string.Empty, "search=" + WebUtility.UrlEncode(searchText)));
                         }
 
                         break;
