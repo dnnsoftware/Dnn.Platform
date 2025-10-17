@@ -57,7 +57,7 @@ graph TD
   classDef changing fill:#ffa500,stroke:#000000,color:#000,stroke-width:1px;
   class MvcPipeline,MvcWebsite,Mvc,Website,EditBar,PersonaBar,ApertureSkin default;
   class MvcUrlRewriter deprecated;
-  class CSP,HtmlModule,NewDDRMenu,WebClient changing;
+  class CSP,HtmlModule,NewDDRMenu,WebClient,MvcPipeline,MvcWebsite changing;
 ```
 
 ### Legend
