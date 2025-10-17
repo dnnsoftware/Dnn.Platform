@@ -3,7 +3,9 @@
 ## on feature/mvc-pipeline-old branch
 > PR are inter dependend
 
-> first merge this PRs before reviewing "First code submission for MVC Pipeline"
+> first merge this PRs without review
+
+> before reviewing "First code submission for MVC Pipeline", so everthing will be rewiewed in this PR
 
 * MVC pipeline - Module control — Type: Feature [#6700](https://github.com/dnnsoftware/Dnn.Platform/pull/6700)
 * MVC pipeline popups [#6723](https://github.com/dnnsoftware/Dnn.Platform/pull/6723) 
