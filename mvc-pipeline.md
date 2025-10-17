@@ -26,7 +26,7 @@
 
 
 
-# List of modified projects
+# List of modified projects - sujested order of review
 
 ### Projects graph
 
@@ -70,7 +70,7 @@ graph TD
 - 🟠 **Orange**: Projects that will change (PR or planned development)
 - 🟡 **Yellow**: Tempory projects (will be removed)
 
-## MVC Pipeline Projects - sujested order of review
+## MVC Pipeline Projects
 
 ### DotNetNuke.Web.MvcPipeline
 
