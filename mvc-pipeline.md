@@ -1,25 +1,29 @@
 # List of Pull requests - sujested merge order
 
+## on feature/mvc-pipeline-old branch
+> PR are inter dependend
+> first merge this PRs before reviewing "First code submission for MVC Pipeline"
+
+* MVC pipeline - Module control — Type: Feature [#6700](https://github.com/dnnsoftware/Dnn.Platform/pull/6700)
+* MVC pipeline popups [#6723](https://github.com/dnnsoftware/Dnn.Platform/pull/6723) 
+* MVC pipeline (routing / settings) [#6721](https://github.com/dnnsoftware/Dnn.Platform/pull/6721)
+* MVC pipeline - module actions [#6725](https://github.com/dnnsoftware/Dnn.Platform/pull/6725) 
+
+
+## on feature/mvc-pipeline branch
+* First code submission for MVC Pipeline [#6749](https://github.com/dnnsoftware/Dnn.Platform/pull/6749)
+
+
 ## on develop branch
 
 * Replace CDF [#6729](https://github.com/dnnsoftware/Dnn.Platform/pull/6729)
 * Content security policy headers (CSP) [#6752](https://github.com/dnnsoftware/Dnn.Platform/pull/6752)
 * Priority-based IPageService for page metadata, head tags, and messages [#6738](https://github.com/dnnsoftware/Dnn.Platform/pull/6738) 
 
-> idealy on this stage developed branch needs to be merged in mvc-pipeline-old
-> and code need to be adapted
+> after merge, mvc code need to be adapted to use it
 
-## on feature/mvc-pipeline branch
-* First code submission for MVC Pipeline [#6749](https://github.com/dnnsoftware/Dnn.Platform/pull/6749)
 
-## on feature/mvc-pipeline-old branch
-> PR are inter dependend
-* MVC pipeline - Module control — Type: Feature [#6700](https://github.com/dnnsoftware/Dnn.Platform/pull/6700)
-* MVC pipeline popups [#6723](https://github.com/dnnsoftware/Dnn.Platform/pull/6723) 
-* MVC pipeline (routing / settings) [#6721](https://github.com/dnnsoftware/Dnn.Platform/pull/6721)
-* MVC pipeline - module actions [#6725](https://github.com/dnnsoftware/Dnn.Platform/pull/6725) 
 
-> maybe easyer for reviewers to first merge this PRs before reviewing "First code submission for MVC Pipeline"²
 
 # List of modified projects
 
@@ -101,6 +105,7 @@ graph TD
 ### DotNetNuke.Web.MvcWebsite
   * created to avoid circular dependencies
   * this can maybe moved to DotNetNuke.Website
+  * DefaultController : entry point, replacement for default.aspx
   
 ### DotNetNuke.Web.MvcUrlRewriter
 > will change
