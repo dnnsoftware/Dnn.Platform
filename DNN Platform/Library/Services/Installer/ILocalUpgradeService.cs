@@ -21,4 +21,10 @@ public interface ILocalUpgradeService
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task indicating completion.</returns>
     Task StartLocalUpgrade(IReadOnlyList<LocalUpgradeInfo> upgrades, CancellationToken cancellationToken);
+
+    /// <summary>Begins the process of upgrading the site to the specified version.</summary>
+    /// <param name="upgrade">The upgrade version (from <see cref="GetLocalUpgrades"/>).</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task indicating completion.</returns>
+    Task StartLocalUpgrade(LocalUpgradeInfo upgrade, CancellationToken cancellationToken);
 }

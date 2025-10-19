@@ -23,3 +23,60 @@
     }
   }
 }
+
+.dnn-servers-grid-panel {
+  .dnn-upgrades-grid-row {
+    display: table;
+    width: 100%;
+    border-bottom: 1px solid @alto;
+    color: @rollingStone;
+    float: left;
+    position: relative;
+    padding: 15px 18px;
+    box-sizing: border-box;
+    cursor: auto;
+    > div {
+      float: left;
+      width: 100%;
+      > div {
+        float: left;
+        width: 100%;
+      }
+    }
+    .ellipsis {
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .edit-icon {
+      margin-left: 5px;
+      float: right;
+      cursor: pointer;
+      svg {
+        width: 18px;
+        float: left;
+        height: 18px;
+      }
+      &.false {
+        svg {
+          fill: @curiousBlue;
+        }
+        svg:hover {
+          fill: @thunder;
+        }
+      }
+    }
+    .icon-flat {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      &.active {
+        svg {
+          fill: @thunder;
+        }
+      }
+    }
+  }
+}

@@ -9,19 +9,18 @@ import InfoBlock from "../../common/InfoBlock";
 import Localization from "../../../localization";
 import "../tabs.less";
 import "./style.less";
-import upgradeService from "services/upgradeService";
-import { UpgradeFile } from "models/upgradeFile";
+import upgradeService from "../../../services/upgradeService";
+import { LocalUpgradeInfo } from "../../../models/LocalUpgradeInfo";
+import UpgradeList from "./UpgradeList";
 
 interface IProps {
   applicationInfo: any;
 }
 
 const UpgradesTab: React.FC<IProps> = (props) => {
-  const [upgrades, setUpgrades] = useState<UpgradeFile[]>([]);
-  console.log("here3");
+  const [upgrades, setUpgrades] = useState<LocalUpgradeInfo[]>([]);
 
   useEffect(() => {
-    console.log("here2");
     upgradeService.listUpgrades().then((upgrades) => {
       setUpgrades(upgrades);
     });
@@ -52,6 +51,7 @@ const UpgradesTab: React.FC<IProps> = (props) => {
           className="header-title"
           label={Localization.get("plAvailableUpgrades")}
         />
+        <UpgradeList upgrades={upgrades} />
       </GridCell>
     </GridCell>
   );

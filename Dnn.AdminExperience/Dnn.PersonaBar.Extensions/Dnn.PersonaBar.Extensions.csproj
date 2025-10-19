@@ -58,6 +58,7 @@
       <Link>SolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Common\ControllerBase.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="Common\PortalHelper.cs" />
     <Compile Include="Components\AdminLogs\AdminLogsController.cs" />
     <Compile Include="Components\AdminLogs\Constants.cs" />
@@ -452,7 +453,6 @@
     <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
     <Compile Include="Services\Dto\UpdateSslSettingsRequest.cs" />
-    <Compile Include="Services\Dto\UpgradeFileDto.cs" />
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\Dto\VocabularyDto.cs" />

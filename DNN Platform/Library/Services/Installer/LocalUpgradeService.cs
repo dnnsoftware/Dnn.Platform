@@ -102,6 +102,12 @@ public class LocalUpgradeService : ILocalUpgradeService
     public async Task StartLocalUpgrade(IReadOnlyList<LocalUpgradeInfo> upgrades, CancellationToken cancellationToken)
     {
         var upgrade = upgrades.Where(u => u.IsValid && !u.IsOutdated).OrderBy(u => u.Version).First();
+        await this.StartLocalUpgrade(upgrade, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task StartLocalUpgrade(LocalUpgradeInfo upgrade, CancellationToken cancellationToken)
+    {
         var upgradeZipPath = Path.Combine(this.UpgradeDirectoryPath, upgrade.PackageName + ".zip");
         using var fileStream = File.OpenRead(upgradeZipPath);
         using var archive = new ZipArchive(fileStream, ZipArchiveMode.Read);

@@ -756,4 +756,16 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="plCurrentVersion.Text" xml:space="preserve">
     <value>Current Version:</value>
   </data>
+  <data name="Backup.Confirm" xml:space="preserve">
+    <value>Please confirm you have made a backup of this installation before upgrading.</value>
+  </data>
+  <data name="IsOutdated.Text" xml:space="preserve">
+    <value>Is Outdated</value>
+  </data>
+  <data name="IsValid.Text" xml:space="preserve">
+    <value>Is Valid</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
 </root>
