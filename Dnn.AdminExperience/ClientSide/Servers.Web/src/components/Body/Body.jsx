@@ -62,7 +62,7 @@ class Body extends Component {
 
         const systemInfoTabHeaders = isHost ? [Localization.get("tabApplicationTitle"), Localization.get("tabWebTitle"), Localization.get("tabDatabaseTitle"), Localization.get("tabServersTitle"), "Upgrades"]
             : [Localization.get("tabApplicationTitle")];
-        const systemInfoTabBody = isHost ? [<ApplicationTab key="first" />, <WebTab key="second" />, <DatabaseTab key="third" />, <ServersTab key="fourth" />, <UpgradesTab key="fifth" />]
+        const systemInfoTabBody = isHost ? [<ApplicationTab key="first" />, <WebTab key="second" />, <DatabaseTab key="third" />, <ServersTab key="fourth" />, <UpgradesTab key="fifth" applicationInfo={props.applicationInfo} />]
             :  [<ApplicationTab key="first" />];
         const serverSettingsTabHeaders = isHost ? [Localization.get("tabSmtpServerTitle"), Localization.get("tabPerformanceTitle"), Localization.get("tabLogsTitle")]
             : [Localization.get("tabSmtpServerTitle")];
@@ -123,12 +123,14 @@ class Body extends Component {
 }
 
 Body.propTypes = {
+    applicationInfo: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     tabIndex: PropTypes.number
 };
 
 function mapStateToProps(state) {
     return {
+        applicationInfo: state.applicationTab.applicationInfo,
         tabIndex: state.pagination.tabIndex
     };
 }

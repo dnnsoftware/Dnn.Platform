@@ -747,4 +747,13 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="OAuthConfigurationNotSaved.Text" xml:space="preserve">
     <value>Please save the settings and complete the authorization process before testing when OAuth authentication mode is enabled in host or website level.</value>
   </data>
+  <data name="plAvailableUpgrades.Text" xml:space="preserve">
+    <value>Available Upgrades</value>
+  </data>
+  <data name="plCurrentVersion.Help" xml:space="preserve">
+    <value>The current version of this application.</value>
+  </data>
+  <data name="plCurrentVersion.Text" xml:space="preserve">
+    <value>Current Version:</value>
+  </data>
 </root>
