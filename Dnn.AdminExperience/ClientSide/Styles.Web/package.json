@@ -37,7 +37,7 @@
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "eslint": "^9.38.0",
-    "jiti": "^2.4.2",
+    "jiti": "^2.6.1",
     "typescript-eslint": "^8.46.2"
   }
 }
