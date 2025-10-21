@@ -11,6 +11,8 @@ import {
 } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import "./style.less";
+import util from "../../../utils";
+import upgradeService from "services/upgradeService";
 
 interface IUpgradeRowProps {
   upgrade: LocalUpgradeInfo;
@@ -37,7 +39,16 @@ const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
         <IconButton
           type="trash"
           className={"edit-icon"}
-          onClick={() => {}}
+          onClick={() => {
+            util.confirm(
+              Localization.get("DeleteUpgradePackage.Confirm"),
+              Localization.get("Confirm"),
+              Localization.get("Cancel"),
+              function () {
+                  upgradeService.deletePackage(props.upgrade.PackageName);
+              }.bind(this)
+          );
+          }}
           title={Localization.get("Delete")}
         />
       </GridCell>

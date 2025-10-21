@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.Extensions.Services
     using System.Threading.Tasks;
     using System.Web.Http;
 
+    using Dnn.PersonaBar.Extensions.Services.Dto;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Abstractions.Application;
@@ -36,6 +37,13 @@ namespace Dnn.PersonaBar.Extensions.Services
             this.localUpgradeService = localUpgradeService;
         }
 
+        /// <summary>
+        /// Retrieves a list of local upgrades.
+        /// </summary>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <returns>A <see cref="HttpResponseMessage"/> containing the list of local upgrades with a status code
+        /// of <see cref="HttpStatusCode.OK"/> if successful, or an error message with a status code of
+        /// <see cref="HttpStatusCode.InternalServerError"/> if an exception occurs.</returns>
         [HttpGet]
         public async Task<HttpResponseMessage> List(CancellationToken cancellationToken)
         {
@@ -52,11 +60,11 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// <summary>Starts a local upgrade.</summary>
-        /// <param name="version">The version to upgrade to.</param>
+        /// <param name="data">The DTO containing the packageName.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>An empty success response.</returns>
         [HttpPost]
-        public async Task<HttpResponseMessage> StartUpgrade(string version, CancellationToken cancellationToken)
+        public async Task<HttpResponseMessage> StartUpgrade(UpgradePackageRequestDto data, CancellationToken cancellationToken)
         {
             var upgrades = await this.localUpgradeService.GetLocalUpgrades(cancellationToken);
             if (!upgrades.Any(u => u.IsValid && !u.IsOutdated))
@@ -64,11 +72,10 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "There are no upgrades to apply", });
             }
 
-            var ver = new Version(version);
-            var upgrade = upgrades.FirstOrDefault(u => u.Version.Equals(ver));
+            var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(data.PackageName, StringComparison.InvariantCultureIgnoreCase));
             if (upgrade == null || !upgrade.IsValid || upgrade.IsOutdated)
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"There is no valid upgrade for version {version}", });
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"There is no valid upgrade for package {data.PackageName}", });
             }
 
             await this.localUpgradeService.StartLocalUpgrade(upgrade, cancellationToken);
@@ -93,9 +100,39 @@ namespace Dnn.PersonaBar.Extensions.Services
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
+        /// <summary>Deletes a local upgrade package.</summary>
+        /// <param name="data">The DTO containing the packageName.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>An empty success response.</returns>
+        [HttpPost]
+        public async Task<HttpResponseMessage> Delete(UpgradePackageRequestDto data, CancellationToken cancellationToken)
+        {
+            var upgrades = await this.localUpgradeService.GetLocalUpgrades(cancellationToken);
+            var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(data.PackageName, StringComparison.InvariantCultureIgnoreCase));
+            try
+            {
+                var packagePath = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", upgrade.PackageName + ".zip");
+                if (File.Exists(packagePath))
+                {
+                    File.Delete(packagePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = ex.Message, });
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.NoContent);
+        }
+
+        /// <summary>
+        /// Uploads a DNN package for local upgrade.
+        /// </summary>
+        /// <returns>Either a package info or an error message.</returns>
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
-        public Task<HttpResponseMessage> Upload([FromUri] string legacySkin = null, [FromUri] bool isPortalPackage = false)
+        public Task<HttpResponseMessage> Upload()
         {
             try
             {
@@ -154,7 +191,15 @@ namespace Dnn.PersonaBar.Extensions.Services
             if (!string.IsNullOrEmpty(fileName) && stream != null)
             {
                 var info = this.localUpgradeService.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(fileName), stream, CancellationToken.None).Result;
-                if (info.IsValid)
+                if (!info.IsValid)
+                {
+                    result = new { message = $"The uploaded file {fileName} is not a valid DNN package.", };
+                }
+                else if (info.IsOutdated)
+                {
+                    result = new { message = $"The uploaded file {fileName} is an outdated DNN package.", };
+                }
+                else
                 {
                     var upgradePath = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", info.PackageName + ".zip");
                     using (var fileStream = File.Create(upgradePath))
@@ -164,10 +209,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                     }
 
                     result = info;
-                }
-                else
-                {
-                    result = "The uploaded file is not a valid DNN upgrade package.";
                 }
             }
 
