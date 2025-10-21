@@ -30,7 +30,7 @@
     "@stencil/core": "^4.22.2"
   },
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.27.4",
+    "@dnncommunity/dnn-elements": "^0.27.7",
     "@stencil/eslint-plugin": "^1.1.0",
     "@stencil/sass": "^3.0.12",
     "@types/node": "^22.9.0",
