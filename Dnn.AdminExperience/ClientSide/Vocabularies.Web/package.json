@@ -27,7 +27,7 @@
     "es6-object-assign": "1.1.0",
     "eslint": "9.38.0",
     "eslint-plugin-react": "7.37.5",
-    "eslint-webpack-plugin": "^5.0.1",
+    "eslint-webpack-plugin": "^5.0.2",
     "file-loader": "6.2.0",
     "globals": "^16.4.0",
     "less": "4.1.3",
