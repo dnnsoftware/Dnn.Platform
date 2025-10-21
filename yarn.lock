@@ -1694,7 +1694,7 @@ __metadata:
     storybook: "npm:9.1.13"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -5918,7 +5918,7 @@ __metadata:
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -9302,7 +9302,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -10911,7 +10911,7 @@ __metadata:
     source-map-loader: "npm:^0.2.4"
     style-loader: "npm:4.0.0"
     throttle-debounce: "npm:5.0.2"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-analyzer: "npm:^4.10.2"
     webpack-cli: "npm:6.0.1"
@@ -11002,7 +11002,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -14317,7 +14317,7 @@ __metadata:
     react-hot-loader: "npm:4.13.1"
     react-modal: "npm:3.16.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -14947,15 +14947,6 @@ __metadata:
   bin:
     mime: cli.js
   checksum: 10/b7d98bb1e006c0e63e2c91b590fe1163b872abf8f7ef224d53dd31499c2197278a6d3d0864c45239b1a93d22feaf6f9477e9fc847eef945838150b8c02d03170
-  languageName: node
-  linkType: hard
-
-"mime@npm:^2.0.3":
-  version: 2.6.0
-  resolution: "mime@npm:2.6.0"
-  bin:
-    mime: cli.js
-  checksum: 10/7da117808b5cd0203bb1b5e33445c330fe213f4d8ee2402a84d62adbde9716ca4fb90dd6d9ab4e77a4128c6c5c24a9c4c9f6a4d720b095b1b342132d02dba58d
   languageName: node
   linkType: hard
 
@@ -16405,7 +16396,7 @@ __metadata:
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
     uglifyjs-webpack-plugin: "npm:^2.2.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     url-parse: "npm:^1.5.10"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -17386,7 +17377,7 @@ __metadata:
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-cli: "npm:6.0.1"
     webpack-dev-server: "npm:5.2.2"
@@ -18832,7 +18823,7 @@ __metadata:
     react-widgets: "npm:^5.8.4"
     style-loader: "npm:4.0.0"
     throttle-debounce: "npm:5.0.2"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -19317,7 +19308,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:^2.1.0"
     redux-thunk: "npm:^2.4.2"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -19453,7 +19444,7 @@ __metadata:
     react-hot-loader: "npm:4.13.1"
     react-modal: "npm:3.16.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -19544,7 +19535,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -19813,7 +19804,7 @@ __metadata:
     style-loader: "npm:^4.0.0"
     svg-url-loader: "npm:^8.0.0"
     throttle-debounce: "npm:^5.0.2"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     utils: "npm:^0.3.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -19860,7 +19851,7 @@ __metadata:
     redux-thunk: "npm:^2.4.2"
     source-map-loader: "npm:^0.2.4"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -19896,7 +19887,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -20768,7 +20759,7 @@ __metadata:
     react-hot-loader: "npm:4.13.1"
     react-modal: "npm:3.16.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -20809,7 +20800,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -20907,7 +20898,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     style-loader: "npm:^4.0.0"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"
     webpack-cli: "npm:6.0.1"
@@ -21749,16 +21740,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url-loader@npm:1.1.2":
-  version: 1.1.2
-  resolution: "url-loader@npm:1.1.2"
+"url-loader@npm:4.1.1":
+  version: 4.1.1
+  resolution: "url-loader@npm:4.1.1"
   dependencies:
-    loader-utils: "npm:^1.1.0"
-    mime: "npm:^2.0.3"
-    schema-utils: "npm:^1.0.0"
+    loader-utils: "npm:^2.0.0"
+    mime-types: "npm:^2.1.27"
+    schema-utils: "npm:^3.0.0"
   peerDependencies:
-    webpack: ^3.0.0 || ^4.0.0
-  checksum: 10/00ab1f4552e2c8c704ef1e5f07a9ca5074a5eeb3c6862a873dab15554f03fa13aeaa339b45c9d01f346bf8b8b6edb09298a00ab650f3b418e5c51035dd1ad124
+    file-loader: "*"
+    webpack: ^4.0.0 || ^5.0.0
+  peerDependenciesMeta:
+    file-loader:
+      optional: true
+  checksum: 10/f7e7258156f607bdd74469d22868a3522177bd895bb0eb1919363e32116ad7ed0c666b076d32dd700f1681c53d2edf046382bd9f6d9e77a19d4dd8ea36511da2
   languageName: node
   linkType: hard
 
@@ -21820,7 +21815,7 @@ __metadata:
     services: "npm:^0.0.3"
     style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
-    url-loader: "npm:1.1.2"
+    url-loader: "npm:4.1.1"
     utils: "npm:^0.3.1"
     webpack: "npm:5.102.1"
     webpack-bundle-size-analyzer: "npm:3.1.0"

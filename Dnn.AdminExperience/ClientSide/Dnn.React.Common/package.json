@@ -88,7 +88,7 @@
     "react-test-renderer": "^17.0.2",
     "storybook": "9.1.13",
     "style-loader": "^4.0.0",
-    "url-loader": "1.1.2",
+    "url-loader": "4.1.1",
     "webpack": "5.102.1",
     "webpack-bundle-size-analyzer": "3.1.0",
     "webpack-cli": "6.0.1",
