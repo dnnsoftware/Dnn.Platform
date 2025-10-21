@@ -5717,7 +5717,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array.prototype.findindex@npm:2.2.4, array.prototype.findindex@npm:^2.2.1":
+"array.prototype.findindex@npm:2.2.4, array.prototype.findindex@npm:^2.2.4":
   version: 2.2.4
   resolution: "array.prototype.findindex@npm:2.2.4"
   dependencies:
@@ -18968,7 +18968,7 @@ __metadata:
     "@babel/preset-react": "npm:^7.27.1"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
     array.prototype.find: "npm:^2.2.3"
-    array.prototype.findindex: "npm:^2.2.1"
+    array.prototype.findindex: "npm:^2.2.4"
     babel-loader: "npm:^10.0.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
     babel-plugin-transform-object-rest-spread: "npm:6.26.0"
