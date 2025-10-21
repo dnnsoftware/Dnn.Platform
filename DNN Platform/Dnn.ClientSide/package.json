@@ -22,7 +22,7 @@
     "autoprefixer": "^10.4.21",
     "chokidar": "^4.0.3",
     "cssnano": "^7.1.1",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.25.11",
     "eslint": "^9.38.0",
     "modern-normalize": "^3.0.1",
     "postcss": "^8.5.6",
