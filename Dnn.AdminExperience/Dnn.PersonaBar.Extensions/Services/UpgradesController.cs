@@ -141,7 +141,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Task.FromResult(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                return Task.FromResult(this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = ex.Message, }));
             }
         }
 
@@ -188,16 +188,22 @@ namespace Dnn.PersonaBar.Extensions.Services
                 }
             }
 
+            // Response Content Type cannot be application/json
+            // because IE9 with iframe-transport manages the response
+            // as a file download 1
+            var mediaTypeFormatter = new JsonMediaTypeFormatter();
+            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
+
             if (!string.IsNullOrEmpty(fileName) && stream != null)
             {
                 var info = this.localUpgradeService.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(fileName), stream, CancellationToken.None).Result;
                 if (!info.IsValid)
                 {
-                    result = new { message = $"The uploaded file {fileName} is not a valid DNN package.", };
+                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"The uploaded file {fileName} is not a valid DNN package.", });
                 }
                 else if (info.IsOutdated)
                 {
-                    result = new { message = $"The uploaded file {fileName} is an outdated DNN package.", };
+                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"The uploaded file {fileName} is an outdated DNN package.", });
                 }
                 else
                 {
@@ -208,21 +214,15 @@ namespace Dnn.PersonaBar.Extensions.Services
                         stream.CopyTo(fileStream);
                     }
 
-                    result = info;
+                    return this.Request.CreateResponse(
+                        HttpStatusCode.OK,
+                        result,
+                        mediaTypeFormatter,
+                        "text/plain");
                 }
             }
 
-            var mediaTypeFormatter = new JsonMediaTypeFormatter();
-            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-
-            // Response Content Type cannot be application/json
-            // because IE9 with iframe-transport manages the response
-            // as a file download
-            return this.Request.CreateResponse(
-                HttpStatusCode.OK,
-                result,
-                mediaTypeFormatter,
-                "text/plain");
+            return request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"The uploaded file {fileName} was not a DNN package.", });
         }
     }
 }

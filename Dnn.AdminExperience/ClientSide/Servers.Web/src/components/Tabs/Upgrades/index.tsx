@@ -68,9 +68,9 @@ const UpgradesTab: React.FC<IProps> = (props) => {
               <FileUpload
                 cancelInstall={() => setShowUploadPanel(false)}
                 clearUploadedPackage={() => {}}
-                onSelectLegacyType={() => {}}
-                selectedLegacyType="Skin"
-                alreadyInstalled={false}
+                uploadComplete={() => {
+                  setShowUploadPanel(false);
+                }}
                 uploadPackage={(
                   file: File,
                   onSuccess: (data: any) => void,
