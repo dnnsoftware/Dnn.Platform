@@ -66,6 +66,6 @@
   },
   "dependencies": {
     "dompurify": "^3.3.0",
-    "html-react-parser": "^5.2.5"
+    "html-react-parser": "^5.2.7"
   }
 }
