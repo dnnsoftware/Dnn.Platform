@@ -16,7 +16,7 @@
         shim: {
             'jquery.hoverintent.min': ['jquery'],
             'jquery.qatooltip': ['jquery.hoverintent.min']
-            
+
         },
         map: {
             '*': {
@@ -65,7 +65,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
     function ($, ko, dayjs, ut, sf, cf, extension, persistent, eventEmitter, iconLoader, Gateway) {
         var iframe = window.parent.document.getElementById("personaBar-iframe");
         if (!iframe) return;
-        
+
         var onTouch = "ontouchstart" in document.documentElement;
         // Checking touch screen for second level menu - the above onTouch won't work on windows tablet - IE I didnt test but read about it.
         var isTouch = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
@@ -98,7 +98,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
         if (config.skin) {
             $personaBar.addClass(config.skin);
         }
-        
+
         var menuViewModel = utility.buildMenuViewModel(config.menuStructure);
         var cachedPersonaBarPageWidth = 860;
 
@@ -242,7 +242,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                 $showSiteButton.hide();
                 var $menuItems = $(".btn_panel");
                 var $hoverMenuItems = $(".hovermenu > ul > li");
-                
+
                 $menuItems.removeClass('selected pending');
                 $hoverMenuItems.removeClass('selected pending');
 
@@ -432,7 +432,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
             },
             /**
              * in case path is an array, it is expected to be a sorted list of dependent sources.
-             * 
+             *
              * @param path string|array
              */
             loadBundleScript: function (path) {
@@ -457,7 +457,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                         }
                     });
                 }
-                    
+
                 ajax(urls.reverse(), config.buildNumber);
             },
             panelViewData: function (panelId, viewData) {
@@ -590,7 +590,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                 }, 100);
             }
         }
-        
+
         function onShownPersonaBar() {
             (function handleResizeWindow() {
                 var evt = document.createEvent('HTMLEvents');
@@ -697,7 +697,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                 e.stopImmediatePropagation();
             });
             $btnEdit.append($tooltip);
-            
+
             var title = util.resx.PersonaBar["DisableEditBar"];
             var message = util.resx.PersonaBar["DisableEditBar.Help"];
 
@@ -755,10 +755,6 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                             resx: util.resx.PersonaBar,
                             menu: menuViewModel.menu,
                             upToDate: ko.observable(true),
-                            localUpgrades: ko.observableArray([]),
-                            localUpgradeAvailable: ko.pureComputed(function () { 
-                                return viewModel.localUpgrades() && viewModel.localUpgrades().length > 0 && viewModel.localUpgrades().some(u => u.IsValid && !u.IsOutdated); 
-                            }),
                             updateLink: ko.observable(''),
                             updateCritical: ko.observable(false),
                             logOff: function() {
@@ -795,7 +791,6 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                             viewModel.upToDate(data.UpToDate);
                             viewModel.updateLink(data.Url);
                             viewModel.updateCritical(data.Critical);
-                            viewModel.localUpgrades(data.LocalUpgrades);
                         });
 
                         document.addEventListener("click", function(e) {
@@ -861,9 +856,9 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                                 $body.addClass('ie');
                                 iframe.style.backgroundColor = "rgba(0,0,0,0.01)"; // IE10 flashing bug
                             }
-                            
+
                             if (config.visible) {
-                                
+
 
                                 (function setupMenu() {
                                     $(".btn_panel .hovermenu").click(function(e) {
@@ -915,7 +910,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                                         }
 
                                         if (!path) return;
-                                        
+
                                         if (moduleName !== undefined) {
                                             params = {
                                                 moduleName: moduleName,
@@ -1159,7 +1154,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                     } else {
                         $iframe.width(personaBarMenuWidth);
                         $personaBar.show();
-          
+
                         $personaBar.css({ left: 0, 'display': 'block' });
                         $parentBody.animate({ marginLeft: personaBarMenuWidth }, 1, 'linear', onShownPersonaBar);
                         $personaBar.animate({ left: 0 }, 1, 'linear', callback);
@@ -1188,7 +1183,7 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                 util.loadPanel(identifier, {});
             }
         });
-        
+
         if (typeof window.parent.dnn === "undefined" || window.parent.dnn === null) {
              window.parent.dnn = {};
         }
