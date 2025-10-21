@@ -1647,7 +1647,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.18"
     enzyme: "npm:^3.11.0"
-    enzyme-adapter-react-16: "npm:^1.15.7"
+    enzyme-adapter-react-16: "npm:^1.15.8"
     enzyme-to-json: "npm:^3.6.2"
     eslint: "npm:^9.38.0"
     eslint-import-resolver-node: "npm:^0.3.9"
@@ -9239,7 +9239,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enzyme-adapter-react-16@npm:^1.15.7":
+"enzyme-adapter-react-16@npm:^1.15.8":
   version: 1.15.8
   resolution: "enzyme-adapter-react-16@npm:1.15.8"
   dependencies:
@@ -15752,7 +15752,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.18"
     enzyme: "npm:^3.11.0"
-    enzyme-adapter-react-16: "npm:^1.15.7"
+    enzyme-adapter-react-16: "npm:^1.15.8"
     eslint: "npm:^9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
@@ -16761,7 +16761,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     dompurify: "npm:^3.3.0"
     enzyme: "npm:^3.11.0"
-    enzyme-adapter-react-16: "npm:^1.15.7"
+    enzyme-adapter-react-16: "npm:^1.15.8"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"

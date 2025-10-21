@@ -28,7 +28,7 @@
     "create-react-class": "^15.7.0",
     "css-loader": "^7.1.2",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.7",
+    "enzyme-adapter-react-16": "^1.15.8",
     "es6-object-assign": "1.1.0",
     "eslint": "9.38.0",
     "eslint-plugin-react": "7.37.5",
