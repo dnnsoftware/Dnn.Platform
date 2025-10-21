@@ -6489,7 +6489,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^2.4.1, async@npm:^2.5.0, async@npm:^2.6.0":
+"async@npm:^2.4.1, async@npm:^2.6.0":
   version: 2.6.4
   resolution: "async@npm:2.6.4"
   dependencies:
@@ -10908,7 +10908,7 @@ __metadata:
     redux-devtools-log-monitor: "npm:2.1.0"
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-thunk: "npm:2.4.2"
-    source-map-loader: "npm:^0.2.4"
+    source-map-loader: "npm:^5.0.0"
     style-loader: "npm:4.0.0"
     throttle-debounce: "npm:5.0.2"
     url-loader: "npm:4.1.1"
@@ -19849,7 +19849,7 @@ __metadata:
     redux: "npm:^4.2.1"
     redux-immutable-state-invariant: "npm:^2.1.0"
     redux-thunk: "npm:^2.4.2"
-    source-map-loader: "npm:^0.2.4"
+    source-map-loader: "npm:^5.0.0"
     style-loader: "npm:^4.0.0"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
@@ -20020,20 +20020,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-js@npm:>=0.6.2 <2.0.0, source-map-js@npm:^1.0.1, source-map-js@npm:^1.2.1":
+"source-map-js@npm:>=0.6.2 <2.0.0, source-map-js@npm:^1.0.1, source-map-js@npm:^1.0.2, source-map-js@npm:^1.2.1":
   version: 1.2.1
   resolution: "source-map-js@npm:1.2.1"
   checksum: 10/ff9d8c8bf096d534a5b7707e0382ef827b4dd360a577d3f34d2b9f48e12c9d230b5747974ee7c607f0df65113732711bb701fe9ece3c7edbd43cb2294d707df3
   languageName: node
   linkType: hard
 
-"source-map-loader@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "source-map-loader@npm:0.2.4"
+"source-map-loader@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "source-map-loader@npm:5.0.0"
   dependencies:
-    async: "npm:^2.5.0"
-    loader-utils: "npm:^1.1.0"
-  checksum: 10/10641842a7efab6246a71b9bfe7a6765b29d6c518ea42056be22132c44e20e541fcfce36872dab1c6b7725901121d6f997b2044e2c52c805c3378637ed0560b5
+    iconv-lite: "npm:^0.6.3"
+    source-map-js: "npm:^1.0.2"
+  peerDependencies:
+    webpack: ^5.72.1
+  checksum: 10/9bc90a50df1a3570ddc1ea9cd1aeadb241fd6f6ddb03e72a8f45f5d3fcc357e7edcc9fff8d35d2e338d17edf13c38a7b6e530308ac263d1b462a1e6bfacaf1a1
   languageName: node
   linkType: hard
 
