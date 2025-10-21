@@ -26,6 +26,17 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>The default <see cref="ILocalUpgradeService"/> implementation.</summary>
 public class LocalUpgradeService : ILocalUpgradeService
 {
+    private static readonly List<string> InstallFilter = new List<string>
+    {
+        "App_Data\\Database.mdf",
+        "bin\\",
+        "Config\\DotNetNuke.config",
+        "Install\\InstallWizard",
+        "favicon.ico",
+        "robots.txt",
+        "web.config",
+    };
+
     private readonly IApplicationInfo application;
     private readonly IApplicationStatusInfo appStatus;
     private readonly IDirectory directory;
@@ -142,7 +153,9 @@ public class LocalUpgradeService : ILocalUpgradeService
         installer.Commit();
 
         await FileSystemUtils.UnzipResourcesAsync(
-            archive.FileEntries().Where(entry => !assemblyEntries.Contains(entry)),
+            archive.FileEntries()
+                .Where(entry => !assemblyEntries.Contains(entry))
+                .Where(entry => !InstallFilter.Any(filter => entry.FullName.StartsWith(filter, StringComparison.OrdinalIgnoreCase))),
             this.appStatus.ApplicationMapPath,
             cancellationToken);
     }
