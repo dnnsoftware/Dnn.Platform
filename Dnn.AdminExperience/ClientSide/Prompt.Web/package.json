@@ -41,7 +41,6 @@
     "less": "4.4.2",
     "less-loader": "12.3.0",
     "localization": "^1.0.2",
-    "object-assign": "*",
     "prop-types": "^15.8.1",
     "raw-loader": "4.0.2",
     "react": "^16.14.0",
