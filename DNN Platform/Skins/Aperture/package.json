@@ -14,10 +14,10 @@
     "normalize.css": "^8.0.1"
   },
   "devDependencies": {
-    "@types/browser-sync": "^2.27.5",
+    "@types/browser-sync": "^2.29.0",
     "@types/node": "^20.10.5",
     "@types/postcss-import": "^14.0.3",
-    "browser-sync": "^2.29.3",
+    "browser-sync": "^3.0.4",
     "chokidar": "^3.6.0",
     "cssnano": "^7.1.1",
     "glob": "^10.3.10",
