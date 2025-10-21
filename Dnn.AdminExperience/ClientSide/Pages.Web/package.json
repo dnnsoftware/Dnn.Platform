@@ -65,7 +65,7 @@
     "webpack-dev-server": "5.2.1"
   },
   "dependencies": {
-    "dayjs": "^1.11.9",
+    "dayjs": "^1.11.18",
     "promise": "^8.3.0",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
