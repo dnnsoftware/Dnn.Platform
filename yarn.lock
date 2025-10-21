@@ -6167,7 +6167,7 @@ __metadata:
     sass: "npm:^1.93.2"
     tsx: "npm:^4.20.6"
     typescript: "npm:^5.9.3"
-    zip-lib: "npm:^0.7.3"
+    zip-lib: "npm:^1.1.2"
   languageName: unknown
   linkType: soft
 
@@ -7608,6 +7608,13 @@ __metadata:
   version: 0.2.0
   resolution: "buffer-builder@npm:0.2.0"
   checksum: 10/16bd9eb8ac6630a05441bcb56522e956ae6a0724371ecc49b9a6bc10d35690489140df73573d0577e1e85c875737e560a4e2e67521fddd14714ddf4e0097d0ec
+  languageName: node
+  linkType: hard
+
+"buffer-crc32@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "buffer-crc32@npm:1.0.0"
+  checksum: 10/ef3b7c07622435085c04300c9a51e850ec34a27b2445f758eef69b859c7827848c2282f3840ca6c1eef3829145a1580ce540cab03ccf4433827a2b95d3b09ca7
   languageName: node
   linkType: hard
 
@@ -11110,15 +11117,6 @@ __metadata:
   dependencies:
     bser: "npm:2.1.1"
   checksum: 10/4f95d336fb805786759e383fd7fff342ceb7680f53efcc0ef82f502eb479ce35b98e8b207b6dfdfeea0eba845862107dc73813775fc6b56b3098c6e90a2dad77
-  languageName: node
-  linkType: hard
-
-"fd-slicer@npm:~1.1.0":
-  version: 1.1.0
-  resolution: "fd-slicer@npm:1.1.0"
-  dependencies:
-    pend: "npm:~1.2.0"
-  checksum: 10/db3e34fa483b5873b73f248e818f8a8b59a6427fd8b1436cd439c195fdf11e8659419404826059a642b57d18075c856d06d6a50a1413b714f12f833a9341ead3
   languageName: node
   linkType: hard
 
@@ -22724,22 +22722,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yauzl@npm:^2.10.0":
-  version: 2.10.0
-  resolution: "yauzl@npm:2.10.0"
+"yauzl@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "yauzl@npm:3.2.0"
   dependencies:
     buffer-crc32: "npm:~0.2.3"
-    fd-slicer: "npm:~1.1.0"
-  checksum: 10/1e4c311050dc0cf2ee3dbe8854fe0a6cde50e420b3e561a8d97042526b4cf7a0718d6c8d89e9e526a152f4a9cec55bcea9c3617264115f48bd6704cf12a04445
+    pend: "npm:~1.2.0"
+  checksum: 10/a3cd2bfcf7590673bb35750f2a4e5107e3cc939d32d98a072c0673fe42329e390f471b4a53dbbd72512229099b18aa3b79e6ddb87a73b3a17446080c903a2c4b
   languageName: node
   linkType: hard
 
-"yazl@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "yazl@npm:2.5.1"
+"yazl@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "yazl@npm:3.3.1"
   dependencies:
-    buffer-crc32: "npm:~0.2.3"
-  checksum: 10/498ea4c6bca26130608c44db166e2f63b3437b94b7ad020ca0c161268d29517e8517146e91e51b78da100ad62feadc1a1a85aaa94aab0b2dc29b355ec75bc8f0
+    buffer-crc32: "npm:^1.0.0"
+  checksum: 10/021e6c553ea826b90bd20a109ec293f2c2a02ac7c3c361f637e49c4c746b554a0c8e9380b984e12dfee66ca40894836dd8389bec83de2224eafa2eee8cf7be42
   languageName: node
   linkType: hard
 
@@ -22764,12 +22762,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zip-lib@npm:^0.7.3":
-  version: 0.7.3
-  resolution: "zip-lib@npm:0.7.3"
+"zip-lib@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "zip-lib@npm:1.1.2"
   dependencies:
-    yauzl: "npm:^2.10.0"
-    yazl: "npm:^2.5.1"
-  checksum: 10/372e0498405494e2af34826549227b1ae9148a58b49d6a99d605cb1a44b933756e9d0d9f0e61bb6805504ac74997f2c231fbd9958b981f1e3febea0c6d4cf18c
+    yauzl: "npm:^3.2.0"
+    yazl: "npm:^3.3.1"
+  checksum: 10/03c1c95a1fad986f3db21e014f2e39c0acaa5314b65dcce5dfe3be64f70755fab3706806ef70e33a2ca0f8fd3e74448ea7ee659d0b44a93890434c9c1d7aee2c
   languageName: node
   linkType: hard
