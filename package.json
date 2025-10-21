@@ -44,5 +44,5 @@
   "resolutions": {
     "@types/ws": "8.5.4"
   },
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "yarn@4.10.3"
 }
