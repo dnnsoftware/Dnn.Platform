@@ -78,7 +78,7 @@
     "file-loader": "6.2.0",
     "less": "4.4.2",
     "less-loader": "12.3.0",
-    "nanoid": "^5.0.7",
+    "nanoid": "^5.1.6",
     "prop-types": "^15.8.1",
     "raw-loader": "4.0.2",
     "react": "^16.14.0",
