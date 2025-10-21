@@ -1686,7 +1686,7 @@ __metadata:
     scroll: "npm:^3.0.1"
     storybook: "npm:9.1.13"
     style-loader: "npm:^4.0.0"
-    throttle-debounce: "npm:^5.0.0"
+    throttle-debounce: "npm:^5.0.2"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -5910,7 +5910,7 @@ __metadata:
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^4.0.0"
-    throttle-debounce: "npm:^5.0.0"
+    throttle-debounce: "npm:^5.0.2"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -9342,7 +9342,7 @@ __metadata:
     react-widgets: "npm:^5.8.4"
     redux: "npm:4.2.1"
     style-loader: "npm:^4.0.0"
-    throttle-debounce: "npm:^5.0.0"
+    throttle-debounce: "npm:^5.0.2"
     utils: "npm:^0.3.1"
     webpack: "npm:5.94.0"
     webpack-cli: "npm:5.1.4"
@@ -10855,7 +10855,7 @@ __metadata:
     redux-thunk: "npm:2.4.2"
     source-map-loader: "npm:^0.2.4"
     style-loader: "npm:4.0.0"
-    throttle-debounce: "npm:5.0.0"
+    throttle-debounce: "npm:5.0.2"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-analyzer: "npm:^4.9.0"
@@ -16341,7 +16341,7 @@ __metadata:
     react-widgets: "npm:5.8.4"
     string.prototype.startswith: "npm:1.0.1"
     style-loader: "npm:^4.0.0"
-    throttle-debounce: "npm:^5.0.0"
+    throttle-debounce: "npm:^5.0.2"
     uglifyjs-webpack-plugin: "npm:^2.2.0"
     url-loader: "npm:1.1.2"
     url-parse: "npm:^1.5.10"
@@ -17323,7 +17323,7 @@ __metadata:
     redux-mock-store: "npm:^1.5.4"
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^4.0.0"
-    throttle-debounce: "npm:^5.0.0"
+    throttle-debounce: "npm:^5.0.2"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-cli: "npm:5.1.4"
@@ -18769,7 +18769,7 @@ __metadata:
     react-hot-loader: "npm:4.13.1"
     react-widgets: "npm:^5.8.4"
     style-loader: "npm:4.0.0"
-    throttle-debounce: "npm:5.0.0"
+    throttle-debounce: "npm:5.0.2"
     url-loader: "npm:1.1.2"
     webpack: "npm:5.94.0"
     webpack-bundle-size-analyzer: "npm:3.1.0"
@@ -19738,7 +19738,7 @@ __metadata:
     redux-thunk: "npm:2.4.2"
     style-loader: "npm:^4.0.0"
     svg-url-loader: "npm:^8.0.0"
-    throttle-debounce: "npm:^5.0.0"
+    throttle-debounce: "npm:^5.0.2"
     url-loader: "npm:1.1.2"
     utils: "npm:^0.3.1"
     webpack: "npm:5.94.0"
@@ -20850,14 +20850,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"throttle-debounce@npm:5.0.0":
-  version: 5.0.0
-  resolution: "throttle-debounce@npm:5.0.0"
-  checksum: 10/bedd5a20cd226c7a6e765719c73fa8ec7a43f0c552bfb658cbe7ed51e16ab5f315dd2baed66904c004a1d16b0bb4e85e10126695a787b13516c37d4907426ec5
-  languageName: node
-  linkType: hard
-
-"throttle-debounce@npm:^5.0.0":
+"throttle-debounce@npm:5.0.2, throttle-debounce@npm:^5.0.2":
   version: 5.0.2
   resolution: "throttle-debounce@npm:5.0.2"
   checksum: 10/9a5e5ae7f93127d921e913ad741e75e6d2bb946d15e1898ed541037bc646adb9a759c481385400be917ec6d93f078fd8b016980c1a9143e09ea88c99559b0c93
@@ -21725,7 +21718,7 @@ __metadata:
     redux-thunk: "npm:^2.4.2"
     services: "npm:^0.0.3"
     style-loader: "npm:^4.0.0"
-    throttle-debounce: "npm:^5.0.0"
+    throttle-debounce: "npm:^5.0.2"
     url-loader: "npm:1.1.2"
     utils: "npm:^0.3.1"
     webpack: "npm:5.94.0"

@@ -56,7 +56,7 @@
     "react-widgets": "5.8.4",
     "string.prototype.startswith": "1.0.1",
     "style-loader": "^4.0.0",
-    "throttle-debounce": "^5.0.0",
+    "throttle-debounce": "^5.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "1.1.2",
     "webpack": "5.94.0",

@@ -42,7 +42,7 @@
     "react-widgets": "^5.8.4",
     "redux-undo": "^1.0.0-beta9",
     "scroll": "^3.0.1",
-    "throttle-debounce": "^5.0.0"
+    "throttle-debounce": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.28.4",
