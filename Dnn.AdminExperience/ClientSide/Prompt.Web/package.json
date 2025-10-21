@@ -67,7 +67,7 @@
     "webpack-dev-server": "5.2.1"
   },
   "dependencies": {
-    "dompurify": "^3.2.6",
+    "dompurify": "^3.3.0",
     "html-react-parser": "^5.2.5"
   }
 }
