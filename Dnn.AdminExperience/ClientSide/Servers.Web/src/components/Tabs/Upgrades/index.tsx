@@ -23,11 +23,23 @@ const UpgradesTab: React.FC<IProps> = (props) => {
   const [upgrades, setUpgrades] = useState<LocalUpgradeInfo[]>([]);
   const [showUploadPanel, setShowUploadPanel] = useState(false);
 
-  useEffect(() => {
+  const getUpgrades = () => {
     upgradeService.listUpgrades().then((upgrades) => {
       setUpgrades(upgrades);
     });
-  }, []);
+  };
+
+  const deletePackage = (packageName: string) => {
+    upgradeService.deletePackage(packageName).then(() => {
+      getUpgrades();
+    });
+  };
+
+  useEffect(() => {
+    if (!showUploadPanel) {
+      getUpgrades();
+    }
+  }, [showUploadPanel]);
 
   return (
     <GridCell>
@@ -84,7 +96,10 @@ const UpgradesTab: React.FC<IProps> = (props) => {
             className="header-title"
             label={Localization.get("plAvailableUpgrades")}
           />
-          <UpgradeList upgrades={upgrades} />
+          <UpgradeList
+            upgrades={upgrades}
+            onDelete={(packageName) => deletePackage(packageName)}
+          />
           <div className="dnn-servers-grid-panel-actions">
             <Button
               type="secondary"

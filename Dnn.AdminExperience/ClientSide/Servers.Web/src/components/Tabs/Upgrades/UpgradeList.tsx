@@ -6,11 +6,12 @@ import UpgradeRow from "./UpgradeRow";
 
 interface IUpgradeListProps {
   upgrades: LocalUpgradeInfo[];
+  onDelete: (packageName: string) => void;
 }
 
 const UpgradeList: React.FC<IUpgradeListProps> = (props) => {
   const rows = props.upgrades.map((upgrade) => (
-    <UpgradeRow key={upgrade.PackageName} upgrade={upgrade} />
+    <UpgradeRow key={upgrade.PackageName} upgrade={upgrade} onDelete={(packageName) => props.onDelete(packageName)} />
   ));
   return (
     <div className="grid">

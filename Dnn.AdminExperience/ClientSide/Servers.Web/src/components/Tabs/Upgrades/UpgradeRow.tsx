@@ -1,21 +1,17 @@
 import * as React from "react";
 import { LocalUpgradeInfo } from "../../../models/LocalUpgradeInfo";
 import {
-  Button,
   GridCell,
   TextOverflowWrapper,
   IconButton,
-  Collapsible,
-  SingleLineInputWithError,
-  SvgIcons,
 } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../../localization";
 import "./style.less";
 import util from "../../../utils";
-import upgradeService from "services/upgradeService";
 
 interface IUpgradeRowProps {
   upgrade: LocalUpgradeInfo;
+  onDelete: (packageName: string) => void;
 }
 
 const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
@@ -44,9 +40,7 @@ const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
               Localization.get("DeleteUpgradePackage.Confirm"),
               Localization.get("Confirm"),
               Localization.get("Cancel"),
-              function () {
-                  upgradeService.deletePackage(props.upgrade.PackageName);
-              }.bind(this)
+              () => props.onDelete(props.upgrade.PackageName)
           );
           }}
           title={Localization.get("Delete")}
