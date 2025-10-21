@@ -15768,7 +15768,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:*, object-assign@npm:^4, object-assign@npm:^4.1.1":
+"object-assign@npm:^4, object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: 10/fcc6e4ea8c7fe48abfbb552578b1c53e0d194086e2e6bbbf59e0a536381a292f39943c6e9628af05b5528aa5e3318bb30d6b2e53cadaf5b8fe9e12c4b69af23f
@@ -17307,7 +17307,6 @@ __metadata:
     less: "npm:4.4.2"
     less-loader: "npm:12.3.0"
     localization: "npm:^1.0.2"
-    object-assign: "npm:*"
     prop-types: "npm:^15.8.1"
     raw-loader: "npm:4.0.2"
     react: "npm:^16.14.0"
