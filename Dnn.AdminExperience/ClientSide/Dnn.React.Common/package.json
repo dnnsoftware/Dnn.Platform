@@ -64,7 +64,7 @@
     "create-react-class": "^15.7.0",
     "css-loader": "^7.1.2",
     "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.7",
+    "enzyme-adapter-react-16": "^1.15.8",
     "enzyme-to-json": "^3.6.2",
     "eslint": "^9.38.0",
     "eslint-import-resolver-node": "^0.3.9",
