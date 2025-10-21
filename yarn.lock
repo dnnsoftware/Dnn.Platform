@@ -5493,7 +5493,7 @@ __metadata:
     "@types/node": "npm:^24.9.0"
     "@types/postcss-import": "npm:^14.0.3"
     browser-sync: "npm:^3.0.4"
-    chokidar: "npm:^3.6.0"
+    chokidar: "npm:^4.0.3"
     cssnano: "npm:^7.1.1"
     glob: "npm:^10.3.10"
     normalize.css: "npm:^8.0.1"
