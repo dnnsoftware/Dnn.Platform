@@ -12,6 +12,7 @@ import util from "../../../utils";
 interface IUpgradeRowProps {
   upgrade: LocalUpgradeInfo;
   onDelete: (packageName: string) => void;
+  onInstall: (packageName: string) => void;
 }
 
 const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
@@ -41,10 +42,25 @@ const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
               Localization.get("Confirm"),
               Localization.get("Cancel"),
               () => props.onDelete(props.upgrade.PackageName)
-          );
+            );
           }}
           title={Localization.get("Delete")}
         />
+        {props.upgrade.IsValid && !props.upgrade.IsOutdated && (
+          <IconButton
+            type="traffic"
+            className={"edit-icon"}
+            onClick={() => {
+              util.confirm(
+                Localization.get("Backup.Confirm"),
+                Localization.get("Confirm"),
+                Localization.get("Cancel"),
+                () => props.onInstall(props.upgrade.PackageName)
+              );
+            }}
+            title={Localization.get("Install")}
+          />
+        )}
       </GridCell>
     </div>
   );

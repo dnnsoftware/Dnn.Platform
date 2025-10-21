@@ -9,6 +9,10 @@ const deletePackage = function (packageName) {
   return serviceFramework.post("Upgrades", "Delete", { packageName });
 };
 
+const startUpgrade = function (packageName) {
+  return serviceFramework.post("Upgrades", "StartUpgrade", { packageName });
+};
+
 const uploadPackage = function (file, callback, errorCallback) {
   const sf = utils.getServiceFramework();
   sf.moduleRoot = "PersonaBar";
@@ -22,6 +26,7 @@ const upgradeService = {
   listUpgrades,
   uploadPackage,
   deletePackage,
+  startUpgrade,
 };
 
 export default upgradeService;

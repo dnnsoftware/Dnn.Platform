@@ -795,4 +795,7 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="UploadPackage_Uploading.Text" xml:space="preserve">
     <value>Uploading</value>
   </data>
+  <data name="Install.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
 </root>

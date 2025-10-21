@@ -35,6 +35,12 @@ const UpgradesTab: React.FC<IProps> = (props) => {
     });
   };
 
+  const installPackage = (packageName: string) => {
+    upgradeService.startUpgrade(packageName).then(() => {
+      getUpgrades();
+    });
+  };
+
   useEffect(() => {
     if (!showUploadPanel) {
       getUpgrades();
@@ -99,6 +105,7 @@ const UpgradesTab: React.FC<IProps> = (props) => {
           <UpgradeList
             upgrades={upgrades}
             onDelete={(packageName) => deletePackage(packageName)}
+            onInstall={(packageName) => installPackage(packageName)}
           />
           <div className="dnn-servers-grid-panel-actions">
             <Button
