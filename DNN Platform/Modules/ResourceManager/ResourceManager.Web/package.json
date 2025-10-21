@@ -27,15 +27,15 @@
     "lint": "eslint --fix"
   },
   "dependencies": {
-    "@stencil/core": "^4.22.2"
+    "@stencil/core": "^4.38.2"
   },
   "license": "MIT",
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.27.7",
     "@eslint/js": "^9.38.0",
     "@stencil/eslint-plugin": "^1.1.0",
-    "@stencil/sass": "^3.0.12",
-    "@stencil/store": "^2.0.16",
+    "@stencil/sass": "^3.2.2",
+    "@stencil/store": "^2.2.0",
     "@types/node": "^22.9.0",
     "@typescript-eslint/utils": "^8.46.2",
     "eslint": "^9.38.0",
