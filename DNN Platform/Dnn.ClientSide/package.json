@@ -17,7 +17,7 @@
     "not dead"
   ],
   "devDependencies": {
-    "@types/node": "^22.10.7",
+    "@types/node": "^24.9.0",
     "@types/postcss-import": "^14.0.3",
     "autoprefixer": "^10.4.21",
     "chokidar": "^4.0.3",

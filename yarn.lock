@@ -4322,21 +4322,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.10.5":
-  version: 20.19.5
-  resolution: "@types/node@npm:20.19.5"
+"@types/node@npm:^24.9.0":
+  version: 24.9.0
+  resolution: "@types/node@npm:24.9.0"
   dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10/bab9631d097694b4147dd555ce241547d1de1d5dbc1e0550646da5db9123ba0a2572617fcd1c79270950fcf3443c92da8ea3adc1545b25b36ae7172b7bb5a2c0
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^22.10.7, @types/node@npm:^22.9.0":
-  version: 22.16.1
-  resolution: "@types/node@npm:22.16.1"
-  dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10/830f684e8d20e421923c32d2832f42814dc91c1aa5db6a2d72beea29d5c96032fd28b19eed1b4bc8a95387ee845a81f9c7afc16be1600ce354083f25020f22eb
+    undici-types: "npm:~7.16.0"
+  checksum: 10/485bb1c2bb713e34935b47d41ecbdb02af8454ad72b013275992d09be885729a65c78733f054534ef9104df24c4cca2eb3a6c3082eae3c6c7ae078a643cacf9d
   languageName: node
   linkType: hard
 
@@ -5499,7 +5490,7 @@ __metadata:
   resolution: "aperture@workspace:DNN Platform/Skins/Aperture"
   dependencies:
     "@types/browser-sync": "npm:^2.29.0"
-    "@types/node": "npm:^20.10.5"
+    "@types/node": "npm:^24.9.0"
     "@types/postcss-import": "npm:^14.0.3"
     browser-sync: "npm:^3.0.4"
     chokidar: "npm:^3.6.0"
@@ -8917,7 +8908,7 @@ __metadata:
     "@stencil/eslint-plugin": "npm:^1.1.0"
     "@stencil/sass": "npm:^3.2.2"
     "@stencil/store": "npm:^2.2.0"
-    "@types/node": "npm:^22.9.0"
+    "@types/node": "npm:^24.9.0"
     "@typescript-eslint/utils": "npm:^8.46.2"
     eslint: "npm:^9.38.0"
     jiti: "npm:^2.4.2"
@@ -9044,7 +9035,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn.clientside@workspace:DNN Platform/Dnn.ClientSide"
   dependencies:
-    "@types/node": "npm:^22.10.7"
+    "@types/node": "npm:^24.9.0"
     "@types/postcss-import": "npm:^14.0.3"
     autoprefixer: "npm:^10.4.21"
     chokidar: "npm:^4.0.3"
@@ -20839,7 +20830,7 @@ __metadata:
     "@stencil/core": "npm:^4.38.2"
     "@stencil/eslint-plugin": "npm:^1.1.0"
     "@stencil/sass": "npm:^3.2.2"
-    "@types/node": "npm:^22.9.0"
+    "@types/node": "npm:^24.9.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.46.2"
     "@typescript-eslint/parser": "npm:^8.46.2"
     eslint: "npm:^9.38.0"
@@ -21832,10 +21823,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.21.0":
-  version: 6.21.0
-  resolution: "undici-types@npm:6.21.0"
-  checksum: 10/ec8f41aa4359d50f9b59fa61fe3efce3477cc681908c8f84354d8567bb3701fafdddf36ef6bff307024d3feb42c837cf6f670314ba37fc8145e219560e473d14
+"undici-types@npm:~7.16.0":
+  version: 7.16.0
+  resolution: "undici-types@npm:7.16.0"
+  checksum: 10/db43439f69c2d94cc29f75cbfe9de86df87061d6b0c577ebe9bb3255f49b22c50162a7d7eb413b0458b6510b8ca299ac7cff38c3a29fbd31af9f504bcf7fbc0d
   languageName: node
   linkType: hard
 

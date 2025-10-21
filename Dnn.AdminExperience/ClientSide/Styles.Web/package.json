@@ -33,7 +33,7 @@
     "@dnncommunity/dnn-elements": "^0.27.7",
     "@stencil/eslint-plugin": "^1.1.0",
     "@stencil/sass": "^3.2.2",
-    "@types/node": "^22.9.0",
+    "@types/node": "^24.9.0",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "eslint": "^9.38.0",
