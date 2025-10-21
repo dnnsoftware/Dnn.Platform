@@ -50,7 +50,7 @@ public class LocalUpgradeService : ILocalUpgradeService
         if (this.directory.Exists(this.UpgradeDirectoryPath))
         {
             var upgradeFiles = this.directory.GetFiles(this.UpgradeDirectoryPath, "*.zip", SearchOption.TopDirectoryOnly);
-            localUpgrades = await Task.WhenAll(upgradeFiles.Select(file => GetLocalUpgradeInfo(file, this.application, cancellationToken)));
+            localUpgrades = await Task.WhenAll(upgradeFiles.Select(file => this.GetLocalUpgradeInfo(file, cancellationToken)));
         }
         else
         {
@@ -58,43 +58,64 @@ public class LocalUpgradeService : ILocalUpgradeService
         }
 
         return localUpgrades;
+    }
 
-        static async Task<LocalUpgradeInfo> GetLocalUpgradeInfo(string file, IApplicationInfo application, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<LocalUpgradeInfo> GetLocalUpgradeInfo(string file, CancellationToken cancellationToken)
+    {
+        try
         {
-            try
+            using var archiveStream = File.OpenRead(file);
+            return await this.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(file), archiveStream, cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            Exceptions.LogException(exception);
+            return new LocalUpgradeInfo
             {
-                using var archiveStream = File.OpenRead(file);
-                var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
-                var mainAssemblyEntry = archive.FileEntries()
-                    .Where(entry => string.Equals("DotNetNuke.dll", entry.Name, StringComparison.OrdinalIgnoreCase))
-                    .Where(entry => string.Equals("bin", Path.GetDirectoryName(entry.FullName), StringComparison.OrdinalIgnoreCase))
-                    .SingleOrDefault();
+                PackageName = Path.GetFileNameWithoutExtension(file),
+                Version = null,
+                IsValid = false,
+                IsOutdated = false,
+            };
+        }
+    }
 
-                Version mainAssemblyVersion = null;
-                if (mainAssemblyEntry is not null)
-                {
-                    mainAssemblyVersion = await ReadZippedAssemblyVersion(mainAssemblyEntry, cancellationToken);
-                }
+    /// <inheritdoc />
+    public async Task<LocalUpgradeInfo> GetLocalUpgradeInfo(string packageName, Stream archiveStream, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
+            var mainAssemblyEntry = archive.FileEntries()
+                .Where(entry => string.Equals("DotNetNuke.dll", entry.Name, StringComparison.OrdinalIgnoreCase))
+                .Where(entry => string.Equals("bin", Path.GetDirectoryName(entry.FullName), StringComparison.OrdinalIgnoreCase))
+                .SingleOrDefault();
 
-                return new LocalUpgradeInfo
-                {
-                    PackageName = Path.GetFileNameWithoutExtension(file),
-                    Version = mainAssemblyVersion,
-                    IsValid = mainAssemblyVersion is not null,
-                    IsOutdated = mainAssemblyVersion is not null && mainAssemblyVersion <= application.Version,
-                };
-            }
-            catch (Exception exception)
+            Version mainAssemblyVersion = null;
+            if (mainAssemblyEntry is not null)
             {
-                Exceptions.LogException(exception);
-                return new LocalUpgradeInfo
-                {
-                    PackageName = Path.GetFileNameWithoutExtension(file),
-                    Version = null,
-                    IsValid = false,
-                    IsOutdated = false,
-                };
+                mainAssemblyVersion = await ReadZippedAssemblyVersion(mainAssemblyEntry, cancellationToken);
             }
+
+            return new LocalUpgradeInfo
+            {
+                PackageName = packageName,
+                Version = mainAssemblyVersion,
+                IsValid = mainAssemblyVersion is not null,
+                IsOutdated = mainAssemblyVersion is not null && mainAssemblyVersion <= this.application.Version,
+            };
+        }
+        catch (Exception exception)
+        {
+            Exceptions.LogException(exception);
+            return new LocalUpgradeInfo
+            {
+                PackageName = packageName,
+                Version = null,
+                IsValid = false,
+                IsOutdated = false,
+            };
         }
     }
 

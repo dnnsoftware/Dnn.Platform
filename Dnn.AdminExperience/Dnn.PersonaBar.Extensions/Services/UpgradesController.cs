@@ -5,19 +5,23 @@
 namespace Dnn.PersonaBar.Extensions.Services
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http;
 
-    using Dnn.PersonaBar.Extensions.Common;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
+    using DotNetNuke.Web.Api.Internal;
 
     [MenuPermission(Scope = ServiceScope.Host)]
     public class UpgradesController : PersonaBarApiController
@@ -87,6 +91,97 @@ namespace Dnn.PersonaBar.Extensions.Services
             await this.localUpgradeService.StartLocalUpgrade(upgrades, cancellationToken);
 
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
+        }
+
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        public Task<HttpResponseMessage> Upload([FromUri] string legacySkin = null, [FromUri] bool isPortalPackage = false)
+        {
+            try
+            {
+                return this.UploadFileAction();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Task.FromResult(this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+        }
+
+        private async Task<HttpResponseMessage> UploadFileAction()
+        {
+            var request = this.Request;
+            if (!request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            // Ensure content is buffered (helps if something read headers but not the body).
+            // Note: if a filter already consumed the body, buffering here won't restore it —
+            // the filter must use LoadIntoBufferAsync or otherwise avoid consuming the stream.
+            await request.Content.LoadIntoBufferAsync().ConfigureAwait(false);
+
+            var provider = new MultipartMemoryStreamProvider();
+
+            // read multipart parts
+            await request.Content.ReadAsMultipartAsync(provider).ConfigureAwait(false);
+
+            object result = null;
+            var fileName = string.Empty;
+            Stream stream = null;
+
+            foreach (var item in provider.Contents)
+            {
+                var name = item.Headers.ContentDisposition.Name;
+                switch (name.ToUpper())
+                {
+                    case "\"POSTFILE\"":
+                        fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                        if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                        {
+                            fileName = Path.GetFileName(fileName);
+                        }
+
+                        if (Globals.FileEscapingRegex.Match(fileName).Success == false && Path.GetExtension(fileName).ToLowerInvariant() == ".zip")
+                        {
+                            stream = item.ReadAsStreamAsync().Result;
+                        }
+
+                        break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(fileName) && stream != null)
+            {
+                var info = this.localUpgradeService.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(fileName), stream, CancellationToken.None).Result;
+                if (info.IsValid)
+                {
+                    var upgradePath = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", info.PackageName + ".zip");
+                    using (var fileStream = File.Create(upgradePath))
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                        stream.CopyTo(fileStream);
+                    }
+
+                    result = info;
+                }
+                else
+                {
+                    result = "The uploaded file is not a valid DNN upgrade package.";
+                }
+            }
+
+            var mediaTypeFormatter = new JsonMediaTypeFormatter();
+            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
+
+            // Response Content Type cannot be application/json
+            // because IE9 with iframe-transport manages the response
+            // as a file download
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
+                result,
+                mediaTypeFormatter,
+                "text/plain");
         }
     }
 }

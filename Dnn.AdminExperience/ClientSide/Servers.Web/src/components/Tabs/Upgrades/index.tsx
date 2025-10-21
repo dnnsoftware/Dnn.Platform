@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Button,
   GridCell,
   GridSystem,
   Label,
@@ -12,6 +13,7 @@ import "./style.less";
 import upgradeService from "../../../services/upgradeService";
 import { LocalUpgradeInfo } from "../../../models/LocalUpgradeInfo";
 import UpgradeList from "./UpgradeList";
+import FileUpload from "./Upload";
 
 interface IProps {
   applicationInfo: any;
@@ -19,6 +21,7 @@ interface IProps {
 
 const UpgradesTab: React.FC<IProps> = (props) => {
   const [upgrades, setUpgrades] = useState<LocalUpgradeInfo[]>([]);
+  const [showUploadPanel, setShowUploadPanel] = useState(false);
 
   useEffect(() => {
     upgradeService.listUpgrades().then((upgrades) => {
@@ -46,13 +49,55 @@ const UpgradesTab: React.FC<IProps> = (props) => {
           </GridCell>
         </GridSystem>
       </GridCell>
-      <GridCell className="dnn-servers-grid-panel">
-        <Label
-          className="header-title"
-          label={Localization.get("plAvailableUpgrades")}
-        />
-        <UpgradeList upgrades={upgrades} />
-      </GridCell>
+      {showUploadPanel && (
+        <GridCell className="dnn-servers-grid-panel">
+          <div className="dnn-servers-grid-panel-actions">
+            <div className="dnn-servers-grid-panel-upload">
+              <FileUpload
+                cancelInstall={() => setShowUploadPanel(false)}
+                clearUploadedPackage={() => {}}
+                onSelectLegacyType={() => {}}
+                selectedLegacyType="Skin"
+                alreadyInstalled={false}
+                uploadPackage={(
+                  file: File,
+                  onSuccess: (data: any) => void,
+                  onError: (error: any) => void
+                ) => upgradeService.uploadPackage(file, onSuccess, onError)}
+              />
+            </div>
+            <Button
+              type="secondary"
+              size="large"
+              onClick={() => {
+                setShowUploadPanel(false);
+              }}
+            >
+              {Localization.get("Cancel")}
+            </Button>
+          </div>
+        </GridCell>
+      )}
+      {!showUploadPanel && (
+        <GridCell className="dnn-servers-grid-panel">
+          <Label
+            className="header-title"
+            label={Localization.get("plAvailableUpgrades")}
+          />
+          <UpgradeList upgrades={upgrades} />
+          <div className="dnn-servers-grid-panel-actions">
+            <Button
+              type="secondary"
+              size="large"
+              onClick={() => {
+                setShowUploadPanel(true);
+              }}
+            >
+              {Localization.get("UploadPackage")}
+            </Button>
+          </div>
+        </GridCell>
+      )}
     </GridCell>
   );
 };
