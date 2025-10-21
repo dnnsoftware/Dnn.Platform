@@ -32,15 +32,15 @@
   "license": "MIT",
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.27.5",
-    "@eslint/js": "^9.27.0",
+    "@eslint/js": "^9.38.0",
     "@stencil/eslint-plugin": "^1.0.0",
     "@stencil/sass": "^3.0.12",
     "@stencil/store": "^2.0.16",
     "@types/node": "^22.9.0",
     "@typescript-eslint/utils": "^8.32.1",
-    "eslint": "^9.27.0",
+    "eslint": "^9.38.0",
     "jiti": "^2.4.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.1"
+    "typescript-eslint": "^8.46.2"
   }
 }
