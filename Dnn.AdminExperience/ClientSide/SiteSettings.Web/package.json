@@ -44,7 +44,7 @@
     "redux": "^4.2.1",
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.4.2",
-    "source-map-loader": "^0.2.4",
+    "source-map-loader": "^5.0.0",
     "style-loader": "^4.0.0",
     "url-loader": "4.1.1",
     "webpack": "5.102.1",
