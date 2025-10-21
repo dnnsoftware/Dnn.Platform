@@ -99,7 +99,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/eslint-parser@npm:^7.27.1":
+"@babel/eslint-parser@npm:^7.28.4":
   version: 7.28.4
   resolution: "@babel/eslint-parser@npm:7.28.4"
   dependencies:
@@ -1645,7 +1645,7 @@ __metadata:
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
     "@babel/core": "npm:^7.26.0"
-    "@babel/eslint-parser": "npm:^7.27.1"
+    "@babel/eslint-parser": "npm:^7.28.4"
     "@babel/eslint-plugin": "npm:7.27.1"
     "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
     "@babel/plugin-transform-object-assign": "npm:^7.25.9"
@@ -1671,11 +1671,11 @@ __metadata:
     eslint-import-resolver-node: "npm:^0.3.9"
     eslint-import-resolver-webpack: "npm:^0.13.10"
     eslint-plugin-filenames: "npm:^1.3.2"
-    eslint-plugin-import: "npm:^2.31.0"
+    eslint-plugin-import: "npm:^2.32.0"
     eslint-plugin-jest: "npm:^29.0.1"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-plugin-storybook: "npm:9.0.1"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-plugin-storybook: "npm:9.1.13"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     interact.js: "npm:^1.2.8"
     less: "npm:4.1.3"
@@ -3468,7 +3468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/eslint-plugin@npm:^1.0.0":
+"@stencil/eslint-plugin@npm:^1.1.0":
   version: 1.1.0
   resolution: "@stencil/eslint-plugin@npm:1.1.0"
   dependencies:
@@ -4042,16 +4042,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8.56.10":
-  version: 8.56.12
-  resolution: "@types/eslint@npm:8.56.12"
-  dependencies:
-    "@types/estree": "npm:*"
-    "@types/json-schema": "npm:*"
-  checksum: 10/bd998b5d3f98ac430ec8db6223f1cff1820774c1e72eabda05463256875d97065fd357fba7379dd25e6bfbeb73296f28faff6f4dcbc320f890bb49b09087644d
-  languageName: node
-  linkType: hard
-
 "@types/estree@npm:*, @types/estree@npm:^1.0.5, @types/estree@npm:^1.0.6":
   version: 1.0.8
   resolution: "@types/estree@npm:1.0.8"
@@ -4498,7 +4488,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:8.46.2":
+"@typescript-eslint/eslint-plugin@npm:8.46.2, @typescript-eslint/eslint-plugin@npm:^8.46.2":
   version: 8.46.2
   resolution: "@typescript-eslint/eslint-plugin@npm:8.46.2"
   dependencies:
@@ -4519,28 +4509,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^8.32.1":
-  version: 8.36.0
-  resolution: "@typescript-eslint/eslint-plugin@npm:8.36.0"
-  dependencies:
-    "@eslint-community/regexpp": "npm:^4.10.0"
-    "@typescript-eslint/scope-manager": "npm:8.36.0"
-    "@typescript-eslint/type-utils": "npm:8.36.0"
-    "@typescript-eslint/utils": "npm:8.36.0"
-    "@typescript-eslint/visitor-keys": "npm:8.36.0"
-    graphemer: "npm:^1.4.0"
-    ignore: "npm:^7.0.0"
-    natural-compare: "npm:^1.4.0"
-    ts-api-utils: "npm:^2.1.0"
-  peerDependencies:
-    "@typescript-eslint/parser": ^8.36.0
-    eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.9.0"
-  checksum: 10/712c9ef0d52634e10042cdd1c6427abc9042a7d451fc20c55bb7df8050af0e155b7d50e0246e26bf88a7a1aaba5c8fed9ffb15a144067d4018a4ed006bc745be
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/parser@npm:8.46.2":
+"@typescript-eslint/parser@npm:8.46.2, @typescript-eslint/parser@npm:^8.46.2":
   version: 8.46.2
   resolution: "@typescript-eslint/parser@npm:8.46.2"
   dependencies:
@@ -4553,22 +4522,6 @@ __metadata:
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <6.0.0"
   checksum: 10/2ee394d880b5a9372ecf50ddbf70f66e9ecc16691a210dd40b5b152310a539005dfed13105e0adc81f1a9f49d86f7b78ddf3bf8d777fe84c179eb6a8be2fa56c
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/parser@npm:^8.32.1":
-  version: 8.36.0
-  resolution: "@typescript-eslint/parser@npm:8.36.0"
-  dependencies:
-    "@typescript-eslint/scope-manager": "npm:8.36.0"
-    "@typescript-eslint/types": "npm:8.36.0"
-    "@typescript-eslint/typescript-estree": "npm:8.36.0"
-    "@typescript-eslint/visitor-keys": "npm:8.36.0"
-    debug: "npm:^4.3.4"
-  peerDependencies:
-    eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.9.0"
-  checksum: 10/83789c53ad6a2ac162f4663ab4d2a5324d5f1a7260bdd4972757b947ce4fbc9e9bc1b7613398bab48cec202b5fa485ed37dc3963e3d02cc727b8df47b134d339
   languageName: node
   linkType: hard
 
@@ -4665,21 +4618,6 @@ __metadata:
   peerDependencies:
     typescript: ">=4.8.4 <6.0.0"
   checksum: 10/e459d131ca646cca6ad164593ca7e8c45ad3daa103a24e1e57fd47b5c1e5b5418948b749f02baa42e61103a496fc80d32ddd1841c11495bbcf37808b88bb0ef4
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/type-utils@npm:8.36.0":
-  version: 8.36.0
-  resolution: "@typescript-eslint/type-utils@npm:8.36.0"
-  dependencies:
-    "@typescript-eslint/typescript-estree": "npm:8.36.0"
-    "@typescript-eslint/utils": "npm:8.36.0"
-    debug: "npm:^4.3.4"
-    ts-api-utils: "npm:^2.1.0"
-  peerDependencies:
-    eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.9.0"
-  checksum: 10/3ca0f17fa1f6280dc609a6fe144b4108af3719c5709dd6d5e77d9de59946065dc876523f77b261e7cd07911ebfe2060a25a36939cf374d767ef7c08ca8b7d76f
   languageName: node
   linkType: hard
 
@@ -4780,22 +4718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:8.36.0, @typescript-eslint/utils@npm:^8.32.1, @typescript-eslint/utils@npm:^8.8.1":
-  version: 8.36.0
-  resolution: "@typescript-eslint/utils@npm:8.36.0"
-  dependencies:
-    "@eslint-community/eslint-utils": "npm:^4.7.0"
-    "@typescript-eslint/scope-manager": "npm:8.36.0"
-    "@typescript-eslint/types": "npm:8.36.0"
-    "@typescript-eslint/typescript-estree": "npm:8.36.0"
-  peerDependencies:
-    eslint: ^8.57.0 || ^9.0.0
-    typescript: ">=4.8.4 <5.9.0"
-  checksum: 10/4683a3fda91b55139181277e583edba5006e1a7264df2648abd1adeeeb0565b31d5b15d55f73cde738475a2d2162e234301c01e70c4dece6a26b2abf65da610e
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/utils@npm:8.46.2":
+"@typescript-eslint/utils@npm:8.46.2, @typescript-eslint/utils@npm:^8.46.2":
   version: 8.46.2
   resolution: "@typescript-eslint/utils@npm:8.46.2"
   dependencies:
@@ -4822,6 +4745,21 @@ __metadata:
     eslint: ^8.57.0 || ^9.0.0
     typescript: ">=4.8.4 <6.0.0"
   checksum: 10/9e675a0da4434bd434901f9ba3e1e91d4d7ad542d7fcf8c23534a67f2f9039a569da20929e67a6562e3a263be226ad424cd0c1ac80f7828f4285f7f34e361926
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/utils@npm:^8.8.1":
+  version: 8.36.0
+  resolution: "@typescript-eslint/utils@npm:8.36.0"
+  dependencies:
+    "@eslint-community/eslint-utils": "npm:^4.7.0"
+    "@typescript-eslint/scope-manager": "npm:8.36.0"
+    "@typescript-eslint/types": "npm:8.36.0"
+    "@typescript-eslint/typescript-estree": "npm:8.36.0"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+    typescript: ">=4.8.4 <5.9.0"
+  checksum: 10/4683a3fda91b55139181277e583edba5006e1a7264df2648abd1adeeeb0565b31d5b15d55f73cde738475a2d2162e234301c01e70c4dece6a26b2abf65da610e
   languageName: node
   linkType: hard
 
@@ -5228,7 +5166,7 @@ __metadata:
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:4.2.0"
     globals: "npm:^16.4.0"
     i18n-webpack-plugin: "npm:1.0.0"
@@ -5766,7 +5704,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"array.prototype.flatmap@npm:^1.3.2, array.prototype.flatmap@npm:^1.3.3":
+"array.prototype.flatmap@npm:^1.3.3":
   version: 1.3.3
   resolution: "array.prototype.flatmap@npm:1.3.3"
   dependencies:
@@ -8909,11 +8847,11 @@ __metadata:
     "@dnncommunity/dnn-elements": "npm:^0.27.5"
     "@eslint/js": "npm:^9.38.0"
     "@stencil/core": "npm:^4.22.2"
-    "@stencil/eslint-plugin": "npm:^1.0.0"
+    "@stencil/eslint-plugin": "npm:^1.1.0"
     "@stencil/sass": "npm:^3.0.12"
     "@stencil/store": "npm:^2.0.16"
     "@types/node": "npm:^22.9.0"
-    "@typescript-eslint/utils": "npm:^8.32.1"
+    "@typescript-eslint/utils": "npm:^8.46.2"
     eslint: "npm:^9.38.0"
     jiti: "npm:^2.4.2"
     typescript: "npm:^5.8.3"
@@ -8938,7 +8876,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -8974,11 +8912,11 @@ __metadata:
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.9"
     eslint: "npm:9.38.0"
-    eslint-import-resolver-webpack: "npm:^0.13.2"
+    eslint-import-resolver-webpack: "npm:^0.13.10"
     eslint-plugin-filenames: "npm:^1.3.2"
-    eslint-plugin-import: "npm:^2.27.5"
+    eslint-plugin-import: "npm:^2.32.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
@@ -9009,12 +8947,12 @@ __metadata:
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.9"
     eslint: "npm:9.38.0"
-    eslint-import-resolver-webpack: "npm:^0.13.2"
+    eslint-import-resolver-webpack: "npm:^0.13.10"
     eslint-plugin-filenames: "npm:^1.3.2"
-    eslint-plugin-import: "npm:^2.27.5"
-    eslint-plugin-react: "npm:7.37.1"
+    eslint-plugin-import: "npm:^2.32.0"
+    eslint-plugin-react: "npm:7.37.5"
     eslint-plugin-spellcheck: "npm:0.0.20"
-    eslint-webpack-plugin: "npm:^4.2.0"
+    eslint-webpack-plugin: "npm:^5.0.2"
     less: "npm:4.1.3"
     less-loader: "npm:12.2.0"
     localization: "npm:^1.0.2"
@@ -9733,7 +9671,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-iterator-helpers@npm:^1.0.19, es-iterator-helpers@npm:^1.2.1":
+"es-iterator-helpers@npm:^1.2.1":
   version: 1.2.1
   resolution: "es-iterator-helpers@npm:1.2.1"
   dependencies:
@@ -9965,7 +9903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-import-resolver-webpack@npm:^0.13.10, eslint-import-resolver-webpack@npm:^0.13.2":
+"eslint-import-resolver-webpack@npm:^0.13.10":
   version: 0.13.10
   resolution: "eslint-import-resolver-webpack@npm:0.13.10"
   dependencies:
@@ -10012,7 +9950,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.27.5, eslint-plugin-import@npm:^2.31.0":
+"eslint-plugin-import@npm:^2.32.0":
   version: 2.32.0
   resolution: "eslint-plugin-import@npm:2.32.0"
   dependencies:
@@ -10059,34 +9997,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:7.37.1":
-  version: 7.37.1
-  resolution: "eslint-plugin-react@npm:7.37.1"
-  dependencies:
-    array-includes: "npm:^3.1.8"
-    array.prototype.findlast: "npm:^1.2.5"
-    array.prototype.flatmap: "npm:^1.3.2"
-    array.prototype.tosorted: "npm:^1.1.4"
-    doctrine: "npm:^2.1.0"
-    es-iterator-helpers: "npm:^1.0.19"
-    estraverse: "npm:^5.3.0"
-    hasown: "npm:^2.0.2"
-    jsx-ast-utils: "npm:^2.4.1 || ^3.0.0"
-    minimatch: "npm:^3.1.2"
-    object.entries: "npm:^1.1.8"
-    object.fromentries: "npm:^2.0.8"
-    object.values: "npm:^1.2.0"
-    prop-types: "npm:^15.8.1"
-    resolve: "npm:^2.0.0-next.5"
-    semver: "npm:^6.3.1"
-    string.prototype.matchall: "npm:^4.0.11"
-    string.prototype.repeat: "npm:^1.0.0"
-  peerDependencies:
-    eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8 || ^9.7
-  checksum: 10/a7b9cf2c43255844ad0c9d4e3758a8c2b687a2ce9a09f4161ab245581d5d2d91b37742e541c88aa9ce368ec6c860e23dc78c15117f3fc1cdc433847038e8346b
-  languageName: node
-  linkType: hard
-
 "eslint-plugin-react@npm:7.37.5":
   version: 7.37.5
   resolution: "eslint-plugin-react@npm:7.37.5"
@@ -10128,15 +10038,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-storybook@npm:9.0.1":
-  version: 9.0.1
-  resolution: "eslint-plugin-storybook@npm:9.0.1"
+"eslint-plugin-storybook@npm:9.1.13":
+  version: 9.1.13
+  resolution: "eslint-plugin-storybook@npm:9.1.13"
   dependencies:
     "@typescript-eslint/utils": "npm:^8.8.1"
   peerDependencies:
     eslint: ">=8"
-    storybook: ^9.0.1
-  checksum: 10/0f2aa5ca74cc822895033157b8ced3cfcd658cd9e39fc613eddd86a1b5137bb1c3eb42d4b691f183c9c21aa8bfcda3a5153c93156bca8547d56dc066a411f4e1
+    storybook: ^9.1.13
+  checksum: 10/c42247cf4b5118b4dcff529f6fda72fb26fc39e5a62158b456b27b89489176fb0ff04ea19a5bf31f40bea7bdd4cd5e83b6d908351c7808ce74aef34aa6347560
   languageName: node
   linkType: hard
 
@@ -10206,23 +10116,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-webpack-plugin@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "eslint-webpack-plugin@npm:4.2.0"
-  dependencies:
-    "@types/eslint": "npm:^8.56.10"
-    jest-worker: "npm:^29.7.0"
-    micromatch: "npm:^4.0.5"
-    normalize-path: "npm:^3.0.0"
-    schema-utils: "npm:^4.2.0"
-  peerDependencies:
-    eslint: ^8.0.0 || ^9.0.0
-    webpack: ^5.0.0
-  checksum: 10/061d11a93832b82bd0362d6c546f51fe5e3a0eb811374b86536a2929ff46fea7e5ef30e32f0d3194b9da146a7c0ae43f13b2ec5ce0f65a9ca9c4d961d9e446b3
-  languageName: node
-  linkType: hard
-
-"eslint-webpack-plugin@npm:^5.0.1":
+"eslint-webpack-plugin@npm:^5.0.2":
   version: 5.0.2
   resolution: "eslint-webpack-plugin@npm:5.0.2"
   dependencies:
@@ -10472,7 +10366,7 @@ __metadata:
     es6-promise: "npm:4.2.8"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:4.2.0"
     globals: "npm:^16.4.0"
     json-loader: "npm:^0.5.7"
@@ -10600,7 +10494,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -14223,7 +14117,7 @@ __metadata:
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -15949,7 +15843,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object.entries@npm:^1.1.1, object.entries@npm:^1.1.2, object.entries@npm:^1.1.8, object.entries@npm:^1.1.9":
+"object.entries@npm:^1.1.1, object.entries@npm:^1.1.2, object.entries@npm:^1.1.9":
   version: 1.1.9
   resolution: "object.entries@npm:1.1.9"
   dependencies:
@@ -16022,7 +15916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object.values@npm:^1.1.1, object.values@npm:^1.1.6, object.values@npm:^1.1.7, object.values@npm:^1.2.0, object.values@npm:^1.2.1":
+"object.values@npm:^1.1.1, object.values@npm:^1.1.6, object.values@npm:^1.1.7, object.values@npm:^1.2.1":
   version: 1.2.1
   resolution: "object.values@npm:1.2.1"
   dependencies:
@@ -16425,7 +16319,7 @@ __metadata:
     enzyme-adapter-react-16: "npm:^1.15.7"
     eslint: "npm:^9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     jest: "npm:^28.1.3"
@@ -17449,7 +17343,7 @@ __metadata:
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     extract-text-webpack-plugin: "npm:^3.0.2"
     fbjs: "npm:*"
     fetch-mock: "npm:^7.7.3"
@@ -18955,7 +18849,7 @@ __metadata:
     es6-object-assign: "npm:^1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -19422,7 +19316,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -19553,7 +19447,7 @@ __metadata:
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -19655,7 +19549,7 @@ __metadata:
     dayjs: "npm:^1.11.9"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -19926,7 +19820,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     globals: "npm:^16.4.0"
     i18n-webpack-plugin: "npm:1.0.0"
     less: "npm:4.1.3"
@@ -19977,7 +19871,7 @@ __metadata:
     eslint: "npm:9.38.0"
     eslint-plugin-jest: "npm:^29.0.1"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     jest: "npm:^28.1.3"
@@ -20021,7 +19915,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -20559,7 +20453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string.prototype.matchall@npm:^4.0.11, string.prototype.matchall@npm:^4.0.12":
+"string.prototype.matchall@npm:^4.0.12":
   version: 4.0.12
   resolution: "string.prototype.matchall@npm:4.0.12"
   dependencies:
@@ -20798,11 +20692,11 @@ __metadata:
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.27.4"
     "@stencil/core": "npm:^4.22.2"
-    "@stencil/eslint-plugin": "npm:^1.0.0"
+    "@stencil/eslint-plugin": "npm:^1.1.0"
     "@stencil/sass": "npm:^3.0.12"
     "@types/node": "npm:^22.9.0"
-    "@typescript-eslint/eslint-plugin": "npm:^8.32.1"
-    "@typescript-eslint/parser": "npm:^8.32.1"
+    "@typescript-eslint/eslint-plugin": "npm:^8.46.2"
+    "@typescript-eslint/parser": "npm:^8.46.2"
     eslint: "npm:^9.38.0"
     jiti: "npm:^2.4.2"
     typescript-eslint: "npm:^8.46.2"
@@ -20997,7 +20891,7 @@ __metadata:
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -21038,7 +20932,7 @@ __metadata:
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -21147,7 +21041,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     less: "npm:4.1.3"
@@ -22057,7 +21951,7 @@ __metadata:
     css-loader: "npm:^7.1.2"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.1"
+    eslint-webpack-plugin: "npm:^5.0.2"
     file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     jest: "npm:^28.1.3"

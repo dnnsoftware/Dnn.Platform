@@ -32,7 +32,7 @@
     "es6-object-assign": "1.1.0",
     "eslint": "9.38.0",
     "eslint-plugin-react": "7.37.5",
-    "eslint-webpack-plugin": "^5.0.1",
+    "eslint-webpack-plugin": "^5.0.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "fbjs": "*",
     "fetch-mock": "^7.7.3",
