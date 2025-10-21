@@ -4237,7 +4237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/knockout@npm:^3.4.72":
+"@types/knockout@npm:^3.4.77":
   version: 3.4.77
   resolution: "@types/knockout@npm:3.4.77"
   checksum: 10/0b3ec7d0151ac5dbd4ecaf6579f46c341a3a08b6a92c90acad7a82fdff6962179fd1680640a8aa571d95076e5259c2ef1732bd3314cd6277afd8ae619b6d8dfe
@@ -16433,7 +16433,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
-    "@types/knockout": "npm:^3.4.72"
+    "@types/knockout": "npm:^3.4.77"
     "@types/redux": "npm:3.6.31"
     babel-eslint: "npm:^10.1.0"
     babel-jest: "npm:^30.2.0"
