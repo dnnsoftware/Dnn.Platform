@@ -247,8 +247,8 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="moduleMessageType">The type of the message.</param>
-        [Obsolete("This method has been deprecated. Please use IPageService.AddMessage Scheduled removal in v11.0.0.")]
-        public static void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
+        [DnnDeprecated(10, 2, 0, "Please use IPageService.AddMessage")]
+        public static partial void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddPageMessage(page, heading, message, moduleMessageType, Null.NullString);
         }
