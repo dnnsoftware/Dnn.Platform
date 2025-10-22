@@ -27,14 +27,3 @@
     <!-- Footer -->
     @Html.SkinPartial("partials/_footer")
 </div>
-
-
-
-@{
-    // Context.Response.AddHeader("Content-Security-Policy", Model.ContentSecurityPolicy.GeneratePolicy());
-    Context.Response.AddHeader("X-XSS-Protection", "1; mode=block");
-    Context.Response.AddHeader("X-Content-Type-Options", "nosniff");
-    Context.Response.AddHeader("Referrer-Policy", "same-origin");
-    Context.Response.AddHeader("Permissions-Policy", "camera=self");
-    Context.Response.AddHeader("Strict-Transport-Security", "max-age=2592000");
-} 

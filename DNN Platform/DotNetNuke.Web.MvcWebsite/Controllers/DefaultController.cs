@@ -11,7 +11,6 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using Dnn.EditBar.UI.Mvc;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -35,18 +34,18 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
         private readonly INavigationManager navigationManager;
-        private readonly IContentSecurityPolicy contentSecurityPolicy;
         private readonly IPageModelFactory pageModelFactory;
 
-        public DefaultController(IContentSecurityPolicy contentSecurityPolicy, INavigationManager navigationManager, IPageModelFactory pageModelFactory)
+        public DefaultController(INavigationManager navigationManager, IPageModelFactory pageModelFactory)
         {
-            this.contentSecurityPolicy = contentSecurityPolicy;
             this.navigationManager = navigationManager;
             this.pageModelFactory = pageModelFactory;
         }
 
         public ActionResult Page(int tabid, string language)
         {
+            //TODO: CSP - enable when CSP implementation is ready
+            /*
             this.HttpContext.Items.Add("CSP-NONCE", this.contentSecurityPolicy.Nonce);
 
             this.contentSecurityPolicy.DefaultSource.AddSelf();
@@ -66,6 +65,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             {
                 this.contentSecurityPolicy.FrameSource.AddHost("https://dnndocs.com").AddHost("https://docs.dnncommunity.org");
             }
+            */
 
             // There could be a pending installation/upgrade process
             if (InstallBlocker.Instance.IsInstallInProgress())
@@ -107,7 +107,6 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // Register the scripts and stylesheets
             this.RegisterScriptsAndStylesheets(model);
 
-            // this.Response.AddHeader("Content-Security-Policy", $"default-src 'self';base-uri 'self';form-action 'self';object-src 'none'; img-src *; style-src 'self' 'unsafe-inline';font-src *; script-src * 'unsafe-inline';");
             return this.View(model.Skin.RazorFile, "Layout", model);
         }
 

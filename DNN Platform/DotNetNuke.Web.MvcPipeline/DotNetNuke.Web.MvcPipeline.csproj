@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>DotNetNuke.Web.MvcPipeline</AssemblyName>
     <TargetFramework>net48</TargetFramework>
@@ -36,7 +36,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj" />
     <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj" />
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
   </ItemGroup>

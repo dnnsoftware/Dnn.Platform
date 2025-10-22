@@ -48,7 +48,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             int autoSearchDelayInMilliSecond = 400)
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;
-            var nonce = helper.ViewData.Model.ContentSecurityPolicy.Nonce;
+            //TODO: CSP - enable when CSP implementation is ready
+            var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             MvcClientResourceManager.RegisterStyleSheet(helper.ViewContext, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             var htmlAttributes = new Dictionary<string, string>
@@ -240,9 +241,14 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
         private static string GetInitScript(bool useDropDownList, bool enableWildSearch, int minCharRequired, int autoSearchDelayInMilliSecond, string id, string nonce)
         {
+            var nonceAttribute = string.Empty;
+            if (!string.IsNullOrEmpty(nonce))
+            {
+                nonceAttribute = $"nonce=\"{nonce}\"";
+            }
             return string.Format(
                 @"
-                <script nonce=""{8}"">
+                <script {8} >
                     $(function() {{
                         if (typeof dnn != 'undefined' && typeof dnn.searchSkinObject != 'undefined') {{
                             var searchSkinObject = new dnn.searchSkinObject({{
@@ -270,7 +276,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 PortalSettings.Current.PortalId,
                 useDropDownList ? "if (typeof dnn.initDropdownSearch != 'undefined') { dnn.initDropdownSearch(searchSkinObject); }" : string.Empty,
                 id,
-                nonce);
+                nonceAttribute);
         }
 
         private static string GetSeeMoreText()

@@ -1273,12 +1273,8 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
     <Content Include="Views\Default\Layout.cshtml" />
     <Content Include="Views\ModuleActionsView\Invoke.cshtml" />
-    <Content Include="Views\ModulePermissionsGrid\Index.cshtml" />
-    <Content Include="Views\ModuleSettingsView\Invoke.cshtml" />
     <Content Include="Views\PersonaBarContainer\Index.cshtml" />
     <Content Include="Views\PrivacyView\Invoke.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_PermissionTriState.cshtml" />
     <Content Include="Views\TermsView\Invoke.cshtml" />
     <Content Include="Views\web.config" />
     <None Include="web.Debug.config">

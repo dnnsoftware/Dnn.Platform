@@ -16,7 +16,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -34,7 +33,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
     "<meta([^>])+name=('|\")robots('|\")",
     RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
-        private readonly IContentSecurityPolicy contentSecurityPolicy;
         private readonly INavigationManager navigationManager;
         private readonly IPortalController portalController;
         private readonly IModuleControlPipeline moduleControlPipeline;
@@ -43,7 +41,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
         private readonly IHostSettings hostSettings;
 
         public PageModelFactory(
-            IContentSecurityPolicy contentSecurityPolicy,
             INavigationManager navigationManager,
             IPortalController portalController,
             IModuleControlPipeline moduleControlPipeline,
@@ -51,7 +48,6 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
             ISkinModelFactory skinModelFactory,
             IHostSettings hostSettings)
         {
-            this.contentSecurityPolicy = contentSecurityPolicy;
             this.navigationManager = navigationManager;
             this.portalController = portalController;
             this.moduleControlPipeline = moduleControlPipeline;
@@ -70,7 +66,8 @@ namespace DotNetNuke.Web.MvcPipeline.Framework
                 PortalId = page.PortalSettings.PortalId,
                 TabId = page.PortalSettings.ActiveTab.TabID,
                 Language = Thread.CurrentThread.CurrentCulture.Name,
-                ContentSecurityPolicy = this.contentSecurityPolicy,
+                //TODO: CSP - enable when CSP implementation is ready
+                // ContentSecurityPolicy = this.contentSecurityPolicy,
                 NavigationManager = this.navigationManager,
                 FavIconLink = FavIcon.GetHeaderLink(this.hostSettings, page.PortalSettings.PortalId),
             };
