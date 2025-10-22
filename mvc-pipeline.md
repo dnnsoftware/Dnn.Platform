@@ -1,4 +1,4 @@
-# List of Pull requests - sujested merge order
+# List of Pull requests - suggested merge order
 
 ## on feature/mvc-pipeline-old branch
 > PR are inter dependend
@@ -28,7 +28,7 @@
 
 
 
-# List of modified projects - sujested order of review
+# List of modified projects - suggested order of review
 
 ### Projects graph
 
@@ -138,6 +138,9 @@ graph TD
 * mvc.js : some small stuff for making the mvc pipeline compatible with existing js stuff
 
 ## Dotnetnuke.Web.Mvc
+
+> This is undependent of the rest of mvc pipeline (can be splitted in apart PR)
+
 * make actual MVC modules compatible with MVC pipeline
 * the MVC Controllers will be used as Child Controllers in the MvcPipeline
 * to be compatible with the 2 pipeline it's required that they only use stuff that is undependent of the pipeline (new CDF, IPageService, ...)
