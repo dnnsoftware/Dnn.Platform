@@ -214,8 +214,8 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="iconSrc">The Icon to display.</param>
-        [Obsolete("This method has been deprecated. Please use IPageService.AddMessage Scheduled removal in v11.0.0.")]
-        public static void AddPageMessage(Page page, string heading, string message, string iconSrc)
+        [DnnDeprecated(10, 2, 0, "Please use IPageService.AddMessage")]
+        public static partial void AddPageMessage(Page page, string heading, string message, string iconSrc)
         {
             AddPageMessage(page, heading, message, ModuleMessage.ModuleMessageType.GreenSuccess, iconSrc);
         }
