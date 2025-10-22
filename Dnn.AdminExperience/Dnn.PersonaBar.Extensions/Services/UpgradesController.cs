@@ -80,6 +80,8 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             await this.localUpgradeService.StartLocalUpgrade(upgrade, cancellationToken);
 
+            await this.localUpgradeService.DeleteLocalUpgrade(data.PackageName, cancellationToken);
+
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
