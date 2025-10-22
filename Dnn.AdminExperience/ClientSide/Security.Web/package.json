@@ -32,7 +32,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-hot-loader": "4.13.1",
-    "react-modal": "3.16.1",
+    "react-modal": "3.16.3",
     "react-redux": "^8.1.1",
     "redux": "^4.2.1",
     "redux-immutable-state-invariant": "^2.1.0",
