@@ -233,11 +233,12 @@ namespace DotNetNuke.Framework
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-                    UI.Skins.Skin.AddPageMessage(
-                        ctlSkin,
+                    this.pageService.AddMessage(new PageMessage(
                         heading,
                         message,
-                        ModuleMessage.ModuleMessageType.YellowWarning);
+                        PageMessageType.Warning,
+                        string.Empty,
+                        PagePriority.Page));
                 }
                 else
                 {
@@ -389,7 +390,7 @@ namespace DotNetNuke.Framework
 
             foreach (var item in this.pageService.GetMessages())
             {
-                Skin.AddPageMessage(this, item.Heading, item.Message, item.MessageType.ToModuleMessageType());
+                Skin.AddPageMessage(this, item.Heading, item.Message, item.MessageType.ToModuleMessageType(), item.IconSrc);
             }
         }
 
