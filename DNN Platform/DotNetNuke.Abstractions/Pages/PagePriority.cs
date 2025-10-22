@@ -19,11 +19,11 @@ namespace DotNetNuke.Abstractions.Pages
     /// 3. Default content (priority 100)
     /// 4. Module-level content (priority 200).
     /// </remarks>
-    public class PagePriority
+    public static class PagePriority
     {
         /// <summary>
         /// Site-level priority (value: 10).
-        /// Used for framework scripts, core styles, and other fundamental site-wide content
+        /// Used for framework  site-wide content
         /// that should be loaded before any other content.
         /// </summary>
         public const int Site = 10;

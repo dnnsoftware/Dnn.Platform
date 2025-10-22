@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.Pages
                 PageMessageType.Warning => ModuleMessage.ModuleMessageType.YellowWarning,
                 PageMessageType.Error => ModuleMessage.ModuleMessageType.RedError,
                 PageMessageType.Info => ModuleMessage.ModuleMessageType.BlueInfo,
-                _ => ModuleMessage.ModuleMessageType.GreenSuccess,
+                _ => ModuleMessage.ModuleMessageType.BlueInfo,
             };
         }
     }

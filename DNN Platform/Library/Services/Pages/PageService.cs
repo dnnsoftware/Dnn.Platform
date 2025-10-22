@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Pages
         /// Gets all head tags ordered by priority (lowest priority first).
         /// </summary>
         /// <returns>List of head tags ordered by priority.</returns>
-        public List<PageTag> GetHeadTags()
+        public IEnumerable<PageTag> GetHeadTags()
         {
             return this.headTags.OrderBy(x => x.Priority).ToList();
         }
@@ -223,7 +223,7 @@ namespace DotNetNuke.Services.Pages
         /// Gets all meta tags ordered by priority (lowest priority first).
         /// </summary>
         /// <returns>List of meta tags ordered by priority.</returns>
-        public List<PageMeta> GetMetaTags()
+        public IEnumerable<PageMeta> GetMetaTags()
         {
             return this.metaTags.OrderBy(x => x.Priority).ToList();
         }
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.Pages
         /// Gets all messages ordered by priority (lowest priority first).
         /// </summary>
         /// <returns>List of messages ordered by priority.</returns>
-        public List<PageMessage> GetMessages()
+        public IEnumerable<PageMessage> GetMessages()
         {
             return this.messages.OrderBy(x => x.Priority).ToList();
         }

@@ -30,6 +30,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Pages;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI;
     using DotNetNuke.UI.Internals;
@@ -388,26 +389,7 @@ namespace DotNetNuke.Framework
 
             foreach (var item in this.pageService.GetMessages())
             {
-                ModuleMessage.ModuleMessageType moduleMessageType = ModuleMessage.ModuleMessageType.BlueInfo;
-
-                switch (item.MessageType)
-                {
-                    case PageMessageType.Success:
-                        moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
-                        break;
-                    case PageMessageType.Warning:
-                        moduleMessageType = ModuleMessage.ModuleMessageType.YellowWarning;
-                        break;
-                    case PageMessageType.Error:
-                        moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
-                        break;
-                    case PageMessageType.Info:
-                    default:
-                        moduleMessageType = ModuleMessage.ModuleMessageType.BlueInfo;
-                        break;
-                }
-
-                Skin.AddPageMessage(this, item.Heading, item.Message, moduleMessageType);
+                Skin.AddPageMessage(this, item.Heading, item.Message, item.MessageType.ToModuleMessageType());
             }
         }
 

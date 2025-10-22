@@ -87,19 +87,19 @@ namespace DotNetNuke.Abstractions.Pages
         /// Gets all head tags ordered by priority (lowest priority first).
         /// </summary>
         /// <returns>List of head tags ordered by priority.</returns>
-        List<PageTag> GetHeadTags();
+        IEnumerable<PageTag> GetHeadTags();
 
         /// <summary>
         /// Gets all meta tags ordered by priority (lowest priority first).
         /// </summary>
         /// <returns>List of meta tags ordered by priority.</returns>
-        List<PageMeta> GetMetaTags();
+        IEnumerable<PageMeta> GetMetaTags();
 
         /// <summary>
         /// Gets all messages ordered by priority (lowest priority first).
         /// </summary>
         /// <returns>List of messages ordered by priority.</returns>
-        List<PageMessage> GetMessages();
+        IEnumerable<PageMessage> GetMessages();
 
         /// <summary>
         /// Clears all stored page data. Useful for testing or resetting state.
