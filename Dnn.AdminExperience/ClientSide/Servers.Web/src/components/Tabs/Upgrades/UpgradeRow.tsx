@@ -27,10 +27,14 @@ const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
         <TextOverflowWrapper text={version} />
       </GridCell>
       <GridCell columnSize={10}>
-        {props.upgrade.IsValid ? "Yes" : "No"}
+        {props.upgrade.IsValid
+          ? Localization.get("Yes")
+          : Localization.get("No")}
       </GridCell>
       <GridCell columnSize={20}>
-        {props.upgrade.IsOutdated ? "Yes" : "No"}
+        {props.upgrade.IsOutdated
+          ? Localization.get("Yes")
+          : Localization.get("No")}
       </GridCell>
       <GridCell columnSize={10}>
         <IconButton

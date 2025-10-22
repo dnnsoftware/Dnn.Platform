@@ -9,8 +9,6 @@ namespace Dnn.PersonaBar.Extensions.Services
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Formatting;
-    using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http;
@@ -107,15 +105,9 @@ namespace Dnn.PersonaBar.Extensions.Services
         [HttpPost]
         public async Task<HttpResponseMessage> Delete(UpgradePackageRequestDto data, CancellationToken cancellationToken)
         {
-            var upgrades = await this.localUpgradeService.GetLocalUpgrades(cancellationToken);
-            var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(data.PackageName, StringComparison.InvariantCultureIgnoreCase));
             try
             {
-                var packagePath = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", upgrade.PackageName + ".zip");
-                if (File.Exists(packagePath))
-                {
-                    File.Delete(packagePath);
-                }
+                await this.localUpgradeService.DeleteLocalUpgrade(data.PackageName, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -188,12 +180,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 }
             }
 
-            // Response Content Type cannot be application/json
-            // because IE9 with iframe-transport manages the response
-            // as a file download 1
-            var mediaTypeFormatter = new JsonMediaTypeFormatter();
-            mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-
             if (!string.IsNullOrEmpty(fileName) && stream != null)
             {
                 var info = this.localUpgradeService.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(fileName), stream, CancellationToken.None).Result;
@@ -214,11 +200,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         stream.CopyTo(fileStream);
                     }
 
-                    return this.Request.CreateResponse(
-                        HttpStatusCode.OK,
-                        result,
-                        mediaTypeFormatter,
-                        "text/plain");
+                    return this.Request.CreateResponse(HttpStatusCode.OK, result);
                 }
             }
 

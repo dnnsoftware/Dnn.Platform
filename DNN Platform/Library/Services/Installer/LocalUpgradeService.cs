@@ -29,7 +29,6 @@ public class LocalUpgradeService : ILocalUpgradeService
     private static readonly List<string> InstallFilter = new List<string>
     {
         "App_Data\\Database.mdf",
-        "bin\\",
         "Config\\DotNetNuke.config",
         "Install\\InstallWizard",
         "favicon.ico",
@@ -127,6 +126,19 @@ public class LocalUpgradeService : ILocalUpgradeService
                 IsValid = false,
                 IsOutdated = false,
             };
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task DeleteLocalUpgrade(string packageName, CancellationToken cancellationToken)
+    {
+        var upgrades = await this.GetLocalUpgrades(cancellationToken);
+        var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(packageName, StringComparison.InvariantCultureIgnoreCase));
+        var packagePath = Path.Combine(this.appStatus.ApplicationMapPath, "App_Data", "Upgrade", upgrade.PackageName + ".zip");
+
+        if (File.Exists(packagePath))
+        {
+            File.Delete(packagePath);
         }
     }
 

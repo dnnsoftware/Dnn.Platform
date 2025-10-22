@@ -798,4 +798,25 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="Install.Text" xml:space="preserve">
     <value>Install</value>
   </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="tabUpgrades.Text" xml:space="preserve">
+    <value>Upgrades</value>
+  </data>
+  <data name="UpgradeDoneLink.Text" xml:space="preserve">
+    <value>Please click here to start the upgrade process</value>
+  </data>
+  <data name="UpgradeDone.Text" xml:space="preserve">
+    <value>File Copying Complete</value>
+  </data>
+  <data name="Upgrading.Help" xml:space="preserve">
+    <value>Please wait while we prepare to upgrade your server.</value>
+  </data>
+  <data name="Upgrading.Text" xml:space="preserve">
+    <value>Upgrading ...</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
 </root>
