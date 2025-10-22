@@ -28,9 +28,9 @@ public class LocalUpgradeService : ILocalUpgradeService
 {
     private static readonly List<string> InstallFilter = new List<string>
     {
-        "App_Data\\Database.mdf",
-        "Config\\DotNetNuke.config",
-        "Install\\InstallWizard",
+        "App_Data/Database.mdf",
+        "Config/DotNetNuke.config",
+        "Install/InstallWizard",
         "favicon.ico",
         "robots.txt",
         "web.config",
@@ -134,7 +134,7 @@ public class LocalUpgradeService : ILocalUpgradeService
     {
         var upgrades = await this.GetLocalUpgrades(cancellationToken);
         var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(packageName, StringComparison.InvariantCultureIgnoreCase));
-        var packagePath = Path.Combine(this.appStatus.ApplicationMapPath, "App_Data", "Upgrade", upgrade.PackageName + ".zip");
+        var packagePath = Path.Combine(this.UpgradeDirectoryPath, upgrade.PackageName + ".zip");
 
         if (File.Exists(packagePath))
         {

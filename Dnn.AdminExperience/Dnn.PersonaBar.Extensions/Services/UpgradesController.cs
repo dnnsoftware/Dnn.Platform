@@ -20,11 +20,13 @@ namespace Dnn.PersonaBar.Extensions.Services
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api.Internal;
 
     [MenuPermission(Scope = ServiceScope.Host)]
     public class UpgradesController : PersonaBarApiController
     {
+        private const string ResourceFile = "~/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradesController));
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly ILocalUpgradeService localUpgradeService;
@@ -67,13 +69,13 @@ namespace Dnn.PersonaBar.Extensions.Services
             var upgrades = await this.localUpgradeService.GetLocalUpgrades(cancellationToken);
             if (!upgrades.Any(u => u.IsValid && !u.IsOutdated))
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "There are no upgrades to apply", });
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString("Upgrade_NoUpgrade"), });
             }
 
             var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(data.PackageName, StringComparison.InvariantCultureIgnoreCase));
             if (upgrade == null || !upgrade.IsValid || upgrade.IsOutdated)
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"There is no valid upgrade for package {data.PackageName}", });
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_NoValidUpgrade", data.PackageName), });
             }
 
             await this.localUpgradeService.StartLocalUpgrade(upgrade, cancellationToken);
@@ -90,7 +92,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             var upgrades = await this.localUpgradeService.GetLocalUpgrades(cancellationToken);
             if (!upgrades.Any(u => u.IsValid && !u.IsOutdated))
             {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "There are no upgrades to apply", });
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString("Upgrade_NoUpgrade"), });
             }
 
             await this.localUpgradeService.StartLocalUpgrade(upgrades, cancellationToken);
@@ -121,14 +123,15 @@ namespace Dnn.PersonaBar.Extensions.Services
         /// <summary>
         /// Uploads a DNN package for local upgrade.
         /// </summary>
+        /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either a package info or an error message.</returns>
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
-        public Task<HttpResponseMessage> Upload()
+        public Task<HttpResponseMessage> Upload(CancellationToken cancellationToken)
         {
             try
             {
-                return this.UploadFileAction();
+                return this.UploadFileAction(cancellationToken);
             }
             catch (Exception ex)
             {
@@ -137,7 +140,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        private async Task<HttpResponseMessage> UploadFileAction()
+        private async Task<HttpResponseMessage> UploadFileAction(CancellationToken cancellationToken)
         {
             var request = this.Request;
             if (!request.Content.IsMimeMultipartContent())
@@ -153,7 +156,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             var provider = new MultipartMemoryStreamProvider();
 
             // read multipart parts
-            await request.Content.ReadAsMultipartAsync(provider).ConfigureAwait(false);
+            await request.Content.ReadAsMultipartAsync(provider, cancellationToken).ConfigureAwait(false);
 
             object result = null;
             var fileName = string.Empty;
@@ -161,8 +164,9 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             foreach (var item in provider.Contents)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var name = item.Headers.ContentDisposition.Name;
-                switch (name.ToUpper())
+                switch (name.ToUpperInvariant())
                 {
                     case "\"POSTFILE\"":
                         fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
@@ -182,14 +186,14 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             if (!string.IsNullOrEmpty(fileName) && stream != null)
             {
-                var info = this.localUpgradeService.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(fileName), stream, CancellationToken.None).Result;
+                var info = await this.localUpgradeService.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(fileName), stream, cancellationToken);
                 if (!info.IsValid)
                 {
-                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"The uploaded file {fileName} is not a valid DNN package.", });
+                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_InvalidPackage", fileName), });
                 }
                 else if (info.IsOutdated)
                 {
-                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"The uploaded file {fileName} is an outdated DNN package.", });
+                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_OutdatedPackage", fileName), });
                 }
                 else
                 {
@@ -204,7 +208,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                 }
             }
 
-            return request.CreateResponse(HttpStatusCode.BadRequest, new { message = $"The uploaded file {fileName} was not a DNN package.", });
+            return request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_InvalidPackage", fileName), });
+        }
+
+        private string LocalizeString(string key, params object[] args)
+        {
+            return string.Format(Localization.GetString(key, ResourceFile), args);
         }
     }
 }

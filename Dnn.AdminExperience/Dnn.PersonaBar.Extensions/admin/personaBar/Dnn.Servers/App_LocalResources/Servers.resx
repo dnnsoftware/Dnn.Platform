@@ -819,4 +819,16 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="Yes.Text" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Upgrade_InvalidPackage.Text" xml:space="preserve">
+    <value>The uploaded file {0} is not a valid DNN package.</value>
+  </data>
+  <data name="Upgrade_NoUpgrade.Text" xml:space="preserve">
+    <value>There are no upgrades to apply</value>
+  </data>
+  <data name="Upgrade_NoValidUpgrade.Text" xml:space="preserve">
+    <value>There is no valid upgrade for package {0}</value>
+  </data>
+  <data name="Upgrade_OutdatedPackage.Text" xml:space="preserve">
+    <value>The uploaded file {0} is an outdated DNN package.</value>
+  </data>
 </root>
