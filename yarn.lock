@@ -1681,7 +1681,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-height: "npm:^3.0.2"
     react-hot-loader: "npm:^4.13.1"
-    react-modal: "npm:^3.16.1"
+    react-modal: "npm:^3.16.3"
     react-motion: "npm:^0.5.2"
     react-scrollbar: "npm:^0.5.6"
     react-slider: "npm:2.0.6"
@@ -10903,7 +10903,7 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-height: "npm:3.0.2"
     react-hot-loader: "npm:4.13.1"
-    react-modal: "npm:3.16.1"
+    react-modal: "npm:3.16.3"
     react-motion: "npm:0.5.2"
     react-redux: "npm:8.1.1"
     react-tabs: "npm:3.2.3"
@@ -14313,7 +14313,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     raw-loader: "npm:4.0.2"
     react-hot-loader: "npm:4.13.1"
-    react-modal: "npm:3.16.1"
+    react-modal: "npm:3.16.3"
     style-loader: "npm:^4.0.0"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
@@ -17845,22 +17845,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-modal@npm:3.16.1":
-  version: 3.16.1
-  resolution: "react-modal@npm:3.16.1"
-  dependencies:
-    exenv: "npm:^1.2.0"
-    prop-types: "npm:^15.7.2"
-    react-lifecycles-compat: "npm:^3.0.0"
-    warning: "npm:^4.0.3"
-  peerDependencies:
-    react: ^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18
-    react-dom: ^0.14.0 || ^15.0.0 || ^16 || ^17 || ^18
-  checksum: 10/79787ed2754f65168fccefcef50b509fa1cbc2b44907f92dcfd78ea6f9702668c70604f192a4bb45badb664902fb100179d6d191e478310be94e656271963905
-  languageName: node
-  linkType: hard
-
-"react-modal@npm:^3.16.1":
+"react-modal@npm:3.16.3, react-modal@npm:^3.16.3":
   version: 3.16.3
   resolution: "react-modal@npm:3.16.3"
   dependencies:
@@ -19300,7 +19285,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    react-modal: "npm:3.16.1"
+    react-modal: "npm:3.16.3"
     react-redux: "npm:^8.1.1"
     redux: "npm:^4.2.1"
     redux-immutable-state-invariant: "npm:^2.1.0"
@@ -19440,7 +19425,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    react-modal: "npm:3.16.1"
+    react-modal: "npm:3.16.3"
     style-loader: "npm:^4.0.0"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
@@ -19842,7 +19827,7 @@ __metadata:
     react-custom-scrollbars: "npm:4.2.1"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    react-modal: "npm:3.16.1"
+    react-modal: "npm:3.16.3"
     react-redux: "npm:^8.1.1"
     redux: "npm:^4.2.1"
     redux-immutable-state-invariant: "npm:^2.1.0"
@@ -20757,7 +20742,7 @@ __metadata:
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
-    react-modal: "npm:3.16.1"
+    react-modal: "npm:3.16.3"
     style-loader: "npm:^4.0.0"
     url-loader: "npm:4.1.1"
     webpack: "npm:5.102.1"
