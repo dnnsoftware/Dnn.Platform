@@ -15,18 +15,11 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Settings;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Modules.Html;
-    using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using Microsoft.Extensions.DependencyInjection;
@@ -56,13 +49,11 @@ namespace DotNetNuke.Modules.Html.Controllers
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
-        private readonly IContentSecurityPolicy contentSecurityPolicy;
 
-        public EditHTMLViewController(IContentSecurityPolicy csp)
+        public EditHTMLViewController()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = new HtmlTextController(this.navigationManager);
-            this.contentSecurityPolicy = csp;
         }
 
         public override string ControlPath => "~/DesktopModules/Html/";
@@ -138,9 +129,10 @@ namespace DotNetNuke.Modules.Html.Controllers
             MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/DesktopModules/HTML/edit.css");
             MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/DesktopModules/HTML/js/edit.js");
 
-            this.contentSecurityPolicy.StyleSource.AddInline();
-            this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();
-            this.contentSecurityPolicy.ImgSource.AddScheme("data:");
+            // TODO: CSP - enable when CSP implementation is ready
+            // this.contentSecurityPolicy.StyleSource.AddInline();
+            // this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();
+            // this.contentSecurityPolicy.ImgSource.AddScheme("data:");
             return model;
         }
 

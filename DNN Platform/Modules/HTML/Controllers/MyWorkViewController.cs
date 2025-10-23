@@ -6,27 +6,17 @@ namespace DotNetNuke.Modules.Html.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net.NetworkInformation;
-    using System.Web;
-    using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Settings;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Modules.Html;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.Mvc;
     using DotNetNuke.Web.MvcPipeline.Controllers;
-    using DotNetNuke.Website.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
     public class MyWorkViewController : ModuleViewControllerBase
