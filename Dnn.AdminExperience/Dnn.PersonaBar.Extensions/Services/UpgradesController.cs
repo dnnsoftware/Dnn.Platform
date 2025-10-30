@@ -38,6 +38,31 @@ namespace Dnn.PersonaBar.Extensions.Services
         }
 
         /// <summary>
+        /// Retrieves upgrade settings.
+        /// </summary>
+        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <returns>A <see cref="HttpResponseMessage"/> containing the upgrade settings with a status code
+        /// of <see cref="HttpStatusCode.OK"/> if successful, or an error message with a status code of
+        /// <see cref="HttpStatusCode.InternalServerError"/> if an exception occurs.</returns>
+        [HttpGet]
+        public HttpResponseMessage GetSettings(CancellationToken cancellationToken)
+        {
+            try
+            {
+                bool.TryParse(DotNetNuke.Common.Utilities.Config.GetSetting("AllowDnnUpgradeUpload"), out bool allowDnnUpgradeUpload);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    AllowDnnUpgradeUpload = allowDnnUpgradeUpload,
+                });
+            }
+            catch (Exception ex)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Message = ex.Message });
+            }
+        }
+
+        /// <summary>
         /// Retrieves a list of local upgrades.
         /// </summary>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
@@ -133,6 +158,12 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
+                bool.TryParse(DotNetNuke.Common.Utilities.Config.GetSetting("AllowDnnUpgradeUpload"), out bool allowDnnUpgradeUpload);
+                if (!allowDnnUpgradeUpload)
+                {
+                    return Task.FromResult(this.Request.CreateResponse(HttpStatusCode.Forbidden, new { message = this.LocalizeString("Upgrade_UploadNotAllowed"), }));
+                }
+
                 return this.UploadFileAction(cancellationToken);
             }
             catch (Exception ex)

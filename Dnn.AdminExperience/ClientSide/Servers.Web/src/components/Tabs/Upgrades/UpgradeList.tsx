@@ -31,6 +31,13 @@ const UpgradeList: React.FC<IUpgradeListProps> = (props) => {
         </GridCell>
       </div>
       {rows}
+      {props.upgrades.length === 0 && (
+        <div className="row">
+          <GridCell columnSize={100}>
+            {Localization.get("Upgrade_NoUpgradesAvailable")}
+          </GridCell>
+        </div>
+      )}
     </div>
   );
 };

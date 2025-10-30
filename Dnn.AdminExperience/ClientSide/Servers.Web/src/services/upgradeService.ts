@@ -1,6 +1,10 @@
 import utils from "../utils";
 import serviceFramework from "./serviceFramework";
 
+const getUpgradeSettings = function () {
+  return serviceFramework.get("Upgrades", "GetSettings");
+};
+
 const listUpgrades = function () {
   return serviceFramework.get("Upgrades", "List");
 };
@@ -23,6 +27,7 @@ const uploadPackage = function (file, callback, errorCallback) {
 };
 
 const upgradeService = {
+  getUpgradeSettings,
   listUpgrades,
   uploadPackage,
   deletePackage,

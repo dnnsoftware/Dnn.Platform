@@ -831,4 +831,10 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="Upgrade_OutdatedPackage.Text" xml:space="preserve">
     <value>The uploaded file {0} is an outdated DNN package.</value>
   </data>
+  <data name="Upgrade_UploadNotAllowed.Text" xml:space="preserve">
+    <value>Uploading DNN upgrade packages has been disabled.</value>
+  </data>
+  <data name="Upgrade_NoUpgradesAvailable.Text" xml:space="preserve">
+    <value>There are no upgrades available.</value>
+  </data>
 </root>

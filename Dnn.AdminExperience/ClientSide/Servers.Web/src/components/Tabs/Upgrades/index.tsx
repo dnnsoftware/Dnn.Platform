@@ -16,6 +16,7 @@ import UpgradeList from "./UpgradeList";
 import FileUpload from "./Upload";
 import Upgrading from "./Upgrading";
 import Done from "./Done";
+import { UpgradeSettings } from "models/UpgradeSettings";
 
 interface IProps {
   applicationInfo: any;
@@ -23,6 +24,9 @@ interface IProps {
 
 const UpgradesTab: React.FC<IProps> = (props) => {
   const [upgrades, setUpgrades] = useState<LocalUpgradeInfo[]>([]);
+  const [upgradeSettings, setUpgradeSettings] = useState<UpgradeSettings>({
+    AllowDnnUpgradeUpload: false,
+  });
   const [panelToShow, setPanelToShow] = useState<
     "done" | "upload" | "upgrading" | "list"
   >("list");
@@ -47,6 +51,12 @@ const UpgradesTab: React.FC<IProps> = (props) => {
   };
 
   useEffect(() => {
+    upgradeService.getUpgradeSettings().then((settings) => {
+      setUpgradeSettings(settings);
+    });
+  }, []);
+
+  useEffect(() => {
     if (panelToShow === "list") {
       getUpgrades();
     }
@@ -66,17 +76,19 @@ const UpgradesTab: React.FC<IProps> = (props) => {
             onDelete={(packageName) => deletePackage(packageName)}
             onInstall={(packageName) => installPackage(packageName)}
           />
-          <div className="dnn-servers-grid-panel-actions">
-            <Button
-              type="secondary"
-              size="large"
-              onClick={() => {
-                setPanelToShow("upload");
-              }}
-            >
-              {Localization.get("UploadPackage")}
-            </Button>
-          </div>
+          {upgradeSettings.AllowDnnUpgradeUpload && (
+            <div className="dnn-servers-grid-panel-actions">
+              <Button
+                type="secondary"
+                size="large"
+                onClick={() => {
+                  setPanelToShow("upload");
+                }}
+              >
+                {Localization.get("UploadPackage")}
+              </Button>
+            </div>
+          )}
         </>
       );
       break;
