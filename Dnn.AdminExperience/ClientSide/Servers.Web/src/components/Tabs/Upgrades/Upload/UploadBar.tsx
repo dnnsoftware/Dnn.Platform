@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
 /* eslint-disable no-undef */
 const upload = require("!raw-loader!./img/upload.svg").default;
@@ -9,7 +9,7 @@ const errorIcon = require("!raw-loader!./img/x.svg").default;
 interface UploadBarProps {
     errorText?: string;
     fileName: string;
-    uploadComplete: boolean;
+    percent: number;
     uploadCompleteText: string;
     uploadingText: string;
     errorInPackage: boolean;
@@ -20,61 +20,18 @@ interface UploadBarProps {
 const UploadBar: React.FC<UploadBarProps> = ({
     errorText,
     fileName,
-    uploadComplete,
+    percent,
     uploadCompleteText,
     uploadingText,
     errorInPackage = false,
     onTryAgain,
     tryAgainText
 }) => {
-    const [percent, setPercent] = useState(0);
-    const timeoutRef = useRef(20);
-    const deltaRef = useRef(1.00);
-    const setTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-    const isMountedRef = useRef(true);
-
-    const increase = () => {
-        setPercent((prevPercent) => {
-            let newPercent = prevPercent + 1;
-            timeoutRef.current *= deltaRef.current;
-            deltaRef.current *= 1.00;
-
-            if (newPercent < 95) {
-                setTimeoutRef.current = setTimeout(increase, timeoutRef.current);
-            }
-
-            return newPercent <= 100 ? newPercent : prevPercent;
-        });
-    };
-
-    useEffect(() => {
-        setTimeout(increase, 100);
-        isMountedRef.current = true;
-
-        return () => {
-            isMountedRef.current = false;
-            if (setTimeoutRef.current) {
-                clearTimeout(setTimeoutRef.current);
-            }
-        };
-    }, []);
-
-    useEffect(() => {
-        if (uploadComplete) {
-            if (setTimeoutRef.current) {
-                clearTimeout(setTimeoutRef.current);
-            }
-            if (isMountedRef.current) {
-                setPercent(100);
-            }
-        }
-    }, [uploadComplete]);
-
     const displayPercent = errorText ? 0 : percent;
-    const text = errorText ? errorText : (uploadComplete ? uploadCompleteText : uploadingText);
-    const svg = errorText ? errorIcon : (uploadComplete ? checkmark : upload);
+    const text = errorText ? errorText : (percent === 100 ? uploadCompleteText : uploadingText);
+    const svg = errorText ? errorIcon : (percent === 100 ? checkmark : upload);
     const className = "file-upload-container dnn-upload-bar" +
-        (uploadComplete ? " complete" : "") +
+        (percent === 100 ? " complete" : "") +
         (errorText ? " upload-error" : "");
 
     return (

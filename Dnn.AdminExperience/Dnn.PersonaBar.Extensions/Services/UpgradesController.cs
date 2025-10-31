@@ -17,7 +17,6 @@ namespace Dnn.PersonaBar.Extensions.Services
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Localization;
@@ -173,6 +172,47 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        /// <summary>
+        /// Completes the uploads of a DNN package for local upgrade.
+        /// </summary>
+        /// <param name="data">The upload complete data.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>Either a package info or an error message.</returns>
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        public async Task<HttpResponseMessage> UploadComplete(UpgradeUploadCompleteDto data, CancellationToken cancellationToken)
+        {
+            var fileName = Path.GetFileName(data.FileName);
+            var fileId = Path.GetFileName(data.FileId);
+
+            if (!string.IsNullOrEmpty(fileName) && !string.IsNullOrEmpty(fileId))
+            {
+                var writtenFile = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", fileId + ".resources");
+                if (!File.Exists(writtenFile))
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_InvalidPackage", fileName), });
+                }
+
+                var info = await this.localUpgradeService.GetLocalUpgradeInfo(writtenFile, cancellationToken);
+                if (!info.IsValid)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_InvalidPackage", fileName), });
+                }
+                else if (info.IsOutdated)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_OutdatedPackage", fileName), });
+                }
+                else
+                {
+                    var upgradePath = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", Path.GetFileNameWithoutExtension(fileName) + ".zip");
+                    File.Move(writtenFile, upgradePath);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, fileName);
+                }
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_InvalidPackage", fileName), });
+        }
+
         private async Task<HttpResponseMessage> UploadFileAction(CancellationToken cancellationToken)
         {
             var request = this.Request;
@@ -191,8 +231,9 @@ namespace Dnn.PersonaBar.Extensions.Services
             // read multipart parts
             await request.Content.ReadAsMultipartAsync(provider, cancellationToken).ConfigureAwait(false);
 
-            object result = null;
-            var fileName = string.Empty;
+            long startPosition = 0;
+            long totalSize = 0;
+            string fileId = string.Empty;
             Stream stream = null;
 
             foreach (var item in provider.Contents)
@@ -201,47 +242,34 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var name = item.Headers.ContentDisposition.Name;
                 switch (name.ToUpperInvariant())
                 {
-                    case "\"POSTFILE\"":
-                        fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                        if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
-                        {
-                            fileName = Path.GetFileName(fileName);
-                        }
-
-                        if (Globals.FileEscapingRegex.Match(fileName).Success == false && Path.GetExtension(fileName).ToLowerInvariant() == ".zip")
-                        {
-                            stream = item.ReadAsStreamAsync().Result;
-                        }
-
+                    case "\"CHUNK\"":
+                        stream = item.ReadAsStreamAsync().Result;
+                        break;
+                    case "\"START\"":
+                        long.TryParse(item.ReadAsStringAsync().Result, out startPosition);
+                        break;
+                    case "\"TOTALSIZE\"":
+                        long.TryParse(item.ReadAsStringAsync().Result, out totalSize);
+                        break;
+                    case "\"FILEID\"":
+                        fileId = item.ReadAsStringAsync().Result;
                         break;
                 }
             }
 
-            if (!string.IsNullOrEmpty(fileName) && stream != null)
+            if (stream != null && totalSize != 0 && !string.IsNullOrEmpty(fileId))
             {
-                var info = await this.localUpgradeService.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(fileName), stream, cancellationToken);
-                if (!info.IsValid)
-                {
-                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_InvalidPackage", fileName), });
-                }
-                else if (info.IsOutdated)
-                {
-                    return request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_OutdatedPackage", fileName), });
-                }
-                else
-                {
-                    var upgradePath = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", info.PackageName + ".zip");
-                    using (var fileStream = File.Create(upgradePath))
-                    {
-                        stream.Seek(0, SeekOrigin.Begin);
-                        stream.CopyTo(fileStream);
-                    }
+                var fileToWriteTo = Path.Combine(this.applicationStatusInfo.ApplicationMapPath, "App_Data", "Upgrade", fileId + ".resources");
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, result);
+                // use the file stream and start position to write the chunk to the file
+                using (var fileStream = new FileStream(fileToWriteTo, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    fileStream.Position = startPosition;
+                    await stream.CopyToAsync(fileStream).ConfigureAwait(false);
                 }
             }
 
-            return request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_InvalidPackage", fileName), });
+            return request.CreateResponse(HttpStatusCode.OK);
         }
 
         private string LocalizeString(string key, params object[] args)

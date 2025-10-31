@@ -59,6 +59,20 @@ public class LocalUpgradeService : ILocalUpgradeService
         IReadOnlyList<LocalUpgradeInfo> localUpgrades;
         if (this.directory.Exists(this.UpgradeDirectoryPath))
         {
+            // clean up any old temp files
+            var tempFiles = this.directory.GetFiles(this.UpgradeDirectoryPath, "*.resources", SearchOption.TopDirectoryOnly);
+            foreach (var tempFile in tempFiles)
+            {
+                try
+                {
+                    File.Delete(tempFile);
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.LogException(ex);
+                }
+            }
+
             var upgradeFiles = this.directory.GetFiles(this.UpgradeDirectoryPath, "*.zip", SearchOption.TopDirectoryOnly);
             localUpgrades = await Task.WhenAll(upgradeFiles.Select(file => this.GetLocalUpgradeInfo(file, cancellationToken)));
         }

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import UploadBar from "./UploadBar";
 import Localization from "localization";
-import { LocalUpgradeInfo } from "../../../../models/LocalUpgradeInfo";
 import "./style.less";
+import { ChunkToUpload } from "models/ChunkToUpload";
+import upgradeService from "services/upgradeService";
 
 interface ErrorData {
   responseJSON: {
@@ -13,11 +14,6 @@ interface ErrorData {
 interface FileUploadProps {
   cancelInstall: () => void;
   clearUploadedPackage: () => void;
-  uploadPackage: (
-    file: File,
-    onSuccess: (data: any) => void,
-    onError: (error: ErrorData) => void
-  ) => void;
   uploadComplete: () => void;
 }
 
@@ -31,6 +27,7 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [errorInPackage, setErrorInPackage] = useState(false);
+  const [percent, setPercent] = useState(0);
 
   const prevent = useCallback((e: Event) => {
     e.preventDefault();
@@ -69,32 +66,74 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
     }
   }, []);
 
-  const uploadCompleteCallback = useCallback((data: LocalUpgradeInfo) => {
+  const uploadCompleteCallback = useCallback(() => {
     setUploading(false);
     setUploadComplete(true);
-    setTimeout(() => {
-      props.uploadComplete();
-    }, 1000);
+    setPercent(100);
+    props.uploadComplete();
   }, []);
 
-  const postFile = useCallback(
-    (file: File) => {
-      if (props.uploadPackage) {
-        props.uploadPackage(file, uploadCompleteCallback, handleError);
-      }
-      setUploading(true);
-      setUploadComplete(false);
-    },
-    [props.uploadPackage, uploadCompleteCallback, handleError]
-  );
-
   const uploadFile = useCallback(
-    (file: File) => {
+    async (file: File) => {
       setFileName(file.name);
       setErrorInPackage(false);
-      postFile(file);
+      setUploading(true);
+      setUploadComplete(false);
+      setPercent(0);
+
+      const newFileId = Math.random().toString(36).substring(2, 15);
+      const chunkSize = 1024 * 1024; // size of each chunk (1MB)
+      let start = 0;
+
+      // Upload chunks sequentially
+      while (start < file.size) {
+        const chunk: ChunkToUpload = {
+          chunk: file.slice(start, start + chunkSize),
+          start: start,
+          totalSize: file.size,
+          fileId: newFileId,
+        };
+
+        // Wait for this chunk to complete before uploading the next one
+        try {
+          await new Promise<void>((resolve, reject) => {
+            upgradeService.uploadPackage(
+              chunk,
+              () => {
+                // Only call the complete callback on the last chunk
+                setPercent(
+                  Math.min(
+                    100,
+                    Math.floor(((start + chunkSize) / file.size) * 100)
+                  )
+                );
+                if (start + chunkSize >= file.size) {
+                  upgradeService
+                    .completeUpload(newFileId, file.name)
+                    .then(() => {
+                      uploadCompleteCallback();
+                    })
+                    .catch((error) => {
+                      handleError(error);
+                      reject(error);
+                    });
+                }
+                resolve();
+              },
+              (error) => {
+                handleError(error);
+                reject(error);
+              }
+            );
+          });
+        } catch (error) {
+          break;
+        }
+
+        start += chunkSize;
+      }
     },
-    [postFile]
+    [uploadCompleteCallback, handleError]
   );
 
   const onFileUpload = useCallback(
@@ -161,11 +200,18 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
       )}
       {uploading && (
         <UploadBar
-          uploadComplete={uploadComplete}
+          percent={percent}
           errorText={errorText}
           errorInPackage={errorInPackage}
           fileName={fileName}
-          onTryAgain={() => setUploading(false)}
+          onTryAgain={() => {
+            setFileName("");
+            setErrorText("");
+            setErrorInPackage(true);
+            setUploading(false);
+            setUploadComplete(false);
+            setPercent(0);
+          }}
           tryAgainText={Localization.get("TryAgain")}
           uploadCompleteText={Localization.get("UploadPackage_UploadComplete")}
           uploadingText={Localization.get("UploadPackage_Uploading")}

@@ -30,6 +30,7 @@ const UpgradesTab: React.FC<IProps> = (props) => {
   const [panelToShow, setPanelToShow] = useState<
     "done" | "upload" | "upgrading" | "list"
   >("list");
+  const [showUploadCancelButton, setShowUploadCancelButton] = useState(true);
 
   const getUpgrades = () => {
     upgradeService.listUpgrades().then((upgrades) => {
@@ -100,24 +101,25 @@ const UpgradesTab: React.FC<IProps> = (props) => {
               cancelInstall={() => setPanelToShow("list")}
               clearUploadedPackage={() => {}}
               uploadComplete={() => {
-                setPanelToShow("list");
+                setShowUploadCancelButton(false);
+                setTimeout(() => {
+                  setPanelToShow("list");
+                  setShowUploadCancelButton(true);
+                }, 500);
               }}
-              uploadPackage={(
-                file: File,
-                onSuccess: (data: any) => void,
-                onError: (error: any) => void
-              ) => upgradeService.uploadPackage(file, onSuccess, onError)}
             />
           </div>
-          <Button
-            type="secondary"
-            size="large"
-            onClick={() => {
-              setPanelToShow("list");
-            }}
-          >
-            {Localization.get("Cancel")}
-          </Button>
+          {showUploadCancelButton && (
+            <Button
+              type="secondary"
+              size="large"
+              onClick={() => {
+                setPanelToShow("list");
+              }}
+            >
+              {Localization.get("Cancel")}
+            </Button>
+          )}
         </div>
       );
       break;

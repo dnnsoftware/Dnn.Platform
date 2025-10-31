@@ -453,6 +453,7 @@
     <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
     <Compile Include="Services\Dto\UpdateSslSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpgradePackageRequestDto.cs" />
+    <Compile Include="Services\Dto\UpgradeUploadCompleteDto.cs" />
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\Dto\VocabularyDto.cs" />
