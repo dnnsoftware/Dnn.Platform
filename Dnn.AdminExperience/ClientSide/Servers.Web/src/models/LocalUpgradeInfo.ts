@@ -5,4 +5,6 @@ export interface LocalUpgradeInfo {
   IsOutdated: boolean;
   PackageName: string;
   Version: Version;
+  MinDnnVersion: Version;
+  CanInstall: Version;
 }

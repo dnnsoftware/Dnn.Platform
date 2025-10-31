@@ -588,7 +588,6 @@
     </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
-    <Content Include="App_Data\Upgrade\PlaceHolder.txt" />
     <Content Include="Install\InstallWizard.aspx" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
@@ -606,6 +605,7 @@
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
+    <Content Include="App_Data\Upgrade\upgrade.json" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>

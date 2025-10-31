@@ -26,7 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>The default <see cref="ILocalUpgradeService"/> implementation.</summary>
 public class LocalUpgradeService : ILocalUpgradeService
 {
-    private static readonly List<string> InstallFilter = new List<string>
+    private static readonly string[] DefaultUpgradeExclude = new[]
     {
         "App_Data/Database.mdf",
         "Config/DotNetNuke.config",
@@ -122,13 +122,32 @@ public class LocalUpgradeService : ILocalUpgradeService
                 mainAssemblyVersion = await ReadZippedAssemblyVersion(mainAssemblyEntry, cancellationToken);
             }
 
-            return new LocalUpgradeInfo
+            var upgradeInfo = archive.FileEntries()
+                .Where(entry => string.Equals("App_Data/Upgrade/upgrade.json", entry.FullName, StringComparison.OrdinalIgnoreCase))
+                .SingleOrDefault();
+            var upgradeSettings = new LocalUpgradeSettings
+            {
+                MinimumDnnVersion = "0.0.0",
+            };
+            if (upgradeInfo is not null)
+            {
+                var upgradeInfoFile = upgradeInfo.ReadTextFile();
+                upgradeSettings = Json.Deserialize<LocalUpgradeSettings>(upgradeInfoFile);
+            }
+
+            var res = new LocalUpgradeInfo
             {
                 PackageName = packageName,
                 Version = mainAssemblyVersion,
                 IsValid = mainAssemblyVersion is not null,
                 IsOutdated = mainAssemblyVersion is not null && mainAssemblyVersion <= this.application.Version,
+                MinDnnVersion = Version.Parse(upgradeSettings.MinimumDnnVersion),
             };
+            res.CanInstall = res.IsValid
+                && !res.IsOutdated
+                && (res.MinDnnVersion is null || res.MinDnnVersion <= this.application.Version);
+
+            return res;
         }
         catch (Exception exception)
         {
@@ -139,6 +158,8 @@ public class LocalUpgradeService : ILocalUpgradeService
                 Version = null,
                 IsValid = false,
                 IsOutdated = false,
+                MinDnnVersion = null,
+                CanInstall = false,
             };
         }
     }
@@ -169,6 +190,19 @@ public class LocalUpgradeService : ILocalUpgradeService
         var upgradeZipPath = Path.Combine(this.UpgradeDirectoryPath, upgrade.PackageName + ".zip");
         using var fileStream = File.OpenRead(upgradeZipPath);
         using var archive = new ZipArchive(fileStream, ZipArchiveMode.Read);
+        var upgradeInfo = archive.FileEntries()
+            .Where(entry => string.Equals("App_Data/Upgrade/upgrade.json", entry.FullName, StringComparison.OrdinalIgnoreCase))
+            .SingleOrDefault();
+        var upgradeSettings = new LocalUpgradeSettings
+        {
+            UpgradeExclude = DefaultUpgradeExclude,
+        };
+        if (upgradeInfo is not null)
+        {
+            var upgradeInfoFile = upgradeInfo.ReadTextFile();
+            upgradeSettings = Json.Deserialize<LocalUpgradeSettings>(upgradeInfoFile);
+        }
+
         var assemblyEntries = archive.FileEntries()
             .Where(entry => string.Equals(".dll", Path.GetExtension(entry.Name), StringComparison.OrdinalIgnoreCase))
             .Where(entry => string.Equals("bin", Path.GetDirectoryName(entry.FullName), StringComparison.OrdinalIgnoreCase))
@@ -181,7 +215,7 @@ public class LocalUpgradeService : ILocalUpgradeService
         await FileSystemUtils.UnzipResourcesAsync(
             archive.FileEntries()
                 .Where(entry => !assemblyEntries.Contains(entry))
-                .Where(entry => !InstallFilter.Any(filter => entry.FullName.StartsWith(filter, StringComparison.OrdinalIgnoreCase))),
+                .Where(entry => !upgradeSettings.UpgradeExclude.Any(filter => entry.FullName.StartsWith(filter, StringComparison.OrdinalIgnoreCase))),
             this.appStatus.ApplicationMapPath,
             cancellationToken);
     }

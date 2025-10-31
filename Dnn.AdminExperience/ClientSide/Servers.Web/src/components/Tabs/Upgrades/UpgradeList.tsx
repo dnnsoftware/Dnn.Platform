@@ -22,10 +22,12 @@ const UpgradeList: React.FC<IUpgradeListProps> = (props) => {
   return (
     <div className="grid">
       <div className="row header">
-        <GridCell columnSize={40}>{Localization.get("FileName")}</GridCell>
-        <GridCell columnSize={20}>{Localization.get("Version")}</GridCell>
+        <GridCell columnSize={30}>{Localization.get("FileName")}</GridCell>
+        <GridCell columnSize={15}>{Localization.get("Version")}</GridCell>
+        <GridCell columnSize={15}>{Localization.get("MinDnnVersion")}</GridCell>
         <GridCell columnSize={10}>{Localization.get("IsValid")}</GridCell>
-        <GridCell columnSize={20}>{Localization.get("IsOutdated")}</GridCell>
+        <GridCell columnSize={10}>{Localization.get("IsOutdated")}</GridCell>
+        <GridCell columnSize={10}>{Localization.get("CanInstall")}</GridCell>
         <GridCell columnSize={10} className="right">
           {Localization.get("Actions")}
         </GridCell>

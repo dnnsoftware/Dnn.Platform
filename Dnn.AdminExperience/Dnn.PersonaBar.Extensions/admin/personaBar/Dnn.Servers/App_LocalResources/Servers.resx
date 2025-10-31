@@ -760,10 +760,10 @@ Are you sure you want to increment the version number for your site?</value>
     <value>Please confirm you have made a backup of this installation before upgrading.</value>
   </data>
   <data name="IsOutdated.Text" xml:space="preserve">
-    <value>Is Outdated</value>
+    <value>Outdated</value>
   </data>
   <data name="IsValid.Text" xml:space="preserve">
-    <value>Is Valid</value>
+    <value>Valid</value>
   </data>
   <data name="Version.Text" xml:space="preserve">
     <value>Version</value>
@@ -836,5 +836,11 @@ Are you sure you want to increment the version number for your site?</value>
   </data>
   <data name="Upgrade_NoUpgradesAvailable.Text" xml:space="preserve">
     <value>There are no upgrades available.</value>
+  </data>
+  <data name="CanInstall.Text" xml:space="preserve">
+    <value>Can Install</value>
+  </data>
+  <data name="MinDnnVersion.Text" xml:space="preserve">
+    <value>Req DNN Version</value>
   </data>
 </root>

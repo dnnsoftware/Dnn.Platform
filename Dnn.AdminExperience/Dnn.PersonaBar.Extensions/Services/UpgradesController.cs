@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
 
             var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(data.PackageName, StringComparison.InvariantCultureIgnoreCase));
-            if (upgrade == null || !upgrade.IsValid || upgrade.IsOutdated)
+            if (upgrade == null || !upgrade.CanInstall)
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = this.LocalizeString($"Upgrade_NoValidUpgrade", data.PackageName), });
             }

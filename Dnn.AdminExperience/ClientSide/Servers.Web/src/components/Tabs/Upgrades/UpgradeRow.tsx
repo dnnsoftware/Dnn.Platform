@@ -17,22 +17,31 @@ interface IUpgradeRowProps {
 
 const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
   const version = `${props.upgrade.Version._Major}.${props.upgrade.Version._Minor}.${props.upgrade.Version._Build}`;
+  const minDnnVersion = `${props.upgrade.MinDnnVersion._Major}.${props.upgrade.MinDnnVersion._Minor}.${props.upgrade.MinDnnVersion._Build}`;
 
   return (
     <div className="dnn-upgrades-grid-row">
-      <GridCell columnSize={40}>
+      <GridCell columnSize={30}>
         <TextOverflowWrapper text={props.upgrade.PackageName} />
       </GridCell>
-      <GridCell columnSize={20}>
+      <GridCell columnSize={15}>
         <TextOverflowWrapper text={version} />
+      </GridCell>
+      <GridCell columnSize={15}>
+        <TextOverflowWrapper text={minDnnVersion} />
       </GridCell>
       <GridCell columnSize={10}>
         {props.upgrade.IsValid
           ? Localization.get("Yes")
           : Localization.get("No")}
       </GridCell>
-      <GridCell columnSize={20}>
+      <GridCell columnSize={10}>
         {props.upgrade.IsOutdated
+          ? Localization.get("Yes")
+          : Localization.get("No")}
+      </GridCell>
+      <GridCell columnSize={10}>
+        {props.upgrade.CanInstall
           ? Localization.get("Yes")
           : Localization.get("No")}
       </GridCell>
@@ -50,7 +59,7 @@ const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
           }}
           title={Localization.get("Delete")}
         />
-        {props.upgrade.IsValid && !props.upgrade.IsOutdated && (
+        {props.upgrade.CanInstall && (
           <IconButton
             type="traffic"
             className={"edit-icon"}
