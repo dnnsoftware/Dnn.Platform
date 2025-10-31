@@ -243,16 +243,16 @@ namespace Dnn.PersonaBar.Extensions.Services
                 switch (name.ToUpperInvariant())
                 {
                     case "\"CHUNK\"":
-                        stream = item.ReadAsStreamAsync().Result;
+                        stream = await item.ReadAsStreamAsync();
                         break;
                     case "\"START\"":
-                        long.TryParse(item.ReadAsStringAsync().Result, out startPosition);
+                        long.TryParse(await item.ReadAsStringAsync(), out startPosition);
                         break;
                     case "\"TOTALSIZE\"":
-                        long.TryParse(item.ReadAsStringAsync().Result, out totalSize);
+                        long.TryParse(await item.ReadAsStringAsync(), out totalSize);
                         break;
                     case "\"FILEID\"":
-                        fileId = item.ReadAsStringAsync().Result;
+                        fileId = await item.ReadAsStringAsync();
                         break;
                 }
             }
