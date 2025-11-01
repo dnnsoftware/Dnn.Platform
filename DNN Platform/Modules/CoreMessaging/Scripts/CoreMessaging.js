@@ -728,7 +728,9 @@
                     resizable: false,
                     modal: true,
                     title: settings.notificationConfirmTitleText,
-                    dialogClass: 'dnnFormPopup dnnClear',
+                    classes: {
+                        'ui-dialog': 'dnnFormPopup dnnClear'
+                    },
                     open: function () {
                         $('.ui-dialog-buttonpane').find('button:contains("' + settings.notificationConfirmNoText + '")').addClass('dnnConfirmCancel');
                     },
