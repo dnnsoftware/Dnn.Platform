@@ -7,6 +7,7 @@ namespace DotNetNuke.Abstractions.Application;
 using System;
 
 using DotNetNuke.Abstractions.Security;
+using DotNetNuke.Internal.SourceGenerators;
 
 /// <summary>Provides access to well-known host settings.</summary>
 public interface IHostSettings
@@ -40,12 +41,15 @@ public interface IHostSettings
     public bool AllowControlPanelToDetermineVisibility { get; }
 
     /// <summary>Gets a value indicating whether Composite Files are enabled at the host level.</summary>
+    [DnnDeprecated(10, 2, 0, "Bundling and minification have been deprecated in DNN 10.2. These references will be removed in DNN 12.")]
     public bool CrmEnableCompositeFiles { get; }
 
     /// <summary>Gets a value indicating whether CSS Minification is enabled at the host level.</summary>
+    [DnnDeprecated(10, 2, 0, "Bundling and minification have been deprecated in DNN 10.2. These references will be removed in DNN 12.")]
     public bool CrmMinifyCss { get; }
 
     /// <summary>Gets a value indicating whether JS Minification is enabled at the host level.</summary>
+    [DnnDeprecated(10, 2, 0, "Bundling and minification have been deprecated in DNN 10.2. These references will be removed in DNN 12.")]
     public bool CrmMinifyJs { get; }
 
     /// <summary>Gets the Client Resource Management version number.</summary>

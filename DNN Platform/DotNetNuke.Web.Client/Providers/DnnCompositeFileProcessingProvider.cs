@@ -10,8 +10,10 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core;
     using ClientDependency.Core.CompositeFiles;
     using ClientDependency.Core.CompositeFiles.Providers;
+    using DotNetNuke.Internal.SourceGenerators;
 
     /// <summary>A provider for combining, minifying, compressing and saving composite scripts/css files.</summary>
+    [DnnDeprecated(10, 2, 0, "Bundling and minification have been deprecated in DNN 10.2. These references will be removed in DNN 12.")]
     public class DnnCompositeFileProcessingProvider : CompositeFileProcessingProvider
     {
         private readonly ClientResourceSettings clientResourceSettings = new ClientResourceSettings();
