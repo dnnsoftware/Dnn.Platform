@@ -1696,7 +1696,7 @@ __metadata:
     react-motion: "npm:^0.5.2"
     react-scrollbar: "npm:^0.5.6"
     react-slider: "npm:2.0.6"
-    react-tabs: "npm:3.2.3"
+    react-tabs: "npm:6.1.0"
     react-test-renderer: "npm:^17.0.2"
     react-tooltip: "npm:^4.5.1"
     react-widgets: "npm:^5.8.4"
@@ -7523,10 +7523,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^1.1.0":
-  version: 1.2.1
-  resolution: "clsx@npm:1.2.1"
-  checksum: 10/5ded6f61f15f1fa0350e691ccec43a28b12fb8e64c8e94715f2a937bc3722d4c3ed41d6e945c971fc4dcc2a7213a43323beaf2e1c28654af63ba70c9968a8643
+"clsx@npm:^2.0.0":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: 10/cdfb57fa6c7649bbff98d9028c2f0de2f91c86f551179541cf784b1cfdc1562dcb951955f46d54d930a3879931a980e32a46b598acaea274728dbe068deca919
   languageName: node
   linkType: hard
 
@@ -10422,7 +10422,7 @@ __metadata:
     react-modal: "npm:3.16.1"
     react-motion: "npm:0.5.2"
     react-redux: "npm:8.1.1"
-    react-tabs: "npm:3.2.3"
+    react-tabs: "npm:6.1.0"
     react-tooltip: "npm:4.5.1"
     react-widgets: "npm:^5.8.4"
     redux: "npm:4.2.1"
@@ -18043,15 +18043,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tabs@npm:3.2.3":
-  version: 3.2.3
-  resolution: "react-tabs@npm:3.2.3"
+"react-tabs@npm:6.1.0":
+  version: 6.1.0
+  resolution: "react-tabs@npm:6.1.0"
   dependencies:
-    clsx: "npm:^1.1.0"
+    clsx: "npm:^2.0.0"
     prop-types: "npm:^15.5.0"
   peerDependencies:
-    react: ^16.3.0 || ^17.0.0-0
-  checksum: 10/3821db45237ad8ecab51678ea184357109177f7cc81a397f388baf678b3584714b8d63e41f044691dbd0936e9e8a773bd5f26fad1ffe7c6d142839e5f0e32ccb
+    react: ^18.0.0 || ^19.0.0
+  checksum: 10/b990df9b03029c01d4e5fd131655b4bcf3847a33b976c405da312d15d381630753c2fbc9e7bbc86215b935956bccdb6d72ac918c3224dbafc70e7fdeee40f7c9
   languageName: node
   linkType: hard
 
