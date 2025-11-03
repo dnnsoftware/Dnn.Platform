@@ -14,7 +14,7 @@
     "@babel/plugin-proposal-object-rest-spread": "7.20.7",
     "@babel/plugin-transform-object-assign": "7.27.1",
     "@babel/preset-env": "7.28.3",
-    "@babel/preset-react": "7.27.1",
+    "@babel/preset-react": "7.28.5",
     "@dnnsoftware/dnn-react-common": "10.1.0",
     "babel-loader": "10.0.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
