@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 return this.CdnUrl;
             }
-            else if (path.ToLowerInvariant().StartsWith("http"))
+            else if (path.StartsWith("http", StringComparison.OrdinalIgnoreCase))
             {
                 return path;
             }
