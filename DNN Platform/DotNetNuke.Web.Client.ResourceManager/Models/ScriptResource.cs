@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public override string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             var htmlString = new StringBuilder("<script");
-            htmlString.Append($" src=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
+            htmlString.Append($" src=\"{WebUtility.HtmlEncode(this.GetVersionedPath(crmVersion, useCdn, applicationPath))}\"");
             if (this.Async)
             {
                 htmlString.Append(" async");
