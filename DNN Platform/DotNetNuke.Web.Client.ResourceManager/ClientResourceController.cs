@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             if (!string.IsNullOrEmpty(resource.Name))
             {
                 // if a resource with the same name and force version is already present we ignore this one
-                if (resources.Exists(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && l.ForceVersion))
+                if (resources.Exists(r => string.Equals(r.Name., resource.Name, StringComparison.OrdinalIgnoreCase) && r.ForceVersion))
                 {
                     return resources;
                 }
