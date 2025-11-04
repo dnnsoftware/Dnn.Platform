@@ -179,9 +179,7 @@ async function buildAll(firstRun = true): Promise<void> {
 /** Watch for changes (optional) */
 function watchFiles(): void {
   const watcher = chokidar.watch([
-    "*.ascx",
-    "*.txt",
-    "*.png",
+    ...globSync(['*.ascx', '*.txt', '*.png']),
     "./src",
     "./containers",
     "./menus",
