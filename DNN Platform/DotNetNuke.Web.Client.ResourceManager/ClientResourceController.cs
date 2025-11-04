@@ -168,16 +168,16 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 // If we are forcing the version, we need to remove any existing link with the same name
                 if (resource.ForceVersion)
                 {
-                    resources.RemoveAll(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant());
+                    resources.RemoveAll(r => string.Equals(r.Name, resource.Name, StringComparison.OrdinalIgnoreCase));
                 }
 
                 // If we have a version, we need to remove any existing link with the same name and a lower version
                 if (!string.IsNullOrEmpty(resource.Version))
                 {
-                    resources.RemoveAll(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && string.Compare(l.Version, resource.Version, System.StringComparison.InvariantCultureIgnoreCase) < 0);
+                    resources.RemoveAll(r => string.Equals(r.Name, resource.Name, StringComparison.OrdinalIgnoreCase) && string.Compare(r.Version, resource.Version, StringComparison.InvariantCultureIgnoreCase) < 0);
 
                     // If we have an existing link with the same name and a higher version, we do not add this link
-                    if (resources.Exists(l => l.Name.ToLowerInvariant() == resource.Name.ToLowerInvariant() && string.Compare(l.Version, resource.Version, System.StringComparison.InvariantCultureIgnoreCase) >= 0))
+                    if (resources.Exists(r => string.Equals(r.Name, resource.Name, StringComparison.OrdinalIgnoreCase) && string.Compare(r.Version, resource.Version, StringComparison.InvariantCultureIgnoreCase) >= 0))
                     {
                         return resources;
                     }
