@@ -10,6 +10,11 @@ namespace DotNetNuke.Web.Client.Cdf
     public enum CssMediaType
     {
         /// <summary>
+        /// Do not specify a media type.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// Applies to all media types.
         /// </summary>
         All,

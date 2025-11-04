@@ -4,7 +4,7 @@
 
 namespace DotNetNuke.Services.ClientDependency
 {
-    using System.Web;
+    using System.Web.Hosting;
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Web.Client.ResourceManager;
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.ClientDependency
 
             if (checkIfExists)
             {
-                var physicalPath = HttpContext.Current.Server.MapPath(fontPath);
+                var physicalPath = HostingEnvironment.MapPath(fontPath);
                 if (!System.IO.File.Exists(physicalPath))
                 {
                     return;
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.ClientDependency
 
             if (checkIfExists)
             {
-                var physicalPath = HttpContext.Current.Server.MapPath(scriptPath);
+                var physicalPath = HostingEnvironment.MapPath(scriptPath);
                 if (!System.IO.File.Exists(physicalPath))
                 {
                     return;
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.ClientDependency
 
             if (checkIfExists)
             {
-                var physicalPath = HttpContext.Current.Server.MapPath(scriptPath);
+                var physicalPath = HostingEnvironment.MapPath(scriptPath);
                 if (!System.IO.File.Exists(physicalPath))
                 {
                     return;
@@ -125,7 +125,7 @@ namespace DotNetNuke.Services.ClientDependency
 
             if (checkIfExists)
             {
-                var physicalPath = HttpContext.Current.Server.MapPath(stylesheetPath);
+                var physicalPath = HostingEnvironment.MapPath(stylesheetPath);
                 if (!System.IO.File.Exists(physicalPath))
                 {
                     return;
@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.ClientDependency
 
             if (checkIfExists)
             {
-                var physicalPath = HttpContext.Current.Server.MapPath(stylesheetPath);
+                var physicalPath = HostingEnvironment.MapPath(stylesheetPath);
                 if (!System.IO.File.Exists(physicalPath))
                 {
                     return;

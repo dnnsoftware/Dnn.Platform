@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using System.Net;
     using System.Text;
 
     using DotNetNuke.Abstractions.ClientResources;
@@ -54,6 +55,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                 htmlString.Append(" disabled");
             }
 
+            this.RenderMedia(htmlString);
             this.RenderType(htmlString);
             this.RenderBlocking(htmlString);
             this.RenderCrossOriginAttribute(htmlString);

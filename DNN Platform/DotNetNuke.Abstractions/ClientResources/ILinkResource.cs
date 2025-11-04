@@ -11,4 +11,12 @@ public interface ILinkResource : IResource
     /// Gets or sets a value indicating whether the client resource should be preloaded.
     /// </summary>
     bool Preload { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating the media that the linked resource applies to.
+    /// Its value must be a media type / media query. This attribute is mainly useful
+    /// when linking to external stylesheets — it allows the user agent to pick the
+    /// best adapted one for the device it runs on.
+    /// </summary>
+    string Media { get; set; }
 }

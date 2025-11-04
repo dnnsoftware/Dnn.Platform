@@ -203,7 +203,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 throw new ArgumentNullException(nameof(input));
             }
 
-            if (!string.IsNullOrEmpty(attributeName) && !string.IsNullOrEmpty(attributeValue))
+            if (!string.IsNullOrEmpty(attributeName))
             {
                 if (input.Attributes.ContainsKey(attributeName))
                 {

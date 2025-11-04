@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Text;

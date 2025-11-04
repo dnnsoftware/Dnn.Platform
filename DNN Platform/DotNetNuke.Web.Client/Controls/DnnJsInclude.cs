@@ -4,24 +4,39 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Web.Client.Cdf;
+    using DotNetNuke.Web.Client.ResourceManager;
 
     /// <summary>Registers a JavaScript resource.</summary>
     public class DnnJsInclude : ClientResourceInclude
     {
+        private readonly IClientResourceController clientResourceController;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
         /// Sets up default settings for the control.
         /// </summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         public DnnJsInclude(IClientResourceController clientResourceController)
-            : base(clientResourceController)
+            : base()
         {
+            this.clientResourceController = clientResourceController;
             this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
             this.DependencyType = ClientDependencyType.Javascript;
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.clientResourceController.CreateScript()
+                        .FromSrc(this.FilePath, this.PathNameAlias)
+                        .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
+                        .SetProvider(this.ForceProvider)
+                        .SetPriority(this.Priority)
+                        .Register();
         }
 
         /// <inheritdoc/>

@@ -4,6 +4,9 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using System.Net;
+    using System.Text;
+
     using DotNetNuke.Abstractions.ClientResources;
 
     /// <summary>
@@ -13,5 +16,20 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     {
         /// <inheritdoc />
         public bool Preload { get; set; } = false;
+
+        /// <inheritdoc />
+        public string Media { get; set; }
+
+        /// <summary>
+        /// Renders the media attribute if set.
+        /// </summary>
+        /// <param name="htmlString">The HTML string builder to append to.</param>
+        protected void RenderMedia(StringBuilder htmlString)
+        {
+            if (!string.IsNullOrEmpty(this.Media))
+            {
+                htmlString.Append($" media=\"{WebUtility.HtmlEncode(this.Media)}\"");
+            }
+        }
     }
 }

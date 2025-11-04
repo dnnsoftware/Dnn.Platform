@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.Client.ResourceManager.Models
 {
+    using System.Net;
     using System.Text;
 
     using DotNetNuke.Abstractions.ClientResources;
@@ -24,6 +25,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             this.clientResourceController = clientResourceController;
             this.Provider = ClientResourceProviders.DefaultJsProvider;
             this.Priority = (int)FileOrder.Js.DefaultPriority;
+            this.Type = "text/javascript";
         }
 
         /// <inheritdoc />
@@ -68,7 +70,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             this.RenderIntegrity(htmlString);
             this.RenderReferrerPolicy(htmlString);
             this.RenderAttributes(htmlString);
-            htmlString.Append(" type=\"text/javascript\"></script>");
+            htmlString.Append("></script>");
             return htmlString.ToString();
         }
     }

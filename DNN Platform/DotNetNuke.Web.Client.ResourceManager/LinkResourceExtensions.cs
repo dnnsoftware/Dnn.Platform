@@ -30,5 +30,24 @@ namespace DotNetNuke.Web.Client.ResourceManager
             input.Preload = true;
             return input;
         }
+
+        /// <summary>
+        /// Sets the media attribute for the link resource.
+        /// </summary>
+        /// <typeparam name="T">The type of resource, which must implement <see cref="IResource"/>.</typeparam>
+        /// <param name="input">The resource to set the media attribute for.</param>
+        /// <param name="media">The value of the media attribute.</param>
+        /// <returns>The resource with media attribute.</returns>
+        public static T SetMedia<T>(this T input, string media)
+            where T : ILinkResource
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            input.Media = media;
+            return input;
+        }
     }
 }

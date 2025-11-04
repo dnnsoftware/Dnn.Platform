@@ -4,25 +4,18 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    using System;
     using System.Web.UI;
 
-    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Web.Client.Cdf;
-    using DotNetNuke.Web.Client.ResourceManager;
 
     /// <summary>Represents an included client resource.</summary>
     public abstract class ClientResourceInclude : Control
     {
-        private readonly IClientResourceController clientResourceController;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientResourceInclude"/> class.
         /// </summary>
-        /// <param name="clientResourceController">The client resources controller.</param>
-        protected ClientResourceInclude(IClientResourceController clientResourceController)
+        protected ClientResourceInclude()
         {
-            this.clientResourceController = clientResourceController;
         }
 
         /// <summary>
@@ -75,28 +68,5 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// Gets or sets a value indicating whether to add the HTML tag for this resource to the page output.
         /// </summary>
         public bool AddTag { get; set; }
-
-        protected override void OnInit(EventArgs e)
-        {
-            switch (this.DependencyType)
-            {
-                case ClientDependencyType.Css:
-                    this.clientResourceController.CreateStylesheet()
-                                .FromSrc(this.FilePath, this.PathNameAlias)
-                                .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
-                                .SetProvider(this.ForceProvider)
-                                .SetPriority(this.Priority)
-                                .Register();
-                    break;
-                case ClientDependencyType.Javascript:
-                    this.clientResourceController.CreateScript()
-                                .FromSrc(this.FilePath, this.PathNameAlias)
-                                .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
-                                .SetProvider(this.ForceProvider)
-                                .SetPriority(this.Priority)
-                                .Register();
-                    break;
-            }
-        }
     }
 }
