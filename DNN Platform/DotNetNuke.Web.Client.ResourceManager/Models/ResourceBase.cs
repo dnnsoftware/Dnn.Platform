@@ -41,10 +41,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public string Name
         {
-            get
-            {
-                return string.IsNullOrEmpty(this.name) ? this.FilePath : this.name;
-            }
+            get => string.IsNullOrEmpty(this.name) ? this.FilePath : this.name;
             set => this.name = value;
         }
 
