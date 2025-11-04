@@ -688,19 +688,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static IClientResourceController GetClientResourcesController(HttpContextBase context)
         {
-            var serviceProvider = GetCurrentServiceProvider(context);
+            var serviceProvider = Globals.GetCurrentServiceProvider();
             return serviceProvider.GetRequiredService<IClientResourceController>();
-        }
-
-        private static IServiceProvider GetCurrentServiceProvider(HttpContextBase context)
-        {
-            return GetScope(context.Items).ServiceProvider;
-
-            // Copy of DotNetNuke.Common.Extensions.HttpContextDependencyInjectionExtensions.GetScope
-            static IServiceScope GetScope(IDictionary httpContextItems)
-            {
-                return httpContextItems[typeof(IServiceScope)] as IServiceScope;
-            }
         }
     }
 }
