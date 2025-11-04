@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public override string Render(int crmVersion, bool useCdn, string applicationPath)
         {
             var htmlString = new StringBuilder("<link");
-            htmlString.Append($" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
+            htmlString.Append($" href=\"{WebUtility.HtmlEncode(this.GetVersionedPath(crmVersion, useCdn, applicationPath))}\"");
             if (this.Preload)
             {
                 htmlString.Append($" rel=\"preload\" as=\"style\"");
