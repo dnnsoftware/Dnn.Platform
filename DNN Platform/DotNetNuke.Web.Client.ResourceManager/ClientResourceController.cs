@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
         private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-        private List<string> FontsToExclude { get; set; } = new List<string>();
+        private HashSet<string> FontsToExclude { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         private List<string> ScriptsToExclude { get; set; } = new List<string>();
 
