@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke
@@ -10,6 +10,7 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Prompt;
@@ -47,6 +48,7 @@ namespace DotNetNuke
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Services.Mobile;
+    using DotNetNuke.Services.Pages;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Internals;
@@ -90,6 +92,7 @@ namespace DotNetNuke
             services.AddScoped<IPortalAliasService, PortalAliasController>();
 
             services.AddScoped<IPermissionDefinitionService, PermissionController>();
+            services.AddScoped<IPageService, PageService>();
 
             services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
             services.AddTransient<ISmtpOAuthController, SmtpOAuthController>();

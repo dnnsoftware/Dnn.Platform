@@ -891,6 +891,8 @@
     <Compile Include="Services\OutputCache\Providers\FileResponseFilter.cs" />
     <Compile Include="Services\OutputCache\Providers\MemoryProvider.cs" />
     <Compile Include="Services\OutputCache\Providers\MemoryResponseFilter.cs" />
+    <Compile Include="Services\Pages\PageExtensions.cs" />
+    <Compile Include="Services\Pages\PageService.cs" />
     <Compile Include="Services\Registration\IRegistrationProfileController.cs" />
     <Compile Include="Services\Registration\RegistrationProfileController.cs" />
     <Compile Include="Services\Search\Controllers\BaseResultController.cs" />
