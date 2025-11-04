@@ -35,9 +35,9 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
         private HashSet<string> FontsToExclude { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        private List<string> ScriptsToExclude { get; set; } = new List<string>();
+        private HashSet<string> ScriptsToExclude { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        private List<string> StylesheetsToExclude { get; set; } = new List<string>();
+        private HashSet<string> StylesheetsToExclude { get; set; } = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         /// <inheritdoc />
         public void AddFont(IFontResource font)
