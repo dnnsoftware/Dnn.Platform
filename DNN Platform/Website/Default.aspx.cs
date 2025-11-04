@@ -17,6 +17,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -29,6 +30,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Pages;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI;
     using DotNetNuke.UI.Internals;
@@ -59,11 +61,12 @@ namespace DotNetNuke.Framework
         private readonly IHostSettingsService hostSettingsService;
         private readonly IEventLogger eventLogger;
         private readonly IPortalSettingsController portalSettingsController;
+        private readonly IPageService pageService;
 
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -77,7 +80,8 @@ namespace DotNetNuke.Framework
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="portalSettingsController">The portal settings controller.</param>
-        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController)
+        /// <param name="pageService">The page service.</param>
+        public DefaultPage(INavigationManager navigationManager, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, IModuleControlPipeline moduleControlPipeline, IHostSettings hostSettings, IHostSettingsService hostSettingsService, IEventLogger eventLogger, IPortalController portalController, IPortalSettingsController portalSettingsController, IPageService pageService)
             : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
@@ -88,6 +92,7 @@ namespace DotNetNuke.Framework
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         public string CurrentSkinPath => ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
@@ -228,11 +233,12 @@ namespace DotNetNuke.Framework
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-                    UI.Skins.Skin.AddPageMessage(
-                        ctlSkin,
+                    this.pageService.AddMessage(new PageMessage(
                         heading,
                         message,
-                        ModuleMessage.ModuleMessageType.YellowWarning);
+                        PageMessageType.Warning,
+                        string.Empty,
+                        PagePriority.Page));
                 }
                 else
                 {
@@ -337,6 +343,13 @@ namespace DotNetNuke.Framework
             this.metaPanel.Visible = !UrlUtils.InPopUp();
             if (!UrlUtils.InPopUp())
             {
+                this.pageService.SetTitle(this.Title, PagePriority.Page);
+                this.Title = this.pageService.GetTitle();
+                this.pageService.SetDescription(this.Description, PagePriority.Page);
+                this.Description = this.pageService.GetDescription();
+                this.pageService.SetKeyWords(this.KeyWords, PagePriority.Page);
+                this.KeyWords = this.pageService.GetKeyWords();
+
                 this.MetaGenerator.Content = this.Generator;
                 this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
@@ -352,6 +365,8 @@ namespace DotNetNuke.Framework
                 this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
             }
 
+            this.pageService.SetCanonicalLinkUrl(this.CanonicalLinkUrl, PagePriority.Page);
+            this.CanonicalLinkUrl = this.pageService.GetCanonicalLinkUrl();
             if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
             {
                 // Add Canonical <link> using the primary alias
@@ -361,6 +376,21 @@ namespace DotNetNuke.Framework
 
                 // Add the HtmlLink to the Head section of the page.
                 this.Page.Header.Controls.Add(canonicalLink);
+            }
+
+            foreach (var item in this.pageService.GetHeadTags())
+            {
+                this.Page.Header.Controls.Add(new LiteralControl(item.Value));
+            }
+
+            foreach (var item in this.pageService.GetMetaTags())
+            {
+                this.Page.Header.Controls.Add(new Meta() { Name = item.Name, Content = item.Content });
+            }
+
+            foreach (var item in this.pageService.GetMessages())
+            {
+                Skin.AddPageMessage(this, item.Heading, item.Message, item.MessageType.ToModuleMessageType(), item.IconSrc);
             }
         }
 

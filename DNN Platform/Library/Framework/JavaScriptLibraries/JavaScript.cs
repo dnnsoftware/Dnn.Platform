@@ -12,6 +12,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -602,9 +603,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogType.SCRIPT_COLLISION);
             var strMessage = Localization.GetString("ScriptCollision", Localization.SharedResourceFile);
-            if (HttpContextSource.Current?.Handler is Page page)
+
+            if (HttpContextSource.Current != null)
             {
-                Skin.AddPageMessage(page, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+                var pageService = Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
+                pageService.AddMessage(new PageMessage(string.Empty, strMessage, PageMessageType.Warning, string.Empty, PagePriority.Default));
             }
         }
 
