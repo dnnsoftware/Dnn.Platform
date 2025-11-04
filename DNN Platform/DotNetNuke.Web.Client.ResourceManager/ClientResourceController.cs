@@ -195,7 +195,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 return filePath;
             }
 
-            if (filePath.ToLowerInvariant().StartsWith("http"))
+            if (filePath.StartsWith("http", StringComparison.OrdinalIgnoreCase))
             {
                 // Path is already fully qualified
                 return filePath;
