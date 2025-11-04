@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
         private List<IStylesheetResource> Stylesheets { get; set; } = new List<IStylesheetResource>();
 
-        private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>();
+        private Dictionary<string, string> PathNameAliases { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         private List<string> FontsToExclude { get; set; } = new List<string>();
 
