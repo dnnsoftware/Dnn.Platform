@@ -90,7 +90,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc />
         public void RemoveFontByPath(string fontPath, string pathNameAlias)
         {
-            var fullPath = this.ResolvePath(fontPath, pathNameAlias).ToLowerInvariant();
+            var fullPath = this.ResolvePath(fontPath, pathNameAlias);
             this.FontsToExclude.Add(fullPath.ToLowerInvariant());
         }
 
