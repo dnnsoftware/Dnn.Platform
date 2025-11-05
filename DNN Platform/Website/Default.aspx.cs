@@ -60,7 +60,6 @@ namespace DotNetNuke.Framework
         private readonly IModuleControlPipeline moduleControlPipeline;
         private readonly IHostSettings hostSettings;
         private readonly IApplicationStatusInfo appStatus;
-        private readonly IHostSettingsService hostSettingsService;
         private readonly IEventLogger eventLogger;
         private readonly IPortalSettingsController portalSettingsController;
         private readonly IClientResourceController clientResourceController;
@@ -79,31 +78,29 @@ namespace DotNetNuke.Framework
         /// <param name="appStatus">The application status.</param>
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="hostSettings">The host settings.</param>
-        /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="portalSettingsController">The portal settings controller.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="pageService">The page service.</param>
         public DefaultPage(
-                INavigationManager navigationManager,
-                IApplicationInfo appInfo,
-                IApplicationStatusInfo appStatus,
-                IModuleControlPipeline moduleControlPipeline,
-                IHostSettings hostSettings,
-                IHostSettingsService hostSettingsService,
-                IEventLogger eventLogger,
-                IPortalController portalController,
-                IPortalSettingsController portalSettingsController,
-                IClientResourceController clientResourceController,
-                IPageService pageService)
+            INavigationManager navigationManager,
+            IApplicationInfo appInfo,
+            IApplicationStatusInfo appStatus,
+            IModuleControlPipeline moduleControlPipeline,
+            IHostSettings hostSettings,
+            IEventLogger eventLogger,
+            IPortalController portalController,
+            IPortalSettingsController portalSettingsController,
+            IClientResourceController clientResourceController,
+            IPageService pageService)
+            : base(portalController, appStatus, hostSettings)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.portalSettingsController = portalSettingsController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
@@ -113,9 +110,7 @@ namespace DotNetNuke.Framework
         public string CurrentSkinPath => ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
 
         /// <summary>Gets or sets property to allow the programmatic assigning of ScrollTop position.</summary>
-        /// <value>
-        /// Property to allow the programmatic assigning of ScrollTop position.
-        /// </value>
+        /// <value>Property to allow the programmatic assigning of ScrollTop position.</value>
         public int PageScrollTop
         {
             get
@@ -139,42 +134,42 @@ namespace DotNetNuke.Framework
         /// <summary>Gets a service that provides navigation features.</summary>
         protected INavigationManager NavigationManager { get; }
 
-        /// <summary>
-        /// Gets a string representation of the list HTML attributes.
-        /// </summary>
+        /// <summary>Gets a string representation of the list HTML attributes.</summary>
         protected string HtmlAttributeList
         {
             get
             {
-                if ((this.HtmlAttributes != null) && (this.HtmlAttributes.Count > 0))
+                if (this.HtmlAttributes is not { Count: > 0 })
                 {
-                    var attr = new StringBuilder();
-                    foreach (string attributeName in this.HtmlAttributes.Keys)
-                    {
-                        if ((!string.IsNullOrEmpty(attributeName)) && (this.HtmlAttributes[attributeName] != null))
-                        {
-                            string attributeValue = this.HtmlAttributes[attributeName];
-                            if (attributeValue.IndexOf(",") > 0)
-                            {
-                                var attributeValues = attributeValue.Split(',');
-                                for (var attributeCounter = 0;
-                                     attributeCounter <= attributeValues.Length - 1;
-                                     attributeCounter++)
-                                {
-                                    attr.Append(string.Concat(" ", attributeName, "=\"", attributeValues[attributeCounter], "\""));
-                                }
-                            }
-                            else
-                            {
-                                attr.Append(string.Concat(" ", attributeName, "=\"", attributeValue, "\""));
-                            }
-                        }
-                    }
-
-                    return attr.ToString();
+                    return string.Empty;
                 }
 
-                return string.Empty;
+                var attr = new StringBuilder();
+                foreach (string attributeName in this.HtmlAttributes.Keys)
+                {
+                    if (string.IsNullOrEmpty(attributeName) || this.HtmlAttributes[attributeName] == null)
+                    {
+                        continue;
+                    }
+
+                    var attributeValue = this.HtmlAttributes[attributeName];
+                    if (attributeValue.IndexOf(',') > 0)
+                    {
+                        var attributeValues = attributeValue.Split(',');
+                        for (var attributeCounter = 0;
+                             attributeCounter <= attributeValues.Length - 1;
+                             attributeCounter++)
+                        {
+                            attr.Append(string.Concat(" ", attributeName, "=\"", attributeValues[attributeCounter], "\""));
+                        }
+                    }
+                    else
+                    {
+                        attr.Append(string.Concat(" ", attributeName, "=\"", attributeValue, "\""));
+                    }
+                }
+
+                return attr.ToString();
             }
         }
 
@@ -186,31 +181,29 @@ namespace DotNetNuke.Framework
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
-            if (dict.ContainsKey("type"))
+            if (!dict.ContainsKey("type"))
             {
-                if (DNNClientAPI.IsPersonalizationKeyRegistered(dict["namingcontainer"] + ClientAPI.CUSTOM_COLUMN_DELIMITER + dict["key"]) == false)
-                {
-                    throw new Exception(string.Format("This personalization key has not been enabled ({0}:{1}).  Make sure you enable it with DNNClientAPI.EnableClientPersonalization", dict["namingcontainer"], dict["key"]));
-                }
-
-                switch ((DNNClientAPI.PageCallBackType)Enum.Parse(typeof(DNNClientAPI.PageCallBackType), dict["type"]))
-                {
-                    case DNNClientAPI.PageCallBackType.GetPersonalization:
-                        return Personalization.GetProfile(dict["namingcontainer"], dict["key"]).ToString();
-                    case DNNClientAPI.PageCallBackType.SetPersonalization:
-                        Personalization.SetProfile(dict["namingcontainer"], dict["key"], dict["value"]);
-                        return dict["value"];
-                    default:
-                        throw new Exception("Unknown Callback Type");
-                }
+                return string.Empty;
             }
 
-            return string.Empty;
+            if (!DNNClientAPI.IsPersonalizationKeyRegistered(dict["namingcontainer"] + ClientAPI.CUSTOM_COLUMN_DELIMITER + dict["key"]))
+            {
+                throw new Exception($"This personalization key has not been enabled ({dict["namingcontainer"]}:{dict["key"]}).  Make sure you enable it with DNNClientAPI.EnableClientPersonalization");
+            }
+
+            switch ((DNNClientAPI.PageCallBackType)Enum.Parse(typeof(DNNClientAPI.PageCallBackType), dict["type"]))
+            {
+                case DNNClientAPI.PageCallBackType.GetPersonalization:
+                    return Personalization.GetProfile(dict["namingcontainer"], dict["key"]).ToString();
+                case DNNClientAPI.PageCallBackType.SetPersonalization:
+                    Personalization.SetProfile(dict["namingcontainer"], dict["key"], dict["value"]);
+                    return dict["value"];
+                default:
+                    throw new Exception("Unknown Callback Type");
+            }
         }
 
-        /// <summary>
-        /// Checks if the current version is not a production version.
-        /// </summary>
+        /// <summary>Checks if the current version is not a production version.</summary>
         /// <returns>A value indicating whether the current version is not a production version.</returns>
         protected bool NonProductionVersion()
         {
