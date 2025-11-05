@@ -1,0 +1,82 @@
+import * as React from "react";
+import { LocalUpgradeInfo } from "../../../models/LocalUpgradeInfo";
+import {
+  GridCell,
+  TextOverflowWrapper,
+  IconButton,
+} from "@dnnsoftware/dnn-react-common";
+import Localization from "../../../localization";
+import "./style.less";
+import util from "../../../utils";
+
+interface IUpgradeRowProps {
+  upgrade: LocalUpgradeInfo;
+  onDelete: (packageName: string) => void;
+  onInstall: (packageName: string) => void;
+}
+
+const UpgradeRow: React.FC<IUpgradeRowProps> = (props) => {
+  const version = `${props.upgrade.Version._Major}.${props.upgrade.Version._Minor}.${props.upgrade.Version._Build}`;
+  const minDnnVersion = `${props.upgrade.MinDnnVersion._Major}.${props.upgrade.MinDnnVersion._Minor}.${props.upgrade.MinDnnVersion._Build}`;
+
+  return (
+    <div className="dnn-upgrades-grid-row">
+      <GridCell columnSize={30}>
+        <TextOverflowWrapper text={props.upgrade.PackageName} />
+      </GridCell>
+      <GridCell columnSize={15}>
+        <TextOverflowWrapper text={version} />
+      </GridCell>
+      <GridCell columnSize={15}>
+        <TextOverflowWrapper text={minDnnVersion} />
+      </GridCell>
+      <GridCell columnSize={10}>
+        {props.upgrade.IsValid
+          ? Localization.get("Yes")
+          : Localization.get("No")}
+      </GridCell>
+      <GridCell columnSize={10}>
+        {props.upgrade.IsOutdated
+          ? Localization.get("Yes")
+          : Localization.get("No")}
+      </GridCell>
+      <GridCell columnSize={10}>
+        {props.upgrade.CanInstall
+          ? Localization.get("Yes")
+          : Localization.get("No")}
+      </GridCell>
+      <GridCell columnSize={10}>
+        <IconButton
+          type="trash"
+          className={"edit-icon"}
+          onClick={() => {
+            util.confirm(
+              Localization.get("DeleteUpgradePackage.Confirm"),
+              Localization.get("Confirm"),
+              Localization.get("Cancel"),
+              () => props.onDelete(props.upgrade.PackageName)
+            );
+          }}
+          title={Localization.get("Delete")}
+        />
+        {props.upgrade.CanInstall && (
+          <IconButton
+            type="traffic"
+            className={"edit-icon"}
+            onClick={() => {
+              util.confirm(
+                Localization.get("Backup.Confirm"),
+                Localization.get("Confirm"),
+                Localization.get("Cancel"),
+                () => props.onInstall(props.upgrade.PackageName)
+              );
+            }}
+            title={Localization.get("Install")}
+          />
+        )}
+      </GridCell>
+    </div>
+  );
+};
+
+export default UpgradeRow;
