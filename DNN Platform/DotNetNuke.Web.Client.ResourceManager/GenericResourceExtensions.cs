@@ -8,14 +8,10 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
     using DotNetNuke.Abstractions.ClientResources;
 
-    /// <summary>
-    /// Provides extension methods for <see cref="IResource"/> to set various resource properties in a fluent manner.
-    /// </summary>
+    /// <summary>Provides extension methods for <see cref="IResource"/> to set various resource properties in a fluent manner.</summary>
     public static class GenericResourceExtensions
     {
-        /// <summary>
-        /// Sets the priority of the resource.
-        /// </summary>
+        /// <summary>Sets the priority of the resource.</summary>
         /// <param name="input">The resource to set the priority for.</param>
         /// <param name="priority">The priority value to set.</param>
         /// <returns>The resource with the priority set.</returns>
@@ -32,9 +28,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Sets the name, version, and force version flag of the resource.
-        /// </summary>
+        /// <summary>Sets the name, version, and force version flag of the resource.</summary>
         /// <param name="input">The resource to set the name and version for.</param>
         /// <param name="name">The name to set.</param>
         /// <param name="version">The version to set.</param>
@@ -55,9 +49,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Sets the CDN URL of the resource.
-        /// </summary>
+        /// <summary>Sets the CDN URL of the resource.</summary>
         /// <param name="input">The resource to set the CDN URL for.</param>
         /// <param name="cdnUrl">The CDN URL to set.</param>
         /// <returns>The resource with the CDN URL set.</returns>
@@ -74,9 +66,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Sets the provider of the resource.
-        /// </summary>
+        /// <summary>Sets the provider of the resource.</summary>
         /// <param name="input">The resource to set the provider for.</param>
         /// <param name="provider">The provider to set.</param>
         /// <returns>The resource with the provider set.</returns>
@@ -93,9 +83,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Marks the resource as blocking.
-        /// </summary>
+        /// <summary>Marks the resource as blocking.</summary>
         /// <param name="input">The resource to mark as blocking.</param>
         /// <returns>The resource marked as blocking.</returns>
         /// <typeparam name="T">The type of resource, which must implement <see cref="IResource"/>.</typeparam>
@@ -111,9 +99,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Sets the integrity hash of the resource.
-        /// </summary>
+        /// <summary>Sets the integrity hash of the resource.</summary>
         /// <param name="input">The resource to set the integrity hash for.</param>
         /// <param name="hash">The integrity hash to set.</param>
         /// <returns>The resource with the integrity hash set.</returns>
@@ -130,9 +116,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Sets the Cross-Origin attribute of the resource.
-        /// </summary>
+        /// <summary>Sets the Cross-Origin attribute of the resource.</summary>
         /// <param name="input">The resource to set the Cross-Origin attribute for.</param>
         /// <param name="crossOrigin">The Cross-Origin value to set.</param>
         /// <returns>The resource with the Cross-Origin attribute set.</returns>
@@ -149,9 +133,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Sets the fetch priority of the resource.
-        /// </summary>
+        /// <summary>Sets the fetch priority of the resource.</summary>
         /// <param name="input">The resource to set the fetch priority for.</param>
         /// <param name="fetchPriority">The fetch priority to set.</param>
         /// <returns>The resource with the fetch priority set.</returns>
@@ -168,9 +150,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Sets the referrer policy of the resource.
-        /// </summary>
+        /// <summary>Sets the referrer policy of the resource.</summary>
         /// <param name="input">The resource to set the referrer policy for.</param>
         /// <param name="referrerPolicy">The referrer policy to set.</param>
         /// <returns>The resource with the referrer policy set.</returns>
@@ -187,9 +167,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             return input;
         }
 
-        /// <summary>
-        /// Adds or updates an attribute of the resource.
-        /// </summary>
+        /// <summary>Adds or updates an attribute of the resource.</summary>
         /// <param name="input">The resource to add or update the attribute for.</param>
         /// <param name="attributeName">The name of the attribute to add or update.</param>
         /// <param name="attributeValue">The value of the attribute to add or update.</param>
@@ -205,14 +183,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
             if (!string.IsNullOrEmpty(attributeName))
             {
-                if (input.Attributes.ContainsKey(attributeName))
-                {
-                    input.Attributes[attributeName] = attributeValue;
-                }
-                else
-                {
-                    input.Attributes.Add(attributeName, attributeValue);
-                }
+                input.Attributes[attributeName] = attributeValue;
             }
 
             return input;

@@ -174,10 +174,10 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 // If we have a version, we need to remove any existing link with the same name and a lower version
                 if (!string.IsNullOrEmpty(resource.Version))
                 {
-                    resources.RemoveAll(r => string.Equals(r.Name, resource.Name, StringComparison.OrdinalIgnoreCase) && string.Compare(r.Version, resource.Version, StringComparison.InvariantCultureIgnoreCase) < 0);
+                    resources.RemoveAll(r => string.Equals(r.Name, resource.Name, StringComparison.OrdinalIgnoreCase) && VersionIsLessThan(r.Version, resource.Version));
 
                     // If we have an existing link with the same name and a higher version, we do not add this link
-                    if (resources.Exists(r => string.Equals(r.Name, resource.Name, StringComparison.OrdinalIgnoreCase) && string.Compare(r.Version, resource.Version, StringComparison.InvariantCultureIgnoreCase) >= 0))
+                    if (resources.Exists(r => string.Equals(r.Name, resource.Name, StringComparison.OrdinalIgnoreCase) && !VersionIsLessThan(r.Version, resource.Version)))
                     {
                         return resources;
                     }
@@ -186,6 +186,17 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
             resources.Add(resource);
             return resources;
+
+            static bool VersionIsLessThan(string version, string otherVersion)
+            {
+                if (Version.TryParse(version, out var parsedVersion) &&
+                    Version.TryParse(otherVersion, out var otherParsedVersion))
+                {
+                    return parsedVersion < otherParsedVersion;
+                }
+
+                return string.Compare(version, otherVersion, StringComparison.OrdinalIgnoreCase) < 0;
+            }
         }
 
         private string ResolvePath(string filePath, string pathNameAlias)
