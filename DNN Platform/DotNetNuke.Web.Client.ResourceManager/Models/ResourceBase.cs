@@ -11,9 +11,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
 
     using DotNetNuke.Abstractions.ClientResources;
 
-    /// <summary>
-    /// Base class for all resource types.
-    /// </summary>
+    /// <summary>Base class for all resource types.</summary>
     public abstract class ResourceBase : IResource
     {
         private string name;
@@ -76,9 +74,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <inheritdoc />
         public abstract string Render(int crmVersion, bool useCdn, string applicationPath);
 
-        /// <summary>
-        /// Gets the versioned path.
-        /// </summary>
+        /// <summary>Gets the versioned path.</summary>
         /// <param name="crmVersion">The CRM version.</param>
         /// <param name="useCdn">Whether to use the CDN url if available.</param>
         /// <param name="applicationPath">The application path to use for resolving relative paths.</param>
@@ -113,9 +109,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             return $"{applicationPath}/{path}?cdv={crmVersion}";
         }
 
-        /// <summary>
-        /// Renders the blocking attribute.
-        /// </summary>
+        /// <summary>Renders the <c>blocking</c> attribute.</summary>
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderBlocking(StringBuilder htmlString)
         {
@@ -125,9 +119,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             }
         }
 
-        /// <summary>
-        /// Renders the cross origin attribute.
-        /// </summary>
+        /// <summary>Renders the <c>crossorigin</c> attribute.</summary>
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderCrossOriginAttribute(StringBuilder htmlString)
         {
@@ -144,9 +136,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             }
         }
 
-        /// <summary>
-        /// Renders the fetch priority attribute.
-        /// </summary>
+        /// <summary>Renders the <c>fetchpriority</c> attribute.</summary>
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderFetchPriority(StringBuilder htmlString)
         {
@@ -163,9 +153,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             }
         }
 
-        /// <summary>
-        /// Renders the integrity attribute.
-        /// </summary>
+        /// <summary>Renders the <c>integrity</c> attribute.</summary>
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderIntegrity(StringBuilder htmlString)
         {
@@ -175,9 +163,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             }
         }
 
-        /// <summary>
-        /// Renders the referrer policy attribute.
-        /// </summary>
+        /// <summary>Renders the <c>referrerpolicy</c> attribute.</summary>
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderReferrerPolicy(StringBuilder htmlString)
         {
@@ -213,9 +199,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             }
         }
 
-        /// <summary>
-        /// Renders the mimetype attribute.
-        /// </summary>
+        /// <summary>Renders the <c>type</c> attribute.</summary>
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderType(StringBuilder htmlString)
         {
@@ -225,9 +209,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             }
         }
 
-        /// <summary>
-        /// Renders the attributes.
-        /// </summary>
+        /// <summary>Renders the attributes.</summary>
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderAttributes(StringBuilder htmlString)
         {

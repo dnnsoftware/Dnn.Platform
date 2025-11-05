@@ -440,7 +440,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static void AddItemRequest(JavaScriptLibrary library, bool forceVersion)
         {
             HttpContextSource.Current.Items[ScriptPrefix + library.JavaScriptLibraryID] = true;
-            var controller = GetClientResourcesController(HttpContextSource.Current);
+            var controller = GetClientResourcesController();
             controller.CreateScript()
                 .FromSrc(GetScriptPath(null, null, library.LibraryName))
                 .SetNameAndVersion(library.LibraryName, library.Version.ToString(), forceVersion)
@@ -553,7 +553,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 }
             }
 
-            return "~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName;
+            var formatVersion = Globals.FormatVersion(js.Version, "00", 3, "_");
+            return $"~/Resources/libraries/{js.LibraryName}/{formatVersion}/{js.FileName}";
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)
@@ -689,7 +690,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static IClientResourceController GetClientResourcesController(HttpContextBase context)
+        private static IClientResourceController GetClientResourcesController()
         {
             var serviceProvider = Globals.GetCurrentServiceProvider();
             return serviceProvider.GetRequiredService<IClientResourceController>();
