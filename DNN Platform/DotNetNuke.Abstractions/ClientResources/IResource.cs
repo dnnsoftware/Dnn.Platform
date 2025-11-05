@@ -19,14 +19,14 @@ public interface IResource
 
     /// <summary>
     /// Gets or sets the CDN url to be used if host settings specify CDN should be used.
-    /// Note, if you only wish to use an external path, then use the FilePath property.
+    /// Note, if you only wish to use an external path, then use the <see cref="FilePath"/> property.
     /// </summary>
     string CdnUrl { get; set; }
 
     /// <summary>Gets or sets the priority of the client resource.</summary>
     int Priority { get; set; }
 
-    /// <summary>Gets or sets the provider of the client resource.</summary>
+    /// <summary>Gets or sets the provider of the client resource, see <see cref="ClientResourceProviders"/>.</summary>
     string Provider { get; set; }
 
     /// <summary>Gets or sets the name of the client resource.</summary>
@@ -58,12 +58,14 @@ public interface IResource
     string Integrity { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating the type of script or link element.
-    /// In the case of a link, this should be a mime type.
-    /// In the case of a script, the value of this attribute indicates the type of data represented by the script, and will be one of the following:
-    /// - Empty string or "text/javascript" (default): classic script.
-    /// - "module": module script.
-    /// - "importmap": import map.
+    /// Gets or sets a value indicating the type of <c>script</c> or <c>link</c> element.
+    /// In the case of a <c>link</c>, this should be a MIME type.
+    /// In the case of a <c>script</c>, the value of this attribute indicates the type of data represented by the script, and will be one of the following:
+    /// <list type="bullet">
+    /// <item>Empty string or <c>"text/javascript"</c> (default): classic script.</item>
+    /// <item><c>"module"</c>: module script.</item>
+    /// <item><c>"importmap"</c>: import map.</item>
+    /// </list>
     /// </summary>
     string Type { get; set; }
 
