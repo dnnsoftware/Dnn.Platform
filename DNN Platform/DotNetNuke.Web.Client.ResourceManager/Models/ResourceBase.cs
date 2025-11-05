@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 return path;
             }
-            else if (path.StartsWith("~"))
+            else if (path.StartsWith("~", StringComparison.Ordinal))
             {
                 if (string.IsNullOrEmpty(applicationPath))
                 {
@@ -105,7 +105,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
                     return $"{path.Replace("~", applicationPath)}?cdv={crmVersion}";
                 }
             }
-            else if (path.StartsWith("/"))
+            else if (path.StartsWith("/", StringComparison.Ordinal))
             {
                 return $"{path}?cdv={crmVersion}";
             }

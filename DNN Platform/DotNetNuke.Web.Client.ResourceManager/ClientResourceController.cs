@@ -79,71 +79,71 @@ namespace DotNetNuke.Web.Client.ResourceManager
         /// <inheritdoc />
         public void RegisterPathNameAlias(string pathNameAlias, string resolvedPath)
         {
-            this.PathNameAliases[pathNameAlias.ToLowerInvariant()] = resolvedPath;
+            this.PathNameAliases[pathNameAlias] = resolvedPath;
         }
 
         /// <inheritdoc />
         public void RemoveFontByName(string fontName)
         {
-            this.FontsToExclude.Add(fontName.ToLowerInvariant());
+            this.FontsToExclude.Add(fontName);
         }
 
         /// <inheritdoc />
         public void RemoveFontByPath(string fontPath, string pathNameAlias)
         {
             var fullPath = this.ResolvePath(fontPath, pathNameAlias);
-            this.FontsToExclude.Add(fullPath.ToLowerInvariant());
+            this.FontsToExclude.Add(fullPath);
         }
 
         /// <inheritdoc />
         public void RemoveScriptByName(string scriptName)
         {
-            this.ScriptsToExclude.Add(scriptName.ToLowerInvariant());
+            this.ScriptsToExclude.Add(scriptName);
         }
 
         /// <inheritdoc />
         public void RemoveScriptByPath(string scriptPath, string pathNameAlias)
         {
-            var fullPath = this.ResolvePath(scriptPath, pathNameAlias).ToLowerInvariant();
-            this.ScriptsToExclude.Add(fullPath.ToLowerInvariant());
+            var fullPath = this.ResolvePath(scriptPath, pathNameAlias);
+            this.ScriptsToExclude.Add(fullPath);
         }
 
         /// <inheritdoc />
         public void RemoveStylesheetByName(string stylesheetName)
         {
-            this.StylesheetsToExclude.Add(stylesheetName.ToLowerInvariant());
+            this.StylesheetsToExclude.Add(stylesheetName);
         }
 
         /// <inheritdoc />
         public void RemoveStylesheetByPath(string stylesheetPath, string pathNameAlias)
         {
-            var fullPath = this.ResolvePath(stylesheetPath, pathNameAlias).ToLowerInvariant();
-            this.StylesheetsToExclude.Add(fullPath.ToLowerInvariant());
+            var fullPath = this.ResolvePath(stylesheetPath, pathNameAlias);
+            this.StylesheetsToExclude.Add(fullPath);
         }
 
         /// <inheritdoc />
         public string RenderDependencies(ResourceType resourceType, string provider, string applicationPath)
         {
             var sortedList = new List<string>();
-            if (resourceType == ResourceType.Font || resourceType == ResourceType.All)
+            if (resourceType is ResourceType.Font or ResourceType.All)
             {
-                foreach (var link in this.Fonts.Where(s => (s.Provider == provider || (s.Provider == string.Empty && provider == ClientResourceProviders.DefaultCssProvider)) && !this.FontsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
+                foreach (var link in this.Fonts.Where(s => (s.Provider == provider || (s.Provider == string.Empty && provider == ClientResourceProviders.DefaultCssProvider)) && !this.FontsToExclude.Contains(s.Name)).OrderBy(l => l.Priority))
                 {
                     sortedList.Add(link.Render(this.hostSettings.CrmVersion, this.hostSettings.CdnEnabled, applicationPath));
                 }
             }
 
-            if (resourceType == ResourceType.Stylesheet || resourceType == ResourceType.All)
+            if (resourceType is ResourceType.Stylesheet or ResourceType.All)
             {
-                foreach (var link in this.Stylesheets.Where(s => (s.Provider == provider || (s.Provider == string.Empty && provider == ClientResourceProviders.DefaultCssProvider)) && !this.StylesheetsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(l => l.Priority))
+                foreach (var link in this.Stylesheets.Where(s => (s.Provider == provider || (s.Provider == string.Empty && provider == ClientResourceProviders.DefaultCssProvider)) && !this.StylesheetsToExclude.Contains(s.Name)).OrderBy(l => l.Priority))
                 {
                     sortedList.Add(link.Render(this.hostSettings.CrmVersion, this.hostSettings.CdnEnabled, applicationPath));
                 }
             }
 
-            if (resourceType == ResourceType.Script || resourceType == ResourceType.All)
+            if (resourceType is ResourceType.Script or ResourceType.All)
             {
-                foreach (var script in this.Scripts.Where(s => (s.Provider == provider || (s.Provider == string.Empty && provider == ClientResourceProviders.DefaultJsProvider)) && !this.ScriptsToExclude.Contains(s.Name.ToLowerInvariant())).OrderBy(s => s.Priority))
+                foreach (var script in this.Scripts.Where(s => (s.Provider == provider || (s.Provider == string.Empty && provider == ClientResourceProviders.DefaultJsProvider)) && !this.ScriptsToExclude.Contains(s.Name)).OrderBy(s => s.Priority))
                 {
                     sortedList.Add(script.Render(this.hostSettings.CrmVersion, this.hostSettings.CdnEnabled, applicationPath));
                 }
@@ -205,7 +205,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             filePath = filePath.Replace("\\", "/");
             if (!string.IsNullOrEmpty(pathNameAlias))
             {
-                if (this.PathNameAliases.TryGetValue(pathNameAlias.ToLowerInvariant(), out var alias))
+                if (this.PathNameAliases.TryGetValue(pathNameAlias, out var alias))
                 {
                     return $"{alias}/{filePath.TrimStart('/')}";
                 }
