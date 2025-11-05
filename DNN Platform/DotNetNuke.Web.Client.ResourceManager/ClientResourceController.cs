@@ -156,8 +156,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             where T : IResource
         {
             resource.ResolvedPath = this.ResolvePath(resource.FilePath, resource.PathNameAlias);
-            resource.Key = resource.ResolvedPath.ToLowerInvariant();
-            resources.RemoveAll(l => l.Key == resource.Key); // remove any existing link with the same key (i.e. exactly the same resolved path)
+            resources.RemoveAll(l => string.Equals(l.ResolvedPath, resource.ResolvedPath, StringComparison.OrdinalIgnoreCase)); // remove any existing link with the same key (i.e. exactly the same resolved path)
             if (!string.IsNullOrEmpty(resource.Name))
             {
                 // if a resource with the same name and force version is already present we ignore this one

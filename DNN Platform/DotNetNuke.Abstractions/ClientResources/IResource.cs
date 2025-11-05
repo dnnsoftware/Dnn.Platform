@@ -26,11 +26,6 @@ public interface IResource
     string ResolvedPath { get; set; }
 
     /// <summary>
-    /// Gets or sets the lowered src path to facilitate lookup.
-    /// </summary>
-    string Key { get; set; }
-
-    /// <summary>
     /// Gets or sets the CDN url to be used if host settings specify CDN should be used.
     /// Note, if you only wish to use an external path, then use the FilePath property.
     /// </summary>

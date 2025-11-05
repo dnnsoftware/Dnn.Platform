@@ -28,9 +28,6 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public string ResolvedPath { get; set; }
 
         /// <inheritdoc />
-        public string Key { get; set; }
-
-        /// <inheritdoc />
         public string CdnUrl { get; set; }
 
         /// <inheritdoc />
