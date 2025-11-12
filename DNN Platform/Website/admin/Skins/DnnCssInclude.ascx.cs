@@ -5,13 +5,12 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
 
-    using ClientDependency.Core;
-    using ClientDependency.Core.Controls;
+    using DotNetNuke.Web.Client.Cdf;
 
     /// <summary>A control which causes CSS to be included on the page.</summary>
     public partial class DnnCssInclude : SkinObjectBase
     {
-        public CssMediaType CssMedia { get; set; }
+        public CssMediaType CssMedia { get; set; } = CssMediaType.None;
 
         public string FilePath { get; set; }
 
@@ -36,15 +35,17 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
             this.ctlInclude.AddTag = this.AddTag;
-            this.ctlInclude.CssMedia = this.CssMedia;
             this.ctlInclude.FilePath = this.FilePath;
-            this.ctlInclude.ForceBundle = this.ForceBundle;
             this.ctlInclude.ForceProvider = this.ForceProvider;
             this.ctlInclude.ForceVersion = this.ForceVersion;
             this.ctlInclude.Name = this.Name;
             this.ctlInclude.PathNameAlias = this.PathNameAlias;
             this.ctlInclude.Priority = this.Priority;
             this.ctlInclude.Version = this.Version;
+            if (this.CssMedia != CssMediaType.None)
+            {
+                this.ctlInclude.CssMedia = this.CssMedia.ToString().ToLowerInvariant();
+            }
         }
     }
 }

@@ -555,38 +555,14 @@
   <data name="PerformanceTab_ClientResourceManagementTitle.Text" xml:space="preserve">
     <value>Client Resource Management</value>
   </data>
-  <data name="PerformanceTab_ClientResourcesManagementMode.Help" xml:space="preserve">
-    <value>Host mode utilizes all Client Resources Management settings set at the application level. Site level allows you to select your own Client Resources Management settings.</value>
-  </data>
-  <data name="PerformanceTab_ClientResourcesManagementMode.Text" xml:space="preserve">
-    <value>Client Resources Management Mode</value>
-  </data>
   <data name="PerformanceTab_CurrentHostVersion.Text" xml:space="preserve">
     <value>Current Host Version:</value>
-  </data>
-  <data name="PerformanceTab_EnableCompositeFiles.Help" xml:space="preserve">
-    <value>Composite files are combinations of resources (JavaScript and CSS) created to reduce the number of file requests by the browser. This will significantly increase the page loading speed.</value>
-  </data>
-  <data name="PerformanceTab_EnableCompositeFiles.Text" xml:space="preserve">
-    <value>Enable Composite Files</value>
   </data>
   <data name="PerformanceTab_GlobalClientResourcesManagementMode.Text" xml:space="preserve">
     <value>Global</value>
   </data>
   <data name="PerformanceTab_IncrementVersion.Text" xml:space="preserve">
     <value>Increment Version</value>
-  </data>
-  <data name="PerformanceTab_MinifyCss.Help" xml:space="preserve">
-    <value>CSS minification will reduce the size of the CSS code by using regular expressions to remove comments, whitespace and "dead CSS". It is only available when composite files are enabled.</value>
-  </data>
-  <data name="PerformanceTab_MinifyCss.Text" xml:space="preserve">
-    <value>Minify CSS</value>
-  </data>
-  <data name="PerformanceTab_MinifyJs.Help" xml:space="preserve">
-    <value>JS minification will reduce the size of the JavaScript code using JSMin. It is only available when composite files are enabled.</value>
-  </data>
-  <data name="PerformanceTab_MinifyJs.Text" xml:space="preserve">
-    <value>Minify JS</value>
   </data>
   <data name="PerformanceTab_ModuleCacheProviders.Help" xml:space="preserve">
     <value>Select the default module caching provider. This setting can be overridden by each individual module.</value>
@@ -635,10 +611,6 @@
   </data>
   <data name="PerformanceTab_AjaxWarning.Text" xml:space="preserve">
     <value>Warning: Memory page state persistence can cause Ajax issues.</value>
-  </data>
-  <data name="PerformanceTab_MinifactionWarning.Text" xml:space="preserve">
-    <value>Important note regarding minification settings.&lt;br/&gt;
-If minification settings are changed when composite files are enabled, you must first save the minification settings by clicking Save and then increment the version number. This will issue new composite files using the new minification settings.</value>
   </data>
   <data name="PerformanceTab_PortalVersionConfirmMessage.Text" xml:space="preserve">
     <value>This action will force all site visitors to download new versions of CSS and JavaScript files. You should only do this if you are certain that the files have changed and you want those changes to be reflected on the client's browser.
