@@ -38,6 +38,13 @@ namespace DotNetNuke.UI.Containers
         private ModuleHost moduleHost;
 
         /// <summary>Initializes a new instance of the <see cref="Container"/> class.</summary>
+        [Obsolete("Use Container(IClientResourceController) instead. Scheduled removal in v12.0.0.")]
+        public Container()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Container"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         public Container(IClientResourceController clientResourceController)
         {
