@@ -452,6 +452,8 @@
     <Compile Include="Services\Dto\UpdateSMTPSettingsRequest.cs" />
     <Compile Include="Services\Dto\UpdateSSLOffloadHeaderRequest.cs" />
     <Compile Include="Services\Dto\UpdateSslSettingsRequest.cs" />
+    <Compile Include="Services\Dto\UpgradePackageRequestDto.cs" />
+    <Compile Include="Services\Dto\UpgradeUploadCompleteDto.cs" />
     <Compile Include="Services\Dto\Url.cs" />
     <Compile Include="Services\Dto\UserRoleDto.cs" />
     <Compile Include="Services\Dto\VocabularyDto.cs" />
@@ -484,6 +486,7 @@
     <Compile Include="Services\TaskSchedulerController.cs" />
     <Compile Include="Services\ThemesController.cs" />
     <Compile Include="Services\Dto\UpdateCspSettingsRequest.cs" />
+    <Compile Include="Services\UpgradesController.cs" />
     <Compile Include="Services\UsersController.cs" />
     <Compile Include="Services\VocabulariesController.cs" />
     <Compile Include="Startup.cs" />

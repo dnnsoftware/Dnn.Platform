@@ -5,9 +5,6 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
 
-    using ClientDependency.Core;
-    using ClientDependency.Core.Controls;
-
     /// <summary>A control which causes JavaScript to no longer be included on the page.</summary>
     public partial class DnnJsExclude : SkinObjectBase
     {

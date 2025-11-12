@@ -662,7 +662,9 @@
             $panel.dialog({
                 modal: true,
                 autoOpen: true,
-                dialogClass: "dnnFormPopup " + this.options.dialogCss,
+                classes: {
+                    "ui-dialog": "dnnFormPopup " + this.options.dialogCss
+                },
                 title: this.options.resources.title,
                 resizable: false,
                 width: fuDialogWidth,

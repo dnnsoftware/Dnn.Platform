@@ -14,10 +14,10 @@ function init(options) {
     if (!options.config) {
         throw new Error("This method needs to have an options.config object as an input parameter");
     }
-    utilities = options.utilities;  
+    utilities = options.utilities;
     config = options.config;
     moduleName = options.moduleName;
-    settings = options.settings; 
+    settings = options.settings;
     initialized = true;
 }
 
