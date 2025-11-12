@@ -719,4 +719,100 @@ Are you sure you want to increment the version number for your site?</value>
   <data name="OAuthConfigurationNotSaved.Text" xml:space="preserve">
     <value>Please save the settings and complete the authorization process before testing when OAuth authentication mode is enabled in host or website level.</value>
   </data>
+  <data name="plAvailableUpgrades.Text" xml:space="preserve">
+    <value>Available Upgrades</value>
+  </data>
+  <data name="plCurrentVersion.Help" xml:space="preserve">
+    <value>The current version of this application.</value>
+  </data>
+  <data name="plCurrentVersion.Text" xml:space="preserve">
+    <value>Current Version:</value>
+  </data>
+  <data name="Backup.Confirm" xml:space="preserve">
+    <value>Please confirm you have made a backup of this installation before upgrading.</value>
+  </data>
+  <data name="IsOutdated.Text" xml:space="preserve">
+    <value>Outdated</value>
+  </data>
+  <data name="IsValid.Text" xml:space="preserve">
+    <value>Valid</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="UploadPackage.Text" xml:space="preserve">
+    <value>Upload Package</value>
+  </data>
+  <data name="DeleteUpgradePackage.Confirm" xml:space="preserve">
+    <value>Delete this upgrade package?</value>
+  </data>
+  <data name="UploadPackage_FileUploadDefault.Text" xml:space="preserve">
+    <value>Drag and Drop a File or Click Icon To Browse</value>
+  </data>
+  <data name="TryAgain.Text" xml:space="preserve">
+    <value>[Try Again]</value>
+  </data>
+  <data name="UploadPackage_FileUploadDragOver.Text" xml:space="preserve">
+    <value>Drag and Drop a File</value>
+  </data>
+  <data name="UploadPackage_UploadAFile.Text" xml:space="preserve">
+    <value>Upload a DNN Package Zip</value>
+  </data>
+  <data name="UploadPackage_UploadComplete.Text" xml:space="preserve">
+    <value>Upload Complete</value>
+  </data>
+  <data name="UploadPackage_UploadFailedUnknown.Text" xml:space="preserve">
+    <value>An unknown error occurred uploading this file</value>
+  </data>
+  <data name="UploadPackage_Uploading.Text" xml:space="preserve">
+    <value>Uploading</value>
+  </data>
+  <data name="Install.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="No.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="tabUpgrades.Text" xml:space="preserve">
+    <value>Upgrades</value>
+  </data>
+  <data name="UpgradeDoneLink.Text" xml:space="preserve">
+    <value>Please click here to start the upgrade process</value>
+  </data>
+  <data name="UpgradeDone.Text" xml:space="preserve">
+    <value>File Copying Complete</value>
+  </data>
+  <data name="Upgrading.Help" xml:space="preserve">
+    <value>Please wait while we prepare to upgrade your server.</value>
+  </data>
+  <data name="Upgrading.Text" xml:space="preserve">
+    <value>Upgrading ...</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Upgrade_InvalidPackage.Text" xml:space="preserve">
+    <value>The uploaded file {0} is not a valid DNN package.</value>
+  </data>
+  <data name="Upgrade_NoUpgrade.Text" xml:space="preserve">
+    <value>There are no upgrades to apply</value>
+  </data>
+  <data name="Upgrade_NoValidUpgrade.Text" xml:space="preserve">
+    <value>There is no valid upgrade for package {0}</value>
+  </data>
+  <data name="Upgrade_OutdatedPackage.Text" xml:space="preserve">
+    <value>The uploaded file {0} is an outdated DNN package.</value>
+  </data>
+  <data name="Upgrade_UploadNotAllowed.Text" xml:space="preserve">
+    <value>Uploading DNN upgrade packages has been disabled.</value>
+  </data>
+  <data name="Upgrade_NoUpgradesAvailable.Text" xml:space="preserve">
+    <value>There are no upgrades available.</value>
+  </data>
+  <data name="CanInstall.Text" xml:space="preserve">
+    <value>Can Install</value>
+  </data>
+  <data name="MinDnnVersion.Text" xml:space="preserve">
+    <value>Req DNN Version</value>
+  </data>
 </root>

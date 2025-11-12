@@ -864,6 +864,7 @@
     <Compile Include="Services\Installer\Installers\UrlProviderInstaller.cs" />
     <Compile Include="Services\Installer\LocalUpgradeInfo.cs" />
     <Compile Include="Services\Installer\LocalUpgradeService.cs" />
+    <Compile Include="Services\Installer\LocalUpgradeSettings.cs" />
     <Compile Include="Services\Installer\Packages\IPackageController.cs" />
     <Compile Include="Services\Installer\Packages\PackageDependencyInfo.cs" />
     <Compile Include="Services\Installer\Packages\PackageTypeMemberNameFixer.cs" />
