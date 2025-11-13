@@ -1468,8 +1468,9 @@
   <data name="CspHeaderModeOn.Help" xml:space="preserve">
     <value>The CSP header will be added to the http response and enforced.</value>
   </data>
+  
   <data name="CspSettings.Help" xml:space="preserve">
-    <value>For webforms script-src 'unsafe-inline' and 'unsafe-eval' will be added automatically to the CSP header. Skins and modules can add additional sources to the CSP header.</value>
+    <value>When Fixed CSP Header is enabled, the CSP header will be fixed and cannot be dynamically modified by skins or modules. When Fixed CSP Header is disabled, the CSP header will be dynamically modified by skins or modules and for webforms script-src 'unsafe-inline' and 'unsafe-eval' will be added automatically to the CSP header.</value>
   </data>
   <data name="TabCspSettings.Text" xml:space="preserve">
     <value>CSP SETTINGS</value>
@@ -1489,4 +1490,17 @@
   <data name="CspSettingsRestoreWarning.Text" xml:space="preserve">
     <value>The changes to the CSP settings will be discarded. Do you wish to continue?</value>
   </data>
+  <data name="plCspHeaderFixed.Text" xml:space="preserve">
+    <value>Fixed CSP Header</value>
+  </data>
+  <data name="plCspHeaderFixed.Help" xml:space="preserve">
+    <value>If enabled, the CSP header will be fixed (equal to the settings) and cannot be dynamically modified by skins or modules.</value>
+  </data>
+  <data name="SwitchOn.Text" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="SwitchOff.Text" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  
 </root>

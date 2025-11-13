@@ -601,6 +601,8 @@ namespace DotNetNuke.Entities.Portals
 
         public CspMode CspHeaderMode { get; internal set; }
 
+        public bool CspHeaderFixed { get; internal set; }
+
         public string CspHeader { get; internal set; }
 
         public string CspReportingHeader { get; internal set; }

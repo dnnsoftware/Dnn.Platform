@@ -237,8 +237,9 @@ namespace DotNetNuke.Framework
             // set global page settings
             this.InitializePage();
 
-            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
-                this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+            if (!this.PortalSettings.CspHeaderFixed &&
+                (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
+                  this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly))
             {
                 try
                 {
@@ -422,6 +423,21 @@ namespace DotNetNuke.Framework
                 if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
                 {
                     header = "Content-Security-Policy-Report-Only";
+                }
+
+                if (this.PortalSettings.CspHeaderFixed)
+                {
+                    this.ContentSecurityPolicy.ClearContentSecurityPolicyContributors();
+                    if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+                    {
+                        this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+                    }
+
+                    this.ContentSecurityPolicy.ClearReportingEndpointsContributors();
+                    if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+                    {
+                        this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+                    }
                 }
 
                 var policy = this.ContentSecurityPolicy.GeneratePolicy();

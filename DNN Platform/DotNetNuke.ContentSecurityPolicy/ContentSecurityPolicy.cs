@@ -311,6 +311,22 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
+        /// Clear Content Security Policy Contributors.
+        /// </summary>
+        public void ClearContentSecurityPolicyContributors()
+        {
+            this.ContentSecurityPolicyContributors.Clear();
+        }
+
+        /// <summary>
+        /// Clear Reporting Endpoints Contributors.
+        /// </summary>
+        public void ClearReportingEndpointsContributors()
+        {
+            this.ReportingEndpointsContributors.Clear();
+        }
+
+        /// <summary>
         /// Gets an existing directive contributor or creates a new one if it doesn't exist.
         /// </summary>
         /// <param name="directiveType">The type of directive to get or create.</param>

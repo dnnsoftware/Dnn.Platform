@@ -152,5 +152,15 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// Upgrade Insecure Requests.
         /// </summary>
         void UpgradeInsecureRequests();
+
+        /// <summary>
+        /// Clear Content Security Policy Contributors.
+        /// </summary>
+        void ClearContentSecurityPolicyContributors();
+
+        /// <summary>
+        /// Clear Reporting Endpoints Contributors.
+        /// </summary>
+        void ClearReportingEndpointsContributors();
     }
 }

@@ -10,6 +10,8 @@ namespace Dnn.PersonaBar.Security.Services.Dto
     {
         public PortalSettings.CspMode CspHeaderMode { get; set; }
 
+        public bool CspHeaderFixed { get; set; }
+
         public string CspHeader { get; set; }
 
         public string CspReportingHeader { get; set; }

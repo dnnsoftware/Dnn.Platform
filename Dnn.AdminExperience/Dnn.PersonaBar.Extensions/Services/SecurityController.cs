@@ -1431,6 +1431,7 @@ namespace Dnn.PersonaBar.Security.Services
                         Settings = new
                         {
                             this.PortalSettings.CspHeaderMode,
+                            this.PortalSettings.CspHeaderFixed,
                             this.PortalSettings.CspHeader,
                             this.PortalSettings.CspReportingHeader,
                         },
@@ -1503,6 +1504,7 @@ namespace Dnn.PersonaBar.Security.Services
                 }
 
                 PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderMode", request.CspHeaderMode.ToString().ToUpper());
+                PortalController.UpdatePortalSetting(this.PortalId, "CspHeaderFixed", request.CspHeaderFixed.ToString().ToUpper());
                 PortalController.UpdatePortalSetting(this.PortalId, "CspHeader", request.CspHeader);
                 PortalController.UpdatePortalSetting(this.PortalId, "CspReportingHeader", request.CspReportingHeader);
 

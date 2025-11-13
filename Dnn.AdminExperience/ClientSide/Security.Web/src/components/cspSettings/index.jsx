@@ -159,6 +159,21 @@ class CspSettingsPanelBody extends Component {
                         />
                     </InputGroup>
                     <InputGroup>
+                        <div className="cspSettings-row_switch">
+                            <Label
+                                labelType="inline"
+                                tooltipMessage={resx.get("plCspHeaderFixed.Help")}
+                                label={resx.get("plCspHeaderFixed")}
+                            />
+                            <Switch
+                                onText={resx.get("SwitchOn")}
+                                offText={resx.get("SwitchOff")}
+                                value={state.cspSettings.CspHeaderFixed}
+                                onChange={this.onSettingChange.bind(this, "CspHeaderFixed")}
+                            />
+                        </div>
+                    </InputGroup>
+                    <InputGroup>
                         <Label
                             tooltipMessage={resx.get("plCspHeader.Help")}
                             label={resx.get("plCspHeader")}
