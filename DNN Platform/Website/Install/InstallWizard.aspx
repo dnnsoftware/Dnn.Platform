@@ -376,7 +376,9 @@
                     $(".permissionCheck").html('');
                     if (!result.Item1) {
                         $(".permissionCheck").html(result.Item2).removeClass("promptMessage").dialog({
-                            dialogClass: "dnnFormPopup",
+                            classes: {
+                                "ui-dialog": "dnnFormPopup"
+                            },
                             modal: true,
                             width: 950,
                             height: 550,

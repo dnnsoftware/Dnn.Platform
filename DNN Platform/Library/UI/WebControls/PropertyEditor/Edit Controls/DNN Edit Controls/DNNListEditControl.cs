@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether determines whether the List Auto Posts Back.</summary>
+        /// <summary>Gets or sets a value indicating whether the List Auto Posts Back.</summary>
         protected bool AutoPostBack { get; set; }
 
         /// <summary>Gets or sets a value indicating whether if true the list will be sorted on the value of Text before rendering.</summary>

@@ -13,10 +13,6 @@ namespace Dnn.PersonaBar.UI.Services.DTO
     [Serializable]
     public class FrameworkQueryDTO
     {
-        /// <summary>Gets or sets a list of <see cref="LocalUpgradeDto"/> instances representing local upgrade packages available to be applied.</summary>
-        [DataMember(Name = "LocalUpgrades")]
-        public IReadOnlyList<LocalUpgradeDto> LocalUpgrades { get; set; } = [];
-
         /// <summary>Gets or sets a value indicating whether the current framework version is up-to-date.</summary>
         [DataMember(Name = "UpToDate")]
         public bool UpToDate { get; set; } = true;

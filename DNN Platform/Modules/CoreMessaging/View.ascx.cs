@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.CoreMessaging
     using System.Collections.Generic;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -14,9 +15,9 @@ namespace DotNetNuke.Modules.CoreMessaging
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -25,11 +26,12 @@ namespace DotNetNuke.Modules.CoreMessaging
     {
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public View()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
@@ -37,17 +39,19 @@ namespace DotNetNuke.Modules.CoreMessaging
         /// <param name="javaScript">The JavaScript library helper.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public View(IJavaScriptLibraryHelper javaScript)
-            : this(javaScript, null)
+            : this(javaScript, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="portalController">The portal controller.</param>
-        public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public View(IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController)
         {
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets the user id from the request parameters.</summary>
@@ -106,7 +110,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
             this.javaScript.RequestRegistration(CommonJs.Knockout);
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/CoreMessaging/Scripts/CoreMessaging.js");
             this.javaScript.RequestRegistration(CommonJs.jQueryFileUpload);
             this.AddIe7StyleSheet();
 

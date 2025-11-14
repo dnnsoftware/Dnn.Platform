@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 
-        /// <summary>Gets a value indicating whether gets a value indicating if the provider requires network connectivity to do its tasks.</summary>
+        /// <summary>Gets a value indicating whether the provider requires network connectivity to do its tasks.</summary>
         public override bool RequiresNetworkConnectivity
         {
             get

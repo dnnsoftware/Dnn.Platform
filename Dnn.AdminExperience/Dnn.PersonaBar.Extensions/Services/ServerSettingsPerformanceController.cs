@@ -82,9 +82,6 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostMinifyCss = this.hostSettings.CrmMinifyCss,
                     HostMinifyJs = this.hostSettings.CrmMinifyJs,
                     CurrentPortalVersion = this.GetPortalVersion(portalId),
-                    PortalEnableCompositeFiles = Parse(PortalController.GetPortalSetting(ClientResourceSettings.EnableCompositeFilesKey, portalId, "false")),
-                    PortalMinifyCss = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyCssKey, portalId, "false")),
-                    PortalMinifyJs = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyJsKey, portalId, "false")),
 
                     // Options
                     CachingProviderOptions = this.performanceController.GetCachingProviderOptions(),
@@ -174,8 +171,11 @@ namespace Dnn.PersonaBar.Servers.Services
                 Enum.TryParse(request.CacheSetting, false, out PerformanceSettings perfSetting);
                 this.hostSettings.PerformanceSetting = perfSetting;
 
-                this.hostSettingsService.Update("AuthenticatedCacheability", request.AuthCacheability, false);
-                this.hostSettingsService.Update("UnauthenticatedCacheability", request.UnauthCacheability, false);
+                Enum.TryParse(request.AuthCacheability, false, out CacheControlHeader authCacheability);
+                this.hostSettingsService.Update("AuthenticatedCacheability", authCacheability.ToString(), false);
+
+                Enum.TryParse(request.UnauthCacheability, false, out CacheControlHeader unAuthCacheability);
+                this.hostSettingsService.Update("UnauthenticatedCacheability", unAuthCacheability.ToString(), false);
 
                 this.hostSettingsService.Update(UseSSLKey, request.SslForCacheSynchronization.ToString(), true);
 
@@ -184,16 +184,10 @@ namespace Dnn.PersonaBar.Servers.Services
                 if (request.ClientResourcesManagementMode == "h")
                 {
                     PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
-                    this.hostSettingsService.Update(ClientResourceSettings.EnableCompositeFilesKey, request.HostEnableCompositeFiles.ToString(CultureInfo.InvariantCulture));
-                    this.hostSettingsService.Update(ClientResourceSettings.MinifyCssKey, request.HostMinifyCss.ToString(CultureInfo.InvariantCulture));
-                    this.hostSettingsService.Update(ClientResourceSettings.MinifyJsKey, request.HostMinifyJs.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
                     PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.EnableCompositeFilesKey, request.PortalEnableCompositeFiles.ToString(CultureInfo.InvariantCulture), false);
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.MinifyCssKey, request.PortalMinifyCss.ToString(CultureInfo.InvariantCulture), false);
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.MinifyJsKey, request.PortalMinifyJs.ToString(CultureInfo.InvariantCulture), false);
                 }
 
                 DataCache.ClearCache();

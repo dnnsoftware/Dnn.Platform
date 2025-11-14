@@ -6,9 +6,6 @@ namespace DotNetNuke.UI.WebControls
     using System.Web;
     using System.Web.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      TextColumn
     /// <summary>The TextColumn control provides a custom Text Column.</summary>
     public class TextColumn : TemplateColumn
     {

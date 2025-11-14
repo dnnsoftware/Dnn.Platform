@@ -11,9 +11,6 @@ namespace DotNetNuke.Security.Permissions
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Security.Permissions
-    /// Class    : ModulePermissionInfo
     /// <summary>ModulePermissionInfo provides the Entity Layer for Module Permissions.</summary>
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable

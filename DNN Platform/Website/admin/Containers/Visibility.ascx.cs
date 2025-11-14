@@ -17,9 +17,6 @@ namespace DotNetNuke.UI.Containers
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// Project  : DotNetNuke
-    /// Class    : Containers.Visibility
-    ///
     /// <summary>
     /// Handles the events for collapsing and expanding modules,
     /// Showing or hiding admin controls when preview is checked

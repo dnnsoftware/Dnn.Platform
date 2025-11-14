@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
         private readonly IFileManager fileManager = FileManager.Instance;
         private readonly IFolderManager folderManager = FolderManager.Instance;
+        private readonly IFileContentTypeManager fileContentTypeManager = FileContentTypeManager.Instance;
 
         /// <summary>Attempts to upload a file.</summary>
         /// <returns>A collection of <see cref="FilesStatus"/>.</returns>
@@ -73,7 +74,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     var userFolder = this.folderManager.GetUserFolder(this.UserInfo);
 
                     // todo: deal with the case where the exact file name already exists.
-                    var fileInfo = this.fileManager.AddFile(userFolder, fileName, file.InputStream, true);
+                    var fileInfo = this.fileManager.AddFile(userFolder, fileName, file.InputStream, true, true, this.fileContentTypeManager.GetContentType(Path.GetExtension(fileName)));
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
                     if (!File.Exists(context.Server.MapPath(fileIcon)))
                     {
@@ -88,7 +89,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         type = fileInfo.ContentType,
                         size = file.ContentLength,
                         progress = "1.0",
-                        url = FileManager.Instance.GetUrl(fileInfo),
+                        url = this.fileManager.GetUrl(fileInfo),
                         thumbnail_url = fileIcon,
                         message = "success",
                         id = fileInfo.FileId,

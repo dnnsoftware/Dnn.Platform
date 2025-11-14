@@ -430,7 +430,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>Gets or sets the published version number of the file.</summary>
         public int PublishedVersion { get; set; }
 
-        /// <summary>Gets a value indicating whether gets a flag which says whether the file has ever been published.</summary>
+        /// <summary>Gets a value indicating whether the file has ever been published.</summary>
         [XmlIgnore]
         [JsonIgnore]
         public bool HasBeenPublished { get; private set; }

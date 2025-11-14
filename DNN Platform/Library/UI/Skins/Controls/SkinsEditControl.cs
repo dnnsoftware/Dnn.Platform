@@ -14,9 +14,6 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.Skins.Controls
-    /// Class:      SkinsEditControl
     /// <summary>
     /// The SkinsEditControl control provides a standard UI component for editing
     /// skins.
