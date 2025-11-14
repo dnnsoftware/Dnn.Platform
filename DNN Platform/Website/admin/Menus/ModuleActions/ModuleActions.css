@@ -14,6 +14,7 @@ div.actionMenu ul.showhover {
 div.actionMenu ul.dnn_mact {
   margin-bottom: 0;
   margin-left: 0;
+  display:flex;
 }
 div.actionMenu ul.dnn_mact li {
   position: relative;
@@ -22,7 +23,6 @@ div.actionMenu ul.dnn_mact li {
 div.actionMenu ul.dnn_mact > li {
   width: 20px;
   height: 20px;
-  float: left;
   padding: 0;
   margin: 0;
   cursor: pointer;

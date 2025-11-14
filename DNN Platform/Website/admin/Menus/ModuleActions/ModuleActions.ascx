@@ -86,7 +86,7 @@
                                 var containerPosition = container.offset();
                                 var containerWidth = container.width();
 
-                                var rootMenuWidth = (supportsQuickSettings) ? 85 : 65;
+                                var rootMenuWidth = root.outerWidth(true);
 
                                 var $body = $(document.body);
                                 var positionCss = $body.css('position');

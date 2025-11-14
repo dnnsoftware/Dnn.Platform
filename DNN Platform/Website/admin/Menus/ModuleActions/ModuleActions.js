@@ -340,12 +340,14 @@
             var containerPosition = container.offset();
             var containerWidth = container.width();
 
+            var rootMenuWidth = root.outerWidth(true);
+
             root.css({
                 position: "absolute",
                 marginLeft: 0,
                 marginTop: 0,
                 top: containerPosition.top,
-                left: containerPosition.left + containerWidth - 65
+                left: containerPosition.left + containerWidth - rootMenuWidth
             });
         }
 
