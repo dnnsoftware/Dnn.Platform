@@ -6,6 +6,7 @@ namespace DotNetNuke.ContentSecurityPolicy
 {
     using System.Collections.Generic;
     using System.Linq;
+    using DotNetNuke.Abstractions.ClientResources;
 
     /// <summary>
     /// Manages the entire Content Security Policy.
@@ -29,8 +30,11 @@ namespace DotNetNuke.ContentSecurityPolicy
                 if (this.nonce == null)
                 {
                     var nonceBytes = new byte[32];
-                    var generator = System.Security.Cryptography.RandomNumberGenerator.Create();
-                    generator.GetBytes(nonceBytes);
+                    using (var generator = System.Security.Cryptography.RandomNumberGenerator.Create())
+                    {
+                        generator.GetBytes(nonceBytes);
+                    }
+
                     this.nonce = System.Convert.ToBase64String(nonceBytes);
                 }
 
