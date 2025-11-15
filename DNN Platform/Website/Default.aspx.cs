@@ -184,11 +184,6 @@ namespace DotNetNuke.Framework
 
         private IPortalAliasInfo PrimaryPortalAlias => this.PortalSettings.PrimaryAlias;
 
-        public void AddCsp(string policy)
-        {
-            this.ContentSecurityPolicy.AddHeader(policy);
-        }
-
         /// <inheritdoc/>
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
