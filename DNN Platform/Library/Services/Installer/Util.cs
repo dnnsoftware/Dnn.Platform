@@ -716,69 +716,99 @@ namespace DotNetNuke.Services.Installer
         /// <returns>true if action occur and false otherwise.</returns>
         public static bool TryToCreateAndExecute(string path, Action<FileStream> action, int milliSecondMax = Timeout.Infinite)
         {
-            var result = false;
-            var dateTimeStart = DateTime.Now;
-            Tuple<AutoResetEvent, FileSystemWatcher> tuple = null;
+            var started = DateTime.UtcNow;
+            var fullPath = Path.GetFullPath(path);
+            var directory = Path.GetDirectoryName(fullPath)!;
 
-            while (true)
+            AutoResetEvent gate = null;
+            FileSystemWatcher watcher = null;
+            FileSystemEventHandler changedHandler = null;
+            RenamedEventHandler renamedHandler = null;
+
+            try
             {
-                try
+                while (true)
                 {
-                    // Open for create, requesting read/write access, allow others to read/write as well
-                    using (var file = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    try
                     {
+                        // Open for create with shared read/write; dispose via using
+                        using var file = File.Open(fullPath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
                         action(file);
-                        result = true;
-                        break;
+                        return true;
                     }
-                }
-                catch (IOException)
-                {
-                    // Init only once and only if needed. Prevent against many instantiation in case of multhreaded
-                    // file access concurrency (if file is frequently accessed by someone else). Better memory usage.
-                    if (tuple == null)
+                    catch (IOException)
                     {
-                        var autoResetEvent = new AutoResetEvent(true);
-                        var fileSystemWatcher = new FileSystemWatcher(Path.GetDirectoryName(path))
+                        // Lazily create the wait handle + watcher once
+                        if (gate is null)
                         {
-                            EnableRaisingEvents = true,
-                        };
+                            gate = new AutoResetEvent(false);
 
-                        fileSystemWatcher.Changed +=
-                            (o, e) =>
+                            watcher = new FileSystemWatcher(directory)
                             {
-                                if (Path.GetFullPath(e.FullPath) == Path.GetFullPath(path))
+                                Filter = Path.GetFileName(fullPath),
+                                NotifyFilter = NotifyFilters.FileName
+                                             | NotifyFilters.LastWrite
+                                             | NotifyFilters.CreationTime
+                                             | NotifyFilters.Size,
+                                EnableRaisingEvents = true,
+                            };
+
+                            changedHandler = (o, e) =>
+                            {
+                                // Extra safety: only signal for the exact file
+                                if (string.Equals(Path.GetFullPath(e.FullPath), fullPath, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    autoResetEvent.Set();
+                                    gate.Set();
+                                }
+                            };
+                            renamedHandler = (o, e) =>
+                            {
+                                // Extra safety: only signal for the exact file
+                                if (string.Equals(Path.GetFullPath(e.FullPath), fullPath, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    gate.Set();
                                 }
                             };
 
-                        tuple = new Tuple<AutoResetEvent, FileSystemWatcher>(autoResetEvent, fileSystemWatcher);
-                    }
-
-                    int milliSecond = Timeout.Infinite;
-                    if (milliSecondMax != Timeout.Infinite)
-                    {
-                        milliSecond = (int)(DateTime.Now - dateTimeStart).TotalMilliseconds;
-                        if (milliSecond >= milliSecondMax)
-                        {
-                            result = false;
-                            break;
+                            watcher.Changed += changedHandler;
+                            watcher.Created += changedHandler;
+                            watcher.Renamed += renamedHandler;
+                            watcher.Deleted += changedHandler;
                         }
-                    }
 
-                    tuple.Item1.WaitOne(milliSecond);
+                        // Compute remaining time correctly
+                        int waitMs = Timeout.Infinite;
+                        if (milliSecondMax != Timeout.Infinite)
+                        {
+                            var elapsed = (int)(DateTime.UtcNow - started).TotalMilliseconds;
+                            var remaining = milliSecondMax - elapsed;
+                            if (remaining <= 0)
+                            {
+                                return false;
+                            }
+
+                            waitMs = remaining;
+                        }
+
+                        // Wait for a change (or until remaining timeout)
+                        gate!.WaitOne(waitMs);
+                    }
                 }
             }
-
-            if (tuple != null && tuple.Item1 != null)
+            finally
             {
-                // Dispose of resources now (don't wait the GC).
-                tuple.Item1.Dispose();
-                tuple.Item2.Dispose();
-            }
+                // Clean shutdown: unsubscribe then dispose in reverse order
+                if (watcher != null && changedHandler != null)
+                {
+                    watcher.Changed -= changedHandler;
+                    watcher.Created -= changedHandler;
+                    watcher.Renamed -= renamedHandler;
+                    watcher.Deleted -= changedHandler;
+                }
 
-            return result;
+                watcher?.Dispose();
+                gate?.Dispose();
+            }
         }
 
         public static WebResponse GetExternalRequest(string url, byte[] data, string username, string password, string domain, string proxyAddress, int proxyPort, bool doPOST, string userAgent, string referer, out string filename)
