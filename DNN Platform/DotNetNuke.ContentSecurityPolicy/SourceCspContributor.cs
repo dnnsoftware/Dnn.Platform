@@ -43,76 +43,76 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Ajoute une source 'self' qui autorise les ressources de la même origine.
+        /// Adds a 'self' source that allows resources from the same origin.
         /// </summary>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddSelf()
         {
             return this.AddSource(new CspSource(CspSourceType.Self));
         }
 
         /// <summary>
-        /// Ajoute une source 'unsafe-eval' qui autorise l'utilisation de eval().
+        /// Adds an 'unsafe-eval' source that allows the use of eval().
         /// </summary>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddEval()
         {
             return this.AddSource(new CspSource(CspSourceType.Eval));
         }
 
         /// <summary>
-        /// Ajoute un hôte spécifique comme source autorisée.
+        /// Adds a specific host as an allowed source.
         /// </summary>
-        /// <param name="host">L'hôte à autoriser (ex: example.com).</param>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <param name="host">The host to allow (e.g., example.com).</param>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddHost(string host)
         {
             return this.AddSource(new CspSource(CspSourceType.Host, host));
         }
 
         /// <summary>
-        /// Ajoute un schéma comme source autorisée.
+        /// Adds a scheme as an allowed source.
         /// </summary>
-        /// <param name="scheme">Le schéma à autoriser (ex: https:, data:).</param>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <param name="scheme">The scheme to allow (e.g., https:, data:).</param>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddScheme(string scheme)
         {
             return this.AddSource(new CspSource(CspSourceType.Scheme, scheme));
         }
 
         /// <summary>
-        /// Ajoute un nonce cryptographique comme source autorisée.
+        /// Adds a cryptographic nonce as an allowed source.
         /// </summary>
-        /// <param name="nonce">La valeur du nonce à utiliser.</param>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <param name="nonce">The nonce value to use.</param>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddNonce(string nonce)
         {
             return this.AddSource(new CspSource(CspSourceType.Nonce, nonce));
         }
 
         /// <summary>
-        /// Ajoute un hash cryptographique comme source autorisée.
+        /// Adds a cryptographic hash as an allowed source.
         /// </summary>
-        /// <param name="hash">La valeur du hash à utiliser.</param>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <param name="hash">The hash value to use.</param>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddHash(string hash)
         {
             return this.AddSource(new CspSource(CspSourceType.Hash, hash));
         }
 
         /// <summary>
-        /// Ajoute une source 'none' qui bloque toutes les sources.
+        /// Adds a 'none' source that blocks all sources.
         /// </summary>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddNone()
         {
             return this.AddSource(new CspSource(CspSourceType.None));
         }
 
         /// <summary>
-        /// Ajoute une source 'strict-dynamic' qui active le chargement dynamique strict des scripts.
+        /// Adds a 'strict-dynamic' source that enables strict dynamic script loading.
         /// </summary>
-        /// <returns>L'instance courante pour chaîner les méthodes.</returns>
+        /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddStrictDynamic()
         {
             return this.AddSource(new CspSource(CspSourceType.StrictDynamic));

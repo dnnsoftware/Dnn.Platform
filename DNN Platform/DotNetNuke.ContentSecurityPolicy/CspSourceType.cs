@@ -10,47 +10,47 @@ namespace DotNetNuke.ContentSecurityPolicy
     public enum CspSourceType
     {
         /// <summary>
-        /// Permet de spécifier des domaines spécifiques comme source.
+        /// Allows specifying specific domains as sources.
         /// </summary>
         Host,
 
         /// <summary>
-        /// Permet de spécifier des protocoles (ex: https:, data:) comme source.
+        /// Allows specifying protocols (e.g., https:, data:) as sources.
         /// </summary>
         Scheme,
 
         /// <summary>
-        /// Autorise les ressources de la même origine ('self').
+        /// Allows resources from the same origin ('self').
         /// </summary>
         Self,
 
         /// <summary>
-        /// Autorise l'utilisation de code inline ('unsafe-inline').
+        /// Allows the use of inline code ('unsafe-inline').
         /// </summary>
         Inline,
 
         /// <summary>
-        /// Autorise l'utilisation de eval() ('unsafe-eval').
+        /// Allows the use of eval() ('unsafe-eval').
         /// </summary>
         Eval,
 
         /// <summary>
-        /// Utilise un nonce cryptographique pour valider les ressources.
+        /// Uses a cryptographic nonce to validate resources.
         /// </summary>
         Nonce,
 
         /// <summary>
-        /// Utilise un hash cryptographique pour valider les ressources.
+        /// Uses a cryptographic hash to validate resources.
         /// </summary>
         Hash,
 
         /// <summary>
-        /// N'autorise aucune source ('none').
+        /// Allows no sources ('none').
         /// </summary>
         None,
 
         /// <summary>
-        /// Active le mode strict-dynamic pour le chargement des scripts.
+        /// Enables strict-dynamic mode for script loading.
         /// </summary>
         StrictDynamic,
     }

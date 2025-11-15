@@ -10,87 +10,87 @@ namespace DotNetNuke.ContentSecurityPolicy
     public enum CspDirectiveType
     {
         /// <summary>
-        /// Directive qui définit la politique par défaut pour les types de ressources non spécifiés.
+        /// Directive that defines the default policy for unspecified resource types.
         /// </summary>
         DefaultSrc,
 
         /// <summary>
-        /// Directive qui contrôle les sources de scripts autorisées.
+        /// Directive that controls authorized script sources.
         /// </summary>
         ScriptSrc,
 
         /// <summary>
-        /// Directive qui contrôle les sources de styles autorisées.
+        /// Directive that controls authorized style sources.
         /// </summary>
         StyleSrc,
 
         /// <summary>
-        /// Directive qui contrôle les sources d'images autorisées.
+        /// Directive that controls authorized image sources.
         /// </summary>
         ImgSrc,
 
         /// <summary>
-        /// Directive qui contrôle les destinations de connexion autorisées.
+        /// Directive that controls authorized connection destinations.
         /// </summary>
         ConnectSrc,
 
         /// <summary>
-        /// Directive qui contrôle les sources de polices autorisées.
+        /// Directive that controls authorized font sources.
         /// </summary>
         FontSrc,
 
         /// <summary>
-        /// Directive qui contrôle les sources d'objets autorisées.
+        /// Directive that controls authorized object sources.
         /// </summary>
         ObjectSrc,
 
         /// <summary>
-        /// Directive qui contrôle les sources de médias autorisées.
+        /// Directive that controls authorized media sources.
         /// </summary>
         MediaSrc,
 
         /// <summary>
-        /// Directive qui contrôle les sources de frames autorisées.
+        /// Directive that controls authorized frame sources.
         /// </summary>
         FrameSrc,
 
         /// <summary>
-        /// Directive qui restreint les URLs pouvant être utilisées dans la base URI du document.
+        /// Directive that restricts URLs that can be used in the document's base URI.
         /// </summary>
         BaseUri,
 
         /// <summary>
-        /// Directive qui restreint les types de plugins pouvant être chargés.
+        /// Directive that restricts the types of plugins that can be loaded.
         /// </summary>
         PluginTypes,
 
         /// <summary>
-        /// Directive qui active un bac à sable pour la ressource demandée.
+        /// Directive that enables a sandbox for the requested resource.
         /// </summary>
         SandboxDirective,
 
         /// <summary>
-        /// Directive qui restreint les URLs pouvant être utilisées comme cible de formulaire.
+        /// Directive that restricts URLs that can be used as form targets.
         /// </summary>
         FormAction,
 
         /// <summary>
-        /// Directive qui spécifie les parents autorisés à intégrer une page dans un frame.
+        /// Directive that specifies the parents authorized to embed a page in a frame.
         /// </summary>
         FrameAncestors,
 
         /// <summary>
-        /// Directive qui spécifie l'URI où envoyer les rapports de violation.
+        /// Directive that specifies the URI where violation reports should be sent.
         /// </summary>
         ReportUri,
 
         /// <summary>
-        /// Directive qui spécifie où envoyer les rapports de violation au format JSON.
+        /// Directive that specifies where to send violation reports in JSON format.
         /// </summary>
         ReportTo,
 
         /// <summary>
-        /// Directive qui spécifie UpgradeInsecureRequests.
+        /// Directive that specifies UpgradeInsecureRequests.
         /// </summary>
         UpgradeInsecureRequests,
 }
