@@ -5,20 +5,17 @@
 namespace DotNetNuke.Web.MvcPipeline.Containers
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
-    using System.Web.Routing;
+
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
 
@@ -49,7 +46,8 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 }
 
                 // register admin.css
-                MvcClientResourceManager.RegisterAdminStylesheet(htmlHelper.ViewContext, Globals.HostPath + "admin.css");
+                var controller = GetClientResourcesController();
+                controller.RegisterStylesheet(Globals.HostPath + "admin.css", FileOrder.Css.AdminCss, false);
             }
 
             if (!string.IsNullOrEmpty(model.ContentPaneStyle))
@@ -156,8 +154,8 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             var req = request.Params;
             var isMyRoute = req["MODULEID"] != null && req["CONTROLLER"] != null && int.TryParse(req["MODULEID"], out var moduleId) && moduleId == model.ModuleConfiguration.ModuleID;
 
-            var url = isMyRoute ? 
-                    request.Url.ToString() : 
+            var url = isMyRoute ?
+                    request.Url.ToString() :
                     TestableGlobals.Instance.NavigateURL(model.ModuleConfiguration.TabID, TestableGlobals.Instance.IsHostTab(model.ModuleConfiguration.TabID), model.PortalSettings, string.Empty, routeValues);
 
             moduleContentPaneDiv.InnerHtml += $"<form action=\"{url}\" method=\"post\">";

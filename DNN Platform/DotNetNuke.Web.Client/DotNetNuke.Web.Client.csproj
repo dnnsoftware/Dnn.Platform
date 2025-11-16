@@ -124,7 +124,6 @@
     <Compile Include="Controls\DnnJsInclude.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ClientResourceSettings.cs" />
-    <Compile Include="MvcClientResourceManager.cs" />
     <Compile Include="Providers\DnnBodyProvider.cs" />
     <Compile Include="Providers\DnnCompositeFileProcessingProvider.cs" />
     <Compile Include="Providers\DnnFileRegistrationProvider.cs" />

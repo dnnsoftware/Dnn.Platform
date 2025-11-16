@@ -8,7 +8,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using System.Collections.Generic;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
-
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -19,12 +19,12 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcWebsite.Models;
@@ -106,6 +106,12 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             }
         }
 
+        private readonly IClientResourceController clientResourceController;
+        public ModuleActionsViewController(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController;
+        }
+
         [ChildActionOnly]
         public ActionResult Invoke(ControlViewModel input)
         {
@@ -158,9 +164,9 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // this.actionButton.Click += this.ActionButton_Click;
             MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
-            MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/admin/menus/ModuleActions/ModuleActions.js");
+            this.clientResourceController.RegisterStylesheet("~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
+            this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
@@ -213,12 +219,12 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                     }
                     */
                     moduleSpecificActions.Actions.Add(action);
-                    
+
                     if (!UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
                     {
                         action.ClientScript = UrlUtils.PopUpUrl(action.Url, null, this.PortalSettings, true, false);
                     }
-                    
+
                 }
             }
 

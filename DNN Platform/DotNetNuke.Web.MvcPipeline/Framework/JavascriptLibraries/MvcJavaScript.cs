@@ -1,12 +1,13 @@
 ﻿namespace DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -18,9 +19,9 @@
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class MvcJavaScript
     {
@@ -160,6 +161,8 @@
 
         public static void RegisterClientReference(ControllerContext page, ClientAPI.ClientNamespaceReferences reference)
         {
+            var controller = GetClientResourcesController();
+
             switch (reference)
             {
                 case ClientAPI.ClientNamespaceReferences.dnn:
@@ -170,8 +173,14 @@
                     }
 
                     // MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "MicrosoftAjax.js", 10);
-                    MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "mvc.js", 11);
-                    MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
+                    controller.CreateScript()
+                              .FromSrc(ClientAPI.ScriptPath + "mvc.js")
+                              .SetPriority(11)
+                              .Register();
+                    controller.CreateScript()
+                              .FromSrc(ClientAPI.ScriptPath + "dnn.js")
+                              .SetPriority(12)
+                              .Register();
                     HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
 
                     // page.ClientScript.RegisterClientScriptBlock(page.GetType(), "dnn.js", string.Empty);
@@ -188,7 +197,10 @@
                     break;
                 case ClientAPI.ClientNamespaceReferences.dnn_dom_positioning:
                     RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
-                    MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.dom.positioning.js", 13);
+                    controller.CreateScript()
+                              .FromSrc(ClientAPI.ScriptPath + "dnn.dom.positioning.js")
+                              .SetPriority(13)
+                              .Register();
                     break;
             }
         }
@@ -429,7 +441,13 @@
                 return;
             }
 
-            MvcClientResourceManager.RegisterScript(page, GetScriptPath(jsl, HttpContextSource.Current?.Request), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
+            var controller = GetClientResourcesController();
+            controller.CreateScript()
+                  .FromSrc(GetScriptPath(jsl, HttpContextSource.Current?.Request), GetScriptLocation(jsl))
+                  .SetPriority(GetFileOrder(jsl))
+                  .SetNameAndVersion(jsl.LibraryName, jsl.Version.ToString(3), false)
+                  .Register();
+
             /*
             if (Host.CdnEnabled && !string.IsNullOrEmpty(jsl.ObjectName))
             {
@@ -478,6 +496,12 @@
                 default:
                     return jsl.PackageID + (int)FileOrder.Js.DefaultPriority;
             }
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = DotNetNuke.Common.Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

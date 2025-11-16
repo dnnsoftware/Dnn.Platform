@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
     using System.Linq;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -15,8 +16,8 @@ namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
     using DotNetNuke.Framework;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Security.Models;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 
@@ -28,7 +29,7 @@ namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
         private List<PermissionInfoBase> permissionsList;
         private int viewColumnIndex;
 
-        public ModulePermissionsGridController()
+        public ModulePermissionsGridController(IClientResourceController clientResourceController) : base(clientResourceController)
         {
             this.TabId = -1;
         }
@@ -86,10 +87,10 @@ namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/js/dnn.permissiongrid.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
+            this.clientResourceController.RegisterScript("~/js/dnn.permissiongrid.js");
 
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css", FileOrder.Css.ResourceCss);
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css", FileOrder.Css.ResourceCss);
 
             var script = "var pgm = new dnn.permissionGridManager('ClientID');";
             MvcClientAPI.RegisterStartupScript("ClientID-PermissionGridManager", script);

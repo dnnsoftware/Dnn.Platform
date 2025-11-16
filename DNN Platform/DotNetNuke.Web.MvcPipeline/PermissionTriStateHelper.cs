@@ -4,14 +4,19 @@
 
 namespace DotNetNuke.MvcPipeline
 {
+    using System;
+    using System.Collections;
+    using System.Web;
     using System.Web.Mvc;
-
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static class PermissionTriStateHelper
     {
@@ -27,7 +32,8 @@ namespace DotNetNuke.MvcPipeline
         {
             const string scriptKey = "initTriState";
             MvcJavaScript.RequestRegistration(CommonJs.jQuery);
-            MvcClientResourceManager.RegisterScript(helper.ViewContext, "/js/dnn.permissiontristate.js");
+            var controller = GetClientResourcesController();
+            controller.RegisterScript("/js/dnn.permissiontristate.js");
             MvcClientAPI.RegisterStartupScript(scriptKey, GetInitScript());
 
             var grantImagePath = IconController.IconURL("Grant");
@@ -135,6 +141,12 @@ namespace DotNetNuke.MvcPipeline
             grantAltText = Localization.GetString("PermissionTypeGrant");
             denyAltText = Localization.GetString("PermissionTypeDeny");
             nullAltText = Localization.GetString("PermissionTypeNull");
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = DotNetNuke.Common.Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }
