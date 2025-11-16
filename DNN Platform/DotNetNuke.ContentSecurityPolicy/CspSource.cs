@@ -14,6 +14,11 @@ namespace DotNetNuke.ContentSecurityPolicy
     public class CspSource
     {
         /// <summary>
+        /// Compiled regex for validating host sources (domain with wildcard, IPv4 and IPv6).
+        /// </summary>
+        private static readonly Regex DomainRegex = new Regex(@"^(https?://)?(([a-zA-Z0-9-*]+\.)+[a-zA-Z]{2,}|\d{1,3}(\.\d{1,3}){3}|\[?[0-9a-fA-F:]+\]?)(:\d+)?(/.*)?$", RegexOptions.Compiled);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CspSource"/> class.
         /// </summary>
         /// <param name="type">Type of the source.</param>
@@ -79,14 +84,13 @@ namespace DotNetNuke.ContentSecurityPolicy
                 throw new ArgumentException("Host source cannot be empty");
             }
 
-            // Basic domain validation
-            var domainRegex = new Regex(@"^(https?://)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(:\d+)?(/.*)?$");
-            if (!domainRegex.IsMatch(value))
+            // domain with wildcard, ip4 and ip6 validation
+            if (!DomainRegex.IsMatch(value))
             {
                 throw new ArgumentException($"Invalid host source: {value}");
             }
 
-            return value.StartsWith("http") ? value : $"https://{value}";
+            return value;
         }
 
         /// <summary>
@@ -94,7 +98,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// </summary>
         private string ValidateSchemeSource(string value)
         {
-            string[] validSchemes = { "http:", "https:", "data:", "blob:", "filesystem:", "wss:", "ws:" };
+            var validSchemes = new string[] { "http:", "https:", "data:", "blob:", "filesystem:", "wss:", "ws:" };
             if (!validSchemes.Contains(value))
             {
                 throw new ArgumentException($"Invalid scheme: {value}");
@@ -123,7 +127,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// </summary>
         private string ValidateHashSource(string value)
         {
-            string[] hashPrefixes = { "sha256-", "sha384-", "sha512-" };
+            var hashPrefixes = new string[] { "sha256-", "sha384-", "sha512-" };
 
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -140,22 +144,6 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
 
             return $"'{value}'";
-        }
-
-        /// <summary>
-        /// Checks if a string is a valid Base64 string.
-        /// </summary>
-        private bool IsBase64String(string value)
-        {
-            try
-            {
-                Convert.FromBase64String(value);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 }

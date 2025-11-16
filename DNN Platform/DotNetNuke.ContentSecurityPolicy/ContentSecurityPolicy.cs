@@ -14,11 +14,6 @@ namespace DotNetNuke.ContentSecurityPolicy
     {
         private string nonce;
 
-        /// <summary>Initializes a new instance of the <see cref="ContentSecurityPolicy"/> class.</summary>
-        public ContentSecurityPolicy()
-        {
-        }
-
         /// <summary>
         /// Gets a cryptographically secure random nonce value for use in CSP policies.
         /// </summary>
@@ -422,7 +417,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 this.AddContributor(contributor);
             }
 
-            contributor.SetDirectiveValue(value);
+            contributor.DirectiveValue = value;
         }
 
         /// <summary>
@@ -439,7 +434,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 this.AddContributor(contributor);
             }
 
-            contributor.SetDirectiveValue(value);
+            contributor.DirectiveValue = value;
         }
 
         /// <summary>

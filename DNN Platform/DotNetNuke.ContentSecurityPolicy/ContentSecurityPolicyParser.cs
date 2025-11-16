@@ -169,7 +169,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// </summary>
         private static bool IsScheme(string source)
         {
-            string[] knownSchemes = { "http:", "https:", "data:", "blob:", "filesystem:", "wss:", "ws:" };
+            var knownSchemes = new string[] { "http:", "https:", "data:", "blob:", "filesystem:", "wss:", "ws:" };
             return knownSchemes.Contains(source.ToLowerInvariant());
         }
 

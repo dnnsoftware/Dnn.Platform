@@ -7,7 +7,7 @@ namespace DotNetNuke.ContentSecurityPolicy
     using System;
 
     /// <summary>
-    /// Interface définissant les opérations de gestion de la Content Security Policy.
+    /// Interface defining Content Security Policy management operations.
     /// </summary>
     public interface IContentSecurityPolicy
     {
@@ -77,48 +77,48 @@ namespace DotNetNuke.ContentSecurityPolicy
         SourceCspContributor BaseUriSource { get; }
 
         /// <summary>
-        /// Supprimer une source de script à la politique.
+        /// Removes a script source from the policy.
         /// </summary>
-        /// <param name="cspSourceType">Le type de source CSP à supprimer.</param>
+        /// <param name="cspSourceType">The CSP source type to remove.</param>
         void RemoveScriptSources(CspSourceType cspSourceType);
 
         /// <summary>
-        /// Ajoute des types de plugins à la politique.
+        /// Adds plugin types to the policy.
         /// </summary>
-        /// <param name="value">Le type de plugin à autoriser.</param>
+        /// <param name="value">The plugin type to allow.</param>
         void AddPluginTypes(string value);
 
         /// <summary>
-        /// Ajoute une directive sandbox à la politique.
+        /// Adds a sandbox directive to the policy.
         /// </summary>
-        /// <param name="value">Les options de la directive sandbox.</param>
+        /// <param name="value">The sandbox directive options.</param>
         void AddSandbox(string value);
 
         /// <summary>
-        /// Ajoute une action de formulaire à la politique.
+        /// Adds a form action to the policy.
         /// </summary>
-        /// <param name="sourceType">Le type de source CSP à ajouter.</param>
-        /// <param name="value">L'URL autorisée pour la soumission du formulaire.</param>
+        /// <param name="sourceType">The CSP source type to add.</param>
+        /// <param name="value">The allowed URL for form submission.</param>
         void AddFormAction(CspSourceType sourceType, string value);
 
         /// <summary>
-        /// Ajoute des ancêtres de frame à la politique.
+        /// Adds frame ancestors to the policy.
         /// </summary>
-        /// <param name="sourceType">Le type de source CSP à ajouter.</param>
-        /// <param name="value">L'URL autorisée comme ancêtre de frame.</param>
+        /// <param name="sourceType">The CSP source type to add.</param>
+        /// <param name="value">The allowed URL as a frame ancestor.</param>
         void AddFrameAncestors(CspSourceType sourceType, string value);
 
         /// <summary>
-        /// Ajoute une URI de rapport à la politique.
+        /// Adds a report URI to the policy.
         /// </summary>
-        /// <param name="name">Le nom où les rapports de violation seront envoyés.</param>
-        /// <param name="value">L'URI où les rapports de violation seront envoyés.</param>
+        /// <param name="name">The name where violation reports will be sent.</param>
+        /// <param name="value">The URI where violation reports will be sent.</param>
         public void AddReportEndpoint(string name, string value);
 
         /// <summary>
-        /// Ajoute une destination de rapport à la politique.
+        /// Adds a report destination to the policy.
         /// </summary>
-        /// <param name="value">L'endpoint où envoyer les rapports.</param>
+        /// <param name="value">The endpoint where reports will be sent.</param>
         void AddReportTo(string value);
 
         /// <summary>
@@ -130,22 +130,22 @@ namespace DotNetNuke.ContentSecurityPolicy
         IContentSecurityPolicy AddHeader(string cspHeader);
 
         /// <summary>
-        /// Ajoute une directive de rapport à la politique.
+        /// Adds a report directive to the policy.
         /// </summary>
-        /// <param name="header">La directive de rapport à ajouter.</param>
+        /// <param name="header">The report directive to add.</param>
         /// <returns>A ContentSecurityPolicy object representing the parsed header.</returns>
         IContentSecurityPolicy AddReportEndpointHeader(string header);
 
         /// <summary>
-        /// Génère la politique de sécurité complète.
+        /// Generates the complete security policy.
         /// </summary>
-        /// <returns>La politique de sécurité complète sous forme de chaîne.</returns>
+        /// <returns>The complete security policy as a string.</returns>
         string GeneratePolicy();
 
         /// <summary>
-        /// Génère la politique de sécurité complète.
+        /// Generates the reporting endpoints.
         /// </summary>
-        /// <returns>Reporting Endpoints sous forme de chaîne.</returns>
+        /// <returns>Reporting Endpoints as a string.</returns>
         string GenerateReportingEndpoints();
 
         /// <summary>

@@ -6,12 +6,20 @@ namespace DotNetNuke.ContentSecurityPolicy
 {
     using System;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Contributor for document-level directives.
     /// </summary>
     public class DocumentCspContributor : BaseCspContributor
     {
+        /// <summary>
+        /// Compiled regex for validating MIME type format (type/subtype).
+        /// </summary>
+        private static readonly Regex MimeTypeRegex = new Regex(@"^[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_.+]*/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_.+]*$", RegexOptions.Compiled);
+
+        private string directiveValue;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentCspContributor"/> class.
         /// </summary>
@@ -20,22 +28,24 @@ namespace DotNetNuke.ContentSecurityPolicy
         public DocumentCspContributor(CspDirectiveType directiveType, string value)
         {
             this.DirectiveType = directiveType;
-            this.SetDirectiveValue(value);
+            this.DirectiveValue = value;
         }
 
         /// <summary>
-        /// Gets value of the document directive.
+        /// Gets or Sets value of the document directive.
         /// </summary>
-        public string DirectiveValue { get; private set; }
-
-        /// <summary>
-        /// Sets the directive value with validation.
-        /// </summary>
-        /// <param name="value">The value to set for the directive.</param>
-        public void SetDirectiveValue(string value)
+        public string DirectiveValue
         {
-            this.ValidateDirectiveValue(this.DirectiveType, value);
-            this.DirectiveValue = value;
+            get
+            {
+                return this.directiveValue;
+            }
+
+            set
+            {
+                this.ValidateDirectiveValue(this.DirectiveType, value);
+                this.directiveValue = value;
+            }
         }
 
         /// <summary>
@@ -76,16 +86,20 @@ namespace DotNetNuke.ContentSecurityPolicy
         }
 
         /// <summary>
-        /// Validates plugin types.
+        /// Validates plugin types (MIME types).
         /// </summary>
         private void ValidatePluginTypes(string value)
         {
-            string[] validPluginTypes = { "application/pdf", "image/svg+xml" };
-            var types = value.Split(' ');
-
-            if (types.Any(t => !validPluginTypes.Contains(t)))
+            if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Invalid plugin type");
+                throw new ArgumentException("Plugin types cannot be empty");
+            }
+
+            var types = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (types.Any(t => !MimeTypeRegex.IsMatch(t)))
+            {
+                throw new ArgumentException($"Invalid MIME type format: {value}");
             }
         }
 
@@ -97,17 +111,23 @@ namespace DotNetNuke.ContentSecurityPolicy
             string[] validSandboxValues =
             {
                 "allow-forms",
-                "allow-scripts",
-                "allow-same-origin",
-                "allow-top-navigation",
+                "allow-modals",
+                "allow-orientation-lock",
+                "allow-pointer-lock",
                 "allow-popups",
+                "allow-popups-to-escape-sandbox",
+                "allow-presentation",
+                "allow-same-origin",
+                "allow-scripts",
+                "allow-top-navigation",
+                "allow-top-navigation-by-user-activation",
             };
 
-            var values = value.Split(' ');
+            var values = value.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (values.Any(v => !validSandboxValues.Contains(v)))
             {
-                throw new ArgumentException("Invalid sandbox directive value");
+                throw new ArgumentException($"Invalid sandbox directive value: {value}");
             }
         }
     }

@@ -18,7 +18,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportingCspContributor"/> class.
         /// </summary>
-        /// <param name="directiveType">Le type de directive de rapport (ReportUri ou ReportTo).</param>
+        /// <param name="directiveType">The reporting directive type (ReportUri or ReportTo).</param>
         public ReportingCspContributor(CspDirectiveType directiveType)
         {
             if (directiveType != CspDirectiveType.ReportUri && directiveType != CspDirectiveType.ReportTo)
@@ -37,7 +37,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <summary>
         /// Adds a reporting endpoint.
         /// </summary>
-        /// <param name="endpoint">L'URL de l'endpoint où envoyer les rapports.</param>
+        /// <param name="endpoint">The URL of the endpoint where reports will be sent.</param>
         public void AddReportingEndpoint(string endpoint)
         {
             this.ValidateReportingEndpoint(endpoint);
@@ -104,8 +104,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
 
             // URL validation regex
-            var urlRegex = new Regex(@"^(https?://)?([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*)?(:\d+)?(/.*)?$");
-            if (!urlRegex.IsMatch(endpoint))
+            if (!Uri.TryCreate(endpoint, UriKind.Absolute, out Uri uriResult))
             {
                 throw new ArgumentException($"Invalid reporting endpoint: {endpoint}");
             }
