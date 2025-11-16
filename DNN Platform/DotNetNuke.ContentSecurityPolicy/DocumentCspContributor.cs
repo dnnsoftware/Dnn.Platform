@@ -108,7 +108,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// </summary>
         private void ValidateSandboxDirective(string value)
         {
-            string[] validSandboxValues =
+            var validSandboxValues = new string[]
             {
                 "allow-forms",
                 "allow-modals",
