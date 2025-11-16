@@ -137,7 +137,7 @@ namespace DotNetNuke.Entities.Portals
             /// <summary>Content Security Header is not added.</summary>
             Off = 0,
 
-            /// <summary>Content Security Header is not added in Report Only.</summary>
+            /// <summary>Content Security Header is added in Report Only mode.</summary>
             ReportOnly = 1,
 
             /// <summary>Content Security Header is added.</summary>
