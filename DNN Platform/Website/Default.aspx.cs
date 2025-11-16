@@ -232,28 +232,25 @@ namespace DotNetNuke.Framework
             // set global page settings
             this.InitializePage();
 
-            if (!this.PortalSettings.CspHeaderFixed &&
-                (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
-                  this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly))
+            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On ||
+                this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
             {
-                try
+                // If not fixed, we need to setup the default CSP settings
+                // After this modules can add there policies via the ContentSecurityPolicy service
+                if (!this.PortalSettings.CspHeaderFixed)
                 {
-                    if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+                    try
                     {
-                        this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+                        this.AddCspHeaders();
+
+                        // Add policies for webforms framework inline scripts and eval usage
+                        this.ContentSecurityPolicy.ScriptSource.AddInline();
+                        this.ContentSecurityPolicy.ScriptSource.AddEval();
                     }
-
-                    this.ContentSecurityPolicy.ScriptSource.AddInline();
-                    this.ContentSecurityPolicy.ScriptSource.AddEval();
-
-                    if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+                    catch (Exception ex)
                     {
-                        this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+                        Logger.Error("CSP error", ex);
                     }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("CSP error", ex);
                 }
             }
 
@@ -420,19 +417,12 @@ namespace DotNetNuke.Framework
                     header = "Content-Security-Policy-Report-Only";
                 }
 
+                // If fixed, we need to clear any existing contributors and just use the fixed headers
                 if (this.PortalSettings.CspHeaderFixed)
                 {
                     this.ContentSecurityPolicy.ClearContentSecurityPolicyContributors();
-                    if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
-                    {
-                        this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
-                    }
-
                     this.ContentSecurityPolicy.ClearReportingEndpointsContributors();
-                    if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
-                    {
-                        this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
-                    }
+                    this.AddCspHeaders();
                 }
 
                 var policy = this.ContentSecurityPolicy.GeneratePolicy();
@@ -944,6 +934,19 @@ namespace DotNetNuke.Framework
             File.WriteAllText(physicalPath, styles);
 
             return webPath;
+        }
+
+        private void AddCspHeaders()
+        {
+            if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+            {
+                this.ContentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+            }
+
+            if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+            {
+                this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+            }
         }
     }
 }
