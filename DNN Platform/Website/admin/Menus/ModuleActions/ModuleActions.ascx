@@ -24,133 +24,143 @@
 %>
 
 <script type="text/javascript">
-    /*globals jQuery, window */
-    (function ($) {
-        var moduleId = <% = ModuleContext.ModuleId %>;
-        var displayQuickSettings = <% = DisplayQuickSettings.ToString().ToLower() %>;
-        var supportsQuickSettings = <% = SupportsQuickSettings.ToString().ToLower() %>;
+/*globals jQuery, window*/
+(function ($) {
+    var moduleId = <%= ModuleContext.ModuleId %>;
+    var displayQuickSettings = <%= DisplayQuickSettings.ToString().ToLower() %>;
+    var supportsQuickSettings = <%= SupportsQuickSettings.ToString().ToLower() %>;
 
-        function setUpActions() {
-            var tabId = <% = ModuleContext.TabId %>;
+    // Initialize the DNN module actions plugin
+    function setUpActions() {
+        var tabId = <%= ModuleContext.TabId %>;
+        $('#<%= actionButton.ClientID %>').dnnModuleActions({
+            actionButton: "<%=actionButton.UniqueID %>",
+            moduleId: moduleId,
+            tabId: tabId,
+            customActions: <%= CustomActionsJSON %>,
+            adminActions: <%= AdminActionsJSON %>,
+            panes: <%= Panes %>,
+            customText: "<%= CustomText %>",
+            adminText: "<%= AdminText %>",
+            moveText: "<%= MoveText %>",
+            topText: '<%= Localization.GetSafeJSString(LocalizeString("MoveTop.Action")) %>',
+            upText: '<%= Localization.GetSafeJSString(LocalizeString("MoveUp.Action")) %>',
+            downText: '<%= Localization.GetSafeJSString(LocalizeString("MoveDown.Action")) %>',
+            bottomText: '<%= Localization.GetSafeJSString(LocalizeString("MoveBottom.Action")) %>',
+            movePaneText: '<%= Localization.GetSafeJSString(LocalizeString("MoveToPane.Action")) %>',
+            deleteText: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
+            yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
+            noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
+            confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
+            sharedText: '<%= Localization.GetSafeJSString("ModuleShared.Text", Localization.SharedResourceFile) %>',
+            rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
+            supportsMove: <%= SupportsMove.ToString().ToLower() %>,
+            supportsQuickSettings: supportsQuickSettings,
+            displayQuickSettings: displayQuickSettings,
+            isShared: <%= IsShared.ToString().ToLower() %>,
+            moduleTitle: '<%= Localization.GetSafeJSString(ModuleTitle) %>'
+        });
+    }
 
-            //Initialise the actions menu plugin
-            $('#<%= actionButton.ClientID %>').dnnModuleActions({
-                    actionButton: "<% =actionButton.UniqueID %>",
-                    moduleId: moduleId,
-                    tabId: tabId,
-                    customActions: <% = CustomActionsJSON %>,
-                    adminActions: <% = AdminActionsJSON %>,
-                    panes: <% = Panes %>,
-                    customText: "<% = CustomText %>",
-                    adminText: "<% = AdminText %>",
-                    moveText: "<% = MoveText %>",
-                    topText: '<% = Localization.GetSafeJSString(LocalizeString("MoveTop.Action"))%>',
-                    upText: '<% = Localization.GetSafeJSString(LocalizeString("MoveUp.Action"))%>',
-                    downText: '<% = Localization.GetSafeJSString(LocalizeString("MoveDown.Action"))%>',
-                    bottomText: '<% = Localization.GetSafeJSString(LocalizeString("MoveBottom.Action"))%>',
-                    movePaneText: '<% = Localization.GetSafeJSString(LocalizeString("MoveToPane.Action"))%>',
-                    deleteText: '<%= Localization.GetSafeJSString("DeleteItem.Text", Localization.SharedResourceFile) %>',
-                    yesText: '<%= Localization.GetSafeJSString("Yes.Text", Localization.SharedResourceFile) %>',
-                    noText: '<%= Localization.GetSafeJSString("No.Text", Localization.SharedResourceFile) %>',
-                    confirmTitle: '<%= Localization.GetSafeJSString("Confirm.Text", Localization.SharedResourceFile) %>',
-                    sharedText: '<%= Localization.GetSafeJSString("ModuleShared.Text", Localization.SharedResourceFile) %>',
-                    rootFolder: '<%= Page.ResolveClientUrl("~/") %>',
-                    supportsMove: <% = SupportsMove.ToString().ToLower() %>,
-                    supportsQuickSettings: supportsQuickSettings,
-                    displayQuickSettings: displayQuickSettings,
-                    isShared : <% = IsShared.ToString().ToLower() %>,
-                    moduleTitle: '<% = Localization.GetSafeJSString(ModuleTitle) %>'
+    // Positions all module menus relative to their modules
+    function positionMenus() {
+        $('.actionMenu').each(function () {
+            var $menu = $(this);
+            var id = $menu.attr('id');
+            if (!id) return;
+
+            var mId = id.split('-')[1];
+            if (moduleId != mId) return;
+
+            var container = $(".DnnModule-" + mId + " .dnnDragHint");
+            if (!container.length) return;
+
+            var root = $('ul.dnn_mact', $menu);
+
+            // Absolute positioning relative to body
+            var moduleOffset = container.offset();
+            var bodyOffset = $('body').offset() || { top: 0, left: 0 };
+
+            root.css({
+                position: "absolute",
+                top: moduleOffset.top,
+                left: moduleOffset.left + container.outerWidth() - root.outerWidth()
+            });
+
+            // Quick Settings overlay
+            if (displayQuickSettings) {
+                var ul = $('#moduleActions-' + mId + ' .dnn_mact > li.actionQuickSettings > ul');
+                var $self = ul.parent();
+                if ($self.length > 0) {
+                    var windowHeight = $(window).height();
+                    var windowScroll = $(window).scrollTop();
+                    var thisTop = $self.offset().top;
+                    var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
+                    var ulHeight = ul.height();
+
+                    if (!atViewPortTop) {
+                        ul.css({ top: -ulHeight, right: 0 })
+                          .show('slide', { direction: 'down' }, 80, function () {
+                              dnn.addIframeMask(ul[0]);
+                              displayQuickSettings = false;
+                          });
+                    } else {
+                        ul.css({ top: 20, right: 0 })
+                          .show('slide', { direction: 'up' }, 80, function () {
+                              dnn.addIframeMask(ul[0]);
+                              displayQuickSettings = false;
+                          });
+                    }
                 }
-            );
-        }
-
-        // register window resize on ajaxComplete to reposition action menus - only in edit mode
-        // after page fully load
-        var resizeThrottle;
-        $(window).on('resize scroll', function () {
-            if (resizeThrottle) {
-                clearTimeout(resizeThrottle);
-                resizeThrottle = null;
             }
-            resizeThrottle = setTimeout(
-                function () {
-                    var menu = $('.actionMenu');
-                    menu.each(function () {
-                        var $this = $(this);
-                        var id = $this.attr('id');
-                        if (id) {
-                            var mId = id.split('-')[1];
-                            if (moduleId == mId) {
-                                var container = $(".DnnModule-" + mId);
-                                var root = $('ul.dnn_mact', $this);
-                                var containerPosition = container.offset();
-                                var containerWidth = container.width();
+        });
+    }
 
-                                var rootMenuWidth = root.outerWidth(true);
+    // Waits until the body has the expected left margin
+    function waitForBodyMargin(expectedMargin, callback) {
+        var $body = $('body');
+        var stableCount = 0;
+        var interval = setInterval(function () {
+            var currentMargin = parseInt($body.css('margin-left')) || 0;
+            if (currentMargin === expectedMargin) {
+                stableCount++;
+                if (stableCount >= 2) { // stable for two consecutive checks
+                    clearInterval(interval);
+                    callback();
+                }
+            } else {
+                stableCount = 0;
+            }
+        }, 50); // check every 50ms
+    }
 
-                                var $body = $(document.body);
-                                var positionCss = $body.css('position');
-                                var marginLeft = parseInt($body.css('margin-left'));
+    // Safe positioning wrapper
+    function safePositionMenus() {
+        waitForBodyMargin(80, positionMenus);
+    }
 
-                                root.css({
-                                    position: "absolute",
-                                    marginLeft: 0,
-                                    marginTop: 0,
-                                    top: containerPosition.top,
-                                    left: containerPosition.left + containerWidth - rootMenuWidth - (positionCss === "relative" ? marginLeft : 0)
-                                });
+    // Throttled resize/scroll handler
+    var resizeThrottle;
+    $(window).on('resize scroll', function () {
+        if (resizeThrottle) clearTimeout(resizeThrottle);
+        resizeThrottle = setTimeout(function () {
+            safePositionMenus();
+            resizeThrottle = null;
+        }, 100);
+    });
 
-                                if (displayQuickSettings) {
-                                    var ul = $('#moduleActions-' + mId + ' .dnn_mact > li.actionQuickSettings > ul');
-                                    var $self = ul.parent();
-                                    if ($self.length > 0) {
-                                        var windowHeight = $(window).height();
-                                        var windowScroll = $(window).scrollTop();
-                                        var thisTop = $self.offset().top;
-                                        var atViewPortTop = (thisTop - windowScroll) < windowHeight / 2;
+    // Initialize everything after window load
+    $(window).on('load', function () {
+        setUpActions();
 
-                                        var ulHeight = ul.height();
-
-                                        if (!atViewPortTop) {
-                                            ul.css({
-                                                top: -ulHeight,
-                                                right: 0
-                                            }).show('slide', { direction: 'down' }, 80, function () {
-                                                dnn.addIframeMask(ul[0]);
-                                                displayQuickSettings = false;
-                                            });
-                                        }
-                                        else {
-                                            ul.css({
-                                                top: 20,
-                                                right: 0
-                                            }).show('slide', { direction: 'up' }, 80, function () {
-                                                dnn.addIframeMask(ul[0]);
-                                                displayQuickSettings = false;
-                                            });
-                                        }
-                                    }
-                                }
-                               
-                            }
-                        }
-                    });
-                    resizeThrottle = null;
-                },
-                100
-            );
+        // Reposition menus after any AJAX completes
+        $(document).ajaxComplete(function () {
+            $(window).resize();
         });
 
-        // Webkit based browsers (like Chrome and Safari) can access images width and height properties only after images have been fully loaded. 
-        // It will cause menu action out of scope, TO fix this, use $(window).load instead of $(document).ready
-        $(window).on('load', function () {
-            setUpActions();
+        // Initial positioning after Persona Bar / body margin applied
+        safePositionMenus();
+    });
 
-            $(document).ajaxComplete(function () {
-                $(window).resize();
-            });
-            $(window).resize();
-        });        
-
-    } (jQuery));
+}(jQuery));
 </script>

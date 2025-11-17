@@ -335,19 +335,17 @@
         }
 
         function position(mId) {
-            var container = $(".DnnModule-" + mId);
+            var container = $(".DnnModule-" + mId + " .dnnDragHint");
             var root = $("#moduleActions-" + mId + " > ul");
-            var containerPosition = container.offset();
-            var containerWidth = container.width();
-
-            var rootMenuWidth = root.outerWidth(true);
+            
+			// Absolute positioning relative to body
+            var moduleOffset = container.offset();
+            var bodyOffset = $('body').offset() || { top: 0, left: 0 };
 
             root.css({
                 position: "absolute",
-                marginLeft: 0,
-                marginTop: 0,
-                top: containerPosition.top,
-                left: containerPosition.left + containerWidth - rootMenuWidth
+                top: moduleOffset.top,
+                left: moduleOffset.left + container.outerWidth() - root.outerWidth()
             });
         }
 
