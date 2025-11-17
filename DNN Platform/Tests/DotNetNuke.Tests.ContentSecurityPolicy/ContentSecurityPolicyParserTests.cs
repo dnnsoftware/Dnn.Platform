@@ -25,7 +25,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -44,7 +44,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "script-src 'self' 'unsafe-inline' https://cdn.example.com";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -67,7 +67,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "script-src 'self' 'nonce-abc123def456'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -89,7 +89,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "style-src 'self' 'sha256-abc123def456789'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -111,7 +111,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'; script-src 'self' 'strict-dynamic'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' wss:; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests; report-uri http://csp-report";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -146,7 +146,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "sandbox allow-forms allow-scripts; script-src 'self'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -169,7 +169,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "form-action 'self' https://secure.example.com";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -191,7 +191,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'; img-src 'self' https://front.satrabel.be https://www.googletagmanager.com https://region1.google-analytics.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com https://www.googletagmanager.com; frame-ancestors 'self'; frame-src 'self'; form-action 'self'; object-src 'none'; base-uri 'self'; script-src 'nonce-hq9CE6VltPZiiySID0F9914GvPObOnIAN3Qs/0R+AmQ=' 'strict-dynamic'; report-to csp-endpoint; report-uri https://dnncore.satrabel.be/DesktopModules/Csp/Report; connect-src https://www.googletagmanager.com https://region1.google-analytics.com https://www.google-analytics.com; upgrade-insecure-requests";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -230,7 +230,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -250,7 +250,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = string.Empty;
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -268,7 +268,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             string cspHeader = null;
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act & Assert
@@ -284,7 +284,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = string.Empty;
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act & Assert
@@ -300,7 +300,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "   ";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act & Assert
@@ -316,7 +316,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "img-src 'self' data: https: blob: filesystem:";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -341,7 +341,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "script-src 'sha256-abc123' 'sha384-def456' 'sha512-ghi789'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -365,6 +365,32 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
             // Act & Assert
             var exception = Assert.ThrowsException<ArgumentNullException>(() => new ContentSecurityPolicyParser(null));
             exception.ParamName.Should().Be("policy");
+        }
+
+        /// <summary>
+        /// Tests that constructor with null policy throws ArgumentNullException.
+        /// </summary>
+        [TestMethod]
+        public void InvalidHost_ShouldThrowArgumentException()
+        {
+            // Act & Assert
+            var policy = new ContentSecurityPolicy(true);
+            
+            var exception = Assert.ThrowsException<ArgumentException>(() => policy.ScriptSource.AddHost("http:///x.x"));
+            exception.Message.Should().Contain("host");
+        }
+
+        /// <summary>
+        /// Tests that constructor with null policy throws ArgumentNullException.
+        /// </summary>
+        [TestMethod]
+        public void InvalidHost_WithoutSyntaxCheck_ShouldNotThrowException()
+        {
+            // Act & Assert
+            var policy = new ContentSecurityPolicy(false);
+
+            policy.ScriptSource.AddHost("http:///x.x");
+            policy.Should().NotBeNull();
         }
     }
 }

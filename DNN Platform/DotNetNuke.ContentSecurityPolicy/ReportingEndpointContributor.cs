@@ -15,11 +15,14 @@ namespace DotNetNuke.ContentSecurityPolicy
     /// </summary>
     public class ReportingEndpointContributor : BaseCspContributor
     {
+        private bool checkSyntax;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportingEndpointContributor"/> class.
         /// </summary>
         /// <param name="directiveType">The reporting directive type (ReportUri).</param>
-        public ReportingEndpointContributor(CspDirectiveType directiveType)
+        /// <param name="checkSyntax">Check syntax of value.</param>
+        public ReportingEndpointContributor(CspDirectiveType directiveType, bool checkSyntax)
         {
             if (directiveType != CspDirectiveType.ReportUri)
             {
@@ -27,6 +30,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             }
 
             this.DirectiveType = directiveType;
+            this.checkSyntax = checkSyntax;
         }
 
         /// <summary>
@@ -41,7 +45,11 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <param name="endpoint">The URL of the endpoint where reports will be sent.</param>
         public void AddReportingEndpoint(string name, string endpoint)
         {
-            this.ValidateReportingEndpoint(endpoint);
+            if (this.checkSyntax)
+            {
+                this.ValidateReportingEndpoint(endpoint);
+            }
+
             if (!this.ReportingEndpoints.ContainsKey(name))
             {
                 this.ReportingEndpoints.Add(name, endpoint);

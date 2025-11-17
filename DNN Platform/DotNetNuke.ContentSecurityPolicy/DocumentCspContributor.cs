@@ -20,13 +20,17 @@ namespace DotNetNuke.ContentSecurityPolicy
 
         private string directiveValue;
 
+        private bool checkSyntax;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentCspContributor"/> class.
         /// </summary>
         /// <param name="directiveType">The directive type to create the contributor for.</param>
         /// <param name="value">The value of the directive.</param>
-        public DocumentCspContributor(CspDirectiveType directiveType, string value)
+        /// <param name="checkSyntax">Check syntax of value.</param>
+        public DocumentCspContributor(CspDirectiveType directiveType, string value, bool checkSyntax)
         {
+            this.checkSyntax = checkSyntax;
             this.DirectiveType = directiveType;
             this.DirectiveValue = value;
         }
@@ -43,7 +47,11 @@ namespace DotNetNuke.ContentSecurityPolicy
 
             set
             {
-                this.ValidateDirectiveValue(this.DirectiveType, value);
+                if (this.checkSyntax)
+                {
+                    this.ValidateDirectiveValue(this.DirectiveType, value);
+                }
+
                 this.directiveValue = value;
             }
         }
@@ -80,8 +88,6 @@ namespace DotNetNuke.ContentSecurityPolicy
                 case CspDirectiveType.SandboxDirective:
                     this.ValidateSandboxDirective(value);
                     break;
-
-                    // Add more specific validations as needed
             }
         }
 

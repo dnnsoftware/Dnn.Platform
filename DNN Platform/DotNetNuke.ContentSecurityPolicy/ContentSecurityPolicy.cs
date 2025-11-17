@@ -13,6 +13,24 @@ namespace DotNetNuke.ContentSecurityPolicy
     public class ContentSecurityPolicy : IContentSecurityPolicy
     {
         private string nonce;
+        private bool checkSyntax;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentSecurityPolicy"/> class.
+        /// </summary>
+        /// <param name="checkSyntax">Check syntax.</param>
+        public ContentSecurityPolicy(bool checkSyntax)
+        {
+            this.checkSyntax = checkSyntax;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentSecurityPolicy"/> class.
+        /// </summary>
+        public ContentSecurityPolicy()
+            : this(false)
+        {
+        }
 
         /// <summary>
         /// Gets a cryptographically secure random nonce value for use in CSP policies.
@@ -334,7 +352,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var directive = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
             if (directive == null)
             {
-                directive = new SourceCspContributor(directiveType);
+                directive = new SourceCspContributor(directiveType, this.checkSyntax);
                 this.AddContributor(directive);
             }
 
@@ -374,7 +392,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
             if (contributor == null)
             {
-                contributor = new SourceCspContributor(directiveType);
+                contributor = new SourceCspContributor(directiveType, this.checkSyntax);
                 this.AddContributor(contributor);
             }
 
@@ -383,7 +401,7 @@ namespace DotNetNuke.ContentSecurityPolicy
                 value = this.Nonce;
             }
 
-            contributor.AddSource(new CspSource(sourceType, value));
+            contributor.AddSource(new CspSource(sourceType, value, this.checkSyntax));
         }
 
         /// <summary>
@@ -396,7 +414,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as SourceCspContributor;
             if (contributor == null)
             {
-                contributor = new SourceCspContributor(directiveType);
+                contributor = new SourceCspContributor(directiveType, this.checkSyntax);
                 this.AddContributor(contributor);
             }
 
@@ -413,7 +431,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
             if (contributor == null)
             {
-                contributor = new DocumentCspContributor(directiveType, value);
+                contributor = new DocumentCspContributor(directiveType, value, this.checkSyntax);
                 this.AddContributor(contributor);
             }
 
@@ -430,7 +448,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as DocumentCspContributor;
             if (contributor == null)
             {
-                contributor = new DocumentCspContributor(directiveType, value);
+                contributor = new DocumentCspContributor(directiveType, value, this.checkSyntax);
                 this.AddContributor(contributor);
             }
 
@@ -447,7 +465,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var contributor = this.ContentSecurityPolicyContributors.FirstOrDefault(c => c.DirectiveType == directiveType) as ReportingCspContributor;
             if (contributor == null)
             {
-                contributor = new ReportingCspContributor(directiveType);
+                contributor = new ReportingCspContributor(directiveType, this.checkSyntax);
                 this.AddContributor(contributor);
             }
 
@@ -464,7 +482,7 @@ namespace DotNetNuke.ContentSecurityPolicy
             var contributor = this.ReportingEndpointsContributors.FirstOrDefault(c => c.DirectiveType == CspDirectiveType.ReportUri) as ReportingEndpointContributor;
             if (contributor == null)
             {
-                contributor = new ReportingEndpointContributor(CspDirectiveType.ReportUri);
+                contributor = new ReportingEndpointContributor(CspDirectiveType.ReportUri, this.checkSyntax);
                 this.AddReportingEndpointsContributors(contributor);
             }
 

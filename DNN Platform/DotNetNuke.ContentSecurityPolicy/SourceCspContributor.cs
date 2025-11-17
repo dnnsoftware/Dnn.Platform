@@ -14,13 +14,17 @@ namespace DotNetNuke.ContentSecurityPolicy
     /// </summary>
     public class SourceCspContributor : BaseCspContributor
     {
+        private bool checkSyntax;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SourceCspContributor"/> class.
         /// </summary>
         /// <param name="directiveType">The directive type to create the contributor for.</param>
-        public SourceCspContributor(CspDirectiveType directiveType)
+        /// <param name="checkSyntax">Check syntax of value.</param>
+        public SourceCspContributor(CspDirectiveType directiveType, bool checkSyntax)
         {
             this.DirectiveType = directiveType;
+            this.checkSyntax = checkSyntax;
         }
 
         /// <summary>
@@ -67,7 +71,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddHost(string host)
         {
-            return this.AddSource(new CspSource(CspSourceType.Host, host));
+            return this.AddSource(new CspSource(CspSourceType.Host, host, this.checkSyntax));
         }
 
         /// <summary>
@@ -77,7 +81,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddScheme(string scheme)
         {
-            return this.AddSource(new CspSource(CspSourceType.Scheme, scheme));
+            return this.AddSource(new CspSource(CspSourceType.Scheme, scheme, this.checkSyntax));
         }
 
         /// <summary>
@@ -87,7 +91,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddNonce(string nonce)
         {
-            return this.AddSource(new CspSource(CspSourceType.Nonce, nonce));
+            return this.AddSource(new CspSource(CspSourceType.Nonce, nonce, this.checkSyntax));
         }
 
         /// <summary>
@@ -97,7 +101,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <returns>The current instance for method chaining.</returns>
         public SourceCspContributor AddHash(string hash)
         {
-            return this.AddSource(new CspSource(CspSourceType.Hash, hash));
+            return this.AddSource(new CspSource(CspSourceType.Hash, hash, this.checkSyntax));
         }
 
         /// <summary>

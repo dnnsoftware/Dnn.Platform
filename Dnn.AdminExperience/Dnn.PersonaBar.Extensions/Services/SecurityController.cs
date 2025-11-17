@@ -1458,7 +1458,7 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var policy = new ContentSecurityPolicy();
+                var policy = new ContentSecurityPolicy(true);
                 var parser = new ContentSecurityPolicyParser(policy);
                 try
                 {

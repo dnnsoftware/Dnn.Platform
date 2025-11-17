@@ -25,7 +25,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.example.com 'nonce-abc123' cdn.example.com cdn.example.com/ *.example.com 10.10.10.10 https://*.example.com:12/path/to/file.js http://[fe80::1]/index.html; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; font-src 'self' https://fonts.googleapis.com; frame-ancestors 'none'; report-uri http://csp-report";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -58,7 +58,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'; script-src 'self'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -80,7 +80,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var invalidCspHeader = string.Empty;
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -127,7 +127,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -162,7 +162,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
                            "frame-ancestors 'none'; " +
                            "form-action 'self'; " +
                            "base-uri 'self'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -207,8 +207,8 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         public void Parse_PolicyWithReporting_ShouldParseCorrectly()
         {
             // Arrange
-            var cspHeader = "default-src 'self'; report-uri http:///csp-report; report-to csp-endpoint";
-            var policy = new ContentSecurityPolicy();
+            var cspHeader = "default-src 'self'; report-uri http://csp-report; report-to csp-endpoint";
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -229,7 +229,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var cspHeader = "default-src 'self'; upgrade-insecure-requests";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
@@ -250,7 +250,7 @@ namespace DotNetNuke.ContentSecurityPolicy.Tests
         {
             // Arrange
             var originalCspHeader = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self'";
-            var policy = new ContentSecurityPolicy();
+            var policy = new ContentSecurityPolicy(true);
             var parser = new ContentSecurityPolicyParser(policy);
 
             // Act
