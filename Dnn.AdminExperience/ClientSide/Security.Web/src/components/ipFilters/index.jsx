@@ -128,7 +128,7 @@ class IpFiltersPanelBody extends Component {
                         }
                         <div className="AddItemRow">
                             <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                                <div className="add-icon"><SvgIcons.AddIcon />
                                 </div> {resx.get("cmdAdd") }
                             </div>
                         </div>

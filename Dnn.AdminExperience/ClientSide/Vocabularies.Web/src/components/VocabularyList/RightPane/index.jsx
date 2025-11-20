@@ -333,8 +333,8 @@ class RightPane extends Component {
                         <span className="term-list-label">{LocalizedResources.get("Terms") + " (" + props.totalTermCount + ")"}</span>
                         {this.canEdit() &&
                             <div className="add-term-button do-not-close"
-                                dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon + " " + LocalizedResources.get("AddTerm") }}
                                 onClick={this.openAddTerm.bind(this, false, props.type)}>
+                                <SvgIcons.AddIcon /> {LocalizedResources.get("AddTerm")}
                             </div>
                         }
                         <Scrollbars style={{ width: "345px", height: "300px", border: "1px solid #DBDBDB", marginTop: 10 }}>

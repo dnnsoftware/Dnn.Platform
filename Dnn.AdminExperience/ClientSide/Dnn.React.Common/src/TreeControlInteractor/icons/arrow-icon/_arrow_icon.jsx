@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-
-const arrow_svg = require("!raw-loader!./arrow_bullet.svg").default;
+import ArrowSvg from "./arrow_bullet.svg";
 import { global } from "../../global";
 
 const styles = global.styles;
@@ -60,12 +59,11 @@ export class ArrowIcon extends Component {
         const height = {height:"20px"};
         return (
             <div
-                dangerouslySetInnerHTML={{ __html: arrow_svg }}
                 id={this.id}
                 style={merge(marginTop, padding, baseStyles, height)}
-                src={arrow_svg}
+                src={ArrowSvg}
                 alt="arrow_icon"
-                onClick={this.onMouseDown.bind(this)} />
+                onClick={this.onMouseDown.bind(this)}><ArrowSvg /></div>
         );
          
     }

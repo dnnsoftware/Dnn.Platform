@@ -96,7 +96,8 @@ class SchedulerRow extends Component {
                             </div>
                         }
                         <div className="schedule-item item-row-editButton">
-                            <div className={opened && props.panelIndex === 0 ? "edit-icon-active" : "edit-icon"} title={resx.get("ControlTitle_edit")} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this, 0)}>
+                            <div className={opened && props.panelIndex === 0 ? "edit-icon-active" : "edit-icon"} title={resx.get("ControlTitle_edit")} onClick={this.toggle.bind(this, 0)}>
+                                <SvgIcons.EditIcon />
                             </div>
                         </div>
                     </div>

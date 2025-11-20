@@ -55,14 +55,14 @@ class Term extends Component {
             <li className={className}>
                 <div>
                     {props.children.length > 0 && !state.isOpened &&
-                        <div dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowRightIcon }} className="edit-svg" onClick={this.toggleTerm.bind(this)} ></div>
+                        <div className="edit-svg" onClick={this.toggleTerm.bind(this)}><SvgIcons.ArrowRightIcon /></div>
                     }
                     {props.children.length > 0 && state.isOpened &&
-                        <div dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }} className="edit-svg" onClick={this.toggleTerm.bind(this)} ></div>
+                        <div className="edit-svg" onClick={this.toggleTerm.bind(this)}><SvgIcons.ArrowDownIcon /></div>
                     }
                     <div onClick={this.onLiClick.bind(this)}>
                         <span className="term-name" dangerouslySetInnerHTML={{ __html: props.term.Name }}></span>
-                        {props.isEditable && util.canEdit() && <div className="edit-button" onClick={this.onClick.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>}
+                        {props.isEditable && util.canEdit() && <div className="edit-button" onClick={this.onClick.bind(this)}><SvgIcons.EditIcon /></div>}
                     </div>
                 </div>
                 <Collapsible isOpened={state.isOpened}>{props.children}</Collapsible>

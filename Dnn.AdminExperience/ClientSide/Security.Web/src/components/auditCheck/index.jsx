@@ -147,7 +147,7 @@ class AuditCheckPanelBody extends Component {
         let contentShouldShow = (props.auditCheckResults && props.auditCheckResults.length > 0) ? true : false;
         return (
             <ContentLoadWrapper loadComplete={contentShouldShow}
-                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: SvgIcons.TableEmptyState }} />}>
+                svgSkeleton={<div><SvgIcons.TableEmptyState /></div>}>
                 <div className={styles.auditCheckResults}>
                     <div className="auditcheck-topbar">
                         {resx.get("AuditExplanation")}

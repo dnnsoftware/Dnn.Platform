@@ -5,9 +5,7 @@ import "./style.less";
 import { GridCell, DatePicker, IconButton }  from "@dnnsoftware/dnn-react-common";
 import util from "../../../../utils";
 import resx from "../../../../resources";
-import {
-    roleUsers as RoleUsersActions
-} from "../../../../actions";
+import { roleUsers as RoleUsersActions } from "../../../../actions";
 import xIcon from "../../../../img/common/x.svg?raw";
 
 class UserRow extends Component {
