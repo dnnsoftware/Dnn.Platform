@@ -32,8 +32,8 @@ class DropdownDayPicker extends Component  {
 
      
     render() {
-        const {dropdownIsActive, onDayClick, applyChanges, clearChanges, startDate, endDate, CalendarIcon, toggleDropdownCalendar} = this.props;
-
+        const {dropdownIsActive, onDayClick, applyChanges, clearChanges, startDate, endDate, toggleDropdownCalendar} = this.props;
+        const CalendarIcon = this.props.calendarIcon;
         return (
             <div className="date-picker" ref={node => this.node = node}>
                 <GridCell className="calendar-dropdown-container" columnSize={100} style={{padding: "0px 5px"}}>
@@ -41,10 +41,9 @@ class DropdownDayPicker extends Component  {
                         <p>{this.props.label}</p>
                     </GridCell>
                     <GridCell columnSize={10}>
-                        <div    id="calendar-icon"
+                        <div id="calendar-icon"
                             className="calendar-icon"
-                            dangerouslySetInnerHTML={{__html:CalendarIcon}}
-                            onClick={()=>toggleDropdownCalendar() }/>
+                            onClick={()=>toggleDropdownCalendar() }><CalendarIcon /></div>
                     </GridCell>
                     <div
                         id="calendar-dropdown"
@@ -89,7 +88,7 @@ DropdownDayPicker.propTypes = {
     onDayClick: PropTypes.func.isRequired,
     startDate: PropTypes.instanceOf(Date).isRequired,
     endDate: PropTypes.instanceOf(Date).isRequired,
-    CalendarIcon: PropTypes.node.isRequired,
+    calendarIcon: PropTypes.node.isRequired,
     toggleDropdownCalendar: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired
 };

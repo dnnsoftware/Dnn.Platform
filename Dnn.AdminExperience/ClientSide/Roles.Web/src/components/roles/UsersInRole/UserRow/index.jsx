@@ -6,7 +6,7 @@ import { GridCell, DatePicker, IconButton }  from "@dnnsoftware/dnn-react-common
 import util from "../../../../utils";
 import resx from "../../../../resources";
 import { roleUsers as RoleUsersActions } from "../../../../actions";
-import xIcon from "../../../../img/common/x.svg?raw";
+import XIcon from "../../../../img/common/x.svg";
 
 class UserRow extends Component {
 
@@ -108,7 +108,7 @@ class UserRow extends Component {
                 showIcon={true} showInput={false}
                 onIconClick={this.onExpiresTimeClick.bind(this, props.userDetails, props.index) }             />
         </span> : null;
-        let deleteAction = props.userDetails.allowDelete ? <IconButton customIcon={xIcon} width={17} onClick={this.onDeleteClick.bind(this, props.userDetails, props.index) } /> : null;
+        let deleteAction = props.userDetails.allowDelete ? <IconButton customIcon={XIcon} width={17} onClick={this.onDeleteClick.bind(this, props.userDetails, props.index) } /> : null;
         return <div className={state.editIndex === props.index ? "edit-row" : null}>
             {deleteAction}
             {expiresTimeAction}

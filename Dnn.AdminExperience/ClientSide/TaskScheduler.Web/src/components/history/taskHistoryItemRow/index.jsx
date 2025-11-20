@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import styles from "./style.module.less";
-import checkmarkIcon from "./svg/checkmark.svg?raw";
+import CheckmarkIcon from "./svg/checkmark.svg";
  
 
 class TaskHistoryItemRow extends Component {
@@ -49,7 +49,7 @@ class TaskHistoryItemRow extends Component {
      
     getSucceededDisplay() {
         if (this.props.succeeded) {
-            return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: checkmarkIcon }}></div>;
+            return <div className="checkMarkIcon"><CheckmarkIcon /></div>;
         }
         else return <span>&nbsp; </span>;
     }

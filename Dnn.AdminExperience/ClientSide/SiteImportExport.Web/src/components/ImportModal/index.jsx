@@ -13,7 +13,7 @@ import FiltersBar from "./FiltersBar";
 import ProgressBar from "./ProgressBar";
 import styles from "./style.module.less";
 import util from "utils";
-import noDataImg from "./img/nodata.svg?raw";
+import NoDataIcon from "./img/nodata.svg";
 
 import { Button, GridCell, Pager } from "@dnnsoftware/dnn-react-common";
 
@@ -215,7 +215,7 @@ class ImportModal extends Component {
             {props.selectedPackage && !props.packageVerified &&
                 <div className="package-analyzing">
                     <div className="noDataText">{Localization.get("VerifyPackage")}</div>
-                    <div className="noDataImage" dangerouslySetInnerHTML={{ __html: noDataImg }}></div>
+                    <div className="noDataImage"><NoDataIcon /></div>
                     <ProgressBar className="progressCards" visible={true} loaded={props.importSummary} />
                 </div>}
         </div>;

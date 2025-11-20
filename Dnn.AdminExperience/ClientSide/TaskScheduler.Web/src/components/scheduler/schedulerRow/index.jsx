@@ -8,8 +8,8 @@ import {
     task as TaskActions
 } from "../../../actions";
 import util from "../../../utils";
-import checkmarkIcon from "./../../svg/checkmark.svg?raw";
-import historyIcon from "./../../svg/history.svg?raw";
+import CheckmarkIcon from "./../../svg/checkmark.svg";
+import HistoryIcon from "./../../svg/history.svg";
 
 class SchedulerRow extends Component {
     constructor() {
@@ -63,7 +63,7 @@ class SchedulerRow extends Component {
     getEnabledDisplay() {
         if (this.props.id !== "add") {
             if (this.props.enabled) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: checkmarkIcon }}></div>;
+                return <div className="checkMarkIcon"><CheckmarkIcon /></div>;
             }
             else return <span>&nbsp; </span>;
         }
@@ -91,7 +91,8 @@ class SchedulerRow extends Component {
                             {this.getEnabledDisplay()}</div>
                         {props.id !== "add" &&
                             <div className="schedule-item item-row-historyButton">
-                                <div className={opened && props.panelIndex === 1 ? "history-icon-active" : "history-icon"} title={resx.get("ControlTitle_history")} dangerouslySetInnerHTML={{ __html: historyIcon }} onClick={this.toggle.bind(this, 1)}>
+                                <div className={opened && props.panelIndex === 1 ? "history-icon-active" : "history-icon"} title={resx.get("ControlTitle_history")} onClick={this.toggle.bind(this, 1)}>
+                                    <HistoryIcon />
                                 </div>
                             </div>
                         }
