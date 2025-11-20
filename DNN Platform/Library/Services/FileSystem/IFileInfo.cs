@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         bool IsEnabled { get; }
 
-        /// <summary>Gets a value indicating whether gets a flag which says whether the file has ever been published.</summary>
+        /// <summary>Gets a value indicating whether the file has ever been published.</summary>
         bool HasBeenPublished { get; }
 
         int CreatedByUserID { get; }

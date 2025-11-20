@@ -9,9 +9,6 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DNNMultiStateBoxColumnTemplate
     /// <summary>The DNNMultiStateBoxColumnTemplate provides a Template for the DNNMultiStateBoxColumn.</summary>
     public class DNNMultiStateBoxColumnTemplate : ITemplate
     {
@@ -71,14 +68,13 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets the Design Mode of the Column.</summary>
+        /// <summary>Gets or sets a value indicating whether the Column is in Design Mode.</summary>
         /// <value>A Boolean.</value>
         public bool DesignMode { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether an flag that indicates whether the control is enabled (this is overridden if
-        /// the EnabledField is set
-        /// changed.
+        /// Gets or sets a value indicating whether the control is enabled (this is overridden if
+        /// the EnabledField is set).
         /// </summary>
         /// <value>A Boolean.</value>
         public bool Enabled

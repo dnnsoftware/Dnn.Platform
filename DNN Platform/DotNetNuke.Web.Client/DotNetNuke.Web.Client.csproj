@@ -105,10 +105,14 @@
     <Compile Include="..\..\SolutionInfo.cs">
       <Link>SolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Cdf\BasicFile.cs" />
+    <Compile Include="Cdf\ClientDependencyType.cs" />
+    <Compile Include="Cdf\CssMediaType.cs" />
     <Compile Include="Controls\ClientResourceExclude.cs" />
     <Compile Include="Controls\DnnJsExclude.cs" />
     <Compile Include="Controls\DnnCssExclude.cs" />
     <Compile Include="Controls\DnnJsIncludeFallback.cs" />
+    <Compile Include="Controls\DnnResources.cs" />
     <Compile Include="FileOrder.cs" />
     <Compile Include="Controls\ClientResourceInclude.cs" />
     <Compile Include="Controls\ClientResourceLoader.cs" />
@@ -120,7 +124,6 @@
     <Compile Include="Controls\DnnJsInclude.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ClientResourceSettings.cs" />
-    <Compile Include="MvcClientResourceManager.cs" />
     <Compile Include="Providers\DnnBodyProvider.cs" />
     <Compile Include="Providers\DnnCompositeFileProcessingProvider.cs" />
     <Compile Include="Providers\DnnFileRegistrationProvider.cs" />
@@ -146,6 +149,10 @@
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
       <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj">
+      <Project>{039bafbd-e2db-40c4-b565-c27467d9b5e1}</Project>
+      <Name>DotNetNuke.Web.Client.ResourceManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

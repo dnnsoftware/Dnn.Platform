@@ -9,21 +9,32 @@ namespace DotNetNuke.Services.Tokens
     using System.Collections.Generic;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Property Access implementation for javascript registration.</summary>
     public class JavaScriptPropertyAccess : JsonPropertyAccess<JavaScriptDto>
     {
-        private readonly Page page;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
         /// <param name="page">The current page.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public JavaScriptPropertyAccess(Page page)
+           : this((IClientResourceController)null)
         {
-            this.page = page;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public JavaScriptPropertyAccess(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <inheritdoc/>
@@ -45,14 +56,16 @@ namespace DotNetNuke.Services.Tokens
             }
             else
             {
-                ClientResourceManager.RegisterScript(
-                    this.page,
-                    model.Path,
-                    model.Priority,
-                    model.Provider ?? string.Empty,
-                    model.JsName ?? string.Empty,
-                    model.Version ?? string.Empty,
-                    model.HtmlAttributes);
+                var script = this.clientResourceController
+                    .CreateScript()
+                    .FromSrc(model.Path)
+                    .SetPriority(model.Priority)
+                    .SetProvider(model.Provider)
+                    .SetNameAndVersion(model.JsName, model.Version, false);
+
+                model.HtmlAttributes.ForEach(kvp => script.AddAttribute(kvp.Key, kvp.Value));
+
+                script.Register();
             }
 
             return string.Empty;

@@ -4,7 +4,9 @@
 
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
     using System.Security.Cryptography;
+    using System.Text;
 
     /// <summary>CryptographyUtils is a Utility class that provides Cryptography Utility constants.</summary>
     public static class CryptographyUtils
@@ -43,6 +45,66 @@ namespace DotNetNuke.Common.Utilities
         public static SHA512 CreateSHA512()
         {
             return SHA512.Create(CryptoConfig.AllowOnlyFipsAlgorithms ? SHA512CryptoServiceProvider : SHA512Cng);
+        }
+
+        public static string GenerateHash(this string str)
+        {
+            try
+            {
+                return CryptoConfig.AllowOnlyFipsAlgorithms
+                    ? str.GenerateSha256Hash()
+                    : str.GenerateMd5();
+            }
+            catch (Exception)
+            {
+                return str.GenerateMd5();
+            }
+        }
+
+        public static string GenerateSha256Hash(this string str)
+        {
+            return str.GenerateHash(CreateSHA256());
+        }
+
+        public static string GenerateMd5(this string str)
+        {
+            return str.GenerateHash("MD5");
+        }
+
+        public static string GenerateHash(this string str, string hashType)
+        {
+            var hasher = HashAlgorithm.Create(hashType);
+            if (hasher == null)
+            {
+                throw new InvalidOperationException("No hashing type found by name " + hashType);
+            }
+
+            return str.GenerateHash(hasher);
+        }
+
+        public static string GenerateHash(this string str, HashAlgorithm hasher)
+        {
+            using (hasher)
+            {
+                // convert our string into byte array
+                var byteArray = Encoding.UTF8.GetBytes(str);
+
+                // get the hashed values created by our SHA1CryptoServiceProvider
+                var hashedByteArray = hasher.ComputeHash(byteArray);
+
+                // create a StringBuilder object
+                var stringBuilder = new StringBuilder();
+
+                // loop to each each byte
+                foreach (var b in hashedByteArray)
+                {
+                    // append it to our StringBuilder
+                    stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
+                }
+
+                // return the hashed value
+                return stringBuilder.ToString();
+            }
         }
     }
 }

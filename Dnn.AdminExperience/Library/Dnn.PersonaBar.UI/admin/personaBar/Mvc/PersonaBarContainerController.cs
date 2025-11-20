@@ -16,11 +16,13 @@ namespace DotNetNuke.Framework.Controllers
     using Dnn.PersonaBar.Library.Containers;
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.UI.Controllers;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -37,6 +39,16 @@ namespace DotNetNuke.Framework.Controllers
 #pragma warning disable CS0618 // Type or member is obsolete
         private readonly IPersonaBarContainer personaBarContainer = Dnn.PersonaBar.Library.Containers.PersonaBarContainer.Instance;
 #pragma warning restore CS0618 // Type or member is obsolete
+        private readonly IClientResourceController clientResourceController;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersonaBarContainerController"/> class.
+        /// </summary>
+        /// <param name="clientResourceController">The client resource controller used to manage client-side resources.</param>
+        public PersonaBarContainerController(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController;
+        }
 
         /// <summary>
         /// Gets the Persona Bar settings as a JSON string.
@@ -109,15 +121,15 @@ namespace DotNetNuke.Framework.Controllers
             MvcJavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             // ServicesFramework.Instance.RequestAjaxAntiForgerySupport(); // to later add this line
-            MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
+            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
 
             return true;
         }
 
         private void RegisterPersonaBarStyleSheet()
         {
-            MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
+            this.clientResourceController.RegisterStylesheet("~/DesktopModules/admin/Dnn.PersonaBar/css/personaBarContainer.css");
         }
     }
 }

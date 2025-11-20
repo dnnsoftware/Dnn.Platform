@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using System.Web.Mvc.Html;
     using System.Web.Routing;
     using System.Web.UI;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
@@ -29,24 +30,25 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
-    using DotNetNuke.Web.MvcPipeline.Tokens;
     using Microsoft.Extensions.DependencyInjection;
 
     public class SpaModuleControl : DefaultMvcModuleControlBase, IResourcable
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IClientResourceController clientResourceController;
 
         public SpaModuleControl(): base()
         {
             this.businessControllerProvider = Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+            this.clientResourceController = Globals.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
-        public SpaModuleControl(IBusinessControllerProvider businessControllerProvider) : base()
+        public SpaModuleControl(IBusinessControllerProvider businessControllerProvider, IClientResourceController clientResourceController) : base()
         {
             this.businessControllerProvider = businessControllerProvider;
+            this.clientResourceController = clientResourceController;
         }
 
         public string html5File => ModuleConfiguration.ModuleControl.ControlSrc;
@@ -98,7 +100,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             {
                 fileContent = this.GetFileContent(this.html5File);
                 var ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new MvcHtml5ModuleTokenReplace(htmlHelper.ViewContext, this.businessControllerProvider, this.html5File, this.ModuleContext, ModuleActions);
+                var tokenReplace = new Html5ModuleTokenReplace(null, htmlHelper.ViewContext.HttpContext.Request,  this.clientResourceController, this.businessControllerProvider, this.html5File, this.ModuleContext, ModuleActions);
                 fileContent = tokenReplace.ReplaceEnvironmentTokens(fileContent);
             }
                         

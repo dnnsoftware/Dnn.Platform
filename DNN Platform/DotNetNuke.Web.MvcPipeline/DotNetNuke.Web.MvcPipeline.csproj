@@ -36,7 +36,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj" />
+    <ProjectReference Include="..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj" />
     <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj" />
     <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
   </ItemGroup>
@@ -49,6 +49,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tokens\" />
   </ItemGroup>
 
   <Import Project="..\..\DNN_Platform.build" />

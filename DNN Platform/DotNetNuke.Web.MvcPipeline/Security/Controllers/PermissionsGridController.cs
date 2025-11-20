@@ -5,11 +5,11 @@
 namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -24,6 +24,13 @@ namespace DotNetNuke.Web.MvcPipeline.Security.Controllers
         protected const string PermissionTypeGrant = "True";
         protected const string PermissionTypeDeny = "False";
         protected const string PermissionTypeNull = "Null";
+
+        protected readonly IClientResourceController clientResourceController;
+
+        protected PermissionsGridController(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController;
+        }
 
         private List<PermissionInfo> permissions;
         private IList<RoleInfo> roles;

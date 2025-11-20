@@ -10,17 +10,17 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using System.Web.Mvc;
     using Dnn.EditBar.UI.Mvc;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
@@ -31,18 +31,20 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     public class DefaultController : DnnPageController
     {
         private readonly INavigationManager navigationManager;
-        private readonly IContentSecurityPolicy contentSecurityPolicy;
         private readonly IPageModelFactory pageModelFactory;
+        private readonly IClientResourceController clientResourceController;
 
-        public DefaultController(IContentSecurityPolicy contentSecurityPolicy, INavigationManager navigationManager, IPageModelFactory pageModelFactory)
+        public DefaultController(INavigationManager navigationManager, IPageModelFactory pageModelFactory, IClientResourceController clientResourceController)
         {
-            this.contentSecurityPolicy = contentSecurityPolicy;
             this.navigationManager = navigationManager;
             this.pageModelFactory = pageModelFactory;
+            this.clientResourceController = clientResourceController;
         }
 
         public ActionResult Page(int tabid, string language)
         {
+            //TODO: CSP - enable when CSP implementation is ready
+            /*
             this.HttpContext.Items.Add("CSP-NONCE", this.contentSecurityPolicy.Nonce);
 
             this.contentSecurityPolicy.DefaultSource.AddSelf();
@@ -62,6 +64,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             {
                 this.contentSecurityPolicy.FrameSource.AddHost("https://dnndocs.com").AddHost("https://docs.dnncommunity.org");
             }
+            */
 
             // There could be a pending installation/upgrade process
             if (InstallBlocker.Instance.IsInstallInProgress())
@@ -103,7 +106,6 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // Register the scripts and stylesheets
             this.RegisterScriptsAndStylesheets(model);
 
-            // this.Response.AddHeader("Content-Security-Policy", $"default-src 'self';base-uri 'self';form-action 'self';object-src 'none'; img-src *; style-src 'self' 'unsafe-inline';font-src *; script-src * 'unsafe-inline';");
             return this.View(model.Skin.RazorFile, "Layout", model);
         }
 
@@ -111,7 +113,10 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
         {
             foreach (var styleSheet in page.Skin.RegisteredStylesheets)
             {
-                MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, styleSheet.Stylesheet, styleSheet.FileOrder);
+                this.clientResourceController.CreateStylesheet()
+                        .FromSrc(styleSheet.Stylesheet)
+                        .SetPriority((int)styleSheet.FileOrder)
+                        .Register();
             }
 
             foreach (var pane in page.Skin.Panes)
@@ -120,14 +125,17 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 {
                     foreach (var stylesheet in container.Value.RegisteredStylesheets)
                     {
-                        MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, stylesheet.Stylesheet, stylesheet.FileOrder);
+                        this.clientResourceController.CreateStylesheet()
+                                .FromSrc(stylesheet.Stylesheet)
+                                .SetPriority((int)stylesheet.FileOrder)
+                                .Register();
                     }
                 }
             }
 
             foreach (var script in page.Skin.RegisteredScripts)
             {
-                MvcClientResourceManager.RegisterScript(this.ControllerContext, script);
+                this.clientResourceController.RegisterScript(script);
             }
         }
 
@@ -195,9 +203,9 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 MvcClientAPI.RegisterClientVariable("cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 MvcClientAPI.RegisterClientVariable("cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
                 MvcClientAPI.RegisterClientVariable("cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
-                MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
-                MvcClientResourceManager.RegisterStyleSheet(this.ControllerContext, "~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
-                MvcClientResourceManager.RegisterScript(this.ControllerContext, "~/js/dnn.cookieconsent.js", FileOrder.Js.DefaultPriority);
+                this.clientResourceController.RegisterScript("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
+                this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
+                this.clientResourceController.RegisterScript("~/js/dnn.cookieconsent.js");
             }
         }
     }

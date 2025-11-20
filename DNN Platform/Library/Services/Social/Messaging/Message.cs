@@ -12,9 +12,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging
-    /// Class:      Messages
     /// <summary>
     /// The Message class describes the content of messages sent via the system
     /// As messaging is system wide process and there may be no portalID context (e.g. a host messaging "all users") the object does not tie to portalID.

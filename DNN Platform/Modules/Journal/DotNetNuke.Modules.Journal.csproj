@@ -176,13 +176,6 @@
     <Compile Include="JournalListControl.cs" />
     <Compile Include="JournalRouteMapper.cs" />
     <Compile Include="ServicesController.cs" />
-    <Compile Include="MyFiles.ascx.cs">
-      <DependentUpon>MyFiles.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MyFiles.ascx.designer.cs">
-      <DependentUpon>MyFiles.ascx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Edit.ascx.designer.cs">
       <DependentUpon>Edit.ascx</DependentUpon>
@@ -244,7 +237,6 @@
     <Content Include="Images\input-bg.png" />
     <Content Include="Images\journal-tools.png" />
     <Content Include="Images\mini_del.gif" />
-    <Content Include="MyFiles.ascx" />
     <Content Include="Scripts\journal.js" />
     <Content Include="Scripts\journalcomments.js" />
     <Content Include="Scripts\journaleditor.js" />

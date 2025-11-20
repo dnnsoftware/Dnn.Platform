@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets or sets the User's Creation Date.</summary>
         public DateTime CreatedDate { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets the User Whether is deleted.</summary>
+        /// <summary>Gets or sets a value indicating whether the User is deleted.</summary>
         public bool IsDeleted { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the User Is Online.</summary>
@@ -85,7 +85,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets or sets the User's Password Question.</summary>
         public string PasswordQuestion { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets a flag that determines whether the password should be updated.</summary>
+        /// <summary>Gets or sets a value indicating whether the password should be updated.</summary>
         public bool UpdatePassword { get; set; }
 
         internal bool Approving { get; private set; }

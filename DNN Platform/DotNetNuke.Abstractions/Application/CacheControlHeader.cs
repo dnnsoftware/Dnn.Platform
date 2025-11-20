@@ -18,10 +18,7 @@ public enum CacheControlHeader
     /// <summary>Default value. Sets <c>Cache-Control: private</c> to specify that the response is cacheable only on the client and not by shared (proxy server) caches.</summary>
     Private = 2,
 
-    /// <summary>Specifies that the response is cached only at the origin server. Similar to the <see cref="NoCache" /> option. Clients receive a <c>Cache-Control: no-cache</c> directive but the document is cached on the origin server. Equivalent to <see cref="ServerAndNoCache" />.</summary>
-    Server = 3,
-
-    /// <summary>Applies the settings of both <see cref="Server" /> and <see cref="NoCache" /> to indicate that the content is cached at the server but all others are explicitly denied the ability to cache the response.</summary>
+    /// <summary>Applies the settings of both Server and NoCache to indicate that the content is cached at the server but all others are explicitly denied the ability to cache the response.</summary>
     ServerAndNoCache = 3,
 
     /// <summary>Sets <c>Cache-Control: public</c> to specify that the response is cacheable by clients and shared (proxy) caches.</summary>

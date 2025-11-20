@@ -15,18 +15,11 @@ namespace DotNetNuke.Modules.Html.Controls
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Settings;
-    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Modules.Html;
-    using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
-    using DotNetNuke.Services.Exceptions;
-    using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
@@ -39,13 +32,11 @@ namespace DotNetNuke.Modules.Html.Controls
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
-        private readonly IContentSecurityPolicy contentSecurityPolicy;
 
-        public EditHTMLControl(IContentSecurityPolicy csp)
+        public EditHTMLControl()
         {
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = new HtmlTextController(this.navigationManager);
-            this.contentSecurityPolicy = csp;
         }
 
         public ModuleResources ModuleResources => new ModuleResources()
@@ -138,10 +129,12 @@ namespace DotNetNuke.Modules.Html.Controls
                 throw new Exception("EditHTML", exc);
             }
 
-            this.contentSecurityPolicy.StyleSource.AddInline();
-            this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();
-            this.contentSecurityPolicy.ImgSource.AddScheme("data:");
             return this.View(model);
+
+            // TODO: CSP - enable when CSP implementation is ready
+            // this.contentSecurityPolicy.StyleSource.AddInline();
+            // this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();
+            // this.contentSecurityPolicy.ImgSource.AddScheme("data:");
         }
 
         private void PopulateModelWithContent(EditHtmlViewModel model, HtmlTextInfo htmlContent)

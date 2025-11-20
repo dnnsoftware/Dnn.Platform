@@ -10,10 +10,9 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
-    using ClientDependency.Core;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Localization;
 
     /// <summary>A web control for editing a form.</summary>

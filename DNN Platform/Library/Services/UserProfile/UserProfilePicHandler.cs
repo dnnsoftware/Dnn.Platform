@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.UserProfile
 
     public class UserProfilePicHandler : IHttpHandler
     {
-        private static object locker = new object();
+        private static readonly object ResizeLocker = new object();
 
         /// <inheritdoc/>
         public bool IsReusable
@@ -32,12 +32,10 @@ namespace DotNetNuke.Services.UserProfile
         /// <inheritdoc/>
         public void ProcessRequest(HttpContext context)
         {
-            this.SetupCulture();
+            SetupCulture();
 
             var userId = -1;
-            var width = 55;
             var height = 55;
-            var size = string.Empty;
             try
             {
                 if (!string.IsNullOrEmpty(context.Request.QueryString["userid"]))
@@ -45,19 +43,9 @@ namespace DotNetNuke.Services.UserProfile
                     userId = Convert.ToInt32(context.Request.QueryString["userid"]);
                 }
 
-                if (!string.IsNullOrEmpty(context.Request.QueryString["w"]))
-                {
-                    width = Convert.ToInt32(context.Request.QueryString["w"]);
-                }
-
                 if (!string.IsNullOrEmpty(context.Request.QueryString["h"]))
                 {
                     height = Convert.ToInt32(context.Request.QueryString["h"]);
-                }
-
-                if (!string.IsNullOrEmpty(context.Request.QueryString["size"]))
-                {
-                    size = context.Request.QueryString["size"];
                 }
             }
             catch (Exception)
@@ -70,21 +58,15 @@ namespace DotNetNuke.Services.UserProfile
                 height = 128;
             }
 
-            if (width > 128)
-            {
-                width = 128;
-            }
+            CalculateSize(ref height, out var width, out var size);
 
-            this.CalculateSize(ref height, ref width, ref size);
-
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             var user = UserController.Instance.GetUser(settings.PortalId, userId);
 
-            IFileInfo photoFile = null;
             var photoLoaded = false;
-            if (user != null && this.TryGetPhotoFile(user, out photoFile))
+            if (user != null && TryGetPhotoFile(user, out var photoFile))
             {
-                if (!this.IsImageExtension(photoFile.Extension))
+                if (!IsImageExtension(photoFile.Extension))
                 {
                     try
                     {
@@ -97,47 +79,40 @@ namespace DotNetNuke.Services.UserProfile
                 }
 
                 var folder = FolderManager.Instance.GetFolder(photoFile.FolderId);
-                var extension = "." + photoFile.Extension;
-                var sizedPhoto = photoFile.FileName.Replace(extension, "_" + size + extension);
+                var extension = $".{photoFile.Extension}";
+                var sizedPhoto = photoFile.FileName.Replace(extension, $"_{size}{extension}");
                 if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                 {
-                    lock (locker)
+                    lock (ResizeLocker)
                     {
                         if (!FileManager.Instance.FileExists(folder, sizedPhoto))
                         {
-                            using (var fileContent = FileManager.Instance.GetFileContent(photoFile))
-                            using (var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension))
-                            {
-                                FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
-                            }
+                            using var fileContent = FileManager.Instance.GetFileContent(photoFile);
+                            using var sizedContent = ImageUtils.CreateImage(fileContent, height, width, extension);
+
+                            const bool operationDoesNotRequirePermissionsCheck = true;
+                            FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent, false, !operationDoesNotRequirePermissionsCheck, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(sizedPhoto)));
                         }
                     }
                 }
 
-                using (var content = FileManager.Instance.GetFileContent(FileManager.Instance.GetFile(folder, sizedPhoto)))
+                using var content = FileManager.Instance.GetFileContent(FileManager.Instance.GetFile(folder, sizedPhoto));
+                context.Response.ContentType =
+                    photoFile.Extension.ToLowerInvariant() switch
+                    {
+                        "png" => "image/png",
+                        "jpeg" or "jpg" => "image/jpeg",
+                        "gif" => "image/gif",
+                        _ => context.Response.ContentType,
+                    };
+
+                using (var memoryStream = new MemoryStream())
                 {
-                    switch (photoFile.Extension.ToLowerInvariant())
-                    {
-                        case "png":
-                            context.Response.ContentType = "image/png";
-                            break;
-                        case "jpeg":
-                        case "jpg":
-                            context.Response.ContentType = "image/jpeg";
-                            break;
-                        case "gif":
-                            context.Response.ContentType = "image/gif";
-                            break;
-                    }
-
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        content.CopyTo(memoryStream);
-                        memoryStream.WriteTo(context.Response.OutputStream);
-                    }
-
-                    photoLoaded = true;
+                    content.CopyTo(memoryStream);
+                    memoryStream.WriteTo(context.Response.OutputStream);
                 }
+
+                photoLoaded = true;
             }
 
             if (!photoLoaded)
@@ -154,92 +129,88 @@ namespace DotNetNuke.Services.UserProfile
         }
 
         // whether current user has permission to view target user's photo.
-        private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
+        private static bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
         {
-            bool isVisible = false;
             photoFile = null;
 
             UserInfo user = UserController.Instance.GetCurrentUserInfo();
             var settings = PortalController.Instance.GetCurrentSettings();
             var photoProperty = targetUser.Profile.GetProperty("Photo");
-            if (photoProperty != null)
+            if (photoProperty == null)
             {
-                isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
+                return false;
+            }
 
-                if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
-                {
-                    photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
-                    if (photoFile == null)
-                    {
-                        isVisible = false;
-                    }
-                }
-                else
+            var isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, targetUser);
+            if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
+            {
+                photoFile = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
+                if (photoFile == null)
                 {
                     isVisible = false;
                 }
+            }
+            else
+            {
+                isVisible = false;
             }
 
             return isVisible;
         }
 
-        private void CalculateSize(ref int height, ref int width, ref string size)
+        private static void CalculateSize(ref int height, out int width, out string size)
         {
-            if (height > 0 && height <= 32)
+            switch (height)
             {
-                height = 32;
-                width = 32;
-                size = "xs";
-            }
-            else if (height > 32 && height <= 50)
-            {
-                height = 50;
-                width = 50;
-                size = "s";
-            }
-            else if (height > 50 && height <= 64)
-            {
-                height = 64;
-                width = 64;
-                size = "l";
-            }
-            else if (height > 64 && height <= 128)
-            {
-                height = 128;
-                width = 128;
-                size = "xl";
-            }
-
-            // set a default if unprocessed
-            if (string.IsNullOrEmpty(size))
-            {
-                height = 32;
-                width = 32;
-                size = "xs";
+                case > 0 and <= 32:
+                    height = 32;
+                    width = 32;
+                    size = "xs";
+                    break;
+                case > 32 and <= 50:
+                    height = 50;
+                    width = 50;
+                    size = "s";
+                    break;
+                case > 50 and <= 64:
+                    height = 64;
+                    width = 64;
+                    size = "l";
+                    break;
+                case > 64 and <= 128:
+                    height = 128;
+                    width = 128;
+                    size = "xl";
+                    break;
+                default:
+                    height = 32;
+                    width = 32;
+                    size = "xs";
+                    break;
             }
         }
 
-        private bool IsImageExtension(string extension)
+        private static bool IsImageExtension(string extension)
         {
             if (!extension.StartsWith("."))
             {
-                extension = string.Format(".{0}", extension);
+                extension = $".{extension}";
             }
 
-            List<string> imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
+            List<string> imageExtensions = [".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO"];
             return imageExtensions.Contains(extension.ToUpper());
         }
 
-        private void SetupCulture()
+        private static void SetupCulture()
         {
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null)
+            if (settings is null)
             {
                 return;
             }
 
             CultureInfo pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
-            if (pageLocale != null)
+            if (pageLocale is not null)
             {
                 TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
             }

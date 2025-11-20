@@ -9,9 +9,6 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      TextColumnTemplate
     /// <summary>The TextColumnTemplate provides a Template for the TextColumn.</summary>
     public class TextColumnTemplate : ITemplate
     {
@@ -34,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A String.</value>
         public string DataField { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets the Design Mode of the Column.</summary>
+        /// <summary>Gets or sets a value indicating whether the Column is in design mode.</summary>
         /// <value>A Boolean.</value>
         public bool DesignMode { get; set; }
 

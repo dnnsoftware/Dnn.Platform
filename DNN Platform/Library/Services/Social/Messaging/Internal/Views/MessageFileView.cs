@@ -7,9 +7,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     using System;
 
     /// <summary>The MessageFileView class contains details about the attachment.</summary>
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging.Views
-    /// Class:      MessageFileView
     public class MessageFileView
     {
         /// <summary>The _size.</summary>

@@ -48,17 +48,8 @@ namespace DotNetNuke.UI.Modules
             this.moduleControl = moduleControl;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
-        /// Administrator role.
-        /// </summary>
-        public bool EditMode
-        {
-            get
-            {
-                return TabPermissionController.CanAdminPage();
-            }
-        }
+        /// <summary>Gets a value indicating whether the user is in the Administrator role.</summary>
+        public bool EditMode => TabPermissionController.CanAdminPage();
 
         /// <summary>Gets a value indicating whether the module is Editable (in Admin mode).</summary>
         public bool IsEditable
