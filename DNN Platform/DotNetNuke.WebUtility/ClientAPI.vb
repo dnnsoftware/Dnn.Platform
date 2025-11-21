@@ -682,25 +682,25 @@ Namespace DotNetNuke.UI.Utilities
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
                 Case ClientNamespaceReferences.dnn_dom_positioning
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    controller.CreateScript().FromSrc(ScriptPath & "dnn.dom.positioning.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnDomPositioning).Register()
+                    controller.CreateScript(ScriptPath & "dnn.dom.positioning.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnDomPositioning).Register()
 
                 Case ClientNamespaceReferences.dnn_xml
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    controller.CreateScript().FromSrc(ScriptPath & "dnn.xml.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXml).Register()
+                    controller.CreateScript(ScriptPath & "dnn.xml.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXml).Register()
 
                     If BrowserSupportsFunctionality(ClientFunctionality.XMLJS) Then
-                        controller.CreateScript().FromSrc(ScriptPath & "dnn.xml.jsparser.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlJsParser).Register()
+                        controller.CreateScript(ScriptPath & "dnn.xml.jsparser.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlJsParser).Register()
                     End If
                 Case ClientNamespaceReferences.dnn_xmlhttp
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    controller.CreateScript().FromSrc(ScriptPath & "dnn.xmlhttp.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttp).Register()
+                    controller.CreateScript(ScriptPath & "dnn.xmlhttp.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttp).Register()
 
                     If BrowserSupportsFunctionality(ClientFunctionality.XMLHTTPJS) Then
-                        controller.CreateScript().FromSrc(ScriptPath & "dnn.xmlhttp.jsxmlhttprequest.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttpJsXmlHttpRequest).Register()
+                        controller.CreateScript(ScriptPath & "dnn.xmlhttp.jsxmlhttprequest.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttpJsXmlHttpRequest).Register()
                     End If
                 Case ClientNamespaceReferences.dnn_motion
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom_positioning)
-                    controller.CreateScript().FromSrc(ScriptPath & "dnn.motion.js").Register()
+                    controller.CreateScript(ScriptPath & "dnn.motion.js").Register()
 
             End Select
         End Sub
@@ -863,7 +863,7 @@ Namespace DotNetNuke.UI.Utilities
 
                 RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom)
                 Dim controller As IClientResourceController = GetClientResourcesController(objPage)
-                controller.CreateScript().FromSrc(ScriptPath & "dnn.util.tablereorder.js").Register()
+                controller.CreateScript(ScriptPath & "dnn.util.tablereorder.js").Register()
 
                 AddAttribute(objButton, "onclick", "if (dnn.util.tableReorderMove(this," & CInt(blnUp) & ",'" & strKey & "')) return false;")
                 Dim objParent As Control = objButton.Parent

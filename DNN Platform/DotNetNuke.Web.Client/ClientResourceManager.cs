@@ -360,8 +360,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             IDictionary<string, string> htmlAttributes)
         {
             var controller = GetClientResourcesController(page);
-            var script = controller.CreateScript()
-                .FromSrc(filePath)
+            var script = controller.CreateScript(filePath)
                 .SetPriority(priority)
                 .SetProvider(provider)
                 .SetNameAndVersion(name, version, false);
@@ -499,8 +498,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
 
             var controller = GetClientResourcesController(page);
-            var stylesheet = controller.CreateStylesheet()
-                .FromSrc(filePath)
+            var stylesheet = controller.CreateStylesheet(filePath)
                 .SetPriority(priority)
                 .SetProvider(provider)
                 .SetNameAndVersion(name, version, false);
