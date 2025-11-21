@@ -12,7 +12,6 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
-    using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -90,7 +89,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     ? this.navigationManager.NavigateURL(this.TabId, "Privacy")
                     : this.navigationManager.NavigateURL(this.PortalSettings.PrivacyTabId);
                 var dataConsentHtml = string.Format(
-                    Localization.GetString("DataConsent"),
+                    this.LocalizeText("DataConsent"),
                     termsUrl,
                     privacyUrl);
                 return new HtmlString(dataConsentHtml);

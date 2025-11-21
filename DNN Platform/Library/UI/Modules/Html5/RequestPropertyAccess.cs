@@ -13,11 +13,11 @@ namespace DotNetNuke.UI.Modules.Html5
     /// <summary>Replaces tokens related to the current http request.</summary>
     public class RequestPropertyAccess : IPropertyAccess
     {
-        private readonly HttpRequest request;
+        private readonly HttpRequestBase request;
 
         /// <summary>Initializes a new instance of the <see cref="RequestPropertyAccess"/> class.</summary>
         /// <param name="request">The current http request.</param>
-        public RequestPropertyAccess(HttpRequest request)
+        public RequestPropertyAccess(HttpRequestBase request)
         {
             this.request = request;
         }

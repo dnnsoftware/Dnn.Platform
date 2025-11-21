@@ -17,10 +17,6 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.UI.Utilities;
 
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Globals = DotNetNuke.Common.Globals;
-
     public class CDefault : PageBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]

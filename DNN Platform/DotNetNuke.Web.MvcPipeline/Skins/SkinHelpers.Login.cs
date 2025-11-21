@@ -25,7 +25,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         public static IHtmlString Login(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string text = "", string logoffText = "", bool legacyMode = true, bool showInErrorPage = false)
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;
-            var nonce = helper.ViewData.Model.ContentSecurityPolicy.Nonce;
+            //TODO: CSP - enable when CSP implementation is ready
+            var nonce = string.Empty; //helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             var portalSettings = PortalSettings.Current;
             var request = HttpContext.Current.Request;
 
@@ -127,9 +128,14 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             if (!request.IsAuthenticated)
             {
+                var nonceAttribute = string.Empty;
+                if (!string.IsNullOrEmpty(nonce))
+                {
+                    nonceAttribute = $"nonce=\"{nonce}\"";
+                }
                 var script = string.Format(
                     @"
-                    <script nonce=""{0}"">
+                    <script {0} >
                     (function() {{
                         var loginLinks = document.querySelectorAll('.dnnLoginLink');
                         if (loginLinks.length > 0) {{
@@ -142,7 +148,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                                         this.disabled = true;
                                     }}
                                 ",
-                    nonce);
+                    nonceAttribute);
 
                 if (portalSettings.EnablePopUps &&
                     portalSettings.LoginTabId == Null.NullInteger &&

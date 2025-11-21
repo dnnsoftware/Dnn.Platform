@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.WebControls
         /// <value>The typename of the editor.</value>
         public string EditorTypeName { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side validation.</summary>
+        /// <summary>Gets or sets a value indicating whether the Validators should use client-side validation.</summary>
         public bool EnableClientValidation { get; set; }
 
         /// <summary>Gets or sets whether the control displays Help.</summary>

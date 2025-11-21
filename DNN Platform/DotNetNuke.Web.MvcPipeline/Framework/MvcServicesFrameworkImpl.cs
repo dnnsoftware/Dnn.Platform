@@ -5,14 +5,16 @@
     using System.Web.Mvc;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
+    using Microsoft.Extensions.DependencyInjection;
 
     internal class MvcServicesFrameworkImpl : IMvcServicesFramework, IMvcServiceFrameworkInternals
     {
@@ -78,7 +80,8 @@
                 scriptPath = "~/js/dnn.servicesframework.js";
             }
 
-            ClientResourceManager.RegisterScript(page, scriptPath);
+            var controller = GetClientResourcesController();
+            controller.RegisterScript(scriptPath);
         }
 
         public void RegisterAjaxScript(ControllerContext page)
@@ -103,7 +106,8 @@
                 scriptPath = "~/js/dnn.servicesframework.js";
             }
 
-            MvcClientResourceManager.RegisterScript(page, scriptPath);
+            var controller = GetClientResourcesController();
+            controller.RegisterScript(scriptPath);
         }
 
         private static void SetKey(string key)
@@ -119,6 +123,12 @@
         public void RegisterAjaxAntiForgery(ControllerContext page)
         {
             throw new System.NotImplementedException();
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = DotNetNuke.Common.Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

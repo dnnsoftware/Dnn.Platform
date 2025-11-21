@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -28,11 +29,11 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.WebControls;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -48,10 +49,11 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IServiceProvider serviceProvider;
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
         public Register()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -59,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="serviceProvider">The service provider.</param>
         public Register(INavigationManager navigationManager, IServiceProvider serviceProvider)
-            : this(navigationManager, serviceProvider, null, null)
+            : this(navigationManager, serviceProvider, null, null, null)
         {
         }
 
@@ -68,12 +70,14 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
             this.navigationManager = navigationManager ?? this.serviceProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? this.serviceProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.serviceProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourceController = clientResourceController ?? this.serviceProvider.GetRequiredService<IClientResourceController>();
         }
 
         protected string ExcludeTerms
@@ -136,9 +140,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
             this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            this.clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.tooltip.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Admin/Security/Scripts/dnn.PasswordComparer.js");
 
             if (this.PortalSettings.Registration.RegistrationFormType == 0)
             {

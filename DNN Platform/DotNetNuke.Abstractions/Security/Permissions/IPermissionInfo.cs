@@ -7,7 +7,7 @@ namespace DotNetNuke.Abstractions.Security.Permissions;
 /// <summary>Information about an applied instance of a permission.</summary>
 public interface IPermissionInfo : IPermissionDefinitionInfo
 {
-    /// <summary>Gets or sets a value indicating whether gets and sets a flag that indicates whether the user or role has permission.</summary>
+    /// <summary>Gets or sets a value indicating whether the user or role has permission.</summary>
     bool AllowAccess { get; set; }
 
     /// <summary>Gets or sets the User's DisplayName.</summary>

@@ -111,7 +111,7 @@
     @RenderBody()
     @if (Model.IsEditMode)
     {
-        <script nonce="@Model.ContentSecurityPolicy.Nonce">
+        <script @*nonce="@Model.ContentSecurityPolicy.Nonce"*@>
             var dnn = dnn || {};
             dnn.panes = [];
             dnn.panesClientIds = [];
@@ -124,7 +124,7 @@
     }
     @if (Model.StartupScripts.Any())
     {
-        <script nonce="@Model.ContentSecurityPolicy.Nonce">
+        <script @*nonce="@Model.ContentSecurityPolicy.Nonce"*@>
         // startup scripts
         @foreach (var s in Model.StartupScripts)
         {

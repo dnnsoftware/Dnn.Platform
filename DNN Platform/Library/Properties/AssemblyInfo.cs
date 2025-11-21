@@ -44,10 +44,12 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.Html")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Website.Deprecated")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.UI")] // Once Globals is refactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("Dnn.EditBar.UI")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Library")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.Groups")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.Journal")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.RazorHost")] // Once Globals is refactored to Dependency Injection we should be able to remove this
+[assembly: InternalsVisibleTo("DotNetNuke.Modules.CoreMessaging")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DotNetNuke.Website")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.ConfigConsole.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Pages.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this

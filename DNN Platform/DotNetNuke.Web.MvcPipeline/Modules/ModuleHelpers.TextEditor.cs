@@ -12,10 +12,10 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Web.Client.ResourceManager;
 
     public static partial class ModuleHelpers
     {
@@ -131,9 +131,10 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
 
             //if (page.IsChildAction)
             {
-                MvcClientResourceManager.RegisterStyleSheet(page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
-                MvcClientResourceManager.RegisterStyleSheet(page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
-                MvcClientResourceManager.RegisterStyleSheet(page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/editor.css"));
+                var controller = GetClientResourcesController();
+                controller.RegisterStylesheet("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css");
+                controller.RegisterStylesheet("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css");
+                controller.RegisterStylesheet("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/editor.css");
 
                 /*
                 const string CsName = "CKEdScript";
@@ -142,8 +143,8 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
 
                 JavaScript.RequestRegistration(CommonJs.jQuery);
 
-                MvcClientResourceManager.RegisterScript(page, "~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js");
-                MvcClientResourceManager.RegisterScript(page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js"));
+                controller.RegisterScript("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js");
+                controller.RegisterScript("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js");
             }
 
             /*

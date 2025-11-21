@@ -11,9 +11,6 @@ namespace DotNetNuke.Services.Social.Messaging
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Messaging
-    /// Class:      MessageAttachment
     /// <summary>The MessageAttachment class describes the content attachments associated with a message.</summary>
     [Serializable]
     public class MessageAttachment : BaseEntityInfo, IHydratable

@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information
 
 using System.Web.UI;
+using DotNetNuke.Abstractions.ClientResources;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
+using DotNetNuke.Services.ClientDependency;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 
@@ -17,20 +19,20 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     /// </summary>
     public static class ResourceableExtensions
     {
-        public static void RegisterResources(this IResourcable resourcable, Page page)
+        public static void RegisterResources(this IResourcable resourcable, IClientResourceController clientResourceController)
         {
             if (resourcable.ModuleResources.StyleSheets != null)
             {
                 foreach (var styleSheet in resourcable.ModuleResources.StyleSheets)
                 {
-                    ClientResourceManager.RegisterStyleSheet(page, styleSheet.FilePath, styleSheet.Priority, styleSheet.HtmlAttributes);
+                    clientResourceController.RegisterStylesheet(styleSheet.FilePath, styleSheet.Priority);
                 }
             }
             if (resourcable.ModuleResources.Scripts != null)
             {
                 foreach (var javaScript in resourcable.ModuleResources.Scripts)
                 {
-                    ClientResourceManager.RegisterScript(page, javaScript.FilePath, javaScript.Priority, javaScript.HtmlAttributes);
+                    clientResourceController.RegisterScript(javaScript.FilePath, javaScript.Priority);
                 }
             }
             if (resourcable.ModuleResources.Libraries != null)

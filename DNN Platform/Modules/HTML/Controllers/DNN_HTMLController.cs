@@ -6,38 +6,31 @@ namespace DotNetNuke.Modules.Html.Controllers
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net.NetworkInformation;
-    using System.Web;
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Content.Workflow;
-    using DotNetNuke.Entities.Content.Workflow.Entities;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.Html;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Web.MvcPipeline.Controllers;
 
-    public class DNN_HTMLController : ModuleSettingsController
+    public class DNN_HTMLController : ModuleControllerBase
     {
-        // private readonly INavigationManager navigationManager;
+        private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly HtmlTextLogController htmlTextLogController = new HtmlTextLogController();
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly HtmlModuleSettingsRepository settingsRepository;
 
-        public DNN_HTMLController(IContentSecurityPolicy csp, INavigationManager navigationManager)
-            : base(navigationManager)
+        public DNN_HTMLController(INavigationManager navigationManager)
         {
-            // this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-            this.htmlTextController = new HtmlTextController(this.NavigationManager);
+            this.navigationManager = navigationManager;
+            this.htmlTextController = new HtmlTextController(this.navigationManager);
             this.settingsRepository = new HtmlModuleSettingsRepository();
         }
 
@@ -89,7 +82,6 @@ namespace DotNetNuke.Modules.Html.Controllers
             catch (Exception exc)
             {
                 // Gérer l'exception
-                // return this.View("Error", new ErrorViewModel { Message = exc.Message });
                 throw new Exception(exc.Message, exc);
             }
         }
@@ -100,9 +92,8 @@ namespace DotNetNuke.Modules.Html.Controllers
         {
             model.ShowHistoryView = true;
             model.LocalResourceFile = "DesktopModules\\HTML\\App_LocalResources/EditHTML";
-            model.RedirectUrl = this.NavigationManager.NavigateURL(model.TabId);
+            model.RedirectUrl = this.navigationManager.NavigateURL(model.TabId);
 
-            // model.LocalResourceFile = Path.Combine(Path.GetDirectoryName(this.ActiveModule.ModuleControl.ControlSrc), Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(this.ActiveModule.ModuleControl.ControlSrc));
             try
             {
                 int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
@@ -111,17 +102,14 @@ namespace DotNetNuke.Modules.Html.Controllers
                 var maxVersions = this.htmlTextController.GetMaximumVersionHistory(this.PortalSettings.PortalId);
                 model.MaxVersions = maxVersions;
 
-                // var htmlLogging = this.htmlTextLogController.GetHtmlTextLog(htmlContent.ItemID);
                 var versions = this.htmlTextController.GetAllHtmlText(model.ModuleId);
                 model.VersionItems = versions.Cast<HtmlTextInfo>().ToList();
 
-                // return this.PartialView(this.ActiveModule, "_History", model);
                 return this.PartialView(this.ActiveModule, "EditHtml", model);
             }
             catch (Exception exc)
             {
                 // Gérer l'exception
-                // return this.View("Error", new ErrorViewModel { Message = exc.Message });
                 throw new Exception(exc.Message, exc);
             }
         }
@@ -132,9 +120,8 @@ namespace DotNetNuke.Modules.Html.Controllers
         {
             model.ShowPreviewView = true;
             model.LocalResourceFile = "DesktopModules\\HTML\\App_LocalResources/EditHTML";
-            model.RedirectUrl = this.NavigationManager.NavigateURL(model.TabId);
+            model.RedirectUrl = this.navigationManager.NavigateURL(model.TabId);
 
-            // model.LocalResourceFile = Path.Combine(Path.GetDirectoryName(this.ActiveModule.ModuleControl.ControlSrc), Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(this.ActiveModule.ModuleControl.ControlSrc));
             try
             {
                 model.PreviewContent = model.EditorContent; // HttpUtility.HtmlDecode(model.HiddenEditorContent);
@@ -143,7 +130,6 @@ namespace DotNetNuke.Modules.Html.Controllers
             catch (Exception exc)
             {
                 // Gérer l'exception
-                // return this.View("Error", new ErrorViewModel { Message = exc.Message });
                 throw new Exception(exc.Message, exc);
             }
         }
@@ -152,16 +138,14 @@ namespace DotNetNuke.Modules.Html.Controllers
         {
             model.ShowEditView = true;
             model.LocalResourceFile = "DesktopModules\\HTML\\App_LocalResources/EditHTML";
-            model.RedirectUrl = this.NavigationManager.NavigateURL(model.TabId);
+            model.RedirectUrl = this.navigationManager.NavigateURL(model.TabId);
             try
             {
-                // return this.PartialView(this.ActiveModule, "_Edit", model);
                 return this.PartialView(this.ActiveModule, "EditHtml", model);
             }
             catch (Exception exc)
             {
                 // Gérer l'exception
-                // return this.View("Error", new ErrorViewModel { Message = exc.Message });
                 throw new Exception(exc.Message, exc);
             }
         }
@@ -188,9 +172,8 @@ namespace DotNetNuke.Modules.Html.Controllers
         {
             model.ShowPreviewView = true;
             model.LocalResourceFile = "DesktopModules\\HTML\\App_LocalResources/EditHTML";
-            model.RedirectUrl = this.NavigationManager.NavigateURL(model.TabId);
+            model.RedirectUrl = this.navigationManager.NavigateURL(model.TabId);
 
-            // model.LocalResourceFile = Path.Combine(Path.GetDirectoryName(this.ActiveModule.ModuleControl.ControlSrc), Localization.LocalResourceDirectory + "/" + Path.GetFileNameWithoutExtension(this.ActiveModule.ModuleControl.ControlSrc));
             try
             {
                 int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
@@ -199,53 +182,12 @@ namespace DotNetNuke.Modules.Html.Controllers
                 var moduleSettings = this.settingsRepository.GetSettings(this.ActiveModule);
                 model.PreviewContent = HtmlTextController.FormatHtmlText(model.ModuleId, htmlContent.Content, moduleSettings, this.PortalSettings, null);
 
-                // return this.PartialView(this.ActiveModule, "_History", model);
                 return this.PartialView(this.ActiveModule, "EditHtml", model);
             }
             catch (Exception exc)
             {
                 // Gérer l'exception
-                // return this.View("Error", new ErrorViewModel { Message = exc.Message });
                 throw new Exception(exc.Message, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult UpdateSettings(HtmlModuleSettingsModel model)
-        {
-            // if (ModelState.IsValid)
-            {
-                try
-                {
-                    var moduleSettings = this.settingsRepository.GetSettings(this.ActiveModule);
-                    var htmlTextController = new HtmlTextController(this.NavigationManager);
-                    moduleSettings.ReplaceTokens = model.ReplaceTokens;
-                    moduleSettings.UseDecorate = model.UseDecorate;
-                    moduleSettings.SearchDescLength = model.SearchDescLength;
-
-                    var repo = new HtmlModuleSettingsRepository();
-                    repo.SaveSettings(this.ActiveModule, moduleSettings);
-
-                    // disable module caching if token replace is enabled
-                    if (model.ReplaceTokens)
-                    {
-                        ModuleInfo module = ModuleController.Instance.GetModule(model.ModuleId, model.TabId, false);
-                        if (module.CacheTime > 0)
-                        {
-                            module.CacheTime = 0;
-                            ModuleController.Instance.UpdateModule(module);
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    // Gérer les exceptions
-                    // Exceptions.ProcessModuleLoadException(this, exc);
-                    throw new Exception("sModuleLoadException", exc);
-                }
-
-                return this.UpdateDefaultSettings(model);
             }
         }
 
@@ -262,23 +204,6 @@ namespace DotNetNuke.Modules.Html.Controllers
             }
 
             return htmlContent;
-        }
-
-        private void PopulateModelWithContent(EditHtmlViewModel model, HtmlTextInfo htmlContent)
-        {
-            model.CurrentWorkflowInUse = htmlContent.WorkflowName;
-            model.CurrentWorkflowState = htmlContent.StateName;
-            model.CurrentVersion = htmlContent.Version.ToString();
-
-            // model.Content = this.FormatContent(htmlContent.Content);
-        }
-
-        private void PopulateModelWithInitialContent(EditHtmlViewModel model, WorkflowState firstState)
-        {
-            // model.EditorContent = this.LocalizeString("AddContent");
-            model.CurrentWorkflowInUse = firstState.StateName;
-            model.ShowCurrentWorkflowState = false;
-            model.ShowCurrentVersion = false;
         }
     }
 }

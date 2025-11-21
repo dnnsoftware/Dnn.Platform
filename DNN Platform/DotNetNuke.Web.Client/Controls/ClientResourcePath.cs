@@ -4,10 +4,39 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
-    using ClientDependency.Core.Controls;
+    using System;
+    using System.Web.UI;
 
     /// <summary>Defines the path to a client resource.</summary>
-    public class ClientResourcePath : ClientDependencyPath
+    public class ClientResourcePath
     {
+        public event EventHandler DataBinding;
+
+        public string Name { get; set; }
+
+        public string Path { get; set; }
+
+        public ClientResourceLoader Parent { get; internal set; }
+
+        public Control BindingContainer
+        {
+            get
+            {
+                return this.Parent;
+            }
+        }
+
+        public void DataBind()
+        {
+            this.OnDataBinding(new EventArgs());
+        }
+
+        protected void OnDataBinding(EventArgs e)
+        {
+            if (this.DataBinding != null)
+            {
+                this.DataBinding(this, e);
+            }
+        }
     }
 }

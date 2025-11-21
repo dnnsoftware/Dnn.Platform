@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using System.Collections.Generic;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -19,11 +20,14 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Installer.Log;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
-
-    using DotNetNuke.Web.Client;
+    using DotNetNuke.UI;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client.ResourceManager;
+    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+    using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
@@ -108,10 +112,15 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
             }
         }
 
-        public override IRazorModuleResult Invoke()
+        private readonly IClientResourceController clientResourceController;
+        public ModuleActionsControl(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController;
+        }
+
+       public override IRazorModuleResult Invoke()
         {
             var moduleInfo = ModuleConfiguration;
-            this.OnInit();
             this.OnLoad(moduleInfo);
 
             var viewModel = new ModuleActionsModel
@@ -176,20 +185,6 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
             }
         }
 
-        protected void OnInit()
-        {
-            // base.OnInit(e);
-            // this.ID = "ModuleActions";
-            // this.actionButton.Click += this.ActionButton_Click;
-            // MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-            // this.RegisterStyleSheet("~/admin/menus/ModuleActions/ModuleActions.css", FileOrder.Css.ModuleCss);
-            //this.RegisterStyleSheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
-            //this.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
-
-            //ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-        }
-
         protected void OnLoad(ModuleInfo moduleInfo)
         {
             // base.OnLoad(e);
@@ -231,7 +226,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
                     */
                     moduleSpecificActions.Actions.Add(action);
 
-                    if (!DotNetNuke.UI.UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
+                    if (!UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
                     {
                         action.ClientScript = UrlUtils.PopUpUrl(action.Url, null, this.PortalSettings, true, false);
                     }

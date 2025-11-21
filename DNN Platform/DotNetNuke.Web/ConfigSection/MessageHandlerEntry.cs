@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.ConfigSection
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether this property specifies whether this is automatically included when the <see cref="DnnAuthorizeAttribute"/>.</summary>
+        /// <summary>Gets or sets a value indicating whether this is automatically included when the <see cref="DnnAuthorizeAttribute"/>.</summary>
         [ConfigurationProperty(DefaultIncludeTag, DefaultValue = false, IsRequired = true)]
         public bool DefaultInclude
         {

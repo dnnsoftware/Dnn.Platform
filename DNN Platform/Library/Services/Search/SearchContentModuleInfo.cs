@@ -7,9 +7,6 @@ namespace DotNetNuke.Services.Search
 
     using DotNetNuke.Entities.Modules;
 
-    /// Namespace:  DotNetNuke.Services.Search
-    /// Project:    DotNetNuke.Search.Index
-    /// Class:      SearchContentModuleInfo
     /// <summary>
     /// The SearchContentModuleInfo class represents an extension (by containment)
     /// of ModuleInfo to add a parameter that determines whether a module is Searchable.

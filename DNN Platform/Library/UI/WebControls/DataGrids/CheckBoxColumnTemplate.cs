@@ -9,19 +9,9 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      CheckBoxColumnTemplate
     /// <summary>The CheckBoxColumnTemplate provides a Template for the CheckBoxColumn.</summary>
     public class CheckBoxColumnTemplate : ITemplate
     {
-        private string mDataField = Null.NullString;
-        private bool mEnabled = true;
-        private string mEnabledField = Null.NullString;
-        private bool mHeaderCheckBox = true;
-        private ListItemType mItemType = ListItemType.Item;
-        private string mText = string.Empty;
-
         /// <summary>Initializes a new instance of the <see cref="CheckBoxColumnTemplate"/> class.</summary>
         public CheckBoxColumnTemplate()
             : this(ListItemType.Item)
@@ -38,7 +28,7 @@ namespace DotNetNuke.UI.WebControls
         public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
+        /// Gets or sets a value indicating whether the column fires a postback when any check box is
         /// changed.
         /// </summary>
         /// <value>A Boolean.</value>
@@ -50,107 +40,40 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets or sets the Data Field that the column should bind to.</summary>
         /// <value>A String.</value>
-        public string DataField
-        {
-            get
-            {
-                return this.mDataField;
-            }
+        public string DataField { get; set; } = Null.NullString;
 
-            set
-            {
-                this.mDataField = value;
-            }
-        }
-
-        /// <summary>Gets or sets a value indicating whether gets or sets the Design Mode of the Column.</summary>
+        /// <summary>Gets or sets a value indicating whether the Column is in Design Mode.</summary>
         /// <value>A Boolean.</value>
         public bool DesignMode { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether an flag that indicates whether the hcekboxes are enabled (this is overridden if
-        /// the EnabledField is set
-        /// changed.
+        /// Gets or sets a value indicating whether the checkboxes are enabled (this is overridden if
+        /// the EnabledField is set).
         /// </summary>
         /// <value>A Boolean.</value>
-        public bool Enabled
-        {
-            get
-            {
-                return this.mEnabled;
-            }
-
-            set
-            {
-                this.mEnabled = value;
-            }
-        }
+        public bool Enabled { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the Data Field that determines whether the checkbox is Enabled
         /// changed.
         /// </summary>
         /// <value>A String.</value>
-        public string EnabledField
-        {
-            get
-            {
-                return this.mEnabledField;
-            }
-
-            set
-            {
-                this.mEnabledField = value;
-            }
-        }
+        public string EnabledField { get; set; } = Null.NullString;
 
         /// <summary>
-        /// Gets or sets a value indicating whether a flag that indicates whether there is a checkbox in the Header that sets all
+        /// Gets or sets a value indicating whether there is a checkbox in the Header that sets all
         /// the checkboxes.
         /// </summary>
         /// <value>A Boolean.</value>
-        public bool HeaderCheckBox
-        {
-            get
-            {
-                return this.mHeaderCheckBox;
-            }
-
-            set
-            {
-                this.mHeaderCheckBox = value;
-            }
-        }
+        public bool HeaderCheckBox { get; set; } = true;
 
         /// <summary>Gets or sets the type of Template to Create.</summary>
         /// <value>A String.</value>
-        public ListItemType ItemType
-        {
-            get
-            {
-                return this.mItemType;
-            }
-
-            set
-            {
-                this.mItemType = value;
-            }
-        }
+        public ListItemType ItemType { get; set; } = ListItemType.Item;
 
         /// <summary>Gets or sets the Text to display in a Header Template.</summary>
         /// <value>A String.</value>
-        public string Text
-        {
-            get
-            {
-                return this.mText;
-            }
-
-            set
-            {
-                this.mText = value;
-            }
-        }
+        public string Text { get; set; } = string.Empty;
 
         /// <summary>InstantiateIn is called when the Template is instantiated by the parent control.</summary>
         /// <param name="container">The container control.</param>

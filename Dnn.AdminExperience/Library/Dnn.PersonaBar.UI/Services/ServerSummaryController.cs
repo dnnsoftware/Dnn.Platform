@@ -33,31 +33,28 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private readonly IHostSettings hostSettings;
         private readonly IApplicationInfo application;
-        private readonly ILocalUpgradeService localUpgradeService;
 
         /// <summary>Initializes a new instance of the <see cref="ServerSummaryController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ServerSummaryController()
-            : this(null, null, null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ServerSummaryController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="application">The application.</param>
-        /// <param name="localUpgradeService">The local upgrade service.</param>
-        public ServerSummaryController(IHostSettings hostSettings, IApplicationInfo application, ILocalUpgradeService localUpgradeService)
+        public ServerSummaryController(IHostSettings hostSettings, IApplicationInfo application)
         {
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.application = application ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
-            this.localUpgradeService = localUpgradeService ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocalUpgradeService>();
         }
 
         /// <summary>Return server info.</summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A response with server info.</returns>
         [HttpGet]
-        public async Task<HttpResponseMessage> GetServerInfo(CancellationToken cancellationToken)
+        public HttpResponseMessage GetServerInfo(CancellationToken cancellationToken)
         {
             try
             {
@@ -70,7 +67,7 @@ namespace Dnn.PersonaBar.UI.Services
                     ServerName = isHost ? Globals.ServerName : string.Empty,
                     LicenseVisible = isHost && this.GetVisibleSetting("LicenseVisible"),
                     DocCenterVisible = this.GetVisibleSetting("DocCenterVisible"),
-                    Update = await this.UpdateInfo(cancellationToken),
+                    Update = this.UpdateInfo(cancellationToken),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -86,31 +83,9 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A serialized <see cref="FrameworkQueryDTO"/> object.</returns>
         [HttpGet]
-        public async Task<HttpResponseMessage> GetUpdateInfo(CancellationToken cancellationToken)
+        public HttpResponseMessage GetUpdateInfo(CancellationToken cancellationToken)
         {
-            return this.Request.CreateResponse(HttpStatusCode.OK, await this.UpdateInfo(cancellationToken));
-        }
-
-        /// <summary>Starts a local upgrade.</summary>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>An empty success response.</returns>
-        [HttpPost]
-        public async Task<HttpResponseMessage> StartLocalUpgrade(CancellationToken cancellationToken)
-        {
-            if (!this.UserInfo.IsSuperUser)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
-            }
-
-            var upgrades = await this.localUpgradeService.GetLocalUpgrades(cancellationToken);
-            if (!upgrades.Any(u => u.IsValid && !u.IsOutdated))
-            {
-                return this.Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "There are no upgrades to apply", });
-            }
-
-            await this.localUpgradeService.StartLocalUpgrade(upgrades, cancellationToken);
-
-            return this.Request.CreateResponse(HttpStatusCode.NoContent);
+            return this.Request.CreateResponse(HttpStatusCode.OK, this.UpdateInfo(cancellationToken));
         }
 
         private bool GetVisibleSetting(string settingName)
@@ -121,16 +96,13 @@ namespace Dnn.PersonaBar.UI.Services
                    || portalSettings[settingName] == "true";
         }
 
-        private async Task<FrameworkQueryDTO> UpdateInfo(CancellationToken cancellationToken)
+        private FrameworkQueryDTO UpdateInfo(CancellationToken cancellationToken)
         {
             var updateInfo = new FrameworkQueryDTO();
             if (HttpContextSource.Current == null || !this.UserInfo.IsSuperUser)
             {
                 return updateInfo;
             }
-
-            var localUpgrades = await this.localUpgradeService.GetLocalUpgrades(cancellationToken);
-            updateInfo.LocalUpgrades = localUpgrades.Select(info => LocalUpgradeDto.FromLocalUpgradeInfo(info)).ToList();
 
             if (!this.hostSettings.CheckUpgrade)
             {

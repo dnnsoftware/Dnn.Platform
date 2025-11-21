@@ -7,6 +7,7 @@ namespace DotNetNuke.Abstractions.Application;
 using System;
 
 using DotNetNuke.Abstractions.Security;
+using DotNetNuke.Internal.SourceGenerators;
 
 /// <summary>Provides access to well-known host settings.</summary>
 public interface IHostSettings
@@ -39,13 +40,16 @@ public interface IHostSettings
     /// </summary>
     public bool AllowControlPanelToDetermineVisibility { get; }
 
-    /// <summary>Gets a value indicating whether indicates whether Composite Files are enabled at the host level.</summary>
+    /// <summary>Gets a value indicating whether Composite Files are enabled at the host level.</summary>
+    [DnnDeprecated(10, 2, 0, "Bundling is no longer supported, there is no replacement within DNN for this functionality.")]
     public bool CrmEnableCompositeFiles { get; }
 
-    /// <summary>Gets a value indicating whether indicates whether CSS Minification is enabled at the host level.</summary>
+    /// <summary>Gets a value indicating whether CSS Minification is enabled at the host level.</summary>
+    [DnnDeprecated(10, 2, 0, "Minification is no longer supported, there is no replacement within DNN for this functionality.")]
     public bool CrmMinifyCss { get; }
 
-    /// <summary>Gets a value indicating whether indicates whether JS Minification is enabled at the host level.</summary>
+    /// <summary>Gets a value indicating whether JS Minification is enabled at the host level.</summary>
+    [DnnDeprecated(10, 2, 0, "Minification is no longer supported, there is no replacement within DNN for this functionality.")]
     public bool CrmMinifyJs { get; }
 
     /// <summary>Gets the Client Resource Management version number.</summary>
@@ -97,7 +101,7 @@ public interface IHostSettings
     /// <summary>Gets a value indicating whether File AutoSync is Enabled.</summary>
     public bool EnableFileAutoSync { get; }
 
-    /// <summary>Gets a value indicating whether enable whether the IP address of the user is checked against a list during login.</summary>
+    /// <summary>Gets a value indicating whether the IP address of the user is checked against a list during login.</summary>
     public bool EnableIPChecking { get; }
 
     /// <summary>Gets a value indicating whether Module Online Help is Enabled.</summary>
@@ -106,10 +110,10 @@ public interface IHostSettings
     /// <summary>Gets a value indicating whether the Request Filters are Enabled.</summary>
     public bool EnableRequestFilters { get; }
 
-    /// <summary>Gets a value indicating whether enable whether a client-side password strength meter is shown on registration screen.</summary>
+    /// <summary>Gets a value indicating whether a client-side password strength meter is shown on registration screen.</summary>
     public bool EnableStrengthMeter { get; }
 
-    /// <summary>Gets a value indicating whether enable whether a previous passwords are stored to check if user is reusing them.</summary>
+    /// <summary>Gets a value indicating whether a previous passwords are stored to check if user is reusing them.</summary>
     public bool EnablePasswordHistory { get; }
 
     /// <summary>Gets a value indicating whether to use the Language in the Url.</summary>
