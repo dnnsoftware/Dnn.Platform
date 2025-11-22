@@ -13,11 +13,6 @@ namespace DotNetNuke.UI.WebControls
     /// <summary>The ImageCommandColumnTemplate provides a Template for the ImageCommandColumn.</summary>
     public class ImageCommandColumnTemplate : ITemplate
     {
-        private ImageCommandColumnEditMode mEditMode = ImageCommandColumnEditMode.Command;
-        private ListItemType mItemType = ListItemType.Item;
-        private bool mShowImage = true;
-        private bool mVisible = true;
-
         /// <summary>Initializes a new instance of the <see cref="ImageCommandColumnTemplate"/> class.</summary>
         public ImageCommandColumnTemplate()
             : this(ListItemType.Item)
@@ -35,24 +30,13 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A String.</value>
         public string CommandName { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets the Design Mode of the Column.</summary>
+        /// <summary>Gets or sets a value indicating whether the Column is in design mode.</summary>
         /// <value>A Boolean.</value>
         public bool DesignMode { get; set; }
 
         /// <summary>Gets or sets the CommandName for the Column.</summary>
         /// <value>A String.</value>
-        public ImageCommandColumnEditMode EditMode
-        {
-            get
-            {
-                return this.mEditMode;
-            }
-
-            set
-            {
-                this.mEditMode = value;
-            }
-        }
+        public ImageCommandColumnEditMode EditMode { get; set; } = ImageCommandColumnEditMode.Command;
 
         /// <summary>Gets or sets the URL of the Image.</summary>
         /// <value>A String.</value>
@@ -60,18 +44,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets or sets the type of Template to Create.</summary>
         /// <value>A String.</value>
-        public ListItemType ItemType
-        {
-            get
-            {
-                return this.mItemType;
-            }
-
-            set
-            {
-                this.mItemType = value;
-            }
-        }
+        public ListItemType ItemType { get; set; } = ListItemType.Item;
 
         /// <summary>Gets or sets the Key Field that provides a Unique key to the data Item.</summary>
         /// <value>A String.</value>
@@ -89,44 +62,21 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A String.</value>
         public string OnClickJS { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether an Image is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether an Image is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
-        public bool ShowImage
-        {
-            get
-            {
-                return this.mShowImage;
-            }
-
-            set
-            {
-                this.mShowImage = value;
-            }
-        }
+        public bool ShowImage { get; set; } = true;
 
         /// <summary>Gets or sets the Text (for Header/Footer Templates).</summary>
         /// <value>A String.</value>
         public string Text { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether an flag that indicates whether the buttons are visible (this is overridden if
-        /// the VisibleField is set)
-        /// changed.
+        /// Gets or sets a value indicating whether the buttons are visible (this is overridden if
+        /// the VisibleField is set).
         /// </summary>
         /// <value>A Boolean.</value>
-        public bool Visible
-        {
-            get
-            {
-                return this.mVisible;
-            }
-
-            set
-            {
-                this.mVisible = value;
-            }
-        }
+        public bool Visible { get; set; } = true;
 
         /// <summary>Gets or sets an flag that indicates whether the buttons are visible.</summary>
         /// <value>A Boolean.</value>

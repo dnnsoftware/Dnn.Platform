@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc.Html;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Abstractions.ClientResources;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Instrumentation;
@@ -16,6 +17,7 @@ using DotNetNuke.UI.Skins.Controls;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 using DotNetNuke.Web.MvcPipeline.Utils;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms
 {
@@ -54,7 +56,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms
                 if (mc is IResourcable)
                 {
                     var moduleControl = (IResourcable)mc;
-                    moduleControl.RegisterResources(this.Page);
+                    var crc = DependencyProvider.GetService<IClientResourceController>();
+                    moduleControl.RegisterResources(crc);
                 }
             }
             catch (Exception ex)

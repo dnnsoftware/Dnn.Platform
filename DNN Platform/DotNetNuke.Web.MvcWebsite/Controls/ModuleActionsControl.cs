@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using System.Collections.Generic;
     using System.Web.Mvc;
     using System.Web.Script.Serialization;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -19,11 +20,14 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
-    using DotNetNuke.Services.Installer.Log;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
+    using DotNetNuke.UI;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ResourceManager;
+    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
+    using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
@@ -109,13 +113,18 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
             }
         }
 
-        public override IRazorModuleResult Invoke()
+        private readonly IClientResourceController clientResourceController;
+        public ModuleActionsControl(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController;
+        }
+
+       public override IRazorModuleResult Invoke()
         {
             var moduleInfo = ModuleConfiguration;
-            this.OnInit();
             this.OnLoad(moduleInfo);
 
-            var viewModel = new ModuleActionsModel
+            var viewModel = new Models.ModuleActionsModel
             {
                 ModuleContext = moduleInfo,
                 SupportsQuickSettings = this.SupportsQuickSettings,
@@ -234,7 +243,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controls
                     */
                     moduleSpecificActions.Actions.Add(action);
 
-                    if (!DotNetNuke.UI.UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
+                    if (!UIUtilities.IsLegacyUI(this.ModuleContext.ModuleId, action.ControlKey, this.ModuleContext.PortalId) && action.Url.Contains("ctl"))
                     {
                         action.ClientScript = UrlUtils.PopUpUrl(action.Url, null, this.PortalSettings, true, false);
                     }

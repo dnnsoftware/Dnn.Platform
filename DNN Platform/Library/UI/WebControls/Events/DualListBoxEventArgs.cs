@@ -6,9 +6,6 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections.Generic;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DualListBoxEventArgs
     /// <summary>
     /// The DualListBoxEventArgs class is a cusom EventArgs class for
     /// handling Event Args in the DualListBox.

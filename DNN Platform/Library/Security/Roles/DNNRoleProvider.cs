@@ -18,9 +18,6 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Membership
-    /// Class:      DNNRoleProvider
     /// <summary>
     /// The DNNRoleProvider overrides the default MembershipProvider to provide
     /// a purely DNN Membership Component implementation.

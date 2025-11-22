@@ -6,6 +6,7 @@ on:
       - "**.jpeg"
       - "**.png"
       - "**.webp"
+      - "**.avif"
   push:
     branches:
       - development # merging PRs from other forks (will open a new PR)
@@ -26,7 +27,7 @@ jobs:
 
       - name: Compress Images
         id: compress_images
-        uses: calibreapp/image-actions@1.3.0
+        uses: calibreapp/image-actions@1.4.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: ${{ github.event_name != 'pull_request' }} # For non-Pull Requests, run in compressOnly mode and we'll PR after.

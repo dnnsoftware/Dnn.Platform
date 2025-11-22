@@ -661,11 +661,6 @@ MIT License
 License File: Admin Persona Bar Referenced Licences.zip\fast-levenshtein\LICENSE.md
 --------------------------------------------------------------------------------------
 
-fbjs (A collection of utility libraries used by other Facebook JS projects)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\fbjs\LICENSE
---------------------------------------------------------------------------------------
-
 figures (Unicode symbols with Windows CMD fallbacks)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\figures\license

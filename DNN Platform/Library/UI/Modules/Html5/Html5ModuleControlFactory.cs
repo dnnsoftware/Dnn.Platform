@@ -6,29 +6,40 @@ namespace DotNetNuke.UI.Modules.Html5
     using System;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Module control factory for HTML modules.</summary>
     public class Html5ModuleControlFactory : BaseModuleControlFactory
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Html5ModuleControlFactory()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Html5ModuleControlFactory"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public Html5ModuleControlFactory(IBusinessControllerProvider businessControllerProvider, IClientResourceController clientResourceController)
         {
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <inheritdoc/>
@@ -44,7 +55,7 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <inheritdoc/>
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
-            return new Html5HostControl("~/" + controlSrc, this.businessControllerProvider);
+            return new Html5HostControl("~/" + controlSrc, this.businessControllerProvider, this.clientResourceController);
         }
 
         /// <inheritdoc/>

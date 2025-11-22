@@ -1,16 +1,17 @@
 ﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+Imports System.Collections.Generic
+Imports System.Globalization
+Imports System.Reflection
 Imports System.Web
 Imports System.Web.UI
 Imports System.Web.UI.HtmlControls
 Imports System.Web.UI.WebControls
-Imports System.Reflection
-Imports System.Globalization
-Imports System.Collections.Generic
-Imports System.Text.RegularExpressions
-Imports DotNetNuke.Web.Client
-Imports DotNetNuke.Web.Client.ClientResourceManagement
+
+Imports DotNetNuke.Abstractions.ClientResources
+Imports DotNetNuke.Web.Client.ResourceManager
+Imports Microsoft.Extensions.DependencyInjection
 
 Namespace DotNetNuke.UI.Utilities
 
@@ -663,6 +664,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Sub RegisterClientReference(ByVal objPage As Page, ByVal eRef As ClientNamespaceReferences)
+            Dim controller As IClientResourceController = GetClientResourcesController(objPage)
             Select Case eRef
                 Case ClientNamespaceReferences.dnn
                     If Not IsClientScriptBlockRegistered(objPage, "dnn.js") Then
@@ -679,26 +681,26 @@ Namespace DotNetNuke.UI.Utilities
                 Case ClientNamespaceReferences.dnn_dom
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
                 Case ClientNamespaceReferences.dnn_dom_positioning
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.dom.positioning.js")
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
+                    controller.CreateScript().FromSrc(ScriptPath & "dnn.dom.positioning.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnDomPositioning).Register()
 
                 Case ClientNamespaceReferences.dnn_xml
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xml.js", FileOrder.Js.DnnXml)
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
+                    controller.CreateScript().FromSrc(ScriptPath & "dnn.xml.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXml).Register()
 
-                            If BrowserSupportsFunctionality(ClientFunctionality.XMLJS) Then
-                        ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xml.jsparser.js", FileOrder.Js.DnnXmlJsParser)
-                        End If
+                    If BrowserSupportsFunctionality(ClientFunctionality.XMLJS) Then
+                        controller.CreateScript().FromSrc(ScriptPath & "dnn.xml.jsparser.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlJsParser).Register()
+                    End If
                 Case ClientNamespaceReferences.dnn_xmlhttp
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xmlhttp.js", FileOrder.Js.DnnXmlHttp)
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
+                    controller.CreateScript().FromSrc(ScriptPath & "dnn.xmlhttp.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttp).Register()
 
-                            If BrowserSupportsFunctionality(ClientFunctionality.XMLHTTPJS) Then
-                        ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xmlhttp.jsxmlhttprequest.js", FileOrder.Js.DnnXmlHttpJsXmlHttpRequest)
-                        End If
+                    If BrowserSupportsFunctionality(ClientFunctionality.XMLHTTPJS) Then
+                        controller.CreateScript().FromSrc(ScriptPath & "dnn.xmlhttp.jsxmlhttprequest.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttpJsXmlHttpRequest).Register()
+                    End If
                 Case ClientNamespaceReferences.dnn_motion
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom_positioning)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.motion.js")
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom_positioning)
+                    controller.CreateScript().FromSrc(ScriptPath & "dnn.motion.js").Register()
 
             End Select
         End Sub
@@ -860,7 +862,8 @@ Namespace DotNetNuke.UI.Utilities
             If BrowserSupportsFunctionality(ClientFunctionality.DHTML) Then
 
                 RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom)
-                ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.util.tablereorder.js")
+                Dim controller As IClientResourceController = GetClientResourcesController(objPage)
+                controller.CreateScript().FromSrc(ScriptPath & "dnn.util.tablereorder.js").Register()
 
                 AddAttribute(objButton, "onclick", "if (dnn.util.tableReorderMove(this," & CInt(blnUp) & ",'" & strKey & "')) return false;")
                 Dim objParent As Control = objButton.Parent
@@ -1084,6 +1087,19 @@ Namespace DotNetNuke.UI.Utilities
 
 
 #End Region
+
+        Friend Shared Function GetClientResourcesController(ByVal page As Page) As IClientResourceController
+            Dim serviceProvider As IServiceProvider = GetCurrentServiceProvider(page.Request.RequestContext.HttpContext)
+            Return serviceProvider.GetRequiredService(Of IClientResourceController)()
+        End Function
+
+        Friend Shared Function GetCurrentServiceProvider(ByVal context As HttpContextBase) As IServiceProvider
+            Return GetScope(context.Items).ServiceProvider
+        End Function
+
+        Friend Shared Function GetScope(ByVal httpContextItems As IDictionary) As IServiceScope
+            Return TryCast(httpContextItems(GetType(IServiceScope)), IServiceScope)
+        End Function
 
     End Class
 

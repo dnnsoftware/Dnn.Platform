@@ -27,12 +27,7 @@
     <div id="personabar-wrap">
         <div class="personabar" id="personabar">
             <div class="personabarLogo" data-bind="css: { 'updateLogo': !upToDate() }">
-                <!-- ko if: localUpgradeAvailable() -->
-                <button class="update local" data-bind="visible: !upToDate(), click: startLocalUpgrade, html: updateText, css: { 'critical': updateCritical() }"></button>
-                <!-- /ko -->
-                <!-- ko ifnot: localUpgradeAvailable() -->
                 <a class="update" target="_blank" data-bind="visible: !upToDate(), attr: { 'href': updateLink }, html: updateText, css: { 'critical': updateCritical() }"></a>
-                <!-- /ko -->
             </div>
             <div id="topLevelMenu">
                 <ul class="personabarnav">

@@ -268,10 +268,6 @@
       <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj">
-      <Project>{33C9571D-E3AF-46FC-DC75-9CA082BBDC3D}</Project>
-      <Name>DotNetNuke.ContentSecurityPolicy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
       <Project>{AA3EE19B-81A0-3766-E8F4-424C2425A8D3}</Project>
       <Name>DotNetNuke.Web.MvcPipeline</Name>

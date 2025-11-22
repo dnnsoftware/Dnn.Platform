@@ -55,14 +55,9 @@ namespace Dnn.PersonaBar.Pages.Components
             string filename;
             try
             {
-                var folder = GetTemplateFolder();
+                var folder = GetTemplateFolder() ?? CreateTemplateFolder();
 
-                if (folder == null)
-                {
-                    folder = CreateTemplateFolder();
-                }
-
-                filename = folder.FolderPath + template.Name + ".page.template";
+                filename = $"{folder.FolderPath}{template.Name}.page.template";
                 filename = filename.Replace("/", "\\");
 
                 var xmlTemplate = new XmlDocument { XmlResolver = null };
@@ -79,10 +74,15 @@ namespace Dnn.PersonaBar.Pages.Components
                 this.SerializeTab(template, xmlTemplate, nodeTabs);
 
                 // add file to Files table
-                using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
-                {
-                    FileManager.Instance.AddFile(folder, template.Name + ".page.template", fileContent, true, false, "application/octet-stream");
-                }
+                const bool permissionsCheckedByCallingMethod = true;
+                using var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml));
+                FileManager.Instance.AddFile(
+                    folder,
+                    $"{template.Name}.page.template",
+                    fileContent,
+                    true,
+                    !permissionsCheckedByCallingMethod,
+                    "application/octet-stream");
             }
             catch (DotNetNuke.Services.FileSystem.PermissionsNotMetException)
             {
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         public IEnumerable<Template> GetTemplates()
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, TemplatesFolderPath);
 
             return this.LoadTemplates(portalSettings.PortalId, templateFolder);
@@ -210,7 +210,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var tab = this.tabController.GetTab(template.TabId, portalSettings.PortalId, false);
             var xmlTab = new XmlDocument { XmlResolver = null };
             var nodeTab = TabController.SerializeTab(this.businessControllerProvider, xmlTab, tab, template.IncludeContent);

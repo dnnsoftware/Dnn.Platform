@@ -697,15 +697,6 @@ namespace DotNetNuke.Services.Install
                         return;
                     }
 
-                    // Adding ClientDependency Resources config to web.config
-                    if (!ClientResourceManager.IsInstalled() && ValidatePermissions().Item1)
-                    {
-                        ClientResourceManager.AddConfiguration();
-                        this.Response.Redirect(this.Request.RawUrl);
-
-                        // TODO - this may cause infinite loop
-                    }
-
                     // Ensure connection strings are in synch
                     var synchConnectionString = new SynchConnectionStringStep();
                     synchConnectionString.Execute();

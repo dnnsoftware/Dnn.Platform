@@ -6,7 +6,6 @@ namespace DotNetNuke.Web.MvcPipeline
 {
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
-    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Web.Mvc.Extensions;
     using DotNetNuke.Web.MvcPipeline.ModelFactories;
@@ -29,7 +28,9 @@ namespace DotNetNuke.Web.MvcPipeline
             services.AddTransient<IContainerModelFactory, ContainerModelFactory>();
 
             DependencyResolver.SetResolver(new DnnMvcPipelineDependencyResolver(Globals.DependencyProvider));
-            services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
+
+            //TODO: CSP - enable when CSP implementation is ready
+            //services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
         }
     }
 }

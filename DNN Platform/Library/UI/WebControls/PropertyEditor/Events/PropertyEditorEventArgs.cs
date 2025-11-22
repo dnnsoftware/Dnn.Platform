@@ -5,9 +5,6 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      PropertyEditorEventArgs
     /// <summary>
     /// The PropertyEditorEventArgs class is a cusom EventArgs class for
     /// handling Event Args from a change in value of a property.

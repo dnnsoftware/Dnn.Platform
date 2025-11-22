@@ -13,9 +13,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.WebControls;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      DateEditControl
     /// <summary>
     /// The DateEditControl control provides a standard UI component for editing
     /// date properties.

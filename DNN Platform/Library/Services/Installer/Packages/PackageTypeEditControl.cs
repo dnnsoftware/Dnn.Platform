@@ -11,9 +11,6 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
 
     using DNNLocalization = DotNetNuke.Services.Localization.Localization;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Services.Installer.Packages.WebControls
-    /// Class:      PackageTypeEditControl
     /// <summary>
     /// The PackageTypeEditControl control provides a standard UI component for editing
     /// package types.

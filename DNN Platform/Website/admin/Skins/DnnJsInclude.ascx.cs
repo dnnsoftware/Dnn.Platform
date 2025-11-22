@@ -5,9 +5,6 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
 
-    using ClientDependency.Core;
-    using ClientDependency.Core.Controls;
-
     /// <summary>A control which causes JavaScript to be included on the page.</summary>
     public partial class DnnJsInclude : SkinObjectBase
     {
@@ -35,7 +32,6 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             this.ctlInclude.AddTag = this.AddTag;
             this.ctlInclude.FilePath = this.FilePath;
-            this.ctlInclude.ForceBundle = this.ForceBundle;
             this.ctlInclude.ForceProvider = this.ForceProvider;
             this.ctlInclude.ForceVersion = this.ForceVersion;
             this.ctlInclude.Name = this.Name;

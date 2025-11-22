@@ -4,28 +4,46 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web.UI;
 
-    using ClientDependency.Core.Controls;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Web.Client.Cdf;
+    using DotNetNuke.Web.Client.ResourceManager;
 
     /// <summary>Registers a JavaScript resource.</summary>
-    public class DnnJsInclude : JsInclude
+    public class DnnJsInclude : ClientResourceInclude
     {
+        private readonly IClientResourceController clientResourceController;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
         /// Sets up default settings for the control.
         /// </summary>
-        public DnnJsInclude()
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public DnnJsInclude(IClientResourceController clientResourceController)
+            : base()
         {
-            this.ForceProvider = ClientResourceManager.DefaultJsProvider;
+            this.clientResourceController = clientResourceController;
+            this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
+            this.DependencyType = ClientDependencyType.Javascript;
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.clientResourceController.CreateScript()
+                        .FromSrc(this.FilePath, this.PathNameAlias)
+                        .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
+                        .SetProvider(this.ForceProvider)
+                        .SetPriority(this.Priority)
+                        .Register();
         }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
+            this.PathNameAlias = string.IsNullOrEmpty(this.PathNameAlias) ? string.Empty : this.PathNameAlias.ToLowerInvariant();
             base.OnLoad(e);
-
-            this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
         }
 
         /// <inheritdoc/>
@@ -33,7 +51,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)
             {
-                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", this.DependencyType, this.FilePath, this.ForceProvider, this.Priority);
+                writer.Write("<!--CDF(Javascript|{0}|{1}|{2})-->", this.FilePath, this.ForceProvider, this.Priority);
             }
         }
     }

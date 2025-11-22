@@ -17,20 +17,20 @@
     "not dead"
   ],
   "devDependencies": {
-    "@types/node": "^22.10.7",
+    "@types/node": "^24.9.0",
     "@types/postcss-import": "^14.0.3",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.21",
     "chokidar": "^4.0.3",
-    "cssnano": "^7.0.6",
-    "esbuild": "^0.25.0",
-    "eslint": "^9.18.0",
+    "cssnano": "^7.1.1",
+    "esbuild": "^0.25.11",
+    "eslint": "^9.38.0",
     "modern-normalize": "^3.0.1",
-    "postcss": "^8.5.1",
+    "postcss": "^8.5.6",
     "postcss-banner": "^4.0.1",
-    "postcss-cli": "^11.0.0",
-    "postcss-import": "^16.1.0",
-    "sass": "^1.83.4",
-    "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "postcss-cli": "^11.0.1",
+    "postcss-import": "^16.1.1",
+    "sass": "^1.93.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   }
 }

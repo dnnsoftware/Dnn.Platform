@@ -10,26 +10,29 @@ namespace DotNetNuke.Web.MvcPipeline
     using System.Web;
     using System.Web.Helpers;
     using System.Web.Mvc;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using DotNetNuke.Web.MvcPipeline.Utils;
+    using DotNetNuke.Web.Client.ResourceManager;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static partial class HtmlHelpers
     {
         public static IHtmlString Control(this HtmlHelper htmlHelper, string controlSrc, ModuleInfo module)
         {
+            var clientResourcesController = GetClientResourcesController();
             var moduleControl = MvcUtils.GetModuleControl(module, controlSrc);
             // moduleControl.ViewContext = htmlHelper.ViewContext;
             if (moduleControl is IResourcable)
             {
                 var resourcable = (IResourcable)moduleControl;
-                resourcable.RegisterResources(htmlHelper.ViewContext.Controller.ControllerContext);
+                resourcable.RegisterResources(clientResourcesController);
             }
             return moduleControl.Html(htmlHelper);
         }
@@ -41,7 +44,9 @@ namespace DotNetNuke.Web.MvcPipeline
 
         public static IHtmlString CspNonce(this HtmlHelper htmlHelper)
         {
-            return new MvcHtmlString(htmlHelper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
+            //todo CSP - implement nonce support
+            //return new MvcHtmlString(htmlHelper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
+            return new MvcHtmlString(string.Empty);
         }
 
         public static IHtmlString RegisterAjaxScriptIfRequired(this HtmlHelper htmlHelper)
@@ -62,6 +67,12 @@ namespace DotNetNuke.Web.MvcPipeline
             }
 
             return new MvcHtmlString(string.Empty);
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = Common.Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

@@ -10,6 +10,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
     public interface IContainerModelFactory
     {
-        ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings);
+        ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc);
     }
 }

@@ -6,19 +6,16 @@ namespace Dnn.EditBar.UI.Mvc
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.IO;
     using System.Linq;
-    using System.Reflection;
     using System.Threading;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.UI;
-    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using Dnn.EditBar.UI.Controllers;
-    using DotNetNuke.Collections;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
@@ -27,17 +24,14 @@ namespace Dnn.EditBar.UI.Mvc
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
-    using DotNetNuke.UI;
-    using DotNetNuke.UI.Containers;
     using DotNetNuke.UI.Skins;
-    using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
-    using DotNetNuke.Web.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -291,30 +285,29 @@ namespace Dnn.EditBar.UI.Mvc
 
         private void RegisterClientResources()
         {
-            ClientResourceManager.EnableAsyncPostBackHandler();
+            DotNetNuke.Web.Client.ClientResourceManagement.ClientResourceManager.EnableAsyncPostBackHandler();
 
             // register drop down list required resources
-            MvcClientResourceManager.RegisterStyleSheet(this.Context, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
-            MvcClientResourceManager.RegisterStyleSheet(this.Context, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
+            var controller = this.GetClientResourcesController();
+            controller.RegisterStylesheet("~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
 
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/scripts/dnn.extensions.js");
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/scripts/dnn.DataStructures.js");
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
+            controller.RegisterStylesheet("~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
 
-            MvcClientResourceManager.RegisterScript(this.Context, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleManager.js"));
-            MvcClientResourceManager.RegisterScript(this.Context, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleDialog.js"));
-            MvcClientResourceManager.RegisterScript(this.Context, Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
-            MvcClientResourceManager.RegisterScript(this.Context, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
-            MvcClientResourceManager.RegisterScript(this.Context, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
-            MvcClientResourceManager.RegisterStyleSheet(
-                this.Context,
-                Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"),
-                CssFileOrder);
+            controller.RegisterScript("~/Resources/Shared/scripts/dnn.extensions.js");
+            controller.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            controller.RegisterScript("~/Resources/Shared/scripts/dnn.DataStructures.js");
+            controller.RegisterScript("~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
+            controller.RegisterScript("~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
+            controller.RegisterScript("~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
+            controller.RegisterScript("~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
+            controller.RegisterScript("~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
+
+            controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleManager.js"));
+            controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleDialog.js"));
+            controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
+            controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
+            controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
+            controller.CreateStylesheet().FromSrc(Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css")).SetPriority(CssFileOrder);
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -322,10 +315,8 @@ namespace Dnn.EditBar.UI.Mvc
             // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
-            MvcClientResourceManager.RegisterScript(this.Context, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            MvcClientResourceManager.RegisterStyleSheet(
-                this.Context,
-                "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
+            controller.RegisterScript("~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
+            controller.RegisterStylesheet("~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
         }
 
         private void RegisterEditBarResources()
@@ -340,9 +331,10 @@ namespace Dnn.EditBar.UI.Mvc
 
             // this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "EditBarSettings", settingsScript, true);
             MvcClientAPI.RegisterStartupScript("EditBarSettings", settingsScript);
-            MvcClientResourceManager.RegisterScript(this.Context, "~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
 
-            MvcClientResourceManager.RegisterStyleSheet(this.Context, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
+            var controller = this.GetClientResourcesController();
+            controller.RegisterScript("~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
+            controller.RegisterStylesheet("~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
         }
 
         private bool IsPageEditor()
@@ -408,17 +400,17 @@ namespace Dnn.EditBar.UI.Mvc
                 this.SupportAjax ? "true" : "false",
                 panesClientIds);
 
-           /*
-           if (ScriptManager.GetCurrent(this.Page) != null)
-           {
-               // respect MS AJAX
-               ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ContentEditorManager", script, true);
-           }
-           else
-           {
-               this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ContentEditorManager", script, true);
-           }
-           */
+            /*
+            if (ScriptManager.GetCurrent(this.Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ContentEditorManager", script, true);
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ContentEditorManager", script, true);
+            }
+            */
 
             MvcClientAPI.RegisterStartupScript("ContentEditorManager", script);
         }
@@ -740,6 +732,12 @@ namespace Dnn.EditBar.UI.Mvc
         {
             var user = this.PortalSettings.UserInfo;
             return user.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
+        }
+
+        private IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = DotNetNuke.Common.Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

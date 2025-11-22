@@ -591,7 +591,6 @@
     </Compile>
     <Content Include="admin\Menus\ModuleActions\dnnQuickSettings.js" />
     <Content Include="admin\Menus\ModuleActions\ModuleActions.less" />
-    <Content Include="App_Data\Upgrade\PlaceHolder.txt" />
     <Content Include="Install\InstallWizard.aspx" />
     <Content Include="Licenses\Castle Core %28Apache%29.txt.resources" />
     <Content Include="Licenses\LiteDB %28MIT%29.txt.resources" />
@@ -610,6 +609,7 @@
       <Link>stylecop.json</Link>
     </AdditionalFiles>
     <Content Include="admin\Portal\Views\web.config" />
+    <Content Include="App_Data\Upgrade\upgrade.json" />
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -1279,8 +1279,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
     <Content Include="Views\Default\Layout.cshtml" />
     <Content Include="Views\ModuleActionsView\Invoke.cshtml" />
-    <Content Include="Views\ModulePermissionsGrid\Index.cshtml" />
-    <Content Include="Views\ModuleSettingsView\Invoke.cshtml" />
     <Content Include="Views\PersonaBarContainer\Index.cshtml" />
     <Content Include="Views\PrivacyView\Invoke.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1300,6 +1298,9 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.99.00.SqlDataProvider" />
     <Content Include="Portals\_default\Skins\_default\Views\web.config" />
     <Content Include="Views\Default\ModuleActions.cshtml" />
+    <Content Include="Views\TermsView\Invoke.cshtml" />
+    <Content Include="Views\web.config" />
+    <Content Include="Install\Config\10.02.00.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1471,39 +1472,6 @@
     <Content Include="DesktopModules\AuthenticationServices\DNN\Login.ascx" />
     <Content Include="DesktopModules\AuthenticationServices\DNN\Settings.ascx" />
     <Content Include="DNN.ico" />
-    <Content Include="Documentation\Contributors.txt" />
-    <Content Include="Documentation\License.txt" />
-    <Content Include="Documentation\Readme.txt" />
-    <Content Include="Documentation\StarterKit\Documents.css" />
-    <Content Include="Documentation\StarterKit\images\AddDatabase.jpg" />
-    <Content Include="Documentation\StarterKit\images\AppSetting.gif" />
-    <Content Include="Documentation\StarterKit\images\App_Data.jpg" />
-    <Content Include="Documentation\StarterKit\images\ConnectionString.gif" />
-    <Content Include="Documentation\StarterKit\images\Database2005Properties.jpg" />
-    <Content Include="Documentation\StarterKit\images\DatabaseProperties.jpg" />
-    <Content Include="Documentation\StarterKit\images\EditWeb.jpg" />
-    <Content Include="Documentation\StarterKit\images\FileSecurity.jpg" />
-    <Content Include="Documentation\StarterKit\images\IISPermissions.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005Database.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005Login.jpg" />
-    <Content Include="Documentation\StarterKit\images\New2005User.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewDatabase.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewLogin.jpg" />
-    <Content Include="Documentation\StarterKit\images\NewUser.jpg" />
-    <Content Include="Documentation\StarterKit\images\NTFSPermissions.jpg" />
-    <Content Include="Documentation\StarterKit\images\User2005Properties.jpg" />
-    <Content Include="Documentation\StarterKit\images\UserProperties.jpg" />
-    <Content Include="Documentation\StarterKit\images\webconfig.jpg" />
-    <Content Include="Documentation\StarterKit\images\WebProperties1.jpg" />
-    <Content Include="Documentation\StarterKit\images\WebProperties2.jpg" />
-    <Content Include="Documentation\StarterKit\logo.gif" />
-    <Content Include="Documentation\StarterKit\NTFSConfig.html" />
-    <Content Include="Documentation\StarterKit\SQLServer2005Config.html" />
-    <Content Include="Documentation\StarterKit\SQLServerConfig.html" />
-    <Content Include="Documentation\StarterKit\SQLServerXpressConfig.html" />
-    <Content Include="Documentation\StarterKit\TemplateConfig.html" />
-    <Content Include="Documentation\StarterKit\WebServerConfig.html" />
-    <Content Include="Documentation\StarterKit\Welcome.html" />
     <Content Include="ErrorPage.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -2914,7 +2882,6 @@
     <Content Include="Portals\_default\Containers\_default\popUpContainer.ascx" />
     <Content Include="Resources\Shared\stylesheets\dnndefault\8.0.0\default.css" />
     <Content Include="Portals\_default\EventQueue\readme.txt" />
-    <Content Include="Portals\_default\ie.css" />
     <Content Include="Portals\_default\portal.css" />
     <Content Include="Portals\_default\Skins\_default\No Skin.ascx" />
     <Content Include="Portals\_default\Skins\_default\popUpSkin.ascx" />
@@ -3178,7 +3145,6 @@
     <None Include="Config\SolutionsExplorer.opml.config" />
     <None Include="controls\CountryListBox\Data\GeoIP.dat" />
     <None Include="development.config" />
-    <None Include="Documentation\TELERIK_EULA.pdf" />
     <Content Include="Install\Config\08.00.00.01.config" />
     <Content Include="Install\Config\08.00.00.02.config" />
     <Content Include="Install\Config\08.00.00.03.config" />
@@ -3447,6 +3413,10 @@
     <ProjectReference Include="..\DotNetNuke.Maintenance\DotNetNuke.Maintenance.csproj">
       <Project>{1D5A98BD-F8E0-45F7-B26D-270D9023629D}</Project>
       <Name>DotNetNuke.Maintenance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj">
+      <Project>{039bafbd-e2db-40c4-b565-c27467d9b5e1}</Project>
+      <Name>DotNetNuke.Web.Client.ResourceManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>

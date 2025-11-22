@@ -9,9 +9,6 @@ namespace DotNetNuke.Entities.Modules
 
     using DotNetNuke.Common.Utilities;
 
-    /// Project  : DotNetNuke
-    /// Namespace: DotNetNuke.Entities.Modules
-    /// Class    : ControlInfo
     /// <summary>ControlInfo provides a base class for Module Controls and SkinControls.</summary>
     [Serializable]
     public abstract class ControlInfo : BaseEntityInfo
@@ -35,7 +32,7 @@ namespace DotNetNuke.Entities.Modules
         public string MvcControlClass { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the control support the AJAX
+        /// Gets or sets a value indicating whether the control support the AJAX
         /// Update Panel.
         /// </summary>
         /// <returns>A Boolean.</returns>

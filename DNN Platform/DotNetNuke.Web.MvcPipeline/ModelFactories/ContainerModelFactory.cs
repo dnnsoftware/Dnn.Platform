@@ -5,7 +5,7 @@
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
     using System;
-
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -14,16 +14,21 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Services.ClientDependency;
 
     public class ContainerModelFactory : IContainerModelFactory
     {
-        public ContainerModelFactory()
+        private readonly IClientResourceController clientResourceController;
+
+        public ContainerModelFactory(IClientResourceController clientResourceController)
         {
+            this.clientResourceController = clientResourceController;
         }
 
-        public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings)
+        public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc)
         {
             var container = new ContainerModel(configuration, portalSettings);
+            container.ContainerSrc = containerSrc;
             container = this.ProcessModule(container, portalSettings);
             return container;
         }
@@ -139,12 +144,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         private ContainerModel ProcessStylesheets(ContainerModel container, bool includeModuleCss)
         {
             // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, container.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
-            container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerPath + "container.css", FileOrder = FileOrder.Css.ContainerCss });
+            //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerPath + "container.css", FileOrder = FileOrder.Css.ContainerCss });
+            this.clientResourceController.RegisterStylesheet(container.ContainerPath + "container.css" , DotNetNuke.Abstractions.ClientResources.FileOrder.Css.ContainerCss, true);
 
             if (!string.IsNullOrEmpty(container.ContainerSrc))
             {
                 // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, container.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
-                container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerSrc.Replace(".ascx", ".css"), FileOrder = FileOrder.Css.SpecificContainerCss });
+                //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = container.ContainerSrc.Replace(".ascx", ".css"), FileOrder = FileOrder.Css.SpecificContainerCss });
+                this.clientResourceController.RegisterStylesheet(container.ContainerSrc.Replace(".ascx", ".css"), DotNetNuke.Abstractions.ClientResources.FileOrder.Css.SpecificContainerCss, true);
             }
             // process the base class module properties
             if (includeModuleCss)
@@ -165,7 +172,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     }
 
                     // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, stylesheet, FileOrder.Css.ModuleCss);
-                    container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = stylesheet, FileOrder = FileOrder.Css.ModuleCss });
+                    //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = stylesheet, FileOrder = FileOrder.Css.ModuleCss });
+                    this.clientResourceController.RegisterStylesheet(stylesheet, DotNetNuke.Abstractions.ClientResources.FileOrder.Css.ModuleCss, true);
                 }
 
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
@@ -174,7 +182,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
 
                     // MvcClientResourceManager.RegisterStyleSheet(this.Page.ControllerContext, stylesheet, FileOrder.Css.ModuleCss);
-                    container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = stylesheet, FileOrder = FileOrder.Css.ModuleCss });
+                    //container.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = stylesheet, FileOrder = FileOrder.Css.ModuleCss });
+                    this.clientResourceController.RegisterStylesheet(stylesheet, DotNetNuke.Abstractions.ClientResources.FileOrder.Css.ModuleCss, true);
                 }
             }
 
