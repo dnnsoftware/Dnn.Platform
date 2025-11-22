@@ -22,17 +22,25 @@
     {
         @Html.Raw(Model.PortalHeadText)
     }
+    @foreach (var item in Model.PageService.GetHeadTags())
+    {
+        @Html.Raw(item.Value)
+    }
+    @foreach (var item in Model.PageService.GetMetaTags())
+    {
+        <meta name="@item.Name" content="@item.Content" />
+    }
     @if (!string.IsNullOrEmpty(Model.MetaRefresh))
     {
         <meta id="MetaRefresh" http-equiv="Refresh" name="Refresh" content="@Model.MetaRefresh" />
     }
-    @if (!string.IsNullOrEmpty(Model.Description))
+    @if (!string.IsNullOrEmpty(Model.PageService.GetDescription()))
     {
-        <meta id="MetaDescription" name="description" content="@Model.Description" />
+        <meta id="MetaDescription" name="description" content="@Model.PageService.GetDescription()" />
     }
-    @if (!string.IsNullOrEmpty(Model.KeyWords))
+    @if (!string.IsNullOrEmpty(Model.PageService.GetKeyWords()))
     {
-        <meta id="MetaKeywords" name="keywords" content="@Model.KeyWords" />
+        <meta id="MetaKeywords" name="keywords" content="@Model.PageService.GetKeyWords()" />
     }
     @if (!string.IsNullOrEmpty(Model.Copyright))
     {
@@ -47,15 +55,15 @@
     {
         <meta id="MetaRobots" name="robots" Visible="@Model.MetaRobots" />
     }
-    @if (!string.IsNullOrEmpty(Model.CanonicalLinkUrl))
+    @if (!string.IsNullOrEmpty(Model.PageService.GetCanonicalLinkUrl()))
     {
-        <link rel="canonical" href="@Model.CanonicalLinkUrl" />
+        <link rel="canonical" href="@Model.PageService.GetCanonicalLinkUrl()" />
     }
     @if (!string.IsNullOrEmpty(Model.FavIconLink))
     {
         @Html.Raw(Model.FavIconLink)
     }
-    <title>[MVC] @Model.Title</title>
+    <title>[MVC] @Model.PageService.GetTitle()</title>
     @if (!string.IsNullOrEmpty(Model.PageHeadText))
     {
         @Html.Raw(Model.PageHeadText)

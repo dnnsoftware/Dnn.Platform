@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using Dnn.EditBar.UI.Mvc;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -34,12 +35,17 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
         private readonly INavigationManager navigationManager;
         private readonly IPageModelFactory pageModelFactory;
         private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
 
-        public DefaultController(INavigationManager navigationManager, IPageModelFactory pageModelFactory, IClientResourceController clientResourceController)
+        public DefaultController(INavigationManager navigationManager, 
+                                IPageModelFactory pageModelFactory, 
+                                IClientResourceController clientResourceController,
+                                IPageService pageService)
         {
             this.navigationManager = navigationManager;
             this.pageModelFactory = pageModelFactory;
             this.clientResourceController = clientResourceController;
+            this.pageService = pageService;
         }
 
         public ActionResult Page(int tabid, string language)
@@ -85,6 +91,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
             PageModel model = this.pageModelFactory.CreatePageModel(this);
             model.ClientResourceController = this.clientResourceController;
+            model.PageService = this.pageService;
             try
             {
                 this.InitializePage(model);

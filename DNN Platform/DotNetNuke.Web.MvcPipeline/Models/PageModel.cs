@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
 
     public class PageModel
     {
@@ -56,5 +57,6 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         public INavigationManager NavigationManager { get; set; }
 
         public IClientResourceController ClientResourceController { get; set; }
+        public IPageService PageService { get; set; }
     }
 }
