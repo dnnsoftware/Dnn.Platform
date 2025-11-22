@@ -59,21 +59,85 @@ namespace DotNetNuke.Web.Client.ResourceManager
         }
 
         /// <inheritdoc />
-        public IFontResource CreateFont()
+        public IFontResource CreateFont(string sourcePath)
         {
-            return new Models.FontResource(this);
+            var font = new Models.FontResource(this);
+            font.FilePath = sourcePath;
+
+            switch (font.FilePath?.Substring(font.FilePath.LastIndexOf('.')).ToLowerInvariant())
+            {
+                case ".eot":
+                    font.Type = "application/vnd.ms-fontobject";
+                    break;
+                case ".woff":
+                    font.Type = "font/woff";
+                    break;
+                case ".woff2":
+                    font.Type = "font/woff2";
+                    break;
+                case ".ttf":
+                    font.Type = "font/ttf";
+                    break;
+                case ".svg":
+                    font.Type = "image/svg+xml";
+                    break;
+                case ".otf":
+                    font.Type = "font/otf";
+                    break;
+                default:
+                    font.Type = "application/octet-stream";
+                    break;
+            }
+
+            return font;
         }
 
         /// <inheritdoc />
-        public IScriptResource CreateScript()
+        public IFontResource CreateFont(string sourcePath, string pathNameAlias)
         {
-            return new Models.ScriptResource(this);
+            var font = this.CreateFont(sourcePath);
+            font.PathNameAlias = pathNameAlias;
+            return font;
         }
 
         /// <inheritdoc />
-        public IStylesheetResource CreateStylesheet()
+        public IFontResource CreateFont(string sourcePath, string pathNameAlias, string mimeType)
         {
-            return new Models.StylesheetResource(this);
+            var font = this.CreateFont(sourcePath, pathNameAlias);
+            font.Type = mimeType;
+            return font;
+        }
+
+        /// <inheritdoc />
+        public IScriptResource CreateScript(string sourcePath)
+        {
+            var script = new Models.ScriptResource(this);
+            script.FilePath = sourcePath;
+            return script;
+        }
+
+        /// <inheritdoc />
+        public IScriptResource CreateScript(string sourcePath, string pathNameAlias)
+        {
+            var script = this.CreateScript(sourcePath);
+            script.PathNameAlias = pathNameAlias;
+            return script;
+        }
+
+        /// <inheritdoc />
+        public IStylesheetResource CreateStylesheet(string sourcePath)
+        {
+            var stylesheet = new Models.StylesheetResource(this);
+            stylesheet.FilePath = sourcePath;
+            return stylesheet;
+        }
+
+        /// <inheritdoc />
+        public IStylesheetResource CreateStylesheet(string sourcePath, string pathNameAlias)
+        {
+            var stylesheet = this.CreateStylesheet(sourcePath);
+            stylesheet.PathNameAlias = pathNameAlias;
+            return stylesheet;
         }
 
         /// <inheritdoc />
