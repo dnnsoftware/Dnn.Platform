@@ -21,7 +21,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         {
             // var htmlAttibs = new { nonce = helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString(), defer = defer ? "defer" : string.Empty };
             var htmlAttibs = new Dictionary<string, string>();
-            htmlAttibs.Add("nonce", helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
+            //todo CSP - implement nonce support
+            // htmlAttibs.Add("nonce", helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
             if (defer)
             {
                 htmlAttibs.Add("defer", "defer");

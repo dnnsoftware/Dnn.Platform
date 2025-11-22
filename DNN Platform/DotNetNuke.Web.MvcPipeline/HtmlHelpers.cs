@@ -73,7 +73,9 @@ namespace DotNetNuke.Web.MvcPipeline
 
         public static IHtmlString CspNonce(this HtmlHelper htmlHelper)
         {
-            return new MvcHtmlString(htmlHelper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
+            //todo CSP - implement nonce support
+            //return new MvcHtmlString(htmlHelper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
+            return new MvcHtmlString(string.Empty);
         }
 
         public static IHtmlString RegisterAjaxScriptIfRequired(this HtmlHelper htmlHelper)

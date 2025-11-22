@@ -287,8 +287,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
 
                 // container = ControlUtilities.LoadControl<MvcContainer>(this.PaneControl.Page, containerPath);
-                container = this.containerModelFactory.CreateContainerModel(module, portalSettings);
-                container.ContainerSrc = containerSrc;
+                container = this.containerModelFactory.CreateContainerModel(module, portalSettings, containerSrc);
+                //container.ContainerSrc = containerSrc;
 
                 // call databind so that any server logic in the container is executed
                 // container.DataBind();

@@ -58,12 +58,26 @@ namespace DotNetNuke.Services.Tokens
             {
                 var script = this.clientResourceController
                     .CreateScript()
-                    .FromSrc(model.Path)
-                    .SetPriority(model.Priority)
-                    .SetProvider(model.Provider)
-                    .SetNameAndVersion(model.JsName, model.Version, false);
+                    .FromSrc(model.Path);
+                if (model.Priority > 0)
+                {
+                    script.SetPriority(model.Priority);
+                }
 
-                model.HtmlAttributes.ForEach(kvp => script.AddAttribute(kvp.Key, kvp.Value));
+                if (!string.IsNullOrEmpty(model.Provider))
+                {
+                    script.SetProvider(model.Provider);
+                }
+
+                if (!string.IsNullOrEmpty(model.JsName))
+                {
+                    script.SetNameAndVersion(model.JsName, model.Version, false);
+                }
+
+                if (model.HtmlAttributes != null)
+                {
+                    model.HtmlAttributes.ForEach(kvp => script.AddAttribute(kvp.Key, kvp.Value));
+                }
 
                 script.Register();
             }

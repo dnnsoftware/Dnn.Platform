@@ -445,6 +445,7 @@
             controller.CreateScript()
                   .FromSrc(GetScriptPath(jsl, HttpContextSource.Current?.Request), GetScriptLocation(jsl))
                   .SetPriority(GetFileOrder(jsl))
+                  .SetProvider(GetProvider(jsl))
                   .SetNameAndVersion(jsl.LibraryName, jsl.Version.ToString(3), false)
                   .Register();
 
@@ -479,6 +480,23 @@
                 }
             }
             */
+        }
+
+        private static string GetProvider(JavaScriptLibrary jsl)
+        {
+            if (jsl.PreferredScriptLocation== ScriptLocation.PageHead)
+            {
+                return "DnnPageHeaderProvider";
+            }
+            else if (jsl.PreferredScriptLocation == ScriptLocation.PageHead)
+            {
+                return "DnnBodyProvider";
+            }
+            else if (jsl.PreferredScriptLocation == ScriptLocation.PageHead)
+            {
+                return "DnnFormBottomProvider";
+            }
+            return string.Empty;
         }
 
         private static int GetFileOrder(JavaScriptLibrary jsl)

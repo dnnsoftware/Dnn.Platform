@@ -42,7 +42,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         public SpaModuleControl(): base()
         {
             this.businessControllerProvider = Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
-            this.clientResourceController = Globals.DependencyProvider.GetRequiredService<IClientResourceController>();
+            var serviceProvider = Common.Globals.GetCurrentServiceProvider();
+            this.clientResourceController = serviceProvider.GetRequiredService<IClientResourceController>();
         }
 
         public SpaModuleControl(IBusinessControllerProvider businessControllerProvider, IClientResourceController clientResourceController) : base()

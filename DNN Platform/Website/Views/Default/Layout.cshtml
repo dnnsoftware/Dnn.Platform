@@ -1,12 +1,18 @@
 @using ClientDependency.Core
 @using ClientDependency.Core.Mvc
 @using DotNetNuke.Web.MvcPipeline
+@using DotNetNuke.Common
+@using DotNetNuke.Abstractions.ClientResources
 @model DotNetNuke.Web.MvcPipeline.Models.PageModel
 @{
-    var SkinPath = Path.GetDirectoryName(Model.Skin.SkinSrc).Replace("\\","/");
+    var SkinPath = Path.GetDirectoryName(Model.Skin.SkinSrc).Replace("\\", "/");
     DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries.MvcJavaScript.Register(this.ViewContext);
+    var controlPanel = new System.Web.Mvc.MvcHtmlString(string.Empty);
+    if (!string.IsNullOrEmpty(Model.Skin.ControlPanelRazor))
+    {
+        controlPanel = Html.Action("Index", Model.Skin.ControlPanelRazor, Model);
+    }
 
-   
     //DotNetNuke.Framework.Controllers.DefaultController.RegisterAjaxScript(this.ViewContext.Controller.ControllerContext);
 }
 <!DOCTYPE html>
@@ -60,8 +66,10 @@
     @RenderSection("stylesheets", required: false)
     @Html.RenderJsHere(new BasicPath("SkinPath", SkinPath), new BasicPath("SharedScripts", "~/Resources/Shared/Scripts/"))
     @RenderSection("scripts", required: false)
+    @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnPageHeaderProvider", Globals.ApplicationPath))
 </head>
 <body class="@(Model.Skin.BodyCssClass)">
+    @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnBodyProvider", Globals.ApplicationPath))
     <form id="Form">
         <div class="aspNetHidden">
             <input name="ScrollTop" type="hidden" id="ScrollTop" />
@@ -70,10 +78,7 @@
             @Html.AntiForgeryIfRequired()
         </div>
     </form>
-    @if (!string.IsNullOrEmpty(Model.Skin.ControlPanelRazor))
-    {
-        @Html.Action("Index", Model.Skin.ControlPanelRazor, Model);
-    }
+    @controlPanel
 
     @if (!string.IsNullOrEmpty(Model.Skin.SkinError))
     {
@@ -133,5 +138,6 @@
         }
         </script>
     }
+    @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnFormBottomProvider", Globals.ApplicationPath))
 </body>
 </html>

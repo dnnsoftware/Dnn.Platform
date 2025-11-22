@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using Dnn.EditBar.UI.Mvc;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -19,7 +20,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.UI.Utilities;
+
     using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
@@ -83,6 +84,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // Configure the ActiveTab with Skin/Container information
             PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
             PageModel model = this.pageModelFactory.CreatePageModel(this);
+            model.ClientResourceController = this.clientResourceController;
             try
             {
                 this.InitializePage(model);
@@ -198,7 +200,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // Cookie Consent
             if (this.PortalSettings.ShowCookieConsent)
             {
-                MvcJavaScript.RegisterClientReference(this.ControllerContext, ClientAPI.ClientNamespaceReferences.dnn);
+                MvcJavaScript.RegisterClientReference(this.ControllerContext, DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn);
                 MvcClientAPI.RegisterClientVariable("cc_morelink", this.PortalSettings.CookieMoreLink, true);
                 MvcClientAPI.RegisterClientVariable("cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 MvcClientAPI.RegisterClientVariable("cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
