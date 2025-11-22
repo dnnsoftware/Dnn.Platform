@@ -11,8 +11,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web.Mvc;
 
     using ClientDependency.Core;
-    using ClientDependency.Core.Mvc;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinHelpers
@@ -20,16 +18,31 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         public static IHtmlString DnnJsInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, bool defer = false)
         {
             // var htmlAttibs = new { nonce = helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString(), defer = defer ? "defer" : string.Empty };
-            var htmlAttibs = new Dictionary<string, string>();
             //todo CSP - implement nonce support
             // htmlAttibs.Add("nonce", helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
+
+            var script = GetClientResourcesController().CreateScript();
+            script.FilePath = filePath;
+            script.PathNameAlias = pathNameAlias;
+            script.Priority = priority;
+            if (!string.IsNullOrEmpty(forceProvider))
+            {
+                script.Provider = forceProvider;
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                script.Name = name;
+            }
+            if (!string.IsNullOrEmpty(version))
+            {
+                script.Version = version;
+                script.ForceVersion = forceVersion;
+            }
             if (defer)
             {
-                htmlAttibs.Add("defer", "defer");
+                script.Attributes.Add("defer", "defer");
             }
-
-            // TODO: ClientDependency Core is deprecated
-            helper.RequiresJs(filePath, pathNameAlias, priority, htmlAttibs);
+            script.Register();
 
             if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)
             {

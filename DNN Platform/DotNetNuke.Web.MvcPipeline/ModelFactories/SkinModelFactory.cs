@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -26,13 +27,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.ClientDependency;
+    
     using DotNetNuke.UI;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
@@ -44,11 +46,15 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     {
         private readonly INavigationManager navigationManager;
         private readonly IPaneModelFactory paneModelFactory;
+        private readonly IClientResourceController clientResourceController;
 
-        public SkinModelFactory(INavigationManager navigationManager, IPaneModelFactory paneModelFactory)
+        public SkinModelFactory(INavigationManager navigationManager, 
+                                IPaneModelFactory paneModelFactory,
+                                IClientResourceController clientResourceController)
         {
             this.navigationManager = navigationManager;
             this.paneModelFactory = paneModelFactory;
+            this.clientResourceController = clientResourceController;
         }
 
         public SkinModel CreateSkinModel(DnnPageController page)
@@ -140,6 +146,18 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         ModuleMessage.ModuleMessageType.YellowWarning);
                 }
             }
+
+
+            // add CSS links
+            this.clientResourceController.CreateStylesheet()
+                .FromSrc("~/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css")
+                .SetNameAndVersion("dnndefault", "10.0.0", false)
+                .SetPriority(FileOrder.Css.DefaultCss)
+                .Register();
+
+            this.clientResourceController.RegisterStylesheet(string.Concat(page.PortalSettings.ActiveTab.SkinPath, "skin.css"), FileOrder.Css.SkinCss, true);
+            this.clientResourceController.RegisterStylesheet(page.PortalSettings.ActiveTab.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss, true);
+
 
             // register css variables
             var cssVariablesStyleSheet = this.GetCssVariablesStylesheet(page.PortalSettings.PortalId, page.PortalSettings.GetStyles(), page.PortalSettings.HomeSystemDirectory);

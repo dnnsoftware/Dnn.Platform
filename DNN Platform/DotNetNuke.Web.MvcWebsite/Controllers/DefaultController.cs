@@ -79,6 +79,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 Exceptions.ProcessHttpException(new HttpException(503, Localization.GetString("SiteAccessedWhileInstallationWasInProgress.Error", Localization.GlobalResourceFile)));
             }
 
+          
             var user = this.PortalSettings.UserInfo;
 
             if (PortalSettings.Current.UserId > 0)
@@ -90,6 +91,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // Configure the ActiveTab with Skin/Container information
             PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
             PageModel model = this.pageModelFactory.CreatePageModel(this);
+            this.clientResourceController.RegisterPathNameAlias("SkinPath", this.PortalSettings.ActiveTab.SkinPath);
             model.ClientResourceController = this.clientResourceController;
             model.PageService = this.pageService;
             try
@@ -216,7 +218,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 MvcClientAPI.RegisterClientVariable("cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
                 MvcClientAPI.RegisterClientVariable("cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
                 this.clientResourceController.RegisterScript("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
-                this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
+                this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.cssdisa", FileOrder.Css.ResourceCss);
                 this.clientResourceController.RegisterScript("~/js/dnn.cookieconsent.js");
             }
         }

@@ -13,11 +13,9 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString DnnCssExclude(this HtmlHelper<PageModel> helper, string name)
         {
-            var cssExclude = new TagBuilder("dnn:DnnCssExclude");
-            cssExclude.Attributes.Add("ID", "ctlExclude");
-            cssExclude.Attributes.Add("Name", name);
-
-            return new MvcHtmlString(cssExclude.ToString());
+            GetClientResourcesController()
+                 .RemoveScriptByName(name);
+            return new MvcHtmlString(string.Empty);
         }
     }
 }

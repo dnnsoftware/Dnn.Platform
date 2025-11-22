@@ -10,10 +10,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web.Mvc;
 
     using ClientDependency.Core;
-    using ClientDependency.Core.Mvc;
-    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Services.ClientDependency;
-    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -21,8 +18,24 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString DnnCssInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
         {
-            // TODO: ClientDependency Core is deprecated and will not load.
-            helper.RequiresCss(filePath, pathNameAlias, priority);            
+            var ss = GetClientResourcesController().CreateStylesheet();
+            ss.FilePath = filePath;
+            ss.PathNameAlias = pathNameAlias;
+            ss.Priority = priority;
+            if (!string.IsNullOrEmpty(forceProvider))
+            {
+                ss.Provider = forceProvider;
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                ss.Name = name;
+            }
+            if (!string.IsNullOrEmpty(version))
+            {
+                ss.Version = version;
+                ss.ForceVersion = forceVersion;
+            }
+            ss.Register();
 
             if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)
             {
@@ -32,20 +45,16 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             return new MvcHtmlString(string.Empty);
         }
 
+        /*
         public static IHtmlString DnnCssInclude(this HtmlHelper<PageModel> helper, string bundleName, string[] filePaths, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
         {
-            // ClientDependency.Core.BundleManager.CreateCssBundle(
-            //    bundleName,
-            //    filePaths.Select(p => new CssFile(p) { PathNameAlias = pathNameAlias, Priority = priority }).ToArray());
-
-            // helper.RequiresCssBundle(bundleName);
-            if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)
+            foreach (var filePath in filePaths)
             {
-                return new MvcHtmlString(string.Format("<!--CDF({0}|{1}|{2}|{3})-->", ClientDependencyType.Css, string.Join(",", filePaths), forceProvider, priority));
-            }
 
+            }
             return new MvcHtmlString(string.Empty);
         }
+        */
 
         public static IHtmlString DnnCssIncludeDefaultStylesheet(this HtmlHelper<PageModel> helper, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
         {
@@ -60,5 +69,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             return new MvcHtmlString(string.Empty);
         }
+        
     }
 }

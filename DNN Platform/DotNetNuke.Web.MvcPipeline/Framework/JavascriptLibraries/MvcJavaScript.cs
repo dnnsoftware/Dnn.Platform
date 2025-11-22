@@ -357,21 +357,6 @@
             return "~/Resources/libraries/" + js.LibraryName + "/" + DotNetNuke.Common.Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName;
         }
 
-        private static string GetScriptLocation(JavaScriptLibrary js)
-        {
-            switch (js.PreferredScriptLocation)
-            {
-                case ScriptLocation.PageHead:
-                    return "DnnPageHeaderProvider";
-                case ScriptLocation.BodyBottom:
-                    return "DnnFormBottomProvider";
-                case ScriptLocation.BodyTop:
-                    return "DnnBodyProvider";
-            }
-
-            return string.Empty;
-        }
-
         private static IEnumerable<string> GetScriptVersions()
         {
             List<string> orderedScripts = (from object item in HttpContextSource.Current.Items.Keys
@@ -443,7 +428,7 @@
 
             var controller = GetClientResourcesController();
             controller.CreateScript()
-                  .FromSrc(GetScriptPath(jsl, HttpContextSource.Current?.Request), GetScriptLocation(jsl))
+                  .FromSrc(GetScriptPath(jsl, HttpContextSource.Current?.Request))
                   .SetPriority(GetFileOrder(jsl))
                   .SetProvider(GetProvider(jsl))
                   .SetNameAndVersion(jsl.LibraryName, jsl.Version.ToString(3), false)

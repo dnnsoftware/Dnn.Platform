@@ -70,9 +70,7 @@
     }
     @Html.RegisterAjaxScriptIfRequired()
     @RenderSection("head", required: false)
-    @Html.RenderCssHere(new BasicPath("SkinPath", SkinPath), new BasicPath("SharedScripts", "~/Resources/Shared/Scripts/"))
     @RenderSection("stylesheets", required: false)
-    @Html.RenderJsHere(new BasicPath("SkinPath", SkinPath), new BasicPath("SharedScripts", "~/Resources/Shared/Scripts/"))
     @RenderSection("scripts", required: false)
     @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnPageHeaderProvider", Globals.ApplicationPath))
 </head>

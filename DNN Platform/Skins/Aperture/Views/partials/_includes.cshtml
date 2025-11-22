@@ -6,11 +6,6 @@
 @{
     @Html.Meta(name: "viewport", content: "width=device-width, initial-scale=1.0")
     
-    @* Exclude default DNN CSS *@
-    @Html.DnnCssExclude("dnndefault")
-	
-	@Html.DnnCssIncludeDefaultStylesheet()
-    
     @* Include skin CSS and JS *@
     @Html.DnnCssInclude(filePath: "css/skin.min.css", pathNameAlias: "SkinPath", priority: 110)
     @Html.DnnJsInclude(filePath: "js/skin.min.js", pathNameAlias: "SkinPath", priority: 110, defer: true)
