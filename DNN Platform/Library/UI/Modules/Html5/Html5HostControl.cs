@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.Modules.Html5
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -15,22 +16,22 @@ namespace DotNetNuke.UI.Modules.Html5
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Cache;
-    using DotNetNuke.Web.Client;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-
     using Microsoft.Extensions.DependencyInjection;
 
     public class Html5HostControl : ModuleControlBase, IActionable
     {
         private readonly string html5File;
         private readonly IBusinessControllerProvider businessControllerProvider;
+        private IClientResourceController clientResourceController;
         private string fileContent;
 
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
         /// <param name="html5File">The path to the HTML file.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File)
-            : this(html5File, null)
+            : this(html5File, null, null)
         {
             this.html5File = html5File;
         }
@@ -38,10 +39,21 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
         /// <param name="html5File">The path to the HTML file.</param>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider)
+            : this(html5File, businessControllerProvider, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
+        /// <param name="html5File">The path to the HTML file.</param>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider, IClientResourceController clientResourceController)
         {
             this.html5File = html5File;
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <inheritdoc/>
@@ -58,20 +70,20 @@ namespace DotNetNuke.UI.Modules.Html5
                 var cssFile = Path.ChangeExtension(this.html5File, ".css");
                 if (this.FileExists(cssFile))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, cssFile, FileOrder.Css.DefaultPriority);
+                    this.clientResourceController.RegisterStylesheet(cssFile, FileOrder.Css.DefaultPriority);
                 }
 
                 // Check if js file exists
                 var jsFile = Path.ChangeExtension(this.html5File, ".js");
                 if (this.FileExists(jsFile))
                 {
-                    ClientResourceManager.RegisterScript(this.Page, jsFile, FileOrder.Js.DefaultPriority);
+                    this.clientResourceController.RegisterScript(jsFile, FileOrder.Js.DefaultPriority);
                 }
 
                 this.fileContent = this.GetFileContent(this.html5File);
 
                 this.ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new Html5ModuleTokenReplace(this.Page, this.businessControllerProvider, this.html5File, this.ModuleContext, this.ModuleActions);
+                var tokenReplace = new Html5ModuleTokenReplace(this.Page, new HttpRequestWrapper(this.Page.Request), this.clientResourceController, this.businessControllerProvider, this.html5File, this.ModuleContext, this.ModuleActions);
                 this.fileContent = tokenReplace.ReplaceEnvironmentTokens(this.fileContent);
             }
 

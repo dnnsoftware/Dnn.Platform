@@ -7,8 +7,6 @@ namespace DotNetNuke.Entities.Users
 
     using DotNetNuke.Internal.SourceGenerators;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
     /// <summary>The AnonymousUserInfo class provides an Entity for an anonymous user.</summary>
     [Serializable]
     [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]

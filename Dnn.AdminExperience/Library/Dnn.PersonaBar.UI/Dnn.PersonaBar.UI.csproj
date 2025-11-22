@@ -205,7 +205,6 @@
     <Content Include="admin\personaBar\index.html" />
     <Content Include="admin\personaBar\scripts\codeEditor.js" />
     <Content Include="admin\personaBar\scripts\eventEmitter.js" />
-    <Content Include="admin\personaBar\scripts\koBindingHandlers\datePicker.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\jScrollPane.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\setWhenHover.js" />
     <Content Include="admin\personaBar\scripts\koBindingHandlers\setWidthFromParentScrollPaneWhen.js" />

@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblTitle;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         protected Panel pnlRule;
-        private bool includeRule;
+
         private bool isExpanded = true;
 
         /// <summary>Gets or sets cssClass determines the Css Class used for the Title Text.</summary>
@@ -48,22 +48,10 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether includeRule determines whether there is a horizontal rule displayed under the
-        /// header text.
+        /// Gets or sets a value indicating whether there is a horizontal rule displayed under the header text.
         /// </summary>
         /// <value>A string representing true or false.</value>
-        public bool IncludeRule
-        {
-            get
-            {
-                return this.includeRule;
-            }
-
-            set
-            {
-                this.includeRule = value;
-            }
-        }
+        public bool IncludeRule { get; set; }
 
         /// <summary>Gets or sets a value indicating whether isExpanded determines whether the section is expanded or collapsed.</summary>
         /// <value>Boolean value that determines whether the panel is expanded (true)
@@ -166,7 +154,7 @@ namespace DotNetNuke.UI.UserControls
                 }
 
                 // optionlly show hr
-                this.pnlRule.Visible = this.includeRule;
+                this.pnlRule.Visible = this.IncludeRule;
             }
             catch (Exception exc)
             {

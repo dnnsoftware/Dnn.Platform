@@ -5,15 +5,15 @@
 namespace DotNetNuke.Web.MvcPipeline.Modules
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using System.Collections;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Mvc.Html;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public static partial class ModuleHelpers
     {
@@ -106,6 +106,12 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             var viewPath = string.Format("~/DesktopModules/{0}/Views/{1}.cshtml", moduleContext.Configuration.DesktopModule.FolderName, partialViewName);
 
             return htmlHelper.Partial(viewPath, model, dic);
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = Common.Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

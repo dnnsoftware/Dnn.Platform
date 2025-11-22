@@ -315,7 +315,9 @@
         createMessageErrorText: 'An error occurred while creating the message. Please try again later.',
         createMessageErrorWithDescriptionText: 'An error occurred while creating the message: ',
         autoSuggestErrorText: 'An error occurred while getting suggestions: ',
-        dialogClass: 'dnnFormPopup dnnClear',
+        classes: {
+            'ui-dialog':'dnnFormPopup dnnClear',
+        },
         autoOpen: false,
         showAttachments: false,
         onPrePopulate: function (target) {

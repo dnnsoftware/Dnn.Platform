@@ -4,24 +4,21 @@
 
 namespace DotNetNuke.Web.MvcPipeline.Skins
 {
-    using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Security.Policy;
-    using System.Web;
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    //using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ResourceManager;
 
     using DotNetNuke.Web.MvcPipeline.Models;
 
@@ -48,14 +45,15 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             int autoSearchDelayInMilliSecond = 400)
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;
-            var nonce = helper.ViewData.Model.ContentSecurityPolicy.Nonce;
+            //TODO: CSP - enable when CSP implementation is ready
+            var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            MvcClientResourceManager.RegisterStyleSheet(helper.ViewContext, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
-            var htmlAttributes = new Dictionary<string, string>
-            {
-                { "defer", "defer" },
-            };
-            MvcClientResourceManager.RegisterScript(helper.ViewContext, "~/Resources/Search/SearchSkinObjectPreview.js", htmlAttributes: htmlAttributes);
+            var controller = GetClientResourcesController();
+            controller.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
+            controller.CreateScript()
+                .FromSrc("~/Resources/Search/SearchSkinObjectPreview.js")
+                .SetDefer()
+                .Register();
 
             var searchType = "S";
             /*
@@ -240,9 +238,14 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
         private static string GetInitScript(bool useDropDownList, bool enableWildSearch, int minCharRequired, int autoSearchDelayInMilliSecond, string id, string nonce)
         {
+            var nonceAttribute = string.Empty;
+            if (!string.IsNullOrEmpty(nonce))
+            {
+                nonceAttribute = $"nonce=\"{nonce}\"";
+            }
             return string.Format(
                 @"
-                <script nonce=""{8}"">
+                <script {8} >
                     $(function() {{
                         if (typeof dnn != 'undefined' && typeof dnn.searchSkinObject != 'undefined') {{
                             var searchSkinObject = new dnn.searchSkinObject({{
@@ -270,7 +273,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 PortalSettings.Current.PortalId,
                 useDropDownList ? "if (typeof dnn.initDropdownSearch != 'undefined') { dnn.initDropdownSearch(searchSkinObject); }" : string.Empty,
                 id,
-                nonce);
+                nonceAttribute);
         }
 
         private static string GetSeeMoreText()

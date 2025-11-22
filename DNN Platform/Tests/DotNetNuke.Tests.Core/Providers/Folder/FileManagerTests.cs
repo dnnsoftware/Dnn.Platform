@@ -250,12 +250,36 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("invalid_script.svg")]
         [TestCase("invalid_namespaced-script.svg")]
         [TestCase("invalid_onload.svg")]
+        [TestCase("invalid_onload-uppercase.svg")]
         [TestCase("invalid_onerror.svg")]
+        [TestCase("invalid_onerror-uppercase.svg")]
+        [TestCase("invalid_foreignObject-iframe-src-data.svg")]
+        [TestCase("invalid_foreignObject-iframe-srcdoc.svg")]
+        [TestCase("DOMPurify/invalid_attribute-mXSS_1.svg")]
+        [TestCase("DOMPurify/invalid_attribute-mXSS_2.svg")]
+        [TestCase("DOMPurify/invalid_embedded-MathML.svg")]
+        [TestCase("DOMPurify/invalid_fake-element-based-namespace-confusion.svg")]
+        [TestCase("DOMPurify/invalid_mXSS-Chrome-77_1.svg")]
+        [TestCase("DOMPurify/invalid_mXSS-Chrome-77_2.svg")]
+        [TestCase("DOMPurify/invalid_mXSS-template-Chrome-77.svg")]
+        [TestCase("XSS-Payloads/Password_steal.svg")]
+        [TestCase("XSS-Payloads/hero-xss.svg")]
+        [TestCase("XSS-Payloads/xss-ww.svg")]
+        [TestCase("XSS_SCRIPTS/desc.svg")]
+        [TestCase("XSS_SCRIPTS/foreignObject.svg")]
+        [TestCase("XSS_SCRIPTS/onload.svg")]
+        [TestCase("XSS_SCRIPTS/title.svg")]
+        [TestCase("OWASP/chameleon.svg")]
+        [TestCase("OWASP/foreignObject.svg")]
+        [TestCase("OWASP/handler.svg")]
+        [TestCase("OWASP/href.svg")]
+        [TestCase("OWASP/onload.svg")]
+        [TestCase("OWASP/set.svg")]
         public void AddFile_Throws_When_File_Content_Is_Invalid(string fileName)
         {
             this.PrepareFileSecurityCheck();
 
-            using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Resources\\{fileName}")))
+            using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Resources/{fileName}")))
             {
                 this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
                 this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
@@ -264,12 +288,15 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             }
         }
 
-        [Test]
-        public void AddFile_No_Error_When_File_Content_Is_Valid()
+        [TestCase("valid.svg")]
+        [TestCase("DOMPurify/valid_data-URI.svg")]
+        [TestCase("DOMPurify/valid_data-URI-href.svg")]
+        [TestCase("DOMPurify/valid_filter.svg")]
+        public void AddFile_No_Error_When_File_Content_Is_Valid(string fileName)
         {
             this.PrepareFileSecurityCheck();
 
-            using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources\\valid.svg")))
+            using (var fileContent = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"Resources/{fileName}")))
             {
                 this.portalController.Setup(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length)).Returns(true);
                 this.mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidSvgFileName)).Returns(true);
@@ -929,7 +956,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             // Arrange
             this.fileInfo.Setup(fi => fi.Extension).Returns("zip");
-            this.mockFileManager.Setup(mfm => mfm.ExtractFiles(this.fileInfo.Object, this.folderInfo.Object, null)).Verifiable();
+            this.mockFileManager.Setup(mfm => mfm.ExtractFiles(this.fileInfo.Object, this.folderInfo.Object, null, true)).Verifiable();
             var stream = Constants.ValidZipFileContent;
             this.mockFileManager.Setup(mfm => mfm.GetFileContent(this.fileInfo.Object)).Returns(stream);
 

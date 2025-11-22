@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.WebControls
 
         // ReSharper restore InconsistentNaming
 
-        /// <summary>Gets or sets a value indicating whether gets or sets whether an Image is displayed.</summary>
+        /// <summary>Gets or sets a value indicating whether an Image is displayed.</summary>
         /// <remarks>Defaults to True.</remarks>
         /// <value>A Boolean.</value>
         public bool ShowImage

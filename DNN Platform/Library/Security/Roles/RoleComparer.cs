@@ -5,9 +5,6 @@ namespace DotNetNuke.Security.Roles
 {
     using System.Collections;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Security.Roles
-    /// Class:      RoleComparer
     /// <summary>
     /// The RoleComparer class provides an implementation of <see cref="IComparer"/> for
     /// <see cref="RoleInfo"/> objects.

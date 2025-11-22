@@ -12,9 +12,6 @@ namespace DotNetNuke.Entities.Users.Social
     using DotNetNuke.Entities.Modules;
     using Newtonsoft.Json;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Class:      Relationship
     /// <summary>
     /// The Relationship class describes the relationships that a user or portal owns.
     /// A handful of default Portal-Level Relationships will be be present for every portal (e.g. Friends, Followers, Family).

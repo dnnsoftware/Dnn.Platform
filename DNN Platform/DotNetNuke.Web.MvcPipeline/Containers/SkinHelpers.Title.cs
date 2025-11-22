@@ -7,11 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     using System;
     using System.Web;
     using System.Web.Mvc;
-    using System.Web.Mvc.Html;
 
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinHelpers

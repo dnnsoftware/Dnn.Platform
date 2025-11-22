@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke
@@ -10,6 +10,7 @@ namespace DotNetNuke
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Prompt;
@@ -36,17 +37,21 @@ namespace DotNetNuke
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
+    using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Services.Mobile;
+    using DotNetNuke.Services.Pages;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
@@ -87,6 +92,7 @@ namespace DotNetNuke
             services.AddScoped<IPortalAliasService, PortalAliasController>();
 
             services.AddScoped<IPermissionDefinitionService, PermissionController>();
+            services.AddScoped<IPageService, PageService>();
 
             services.AddTransient<IFileSystemUtils, FileSystemUtilsProvider>();
             services.AddTransient<ISmtpOAuthController, SmtpOAuthController>();
@@ -121,6 +127,9 @@ namespace DotNetNuke
             services.AddTransient<IUserController, UserController>();
             services.AddTransient<IEventManager, EventManager>();
             services.AddTransient<ILocalUpgradeService, LocalUpgradeService>();
+            services.AddTransient<IJournalDataService, JournalDataServiceImpl>();
+            services.AddTransient<IFileContentTypeManager, FileContentTypeManager>();
+            services.AddTransient<ISearchHelper, SearchHelperImpl>();
 
             services.AddTransient<IDataContext>(serviceProvider =>
             {
@@ -132,6 +141,7 @@ namespace DotNetNuke
 
             services.AddTransient<ModuleInjectionManager>();
             services.AddTransient<PersonalizationController>();
+            services.AddTransient(_ => PortalSecurity.Instance);
             RegisterModuleInjectionFilters(services);
         }
 

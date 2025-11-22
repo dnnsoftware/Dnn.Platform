@@ -6,7 +6,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using System.Collections.Generic;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.ContentSecurityPolicy;
+    using DotNetNuke.Abstractions.ClientResources;
 
     public class PageModel
     {
@@ -50,8 +50,11 @@ namespace DotNetNuke.Web.MvcPipeline.Models
 
         public string CanonicalLinkUrl { get; set; }
 
-        public IContentSecurityPolicy ContentSecurityPolicy { get; set; }
+        //TODO: CSP - enable when CSP implementation is ready
+        //public IContentSecurityPolicy ContentSecurityPolicy { get; set; }
 
         public INavigationManager NavigationManager { get; set; }
+
+        public IClientResourceController ClientResourceController { get; set; }
     }
 }

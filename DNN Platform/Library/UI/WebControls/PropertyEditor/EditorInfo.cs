@@ -10,9 +10,6 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
 
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.UI.WebControls
-    /// Class:      EditorInfo
     /// <summary>The EditorInfo class provides a helper class for the Property Editor.</summary>
     public class EditorInfo
     {

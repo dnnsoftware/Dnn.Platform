@@ -279,12 +279,6 @@ namespace DotNetNuke.Services.Install
                             Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
                         }
 
-                        // Adding ClientDependency Resources config to web.config
-                        if (!ClientResourceManager.IsInstalled())
-                        {
-                            ClientResourceManager.AddConfiguration();
-                        }
-
                         var installVersion = DataProvider.Instance().GetInstallVersion();
                         string strError = Config.UpdateInstallVersion(this.appStatus, installVersion);
 

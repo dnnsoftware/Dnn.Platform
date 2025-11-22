@@ -901,7 +901,9 @@ namespace DotNetNuke.Services.FileSystem
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
             }
 
-            return this.ExtractFiles(file, destinationFolder, invalidFiles);
+            // TODO: add parameter to interface to verify callers have considered permissions
+            const bool alreadyCheckedPermissions = true;
+            return this.ExtractFiles(file, destinationFolder, invalidFiles, alreadyCheckedPermissions);
         }
 
         /// <summary>Updates the metadata of the specified file.</summary>
@@ -1136,74 +1138,67 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="file">The zip file to extract.</param>
         /// <param name="destinationFolder">The destination folder.</param>
         /// <param name="invalidFiles">A list into which the names of invalid files will be added.</param>
+        /// <param name="alreadyCheckedPermissions">Whether the user's permissions to the folder have already been verified.</param>
         /// <returns>The number of files extracted.</returns>
-        internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
+        internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles, bool alreadyCheckedPermissions)
         {
             var folderManager = FolderManager.Instance;
 
             ZipArchive zipInputStream = null;
 
-            if (invalidFiles == null)
-            {
-                invalidFiles = new List<string>();
-            }
+            invalidFiles ??= new List<string>();
 
             var exactFilesCount = 0;
 
             try
             {
-                using (var fileContent = this.GetFileContent(file))
+                using var fileContent = this.GetFileContent(file);
+                zipInputStream = new ZipArchive(fileContent);
+
+                foreach (var zipEntry in zipInputStream.FileEntries())
                 {
-                    zipInputStream = new ZipArchive(fileContent);
+                    exactFilesCount++;
+                    var fileName = Path.GetFileName(zipEntry.FullName);
 
-                    foreach (var zipEntry in zipInputStream.FileEntries())
+                    this.EnsureZipFolder(zipEntry.FullName, destinationFolder);
+
+                    IFolderInfo parentFolder;
+                    if (zipEntry.FullName.IndexOf('/') == -1)
                     {
-                        exactFilesCount++;
-                        var fileName = Path.GetFileName(zipEntry.FullName);
+                        parentFolder = destinationFolder;
+                    }
+                    else
+                    {
+                        var folderPath = destinationFolder.FolderPath + zipEntry.FullName.Substring(0, zipEntry.FullName.LastIndexOf('/') + 1);
+                        parentFolder = folderManager.GetFolder(file.PortalId, folderPath);
+                    }
 
-                        this.EnsureZipFolder(zipEntry.FullName, destinationFolder);
-
-                        IFolderInfo parentFolder;
-                        if (zipEntry.FullName.IndexOf("/") == -1)
-                        {
-                            parentFolder = destinationFolder;
-                        }
-                        else
-                        {
-                            var folderPath = destinationFolder.FolderPath + zipEntry.FullName.Substring(0, zipEntry.FullName.LastIndexOf("/") + 1);
-                            parentFolder = folderManager.GetFolder(file.PortalId, folderPath);
-                        }
-
-                        try
-                        {
-                            this.AddFile(parentFolder, fileName, zipEntry.Open(), true);
-                        }
-                        catch (PermissionsNotMetException exc)
-                        {
-                            Logger.Warn(exc);
-                        }
-                        catch (NoSpaceAvailableException exc)
-                        {
-                            Logger.Warn(exc);
-                        }
-                        catch (InvalidFileExtensionException exc)
-                        {
-                            invalidFiles.Add(zipEntry.FullName);
-                            Logger.Warn(exc);
-                        }
-                        catch (Exception exc)
-                        {
-                            Logger.Error(exc);
-                        }
+                    try
+                    {
+                        this.AddFile(parentFolder, fileName, zipEntry.Open(), true, !alreadyCheckedPermissions, this.GetContentType(Path.GetExtension(fileName)));
+                    }
+                    catch (PermissionsNotMetException exc)
+                    {
+                        Logger.Warn(exc);
+                    }
+                    catch (NoSpaceAvailableException exc)
+                    {
+                        Logger.Warn(exc);
+                    }
+                    catch (InvalidFileExtensionException exc)
+                    {
+                        invalidFiles.Add(zipEntry.FullName);
+                        Logger.Warn(exc);
+                    }
+                    catch (Exception exc)
+                    {
+                        Logger.Error(exc);
                     }
                 }
             }
             finally
             {
-                if (zipInputStream != null)
-                {
-                    zipInputStream.Dispose();
-                }
+                zipInputStream?.Dispose();
             }
 
             return exactFilesCount;

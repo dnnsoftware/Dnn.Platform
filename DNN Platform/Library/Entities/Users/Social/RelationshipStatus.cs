@@ -3,9 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Users.Social
 {
-    /// Project:    DotNetNuke
-    /// Namespace:  DotNetNuke.Entities.Users
-    /// Enum:      RelationshipStatus
     /// <summary>The RelationshipStatus enum describes various UserRelationship statuses. E.g. Accepted, Pending.</summary>
     public enum RelationshipStatus
     {

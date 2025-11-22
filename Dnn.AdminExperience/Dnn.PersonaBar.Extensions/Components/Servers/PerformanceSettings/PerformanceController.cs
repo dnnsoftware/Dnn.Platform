@@ -54,12 +54,11 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
         {
             return new[]
             {
-                new KeyValuePair<string, string>("NoCache", "0"),
-                new KeyValuePair<string, string>("Private", "1"),
-                new KeyValuePair<string, string>("Public", "2"),
-                new KeyValuePair<string, string>("Server", "3"),
-                new KeyValuePair<string, string>("ServerAndNoCache", "4"),
-                new KeyValuePair<string, string>("ServerAndPrivate", "5"),
+                new KeyValuePair<string, int>("NoCache", 1),
+                new KeyValuePair<string, int>("Private", 2),
+                new KeyValuePair<string, int>("ServerAndNoCache", 3),
+                new KeyValuePair<string, int>("Public", 4),
+                new KeyValuePair<string, int>("ServerAndPrivate", 5),
             };
         }
 

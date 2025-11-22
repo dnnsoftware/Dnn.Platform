@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.</summary>
+        /// <summary>Gets or sets a value indicating whether the user should be automatically registered.</summary>
         protected bool AutoRegister
         {
             get
@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <summary>Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created.</summary>
+        /// <summary>Gets or sets a value indicating whether a permanent auth cookie should be created.</summary>
         protected bool RememberMe
         {
             get

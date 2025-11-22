@@ -26,6 +26,16 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>The default <see cref="ILocalUpgradeService"/> implementation.</summary>
 public class LocalUpgradeService : ILocalUpgradeService
 {
+    private static readonly string[] DefaultUpgradeExclude = new[]
+    {
+        "App_Data/Database.mdf",
+        "Config/DotNetNuke.config",
+        "Install/InstallWizard",
+        "favicon.ico",
+        "robots.txt",
+        "web.config",
+    };
+
     private readonly IApplicationInfo application;
     private readonly IApplicationStatusInfo appStatus;
     private readonly IDirectory directory;
@@ -49,8 +59,22 @@ public class LocalUpgradeService : ILocalUpgradeService
         IReadOnlyList<LocalUpgradeInfo> localUpgrades;
         if (this.directory.Exists(this.UpgradeDirectoryPath))
         {
+            // clean up any old temp files
+            var tempFiles = this.directory.GetFiles(this.UpgradeDirectoryPath, "*.resources", SearchOption.TopDirectoryOnly);
+            foreach (var tempFile in tempFiles)
+            {
+                try
+                {
+                    File.Delete(tempFile);
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.LogException(ex);
+                }
+            }
+
             var upgradeFiles = this.directory.GetFiles(this.UpgradeDirectoryPath, "*.zip", SearchOption.TopDirectoryOnly);
-            localUpgrades = await Task.WhenAll(upgradeFiles.Select(file => GetLocalUpgradeInfo(file, this.application, cancellationToken)));
+            localUpgrades = await Task.WhenAll(upgradeFiles.Select(file => this.GetLocalUpgradeInfo(file, cancellationToken)));
         }
         else
         {
@@ -58,43 +82,98 @@ public class LocalUpgradeService : ILocalUpgradeService
         }
 
         return localUpgrades;
+    }
 
-        static async Task<LocalUpgradeInfo> GetLocalUpgradeInfo(string file, IApplicationInfo application, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<LocalUpgradeInfo> GetLocalUpgradeInfo(string file, CancellationToken cancellationToken)
+    {
+        try
         {
-            try
+            using var archiveStream = File.OpenRead(file);
+            return await this.GetLocalUpgradeInfo(Path.GetFileNameWithoutExtension(file), archiveStream, cancellationToken);
+        }
+        catch (Exception exception)
+        {
+            Exceptions.LogException(exception);
+            return new LocalUpgradeInfo
             {
-                using var archiveStream = File.OpenRead(file);
-                var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
-                var mainAssemblyEntry = archive.FileEntries()
-                    .Where(entry => string.Equals("DotNetNuke.dll", entry.Name, StringComparison.OrdinalIgnoreCase))
-                    .Where(entry => string.Equals("bin", Path.GetDirectoryName(entry.FullName), StringComparison.OrdinalIgnoreCase))
-                    .SingleOrDefault();
+                PackageName = Path.GetFileNameWithoutExtension(file),
+                Version = null,
+                IsValid = false,
+                IsOutdated = false,
+            };
+        }
+    }
 
-                Version mainAssemblyVersion = null;
-                if (mainAssemblyEntry is not null)
-                {
-                    mainAssemblyVersion = await ReadZippedAssemblyVersion(mainAssemblyEntry, cancellationToken);
-                }
+    /// <inheritdoc />
+    public async Task<LocalUpgradeInfo> GetLocalUpgradeInfo(string packageName, Stream archiveStream, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var archive = new ZipArchive(archiveStream, ZipArchiveMode.Read);
+            var mainAssemblyEntry = archive.FileEntries()
+                .Where(entry => string.Equals("DotNetNuke.dll", entry.Name, StringComparison.OrdinalIgnoreCase))
+                .Where(entry => string.Equals("bin", Path.GetDirectoryName(entry.FullName), StringComparison.OrdinalIgnoreCase))
+                .SingleOrDefault();
 
-                return new LocalUpgradeInfo
-                {
-                    PackageName = Path.GetFileNameWithoutExtension(file),
-                    Version = mainAssemblyVersion,
-                    IsValid = mainAssemblyVersion is not null,
-                    IsOutdated = mainAssemblyVersion is not null && mainAssemblyVersion <= application.Version,
-                };
-            }
-            catch (Exception exception)
+            Version mainAssemblyVersion = null;
+            if (mainAssemblyEntry is not null)
             {
-                Exceptions.LogException(exception);
-                return new LocalUpgradeInfo
-                {
-                    PackageName = Path.GetFileNameWithoutExtension(file),
-                    Version = null,
-                    IsValid = false,
-                    IsOutdated = false,
-                };
+                mainAssemblyVersion = await ReadZippedAssemblyVersion(mainAssemblyEntry, cancellationToken);
             }
+
+            var upgradeInfo = archive.FileEntries()
+                .Where(entry => string.Equals("App_Data/Upgrade/upgrade.json", entry.FullName, StringComparison.OrdinalIgnoreCase))
+                .SingleOrDefault();
+            var upgradeSettings = new LocalUpgradeSettings
+            {
+                MinimumDnnVersion = "0.0.0",
+            };
+            if (upgradeInfo is not null)
+            {
+                var upgradeInfoFile = upgradeInfo.ReadTextFile();
+                upgradeSettings = Json.Deserialize<LocalUpgradeSettings>(upgradeInfoFile);
+            }
+
+            var res = new LocalUpgradeInfo
+            {
+                PackageName = packageName,
+                Version = mainAssemblyVersion,
+                IsValid = mainAssemblyVersion is not null,
+                IsOutdated = mainAssemblyVersion is not null && mainAssemblyVersion <= this.application.Version,
+                MinDnnVersion = Version.Parse(upgradeSettings.MinimumDnnVersion),
+            };
+            res.CanInstall = res.IsValid
+                && !res.IsOutdated
+                && (res.MinDnnVersion is null || res.MinDnnVersion <= this.application.Version);
+
+            return res;
+        }
+        catch (Exception exception)
+        {
+            Exceptions.LogException(exception);
+            return new LocalUpgradeInfo
+            {
+                PackageName = packageName,
+                Version = null,
+                IsValid = false,
+                IsOutdated = false,
+                MinDnnVersion = null,
+                CanInstall = false,
+            };
+        }
+    }
+
+    /// <inheritdoc />
+    public async Task DeleteLocalUpgrade(string packageName, CancellationToken cancellationToken)
+    {
+        var upgrades = await this.GetLocalUpgrades(cancellationToken);
+        var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(packageName, StringComparison.InvariantCultureIgnoreCase));
+        var packagePath = Path.Combine(this.UpgradeDirectoryPath, upgrade.PackageName + ".zip");
+
+        if (File.Exists(packagePath))
+        {
+            File.Delete(packagePath);
         }
     }
 
@@ -102,9 +181,28 @@ public class LocalUpgradeService : ILocalUpgradeService
     public async Task StartLocalUpgrade(IReadOnlyList<LocalUpgradeInfo> upgrades, CancellationToken cancellationToken)
     {
         var upgrade = upgrades.Where(u => u.IsValid && !u.IsOutdated).OrderBy(u => u.Version).First();
+        await this.StartLocalUpgrade(upgrade, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public async Task StartLocalUpgrade(LocalUpgradeInfo upgrade, CancellationToken cancellationToken)
+    {
         var upgradeZipPath = Path.Combine(this.UpgradeDirectoryPath, upgrade.PackageName + ".zip");
         using var fileStream = File.OpenRead(upgradeZipPath);
         using var archive = new ZipArchive(fileStream, ZipArchiveMode.Read);
+        var upgradeInfo = archive.FileEntries()
+            .Where(entry => string.Equals("App_Data/Upgrade/upgrade.json", entry.FullName, StringComparison.OrdinalIgnoreCase))
+            .SingleOrDefault();
+        var upgradeSettings = new LocalUpgradeSettings
+        {
+            UpgradeExclude = DefaultUpgradeExclude,
+        };
+        if (upgradeInfo is not null)
+        {
+            var upgradeInfoFile = upgradeInfo.ReadTextFile();
+            upgradeSettings = Json.Deserialize<LocalUpgradeSettings>(upgradeInfoFile);
+        }
+
         var assemblyEntries = archive.FileEntries()
             .Where(entry => string.Equals(".dll", Path.GetExtension(entry.Name), StringComparison.OrdinalIgnoreCase))
             .Where(entry => string.Equals("bin", Path.GetDirectoryName(entry.FullName), StringComparison.OrdinalIgnoreCase))
@@ -115,7 +213,9 @@ public class LocalUpgradeService : ILocalUpgradeService
         installer.Commit();
 
         await FileSystemUtils.UnzipResourcesAsync(
-            archive.FileEntries().Where(entry => !assemblyEntries.Contains(entry)),
+            archive.FileEntries()
+                .Where(entry => !assemblyEntries.Contains(entry))
+                .Where(entry => !upgradeSettings.UpgradeExclude.Any(filter => entry.FullName.StartsWith(filter, StringComparison.OrdinalIgnoreCase))),
             this.appStatus.ApplicationMapPath,
             cancellationToken);
     }
