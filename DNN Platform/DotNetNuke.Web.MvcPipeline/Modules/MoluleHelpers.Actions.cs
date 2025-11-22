@@ -11,12 +11,12 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.Utils;
 
-    public static partial class HtmlHelpers
+    public static partial class ModuleHelpers
     {
         public static IHtmlString ModuleActions(this HtmlHelper htmlHelper, ModuleInfo module)
         {
             var actionsControl = new ModuleActionsControl();
-            actionsControl.RegisterResources(htmlHelper.ViewContext.Controller.ControllerContext);
+            actionsControl.RegisterResources(GetClientResourcesController());
             actionsControl.ModuleContext.Configuration = module;
 
             try

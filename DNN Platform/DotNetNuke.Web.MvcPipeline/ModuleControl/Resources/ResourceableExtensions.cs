@@ -9,6 +9,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.ClientDependency;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+using DotNetNuke.Web.Client.ResourceManager;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
@@ -34,38 +35,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 foreach (var javaScript in resourcable.ModuleResources.Scripts)
                 {
                     clientResourceController.RegisterScript(javaScript.FilePath, javaScript.Priority);
-                }
-            }
-            if (resourcable.ModuleResources.Libraries != null)
-            {
-                foreach (var lib in resourcable.ModuleResources.Libraries)
-                {
-                    JavaScript.RequestRegistration(lib);
-                }
-            }
-            if (resourcable.ModuleResources.AjaxScript)
-            {
-                ServicesFramework.Instance.RequestAjaxScriptSupport();
-            }
-            if (resourcable.ModuleResources.AjaxAntiForgery)
-            {
-                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            }
-        }
-        public static void RegisterResources(this IResourcable resourcable, ControllerContext controllerContext)
-        {
-            if (resourcable.ModuleResources.StyleSheets != null)
-            {
-                foreach (var styleSheet in resourcable.ModuleResources.StyleSheets)
-                {
-                    MvcClientResourceManager.RegisterStyleSheet(controllerContext, styleSheet.FilePath, styleSheet.Priority, styleSheet.HtmlAttributes);
-                }
-            }
-            if (resourcable.ModuleResources.Scripts != null)
-            {
-                foreach (var javaScript in resourcable.ModuleResources.Scripts)
-                {
-                    MvcClientResourceManager.RegisterScript(controllerContext, javaScript.FilePath, javaScript.Priority, javaScript.HtmlAttributes);
                 }
             }
             if (resourcable.ModuleResources.Libraries != null)

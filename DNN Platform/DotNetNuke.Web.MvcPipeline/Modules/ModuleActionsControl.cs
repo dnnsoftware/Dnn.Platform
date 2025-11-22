@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System;
     using System.Collections.Generic;
     using System.Web.Script.Serialization;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -19,7 +20,6 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
