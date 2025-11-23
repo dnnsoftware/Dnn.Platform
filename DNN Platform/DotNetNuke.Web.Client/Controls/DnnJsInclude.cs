@@ -31,8 +31,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         protected override void OnInit(EventArgs e)
         {
-            this.clientResourceController.CreateScript()
-                        .FromSrc(this.FilePath, this.PathNameAlias)
+            this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias)
                         .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
                         .SetProvider(this.ForceProvider)
                         .SetPriority(this.Priority)

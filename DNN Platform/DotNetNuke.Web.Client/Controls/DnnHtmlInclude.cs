@@ -67,8 +67,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 switch (dependencyType)
                 {
                     case ClientDependencyType.Css:
-                        var styleSheet = this.clientResourceController.CreateStylesheet()
-                                                        .FromSrc(file.FilePath)
+                        var styleSheet = this.clientResourceController.CreateStylesheet(file.FilePath)
                                                         .SetProvider(file.ForceProvider)
                                                         .SetPriority(file.Priority);
                         foreach (var a in file.HtmlAttributes)
@@ -79,8 +78,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                         styleSheet.Register();
                         break;
                     case ClientDependencyType.Javascript:
-                        var script = this.clientResourceController.CreateScript()
-                                                        .FromSrc(file.FilePath)
+                        var script = this.clientResourceController.CreateScript(file.FilePath)
                                                         .SetProvider(file.ForceProvider)
                                                         .SetPriority(file.Priority);
                         foreach (var a in file.HtmlAttributes)

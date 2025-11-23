@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.ClientDependency
                 }
             }
 
-            controller.CreateFont().FromSrc(fontPath).Register();
+            controller.CreateFont(fontPath).Register();
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.ClientDependency
                 }
             }
 
-            controller.CreateScript().FromSrc(scriptPath).Register();
+            controller.CreateScript(scriptPath).Register();
         }
 
         /// <summary>
@@ -99,8 +99,7 @@ namespace DotNetNuke.Services.ClientDependency
                 }
             }
 
-            controller.CreateScript()
-                .FromSrc(scriptPath)
+            controller.CreateScript(scriptPath)
                 .SetPriority(priority)
                 .Register();
         }
@@ -132,7 +131,7 @@ namespace DotNetNuke.Services.ClientDependency
                 }
             }
 
-            controller.CreateStylesheet().FromSrc(stylesheetPath).Register();
+            controller.CreateStylesheet(stylesheetPath).Register();
         }
 
         /// <summary>
@@ -163,8 +162,7 @@ namespace DotNetNuke.Services.ClientDependency
                 }
             }
 
-            controller.CreateStylesheet()
-                .FromSrc(stylesheetPath)
+            controller.CreateStylesheet(stylesheetPath)
                 .SetPriority(priority)
                 .Register();
         }
