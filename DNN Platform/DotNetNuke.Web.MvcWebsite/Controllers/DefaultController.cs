@@ -124,8 +124,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
         {
             foreach (var styleSheet in page.Skin.RegisteredStylesheets)
             {
-                this.clientResourceController.CreateStylesheet()
-                        .FromSrc(styleSheet.Stylesheet)
+                this.clientResourceController.CreateStylesheet(styleSheet.Stylesheet)
                         .SetPriority((int)styleSheet.FileOrder)
                         .Register();
             }
@@ -136,8 +135,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                 {
                     foreach (var stylesheet in container.Value.RegisteredStylesheets)
                     {
-                        this.clientResourceController.CreateStylesheet()
-                                .FromSrc(stylesheet.Stylesheet)
+                        this.clientResourceController.CreateStylesheet(stylesheet.Stylesheet)
                                 .SetPriority((int)stylesheet.FileOrder)
                                 .Register();
                     }
@@ -146,8 +144,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
 
             foreach (var script in page.Skin.RegisteredScripts)
             {
-                this.clientResourceController.CreateScript()
-                                .FromSrc(script.Script)
+                this.clientResourceController.CreateScript(script.Script)
                                 .SetPriority((int)script.FileOrder)
                                 .Register();
             }

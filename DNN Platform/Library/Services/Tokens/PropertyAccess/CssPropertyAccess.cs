@@ -55,8 +55,7 @@ namespace DotNetNuke.Services.Tokens
             else
             {
                 this.clientResourceController
-                    .CreateStylesheet()
-                    .FromSrc(model.Path)
+                    .CreateStylesheet(model.Path)
                     .SetPriority((FileOrder.Css)model.Priority)
                     .SetProvider(model.Provider)
                     .Register();

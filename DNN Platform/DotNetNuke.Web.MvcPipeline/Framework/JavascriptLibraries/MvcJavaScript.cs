@@ -173,12 +173,10 @@
                     }
 
                     // MvcClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "MicrosoftAjax.js", 10);
-                    controller.CreateScript()
-                              .FromSrc(ClientAPI.ScriptPath + "mvc.js")
+                    controller.CreateScript(ClientAPI.ScriptPath + "mvc.js")
                               .SetPriority(11)
                               .Register();
-                    controller.CreateScript()
-                              .FromSrc(ClientAPI.ScriptPath + "dnn.js")
+                    controller.CreateScript(ClientAPI.ScriptPath + "dnn.js")
                               .SetPriority(12)
                               .Register();
 
@@ -197,8 +195,7 @@
                     break;
                 case ClientAPI.ClientNamespaceReferences.dnn_dom_positioning:
                     RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
-                    controller.CreateScript()
-                              .FromSrc(ClientAPI.ScriptPath + "dnn.dom.positioning.js")
+                    controller.CreateScript(ClientAPI.ScriptPath + "dnn.dom.positioning.js")
                               .SetPriority(13)
                               .Register();
                     break;
@@ -427,8 +424,7 @@
             }
 
             var controller = GetClientResourcesController();
-            controller.CreateScript()
-                  .FromSrc(GetScriptPath(jsl, HttpContextSource.Current?.Request))
+            controller.CreateScript(GetScriptPath(jsl, HttpContextSource.Current?.Request))
                   .SetPriority(GetFileOrder(jsl))
                   .SetProvider(GetProvider(jsl))
                   .SetNameAndVersion(jsl.LibraryName, jsl.Version.ToString(3), false)

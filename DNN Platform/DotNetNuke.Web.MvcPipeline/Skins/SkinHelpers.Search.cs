@@ -50,8 +50,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             var controller = GetClientResourcesController();
             controller.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
-            controller.CreateScript()
-                .FromSrc("~/Resources/Search/SearchSkinObjectPreview.js")
+            controller.CreateScript("~/Resources/Search/SearchSkinObjectPreview.js")
                 .SetDefer()
                 .Register();
 

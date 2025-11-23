@@ -149,8 +149,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
 
             // add CSS links
-            this.clientResourceController.CreateStylesheet()
-                .FromSrc("~/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css")
+            this.clientResourceController.CreateStylesheet("~/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css")
                 .SetNameAndVersion("dnndefault", "10.0.0", false)
                 .SetPriority(FileOrder.Css.DefaultCss)
                 .Register();

@@ -57,8 +57,7 @@ namespace DotNetNuke.Services.Tokens
             else
             {
                 var script = this.clientResourceController
-                    .CreateScript()
-                    .FromSrc(model.Path);
+                    .CreateScript(model.Path);
                 if (model.Priority > 0)
                 {
                     script.SetPriority(model.Priority);

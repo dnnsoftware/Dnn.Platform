@@ -307,7 +307,7 @@ namespace Dnn.EditBar.UI.Mvc
             controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
             controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
             controller.RegisterScript(Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
-            controller.CreateStylesheet().FromSrc(Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css")).SetPriority(CssFileOrder);
+            controller.CreateStylesheet(Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css")).SetPriority(CssFileOrder).Register();
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);

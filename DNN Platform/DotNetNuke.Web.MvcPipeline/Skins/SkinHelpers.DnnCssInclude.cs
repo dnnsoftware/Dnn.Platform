@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using ClientDependency.Core;
     using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Models;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -18,22 +19,16 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString DnnCssInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
         {
-            var ss = GetClientResourcesController().CreateStylesheet();
-            ss.FilePath = filePath;
-            ss.PathNameAlias = pathNameAlias;
-            ss.Priority = priority;
+            var ss = GetClientResourcesController()
+                .CreateStylesheet(filePath, pathNameAlias)
+                .SetPriority(priority);
             if (!string.IsNullOrEmpty(forceProvider))
             {
-                ss.Provider = forceProvider;
+                ss.SetProvider(forceProvider);
             }
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(version))
             {
-                ss.Name = name;
-            }
-            if (!string.IsNullOrEmpty(version))
-            {
-                ss.Version = version;
-                ss.ForceVersion = forceVersion;
+                ss.SetNameAndVersion(name, version, forceVersion);
             }
             ss.Register();
 
@@ -69,6 +64,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             return new MvcHtmlString(string.Empty);
         }
-        
+
     }
 }

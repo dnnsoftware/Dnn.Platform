@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web.Mvc;
 
     using ClientDependency.Core;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinHelpers
@@ -21,26 +22,19 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             //todo CSP - implement nonce support
             // htmlAttibs.Add("nonce", helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
 
-            var script = GetClientResourcesController().CreateScript();
-            script.FilePath = filePath;
-            script.PathNameAlias = pathNameAlias;
-            script.Priority = priority;
+            var script = GetClientResourcesController().CreateScript(filePath, pathNameAlias)
+                .SetPriority(priority);
             if (!string.IsNullOrEmpty(forceProvider))
             {
-                script.Provider = forceProvider;
+                script.SetProvider(forceProvider);
             }
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(version))
             {
-                script.Name = name;
-            }
-            if (!string.IsNullOrEmpty(version))
-            {
-                script.Version = version;
-                script.ForceVersion = forceVersion;
+                script.SetNameAndVersion(name, version, forceVersion);
             }
             if (defer)
             {
-                script.Attributes.Add("defer", "defer");
+                script.SetDefer();
             }
             script.Register();
 
