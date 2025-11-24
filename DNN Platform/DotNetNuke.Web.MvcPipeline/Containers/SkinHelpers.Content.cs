@@ -64,6 +64,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 
             var moduleDiv = new TagBuilder("div");
             moduleDiv.AddCssClass(model.ModuleHost.CssClass);
+
             // render module control
             try
             {
@@ -73,7 +74,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             {
                 if (TabPermissionController.CanAdminPage())
                 {
-                    moduleDiv.InnerHtml += "<div class=\"dnnFormMessage dnnFormError\"> Error loading module: " + ex.Message + "</div>";
+                    moduleDiv.InnerHtml += htmlHelper.ModuleErrorMessage(ex.Message, "Error loading module");
                 }
             }
 

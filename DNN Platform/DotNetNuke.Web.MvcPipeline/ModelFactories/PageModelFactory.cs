@@ -79,6 +79,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 //TODO: CSP - enable when CSP implementation is ready
                 // ContentSecurityPolicy = this.contentSecurityPolicy,
                 NavigationManager = this.navigationManager,
+                PageService = this.pageService,
                 FavIconLink = FavIcon.GetHeaderLink(hostSettings, controller.PortalSettings.PortalId),
             };
             if (controller.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())

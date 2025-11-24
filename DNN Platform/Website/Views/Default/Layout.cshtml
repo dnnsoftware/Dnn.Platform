@@ -1,7 +1,10 @@
 @using ClientDependency.Core
 @using DotNetNuke.Web.MvcPipeline
+
 @using DotNetNuke.Common
 @using DotNetNuke.Abstractions.ClientResources
+@using DotNetNuke.Web.MvcPipeline.Pages;
+
 @model DotNetNuke.Web.MvcPipeline.Models.PageModel
 @{
     var SkinPath = Path.GetDirectoryName(Model.Skin.SkinSrc).Replace("\\", "/");
@@ -79,45 +82,15 @@
         <div class="aspNetHidden">
             <input name="ScrollTop" type="hidden" id="ScrollTop" />
             <input name="__dnnVariable" type="hidden" id="__dnnVariable" autocomplete="off" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.ClientVariables)">
-            @*@Html.Raw(Model.AntiForgery)*@
             @Html.AntiForgeryIfRequired()
         </div>
     </form>
     @controlPanel
-
     @if (!string.IsNullOrEmpty(Model.Skin.SkinError))
     {
-        <div class="NormalRed">Model.Skin.SkinError</div>
+        <div class="NormalRed">@Model.Skin.SkinError</div>
     }
-
-    @if (Model.Skin.PageMessages.Any() || Model.Skin.ModuleMessages.Any())
-    {
-        <div id="dnnSkinMessage">
-            @foreach (var msg in Model.Skin.PageMessages)
-            {
-                <div class="dnnModuleMessage">
-                    <div CssClass="dnnModMessageHeading">@msg.Heading</div>
-                    <div>@msg.Text</div>
-                </div>
-            }
-            @foreach (var msg in Model.Skin.ModuleMessages)
-            {
-                <div>
-                    <div class="dnnModuleMessage">
-                        <div CssClass="dnnModMessageHeading">@msg.Heading</div>
-                        <div>@msg.Text</div>
-                    </div>
-                </div>
-            }
-        </div>
-        <script type="text/javascript">
-            jQuery(document).ready(function ($) {
-                var $body = window.opera ? (document.compatMode == "CSS1Compat" ? $('html') : $('body')) : $('html,body');
-                var scrollTop = $('#dnnSkinMessage').offset().top - parseInt($(document.body).css("margin-top"));
-                $body.animate({ scrollTop: scrollTop }, 'fast');
-            });
-        </script>
-    }
+    @Html.RenderPageMessages()
     @RenderBody()
     @if (Model.IsEditMode)
     {
@@ -139,7 +112,7 @@
         @foreach (var s in Model.StartupScripts)
         {
             <text>// @s.Key </text>
-	        @Html.Raw(s.Value);
+	        @Html.Raw(s.Value)
         }
         </script>
     }

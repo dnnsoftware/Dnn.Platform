@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -21,14 +22,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.ClientDependency;
-    
+    using DotNetNuke.Services.Pages;
     using DotNetNuke.UI;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Modules;
@@ -41,20 +42,29 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
+    using DotNetNuke.Services.Pages;
+    using System.Globalization;
+    using DotNetNuke.Services.ClientDependency;
 
     public class SkinModelFactory : ISkinModelFactory
     {
+        public const string OnInitMessage = "Skin_InitMessage";
+        public const string OnInitMessageType = "Skin_InitMessageType";
+
         private readonly INavigationManager navigationManager;
         private readonly IPaneModelFactory paneModelFactory;
+        private readonly IPageService PageService;
         private readonly IClientResourceController clientResourceController;
 
         public SkinModelFactory(INavigationManager navigationManager, 
                                 IPaneModelFactory paneModelFactory,
-                                IClientResourceController clientResourceController)
+                                IClientResourceController clientResourceController,
+                                IPageService pageService)
         {
             this.navigationManager = navigationManager;
             this.paneModelFactory = paneModelFactory;
             this.clientResourceController = clientResourceController;
+            this.PageService = pageService;
         }
 
         public SkinModel CreateSkinModel(DnnPageController page)
@@ -138,12 +148,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 {
                     var heading = Localization.GetString("PageDisabled.Header");
                     var message = Localization.GetString("PageDisabled.Text");
-
-                    this.AddPageMessage(
-                        skin,
-                        heading,
-                        message,
-                        ModuleMessage.ModuleMessageType.YellowWarning);
+                    this.PageService.AddWarningMessage(heading, message);
                 }
             }
 
@@ -187,7 +192,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                                    : "~/js/dnn.modalpopup.js";
                 skin.RegisteredScripts.Add(new RegisteredScript() { Script = popupFilePath, FileOrder = FileOrder.Js.DnnModalPopup });
             }
-
             return skin;
         }
 
@@ -214,11 +218,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 // Load the Control Panel
                 this.InjectControlPanel(ctlSkin, page.Request);
 
-                /*
+                
                 // Register any error messages on the Skin
-                if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
+                if (page.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
                 {
-                    AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
+                    this.PageService.AddErrorMessage(" ", Localization.GetString("CriticalError.Error"));
 
                     if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                     {
@@ -226,32 +230,32 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
                         JavaScript.RequestRegistration(CommonJs.jQueryUI);
-                        JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
-                        ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.logViewer.js");
+                        MvcJavaScript.RegisterClientReference(page.ControllerContext, DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn_dom);
+                        this.clientResourceController.RegisterScript("~/resources/shared/scripts/dnn.logViewer.js");
                     }
                 }
-                */
+                
                 if (!success && !TabPermissionController.CanAdminPage())
                 {
                     // only display the warning to non-administrators (administrators will see the errors)
-                    this.AddPageMessage(ctlSkin, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
+                    this.PageService.AddWarningMessage(Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), page.PortalSettings.Email));
                 }
 
-                /*
+                
                 if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
                 {
-                    var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                    var messageType = PageMessageType.Warning;
                     if (HttpContext.Current.Items.Contains(OnInitMessageType))
                     {
-                        messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
+                        messageType = (PageMessageType)Enum.Parse(typeof(PageMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
                     }
 
-                    AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+                    this.PageService.AddMessage(new PageMessage(string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType, string.Empty, PagePriority.Default));
 
                     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                     ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 }
-                */
+                
 
                 // Process the Panes attributes
                 foreach (var key in ctlSkin.Panes.Keys)
@@ -426,13 +430,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 }
                 else
                 {
-                    /*
-                    AddPageMessage(
-                        this,
+                    this.PageService.AddErrorMessage(
                         string.Empty,
-                        string.Format(Localization.GetString("ContractExpired.Error"), portalSettings.PortalName, Globals.GetMediumDate(portalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), portalSettings.Email),
-                        ModuleMessage.ModuleMessageType.RedError);
-                    */
+                        string.Format(Localization.GetString("ContractExpired.Error"), portalSettings.PortalName, Globals.GetMediumDate(portalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), portalSettings.Email));
                 }
             }
             else
@@ -642,20 +642,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     }
                     */
                 }
-            }
-        }
-
-        private void AddPageMessage(SkinModel skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
-        {
-            this.AddPageMessage(skin, heading, message, moduleMessageType, Null.NullString);
-        }
-
-        private void AddPageMessage(SkinModel skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
-        {
-            if (!string.IsNullOrEmpty(message))
-            {
-                var moduleMessage = this.GetModuleMessage(heading, message, moduleMessageType, iconSrc);
-                skin.ModuleMessages.Insert(0, moduleMessage);
             }
         }
 

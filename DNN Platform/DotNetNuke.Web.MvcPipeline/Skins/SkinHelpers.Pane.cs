@@ -11,12 +11,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-
-    using DotNetNuke.UI.Modules;
-    using DotNetNuke.UI.Skins;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinExtensions
@@ -28,7 +22,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 throw new InvalidOperationException("The model need to be present.");
             }
-
+            
             var editDiv = new TagBuilder("div");
 
             // editDiv.GenerateId("dnn_" + id + "_SyncPanel");
@@ -46,6 +40,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 paneDiv.AddCssClass(cssClass);
             }
             id = id.ToLower();
+            
             if (model.Skin.Panes.ContainsKey(id))
             {
                 var pane = model.Skin.Panes[id];
