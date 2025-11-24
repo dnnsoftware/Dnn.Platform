@@ -127,9 +127,3 @@ UPDATE {databaseOwner}{objectQualifier}ModuleControls
 	SET    
 		MvcControlClass = 'DotNetNuke.Web.MvcWebsite.Controls.TermsControl, DotNetNuke.Web.MvcWebsite'
 	WHERE ControlSrc = 'Admin/Portal/Terms.ascx'        
-
-
-UPDATE {databaseOwner}{objectQualifier}ModuleControls
-	SET    
-		MvcControlClass = 'DotNetNuke.Web.MvcWebsite.Controls.TermsControl, DotNetNuke.Web.MvcWebsite'
-	WHERE ControlSrc = 'Admin/Portal/Terms.ascx' 
