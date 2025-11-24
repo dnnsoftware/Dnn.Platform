@@ -79,11 +79,10 @@ module.exports = (env, argv) => {
                     },
                 },
                 {
-                    // Load svg files as raw text but only if ?raw is specified
-                    test: /\.svg$/,
-                    resourceQuery: /raw/,
-                    use: "raw-loader",
-                }
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
+                },
             ],
         },
         externals: webpackExternals,

@@ -309,8 +309,7 @@ class Dropdown extends Component {
                     }}
                     aria-label="Search"
                 />
-                {props.withIcon && <div className="dropdown-icon" dangerouslySetInnerHTML={{__html: ArrowDownIcon}}
-                    onClick={this.toggleDropdown.bind(this)}></div>}
+                {props.withIcon && <div className="dropdown-icon" onClick={this.toggleDropdown.bind(this)}><ArrowDownIcon /></div>}
                 <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "")}>
                     <Collapse
                         isOpened={state.dropDownOpen}>

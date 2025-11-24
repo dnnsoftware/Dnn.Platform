@@ -95,13 +95,13 @@ class SearchResultCard extends Component {
      
     render() {
         let visibleMenus = [];
-        this.props.item.canViewPage && visibleMenus.push(<li key={"visible-menu-item-can-view-page"} onClick={() => this.props.onViewPage(this.props.item)}><div title={Localization.get("View")} dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} /></li>);
-        this.props.item.canAddContentToPage && visibleMenus.push(<li key={"visible-menu-item-can-add-content"} onClick={() => this.props.onViewEditPage(this.props.item)}><div title={Localization.get("Edit")} dangerouslySetInnerHTML={{ __html: SvgIcons.TreeEdit }} /></li>);
+        this.props.item.canViewPage && visibleMenus.push(<li key={"visible-menu-item-can-view-page"} onClick={() => this.props.onViewPage(this.props.item)}><div title={Localization.get("View")}><SvgIcons.EyeIcon /></div></li>);
+        this.props.item.canAddContentToPage && visibleMenus.push(<li key={"visible-menu-item-can-add-content"} onClick={() => this.props.onViewEditPage(this.props.item)}><div title={Localization.get("Edit")}><SvgIcons.TreeEdit /></div></li>);
         if (this.props.pageInContextComponents && securityService.isSuperUser()) {
             let additionalMenus = cloneDeep(this.props.pageInContextComponents || []);
             additionalMenus && additionalMenus.map((additionalMenu, index) => {
                 visibleMenus.push(<li key={"visible-menu-item-additinal-" + index} onClick={() => (additionalMenu.OnClickAction && typeof additionalMenu.OnClickAction === "function")
-                    && this.props.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title} dangerouslySetInnerHTML={{ __html: additionalMenu.icon }} /></li>);
+                    && this.props.CallCustomAction(additionalMenu.OnClickAction)}><div title={additionalMenu.title}><additionalMenu.icon /></div></li>);
             });
         }
 

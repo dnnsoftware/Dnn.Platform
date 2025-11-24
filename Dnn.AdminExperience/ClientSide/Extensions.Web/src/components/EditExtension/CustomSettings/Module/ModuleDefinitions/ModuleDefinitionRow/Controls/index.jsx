@@ -210,7 +210,7 @@ class Controls extends Component {
                 <GridCell className="header-container">
                     <h3 className="box-title">{Localization.get("ModuleDefinitions_ModuleControls.Header")}</h3>
                     <a className={"add-button" + (isAddMode ? " add-active" : "")} onClick={this.onEdit.bind(this, this.getNewControlKeys(), -1)}>
-                        <span dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }} ></span> {Localization.get("EditModule_Add.Button")}</a>
+                        <span><SvgIcons.AddIcon /></span> {Localization.get("EditModule_Add.Button")}</a>
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
                 <GridCell className="module-controls-table">

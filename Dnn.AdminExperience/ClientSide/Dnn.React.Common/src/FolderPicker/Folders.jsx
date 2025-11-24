@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import FolderIcon from "./img/folder.svg";
 import "./style.less";
-
-const folderIcon = require("!raw-loader!./img/folder.svg").default;
 
 export default class Folders extends Component {
 
@@ -54,9 +53,7 @@ export default class Folders extends Component {
     }
 
     getFolderIcon() {
-         
-        return (<div className="icon" dangerouslySetInnerHTML={{ __html: folderIcon }} />);
-         
+        return (<div className="icon"><FolderIcon /></div>);
     }
 
     getFolders(folder) {

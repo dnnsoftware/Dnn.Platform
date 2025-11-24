@@ -1,10 +1,7 @@
 import React from "react";
-
-/* eslint-disable no-undef */
-const upload = require("!raw-loader!./img/upload.svg").default;
-const checkmark = require("!raw-loader!./img/checkmark.svg").default;
-const errorIcon = require("!raw-loader!./img/x.svg").default;
-/* eslint-enable no-undef */
+import Upload from "./img/upload.svg";
+import Checkmark from "./img/checkmark.svg";
+import ErrorIcon from "./img/x.svg";
 
 interface UploadBarProps {
     errorText?: string;
@@ -29,7 +26,7 @@ const UploadBar: React.FC<UploadBarProps> = ({
 }) => {
     const displayPercent = errorText ? 0 : percent;
     const text = errorText ? errorText : (percent === 100 ? uploadCompleteText : uploadingText);
-    const svg = errorText ? errorIcon : (percent === 100 ? checkmark : upload);
+    const UploadIcon = errorText ? ErrorIcon : (percent === 100 ? Checkmark : Upload);
     const className = "file-upload-container dnn-upload-bar" +
         (percent === 100 ? " complete" : "") +
         (errorText ? " upload-error" : "");
@@ -38,7 +35,7 @@ const UploadBar: React.FC<UploadBarProps> = ({
         <div className={className}>
             <div className="upload-bar-container">
                 <div className="upload-file-name">{fileName || "myImage.jpg"}</div>
-                <div className="upload-icon" dangerouslySetInnerHTML={{ __html: svg }} />
+                <div className="upload-icon"><UploadIcon /></div>
                 <h4>{text}</h4>
                 {errorInPackage && (
                     <p className="view-log-or-try-again">

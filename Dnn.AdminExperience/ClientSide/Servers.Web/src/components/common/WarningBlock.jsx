@@ -10,7 +10,7 @@ export default class WarningBlock extends Component {
         const {props} = this;
 
         return <GridCell className="serversTabWarningInfo">
-            <div dangerouslySetInnerHTML={{ __html: SvgIcons.ErrorStateIcon }} />
+            <div><SvgIcons.ErrorStateIcon /></div>
             <div className="dnn-label title"
                 dangerouslySetInnerHTML={{ __html: props.label}} />
         </GridCell>;

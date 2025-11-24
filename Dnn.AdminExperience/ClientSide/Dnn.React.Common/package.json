@@ -57,6 +57,7 @@
     "@storybook/addon-onboarding": "9.1.13",
     "@storybook/addon-webpack5-compiler-swc": "4.0.1",
     "@storybook/react-webpack5": "9.1.13",
+    "@svgr/webpack": "^8.1.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^10.0.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
