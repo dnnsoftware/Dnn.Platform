@@ -20,12 +20,13 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
 
 
-    public class ModuleActionsControl : RazorModuleControlBase, IResourcable
+    public class ModuleActionsControl : RazorModuleControlBase, IPageContributor
     {
         private ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleActionsControl));
         private readonly List<int> validIDs = new List<int>();
@@ -133,41 +134,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
         {
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
-        public ModuleResources ModuleResources
-        {
-            get
-            {
-                return new ModuleResources()
-                {
-                    StyleSheets = new List<ModuleStyleSheet>()
-                    {
-                        new ModuleStyleSheet()
-                        {
-                            FilePath = "~/admin/menus/ModuleActions/ModuleActions.css",
-                            Priority = FileOrder.Css.ModuleCss,
-                        },
-                        new ModuleStyleSheet()
-                        {
-                            FilePath = "~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css",
-                            Priority = FileOrder.Css.ModuleCss,
-                        },
-                    },
-                    Scripts = new List<ModuleScript>()
-                    {
-                        new ModuleScript()
-                        {
-                            FilePath = "~/admin/menus/ModuleActions/ModuleActions.js",
-                        },
-                    },
-                    Libraries = new List<string>()
-                    {
-                        CommonJs.DnnPlugins,
-                    },
-                    AjaxAntiForgery = true,
-                };
-            }
-        }
-
+       
         protected void OnLoad(ModuleInfo moduleInfo)
         {
             this.ActionRoot.Actions.AddRange(this.Actions);
@@ -278,6 +245,23 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
                 // Exceptions.ProcessModuleLoadException(this, exc);
                 throw exc;
             }
+        }
+
+        public void ConfigurePage(PageConfigurationContext context)
+        {
+            context.ClientResourceController
+                  .CreateStylesheet("~/admin/menus/ModuleActions/ModuleActions.css")
+                  .SetPriority(FileOrder.Css.ModuleCss)
+                  .Register();
+            context.ClientResourceController
+                .CreateStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css")
+                .SetPriority(FileOrder.Css.ModuleCss)
+                .Register();
+            context.ClientResourceController
+                .CreateScript("~/admin/menus/ModuleActions/ModuleActions.js")
+                .Register();
+            context.JavaScriptLibraryHelper.RequestRegistration(CommonJs.DnnPlugins);
+            context.ServicesFramework.RequestAjaxAntiForgerySupport();
         }
 
     }

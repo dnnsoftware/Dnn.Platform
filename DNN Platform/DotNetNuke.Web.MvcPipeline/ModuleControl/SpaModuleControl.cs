@@ -31,10 +31,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class SpaModuleControl : DefaultMvcModuleControlBase, IResourcable
+    public class SpaModuleControl : DefaultMvcModuleControlBase, IPageContributor
     {
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly IClientResourceController clientResourceController;
@@ -54,46 +54,30 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 
         public string html5File => ModuleConfiguration.ModuleControl.ControlSrc;
 
-        public ModuleResources ModuleResources
+        public void ConfigurePage(PageConfigurationContext context)
         {
-            get
+            context.ServicesFramework.RequestAjaxScriptSupport();
+            if (!string.IsNullOrEmpty(this.html5File))
             {
-                var resource = new ModuleResources()
+                // Check if css file exists
+                var cssFile = Path.ChangeExtension(this.html5File, ".css");
+                if (this.FileExists(cssFile))
                 {
-                    // Register for Services Framework
-                    AjaxScript = true
-                };
-
-                if (!string.IsNullOrEmpty(this.html5File))
-                {
-                    // Check if css file exists
-                    var cssFile = Path.ChangeExtension(this.html5File, ".css");
-                    if (this.FileExists(cssFile))
-                    {
-                        resource.StyleSheets.Add(new ModuleStyleSheet()
-                        {
-                            FilePath = "/" + cssFile,
-                            Priority = FileOrder.Css.DefaultPriority,
-                        });
-                    }
+                    context.ClientResourceController.CreateStylesheet(cssFile).Register();
                 }
+            }
 
-                if (!string.IsNullOrEmpty(this.html5File))
+            if (!string.IsNullOrEmpty(this.html5File))
+            {
+                // Check if js file exists
+                var jsFile = Path.ChangeExtension(this.html5File, ".js");
+                if (this.FileExists(jsFile))
                 {
-                    // Check if js file exists
-                    var jsFile = Path.ChangeExtension(this.html5File, ".js");
-                    if (this.FileExists(jsFile))
-                    {
-                        resource.Scripts.Add(new ModuleScript()
-                        {
-                            FilePath = "/" + jsFile,
-                            Priority = FileOrder.Js.DefaultPriority,
-                        });
-                    }
+                    context.ClientResourceController.CreateScript(jsFile).Register();
                 }
-                return resource;
             }
         }
+
         public override IHtmlString Html(HtmlHelper htmlHelper)
         {
             var fileContent = string.Empty;
@@ -137,5 +121,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 DataCache.SpaModulesHtmlFileCachePriority),
                 c => File.Exists(HttpContext.Current.Server.MapPath("/" + filepath)));
         }
+
+        
     }
 }

@@ -8,13 +8,15 @@ using System.Web.Mvc.Html;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions.ClientResources;
+using DotNetNuke.Abstractions.Pages;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Installer.Log;
 using DotNetNuke.UI.Skins;
 using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
+using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
 using DotNetNuke.Web.MvcPipeline.UI.Utilities;
 using DotNetNuke.Web.MvcPipeline.Utils;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,11 +55,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms
                     var moduleControl = (IActionable)mc;
                     this.ModuleActions = moduleControl.ModuleActions;
                 }
-                if (mc is IResourcable)
+                if (mc is IPageContributor)
                 {
-                    var moduleControl = (IResourcable)mc;
-                    var crc = DependencyProvider.GetService<IClientResourceController>();
-                    moduleControl.RegisterResources(crc);
+                    var moduleControl = (IPageContributor)mc;
+                    moduleControl.ConfigurePage(new PageConfigurationContext(DependencyProvider));
                 }
             }
             catch (Exception ex)

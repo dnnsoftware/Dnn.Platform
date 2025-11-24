@@ -11,28 +11,27 @@ namespace DotNetNuke.Web.MvcPipeline
     using System.Web.Helpers;
     using System.Web.Mvc;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.Utils;
-    using DotNetNuke.Web.Client.ResourceManager;
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class HtmlHelpers
     {
         public static IHtmlString Control(this HtmlHelper htmlHelper, string controlSrc, ModuleInfo module)
         {
-            var clientResourcesController = GetClientResourcesController();
             var moduleControl = MvcUtils.GetModuleControl(module, controlSrc);
-            // moduleControl.ViewContext = htmlHelper.ViewContext;
-            if (moduleControl is IResourcable)
+            if (moduleControl is IPageContributor)
             {
-                var resourcable = (IResourcable)moduleControl;
-                resourcable.RegisterResources(clientResourcesController);
+                var pageContributor = (IPageContributor)moduleControl;
+                pageContributor.ConfigurePage(new PageConfigurationContext(Common.Globals.GetCurrentServiceProvider()));
             }
             return moduleControl.Html(htmlHelper);
         }

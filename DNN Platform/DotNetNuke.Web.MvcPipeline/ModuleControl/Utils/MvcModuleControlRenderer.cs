@@ -10,7 +10,7 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
-using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
+using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
 using DotNetNuke.Web.MvcPipeline.Utils;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Utils

@@ -22,16 +22,16 @@ namespace DotNetNuke.UI.Modules.Html5
 
     public class Html5HostControl : ModuleControlBase, IActionable
     {
+        private readonly Lazy<ServiceScopeContainer> serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
         private readonly string html5File;
         private readonly IBusinessControllerProvider businessControllerProvider;
-        private IClientResourceController clientResourceController;
         private string fileContent;
 
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
         /// <param name="html5File">The path to the HTML file.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File)
-            : this(html5File, null, null)
+            : this(html5File, null)
         {
             this.html5File = html5File;
         }
@@ -39,25 +39,17 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
         /// <param name="html5File">The path to the HTML file.</param>
         /// <param name="businessControllerProvider">The business controller provider.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider)
-            : this(html5File, businessControllerProvider, null)
-        {
-        }
-
-        /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
-        /// <param name="html5File">The path to the HTML file.</param>
-        /// <param name="businessControllerProvider">The business controller provider.</param>
-        /// <param name="clientResourceController">The client resource controller.</param>
-        public Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider, IClientResourceController clientResourceController)
         {
             this.html5File = html5File;
             this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
-            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
         /// <inheritdoc/>
         public ModuleActionCollection ModuleActions { get; private set; }
+
+        /// <summary>Gets the dependency injection service provider.</summary>
+        protected IServiceProvider DependencyProvider => this.serviceScopeContainer.Value.ServiceScope.ServiceProvider;
 
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
@@ -66,24 +58,26 @@ namespace DotNetNuke.UI.Modules.Html5
 
             if (!string.IsNullOrEmpty(this.html5File))
             {
+                var clientResourceController = this.DependencyProvider.GetRequiredService<IClientResourceController>();
+
                 // Check if css file exists
                 var cssFile = Path.ChangeExtension(this.html5File, ".css");
                 if (this.FileExists(cssFile))
                 {
-                    this.clientResourceController.RegisterStylesheet(cssFile, FileOrder.Css.DefaultPriority);
+                    clientResourceController.RegisterStylesheet(cssFile, FileOrder.Css.DefaultPriority);
                 }
 
                 // Check if js file exists
                 var jsFile = Path.ChangeExtension(this.html5File, ".js");
                 if (this.FileExists(jsFile))
                 {
-                    this.clientResourceController.RegisterScript(jsFile, FileOrder.Js.DefaultPriority);
+                    clientResourceController.RegisterScript(jsFile, FileOrder.Js.DefaultPriority);
                 }
 
                 this.fileContent = this.GetFileContent(this.html5File);
 
                 this.ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new Html5ModuleTokenReplace(this.Page, new HttpRequestWrapper(this.Page.Request), this.clientResourceController, this.businessControllerProvider, this.html5File, this.ModuleContext, this.ModuleActions);
+                var tokenReplace = new Html5ModuleTokenReplace(this.Page, new HttpRequestWrapper(this.Page.Request), clientResourceController, this.businessControllerProvider, this.html5File, this.ModuleContext, this.ModuleActions);
                 this.fileContent = tokenReplace.ReplaceEnvironmentTokens(this.fileContent);
             }
 

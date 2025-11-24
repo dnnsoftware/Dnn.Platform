@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System.Web.Mvc;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.Utils;
 
     public static partial class ModuleHelpers
@@ -16,7 +17,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
         public static IHtmlString ModuleActions(this HtmlHelper htmlHelper, ModuleInfo module)
         {
             var actionsControl = new ModuleActionsControl();
-            actionsControl.RegisterResources(GetClientResourcesController());
+            actionsControl.ConfigurePage(new PageConfigurationContext(Common.Globals.GetCurrentServiceProvider()));
             actionsControl.ModuleContext.Configuration = module;
 
             try

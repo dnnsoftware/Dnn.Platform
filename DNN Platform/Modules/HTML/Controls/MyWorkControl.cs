@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Modules.Html.Controls
 {
-    using System.Collections.Generic;
     using System.Linq;
 
     using DotNetNuke.Abstractions;
@@ -16,11 +15,11 @@ namespace DotNetNuke.Modules.Html.Controls
     using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class MyWorkControl : RazorModuleControlBase, IActionable, IResourcable
+    public class MyWorkControl : RazorModuleControlBase, IActionable, IPageContributor
     {
         private readonly INavigationManager navigationManager;
 
@@ -50,25 +49,14 @@ namespace DotNetNuke.Modules.Html.Controls
             }
         }
 
-        public ModuleResources ModuleResources
+        public void ConfigurePage(PageConfigurationContext context)
         {
-            get
-            {
-                return new ModuleResources()
-                {
-                    StyleSheets = new List<ModuleStyleSheet>()
-                    {
-                        new ModuleStyleSheet()
-                        {
-                            FilePath = "~/DesktopModules/HTML/edit.css",
-                        },
-                        new ModuleStyleSheet()
-                        {
-                            FilePath = "~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css",
-                        },
-                    },
-                };
-            }
+            context.ClientResourceController
+                .CreateStylesheet("~/DesktopModules/HTML/edit.css")
+                .Register();
+            context.ClientResourceController
+                .CreateStylesheet("~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css")
+                .Register();
         }
 
         public override IRazorModuleResult Invoke()

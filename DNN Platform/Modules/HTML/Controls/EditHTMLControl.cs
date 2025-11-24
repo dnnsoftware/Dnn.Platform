@@ -5,12 +5,7 @@
 namespace DotNetNuke.Modules.Html.Controls
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net.NetworkInformation;
-    using System.Web;
-    using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
@@ -20,14 +15,12 @@ namespace DotNetNuke.Modules.Html.Controls
     using DotNetNuke.Modules.Html;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
-    using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl.Resources;
     using Microsoft.Extensions.DependencyInjection;
 
-    public class EditHTMLControl : RazorModuleControlBase, IResourcable
+    public class EditHTMLControl : RazorModuleControlBase, IPageContributor
     {
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
@@ -39,31 +32,13 @@ namespace DotNetNuke.Modules.Html.Controls
             this.htmlTextController = new HtmlTextController(this.navigationManager);
         }
 
-        public ModuleResources ModuleResources => new ModuleResources()
+        public void ConfigurePage(PageConfigurationContext context)
         {
-            StyleSheets = new List<ModuleStyleSheet>()
-            {
-                new ModuleStyleSheet()
-                {
-                    FilePath = "~/DesktopModules/HTML/edit.css",
-                },
-                new ModuleStyleSheet()
-                {
-                    FilePath = "~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css",
-                },
-            },
-            Scripts = new List<ModuleScript>()
-            {
-                new ModuleScript()
-                {
-                    FilePath = "~/Resources/Shared/scripts/jquery/jquery.form.min.js",
-                },
-                new ModuleScript()
-                {
-                    FilePath = "~/DesktopModules/HTML/js/edit.js",
-                },
-            },
-        };
+            context.ClientResourceController.CreateStylesheet("~/DesktopModules/HTML/edit.css").Register();
+            context.ClientResourceController.CreateStylesheet("~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css").Register();
+            context.ClientResourceController.CreateScript("~/Resources/Shared/scripts/jquery/jquery.form.min.js").Register();
+            context.ClientResourceController.CreateScript("~/DesktopModules/HTML/js/edit.js").Register();
+        }
 
         public override IRazorModuleResult Invoke()
         {

@@ -3,18 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Html.Controls
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using System.Web.Mvc;
-
     using DotNetNuke.Abstractions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
