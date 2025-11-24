@@ -25,6 +25,16 @@ namespace DotNetNuke.Web.MvcPipeline
 
     public static partial class HtmlHelpers
     {
+        public static IHtmlString Control(this HtmlHelper htmlHelper, IMvcModuleControl moduleControl)
+        {
+            if (moduleControl is IPageContributor)
+            {
+                var pageContributor = (IPageContributor)moduleControl;
+                pageContributor.ConfigurePage(new PageConfigurationContext(Common.Globals.GetCurrentServiceProvider()));
+            }
+            return moduleControl.Html(htmlHelper);
+        }
+
         public static IHtmlString Control(this HtmlHelper htmlHelper, string controlSrc, ModuleInfo module)
         {
             var moduleControl = MvcUtils.GetModuleControl(module, controlSrc);

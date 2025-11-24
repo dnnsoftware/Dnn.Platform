@@ -8,21 +8,21 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using System.Web;
     using System.Web.Mvc;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.Utils;
 
     public static partial class ModuleHelpers
     {
-        public static IHtmlString ModuleActions(this HtmlHelper htmlHelper, ModuleInfo module)
+        public static IHtmlString ModuleActions(this HtmlHelper htmlHelper, IMvcModuleControl moduleControl)
         {
             var actionsControl = new ModuleActionsControl();
             actionsControl.ConfigurePage(new PageConfigurationContext(Common.Globals.GetCurrentServiceProvider()));
-            actionsControl.ModuleContext.Configuration = module;
+            actionsControl.ModuleContext.Configuration = moduleControl.ModuleContext.Configuration;
 
             try
             {
-                var moduleControl = MvcUtils.GetModuleControl(module, module.ModuleControl.ControlSrc);
                 actionsControl.ModuleControl = moduleControl;
                 return actionsControl.Html(htmlHelper);
             }

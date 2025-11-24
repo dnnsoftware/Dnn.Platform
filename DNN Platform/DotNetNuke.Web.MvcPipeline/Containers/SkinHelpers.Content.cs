@@ -19,7 +19,9 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.Modules;
+    using DotNetNuke.Web.MvcPipeline.Utils;
 
     public static partial class SkinHelpers
     {
@@ -31,6 +33,24 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 throw new InvalidOperationException("The model need to be present.");
             }
 
+            var moduleDiv = new TagBuilder("div");
+            moduleDiv.AddCssClass(model.ModuleHost.CssClass);
+
+            // render module control
+            IMvcModuleControl moduleControl = null;
+            try
+            {
+                moduleControl = MvcUtils.GetModuleControl(model.ModuleConfiguration, model.ModuleConfiguration.ModuleControl.ControlSrc);
+                moduleDiv.InnerHtml += htmlHelper.Control(moduleControl);
+            }
+            catch (Exception ex)
+            {
+                if (TabPermissionController.CanAdminPage())
+                {
+                    moduleDiv.InnerHtml += htmlHelper.ModuleErrorMessage(ex.Message, "Error loading module");
+                }
+            }
+            
             var moduleContentPaneDiv = new TagBuilder("div");
             if (!string.IsNullOrEmpty(model.ContentPaneCssClass))
             {
@@ -40,11 +60,10 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             if (!ModuleHostModel.IsViewMode(model.ModuleConfiguration, model.PortalSettings) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
             {
                 MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                if (model.EditMode && model.ModuleConfiguration.ModuleID > 0)
+                if (model.EditMode && model.ModuleConfiguration.ModuleID > 0 && moduleControl != null)
                 {
                     // render module actions
-                    //moduleContentPaneDiv.InnerHtml += htmlHelper.Control("ModuleActions", model.ModuleConfiguration);
-                    moduleContentPaneDiv.InnerHtml += htmlHelper.ModuleActions(model.ModuleConfiguration);
+                    moduleContentPaneDiv.InnerHtml += htmlHelper.ModuleActions(moduleControl);
                 }
 
                 // register admin.css
@@ -60,22 +79,6 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             if (!string.IsNullOrEmpty(model.Header))
             {
                 moduleContentPaneDiv.InnerHtml += model.Header;
-            }
-
-            var moduleDiv = new TagBuilder("div");
-            moduleDiv.AddCssClass(model.ModuleHost.CssClass);
-
-            // render module control
-            try
-            {
-                moduleDiv.InnerHtml += htmlHelper.Control(model.ModuleConfiguration);
-            }
-            catch (Exception ex)
-            {
-                if (TabPermissionController.CanAdminPage())
-                {
-                    moduleDiv.InnerHtml += htmlHelper.ModuleErrorMessage(ex.Message, "Error loading module");
-                }
             }
 
             moduleContentPaneDiv.InnerHtml += moduleDiv.ToString();
