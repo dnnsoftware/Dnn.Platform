@@ -38,6 +38,7 @@
         public static void RegisterEmbeddedResource(string fileName, Type assemblyType)
         {
             // RegisterClientVariable(FileName + ".resx", ThePage.ClientScript.GetWebResourceUrl(AssemblyType, FileName), true);
+            throw new NotImplementedException();
         }
 
         public static void RegisterStartupScript(string key, string value)

@@ -8,7 +8,7 @@
 @model DotNetNuke.Web.MvcPipeline.Models.PageModel
 @{
     var SkinPath = Path.GetDirectoryName(Model.Skin.SkinSrc).Replace("\\", "/");
-    DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries.MvcJavaScript.Register(this.ViewContext);
+    DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries.MvcJavaScript.Register();
     var controlPanel = new System.Web.Mvc.MvcHtmlString(string.Empty);
     if (!string.IsNullOrEmpty(Model.Skin.ControlPanelRazor))
     {

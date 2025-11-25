@@ -186,7 +186,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
             if (page.PortalSettings.EnablePopUps)
             {
-                MvcJavaScript.RequestRegistration(CommonJs.jQueryUI);
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
                 var popupFilePath = HttpContext.Current.IsDebuggingEnabled
                                    ? "~/js/Debug/dnn.modalpopup.js"
                                    : "~/js/dnn.modalpopup.js";
@@ -230,7 +230,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                         ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
                         JavaScript.RequestRegistration(CommonJs.jQueryUI);
-                        MvcJavaScript.RegisterClientReference(page.ControllerContext, DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn_dom);
+                        MvcJavaScript.RegisterClientReference(DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn_dom);
                         this.clientResourceController.RegisterScript("~/resources/shared/scripts/dnn.logViewer.js");
                     }
                 }
@@ -267,7 +267,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
                 {
                     // Register Drag and Drop plugin
-                    MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                     // MvcClientResourceManager.RegisterStyleSheet(page.ControllerContext, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
                     ctlSkin.RegisteredStylesheets.Add(new RegisteredStylesheet { Stylesheet = "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder = FileOrder.Css.FeatureCss });

@@ -7,33 +7,36 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System;
     using System.Web;
     using System.Web.Mvc;
-
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SkinHelpers
     {
         public static IHtmlString JQuery(this HtmlHelper<PageModel> helper, bool dnnjQueryPlugins = false, bool jQueryHoverIntent = false, bool jQueryUI = false)
         {
-            var script = new TagBuilder("script");
-            script.Attributes.Add("src", "~/Resources/Shared/Scripts/jquery/jquery.js");
-            script.Attributes.Add("type", "text/javascript");
+            var javaScript = Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+
+            javaScript.RequestRegistration(CommonJs.jQuery);
+            javaScript.RequestRegistration(CommonJs.jQueryMigrate);
+
+            if (jQueryUI)
+            {
+                javaScript.RequestRegistration(CommonJs.jQueryUI);
+            }
 
             if (dnnjQueryPlugins)
             {
-                script.InnerHtml += "<script src=\"~/Resources/Shared/Scripts/dnn.jquery.js\" type=\"text/javascript\"></script>";
+                javaScript.RequestRegistration(CommonJs.DnnPlugins);
             }
 
             if (jQueryHoverIntent)
             {
-                script.InnerHtml += "<script src=\"~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.js\" type=\"text/javascript\"></script>";
+                javaScript.RequestRegistration(CommonJs.HoverIntent);
             }
 
-            if (jQueryUI)
-            {
-                script.InnerHtml += "<script src=\"~/Resources/Shared/Scripts/jquery/jquery-ui.js\" type=\"text/javascript\"></script>";
-            }
-
-            return new MvcHtmlString(script.ToString());
+            return new MvcHtmlString(string.Empty);
         }
     }
 }

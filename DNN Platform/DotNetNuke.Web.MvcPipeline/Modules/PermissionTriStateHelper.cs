@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             string permissionKey = "")
         {
             const string scriptKey = "initTriState";
-            MvcJavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQuery);
             var controller = GetClientResourcesController();
             controller.RegisterScript("/js/dnn.permissiontristate.js");
             MvcClientAPI.RegisterStartupScript(scriptKey, GetInitScript());

@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 
             if (!ModuleHostModel.IsViewMode(model.ModuleConfiguration, model.PortalSettings) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
             {
-                MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (model.EditMode && model.ModuleConfiguration.ModuleID > 0 && moduleControl != null)
                 {
                     // render module actions

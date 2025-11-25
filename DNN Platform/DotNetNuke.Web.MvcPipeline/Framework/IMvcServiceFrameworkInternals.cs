@@ -7,7 +7,7 @@
         bool IsAjaxAntiForgerySupportRequired { get; }
 
         bool IsAjaxScriptSupportRequired { get; }
-        void RegisterAjaxAntiForgery(ControllerContext page);
-        void RegisterAjaxScript(ControllerContext page);
+        void RegisterAjaxAntiForgery();
+        void RegisterAjaxScript();
     }
 }

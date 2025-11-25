@@ -7,28 +7,31 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System;
     using System.Web;
     using System.Web.Mvc;
-
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SkinHelpers
     {
-        public static IHtmlString JavaScriptLibraryInclude(this HtmlHelper<PageModel> helper, string name, string version = "", string specificVersion = "")
+        public static IHtmlString JavaScriptLibraryInclude(this HtmlHelper<PageModel> helper, string name, Version version, SpecificVersion? specificVersion)
         {
-            var script = new TagBuilder("script");
-            script.Attributes.Add("src", name);
-            script.Attributes.Add("type", "text/javascript");
+            var javaScript = Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
 
-            if (!string.IsNullOrEmpty(version))
+            if (version == null)
             {
-                script.Attributes.Add("data-version", version);
+                javaScript.RequestRegistration(name);
+            }
+            else if (specificVersion == null)
+            {
+                javaScript.RequestRegistration(name, version);
+            }
+            else
+            {
+                javaScript.RequestRegistration(name, version, specificVersion.Value);
             }
 
-            if (!string.IsNullOrEmpty(specificVersion))
-            {
-                script.Attributes.Add("data-specific-version", specificVersion);
-            }
-
-            return new MvcHtmlString(script.ToString());
+            return new MvcHtmlString(string.Empty);
         }
     }
 }

@@ -62,9 +62,8 @@ namespace DotNetNuke.Web.MvcPipeline
         {
             if (MvcServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
             {
-                MvcServicesFrameworkInternal.Instance.RegisterAjaxScript(htmlHelper.ViewContext.Controller.ControllerContext);
+                MvcServicesFrameworkInternal.Instance.RegisterAjaxScript();
             }
-
             return new MvcHtmlString(string.Empty);
         }
 

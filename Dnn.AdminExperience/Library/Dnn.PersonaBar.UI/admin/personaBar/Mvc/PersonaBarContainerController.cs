@@ -40,14 +40,17 @@ namespace DotNetNuke.Framework.Controllers
         private readonly IPersonaBarContainer personaBarContainer = Dnn.PersonaBar.Library.Containers.PersonaBarContainer.Instance;
 #pragma warning restore CS0618 // Type or member is obsolete
         private readonly IClientResourceController clientResourceController;
+        private readonly IJavaScriptLibraryHelper javaScript;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PersonaBarContainerController"/> class.
         /// </summary>
         /// <param name="clientResourceController">The client resource controller used to manage client-side resources.</param>
-        public PersonaBarContainerController(IClientResourceController clientResourceController)
+        /// <param name="javaScript">JavaScript Library Helper.</param>
+        public PersonaBarContainerController(IClientResourceController clientResourceController, IJavaScriptLibraryHelper javaScript)
         {
             this.clientResourceController = clientResourceController;
+            this.javaScript = javaScript;
         }
 
         /// <summary>
@@ -116,9 +119,9 @@ namespace DotNetNuke.Framework.Controllers
 
             this.RegisterPersonaBarStyleSheet();
 
-            MvcJavaScript.RegisterClientReference(this.ControllerContext, ClientAPI.ClientNamespaceReferences.dnn);
-            MvcJavaScript.RequestRegistration(CommonJs.DnnPlugins); // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
-            MvcJavaScript.RequestRegistration(CommonJs.KnockoutMapping);
+            MvcJavaScript.RegisterClientReference(ClientAPI.ClientNamespaceReferences.dnn);
+            this.javaScript.RequestRegistration(CommonJs.DnnPlugins); // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
+            this.javaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             // ServicesFramework.Instance.RequestAjaxAntiForgerySupport(); // to later add this line
             this.clientResourceController.RegisterScript("~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");

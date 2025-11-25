@@ -209,7 +209,7 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
             // Cookie Consent
             if (this.PortalSettings.ShowCookieConsent)
             {
-                MvcJavaScript.RegisterClientReference(this.ControllerContext, DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn);
+                MvcJavaScript.RegisterClientReference(DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn);
                 MvcClientAPI.RegisterClientVariable("cc_morelink", this.PortalSettings.CookieMoreLink, true);
                 MvcClientAPI.RegisterClientVariable("cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 MvcClientAPI.RegisterClientVariable("cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
