@@ -16,34 +16,6 @@
 
     public class MvcUtils
     {
-        public static string GetControlViewName(ModuleInfo module)
-        {
-            return GetControlViewName(module, Path.GetFileNameWithoutExtension(module.ModuleControl.ControlSrc));
-        }
-
-        public static string GetControlViewName(ModuleInfo module, string viewName)
-        {
-            return "~/" + Path.GetDirectoryName(module.ModuleControl.ControlSrc) + "/Views/" + viewName + ".cshtml";
-        }
-
-        public static string GetControlControllerName(ModuleInfo module)
-        {
-            return GetControlControllerName(module.ModuleControl.ControlSrc);
-        }
-
-        public static string GetControlControllerName(string controlSrc)
-        {
-            if (controlSrc.StartsWith("DesktopModules"))
-            {
-                // return controlSrc.Replace("DesktopModules/", string.Empty).Replace("/", string.Empty).Replace(".ascx", string.Empty) + "View";
-                return Path.GetFileNameWithoutExtension(controlSrc) + "View";
-            }
-            else
-            {
-                return Path.GetFileNameWithoutExtension(controlSrc) + "View";
-            }
-        }
-
         public static IMvcModuleControl CreateModuleControl(ModuleInfo module)
         {
             return GetModuleControl(module, module.ModuleControl.ControlSrc);

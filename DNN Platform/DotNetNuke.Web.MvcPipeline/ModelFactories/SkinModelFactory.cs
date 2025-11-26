@@ -318,17 +318,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return ctlSkin;
         }
 
-        private ModuleMessageModel GetModuleMessage(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
-        {
-            return new ModuleMessageModel()
-            {
-                Heading = heading,
-                IconImage = iconSrc,
-                Text = message,
-                IconType = moduleMessageType,
-            };
-        }
-
         private void LoadPanes(PortalSettings portalSettings)
         {
             /*

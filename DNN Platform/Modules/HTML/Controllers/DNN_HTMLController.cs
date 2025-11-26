@@ -6,6 +6,7 @@ namespace DotNetNuke.Modules.Html.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -13,6 +14,7 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.Html;
     using DotNetNuke.Modules.Html.Components;
@@ -204,6 +206,11 @@ namespace DotNetNuke.Modules.Html.Controllers
             }
 
             return htmlContent;
+        }
+
+        private ActionResult PartialView(ModuleInfo module, string viewName, EditHtmlViewModel model)
+        {
+            return this.PartialView("~/" + Path.GetDirectoryName(module.ModuleControl.ControlSrc) + "/Views/" + viewName + ".cshtml", model);
         }
     }
 }

@@ -159,7 +159,6 @@
     <Compile Include="Components\HtmlTextUserController.cs" />
     <Compile Include="Components\HtmlTextUserInfo.cs" />
     <Compile Include="Controllers\DNN_HTMLController.cs" />
-    <Compile Include="Models\HtmlModuleSettingsModel.cs" />
     <Compile Include="Models\HtmlTextUserModel.cs" />
     <Compile Include="Models\MyWorkModel.cs" />
     <Compile Include="Models\WorkflowType.cs" />

@@ -23,15 +23,6 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
 
     public abstract class ModuleViewControllerBase : Controller, IMvcController
     {
-        /*
-        private ModuleInfo activeModule;
-        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-        private readonly Lazy<ServiceScopeContainer> serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
-        private string localResourceFile;
-        private ModuleInstanceContext moduleContext;
-        private DesktopModuleInfo desktopModule;
-        */
-
         private string localResourceFile;
         private ModuleInstanceContext moduleContext;
 
@@ -292,20 +283,13 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             }
             moduleContext.Configuration = activeModule;
             var model = this.ViewModel();
-            return this.PartialView(this.ModuleConfiguration, model);
+            return this.PartialView(ViewName(), model);
         }
 
         protected abstract object ViewModel();
 
-        protected ActionResult PartialView(ModuleInfo module, object model)
-        {
-            return this.View(MvcUtils.GetControlViewName(module), model);
-        }
+        protected abstract string ViewName();
 
-        protected ActionResult PartialView(ModuleInfo module, string viewName, object model)
-        {
-            return this.View(MvcUtils.GetControlViewName(module, viewName), model);
-        }
 
     }
 }
