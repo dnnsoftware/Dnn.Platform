@@ -24,7 +24,9 @@ namespace DotNetNuke.ContentSecurityPolicy
             csp.ImgSource.AddSelf();
             csp.FontSource.AddSelf();
             csp.FrameSource.AddSelf();
+            csp.FormAction.AddSelf();
             csp.ConnectSource.AddSelf();
+            csp.BaseUriSource.AddSelf();
         }
     }
 }

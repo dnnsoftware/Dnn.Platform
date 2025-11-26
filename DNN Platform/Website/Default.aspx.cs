@@ -242,10 +242,6 @@ namespace DotNetNuke.Framework
                     try
                     {
                         this.AddCspHeaders();
-
-                        // Add policies for webforms framework inline scripts and eval usage
-                        this.ContentSecurityPolicy.ScriptSource.AddInline();
-                        this.ContentSecurityPolicy.ScriptSource.AddEval();
                     }
                     catch (Exception ex)
                     {
@@ -426,7 +422,6 @@ namespace DotNetNuke.Framework
                         this.ContentSecurityPolicy.ClearContentSecurityPolicyContributors();
                         this.ContentSecurityPolicy.ClearReportingEndpointsContributors();
                         this.AddCspHeaders();
-                        this.ContentSecurityPolicy.AddWebformsSupport();
                     }
 
                     var policy = this.ContentSecurityPolicy.GeneratePolicy();
@@ -952,6 +947,8 @@ namespace DotNetNuke.Framework
             {
                 this.ContentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
             }
+
+            this.ContentSecurityPolicy.AddWebformsSupport();
         }
     }
 }
