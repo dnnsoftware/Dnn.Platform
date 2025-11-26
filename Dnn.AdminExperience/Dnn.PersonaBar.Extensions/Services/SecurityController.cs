@@ -1423,6 +1423,8 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
+                bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
+
                 var response = new
                 {
                     Success = true,
@@ -1434,6 +1436,7 @@ namespace Dnn.PersonaBar.Security.Services
                             this.PortalSettings.CspHeaderFixed,
                             this.PortalSettings.CspHeader,
                             this.PortalSettings.CspReportingHeader,
+                            CspDisabled = disableCsp,
                         },
                     },
                 };

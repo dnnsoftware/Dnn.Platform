@@ -1468,9 +1468,8 @@
   <data name="CspHeaderModeOn.Help" xml:space="preserve">
     <value>The CSP header will be added to the http response and enforced.</value>
   </data>
-  
   <data name="CspSettings.Help" xml:space="preserve">
-    <value>When Fixed CSP Header is enabled, the CSP header will be fixed and cannot be dynamically modified by skins or modules. When Fixed CSP Header is disabled, the CSP header will be dynamically modified by skins or modules and for webforms script-src 'unsafe-inline' and 'unsafe-eval' will be added automatically to the CSP header.</value>
+    <value>Access to the administrative panels of DNN relies on Javascript features. DNN's Content Security Policy (CSP) feature by default emits "best effort" by using the settings below but allowing modules and themes to enlarge what is allowed on the site. You can disable this by using the "locked" mode. When using this "Locked" mode, please use "report only" first and ensure no script resources are being blocked that would limit your access to (1) this panel and (2) the login page or you risk locking yourself out of this site! Note that CSP can be disabled globally in the web.config in case you have locked yourself out.</value>
   </data>
   <data name="TabCspSettings.Text" xml:space="preserve">
     <value>CSP SETTINGS</value>
@@ -1491,10 +1490,10 @@
     <value>The changes to the CSP settings will be discarded. Do you wish to continue?</value>
   </data>
   <data name="plCspHeaderFixed.Text" xml:space="preserve">
-    <value>Fixed CSP Header</value>
+    <value>Lock CSP Header</value>
   </data>
   <data name="plCspHeaderFixed.Help" xml:space="preserve">
-    <value>If enabled, the CSP header will be fixed (equal to the settings) and cannot be dynamically modified by skins or modules.</value>
+    <value>If enabled, the CSP header will be locked (i.e. set to settings below) and cannot be dynamically modified by skins or modules.</value>
   </data>
   <data name="SwitchOn.Text" xml:space="preserve">
     <value>On</value>
@@ -1502,5 +1501,10 @@
   <data name="SwitchOff.Text" xml:space="preserve">
     <value>Off</value>
   </data>
-  
+  <data name="CspDisabled.Help" xml:space="preserve">
+    <value>Content Security Policy (CSP) has been disabled in the web.config. Please enable it again to use this feature.</value>
+  </data>
+  <data name="CspLockConfirm.Text" xml:space="preserve">
+    <value>I confirm I am aware of the risks of using the "locked" feature.</value>
+  </data>
 </root>
