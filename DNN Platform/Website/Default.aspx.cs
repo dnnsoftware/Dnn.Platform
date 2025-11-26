@@ -410,30 +410,36 @@ namespace DotNetNuke.Framework
                     this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On) &&
                     !this.HeaderIsWritten)
             {
-                var header = "Content-Security-Policy";
-                if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
-                {
-                    header = "Content-Security-Policy-Report-Only";
-                }
+                bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
 
-                // If fixed, we need to clear any existing contributors and just use the fixed headers
-                if (this.PortalSettings.CspHeaderFixed)
+                if (!disableCsp)
                 {
-                    this.ContentSecurityPolicy.ClearContentSecurityPolicyContributors();
-                    this.ContentSecurityPolicy.ClearReportingEndpointsContributors();
-                    this.AddCspHeaders();
-                }
+                    var header = "Content-Security-Policy";
+                    if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+                    {
+                        header = "Content-Security-Policy-Report-Only";
+                    }
 
-                var policy = this.ContentSecurityPolicy.GeneratePolicy();
-                if (!string.IsNullOrEmpty(policy))
-                {
-                    this.Page.Response.AddHeader(header, policy);
-                }
+                    // If fixed, we need to clear any existing contributors and just use the fixed headers
+                    if (this.PortalSettings.CspHeaderFixed)
+                    {
+                        this.ContentSecurityPolicy.ClearContentSecurityPolicyContributors();
+                        this.ContentSecurityPolicy.ClearReportingEndpointsContributors();
+                        this.AddCspHeaders();
+                        this.ContentSecurityPolicy.AddWebformsSupport();
+                    }
 
-                policy = this.ContentSecurityPolicy.GenerateReportingEndpoints();
-                if (!string.IsNullOrEmpty(policy))
-                {
-                    this.Page.Response.AddHeader("Reporting-Endpoints", policy);
+                    var policy = this.ContentSecurityPolicy.GeneratePolicy();
+                    if (!string.IsNullOrEmpty(policy))
+                    {
+                        this.Page.Response.AddHeader(header, policy);
+                    }
+
+                    policy = this.ContentSecurityPolicy.GenerateReportingEndpoints();
+                    if (!string.IsNullOrEmpty(policy))
+                    {
+                        this.Page.Response.AddHeader("Reporting-Endpoints", policy);
+                    }
                 }
             }
 
