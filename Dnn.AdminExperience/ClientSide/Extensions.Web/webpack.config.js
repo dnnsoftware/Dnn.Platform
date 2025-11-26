@@ -110,9 +110,14 @@ module.exports = (env, argv) => {
                     use: {
                         loader: "url-loader?mimetype=application/font-woff",
                     },
+                },      
+                {
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
                 },
                 {
-                    test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
+                    test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/,
                     use: {
                         loader: "file-loader?name=[name].[ext]",
                     },

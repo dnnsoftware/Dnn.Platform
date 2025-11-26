@@ -14,6 +14,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
     "@dnnsoftware/dnn-react-common": "10.1.0",
+    "@svgr/webpack": "^8.1.0",
     "babel-loader": "10.0.0",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-object-rest-spread": "6.26.0",

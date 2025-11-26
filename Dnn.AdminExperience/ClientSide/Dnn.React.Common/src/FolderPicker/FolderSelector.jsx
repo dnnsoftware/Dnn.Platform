@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Folders from "./Folders";
 import { Scrollbars } from "react-custom-scrollbars";
+import SearchIconImage from "./img/search.svg";
 import "./style.less";
-
-const searchIconImage = require("!raw-loader!./img/search.svg").default;
 
 export default class FolderSelector extends Component {
 
@@ -64,9 +63,7 @@ export default class FolderSelector extends Component {
     }
 
     getSearchIcon() {
-         
-        return (<div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIconImage }} />);
-         
+        return <div className="search-icon"><SearchIconImage /></div>;
     }
 
     render() {

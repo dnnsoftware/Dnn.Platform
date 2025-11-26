@@ -43,7 +43,7 @@ class LanguageRow extends Component {
     getActiveDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop && this.props.isLocalized) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>;
+                return <div className="checkMarkIcon"><SvgIcons.CheckMarkIcon /></div>;
             }
             else return <span>&nbsp; </span>;
         }
@@ -53,7 +53,7 @@ class LanguageRow extends Component {
     getEnabledDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>;
+                return <div className="checkMarkIcon"><SvgIcons.CheckMarkIcon /></div>;
             }
             else return <span>&nbsp; </span>;
         }
@@ -171,12 +171,12 @@ class LanguageRow extends Component {
                                 {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons item-row-actionButtons-adv">
-                                {!props.isDefault && <div className={this.getPageEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: SvgIcons.LanguagesPageIcon }} onClick={props.onOpenPageList}></div>}
-                                <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: SvgIcons.LanguagesIcon }} onClick={props.onOpenEditor}></div>
+                                {!props.isDefault && <div className={this.getPageEditorBtnClassName()} onClick={props.onOpenPageList}><SvgIcons.LanguagesPageIcon /></div>}
+                                <div className={this.getEditorBtnClassName()} onClick={props.onOpenEditor}><SvgIcons.LanguagesIcon /></div>
                                 {!props.isDefault &&
-                                    <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: SvgIcons.UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
+                                    <div className={this.getTranslatorBtnClassName()} onClick={this.toggle.bind(this, 2)}><SvgIcons.UsersIcon /></div>
                                 }
-                                <div className={this.getEditBtnClassName()} dangerouslySetInnerHTML={{ __html: SvgIcons.SettingsIcon }} onClick={this.toggle.bind(this, 1)}></div>
+                                <div className={this.getEditBtnClassName()} onClick={this.toggle.bind(this, 1)}><SvgIcons.SettingsIcon /></div>
                             </div>
                         </div>
                     </div>
@@ -198,11 +198,11 @@ class LanguageRow extends Component {
                                 {this.getEnabledDisplay(props.enabled)}
                             </div>
                             <div className="language-item item-row-actionButtons">
-                                <div className={this.getEditorBtnClassName()} dangerouslySetInnerHTML={{ __html: SvgIcons.LanguagesIcon }} onClick={props.onOpenEditor}></div>
+                                <div className={this.getEditorBtnClassName()} onClick={props.onOpenEditor}><SvgIcons.LanguagesIcon /></div>
                                 {!props.isDefault &&
-                                    <div className={this.getTranslatorBtnClassName()} dangerouslySetInnerHTML={{ __html: SvgIcons.UsersIcon }} onClick={this.toggle.bind(this, 2)}></div>
+                                    <div className={this.getTranslatorBtnClassName()} onClick={this.toggle.bind(this, 2)}><SvgIcons.UsersIcon /></div>
                                 }
-                                <div className={this.getEditBtnClassName()} dangerouslySetInnerHTML={{ __html: SvgIcons.SettingsIcon }} onClick={this.toggle.bind(this, 1)}></div>
+                                <div className={this.getEditBtnClassName()} onClick={this.toggle.bind(this, 1)}><SvgIcons.SettingsIcon /></div>
                             </div>
                         </div>
                     </div>

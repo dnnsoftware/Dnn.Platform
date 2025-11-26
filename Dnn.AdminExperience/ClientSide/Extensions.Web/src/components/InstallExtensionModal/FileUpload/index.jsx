@@ -5,6 +5,7 @@ import AlreadyInstalled from "./AlreadyInstalled";
 import Localization from "localization";
 import LogDisplay from "./LogDisplay";
 import { RadioButtons } from "@dnnsoftware/dnn-react-common";
+import UploadIcon from "./img/upload.svg";
 import "./style.less";
 
 export default class FileUpload extends Component {
@@ -150,10 +151,6 @@ export default class FileUpload extends Component {
         this.onDragLeave();
     }
     render() {
-        /* eslint-disable quotes */
-        // eslint-disable-next-line no-undef
-        const svg = require(`!raw-loader!./img/upload.svg`).default;
-
         const buttonsStyle = { width: 67 };
         let className = "overlay" + (this.state.draggedOver ? " hover" : "");
 
@@ -172,7 +169,7 @@ export default class FileUpload extends Component {
                             className="button upload"
                             onMouseEnter={this.onMouseEnter.bind(this, Localization.get("InstallExtension_UploadAFile"))}
                             onMouseLeave={this.onMouseLeave.bind(this)}>
-                            <div dangerouslySetInnerHTML={{ __html: svg }} />
+                            <div><UploadIcon /></div>
                             <input type="file" onChange={this.onFileUpload.bind(this)} aria-label="File" />
                         </div>
                     </div>

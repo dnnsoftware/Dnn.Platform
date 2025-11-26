@@ -33,8 +33,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
-            this.clientResourceController.CreateStylesheet()
-                        .FromSrc(this.FilePath, this.PathNameAlias)
+            this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
                         .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
                         .SetProvider(this.ForceProvider)
                         .SetPriority(this.Priority)

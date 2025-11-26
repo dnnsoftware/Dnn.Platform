@@ -51,7 +51,7 @@ export default class PersonaBarSelectionArrow extends Component {
         return <div className={this.state.showMenu ? "dots active" : "dots"}
             onMouseEnter={this.onMouseEnter.bind(this)}
             onMouseLeave={this.onMouseLeave.bind(this)}>
-            <div dangerouslySetInnerHTML={{ __html: SvgIcons.MoreMenuIcon }} ></div>
+            <div><SvgIcons.MoreMenuIcon /></div>
             {this.state.showMenu && 
                     <PersonaBarTreeInContextMenu {...this.props} onClose={this.onMouseLeave.bind(this)} />
             }
@@ -64,7 +64,7 @@ export default class PersonaBarSelectionArrow extends Component {
         return (
             <div id={`menu-item-${item.name} ${item.selected}`} 
                 className="selection-arrow">
-                {item.selected ? <div dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowForward }} /> : <div></div>}
+                {item.selected ? <div><SvgIcons.ArrowForward /></div> : <div></div>}
                 {item.selected ? this.renderMoreActions() : <div></div>}                
             </div>
         );

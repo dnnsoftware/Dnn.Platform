@@ -24,8 +24,8 @@ class ControlRow extends Component {
                     {props.moduleControl.source}
                 </GridCell>
                 <GridCell columnSize={15} className="action-buttons">
-                    <div onClick={props.onDelete.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }}></div>
-                    <div onClick={props.onEdit.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} className={props.isEditMode ? "svg-active" : ""}></div>
+                    <div onClick={props.onDelete.bind(this)}><SvgIcons.TrashIcon /></div>
+                    <div onClick={props.onEdit.bind(this)} className={props.isEditMode ? "svg-active" : ""}><SvgIcons.EditIcon /></div>
                 </GridCell>
                 <Collapsible isOpened={props.isEditMode} className="edit-module-control">
                     <ControlFields {...props} />

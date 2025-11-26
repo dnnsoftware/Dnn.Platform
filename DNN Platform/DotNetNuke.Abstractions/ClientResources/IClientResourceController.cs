@@ -27,20 +27,56 @@ public interface IClientResourceController
     /// <summary>
     /// Create a new font resource.
     /// </summary>
+    /// <param name="sourcePath">The source URL to set.</param>
     /// <returns>An <see cref="IFontResource"/> instance representing the created font resource.</returns>
-    IFontResource CreateFont();
+    IFontResource CreateFont(string sourcePath);
+
+    /// <summary>
+    /// Create a new font resource.
+    /// </summary>
+    /// <param name="sourcePath">The source URL to set.</param>
+    /// <param name="pathNameAlias">The path alias to set.</param>
+    /// <returns>An <see cref="IFontResource"/> instance representing the created font resource.</returns>
+    IFontResource CreateFont(string sourcePath, string pathNameAlias);
+
+    /// <summary>
+    /// Create a new font resource.
+    /// </summary>
+    /// <param name="sourcePath">The source URL to set.</param>
+    /// <param name="pathNameAlias">The path alias to set.</param>
+    /// <param name="mimeType">The MIME type of the resource.</param>
+    /// <returns>An <see cref="IFontResource"/> instance representing the created font resource.</returns>
+    IFontResource CreateFont(string sourcePath, string pathNameAlias, string mimeType);
 
     /// <summary>
     /// Create a new script resource.
     /// </summary>
+    /// <param name="sourcePath">The source URL to set.</param>
     /// <returns>An <see cref="IScriptResource"/> instance representing the created script resource.</returns>
-    IScriptResource CreateScript();
+    IScriptResource CreateScript(string sourcePath);
+
+    /// <summary>
+    /// Create a new script resource.
+    /// </summary>
+    /// <param name="sourcePath">The source URL to set.</param>
+    /// <param name="pathNameAlias">The path alias to set.</param>
+    /// <returns>An <see cref="IScriptResource"/> instance representing the created script resource.</returns>
+    IScriptResource CreateScript(string sourcePath, string pathNameAlias);
 
     /// <summary>
     /// Creates a new stylesheet resource.
     /// </summary>
+    /// <param name="sourcePath">The source URL to set.</param>
     /// <returns>An <see cref="IStylesheetResource"/> instance representing the created stylesheet resource.</returns>
-    IStylesheetResource CreateStylesheet();
+    IStylesheetResource CreateStylesheet(string sourcePath);
+
+    /// <summary>
+    /// Creates a new stylesheet resource.
+    /// </summary>
+    /// <param name="sourcePath">The source URL to set.</param>
+    /// <param name="pathNameAlias">The path alias to set.</param>
+    /// <returns>An <see cref="IStylesheetResource"/> instance representing the created stylesheet resource.</returns>
+    IStylesheetResource CreateStylesheet(string sourcePath, string pathNameAlias);
 
     /// <summary>
     /// Registers a path name alias for resolving resource paths.

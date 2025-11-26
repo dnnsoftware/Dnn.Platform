@@ -248,7 +248,7 @@ class ProfilePropertiesPanel extends Component {
                     <div className="AddItemRow">
                         <div className="sectionTitle">{resx.get("UserProfileFields") }</div>
                         <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                            <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                            <div className="add-icon"><SvgIcons.AddIcon />
                             </div> {resx.get("cmdAddField") }
                         </div>
                     </div>

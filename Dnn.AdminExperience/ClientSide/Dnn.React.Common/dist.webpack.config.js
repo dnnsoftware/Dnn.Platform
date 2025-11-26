@@ -41,7 +41,7 @@ module.exports = {
             { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
             { test: /\.css$/, use: ["style-loader!css-loader"] },
             { test: /\.(gif|png)$/, use: ["url-loader?mimetype=image/png"] },
-            { test: /\.(svg)$/, use: ["raw-loader"] },
+            { test: /\.(svg)$/, issuer: /\.[jt]sx?$/, use: ["@svgr/webpack"], },
             { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, use: ["url-loader?mimetype=application/font-woff"] },
             { test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, use: ["file-loader?name=[name].[ext]"] }
         ]

@@ -16,6 +16,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
     "@dnnsoftware/dnn-react-common": "10.1.0",
+    "@svgr/webpack": "^8.1.0",
     "babel-loader": "10.0.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "create-react-class": "^15.7.0",

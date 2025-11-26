@@ -5,6 +5,7 @@ import { ExtensionActions, PaginationActions, VisiblePanelActions } from "action
 import Localization from "localization";
 import ExtensionList from "./ExtensionList";
 import { GridCell, DropdownWithError } from "@dnnsoftware/dnn-react-common";
+import FetchingIcon from "../../../img/fetching.svg";
 import "./style.less";
 
 class InstalledExtensions extends Component {
@@ -74,7 +75,7 @@ class InstalledExtensions extends Component {
         return <div className="loading-extensions">
             <h2>{Localization.get("Loading")}</h2>
             <p>{Localization.get("Loading.Tooltip")}</p>
-            <div dangerouslySetInnerHTML={{ __html: require("!raw-loader!./../../../img/fetching.svg").default }} />
+            <div><FetchingIcon /></div>
         </div>;
         /* eslint-enable no-undef */
     }
