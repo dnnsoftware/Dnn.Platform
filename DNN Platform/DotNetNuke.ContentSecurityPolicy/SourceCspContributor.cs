@@ -4,10 +4,8 @@
 
 namespace DotNetNuke.ContentSecurityPolicy
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Contributor for fetch directives (sources-based directives).

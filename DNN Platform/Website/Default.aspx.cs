@@ -427,6 +427,7 @@ namespace DotNetNuke.Framework
                         this.ContentSecurityPolicy.ClearContentSecurityPolicyContributors();
                         this.ContentSecurityPolicy.ClearReportingEndpointsContributors();
                         this.AddCspHeaders();
+                        this.ContentSecurityPolicy.AddWebformsSupport();
                     }
 
                     var policy = this.ContentSecurityPolicy.GeneratePolicy();
