@@ -68,7 +68,8 @@ class LogSettingRow extends Component {
                         {props.fileName}&nbsp; </GridCell>
                     {!props.readOnly &&
                         <GridCell columnSize={5} >
-                            <div className={"edit-icon " + !opened} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this) }>
+                            <div className={"edit-icon " + !opened} onClick={this.toggle.bind(this) }>
+                                <SvgIcons.EditIcon />
                             </div>
                         </GridCell>
                     }

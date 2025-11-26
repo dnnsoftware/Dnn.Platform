@@ -13,7 +13,7 @@ export default class AlreadyInstalled extends Component {
         return <div className="already-installed">
             <div className="already-installed-container">
                 <div className="upload-file-name">{this.props.fileName || "undefined"}</div>
-                <div className="upload-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ErrorStateIcon }} />
+                <div className="upload-icon"><SvgIcons.ErrorStateIcon /></div>
                 <h4 dangerouslySetInnerHTML={{ __html: props.repairWarning }}></h4>
                 <p className="repair-or-install">
                     <span onClick={props.repairInstall.bind(this)}>[{props.repairInstallText}] </span>

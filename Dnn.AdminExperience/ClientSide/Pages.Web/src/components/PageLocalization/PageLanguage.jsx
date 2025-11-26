@@ -107,19 +107,16 @@ class PageLanguage extends Component {
                     <span>{cultureCode}</span>
                     {!this.props.isDefault && !isSpecialPage && <a className="icon"
                         onClick={this.onDeletePage.bind(this, page)} 
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} 
-                        aria-label="Delete">
+                        aria-label="Delete"><SvgIcons.TrashIcon />
                     </a>}
                     {!isCurrentPage && <a className="icon" 
                         onClick={this.onSettingPage.bind(this, page.PageUrl)} 
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.SettingsIcon }} 
-                        aria-label="Settings">
+                        aria-label="Settings"><SvgIcons.SettingsIcon />
                     </a>}
                     <a className="icon" 
                         href={page.PageUrl} 
                         onClick={this.onViewPage.bind(this, page.PageUrl)} 
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.EyeIcon }} 
-                        aria-label="View">
+                        aria-label="View"><SvgIcons.EyeIcon />
                     </a>
                 </div>
                 <div className="page-language-row">
@@ -129,14 +126,13 @@ class PageLanguage extends Component {
                 </div>
                 <div className="page-language-row">
                     <div className="page-language-row-header">
-                        <span className="icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ModuleIcon }} />
+                        <span className="icon"><SvgIcons.ModuleIcon /></span>
                         <span>{Localization.get("ModulesOnThisPage") }</span>
                         {!this.props.isDefault && <div className="icons-container">
                             <span
                                 title={this.state.allModulesLinked ? Localization.get("ClickToDeLocalizeAllModules_tooltip") : Localization.get("ClickToLocalizeAllModules_tooltip")}
                                 className={`icon float-left ${(this.state.allModulesLinked ? " blue" : "")}`}
-                                onClick={this.linkAllModules.bind(this)  }
-                                dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
+                                onClick={this.linkAllModules.bind(this)  }><SvgIcons.LinkIcon /></span>
                             <div title={this.state.allModulesSelected ? Localization.get("UnCheckAllTranslatedModules_tooltip") : Localization.get("CheckToTranslateAllModules_tooltip")} style={{ float: "left", display: "inline-block"}}>
                                 <Checkbox
                                     value={this.state.allModulesSelected}

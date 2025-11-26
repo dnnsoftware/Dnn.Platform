@@ -51,10 +51,10 @@ class Table extends Component {
         return (
             <div>
                 <div className={styles.addItemRow}>
-                    <div className="link-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
+                    <div className="link-icon"><SvgIcons.LinkIcon /></div>
                     <div className="sectionTitle">{Localization.get("UrlsForThisPage")}</div>
                     <div className={"AddItemBox" + (newFormOpened ? " active" : "")} onClick={onOpenNewForm}>
-                        <div className={"add-icon" + (newFormOpened ? " active" : "")} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                        <div className={"add-icon" + (newFormOpened ? " active" : "")}><SvgIcons.AddIcon />
                         </div> {Localization.get("AddUrl")}
                     </div>
                 </div>

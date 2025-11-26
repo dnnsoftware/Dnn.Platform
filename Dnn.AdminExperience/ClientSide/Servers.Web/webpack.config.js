@@ -81,7 +81,12 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(d.ts)$/,
                     use: ["null-loader"],
-                }
+                },
+                {
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
+                },
             ],
         },
         externals: webpackExternals,

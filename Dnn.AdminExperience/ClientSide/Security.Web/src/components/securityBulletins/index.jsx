@@ -5,7 +5,7 @@ import { security as SecurityActions } from "../../actions";
 import BulletinItemRow from "./bulletinItemRow";
 import resx from "../../resources";
 import styles from "./style.module.less";
-import warningIcon from "./../svg/error.svg?raw";
+import WarningIcon from "./../svg/error.svg";
 
 class SecurityBulletinsPanelBody extends Component {
     constructor() {
@@ -82,7 +82,7 @@ class SecurityBulletinsPanelBody extends Component {
             return (
                 <div className={styles.bulletins}>
                     <div className="warning-container">
-                        <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
+                        <div className="warning-icon"><WarningIcon /></div>
                         <div className="warning-msg">{state.error}</div>
                     </div>
                 </div>

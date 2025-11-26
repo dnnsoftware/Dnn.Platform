@@ -41,8 +41,8 @@ class Module extends Component {
                 />
                 <input type="text" value={module.ModuleTitle} onChange={this.onUpdateModules.bind(this, "ModuleTitle") } aria-label="Title"/>
                 {module.IsDeleted && <div className="icons-container">
-                    <span className="icon" onClick={this.onDeleteModule.bind(this, module.TabModuleId) } dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} />
-                    <span className="icon" onClick={this.onRestoreModule.bind(this, module.TabModuleId) } dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                    <span className="icon" onClick={this.onDeleteModule.bind(this, module.TabModuleId) }><SvgIcons.TrashIcon /></span>
+                    <span className="icon" onClick={this.onRestoreModule.bind(this, module.TabModuleId) }><SvgIcons.CycleIcon /></span>
                 </div>}
                 {!module.IsDeleted && !isDefault && <div className="icons-container">
                     <span
@@ -50,7 +50,7 @@ class Module extends Component {
                         title={module.IsShared ? Localization.get("LocalizedSharedModule_tooltip") : 
                             (module.IsLocalized ? Localization.get("ClickToDeLocalizeModule_tooltip") : Localization.get("ClickToLocalizeModule_tooltip"))}
                         onClick={this.toggleLink.bind(this) }
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.LinkIcon }} />
+><SvgIcons.LinkIcon /></span>
                     {module.TranslatedVisible && 
                         <div title={module.IsTranslated ? Localization.get("UnCheckTranslatedModule_tooltip") : Localization.get("CheckToTranslateModule_tooltip")} style={{ float: "left", display: "inline-block" }}>
                             <Checkbox

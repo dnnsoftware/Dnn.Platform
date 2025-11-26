@@ -73,14 +73,14 @@ class JobRow extends Component {
                                 <span className={"job-status" + (props.jobCancelled ? 4 : props.jobStatus)}>
                                     <TextOverflowWrapper text={Localization.get("JobStatus" + (props.jobCancelled ? 4 : props.jobStatus))} maxWidth={80} />                                    
                                     {props.jobStatus === 1 && ! props.jobCancelled &&
-                                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                        <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                     }
                                 </span>
                             </div>
                         </div>
                         <div className="term-label-arrow" onClick={this.toggle.bind(this)}>
                             <div className="term-label-wrapper">
-                                <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowDownIcon }} />
+                                <div className="arrow-icon"><SvgIcons.ArrowDownIcon /></div>
                             </div>
                         </div>
                     </div>

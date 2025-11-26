@@ -122,7 +122,7 @@ class LogSettingsPanel extends Component {
                     {canEdit &&
                         <div className="add-setting-row" onClick={this.toggle.bind(this, opened ? "" : "add") }>
                             <div className={"add-setting-box " + !opened}>
-                                <div className={"add-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                                <div className={"add-icon"}><SvgIcons.AddIcon />
                                 </div> {Localization.get("AddContent.Action") }
                             </div>
                         </div>

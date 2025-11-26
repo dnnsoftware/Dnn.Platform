@@ -69,7 +69,7 @@ class Modules extends Component {
              
             <div className={styles.moduleContainer}>
                 <div className="module-title">
-                    <div className="module-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.ModuleIcon }} />
+                    <div className="module-icon"><SvgIcons.ModuleIcon /></div>
                     <div className="sectionTitle">{Localization.get("ModulesOnThisPage")}</div>
                 </div>
                 <div className="module-table">    

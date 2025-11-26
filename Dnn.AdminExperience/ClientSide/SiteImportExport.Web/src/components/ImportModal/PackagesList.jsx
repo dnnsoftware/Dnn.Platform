@@ -40,7 +40,7 @@ class PackagesList extends Component {
                                 packageDescription={pkg.Description}
                                 isSelected={props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId} />
                             {props.selectedPackage && props.selectedPackage.PackageId === pkg.PackageId &&
-                                <div className="checkmark" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>
+                                <div className="checkmark"><SvgIcons.CheckMarkIcon /></div>
                             }                            
                         </PackageCard>
                         {

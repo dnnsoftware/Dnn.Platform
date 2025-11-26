@@ -44,7 +44,7 @@ class ProviderRow extends Component {
                                 <Checkbox value={props.enabled} onChange={this.updateStatus.bind(this) } />
                             </div>
                             <div className="provider-item item-row-editButton">
-                                <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)} />
+                                <div className={opened ? "edit-icon-active" : "edit-icon"}onClick={this.toggle.bind(this)}><SvgIcons.EditIcon /></div>
                             </div>
                         </div>
                     </div>

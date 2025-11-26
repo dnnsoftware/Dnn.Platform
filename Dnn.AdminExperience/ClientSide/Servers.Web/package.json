@@ -16,6 +16,7 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@dnnsoftware/dnn-react-common": "10.1.0",
+    "@svgr/webpack": "^8.1.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/redux": "^3.6.31",

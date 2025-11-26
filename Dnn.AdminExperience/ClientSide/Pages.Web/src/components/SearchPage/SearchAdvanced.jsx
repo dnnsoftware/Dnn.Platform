@@ -26,7 +26,7 @@ class SearchAdvanced extends Component {
             <div className={`advancedCollapsibleComponent ${this.state.collapsed?"open":""}`}>
                 <div className={"collapsible-header false" } onClick={this.toggle.bind(this)}>
                     <div className="search-advanced-header">
-                        <div className="search-advanced-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.SearchIcon }}>
+                        <div className="search-advanced-icon"><SvgIcons.SearchIcon />
                         </div>
                         <div className="search-advanced-label">
                             {Localization.get("AdvancedFilters")}
