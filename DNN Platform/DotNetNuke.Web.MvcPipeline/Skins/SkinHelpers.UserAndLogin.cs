@@ -6,11 +6,13 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -23,6 +25,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using DotNetNuke.Services.Social.Messaging.Internal;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SkinHelpers
     {
@@ -61,9 +64,10 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 var unreadMessages = InternalMessagingController.Instance.CountUnreadMessages(userInfo.UserID, portalSettings.PortalId);
                 var unreadAlerts = NotificationsController.Instance.CountNotifications(userInfo.UserID, portalSettings.PortalId);
                 var messageTabId = GetMessageTab(portalSettings);
+                var alwaysShowCount = AlwaysShowCount(portalSettings);
 
-                sb.Append($"<li class=\"userMessages\"><a id=\"messagesLink\" href=\"{navigationManager.NavigateURL(messageTabId, string.Empty, $"userId={userInfo.UserID}")}\"><span id=\"messageCount\" {(unreadMessages > 0 ? string.Empty : "style=\"display:none;\"")}>{unreadMessages}</span>{LocalizeString(helper, "Messages")}</a></li>");
-                sb.Append($"<li class=\"userNotifications\"><a id=\"notificationsLink\" href=\"{navigationManager.NavigateURL(messageTabId, string.Empty, $"userId={userInfo.UserID}", "view=notifications", "action=notifications")}\"><span id=\"notificationCount\" {(unreadAlerts > 0 ? string.Empty : "style=\"display:none;\"")}>{unreadAlerts}</span>{LocalizeString(helper, "Notifications")}</a></li>");
+                sb.Append($"<li class=\"userMessages\"><a id=\"messagesLink\" href=\"{navigationManager.NavigateURL(messageTabId, string.Empty, $"userId={userInfo.UserID}")}\"><span id=\"messageCount\" {(unreadMessages > 0 || alwaysShowCount ? string.Empty : "style=\"display:none;\"")}>{unreadMessages}</span>{LocalizeString(helper, "Messages")}</a></li>");
+                sb.Append($"<li class=\"userNotifications\"><a id=\"notificationsLink\" href=\"{navigationManager.NavigateURL(messageTabId, string.Empty, $"userId={userInfo.UserID}", "view=notifications", "action=notifications")}\"><span id=\"notificationCount\" {(unreadAlerts > 0 || alwaysShowCount ? string.Empty : "style=\"display:none;\"")}>{unreadAlerts}</span>{LocalizeString(helper, "Notifications")}</a></li>");
                 sb.Append($"<li class=\"userSettings\"><a id=\"accountLink\" href=\"{navigationManager.NavigateURL(portalSettings.UserTabId, "Profile", $"userId={userInfo.UserID}", "pageno=1")}\">{LocalizeString(helper, "Account")}</a></li>");
                 sb.Append($"<li class=\"userProfilename\"><a id=\"editProfileLink\" href=\"{navigationManager.NavigateURL(portalSettings.UserTabId, "Profile", $"userId={userInfo.UserID}", "pageno=2")}\">{LocalizeString(helper, "EditProfile")}</a></li>");
                 sb.Append($"<li class=\"userLogout\"><a id=\"logoffLink\" href=\"{navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Logoff")}\"><strong>{LocalizeString(helper, "Logout")}</strong></a></li>");
@@ -137,43 +141,5 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         {
             return Localization.GetString(key, GetSkinsResourceFile("UserAndLogin.ascx"));
         }
-
-        /*
-        private static int GetMessageTab(PortalSettings portalSettings)
-        {
-            var cacheKey = $"MessageCenterTab:{portalSettings.PortalId}:{portalSettings.CultureCode}";
-            var messageTabId = DataCache.GetCache<int>(cacheKey);
-            if (messageTabId > 0)
-            {
-                return messageTabId;
-            }
-
-            messageTabId = FindMessageTab(portalSettings);
-            DataCache.SetCache(cacheKey, messageTabId, TimeSpan.FromMinutes(20));
-
-            return messageTabId;
-        }
-        private static int FindMessageTab(PortalSettings portalSettings)
-        {
-            var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
-            if (profileTab != null)
-            {
-                var childTabs = TabController.Instance.GetTabsByPortal(profileTab.PortalID).DescendentsOf(profileTab.TabID);
-                foreach (TabInfo tab in childTabs)
-                {
-                    foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(tab.TabID))
-                    {
-                        var module = kvp.Value;
-                        if (module.DesktopModule.FriendlyName == "Message Center" && !module.IsDeleted)
-                        {
-                            return tab.TabID;
-                        }
-                    }
-                }
-            }
-
-            return portalSettings.UserTabId;
-        }
-        */
     }
 }

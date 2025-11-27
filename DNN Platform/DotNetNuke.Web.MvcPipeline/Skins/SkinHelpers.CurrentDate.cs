@@ -7,12 +7,12 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System;
     using System.Web;
     using System.Web.Mvc;
-
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinHelpers
     {
-        public static IHtmlString CurrentDate(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject")
+        public static IHtmlString CurrentDate(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string dateFormat = "")
         {
             var lblDate = new TagBuilder("span");
 
@@ -21,7 +21,8 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 lblDate.AddCssClass(cssClass);
             }
 
-            lblDate.SetInnerText(DateTime.Now.ToString("D"));
+            var user = UserController.Instance.GetCurrentUserInfo();
+            lblDate.SetInnerText(!string.IsNullOrEmpty(dateFormat) ? user.LocalTime().ToString(dateFormat) : user.LocalTime().ToLongDateString());
 
             return new MvcHtmlString(lblDate.ToString());
         }

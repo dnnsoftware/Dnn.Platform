@@ -5,62 +5,130 @@
 namespace DotNetNuke.Web.MvcPipeline.Skins
 {
     using System;
+    using System.Collections.Generic;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Web;
     using System.Web.Mvc;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.UI;
-
     using DotNetNuke.Web.MvcPipeline.Models;
 
     public static partial class SkinHelpers
     {
-        public static IHtmlString Links(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string separator = " ", string level = "same", bool showDisabled = false, bool forceLinks = true, bool includeActiveTab = true)
+        private static readonly Regex SrcRegex = new Regex("src=[']?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        public static IHtmlString Links(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string separator = " ", string level = "same", string alignment = "", bool showDisabled = false, bool forceLinks = true, bool includeActiveTab = true)
         {
             var portalSettings = PortalSettings.Current;
-            var links = new StringBuilder();
-
-            var tabs = TabController.GetTabsBySortOrder(portalSettings.PortalId);
-            foreach (var tab in tabs)
+            
+            // Separator processing
+            if (!string.IsNullOrEmpty(separator) && separator != " ")
             {
-                if (Navigation.CanShowTab(tab, false, showDisabled))
+                if (separator.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
-                    if (level == "same" && tab.ParentId == portalSettings.ActiveTab.ParentId)
-                    {
-                        if (includeActiveTab || tab.TabID != portalSettings.ActiveTab.TabID)
+                    separator = SrcRegex.Replace(separator, "$&" + portalSettings.ActiveTab.SkinPath);
+                }
+                separator = string.Format("<span class=\"{0}\">{1}</span>", cssClass, separator);
+            }
+            else
+            {
+                separator = " ";
+            }
+
+            string strLinks = BuildLinks(portalSettings, level, separator, cssClass, alignment, showDisabled, includeActiveTab);
+
+            if (string.IsNullOrEmpty(strLinks) && forceLinks)
+            {
+                strLinks = BuildLinks(portalSettings, string.Empty, separator, cssClass, alignment, showDisabled, includeActiveTab);
+            }
+
+            return new MvcHtmlString(strLinks);
+        }
+
+        private static string BuildLinks(PortalSettings portalSettings, string level, string separator, string cssClass, string alignment, bool showDisabled, bool includeActiveTab)
+        {
+            var sbLinks = new StringBuilder();
+            var portalTabs = TabController.GetTabsBySortOrder(portalSettings.PortalId);
+            var hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger);
+
+            foreach (TabInfo objTab in portalTabs)
+            {
+                sbLinks.Append(ProcessLink(ProcessTab(objTab, portalSettings, level, cssClass, includeActiveTab, showDisabled), sbLinks.Length, separator, alignment));
+            }
+
+            foreach (TabInfo objTab in hostTabs)
+            {
+                sbLinks.Append(ProcessLink(ProcessTab(objTab, portalSettings, level, cssClass, includeActiveTab, showDisabled), sbLinks.Length, separator, alignment));
+            }
+
+            return sbLinks.ToString();
+        }
+
+        private static string ProcessTab(TabInfo objTab, PortalSettings portalSettings, string level, string cssClass, bool includeActiveTab, bool showDisabled)
+        {
+            if (Navigation.CanShowTab(objTab, false, showDisabled)) // Assuming AdminMode is false for now as it wasn't passed, or check permissions
+            {
+                switch (level)
+                {
+                    case "same":
+                    case "":
+                        if (objTab.ParentId == portalSettings.ActiveTab.ParentId)
                         {
-                            links.Append($"<a class=\"{cssClass}\" href=\"{tab.FullUrl}\">{tab.TabName}</a>{separator}");
+                            if (includeActiveTab || objTab.TabID != portalSettings.ActiveTab.TabID)
+                            {
+                                return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
+                            }
                         }
-                    }
-                    else if (level == "child" && tab.ParentId == portalSettings.ActiveTab.TabID)
-                    {
-                        links.Append($"<a class=\"{cssClass}\" href=\"{tab.FullUrl}\">{tab.TabName}</a>{separator}");
-                    }
-                    else if (level == "parent" && tab.TabID == portalSettings.ActiveTab.ParentId)
-                    {
-                        links.Append($"<a class=\"{cssClass}\" href=\"{tab.FullUrl}\">{tab.TabName}</a>{separator}");
-                    }
-                    else if (level == "root" && tab.Level == 0)
-                    {
-                        links.Append($"<a class=\"{cssClass}\" href=\"{tab.FullUrl}\">{tab.TabName}</a>{separator}");
-                    }
+                        break;
+                    case "child":
+                        if (objTab.ParentId == portalSettings.ActiveTab.TabID)
+                        {
+                            return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
+                        }
+                        break;
+                    case "parent":
+                        if (objTab.TabID == portalSettings.ActiveTab.ParentId)
+                        {
+                            return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
+                        }
+                        break;
+                    case "root":
+                        if (objTab.Level == 0)
+                        {
+                            return AddLink(objTab.TabName, objTab.FullUrl, cssClass);
+                        }
+                        break;
                 }
             }
+            return string.Empty;
+        }
 
-            if (forceLinks && string.IsNullOrEmpty(links.ToString()))
+        private static string ProcessLink(string sLink, int currentLength, string separator, string alignment)
+        {
+            if (string.IsNullOrEmpty(sLink))
             {
-                foreach (var tab in tabs)
-                {
-                    if (Navigation.CanShowTab(tab, false, showDisabled))
-                    {
-                        links.Append($"<a class=\"{cssClass}\" href=\"{tab.FullUrl}\">{tab.TabName}</a>{separator}");
-                    }
-                }
+                return string.Empty;
             }
 
-            return new MvcHtmlString(links.ToString().TrimEnd(separator.ToCharArray()));
+            if (alignment == "vertical")
+            {
+                return string.Concat("<div>", separator, sLink, "</div>");
+            }
+            else if (!string.IsNullOrEmpty(separator) && currentLength > 0)
+            {
+                return string.Concat(separator, sLink);
+            }
+
+            return sLink;
+        }
+
+        private static string AddLink(string strTabName, string strURL, string strCssClass)
+        {
+            return string.Format("<a class=\"{0}\" href=\"{1}\">{2}</a>", strCssClass, strURL, strTabName);
         }
     }
 }

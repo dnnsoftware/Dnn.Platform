@@ -8,18 +8,26 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SkinHelpers
     {
         public static IHtmlString HostName(this HtmlHelper<PageModel> helper, string cssClass = "")
         {
+            var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
             var link = new TagBuilder("a");
-            link.Attributes.Add("href", Globals.AddHTTP(Host.HostURL));
-            link.Attributes.Add("class", cssClass);
-            link.SetInnerText(Host.HostTitle);
+            link.Attributes.Add("href", Globals.AddHTTP(hostSettings.HostUrl));
+            
+            if (!string.IsNullOrEmpty(cssClass))
+            {
+                link.AddCssClass(cssClass);
+            }
+
+            link.SetInnerText(hostSettings.HostTitle);
 
             return new MvcHtmlString(link.ToString());
         }

@@ -14,21 +14,21 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     public static partial class SkinHelpers
     {
-        public static IHtmlString JavaScriptLibraryInclude(this HtmlHelper<PageModel> helper, string name, Version version, SpecificVersion? specificVersion)
+        public static IHtmlString JavaScriptLibraryInclude(this HtmlHelper<PageModel> helper, string name, string version = null, string specificVersion = null)
         {
             var javaScript = Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-
+            SpecificVersion specificVer;
             if (version == null)
             {
                 javaScript.RequestRegistration(name);
             }
-            else if (specificVersion == null)
+            else if (!Enum.TryParse(specificVersion, true, out specificVer))
             {
-                javaScript.RequestRegistration(name, version);
+                javaScript.RequestRegistration(name, new Version(version));
             }
             else
             {
-                javaScript.RequestRegistration(name, version, specificVersion.Value);
+                javaScript.RequestRegistration(name, new Version(version), specificVer);
             }
 
             return new MvcHtmlString(string.Empty);

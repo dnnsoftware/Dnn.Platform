@@ -14,10 +14,16 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     public static partial class SkinHelpers
     {
-        public static IHtmlString Styles(this HtmlHelper<PageModel> helper, string styleSheet, string condition = "", bool isFirst = false, bool useSkinPath = true, string media = "")
+        public static IHtmlString Styles(this HtmlHelper<PageModel> helper, string styleSheet, string condition = "", bool isFirst = false, bool useSkinPath = true, string media = "", string name = "")
         {
             var skinPath = useSkinPath ? ((Skin)helper.ViewContext.Controller.ViewData["Skin"]).SkinPath : string.Empty;
             var link = new TagBuilder("link");
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                link.GenerateId(name);
+            }
+
             link.Attributes.Add("rel", "stylesheet");
             link.Attributes.Add("type", "text/css");
             link.Attributes.Add("href", skinPath + styleSheet);
@@ -32,11 +38,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             }
             else
             {
-                var openIf = new TagBuilder("span");
-                openIf.InnerHtml = $"<!--[if {condition}]>";
-                var closeIf = new TagBuilder("span");
-                closeIf.InnerHtml = "<![endif]-->";
-                return new MvcHtmlString(openIf.ToString() + link.ToString() + closeIf.ToString());
+                return new MvcHtmlString($"<!--[if {condition}]>{link.ToString()}<![endif]-->");
             }
         }
     }

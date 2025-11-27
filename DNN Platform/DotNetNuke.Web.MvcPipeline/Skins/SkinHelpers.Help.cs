@@ -8,18 +8,44 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SkinHelpers
     {
         public static IHtmlString Help(this HtmlHelper<PageModel> helper, string cssClass = "")
         {
+            if (!helper.ViewContext.HttpContext.Request.IsAuthenticated)
+            {
+                return MvcHtmlString.Empty;
+            }
+
             var portalSettings = PortalSettings.Current;
+            var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            
             var link = new TagBuilder("a");
-            link.Attributes.Add("href", "mailto:" + portalSettings.Email + "?subject=" + portalSettings.PortalName + " Support Request");
-            link.Attributes.Add("class", cssClass);
-            link.SetInnerText("Help");
+            if (!string.IsNullOrEmpty(cssClass))
+            {
+                link.AddCssClass(cssClass);
+            }
+
+            string email;
+            if (TabPermissionController.CanAdminPage())
+            {
+                email = hostSettings.HostEmail;
+            }
+            else
+            {
+                email = portalSettings.Email;
+            }
+
+            link.Attributes.Add("href", "mailto:" + email + "?subject=" + portalSettings.PortalName + " Support Request");
+            link.SetInnerText(Localization.GetString("Help"));
 
             return new MvcHtmlString(link.ToString());
         }

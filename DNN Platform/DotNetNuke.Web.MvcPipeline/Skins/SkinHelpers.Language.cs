@@ -63,6 +63,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             selectCulture.Attributes.Add("id", "selectCulture");
             selectCulture.Attributes.Add("name", "selectCulture");
             selectCulture.AddCssClass("NormalTextBox");
+            selectCulture.Attributes.Add("onchange", "var url = this.options[this.selectedIndex].getAttribute('data-link'); if(url) window.location.href = url;");
 
             if (!string.IsNullOrEmpty(cssClass))
             {
@@ -78,7 +79,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                     var option = new TagBuilder("option");
                     option.Attributes.Add("value", cultureItem.Value);
                     option.Attributes.Add("data-link", ParseTemplate("[URL]", cultureItem.Value, localTokenReplace, currentCulture));
-                    option.Attributes.Add("onclick", "var url = this.dataset.link; window.location.href= url");
                     option.SetInnerText(cultureItem.Text);
                     if (cultureItem.Value == currentCulture)
                     {
@@ -134,13 +134,25 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                     footerTemplate = Localization.GetString("FooterTemplate.Default", localResourceFile, templateCulture);
                 }
 
+                if (string.IsNullOrEmpty(separatorTemplate))
+                {
+                    separatorTemplate = Localization.GetString("SeparatorTemplate.Default", localResourceFile, templateCulture);
+                }
+
                 languageContainer += headerTemplate;
 
                 string listItems = string.Empty;
 
                 bool alt = false;
+                int i = 0;
                 foreach (var locale in locales.Values)
                 {
+                    if (i > 0 && !string.IsNullOrEmpty(separatorTemplate))
+                    {
+                        listItems += ParseTemplate(separatorTemplate, "", localTokenReplace, currentCulture);
+                    }
+                    i++;
+
                     string listItem = string.Empty;
                     if (locale.Code == currentCulture && !string.IsNullOrEmpty(selectedItemTemplate))
                     {

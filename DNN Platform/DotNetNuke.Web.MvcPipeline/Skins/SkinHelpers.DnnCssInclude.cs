@@ -30,6 +30,10 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             {
                 ss.SetNameAndVersion(name, version, forceVersion);
             }
+            if (!string.IsNullOrEmpty(cssMedia))
+            {
+                ss.SetMedia(cssMedia);
+            }
             ss.Register();
 
             if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)
@@ -39,31 +43,5 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
             return new MvcHtmlString(string.Empty);
         }
-
-        /*
-        public static IHtmlString DnnCssInclude(this HtmlHelper<PageModel> helper, string bundleName, string[] filePaths, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
-        {
-            foreach (var filePath in filePaths)
-            {
-
-            }
-            return new MvcHtmlString(string.Empty);
-        }
-        */
-
-        public static IHtmlString DnnCssIncludeDefaultStylesheet(this HtmlHelper<PageModel> helper, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
-        {
-            var filePath = string.Concat(Common.Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/10.0.0/default.css");
-            var controller = GetClientResourcesController();
-            controller.RegisterStylesheet(filePath);
-
-            if (addTag || helper.ViewContext.HttpContext.IsDebuggingEnabled)
-            {
-                return new MvcHtmlString(string.Format("<!--CDF({0}|{1}|{2}|{3})-->", ClientDependencyType.Css, filePath, forceProvider, priority));
-            }
-
-            return new MvcHtmlString(string.Empty);
-        }
-
     }
 }
