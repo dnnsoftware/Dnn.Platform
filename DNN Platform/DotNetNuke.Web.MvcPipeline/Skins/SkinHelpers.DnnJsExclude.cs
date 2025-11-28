@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         public static IHtmlString DnnJsExclude(this HtmlHelper<PageModel> helper, string name)
         {
             GetClientResourcesController()
-                .RemoveStylesheetByName(name);
+                .RemoveScriptByName(name);
             return new MvcHtmlString(string.Empty);
         }
     }
