@@ -229,7 +229,15 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         private static string BuildSearchButton(string cssClass, string submit, string searchUrl)
         {
             var button = new TagBuilder("a");
-            button.AddCssClass("SearchButton " + cssClass);
+            if (string.IsNullOrEmpty(cssClass))
+            {
+                button.AddCssClass("SkinObject");
+            }
+            else
+            {
+                button.AddCssClass(cssClass);
+            }
+                
             button.Attributes["href"] = searchUrl; // "#";
             button.InnerHtml = submit ?? Localization.GetString("Search", GetSkinsResourceFile(SearchFileName));
             return button.ToString();

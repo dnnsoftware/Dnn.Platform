@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString Styles(this HtmlHelper<PageModel> helper, string styleSheet, string condition = "", bool isFirst = false, bool useSkinPath = true, string media = "", string name = "")
         {
-            var skinPath = useSkinPath ? ((Skin)helper.ViewContext.Controller.ViewData["Skin"]).SkinPath : string.Empty;
+            var skinPath = useSkinPath ? helper.ViewData.Model.Skin.SkinPath : string.Empty;
             var link = new TagBuilder("link");
 
             if (!string.IsNullOrEmpty(name))

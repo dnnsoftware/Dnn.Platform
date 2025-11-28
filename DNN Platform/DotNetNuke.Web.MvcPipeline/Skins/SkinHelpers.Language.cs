@@ -180,7 +180,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
                 languageContainer += footerTemplate;
             }
 
-            languageContainer += commonFooterTemplate;
+            languageContainer += ParseTemplate(commonFooterTemplate, currentCulture, localTokenReplace, currentCulture);
 
             if (cultureCount <= 1)
             {

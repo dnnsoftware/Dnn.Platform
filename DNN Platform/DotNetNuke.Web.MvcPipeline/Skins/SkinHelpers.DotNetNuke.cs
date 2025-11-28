@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     public static partial class SkinHelpers
     {
-        public static IHtmlString DotNetNuke(this HtmlHelper<PageModel> helper, string cssClass = "")
+        public static IHtmlString DotNetNuke(this HtmlHelper<PageModel> helper, string cssClass = "Normal")
         {
             var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             if (!hostSettingsService.GetBoolean("Copyright", true))
