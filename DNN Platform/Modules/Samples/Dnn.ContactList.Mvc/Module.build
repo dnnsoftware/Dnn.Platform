@@ -12,7 +12,18 @@
     <ModuleFolderName>$(WebsitePath)\DesktopModules\MVC\Dnn\ContactList</ModuleFolderName>
     <InstallPath>$(PathToArtifacts)</InstallPath>
   </PropertyGroup>
-  <Target Name="PostBuild" AfterTargets="Build" DependsOnTargets="CopyBin;GetFiles;UpdateFiles;DebugProject;Package">
+  <Target Name="CopySqlDataProviderFiles" AfterTargets="Build" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Dnn.ContactList.Api\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
+      <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
+    </CreateItem>
+    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider" />
+  </Target>
+  <Target Name="PostPostBuild" AfterTargets="CopySqlDataProviderFiles" DependsOnTargets="CopyBin;GetFiles;UpdateFiles;DebugProject;Package">
+    <CreateItem Include="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
+      <Output TaskParameter="Include" ItemName="CopiedSqlDataProviderFiles" />
+    </CreateItem>
+    <Delete Files="@(CopiedSqlDataProviderFiles)" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Providers" />
   </Target>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
