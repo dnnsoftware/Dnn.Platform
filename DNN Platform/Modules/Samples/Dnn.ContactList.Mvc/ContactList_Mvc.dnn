@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.ContactList_Mvc" type="Module" version="01.00.01">
+    <package name="Dnn.ContactList_Mvc" type="Module" version="10.01.02">
       <friendlyName>Contact List Mvc</friendlyName>
       <description>DNN Contact List using MVC</description>
       <owner>
@@ -88,7 +88,7 @@
             <assembly>
               <path>bin</path>
               <name>Dnn.ContactList.Api.dll</name>
-            </assembly>            
+            </assembly>
           </assemblies>
         </component>
         <component type="ResourceFile">

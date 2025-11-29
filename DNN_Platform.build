@@ -10,5 +10,6 @@
     <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
     <WebsiteInstallPath>$(WebsitePath)\Install</WebsiteInstallPath>
     <WebsiteSkinInstallPath>$(WebsitePath)\Install\Skin</WebsiteSkinInstallPath>
+    <PathToArtifacts>$(RootDirectory)\Artifacts</PathToArtifacts>
   </PropertyGroup>
 </Project>
