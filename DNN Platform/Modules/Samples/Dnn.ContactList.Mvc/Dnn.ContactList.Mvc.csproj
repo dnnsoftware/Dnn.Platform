@@ -5,13 +5,7 @@
     <OutputPath>bin\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <Authors>DNN Community</Authors>
-    <Company>DNN Platform</Company>
-    <Product>Dnn.ContactList.Mvc</Product>
-    <Copyright>Copyright 2025 by DNN Platform</Copyright>
     <PackageId>Dnn.ContactList.Mvc</PackageId>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
     <Description>Dnn ContactList Mvc Module</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <ApplicationIcon />
@@ -19,6 +13,7 @@
     <StartupObject />
     <DebugType>Portable</DebugType>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <BaseOutputPath>.\bin</BaseOutputPath>
     <AssetTargetFallback>netstandard2.0</AssetTargetFallback>
@@ -39,4 +34,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="Module.build" />
 </Project>

@@ -1,22 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build"
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BuildScriptsPath>$(MSBuildProjectDirectory)\..\..\Build</BuildScriptsPath>
-    <WebsitePath>..\..\Website</WebsitePath>
-    <WebsiteBinPath>$(WebsitePath)\bin</WebsiteBinPath>
-    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
-    <Extension>zip</Extension>
-    <DNNFileName>ContactList_mvc</DNNFileName>
-    <PackageName>DNN_ContactList_Mvc</PackageName>
-    <ModuleFolderName>$(WebsitePath)\DesktopModules\MVC\Dnn\ContactList</ModuleFolderName>
+    <RootDirectory>$(MSBuildProjectDirectory)\..\..\..\..</RootDirectory>
   </PropertyGroup>
+  <Import Project="..\..\..\..\DNN_Platform.build" />
+  <PropertyGroup>
+    <Extension>zip</Extension>
+    <DNNFileName>ContactList_Mvc</DNNFileName>
+    <PackageName>Dnn.ContactList.Mvc</PackageName>
+    <ModuleFolderName>$(WebsitePath)\DesktopModules\MVC\Dnn\ContactList</ModuleFolderName>
+    <InstallPath>$(PathToArtifacts)</InstallPath>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="Build" DependsOnTargets="CopyBin;GetFiles;UpdateFiles;DebugProject;Package">
+  </Target>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Import Project="$(BuildScriptsPath)\Module.Build"/>
-  <Target Name="CopyBin">
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).pdb" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.dll" DestinationFolder="$(WebsitePath)/bin" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.pdb" DestinationFolder="$(WebsitePath)/bin" />
-  </Target>
 </Project>
