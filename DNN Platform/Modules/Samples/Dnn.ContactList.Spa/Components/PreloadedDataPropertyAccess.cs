@@ -44,7 +44,7 @@ namespace Dnn.ContactList.Spa.Components
             _portalId = portalId;
             searchTerm = "";
             pageIndex = 0;
-            pageSize = 5;
+            pageSize = 6;
         }
 
         /// <summary>
