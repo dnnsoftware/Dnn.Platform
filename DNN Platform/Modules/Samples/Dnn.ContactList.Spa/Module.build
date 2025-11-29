@@ -18,7 +18,13 @@
     </CreateItem>
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider" />
   </Target>
-  <Target Name="PostPostBuild" AfterTargets="CopySqlDataProviderFiles" DependsOnTargets="CopyBin;GetFiles;UpdateFiles;DebugProject;Package">
+  <Target Name="CopyBinOrNot" Condition=" '$(CopySampleProjects)' == 'True' ">
+    <CallTarget Targets="CopyBin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.pdb" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.xml" DestinationFolder="$(WebsitePath)/bin" />
+  </Target>
+  <Target Name="PostBuild" AfterTargets="CopySqlDataProviderFiles" DependsOnTargets="CopyBinOrNot;GetFiles;UpdateFiles;DebugProject;Package">
     <CreateItem Include="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
       <Output TaskParameter="Include" ItemName="CopiedSqlDataProviderFiles" />
     </CreateItem>

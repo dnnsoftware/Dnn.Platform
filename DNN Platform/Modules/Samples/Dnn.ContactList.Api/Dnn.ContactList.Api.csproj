@@ -5,20 +5,17 @@
     <OutputPath>bin</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <Authors>DNN Community</Authors>
-    <Company>DNN Platform</Company>
-    <Product>Dnn.ContactList.Api</Product>
-    <Copyright>Copyright 2025 by DNN Platform</Copyright>
     <PackageId>Dnn.ContactList.Api</PackageId>
-    <AssemblyVersion>1.6.3</AssemblyVersion>
-    <FileVersion>1.6.3</FileVersion>
     <Description>Dnn ContactList Api</Description>
     <NeutralLanguage>en-US</NeutralLanguage>
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject />
     <DebugType>Portable</DebugType>
-    <BaseOutputPath>..\..\bin</BaseOutputPath>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <BaseOutputPath>.\bin</BaseOutputPath>
     <AssetTargetFallback>netstandard2.0</AssetTargetFallback>
   </PropertyGroup>
   <ItemGroup>
@@ -28,5 +25,10 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
   </ItemGroup>
 </Project>
