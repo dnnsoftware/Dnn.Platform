@@ -132,7 +132,7 @@ contactList.contactsViewModel = function(config) {
             self.getContacts();
         }
         quickSettingsDispatcher.addSubcriber(moduleId, quickSettingsDispatcher.eventTypes.SAVE, updateView);
-        pager.init(self, 5, self.refresh, resx);
+        pager.init(self, 6, self.refresh, resx);
     };
 
     self.load = function(data) {
@@ -200,7 +200,7 @@ contactList.contactViewModel = function(parentViewModel, config) {
 
         $.dnnConfirm(opts);
 
-       
+
     };
 
     self.init = function(){
