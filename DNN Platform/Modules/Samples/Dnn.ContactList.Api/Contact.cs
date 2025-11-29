@@ -11,7 +11,7 @@ namespace Dnn.ContactList.Api
 {
     [Serializable]
     [TableName("Contacts")]
-    [PrimaryKey("ContactID", "ContactId")]
+    [PrimaryKey("ContactId")]
     [Cacheable("Contacts", CacheItemPriority.Normal, 20)]
     [Scope("PortalId")]
     public class Contact
