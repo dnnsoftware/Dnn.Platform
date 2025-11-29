@@ -1,0 +1,5 @@
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Contacts]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		DROP TABLE {databaseOwner}[{objectQualifier}Contacts]
+	END
+GO

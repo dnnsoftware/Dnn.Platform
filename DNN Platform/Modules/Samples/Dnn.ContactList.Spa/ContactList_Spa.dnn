@@ -29,6 +29,11 @@
               <name>01.00.01.SqlDataProvider</name>
               <version>01.00.01</version>
             </script>
+            <script type="Uninstall">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>Uninstall.SqlDataProvider</name>
+              <version>01.00.01</version>
+            </script>
           </scripts>
         </component>
         <component type="Module">
