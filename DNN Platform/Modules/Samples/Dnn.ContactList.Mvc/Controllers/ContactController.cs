@@ -105,7 +105,7 @@ namespace Dnn.ContactList.Mvc.Controllers
         [ModuleAction(ControlKey = "Edit", TitleKey = "AddContact")]
         public ActionResult Index(string searchTerm = "", int pageIndex = 0)
         {
-            var contacts = _repository.GetContacts(searchTerm, PortalSettings.PortalId, pageIndex, ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("PageSize", 10));
+            var contacts = _repository.GetContacts(searchTerm, PortalSettings.PortalId, pageIndex, ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("PageSize", 6));
 
             return View(contacts);
         }

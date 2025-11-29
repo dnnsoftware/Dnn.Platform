@@ -2,21 +2,22 @@
 @using DotNetNuke.Web.Mvc.Helpers
 @inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<DotNetNuke.Collections.IPagedList<Dnn.ContactList.Api.Contact>>
 
-<div>
-
+<div class="contactList-container">
+    <div class="contactList-grid">
     @foreach (var contact in Model)
     {
         Html.RenderPartial("_ContactPartial", contact, null);
     }
-    <div style="clear: both; margin-right: 130px;" class="right">
+    </div>
+    <div class="contactList-pagination">
         @if (Model.HasPreviousPage)
         {
-            <a href="@Url.Action("Index", "Contact", new {pageIndex = Model.PageIndex - 1})"><i class="fa fa-arrow-left"></i></a>
+            <a href="@Url.Action("Index", "Contact", new {pageIndex = Model.PageIndex - 1})" class="pagination-btn"><i class="fa fa-arrow-left"></i></a>
         }
-        @Dnn.LocalizeString("PageOf").Replace("[PageIndex]", (@Model.PageIndex + 1).ToString()).Replace("[PageCount]", @Model.PageCount.ToString())
+        <span class="pagination-text">@Dnn.LocalizeString("PageOf").Replace("[PageIndex]", (@Model.PageIndex + 1).ToString()).Replace("[PageCount]", @Model.PageCount.ToString())</span>
         @if (Model.HasNextPage)
         {
-            <a href="@Url.Action("Index", "Contact", new {pageIndex = Model.PageIndex + 1})"><i class="fa fa-arrow-right"></i></a>
+            <a href="@Url.Action("Index", "Contact", new {pageIndex = Model.PageIndex + 1})" class="pagination-btn"><i class="fa fa-arrow-right"></i></a>
         }
     </div>
     @if (@Dnn.ModuleContext.IsEditable && Convert.ToBoolean(Dnn.ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("AllowContactCreation", false)))
