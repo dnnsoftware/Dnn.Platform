@@ -1,0 +1,33 @@
+﻿@using DotNetNuke.Collections
+@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.ContactList.Api.Contact>
+<div class="contactCard" style="float: left;">
+    @{
+        if (@Dnn.ModuleContext.IsEditable && Convert.ToBoolean(Dnn.ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("AllowContactCreation", false)))
+        {
+            <div class="right">
+                <a href="@Url.Action("Edit", "Contact", new {ctl = "Edit", contactId = Model.ContactId})" title="@Dnn.LocalizeString("Edit")">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="@Url.Action("Delete", "Contact", new {contactId = Model.ContactId})" title="@Dnn.LocalizeString("Delete")">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        }
+    }
+    <div>
+        <span>@Model.FirstName</span>
+        <span>@Model.LastName</span>
+    </div>
+    <div>
+        <span>@Dnn.LocalizeString("Email")</span>
+        <span>@Model.Email</span>
+    </div>
+    <div>
+        <span>@Dnn.LocalizeString("Phone")</span>
+        <span>@Model.Phone</span>
+    </div>
+    <div>
+        <span>@Dnn.LocalizeString("Twitter")</span>
+        <span>@Model.Twitter</span>
+    </div>
+</div>

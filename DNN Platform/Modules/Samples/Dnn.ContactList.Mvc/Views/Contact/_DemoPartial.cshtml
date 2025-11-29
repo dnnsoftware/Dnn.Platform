@@ -1,0 +1,5 @@
+﻿@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<DateTime>
+<div>Current User Id From Temp Data: @TempData["UserID"]</div>
+<div>Portal Id From View Data: @Dnn.ViewData["PortalId"]</div>
+<div>Portal Alias From View Bag: @Dnn.ViewBag.Alias</div>
+<div>Current Time: @Model.ToString("HH:mm:ss ttt")</div>

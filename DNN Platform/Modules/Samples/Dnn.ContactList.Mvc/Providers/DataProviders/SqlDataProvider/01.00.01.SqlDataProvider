@@ -1,0 +1,23 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/** Add dummy values **/
+
+if exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Contacts]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		DECLARE @COUNT INT= 20;
+
+		WHILE (@COUNT>0)
+		BEGIN
+		   INSERT INTO {databaseOwner}[{objectQualifier}Contacts] ([PortalID],[FirstName],[LastName],[Email],[Phone],[Twitter]) VALUES(0,'DNN ','USER ' + CONVERT(VARCHAR,@COUNT),'DNN_USER_'+ CONVERT(VARCHAR,@COUNT) + '@DNN.COM','123456789','@DNNUSER' + CONVERT(VARCHAR,@COUNT))
+		   SET @COUNT = @COUNT - 1;
+		END
+	END
+GO
