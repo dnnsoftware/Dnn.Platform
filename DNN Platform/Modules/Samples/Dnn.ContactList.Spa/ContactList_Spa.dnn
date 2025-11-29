@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.ContactList_Spa" type="Module" version="01.00.00">
+    <package name="Dnn.ContactList_Spa" type="Module" version="10.01.02">
       <friendlyName>Contact List Spa</friendlyName>
       <description>DNN Contact List SPA</description>
       <owner>
@@ -18,11 +18,16 @@
       <components>
         <component type="Script">
           <scripts>
-            <basePath>DesktopModules\Dnn\ContactList</basePath>
+            <basePath>DesktopModules\MVC\Dnn\ContactList\</basePath>
             <script type="Install">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>01.00.00.SqlDataProvider</name>
               <version>01.00.00</version>
+            </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>01.00.01.SqlDataProvider</name>
+              <version>01.00.01</version>
             </script>
           </scripts>
         </component>
