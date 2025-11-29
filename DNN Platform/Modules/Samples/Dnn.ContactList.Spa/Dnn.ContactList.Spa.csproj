@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <AssemblyName>Dnn.ContactList.Spa</AssemblyName>
+    <TargetFramework>net48</TargetFramework>
+    <OutputPath>bin\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <Authors>DNN Community</Authors>
+    <Company>DNN Platform</Company>
+    <Product>Dnn.ContactList.Spa</Product>
+    <Copyright>Copyright 2025 by DNN Platform</Copyright>
+    <PackageId>Dnn.ContactList.Spa</PackageId>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Description>Dnn ContactList Spa Module</Description>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <DebugType>Portable</DebugType>
+    <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <BaseOutputPath>.\bin</BaseOutputPath>
+    <AssetTargetFallback>netstandard2.0</AssetTargetFallback>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Web\DotNetNuke.Web.csproj" />
+    <ProjectReference Include="..\Dnn.ContactList.Api\Dnn.ContactList.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+</Project>

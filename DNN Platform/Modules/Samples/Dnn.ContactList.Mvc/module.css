@@ -1,0 +1,88 @@
+﻿@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+.contactCard {
+    padding: 20px;
+    border: solid 1px #aaa;
+    border-radius: 10px;
+    width: 200px;
+    margin: 10px;
+}
+
+.contactCard .fa {
+    font-size: 18px;
+}
+
+.editContact div label {
+  width: 200px;
+  display: inline-block;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: right;
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+.editContact div input {
+    width: 200px;
+    margin-top: 20px;
+}
+.buttons {
+  margin-top: 10px;
+  text-align: center;
+  padding-top: 20px;
+  clear: both;
+}
+
+/* info and errors */
+.message-info {
+    border: 1px solid;
+    clear: both;
+    padding: 10px 20px;
+}
+
+.message-error {
+    clear: both;
+    color: #e80c4d;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.message-success {
+    color: #7ac0da;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.error {
+    color: #e80c4d;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}

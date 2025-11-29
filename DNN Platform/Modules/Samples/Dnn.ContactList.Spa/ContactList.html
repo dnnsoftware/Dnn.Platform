@@ -1,0 +1,111 @@
+﻿[JavaScript:{ jsname: "Knockout" }]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/contacts.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/util.js"}]
+[JavaScript:{ path: "~/Resources/Shared/scripts/dnn.jquery.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/QuickSettingsDispatcher.js"}]
+[JavaScript:{ path: "~/DesktopModules/Dnn/ContactList/ClientScripts/pager.js"}]
+[Css: { path: "~/DesktopModules/Dnn/ContactList/stylesheets/bootstrap.min.css"}]
+[ModuleAction:{controlKey : "ShowInfo", securityAccessLevel : "Edit", titleKey: "ShowModuleInfo", localResourceFile: "~/DesktopModules/Dnn/ContactList/App_LocalResources/ShowInfo.resx" }]
+
+<div id="ContactList-[ModuleContext:ModuleId]" class="dnnContactList">
+    <div data-bind="visible: !isEditMode()">
+        <div class="row">
+            <div data-bind="foreach: contacts" class="col-md-12">
+                <div class="col-md-4">
+                    <div class="contactCard">
+                        <div class="right" data-bind="visible: $root.isFormEnabled()">
+                            <a title="[Resx:{key:'Edit'}]" data-bind="click: $parent.editContact">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <a title="[Resx:{key:'Delete'}]" data-bind="click: deleteContact">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                        <div>
+                            <span data-bind="text: firstName"></span>
+                            <span data-bind="text: lastName"></span>
+                        </div>
+                        <div>
+                            <span>[Resx:{key:"Email"}]</span>
+                            <span data-bind="text: email"></span>
+                        </div>
+                        <div>
+                            <span>[Resx:{key:"Phone"}]</span>
+                            <span data-bind="text: phone"></span>
+                        </div>
+                        <div>
+                            <span>[Resx:{key:"Twitter"}]</span>
+                            <span data-bind="text: twitter"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="buttons col-md-12" data-bind="visible: isFormEnabled()">
+            <a class="dnnPrimaryAction" data-bind="click: addContact">[Resx:{key:"AddContact"}]</a>
+        </div>
+    </div>
+    <div class="editContact col-md-6 col-md-offset-3" data-bind="visible: isFormEnabled() && isEditMode(), with: selectedContact">
+        <div class="form-group">
+            <label class="form-label">[Resx:{key:"FirstName"}]</label>
+            <input class="form-control" data-bind="value: firstName, valueUpdate: 'input', css: firstName.validationClass"/>
+            <span class="form-error" data-bind='visible: firstName.hasError, text: firstName.validationMessage'> </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">[Resx:{key:"LastName"}]</label>
+            <input class="form-control" data-bind="value: lastName, valueUpdate: 'input', css: lastName.validationClass"/>
+            <span class="form-error" data-bind='visible: lastName.hasError, text: lastName.validationMessage'> </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">[Resx:{key:"Email"}]</label>
+            <input class="form-control" data-bind="value: email, valueUpdate: 'input', css: email.validationClass"/>
+            <span class="form-error" data-bind='visible: email.hasError, text: email.validationMessage'> </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">[Resx:{key:"Phone"}]</label>
+            <input class="form-control" data-bind="value: phone, valueUpdate: 'input', css: phone.validationClass"/>
+            <span class="form-error" data-bind='visible: phone.hasError, text: phone.validationMessage'> </span>
+        </div>
+        <div class="form-group">
+            <label class="form-label">[Resx:{key:"Twitter"}]</label>
+            <input class="form-control" data-bind="value: twitter"/>
+        </div>
+        <div class="buttons">
+            <a class="dnnSecondaryAction" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
+            <a class="dnnPrimaryAction" data-bind="click: saveContact">[Resx:{key:"Save"}]</a>
+        </div>
+    </div>
+    <div class="col-md-12" data-bind="visible: !isEditMode()">
+        <div class="left" data-bind="html: pagerItemsDescription"></div>
+        <ul class="right pager" data-bind="visible: pagerVisible">
+            <li><a data-bind="click: prev, attr: { 'class': pagerPrevClass }"><i class="fa fa-angle-left"></i></a></li>
+            <li><a data-bind="click: next, attr: { 'class': pagerNextClass }"><i class="fa fa-angle-right"></i></a></li>
+        </ul>
+        <div class="right" data-bind="html: pagerDescription"></div>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+    jQuery(document).ready(function ($) {
+        var moduleId = parseInt("[ModuleContext:ModuleId]");
+        var preloadedData = [PreloadedData:All];
+        var localizedSettings = {
+            Cancel: '[Resx:{key:"Cancel"}]',
+            Delete: '[Resx:{key:"Delete"}]',
+            DeleteConfirm: '[Resx:{key:"DeleteConfirm"}]',
+            ConfirmDeleteTitle: '[Resx:{key:"ConfirmDeleteTitle"}]'
+        };
+
+        var settings = {
+            isFormEnabled: [contactsettings:IsFormEnabled],
+            emailRegex: "[contactsettings:EmailRegex]",
+            servicesFramework: $.ServicesFramework(moduleId),
+            moduleId: moduleId,
+            quickSettingsDispatcher: dnn.modules.spa.dnnContactListSpa.quickSettingsDispatcher
+        };
+
+        var contactList = new ContactList($, ko, settings, localizedSettings, preloadedData);
+        contactList.init("#ContactList-" + moduleId);
+    });
+
+</script>

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Dnn.ContactList.Api</AssemblyName>
+    <TargetFramework>net48</TargetFramework>
+    <OutputPath>bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <Authors>DNN Community</Authors>
+    <Company>DNN Platform</Company>
+    <Product>Dnn.ContactList.Api</Product>
+    <Copyright>Copyright 2025 by DNN Platform</Copyright>
+    <PackageId>Dnn.ContactList.Api</PackageId>
+    <AssemblyVersion>1.6.3</AssemblyVersion>
+    <FileVersion>1.6.3</FileVersion>
+    <Description>Dnn ContactList Api</Description>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <ApplicationIcon />
+    <OutputType>Library</OutputType>
+    <StartupObject />
+    <DebugType>Portable</DebugType>
+    <BaseOutputPath>..\..\bin</BaseOutputPath>
+    <AssetTargetFallback>netstandard2.0</AssetTargetFallback>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+</Project>

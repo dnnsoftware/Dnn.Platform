@@ -1,0 +1,28 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/** Create Table **/
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Contacts]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE {databaseOwner}[{objectQualifier}Contacts]
+		(
+			[ContactID] [int] IDENTITY(1,1) NOT NULL,
+			[PortalID] [int] NOT NULL,
+			[FirstName] [nvarchar](100) NOT NULL,
+			[LastName] [nvarchar](100) NOT NULL,
+			[Email] [nvarchar](100) NOT NULL,
+			[Phone] [nvarchar](50) NOT NULL,
+			[Twitter] [nvarchar](50) NOT NULL,
+		)
+
+		ALTER TABLE {databaseOwner}[{objectQualifier}Contacts] ADD CONSTRAINT [PK_{objectQualifier}Contacts] PRIMARY KEY CLUSTERED  ([ContactID])
+	END
+GO
