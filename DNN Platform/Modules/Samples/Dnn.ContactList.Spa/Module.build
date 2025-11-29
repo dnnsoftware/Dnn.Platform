@@ -10,7 +10,7 @@
     <DNNFileName>ContactList_Spa</DNNFileName>
     <PackageName>Dnn.ContactList.Spa</PackageName>
     <ModuleFolderName>$(WebsitePath)\DesktopModules\Dnn\ContactList</ModuleFolderName>
-    <InstallPath>$(PathToArtifacts)</InstallPath>
+    <InstallPath>$(PathToArtifacts)\SampleModules</InstallPath>
   </PropertyGroup>
   <Target Name="CopySqlDataProviderFiles" AfterTargets="Build" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <CreateItem Include="$(MSBuildProjectDirectory)\..\Dnn.ContactList.Api\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
