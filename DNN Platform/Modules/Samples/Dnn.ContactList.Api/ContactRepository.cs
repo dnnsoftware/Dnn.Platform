@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 
 using System;
-using System.CodeDom;
-using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Collections;
 using DotNetNuke.Common;
