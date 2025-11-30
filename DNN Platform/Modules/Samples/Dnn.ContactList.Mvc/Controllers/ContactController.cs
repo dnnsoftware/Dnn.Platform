@@ -80,11 +80,11 @@ namespace Dnn.ContactList.Mvc.Controllers
 
                 if (contact.ContactId == -1)
                 {
-                    _repository.AddContact(contact);
+                    _repository.AddContact(contact, User.UserID);
                 }
                 else
                 {
-                    _repository.UpdateContact(contact);
+                    _repository.UpdateContact(contact, User.UserID);
                 }
 
                 return RedirectToDefaultRoute();

@@ -17,8 +17,9 @@ namespace Dnn.ContactList.Spa.Components
         /// AddContact adds a contact to the repository
         /// </summary>
         /// <param name="contact">The contact to add</param>
+        /// <param name="userId">The Id of the user making the addition</param>
         /// <returns>The Id of the contact</returns>
-        int AddContact(Contact contact);
+        int AddContact(Contact contact, int userId);
 
         /// <summary>
         /// DeleteContact deletes a contact from the repository
@@ -58,6 +59,7 @@ namespace Dnn.ContactList.Spa.Components
         /// UpdateContact updates a contact in the repository
         /// </summary>
         /// <param name="contact">The contact to update</param>
-        void UpdateContact(Contact contact);
+        /// <param name="userId">The Id of the user making the update</param>
+        void UpdateContact(Contact contact, int userId);
     }
 }

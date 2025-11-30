@@ -41,11 +41,11 @@
             <i class="fa fa-phone"></i>
         <span>@Model.Phone</span>
     </div>
-        @if (!string.IsNullOrEmpty(Model.Twitter))
+        @if (!string.IsNullOrEmpty(Model.Social))
         {
             <div class="contact-detail contact-social">
                 <i class="fa fa-twitter"></i>
-                <a href="https://twitter.com/@Model.Twitter.TrimStart('@')" target="_blank">@Model.Twitter.ToLowerInvariant()</a>
+                <a href="https://social.com/@Model.Social.TrimStart('@')" target="_blank">@Model.Social.ToLowerInvariant()</a>
             </div>
         }
     </div>

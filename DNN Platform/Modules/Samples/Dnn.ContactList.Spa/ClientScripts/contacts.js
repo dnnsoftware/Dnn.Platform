@@ -162,7 +162,7 @@ contactList.contactViewModel = function(parentViewModel, config) {
     self.lastName = ko.observable('').extend({ required: { overrideMessage: "Please enter a last name" } });
     self.email = ko.observable('').extend({ required: { overrideMessage: "Please enter a valid email address", regEx: config.settings.emailRegex } });
     self.phone = ko.observable('').extend({ required: { overrideMessage: "Please enter a valid phone number in the format: 123-456-7890", regEx: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/ } });
-    self.twitter = ko.observable('');
+    self.social = ko.observable('');
 
     self.cancel = function () {
         clearErrors([self.firstName, self.lastName, self.email, self.phone]);
@@ -178,7 +178,7 @@ contactList.contactViewModel = function(parentViewModel, config) {
                     lastName: data.lastName(),
                     email: data.email(),
                     phone: data.phone(),
-                    twitter: data.twitter()
+                    social: data.social()
                 };
 
         util.contactService().post("DeleteContact", params,
@@ -209,7 +209,7 @@ contactList.contactViewModel = function(parentViewModel, config) {
         self.lastName("");
         self.email("");
         self.phone("");
-        self.twitter("");
+        self.social("");
     };
 
     self.load = function(data) {
@@ -218,7 +218,7 @@ contactList.contactViewModel = function(parentViewModel, config) {
         self.lastName(data.lastName);
         self.email(data.email);
         self.phone(data.phone);
-        self.twitter(data.twitter);
+        self.social(data.social);
     };
 
     self.saveContact = function (data, e) {
@@ -235,7 +235,7 @@ contactList.contactViewModel = function(parentViewModel, config) {
             lastName: data.lastName(),
             email: data.email(),
             phone: data.phone(),
-            twitter: data.twitter()
+            social: data.social()
         };
 
         util.contactService().post("SaveContact", params,

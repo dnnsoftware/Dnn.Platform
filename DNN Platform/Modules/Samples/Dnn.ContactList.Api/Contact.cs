@@ -10,7 +10,7 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 namespace Dnn.ContactList.Api
 {
     [Serializable]
-    [TableName("Contacts")]
+    [TableName("Dnn_Contacts")]
     [PrimaryKey("ContactId")]
     [Cacheable("Contacts", CacheItemPriority.Normal, 20)]
     [Scope("PortalId")]
@@ -39,7 +39,15 @@ namespace Dnn.ContactList.Api
 
         public int PortalId { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        public string Twitter { get; set; }
+        [Required(AllowEmptyStrings = true)]
+        public string Social { get; set; }
+
+        public int CreatedByUserId { get; set; }
+
+        public DateTime CreatedOnDate { get; set; }
+
+        public int LastModifiedByUserId { get; set; }
+
+        public DateTime LastModifiedOnDate { get; set; }
     }
 }

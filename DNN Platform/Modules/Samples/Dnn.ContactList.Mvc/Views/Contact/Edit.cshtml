@@ -27,9 +27,9 @@
         @Html.ValidationMessageFor(m => m.Phone, @Dnn.LocalizeString("PhoneRequired"))
     </div>
     <div>
-        <label>@Dnn.LocalizeString("Twitter")*</label>
-        @Html.TextBoxFor(m => m.Twitter)
-        @Html.ValidationMessageFor(m => m.Twitter, @Dnn.LocalizeString("TwitterRequired"))
+        <label>@Dnn.LocalizeString("Social")*</label>
+        @Html.TextBoxFor(m => m.Social)
+        @Html.ValidationMessageFor(m => m.Social, @Dnn.LocalizeString("SocialRequired"))
     </div>
     <div class="buttons">
         <button type="submit" id="btnSave" class="dnnPrimaryAction">@Dnn.LocalizeString("Save")</button>
