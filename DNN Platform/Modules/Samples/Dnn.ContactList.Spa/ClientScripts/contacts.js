@@ -11,8 +11,16 @@ ko.extenders.required = function (target, options) {
     var regEx = new RegExp(options.regEx);
     //define a function to do validation
     var errorMessage = options.overrideMessage || "This field is required";
+    var allowEmpty = options.allowEmpty || false;
     function validate(newValue) {
-        var validated = regEx.test(newValue) && newValue !== "";
+        var validated;
+        if (allowEmpty) {
+            // For optional fields: allow empty OR match regex
+            validated = newValue === "" || regEx.test(newValue);
+        } else {
+            // For required fields: must match regex AND not be empty
+            validated = regEx.test(newValue) && newValue !== "";
+        }
         target.hasError(!validated);
         target.validationClass(validated ? "form-control" : "form-control has-error");
         target.validationMessage(validated ? "" : errorMessage);
@@ -62,7 +70,7 @@ contactList.contactsViewModel = function(config) {
     self.addContact = function(){
         toggleView();
         self.selectedContact.init();
-        clearErrors([self.selectedContact.firstName, self.selectedContact.lastName, self.selectedContact.phone, self.selectedContact.email]);
+        clearErrors([self.selectedContact.firstName, self.selectedContact.lastName, self.selectedContact.phone, self.selectedContact.email, self.selectedContact.social]);
     };
 
     self.closeEdit = function() {
@@ -161,11 +169,11 @@ contactList.contactViewModel = function(parentViewModel, config) {
     self.firstName = ko.observable('').extend({ required: { overrideMessage: "Please enter a first name" } });
     self.lastName = ko.observable('').extend({ required: { overrideMessage: "Please enter a last name" } });
     self.email = ko.observable('').extend({ required: { overrideMessage: "Please enter a valid email address", regEx: config.settings.emailRegex } });
-    self.phone = ko.observable('').extend({ required: { overrideMessage: "Please enter a valid phone number in the format: 123-456-7890", regEx: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/ } });
-    self.social = ko.observable('');
+    self.phone = ko.observable('').extend({ required: { overrideMessage: "Please enter a valid phone number (international formats accepted: +1 234 567 8900, 123-456-7890, etc.)", regEx: /^(\+?\d{1,3}[\s.-]?)?[\d\s().-]{6,}$/ } });
+    self.social = ko.observable('').extend({ required: { overrideMessage: "Social handle must start with @ symbol", regEx: /^@/, allowEmpty: true } });
 
     self.cancel = function () {
-        clearErrors([self.firstName, self.lastName, self.email, self.phone]);
+        clearErrors([self.firstName, self.lastName, self.email, self.phone, self.social]);
         parentViewModel.closeEdit();
     };
 
@@ -226,7 +234,8 @@ contactList.contactViewModel = function(parentViewModel, config) {
         self.lastName.valueHasMutated();
         self.phone.valueHasMutated();
         self.email.valueHasMutated();
-        if ((self.firstName.hasError() || self.lastName.hasError() || self.email.hasError() || self.phone.hasError())) {
+        self.social.valueHasMutated();
+        if ((self.firstName.hasError() || self.lastName.hasError() || self.email.hasError() || self.phone.hasError() || self.social.hasError())) {
             return;
         }
         var params = {
