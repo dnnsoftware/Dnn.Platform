@@ -44,7 +44,7 @@
                 <moduleControls>
                   <moduleControl>
                     <controlKey />
-                    <controlSrc>DesktopModules/Dnn/ContactList/ContactList.html</controlSrc>
+                    <controlSrc>DesktopModules/Dnn/ContactListSpaReact/ContactList.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlType>View</controlType>
                     <supportsPopUps>False</supportsPopUps>
@@ -69,7 +69,7 @@
         </component>
         <component type="ResourceFile">
           <resourceFiles>
-            <basePath>DesktopModules/Dnn/ContactList</basePath>
+            <basePath>DesktopModules/Dnn/ContactListSpaReact</basePath>
             <resourceFile>
               <name>Resources.zip</name>
             </resourceFile>
