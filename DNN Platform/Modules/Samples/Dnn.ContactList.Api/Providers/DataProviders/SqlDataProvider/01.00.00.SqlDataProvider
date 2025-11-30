@@ -10,9 +10,9 @@
 
 /** Create Table **/
 
-if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Contacts]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}Dnn_Contacts]') and OBJECTPROPERTY(id, N'IsTable') = 1)
 	BEGIN
-		CREATE TABLE {databaseOwner}[{objectQualifier}Contacts]
+		CREATE TABLE {databaseOwner}[{objectQualifier}Dnn_Contacts]
 		(
 			[ContactId] [int] IDENTITY(1,1) NOT NULL,
 			[PortalId] [int] NOT NULL,
@@ -20,9 +20,34 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwne
 			[LastName] [nvarchar](100) NOT NULL,
 			[Email] [nvarchar](100) NOT NULL,
 			[Phone] [nvarchar](50) NOT NULL,
-			[Twitter] [nvarchar](50) NOT NULL,
+			[Social] [nvarchar](50) NULL,
+    	[CreatedByUserId] [int] NOT NULL,
+	    [CreatedOnDate] [datetime] NOT NULL,
+	    [LastModifiedByUserId] [int] NOT NULL,
+	    [LastModifiedOnDate] [datetime] NOT NULL,
 		)
 
-		ALTER TABLE {databaseOwner}[{objectQualifier}Contacts] ADD CONSTRAINT [PK_{objectQualifier}Contacts] PRIMARY KEY CLUSTERED  ([ContactId])
+		ALTER TABLE {databaseOwner}[{objectQualifier}Dnn_Contacts] ADD CONSTRAINT [PK_{objectQualifier}Dnn_Contacts] PRIMARY KEY CLUSTERED  ([ContactId])
 	END
 GO
+
+/** Fill table with current DNN users **/
+
+BEGIN
+		INSERT INTO {databaseOwner}[{objectQualifier}Dnn_Contacts]
+      ([PortalId],[FirstName],[LastName],[Email],[Phone],[Social],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate]) 
+    SELECT
+      u.PortalId, 
+      LEFT(u.FirstName,100) AS FirstName,
+      LEFT(u.LastName,100) AS LastName,
+      LEFT(u.Email,100) AS Email,
+      '+' + CAST(ABS(CHECKSUM(NewId())) % 100 AS VARCHAR) + ' '
+	    + CAST(100 + ABS(CHECKSUM(NewId())) % 900 AS VARCHAR) + ' '
+	    + CAST(100 + ABS(CHECKSUM(NewId())) % 900 AS VARCHAR) + ' '
+	    + CAST(100 + ABS(CHECKSUM(NewId())) % 900 AS VARCHAR),
+      '@' + LEFT(LOWER(u.FirstName), 1) + LOWER(u.LastName) + '.dnn.social',
+      -1, GETDATE(), -1, GETDATE()
+    FROM {databaseOwner}[{objectQualifier}vw_Users] u
+    WHERE u.IsSuperUser=0 AND u.IsDeleted = 0
+END
+

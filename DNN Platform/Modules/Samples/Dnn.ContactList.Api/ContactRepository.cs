@@ -28,10 +28,15 @@ namespace Dnn.ContactList.Api
         /// </summary>
         /// <param name="contact">The contact to add</param>
         /// <returns>The Id of the contact</returns>
-        public int AddContact(Contact contact)
+        public int AddContact(Contact contact, int userId)
         {
             Requires.NotNull(contact);
             Requires.PropertyNotNegative(contact, "PortalId");
+
+            contact.CreatedByUserId = userId;
+            contact.CreatedOnDate = DateTime.UtcNow;
+            contact.LastModifiedByUserId = userId;
+            contact.LastModifiedOnDate = DateTime.UtcNow;
 
             using (var context = DataContext.Instance())
             {
@@ -120,10 +125,12 @@ namespace Dnn.ContactList.Api
         /// UpdateContact updates a contact in the repository
         /// </summary>
         /// <param name="contact">The contact to update</param>
-        public void UpdateContact(Contact contact)
+        public void UpdateContact(Contact contact, int userId)
         {
             Requires.NotNull(contact);
             Requires.PropertyNotNegative(contact, "ContactId");
+            contact.LastModifiedByUserId = userId;
+            contact.LastModifiedOnDate = DateTime.UtcNow;
 
             using (var context = DataContext.Instance())
             {

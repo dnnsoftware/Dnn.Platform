@@ -31,7 +31,7 @@ namespace Dnn.ContactList.Spa.Services.ViewModels
             FirstName = contact.FirstName;
             LastName = contact.LastName;
             Phone = contact.Phone;
-            Twitter = contact.Twitter;
+            Social = contact.Social;
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace Dnn.ContactList.Spa.Services.ViewModels
         public string Phone { get; set; }
 
         /// <summary>
-        /// The Twitter of the contact
+        /// The Social of the contact
         /// </summary>
-        [JsonProperty("twitter")]
-        public string Twitter { get; set; }
+        [JsonProperty("social")]
+        public string Social { get; set; }
     }
 }

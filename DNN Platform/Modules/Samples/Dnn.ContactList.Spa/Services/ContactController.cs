@@ -124,10 +124,10 @@ namespace Dnn.ContactList.Spa.Services
                     LastName = viewModel.LastName,
                     Email = viewModel.Email,
                     Phone = viewModel.Phone,
-                    Twitter = viewModel.Twitter,
+                    Social = viewModel.Social,
                     PortalId = PortalSettings.PortalId
                 };
-                _contactService.AddContact(contact);
+                _contactService.AddContact(contact, UserInfo.UserID);
             }
             else
             {
@@ -140,9 +140,9 @@ namespace Dnn.ContactList.Spa.Services
                     contact.LastName = viewModel.LastName;
                     contact.Email = viewModel.Email;
                     contact.Phone = viewModel.Phone;
-                    contact.Twitter = viewModel.Twitter;
+                    contact.Social = viewModel.Social;
                 }
-                _contactService.UpdateContact(contact);
+                _contactService.UpdateContact(contact, UserInfo.UserID);
             }
             var response = new
             {

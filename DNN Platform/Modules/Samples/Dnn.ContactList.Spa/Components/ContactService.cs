@@ -29,9 +29,9 @@ namespace Dnn.ContactList.Spa.Components
             return () => new ContactService();
         }
 
-        public int AddContact(Contact contact)
+        public int AddContact(Contact contact, int userId)
         {
-            return _repository.AddContact(contact);
+            return _repository.AddContact(contact, userId);
         }
 
         public void DeleteContact(Contact contact)
@@ -54,9 +54,9 @@ namespace Dnn.ContactList.Spa.Components
             return _repository.GetContacts(searchTerm, portalId, pageIndex, pageSize);
         }
 
-        public void UpdateContact(Contact contact)
+        public void UpdateContact(Contact contact, int userId)
         {
-            _repository.UpdateContact(contact);
+            _repository.UpdateContact(contact, userId);
         }
     }
 }
