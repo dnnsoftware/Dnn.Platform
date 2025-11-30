@@ -156,8 +156,11 @@
           [Resx:{key:"Social"}]
         </label>
         <input class="form-control"
-               data-bind="value: social"
+               data-bind="value: social, valueUpdate: 'input', css: social.validationClass"
                placeholder="@username" />
+        <span class="form-error"
+              data-bind="visible: social.hasError, text: social.validationMessage">
+        </span>
       </div>
     </div>
     <div class="editContact-footer">

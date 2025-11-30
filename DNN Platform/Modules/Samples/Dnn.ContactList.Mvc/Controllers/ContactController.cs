@@ -84,7 +84,13 @@ namespace Dnn.ContactList.Mvc.Controllers
                 }
                 else
                 {
-                    _repository.UpdateContact(contact, User.UserID);
+                    var existing = _repository.GetContact(contact.ContactId, PortalSettings.PortalId);
+                    existing.FirstName = contact.FirstName;
+                    existing.LastName = contact.LastName;
+                    existing.Email = contact.Email;
+                    existing.Phone = contact.Phone;
+                    existing.Social = contact.Social;
+                    _repository.UpdateContact(existing, User.UserID);
                 }
 
                 return RedirectToDefaultRoute();
