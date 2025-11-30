@@ -27,7 +27,8 @@
     "Dnn.AdminExperience/ClientSide/Styles.Web",
     "DNN Platform/Modules/ResourceManager/ResourceManager.Web",
     "DNN Platform/Skins/Aperture",
-    "DNN Platform/Dnn.ClientSide"
+    "DNN Platform/Dnn.ClientSide",
+    "DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact"
   ],
   "devDependencies": {
     "lerna": "^9.0.0"

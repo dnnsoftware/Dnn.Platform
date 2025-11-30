@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Dnn.ContactList.Api
 {
@@ -14,6 +15,7 @@ namespace Dnn.ContactList.Api
     [PrimaryKey("ContactId")]
     [Cacheable("Contacts", CacheItemPriority.Normal, 20)]
     [Scope("PortalId")]
+    [JsonObject(MemberSerialization.OptOut)]
     public class Contact
     {
         public Contact()
