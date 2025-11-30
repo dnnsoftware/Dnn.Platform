@@ -3,35 +3,78 @@
 @using DotNetNuke.Services.Localization
 @using DotNetNuke.Web.Mvc.Helpers
 
-<div class="editContact">
-    @*@Html.ValidationSummary(true)*@
-    <div>
-        <label>@Dnn.LocalizeString("FirstName")*</label>
-        @Html.TextBoxFor(m => m.FirstName)
-        @Html.ValidationMessageFor(m => m.FirstName, @Dnn.LocalizeString("FirstNameRequired"))
+<div class="contactEdit-container">
+    <div class="contactEdit-header">
+        <div class="contactEdit-logo">
+            <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="5,55 20,15 35,55" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="30,55 50,5 70,55" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="65,55 80,15 95,55" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="contactEdit-title">
+            <h2>@(Model.ContactId > 0 ? Dnn.LocalizeString("Edit") : Dnn.LocalizeString("AddContact"))</h2>
+            <p>@Dnn.LocalizeString("EditDescription")</p>
+        </div>
     </div>
-    <div>
-        <label>@Dnn.LocalizeString("LastName")*</label>
-        @Html.TextBoxFor(m => m.LastName)
-        @Html.ValidationMessageFor(m => m.LastName, @Dnn.LocalizeString("LastNameRequired"))
-    </div>
-    <div>
-        <label>@Dnn.LocalizeString("Email")*</label>
-        @Html.TextBoxFor(m => m.Email)
-        @Html.ValidationMessageFor(m => m.Email, @Dnn.LocalizeString("EmailRequired"))
 
-    </div>
-    <div>
-        <label>@Dnn.LocalizeString("Phone")*</label>
-        @Html.TextBoxFor(m => m.Phone)
-        @Html.ValidationMessageFor(m => m.Phone, @Dnn.LocalizeString("PhoneRequired"))
-    </div>
-    <div>
-        <label>@Dnn.LocalizeString("Social")*</label>
-        @Html.TextBoxFor(m => m.Social)
-        @Html.ValidationMessageFor(m => m.Social, @Dnn.LocalizeString("SocialRequired"))
-    </div>
-    <div class="buttons">
-        <button type="submit" id="btnSave" class="dnnPrimaryAction">@Dnn.LocalizeString("Save")</button>
+    <div class="contactEdit-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="FirstName">
+                    <i class="fa fa-user"></i>
+                    @Dnn.LocalizeString("FirstName") <span class="required">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-input", placeholder = "Enter first name" })
+                @Html.ValidationMessageFor(m => m.FirstName, @Dnn.LocalizeString("FirstNameRequired"))
+            </div>
+
+            <div class="form-group">
+                <label for="LastName">
+                    <i class="fa fa-user"></i>
+                    @Dnn.LocalizeString("LastName") <span class="required">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-input", placeholder = "Enter last name" })
+                @Html.ValidationMessageFor(m => m.LastName, @Dnn.LocalizeString("LastNameRequired"))
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Email">
+                <i class="fa fa-envelope"></i>
+                @Dnn.LocalizeString("Email") <span class="required">*</span>
+            </label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-input", placeholder = "email@example.com", type = "email" })
+            @Html.ValidationMessageFor(m => m.Email, @Dnn.LocalizeString("EmailRequired"))
+        </div>
+
+        <div class="form-group">
+            <label for="Phone">
+                <i class="fa fa-phone"></i>
+                @Dnn.LocalizeString("Phone") <span class="required">*</span>
+            </label>
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-input", placeholder = "+1 555-123-4567", type = "tel" })
+            @Html.ValidationMessageFor(m => m.Phone, @Dnn.LocalizeString("PhoneRequired"))
+        </div>
+
+        <div class="form-group">
+            <label for="Social">
+                <i class="fa fa-twitter"></i>
+                @Dnn.LocalizeString("Social")
+            </label>
+            @Html.TextBoxFor(m => m.Social, new { @class = "form-input", placeholder = "@username or profile URL" })
+            @Html.ValidationMessageFor(m => m.Social, @Dnn.LocalizeString("SocialRequired"))
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" id="btnSave" class="btn-primary">
+                <i class="fa fa-save"></i>
+                @Dnn.LocalizeString("Save")
+            </button>
+            <a href="@Url.Action("Index", "Contact")" class="btn-secondary">
+                <i class="fa fa-times"></i>
+                Cancel
+            </a>
+        </div>
     </div>
 </div>
