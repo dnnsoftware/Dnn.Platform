@@ -93,45 +93,82 @@
   </div>
   <div class="editContact"
        data-bind="visible: isFormEnabled() && isEditMode(), with: selectedContact">
-    <div class="form-group">
-      <label class="form-label">[Resx:{key:"FirstName"}]</label>
-      <input class="form-control"
-             data-bind="value: firstName, valueUpdate: 'input', css: firstName.validationClass" />
-      <span class="form-error"
-            data-bind="visible: firstName.hasError, text: firstName.validationMessage">
-      </span>
+    <div class="editContact-header">
+      <h3 class="editContact-title">
+        <i class="fa fa-user-plus"></i>
+        <span data-bind="text: contactId() > 0 ? '[Resx:{key:"Edit"}]' : '[Resx:{key:"AddContact"}]'"></span>
+      </h3>
     </div>
-    <div class="form-group">
-      <label class="form-label">[Resx:{key:"LastName"}]</label>
-      <input class="form-control"
-             data-bind="value: lastName, valueUpdate: 'input', css: lastName.validationClass" />
-      <span class="form-error"
-            data-bind="visible: lastName.hasError, text: lastName.validationMessage">
-      </span>
+    <div class="editContact-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fa fa-user"></i>
+            [Resx:{key:"FirstName"}]
+          </label>
+          <input class="form-control"
+                 data-bind="value: firstName, valueUpdate: 'input', css: firstName.validationClass"
+                 placeholder="[Resx:{key:"FirstName"}]" />
+          <span class="form-error"
+                data-bind="visible: firstName.hasError, text: firstName.validationMessage">
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            <i class="fa fa-user"></i>
+            [Resx:{key:"LastName"}]
+          </label>
+          <input class="form-control"
+                 data-bind="value: lastName, valueUpdate: 'input', css: lastName.validationClass"
+                 placeholder="[Resx:{key:"LastName"}]" />
+          <span class="form-error"
+                data-bind="visible: lastName.hasError, text: lastName.validationMessage">
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fa fa-envelope"></i>
+          [Resx:{key:"Email"}]
+        </label>
+        <input class="form-control"
+               data-bind="value: email, valueUpdate: 'input', css: email.validationClass"
+               placeholder="[Resx:{key:"Email"}]" />
+        <span class="form-error"
+              data-bind="visible: email.hasError, text: email.validationMessage">
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fa fa-phone"></i>
+          [Resx:{key:"Phone"}]
+        </label>
+        <input class="form-control"
+               data-bind="value: phone, valueUpdate: 'input', css: phone.validationClass"
+               placeholder="[Resx:{key:"Phone"}]" />
+        <span class="form-error"
+              data-bind="visible: phone.hasError, text: phone.validationMessage">
+        </span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">
+          <i class="fa fa-twitter"></i>
+          [Resx:{key:"Social"}]
+        </label>
+        <input class="form-control"
+               data-bind="value: social"
+               placeholder="@username" />
+      </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">[Resx:{key:"Email"}]</label>
-      <input class="form-control"
-             data-bind="value: email, valueUpdate: 'input', css: email.validationClass" />
-      <span class="form-error"
-            data-bind="visible: email.hasError, text: email.validationMessage">
-      </span>
-    </div>
-    <div class="form-group">
-      <label class="form-label">[Resx:{key:"Phone"}]</label>
-      <input class="form-control"
-             data-bind="value: phone, valueUpdate: 'input', css: phone.validationClass" />
-      <span class="form-error"
-            data-bind="visible: phone.hasError, text: phone.validationMessage">
-      </span>
-    </div>
-    <div class="form-group">
-      <label class="form-label">[Resx:{key:"Social"}]</label>
-      <input class="form-control" data-bind="value: social" />
-    </div>
-    <div class="buttons">
-      <a class="dnnSecondaryAction" data-bind="click: cancel">[Resx:{key:"Cancel"}]</a>
-      <a class="dnnPrimaryAction" data-bind="click: saveContact">[Resx:{key:"Save"}]</a>
+    <div class="editContact-footer">
+      <a class="btn-cancel" data-bind="click: cancel">
+        <i class="fa fa-times"></i>
+        [Resx:{key:"Cancel"}]
+      </a>
+      <a class="btn-save" data-bind="click: saveContact">
+        <i class="fa fa-check"></i>
+        [Resx:{key:"Save"}]
+      </a>
     </div>
   </div>
 </div>
