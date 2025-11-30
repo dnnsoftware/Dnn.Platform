@@ -4,13 +4,12 @@
 
 using System.Collections.Generic;
 using System.Web.UI;
-using Dnn.ContactList.SpaReact.Components;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
 
-namespace Dnn.ContactList.Spa.Components
+namespace Dnn.ContactList.SpaReact.Components
 {
     /// <summary>
     /// Business controller for the Contact list SPA module.

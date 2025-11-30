@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Globalization;
+using System.Web;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Tokens;
 using DotNetNuke.UI.Modules;
@@ -27,15 +28,15 @@ namespace Dnn.ContactList.SpaReact.Components
             switch (propertyName.ToLower())
             {
                 case "security":
-                    return JsonConvert.SerializeObject(this.security);
+                    return HttpUtility.HtmlAttributeEncode(JsonConvert.SerializeObject(this.security));
                 case "module":
-                    return JsonConvert.SerializeObject(new
+                    return HttpUtility.HtmlAttributeEncode(JsonConvert.SerializeObject(new
                     {
                         this.moduleContext.ModuleId,
                         this.moduleContext.TabId,
                         this.moduleContext.TabModuleId,
                         this.moduleContext.PortalId,
-                    });
+                    }));
                 default:
                     propertyNotFound = true;
                     return string.Empty;
