@@ -52,6 +52,8 @@ namespace Dnn.EditBar.UI.Items
 
         internal bool HasDraftPermission => PermissionProvider.Instance().CanAddContentToPage(TabController.CurrentPage);
 
+        internal bool IsDirectPublishWorkflow => this.Workflow?.WorkflowKey == SystemWorkflowManager.DirectPublishWorkflowKey;
+
         private ContentItem ContentItem => Util.GetContentController().GetContentItem(TabController.CurrentPage.ContentItemId);
 
         private bool IsVersioningEnabled => TabVersionSettings.Instance.IsVersioningEnabled(PortalSettings.Current.PortalId, TabController.CurrentPage.TabID);

@@ -34,6 +34,7 @@ namespace Dnn.EditBar.UI.Items
 
         /// <inheritdoc/>
         public override bool Visible() => base.Visible()
+            && !this.IsDirectPublishWorkflow
             && (this.IsReviewOrOtherIntermediateStateWithPermissions == true
                 || (this.IsPriorState == true && this.IsDraftWithPermissions == true) // for Save Draft workflow
                 || (this.IsLastState == true && this.HasUnpublishVersion && this.HasDraftPermission == true)); // for Direct Publish workflow
