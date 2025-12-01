@@ -19,18 +19,31 @@ export default function ContactList({ security, moduleContext }: ContactListProp
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   const pageSize = 6;
 
+  // Debounce search term with 0.5 second delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+      // Reset to first page when search term changes
+      setCurrentPage(0);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
   useEffect(() => {
     loadContacts();
-  }, [currentPage]);
+  }, [currentPage, debouncedSearchTerm]);
 
   const loadContacts = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await getContacts(moduleContext, currentPage, pageSize);
+      const response = await getContacts(moduleContext, currentPage, pageSize, debouncedSearchTerm);
 
       setContacts(response.Data);
       setTotalCount(response.TotalCount);
@@ -93,12 +106,24 @@ export default function ContactList({ security, moduleContext }: ContactListProp
         ))}
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalItems={totalCount}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-      />
+      <div className="contactList-controls">
+        <div className="contactList-search">
+          <input
+            type="text"
+            placeholder="Search contacts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+          <i className="fa fa-search search-icon"></i>
+        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalItems={totalCount}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+        />
+      </div>
 
       {security.CanEdit && (
         <div className="buttons col-md-12">
