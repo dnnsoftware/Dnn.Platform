@@ -168,14 +168,72 @@
     text-decoration: underline;
 }
 
+/* Search and Pagination Controls */
+.contactList-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    gap: 20px;
+}
+
+.contactList-search {
+    position: relative;
+    flex: 0 0 auto;
+    min-width: 250px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px 12px 40px;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--dnn-color-tertiary-light,#3c7a9a);
+    box-shadow: 0 0 0 3px rgba(60, 122, 154, 0.1);
+}
+
+.search-input::placeholder {
+    color: #999;
+    opacity: 0.7;
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dnn-color-tertiary-light,#3c7a9a);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .contactList-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .contactList-search {
+        width: 100%;
+    }
+}
+
 /* Pagination */
 .contactList-pagination {
     text-align: center;
-    padding: 20px 0;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 15px;
+    flex: 0 0 auto;
 }
 
 .pagination-btn {
