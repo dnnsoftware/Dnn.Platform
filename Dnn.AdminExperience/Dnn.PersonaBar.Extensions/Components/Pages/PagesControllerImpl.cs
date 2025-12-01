@@ -809,14 +809,27 @@ namespace Dnn.PersonaBar.Pages.Components
             page.EnabledVersioning = TabVersionSettings.Instance.IsVersioningEnabled(portalSettings.PortalId, pageId);
             page.WorkflowEnabled = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalSettings.PortalId, pageId);
             page.WorkflowId = WorkflowHelper.GetTabWorkflowId(tab);
-            page.WorkflowName = WorkflowHelper.GetTabWorkflowName(tab);
+
+            var workflow = WorkflowManager.Instance.GetWorkflow(page.WorkflowId);
+            page.WorkflowName = workflow?.WorkflowName ?? WorkflowHelper.GetTabWorkflowName(tab);
+
+            var isWorkflowCompleted = WorkflowHelper.IsWorkflowCompleted(tab);
+            var isWorkflowOnDraft = WorkflowEngine.Instance.IsWorkflowOnDraft(tab);
+
             page.StateId = tab.StateID;
-            page.StateName = tab.StateID != Null.NullInteger ? WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).StateName : null;
-            page.PublishStatus = tab.HasBeenPublished && page.IsWorkflowCompleted ? "Published" : "Draft";
+            page.StateName = tab.StateID != Null.NullInteger
+                ? WorkflowStateManager.Instance.GetWorkflowState(tab.StateID)?.StateName
+                : workflow == null
+                    ? null
+                    : isWorkflowCompleted
+                        ? workflow.LastState.StateName
+                        : workflow.FirstState.StateName;
+
             page.HasAVisibleVersion = tab.HasAVisibleVersion;
             page.HasBeenPublished = tab.HasBeenPublished;
-            page.IsWorkflowCompleted = WorkflowHelper.IsWorkflowCompleted(tab);
-            page.IsWorkflowOnDraft = WorkflowEngine.Instance.IsWorkflowOnDraft(tab);
+            page.IsWorkflowCompleted = isWorkflowCompleted;
+            page.IsWorkflowOnDraft = isWorkflowOnDraft;
+            page.PublishStatus = tab.HasBeenPublished && isWorkflowCompleted ? "Published" : "Draft";
 
             return page;
         }
