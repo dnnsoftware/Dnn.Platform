@@ -441,8 +441,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             HttpContextSource.Current.Items[ScriptPrefix + library.JavaScriptLibraryID] = true;
             var controller = GetClientResourcesController();
-            controller.CreateScript()
-                .FromSrc(GetScriptPath(null, null, library.LibraryName))
+            controller.CreateScript(GetScriptPath(null, null, library.LibraryName))
                 .SetNameAndVersion(library.LibraryName, library.Version.ToString(), forceVersion)
                 .SetProvider(GetScriptLocation(library))
                 .SetPriority(GetFileOrder(library))
@@ -452,8 +451,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 if (HttpContextSource.Current.Items[ScriptPrefix + dependency.JavaScriptLibraryID] == null)
                 {
-                    controller.CreateScript()
-                        .FromSrc(GetScriptPath(null, null, dependency.LibraryName))
+                    controller.CreateScript(GetScriptPath(null, null, dependency.LibraryName))
                         .SetNameAndVersion(dependency.LibraryName, dependency.Version.ToString(), false)
                         .SetProvider(GetScriptLocation(dependency))
                         .SetPriority(GetFileOrder(dependency))

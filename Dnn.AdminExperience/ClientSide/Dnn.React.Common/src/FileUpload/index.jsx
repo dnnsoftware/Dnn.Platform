@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Browse from "./Browse";
 import UploadBar from "./UploadBar";
+import BrowseIcon from "./img/browse.svg";
+import UploadIcon from "./img/upload.svg";
 
 import "./style.less";
 
 const Buttons = [
-    { name: "browse" },
-    { name: "upload" }
+    { name: "browse", icon: BrowseIcon, },
+    { name: "upload", icon: UploadIcon },
 ];
 
 export default class FileUpload extends Component {
@@ -319,7 +321,7 @@ export default class FileUpload extends Component {
         }
 
         buttons = buttons.map((button) => {
-            const svg = require(`!raw-loader!./img/${button.name}.svg`).default;
+            const ButtonIcon = button.icon;
             const isUpload = button.name === "upload";
              
             const accept = props.fileFormats.join(",");
@@ -329,7 +331,7 @@ export default class FileUpload extends Component {
                 onMouseLeave={this.onMouseLeave.bind(this) }
                 onClick={this.onButtonClick.bind(this, button.name) }
                 key={button.name}>
-                <div dangerouslySetInnerHTML={{ __html: svg }} />
+                <div><ButtonIcon /></div>
                 {isUpload && accept && <input type="file" ref={this.fileInput1Ref} accept={accept} onChange={this.onFileUpload.bind(this) } aria-label="File" />}
                 {isUpload && !accept && <input type="file" ref={this.fileInput2Ref} onChange={this.onFileUpload.bind(this) } aria-label="File" />}
             </div>;

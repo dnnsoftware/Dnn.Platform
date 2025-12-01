@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {
-    licensing as LicensingActions
-} from "../../actions";
+import { licensing as LicensingActions } from "../../actions";
 import resx from "../../resources";
 import styles from "./style.module.less";
 
-import dnnTechnologyEditorialIcon from "./../svg/dnn_technology_editorial.svg?raw";
-import githubIcon from "./../svg/github.svg?raw";
-import dnnIcon from "./../svg/dnn_logo_primary.svg?raw";
-import docsIcon from "./../svg/dnn_docs_logo.svg?raw";
+import DnnTechnologyEditorialIcon from "./../svg/dnn_technology_editorial.svg";
+import GithubIcon from "./../svg/github.svg";
+import DnnIcon from "./../svg/dnn_logo_primary.svg";
+import DocsIcon from "./../svg/dnn_docs_logo.svg";
 
 class Platform extends Component {
     constructor() {
@@ -39,21 +37,21 @@ class Platform extends Component {
             <div className="links-wrapper">
                 <div className="link-docs-wrapper" title={resx.get("Docs.Header")} onClick={this.onDocsClick.bind(this) }>
                     <div className="link-docs">
-                        <div className="docs-icon" dangerouslySetInnerHTML={{ __html: docsIcon }} />
+                        <div className="docs-icon"><DocsIcon /></div>
                         <div className="link-docs-header">{resx.get("Docs.Header") }</div>
                         <div className="link-docs-desc">{resx.get("Docs") }</div>
                     </div>
                 </div>
                 <div className="link-community-wrapper">
                     <div className="link-community" title={resx.get("Community.Header")} onClick={this.onCommunityClick.bind(this) }>
-                        <div className="dnn-icon" dangerouslySetInnerHTML={{ __html: dnnIcon }} />
+                        <div className="dnn-icon"><DnnIcon /></div>
                         <div className="link-community-header">{resx.get("Community.Header") }</div>
                         <div className="link-community-desc">{resx.get("Community") }</div>
                     </div>
                 </div>
                 <div className="link-github-wrapper">
                     <div className="link-github" title={resx.get("GitHub.Header")} onClick={this.onGitHubClick.bind(this)}>
-                        <div className="github-icon" dangerouslySetInnerHTML={{ __html: githubIcon }} />
+                        <div className="github-icon"><GithubIcon /></div>
                         <div className="link-github-header">{resx.get("GitHub.Header")}</div>
                         <div className="link-github-desc">{resx.get("GitHub")}</div>
                     </div>
@@ -74,7 +72,7 @@ class Platform extends Component {
                 <div>
                     {this.renderVersion()}
                     <div className="intro">
-                        <div className="dnn-technology-editorial-icon" dangerouslySetInnerHTML={{ __html: dnnTechnologyEditorialIcon }} />
+                        <div className="dnn-technology-editorial-icon"><DnnTechnologyEditorialIcon /></div>
                         <div className="intro-header">{resx.get("Intro.Header") }</div>
                         <div className="intro-body">{resx.get("Intro") }</div>
                     </div>

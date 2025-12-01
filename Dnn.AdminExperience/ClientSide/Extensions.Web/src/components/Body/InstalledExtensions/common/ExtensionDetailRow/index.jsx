@@ -60,8 +60,8 @@ class ExtensionDetailRow extends Component {
                         </a>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[5]} style={{ paddingRight: 0 }}>
-                        {(props._package.canDelete && props.isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete}></div>}
-                        <div className="extension-action" onClick={props.onEdit.bind(this, props._package.packageId)} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>
+                        {(props._package.canDelete && props.isHost) && <div className="extension-action" onClick={props.onDelete}><SvgIcons.TrashIcon /></div>}
+                        <div className="extension-action" onClick={props.onEdit.bind(this, props._package.packageId)}><SvgIcons.EditIcon /></div>
                     </GridCell>
                 </GridCell >
                 {state.inUseModalOpen &&

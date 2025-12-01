@@ -64,10 +64,8 @@ class Modal extends Component {
                     <div className="modal-header">
                         <h3>{props.header}</h3>
                         {props.headerChildren}
-                        <div
-                            className="close-modal-button"
-                            dangerouslySetInnerHTML={{ __html: XThinIcon }}
-                            onClick={props.onRequestClose}>
+                        <div className="close-modal-button" onClick={props.onRequestClose}>
+                            <XThinIcon />
                         </div>
                     </div>
                 }

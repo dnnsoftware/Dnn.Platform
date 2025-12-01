@@ -81,10 +81,10 @@ module.exports = (env, argv) => {
                     },
                 },
                 {
-                    test: /\.svg$/,
-                    resourceQuery: /raw/,
-                    use: "raw-loader",
-                }
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
+                },
             ],
         },
         externals: webpackExternals,

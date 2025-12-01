@@ -9,7 +9,7 @@ const BackToMain = ({onClick, label}) => {
         <div         
             className={styles.backTo} 
             onClick={onClick}>
-            <div className="icon" dangerouslySetInnerHTML={{ __html: ArrowBack }} />
+            <div className="icon"><ArrowBack /></div>
             <span>{label}</span>
         </div>
     );

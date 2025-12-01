@@ -88,15 +88,9 @@ module.exports = (env, argv) => {
                     },
                 },
                 {
-                    test: /\.svg$/,
-                    use: {
-                        loader: "svg-url-loader",
-                    },
-                },
-                {
                     test: /\.svg$/i,
-                    resourceQuery: /raw/, // *.svg?raw
-                    use: "raw-loader",
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
                 },
             ],
         },

@@ -231,7 +231,7 @@ class LanguagesPanel extends Component {
                         <div className="sectionTitle-languages">{resx.get("Languages")}</div>
                         {isHost &&
                             <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add", 1)}>
-                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                                <div className="add-icon"><SvgIcons.AddIcon />
                                 </div> {resx.get("cmdCreateLanguage")}
                             </div>
                         }

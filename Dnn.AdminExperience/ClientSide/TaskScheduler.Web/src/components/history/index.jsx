@@ -8,7 +8,7 @@ import TaskHistoryItemRow from "./taskHistoryItemRow";
 import "./style.less";
 import { Pager } from "@dnnsoftware/dnn-react-common";
 import resx from "../../resources";
-import historyIcon from "./../svg/history.svg?raw";
+import HistoryIcon from "./../svg/history.svg";
 
 let pageSizeOptions = [];
 let tableFields = [];
@@ -121,7 +121,7 @@ class HistoryPanelBody extends Component {
         const {props} = this;
         return (
             <div>
-                <div className="historyIcon" dangerouslySetInnerHTML={{ __html: historyIcon }}></div>
+                <div className="historyIcon"><HistoryIcon /></div>
                 <div className="taskHistoryList-title">{props.title}</div>
                 <div className="taskHistoryList-grid">
                     {this.renderedHistoryListHeader()}

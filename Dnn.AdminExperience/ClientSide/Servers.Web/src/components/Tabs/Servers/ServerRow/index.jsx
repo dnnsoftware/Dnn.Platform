@@ -73,10 +73,8 @@ export default class ServerRow extends Component {
             <div className={"collapsible-component1 " + this.props.inEdit}>
                 <div className={"collapsible-header1 " + !this.props.inEdit}>
                     <GridCell columnSize={5}>
-                        <span
-                            dangerouslySetInnerHTML={{ __html: SvgIcons.ListViewIcon }}
-                            className={server.isActive ? "icon-flat active" : "icon-flat"}
-                        ></span>
+                        <span className={server.isActive ? "icon-flat active" : "icon-flat"}
+                        ><SvgIcons.ListViewIcon /></span>
                     </GridCell>
                     <GridCell columnSize={25}>
                         <TextOverflowWrapper text={server.serverName} />

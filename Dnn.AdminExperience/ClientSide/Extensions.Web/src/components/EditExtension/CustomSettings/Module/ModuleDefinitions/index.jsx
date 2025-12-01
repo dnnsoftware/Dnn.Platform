@@ -199,7 +199,7 @@ class ModuleDefinitions extends Component {
                     <h3 className="box-title">{Localization.get("EditModule_ModuleDefinitions.Header")}</h3>
                     <a className={"add-button" + (isAddMode ? " add-active" : "")}
                         onClick={this.onEditModuleDefinition.bind(this, this.getNewModuleDefinition(), -1)}>
-                        <span dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }} className={isAddMode ? "svg-active" : ""}></span> {Localization.get("EditModule_Add.Button")}
+                        <span className={isAddMode ? "svg-active" : ""}><SvgIcons.AddIcon /></span> {Localization.get("EditModule_Add.Button")}
                     </a>
                 </GridCell>
                 <GridCell style={{ padding: 0 }}><hr /></GridCell>
