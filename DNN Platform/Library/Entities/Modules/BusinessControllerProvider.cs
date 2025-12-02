@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Modules;
 using System;
 
 using DotNetNuke.Abstractions.Modules;
+using DotNetNuke.Common;
 using DotNetNuke.Framework;
 
 /// <summary>The <see cref="IBusinessControllerProvider"/> implementation.</summary>
@@ -36,6 +37,7 @@ public class BusinessControllerProvider : IBusinessControllerProvider
     public T GetInstance<T>(Type businessControllerType)
         where T : class
     {
+        Requires.NotNull(nameof(businessControllerType), businessControllerType);
         if (typeof(T).IsAssignableFrom(businessControllerType))
         {
             return (T)this.GetInstance(businessControllerType);
