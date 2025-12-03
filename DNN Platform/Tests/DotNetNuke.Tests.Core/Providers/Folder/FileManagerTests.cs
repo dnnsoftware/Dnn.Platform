@@ -255,6 +255,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("invalid_onerror-uppercase.svg")]
         [TestCase("invalid_foreignObject-iframe-src-data.svg")]
         [TestCase("invalid_foreignObject-iframe-srcdoc.svg")]
+        [TestCase("invalid_encoded-parenthesis.svg")]
         [TestCase("DOMPurify/invalid_attribute-mXSS_1.svg")]
         [TestCase("DOMPurify/invalid_attribute-mXSS_2.svg")]
         [TestCase("DOMPurify/invalid_embedded-MathML.svg")]
