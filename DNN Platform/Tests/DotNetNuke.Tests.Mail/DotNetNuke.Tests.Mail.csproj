@@ -1,215 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.6.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props" Condition="Exists('..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.6.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.props" Condition="Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.props')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Platform.1.6.0\build\netstandard2.0\Microsoft.Testing.Platform.props" Condition="Exists('..\..\..\packages\Microsoft.Testing.Platform.1.6.0\build\netstandard2.0\Microsoft.Testing.Platform.props')" />
-  <Import Project="..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.props" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.props')" />
-  <Import Project="..\..\..\packages\NUnit.4.3.2\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.4.3.2\build\NUnit.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6940BDBA-E56F-48A6-B4A6-9F829245984F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DotNetNuke.Tests.Mail</RootNamespace>
-    <AssemblyName>DotNetNuke.Tests.Mail</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <RestorePackages>true</RestorePackages>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-    <RunSettingsFilePath>
-    </RunSettingsFilePath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>SA0001</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TargetFramework>net48</TargetFramework>
+    <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>SA0001</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <LangVersion>latest</LangVersion>
+    <NoWarn>SA0001</NoWarn>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.22.0.997, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.ApplicationInsights.2.22.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.MSBuild, Version=1.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\lib\netstandard2.0\Microsoft.Testing.Extensions.MSBuild.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.Telemetry, Version=1.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.6.0\lib\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.TrxReport.Abstractions, Version=1.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Extensions.TrxReport.Abstractions.1.6.0\lib\netstandard2.0\Microsoft.Testing.Extensions.TrxReport.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Extensions.VSTestBridge, Version=1.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Extensions.VSTestBridge.1.6.0\lib\netstandard2.0\Microsoft.Testing.Extensions.VSTestBridge.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Testing.Platform, Version=1.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.Testing.Platform.1.6.0\lib\netstandard2.0\Microsoft.Testing.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TestPlatform.CoreUtilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.TestPlatform.ObjectModel.17.13.0\lib\net462\Microsoft.TestPlatform.CoreUtilities.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.TestPlatform.PlatformAbstractions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.TestPlatform.ObjectModel.17.13.0\lib\net462\Microsoft.TestPlatform.PlatformAbstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.TestPlatform.ObjectModel.17.13.0\lib\net462\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Moq, Version=4.20.72.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
-      <HintPath>..\..\..\packages\Moq.4.20.72\lib\net462\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="mscorlib" />
-    <Reference Include="nunit.framework, Version=4.3.2.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NUnit.4.3.2\lib\net462\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework.legacy, Version=4.3.2.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NUnit.4.3.2\lib\net462\nunit.framework.legacy.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=9.0.0.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Collections.Immutable.9.0.2\lib\net462\System.Collections.Immutable.dll</HintPath>
-    </Reference>
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Diagnostics.DiagnosticSource.9.0.2\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=9.0.0.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Reflection.Metadata.9.0.2\lib\net462\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="NUnit" Version="4.3.2" />
+    <PackageReference Include="NUnit.Analyzers" Version="4.6.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SmtpOAuthControllerTest.cs" />
+    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" />
+    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
+    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
+    <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj" />
+    <ProjectReference Include="..\..\Providers\SmtpOAuthProviders\ExchangeOnlineAuthProvider\Dnn.ExchangeOnlineAuthProvider.csproj" />
+    <ProjectReference Include="..\..\Providers\SmtpOAuthProviders\GoogleMailAuthProvider\Dnn.GoogleMailAuthProvider.csproj" />
+    <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
-      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
-      <Name>DotNetNuke.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{DDF18E36-41A0-4CA7-A098-78CA6E6F41C1}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj">
-      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Providers\SmtpOAuthProviders\ExchangeOnlineAuthProvider\Dnn.ExchangeOnlineAuthProvider.csproj">
-      <Project>{37c3b4d3-afad-490b-9541-068a098e846f}</Project>
-      <Name>Dnn.ExchangeOnlineAuthProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Providers\SmtpOAuthProviders\GoogleMailAuthProvider\Dnn.GoogleMailAuthProvider.csproj">
-      <Project>{e5494c71-4472-4f19-afb5-4d8902aa5670}</Project>
-      <Name>Dnn.GoogleMailAuthProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj">
-      <Project>{5AECE021-E449-4A7F-BF82-2FA7B236ED3E}</Project>
-      <Name>DotNetNuke.Tests.Utilities</Name>
-    </ProjectReference>
+    <AdditionalFiles Include="..\..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\..\..\packages\NUnit.Analyzers.4.6.0\analyzers\dotnet\cs\nunit.analyzers.dll" />
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\..\..\packages\StyleCop.Analyzers.Unstable.1.2.0.556\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\NUnit.4.3.2\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit.4.3.2\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Platform.1.6.0\build\netstandard2.0\Microsoft.Testing.Platform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Platform.1.6.0\build\netstandard2.0\Microsoft.Testing.Platform.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.6.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Microsoft.Testing.Extensions.Telemetry.1.6.0\build\netstandard2.0\Microsoft.Testing.Extensions.Telemetry.props'))" />
-  </Target>
-  <Import Project="..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.targets" Condition="Exists('..\..\..\packages\NUnit3TestAdapter.5.0.0\build\net462\NUnit3TestAdapter.targets')" />
-  <Import Project="..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('..\..\..\packages\Microsoft.Testing.Platform.MSBuild.1.6.0\build\Microsoft.Testing.Platform.MSBuild.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
