@@ -30,22 +30,22 @@ namespace DotNetNuke.Tests.Urls
 
         public virtual void SetUp()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "SetUp.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\{this.GetTestFolder()}\SetUp.sql");
         }
 
         public virtual void TestFixtureSetUp()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}", this.TestType, "SetUp.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\SetUp.sql");
         }
 
         public virtual void TearDown()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "TearDown.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\{this.GetTestFolder()}\TearDown.sql");
         }
 
         public virtual void TestFixtureTearDown()
         {
-            this.ExecuteScriptFile(string.Format("{0}\\{1}", this.TestType, "TearDown.sql"));
+            this.ExecuteScriptFile($@"{this.TestType}\TearDown.sql");
         }
 
         protected void CreateTab(string tabName)
