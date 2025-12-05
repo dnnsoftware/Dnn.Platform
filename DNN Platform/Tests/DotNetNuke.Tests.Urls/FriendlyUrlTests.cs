@@ -439,7 +439,7 @@ public class FriendlyUrlTests : UrlTestBase
                 Guid.Empty);
         }
 
-        Assert.That(expectedResult.Equals(testUrl, StringComparison.InvariantCultureIgnoreCase), Is.True);
+        Assert.That(testUrl, Is.EqualTo(expectedResult).IgnoreCase);
     }
 
     private void UpdateTabName(int tabId, string newName)

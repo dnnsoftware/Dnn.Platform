@@ -143,18 +143,18 @@ namespace DotNetNuke.Tests.Core
             // Assert
             if (string.IsNullOrEmpty(input))
             {
-                Assert.That(input == result, Is.True);
+                Assert.That(result, Is.EqualTo(input));
             }
             else if (string.IsNullOrWhiteSpace(input))
             {
-                Assert.That(result == string.Empty, Is.True);
+                Assert.That(result, Is.Empty);
             }
             else
             {
                 Assert.Multiple(() =>
                 {
-                    Assert.That(result.Contains(" "), Is.False);
-                    Assert.That(result.Contains("/"), Is.False);
+                    Assert.That(result, Does.Not.Contain(" "));
+                    Assert.That(result, Does.Not.Contain("/"));
                 });
             }
         }

@@ -617,7 +617,7 @@ namespace DotNetNuke.Tests.Urls
                 case 301:
                 case 302:
                     // Test for final Url if redirected
-                    Assert.That(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase), Is.True);
+                    Assert.That(testHelper.Result.FinalUrl.TrimStart('/'), Is.EqualTo(expectedRedirectUrl).IgnoreCase);
                     Assert.That(testHelper.Result.Reason.ToString(), Is.EqualTo(redirectReason), "Redirect reason incorrect");
                     break;
             }

@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
             var getUrlApi = "API/DigitalAssets/ContentService/GetUrl";
             var fileUrl = connector.PostJson(getUrlApi, new { fileId = fileId }, this.GetRequestHeaders()).Content.ReadAsStringAsync().Result;
 
-            Assert.That(fileUrl.Contains(newFolderName), Is.True);
+            Assert.That(fileUrl, Does.Contain(newFolderName));
         }
 
         private int GetRootFolderId()
