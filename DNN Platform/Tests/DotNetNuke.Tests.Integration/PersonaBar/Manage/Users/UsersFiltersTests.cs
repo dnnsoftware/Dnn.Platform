@@ -5,6 +5,7 @@
 namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
 {
     using System;
+    using System.Threading.Tasks;
 
     using DNN.Integration.Test.Framework;
     using DNN.Integration.Test.Framework.Helpers;
@@ -23,7 +24,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
         private string[] _userNames = new string[MaxUsers];
 
         [OneTimeSetUp]
-        public override void TestFixtureSetUp()
+        public override async Task TestFixtureSetUp()
         {
             // clear all existing users except the HOST superuser
             DatabaseHelper.ExecuteNonQuery("DELETE FROM {objectQualifier}UserRelationships");
@@ -35,7 +36,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             {
                 int userId, fileId;
                 string userName;
-                WebApiTestHelper.PrepareNewUser(out userId, out userName, out fileId);
+                (_, userId, userName, fileId) = await WebApiTestHelper.PrepareNewUser();
                 this._userIds[i] = userId;
                 this._userNames[i] = userName;
                 Console.WriteLine(@"Created test users => id: {0}, username: {1}", userId, userName);
