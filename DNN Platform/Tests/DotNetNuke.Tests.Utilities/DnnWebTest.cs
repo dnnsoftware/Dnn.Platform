@@ -38,8 +38,13 @@ public class DnnWebTest : DnnUnitTest
 {
     private static bool alreadyLoaded = false;
 
-    public DnnWebTest(int portalId)
+    public int PortalId { get; private set; }
+
+    /// <inheritdoc />
+    public override void OneTimeSetUp()
     {
+        base.OneTimeSetUp();
+
         var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
         simulator.SimulateRequest(new Uri(this.WebsiteAppPath));
 
@@ -55,14 +60,12 @@ public class DnnWebTest : DnnUnitTest
         var providerProp = typeof(Membership).GetField("s_Provider", BindingFlags.Static | BindingFlags.NonPublic);
         providerProp.SetValue(null, Membership.Providers["AspNetSqlMembershipProvider"]);
 
-        var objPortalAliasInfo = new Entities.Portals.PortalAliasInfo { PortalID = portalId };
+        var objPortalAliasInfo = new Entities.Portals.PortalAliasInfo { PortalID = Constants.PORTAL_Zero, };
         var ps = new Entities.Portals.PortalSettings(59, objPortalAliasInfo);
         httpContextBase.Items.Add("PortalSettings", ps);
 
-        this.PortalId = portalId;
+        this.PortalId = Constants.PORTAL_Zero;
     }
-
-    public int PortalId { get; private set; }
 
     private static void SetupContainer()
     {
