@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.Core.Entities.Tabs
             {
                 // Assert
                 Assert.That(isValid, Is.True, "A regular tab name is not allowed");
-                Assert.That(invalidType, Is.EqualTo(string.Empty), "The invalidType is not the expected one");
+                Assert.That(invalidType, Is.Empty, "The invalidType is not the expected one");
             });
         }
     }
