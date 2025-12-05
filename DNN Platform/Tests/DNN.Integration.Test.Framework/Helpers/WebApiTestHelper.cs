@@ -20,7 +20,7 @@ namespace DNN.Integration.Test.Framework.Helpers
         private static readonly string HostGuid = HostSettingsHelper.GetHostSettingValue("GUID");
         private static IWebApiConnector _anonymousConnector;
 
-        /// <summary>Returns a coonector to access the default site annonymously.</summary>
+        /// <summary>Returns a connector to access the default site anonymously.</summary>
         /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector GetAnnonymousConnector(string url = null)
         {
