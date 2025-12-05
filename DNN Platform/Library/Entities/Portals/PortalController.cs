@@ -1155,9 +1155,9 @@ namespace DotNetNuke.Entities.Portals
 
             // PortalSettings IS Nothing - probably means we haven't set it yet (in Begin Request)
             // so try detecting the user's cookie
-            if (HttpContext.Current.Request["language"] != null)
+            if (context.Request["language"] != null)
             {
-                language = HttpContext.Current.Request["language"];
+                language = context.Request["language"];
                 isDefaultLanguage = false;
             }
 
