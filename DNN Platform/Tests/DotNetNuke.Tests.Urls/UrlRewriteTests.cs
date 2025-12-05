@@ -38,11 +38,6 @@ namespace DotNetNuke.Tests.Urls
         private bool sslEnforced;
         private bool sslEnabled;
 
-        public UrlRewriteTests()
-            : base(0)
-        {
-        }
-
         [SetUp]
         public override void SetUp()
         {
@@ -105,9 +100,9 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeSetUp]
-        public override void TestFixtureSetUp()
+        public override void OneTimeSetUp()
         {
-            base.TestFixtureSetUp();
+            base.OneTimeSetUp();
 
             var tab = TabController.Instance.GetTabByName(AboutUsPageName, this.PortalId);
             if (tab == null)
@@ -141,9 +136,9 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [OneTimeTearDown]
-        public override void TestFixtureTearDown()
+        public override void OneTimeTearDown()
         {
-            base.TestFixtureTearDown();
+            base.OneTimeTearDown();
 
             var aliasController = Globals.DependencyProvider.GetRequiredService<IPortalAliasService>();
             TestUtil.ReadStream("Aliases", (line, header) =>

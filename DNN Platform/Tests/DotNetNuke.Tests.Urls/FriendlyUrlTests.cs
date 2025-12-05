@@ -28,11 +28,6 @@ public class FriendlyUrlTests : UrlTestBase
     private Locale _customLocale;
     private PortalAliasInfo _primaryAlias;
 
-    public FriendlyUrlTests()
-        : base(0)
-    {
-    }
-
     [SetUp]
     public override void SetUp()
     {
@@ -47,9 +42,9 @@ public class FriendlyUrlTests : UrlTestBase
     }
 
     [OneTimeSetUp]
-    public override void TestFixtureSetUp()
+    public override void OneTimeSetUp()
     {
-        base.TestFixtureSetUp();
+        base.OneTimeSetUp();
 
         var tab = TabController.Instance.GetTabByName(_aboutUsPageName, this.PortalId);
         if (tab == null)
@@ -111,9 +106,9 @@ public class FriendlyUrlTests : UrlTestBase
     }
 
     [OneTimeTearDown]
-    public override void TestFixtureTearDown()
+    public override void OneTimeTearDown()
     {
-        base.TestFixtureTearDown();
+        base.OneTimeTearDown();
 
         var aliasController = PortalAliasController.Instance;
         TestUtil.ReadStream("Aliases", (line, header) =>
