@@ -31,9 +31,9 @@ namespace DotNetNuke.UI.Skins.Controls
         public bool ForceBundle { get; set; }
 
         /// <inheritdoc/>
-        protected override void OnLoad(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-            base.OnLoad(e);
+            base.OnInit(e);
             this.ctlInclude.AddTag = this.AddTag;
             this.ctlInclude.FilePath = this.FilePath;
             this.ctlInclude.ForceProvider = this.ForceProvider;

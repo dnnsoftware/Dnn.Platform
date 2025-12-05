@@ -33,18 +33,17 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
+        }
+
+        /// <inheritdoc/>
+        protected override void OnLoad(System.EventArgs e)
+        {
             this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
                         .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
                         .SetProvider(this.ForceProvider)
                         .SetPriority(this.Priority)
                         .SetMedia(this.CssMedia)
                         .Register();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnLoad(System.EventArgs e)
-        {
-            this.PathNameAlias = string.IsNullOrEmpty(this.PathNameAlias) ? string.Empty : this.PathNameAlias.ToLowerInvariant();
             base.OnLoad(e);
         }
 

@@ -29,19 +29,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.DependencyType = ClientDependencyType.Javascript;
         }
 
-        protected override void OnInit(EventArgs e)
+        /// <inheritdoc/>
+        protected override void OnLoad(System.EventArgs e)
         {
             this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias)
                         .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
                         .SetProvider(this.ForceProvider)
                         .SetPriority(this.Priority)
                         .Register();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnLoad(System.EventArgs e)
-        {
-            this.PathNameAlias = string.IsNullOrEmpty(this.PathNameAlias) ? string.Empty : this.PathNameAlias.ToLowerInvariant();
             base.OnLoad(e);
         }
 

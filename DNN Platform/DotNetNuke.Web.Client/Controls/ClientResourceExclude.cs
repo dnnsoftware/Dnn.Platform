@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Client.Controls
         /// </summary>
         public ClientDependencyType DependencyType { get; internal set; }
 
-        protected override void OnInit(EventArgs e)
+        protected override void OnLoad(EventArgs e)
         {
             switch (this.DependencyType)
             {
