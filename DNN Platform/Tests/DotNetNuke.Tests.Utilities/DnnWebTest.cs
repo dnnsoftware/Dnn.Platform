@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Utilities
 
             var objPortalAliasInfo = new Entities.Portals.PortalAliasInfo { PortalID = portalId };
             var ps = new Entities.Portals.PortalSettings(59, objPortalAliasInfo);
-            HttpContext.Current.Items.Add("PortalSettings", ps);
+            httpContextBase.Items.Add("PortalSettings", ps);
 
             this.PortalId = portalId;
         }
