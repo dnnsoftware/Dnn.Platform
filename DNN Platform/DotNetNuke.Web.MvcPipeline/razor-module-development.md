@@ -398,24 +398,42 @@ public class YourModuleControl : RazorModuleControlBase, IActionable
 }
 ```
 
-### 5. Resource Management
+### 5. Resource Management & Page settings
 
-Implement `IPageContributor` to register CSS and JavaScript:
+Implement `IPageContributor` interface to register CSS and JavaScript files, request AJAX support, and configure page settings:
 
 ```csharp
+using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
+
 public class YourModuleControl : RazorModuleControlBase, IPageContributor
 {
     public void ConfigurePage(PageConfigurationContext context)
     {
+        // Request AJAX support (required for AJAX calls and form submissions)
+        context.ServicesFramework.RequestAjaxAntiForgerySupport();
+        context.ServicesFramework.RequestAjaxScriptSupport();
+        
+        // Register CSS stylesheets
         context.ClientResourceController
             .CreateStylesheet("~/DesktopModules/YourModule/styles.css")
             .Register();
+        
+        // Register JavaScript files
         context.ClientResourceController
-            .CreateScript("~/DesktopModules/YourModule/scripts.js")
+            .CreateScript("~/DesktopModules/YourModule/js/edit.js")
             .Register();
+        
+        // Set page title
+        context.PageService.SetTitle("Your Module - Edit");
     }
 }
 ```
+
+**PageConfigurationContext** provides access to:
+- **`ClientResourceController`**: Register CSS and JavaScript resources
+- **`ServicesFramework`**: Request AJAX support (`RequestAjaxAntiForgerySupport()`, `RequestAjaxScriptSupport()`)
+- **`PageService`**: Set page titles and other page-level settings
+- **`JavaScriptLibraryHelper`**: Manage JavaScript libraries
 
 ### 6. View Organization
 
