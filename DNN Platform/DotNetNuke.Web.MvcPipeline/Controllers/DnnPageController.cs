@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.MvcPipeline.Controllers
 {
+    using System;
     using System.Web.Mvc;
 
     using DotNetNuke.Entities.Portals;
@@ -11,9 +12,11 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
     public abstract class DnnPageController : Controller, IMvcController
     {
         /// <summary>Initializes a new instance of the <see cref="DnnPageController"/> class.</summary>
-        protected DnnPageController()
+        protected DnnPageController(IServiceProvider dependencyProvider)
         {
+            this.DependencyProvider = dependencyProvider;
         }
+        public IServiceProvider DependencyProvider  { get; private set; }
 
         public PortalSettings PortalSettings
         {

@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.MvcWebsite.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -40,7 +41,9 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
         public DefaultController(INavigationManager navigationManager, 
                                 IPageModelFactory pageModelFactory, 
                                 IClientResourceController clientResourceController,
-                                IPageService pageService)
+                                IPageService pageService,
+                                IServiceProvider serviceProvider)
+            :base(serviceProvider)
         {
             this.navigationManager = navigationManager;
             this.pageModelFactory = pageModelFactory;
@@ -90,13 +93,26 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
 
             // Configure the ActiveTab with Skin/Container information
             PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
-            PageModel model = this.pageModelFactory.CreatePageModel(this);
-            this.clientResourceController.RegisterPathNameAlias("SkinPath", this.PortalSettings.ActiveTab.SkinPath);
-            model.ClientResourceController = this.clientResourceController;
-            model.PageService = this.pageService;
+            
             try
             {
+                PageModel model = this.pageModelFactory.CreatePageModel(this);
+                this.clientResourceController.RegisterPathNameAlias("SkinPath", this.PortalSettings.ActiveTab.SkinPath);
+                model.ClientResourceController = this.clientResourceController;
+                model.PageService = this.pageService;
                 this.InitializePage(model);
+                // DotNetNuke.Framework.JavaScriptLibraries.MvcJavaScript.Register(this.ControllerContext);
+                model.ClientVariables = MvcClientAPI.GetClientVariableList();
+                model.StartupScripts = MvcClientAPI.GetClientStartupScriptList();
+
+                // Register the scripts and stylesheets
+                this.RegisterScriptsAndStylesheets(model);
+
+                return this.View(model.Skin.RazorFile, "Layout", model);
+            }
+            catch (AccesDeniedException)
+            {
+                return new HttpStatusCodeResult(403, "Access Denied");
             }
             catch (MvcPageException ex)
             {
@@ -109,15 +125,6 @@ namespace DotNetNuke.Web.MvcWebsite.Controllers
                     return this.Redirect(ex.RedirectUrl);
                 }
             }
-
-            // DotNetNuke.Framework.JavaScriptLibraries.MvcJavaScript.Register(this.ControllerContext);
-            model.ClientVariables = MvcClientAPI.GetClientVariableList();
-            model.StartupScripts = MvcClientAPI.GetClientStartupScriptList();
-
-            // Register the scripts and stylesheets
-            this.RegisterScriptsAndStylesheets(model);
-
-            return this.View(model.Skin.RazorFile, "Layout", model);
         }
 
         private void RegisterScriptsAndStylesheets(PageModel page)

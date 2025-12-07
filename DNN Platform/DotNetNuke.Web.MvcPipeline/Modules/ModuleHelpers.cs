@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
-
+    using DotNetNuke.Web.MvcPipeline.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class ModuleHelpers
@@ -108,10 +108,18 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
             return htmlHelper.Partial(viewPath, model, dic);
         }
 
-        private static IClientResourceController GetClientResourcesController()
+        private static IClientResourceController GetClientResourcesController(HtmlHelper htmlHelper)
         {
-            var serviceProvider = Common.Globals.GetCurrentServiceProvider();
-            return serviceProvider.GetRequiredService<IClientResourceController>();
+            var controller = htmlHelper.ViewContext.Controller as DnnPageController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The DnnHelper class can only be used from DnnPageController");
+            }
+
+            return controller.DependencyProvider.GetRequiredService<IClientResourceController>();
+            //var serviceProvider = Common.Globals.GetCurrentServiceProvider();
+            //return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }
