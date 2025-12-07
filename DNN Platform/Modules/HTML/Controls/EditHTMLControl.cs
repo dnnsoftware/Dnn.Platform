@@ -5,19 +5,25 @@
 namespace DotNetNuke.Modules.Html.Controls
 {
     using System;
+    using System.Collections.Specialized;
     using System.Linq;
+    using System.Web.UI.WebControls;
 
+    using DNNConnect.CKEditorProvider.Utilities;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Modules.Html;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
+
     using Microsoft.Extensions.DependencyInjection;
 
     public class EditHTMLControl : RazorModuleControlBase, IPageContributor
@@ -96,7 +102,25 @@ namespace DotNetNuke.Modules.Html.Controls
                 model.ShowCurrentVersion = model.CurrentWorkflowType != WorkflowType.DirectPublish;
                 model.ShowPreviewVersion = model.CurrentWorkflowType != WorkflowType.DirectPublish;
                 model.ShowHistoryView = false;
-                model.ShowMasterContentButton = false;
+
+                // Master Content Button
+                var objModule = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
+                if (objModule.DefaultLanguageModule != null)
+                {
+                    model.ShowMasterContentButton = true;
+                }
+                else
+                {
+                    model.ShowMasterContentButton = false;
+                }
+
+                // Render Options
+                model.RenderOptions = new System.Collections.Generic.List<System.Web.Mvc.SelectListItem>();
+                model.RenderOptions.Add(new System.Web.Mvc.SelectListItem { Text = Localization.GetString("liRichText", this.LocalResourceFile), Value = "RICH" });
+                model.RenderOptions.Add(new System.Web.Mvc.SelectListItem { Text = Localization.GetString("liBasicText", this.LocalResourceFile), Value = "BASIC" });
+
+                // Load CKEditor Settings
+                // this.LoadEditorSettings(model);
             }
             catch (Exception exc)
             {
@@ -128,5 +152,44 @@ namespace DotNetNuke.Modules.Html.Controls
             model.ShowCurrentWorkflowState = false;
             model.ShowCurrentVersion = false;
         }
+
+        /*
+        private void LoadEditorSettings(EditHtmlViewModel model)
+        {
+            const string ProviderType = "htmlEditor";
+
+            // Load config settings
+            var settings = SettingsLoader.LoadConfigSettings(ProviderType);
+            var configFolder = settings["configFolder"];
+
+            // Load editor settings
+            var currentEditorSettings = SettingsLoader.LoadSettings(
+                this.PortalSettings,
+                this.ModuleId,
+                this.ModuleId.ToString(),
+                configFolder);
+
+            // Get module configuration
+            var moduleConfiguration = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
+
+            // Populate settings
+            var emptyAttributes = new NameValueCollection();
+            SettingsLoader.PopulateSettings(
+                settings,
+                currentEditorSettings,
+                this.PortalSettings,
+                moduleConfiguration,
+                emptyAttributes,
+                Unit.Empty,
+                Unit.Empty,
+                this.ModuleId.ToString(),
+                this.ModuleId,
+                null);
+
+            // Generate config script
+            var editorVar = $"editor{this.ModuleId}";
+            model.ConfigScript = SettingsLoader.GetEditorConfigScript(settings, editorVar);
+        }
+        */
     }
 }

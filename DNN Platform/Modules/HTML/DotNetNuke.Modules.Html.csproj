@@ -158,7 +158,7 @@
     <Compile Include="Components\HtmlTextLogInfo.cs" />
     <Compile Include="Components\HtmlTextUserController.cs" />
     <Compile Include="Components\HtmlTextUserInfo.cs" />
-    <Compile Include="Controllers\DNN_HTMLController.cs" />
+    <Compile Include="Controllers\HTMLController.cs" />
     <Compile Include="Models\HtmlTextUserModel.cs" />
     <Compile Include="Models\MyWorkModel.cs" />
     <Compile Include="Models\WorkflowType.cs" />
@@ -280,6 +280,10 @@
       <Name>DotNetNuke.Library</Name>
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Providers\HtmlEditorProviders\DNNConnect.CKE\DNNConnect.CKEditorProvider.csproj">
+      <Project>{ae7e021e-7c7b-4003-9bd6-5a04c781c277}</Project>
+      <Name>DNNConnect.CKEditorProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>

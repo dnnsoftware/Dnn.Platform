@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Html.Controllers
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
@@ -21,19 +22,21 @@ namespace DotNetNuke.Modules.Html.Controllers
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Web.MvcPipeline.Controllers;
 
-    public class DNN_HTMLController : ModuleControllerBase
+    public class HTMLController : ModuleControllerBase
     {
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
         private readonly HtmlTextLogController htmlTextLogController = new HtmlTextLogController();
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly HtmlModuleSettingsRepository settingsRepository;
+        private readonly IClientResourceController clientResourceController;
 
-        public DNN_HTMLController(INavigationManager navigationManager)
+        public HTMLController(INavigationManager navigationManager, IClientResourceController clientResourceController)
         {
             this.navigationManager = navigationManager;
             this.htmlTextController = new HtmlTextController(this.navigationManager);
             this.settingsRepository = new HtmlModuleSettingsRepository();
+            this.clientResourceController = clientResourceController;
         }
 
         [HttpPost]
@@ -182,7 +185,7 @@ namespace DotNetNuke.Modules.Html.Controllers
                 var htmlContent = this.htmlTextController.GetHtmlText(model.ModuleId, model.ItemID);
 
                 var moduleSettings = this.settingsRepository.GetSettings(this.ActiveModule);
-                model.PreviewContent = HtmlTextController.FormatHtmlText(model.ModuleId, htmlContent.Content, moduleSettings, this.PortalSettings, null);
+                model.PreviewContent = HtmlTextController.FormatHtmlText(model.ModuleId, htmlContent.Content, moduleSettings, this.PortalSettings, this.clientResourceController);
 
                 return this.PartialView(this.ActiveModule, "EditHtml", model);
             }

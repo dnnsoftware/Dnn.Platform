@@ -4,7 +4,7 @@
 @model EditHtmlViewModel
 
 <div class="dnnForm dnnEditHtml dnnClear" id="dnnEditHtml" data-returnurl="@Model.RedirectUrl" data-portalid="@Model.PortalId" data-tabid="@Model.TabId" data-moduleid="@Model.ModuleId">
-    @using (Html.BeginForm("Save", "DNN_HTML", new {area= "HTML"}))
+    @using (Html.BeginForm("Save", "HTML", new {area= "HTML"}))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(x => x.TabId)
@@ -69,13 +69,13 @@
                     <a href="@Model.RedirectUrl" class="dnnSecondaryAction">@Localization.GetString("cmdCancel", Model.LocalResourceFile)</a>
                 </li>
                 <li>
-                    <button type="button" data-action="@Url.Action("ShowEdit", "DNN_HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowEditView ? "aspNetDisabled" : "" )" id="cmdEdit" @(Model.ShowEditView ? "disabled" : "" )>@Localization.GetString("cmdEdit", Model.LocalResourceFile)</button>
+                    <button type="button" data-action="@Url.Action("ShowEdit", "HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowEditView ? "aspNetDisabled" : "" )" id="cmdEdit" @(Model.ShowEditView ? "disabled" : "" )>@Localization.GetString("cmdEdit", Model.LocalResourceFile)</button>
                 </li>
                 <li>
-                    <button type="button" data-action="@Url.Action("ShowPreview", "DNN_HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowPreviewView ? "aspNetDisabled" : "" )" id="cmdPreview" @(Model.ShowPreviewView ? "disabled" : "" )>@Localization.GetString("cmdPreview", Model.LocalResourceFile)</button>
+                    <button type="button" data-action="@Url.Action("ShowPreview", "HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowPreviewView ? "aspNetDisabled" : "" )" id="cmdPreview" @(Model.ShowPreviewView ? "disabled" : "" )>@Localization.GetString("cmdPreview", Model.LocalResourceFile)</button>
                 </li>
                 <li>
-                    <button type="button" data-action="@Url.Action("ShowHistory", "DNN_HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowHistoryView ? "aspNetDisabled" : "" )" id="cmdHistory" @(Model.ShowHistoryView ? "disabled" : "" )>@Localization.GetString("cmdHistory", Model.LocalResourceFile)</button>
+                    <button type="button" data-action="@Url.Action("ShowHistory", "HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowHistoryView ? "aspNetDisabled" : "" )" id="cmdHistory" @(Model.ShowHistoryView ? "disabled" : "" )>@Localization.GetString("cmdHistory", Model.LocalResourceFile)</button>
                 </li>
                 <li>
                     <span class="separator"></span>
@@ -98,71 +98,3 @@
         </div>
     }
 </div>
-
-@*
-    @section Scripts {
-        <script>
-            (function ($, Sys) {
-                function setupDnnEditHtml() {
-                    $('#dnnEditHtml').dnnPanels();
-                    if (window.frameElement && window.frameElement.id == "iPopUp") {
-                        var ckeditorid = $(".ehCurrentContent textarea.editor").attr('id');
-                        if (ckeditorid) {
-                            CKEDITOR.on("instanceReady", function (event) {
-                                editor = event.editor;
-                                resizeDnnEditHtml();
-                            });
-                        } else {
-                            resizeDnnEditHtml();
-                        }
-                        $(window).resize(function () {
-                            var timeout;
-                            if (timeout) clearTimeout(timeout);
-                            timeout = setTimeout(function () {
-                                timeout = null;
-                                resizeDnnEditHtml();
-                            }, 50);
-                        });
-                    }
-                }
-
-                function resizeDnnEditHtml() {
-                    $('.ehCurrentContent').height($(window).height() - $('.ehActions').height() - $('.dnnEditHtml ').outerHeight(true) + $('.dnnEditHtml ').innerHeight());
-                    $('window.frameElement, body, html').css('overflow', 'hidden');
-                    if ($('.ehccContent.EditView').length) {
-                        // Ajuster la taille de l'éditeur en fonction du type (RadEditor, CKEditor, ou éditeur de base)
-                        // ... (code pour ajuster la taille de l'éditeur)
-                    }
-                }
-
-                $(document).ready(function () {
-                    setupDnnEditHtml();
-                    Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-                        setupDnnEditHtml();
-                    });
-
-                    // Ajouter des gestionnaires d'événements pour les boutons
-                    $('#cmdEdit').click(function () {
-                        // Logique pour passer en mode édition
-                    });
-
-                    $('#cmdPreview').click(function () {
-                        // Logique pour passer en mode prévisualisation
-                    });
-
-                    $('#cmdHistory').click(function () {
-                        // Logique pour afficher l'historique
-                    });
-
-                    $('#ddlRender').change(function () {
-                        // Logique pour changer le mode de rendu
-                    });
-
-                    $('#cmdMasterContent').click(function () {
-                        // Logique pour afficher/masquer le contenu maître
-                    });
-                });
-            }(jQuery, window.Sys));
-        </script>
-    }
-*@

@@ -108,6 +108,8 @@ $(function () {
         filebrowserImageUploadUrl: '/Providers/HtmlEditorProviders/DNNConnect.CKE/Browser/Browser.aspx?Command=ImageUpload&' + urlpars + '&ckid=txtContent&mode=Default&lang=fr-FR',
         filebrowserWindowWidth: 870, filebrowserWindowHeight: 800
     };
+    if (window['editorConfigeditor' + moduleId])
+        editorConfigeditortxtContent = window['editorConfigeditor' + moduleId];
 
     CKEDITOR.replace('EditorContent', editorConfigeditortxtContent);
 

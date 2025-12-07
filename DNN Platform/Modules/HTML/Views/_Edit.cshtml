@@ -2,6 +2,7 @@
 @using DotNetNuke.Web.MvcPipeline.Modules
 @using DotNetNuke.Services.Localization
 @using DotNetNuke.Web.MvcPipeline.Containers
+@using DNNConnect.CKEditorProvider.Web
 @model EditHtmlViewModel
 
 <fieldset>
@@ -15,9 +16,10 @@
             </div>
         }
         @* Html.TextAreaFor(x => x.EditorContent, new { @class = "dnnTextEditor", rows = "10", cols = "100" })*@
-        @Html.TextEditorFor(x => x.EditorContent)
+        @*@Html.TextEditorFor(x => x.EditorContent)*@
+        @Html.CKEditorEditorFor(x => x.EditorContent, Model.ModuleId)
     </div>
-   
+
     @if (Model.ShowCurrentVersion)
     {
         <div class="divCurrentVersion">

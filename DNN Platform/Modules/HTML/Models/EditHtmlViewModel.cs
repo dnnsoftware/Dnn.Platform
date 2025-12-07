@@ -70,5 +70,7 @@ namespace DotNetNuke.Modules.Html.Models
         public int PageSize { get; set; }
 
         public bool ShowHistoryButton { get; set; }
+
+        public string ConfigScript { get; set; }
     }
 }
