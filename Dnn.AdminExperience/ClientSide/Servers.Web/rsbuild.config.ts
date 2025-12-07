@@ -83,6 +83,7 @@ export default defineConfig({
         ],
       },
     },
+    htmlPlugin: false,
   },
   dev: {
     writeToDisk: true,
