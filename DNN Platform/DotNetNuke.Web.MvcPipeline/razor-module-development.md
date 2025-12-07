@@ -15,7 +15,8 @@ This guide explains how to create DNN modules using `RazorModuleControlBase`, wh
 7. [Module Configuration](#module-configuration)
 8. [Available Properties and Methods](#available-properties-and-methods)
 9. [Return Types](#return-types)
-10. [Best Practices](#best-practices)
+10. [Using Razor Modules in WebForms with WrapperModule](#using-razor-modules-in-webforms-with-wrappermodule)
+11. [Best Practices](#best-practices)
 
 ## Introduction
 
@@ -316,6 +317,43 @@ Displays an error message:
 return Error("Error Heading", "Error message details");
 ```
 
+## Using Razor Modules in WebForms with WrapperModule
+
+The `WrapperModule` class allows you to use Razor module controls within the traditional WebForms pipeline. This is useful when you need to display Razor-based modules on pages that use the WebForms pipeline (`/default.aspx`).
+
+### How It Works
+
+The `WrapperModule` acts as a bridge between WebForms and the MVC pipeline. It:
+- Inherits from `PortalModuleBase` (WebForms compatible)
+- Creates and renders your Razor module control
+- Handles module actions and page contributors automatically
+- Displays the rendered HTML within the WebForms page
+
+### Module Configuration
+
+To use a Razor module control in WebForms, configure your module control in the `.dnn` manifest file as follows:
+
+```xml
+<moduleControl>
+    <controlKey />
+    <controlSrc>DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms.WrapperModule, DotNetNuke.Web.MvcPipeline</controlSrc>
+    <mvcControlClass>YourNamespace.Controls.YourModuleControl, YourAssembly</mvcControlClass>
+    <supportsPartialRendering>False</supportsPartialRendering>
+    <controlTitle />
+    <controlType>View</controlType>
+    <viewOrder>0</viewOrder>
+</moduleControl>
+```
+
+### Important Limitations
+
+**⚠️ Form Tags Restriction**: Razor modules used with `WrapperModule` **cannot contain `<form>` tags**. This is because WebForms pages already have a form tag, and nested forms are not allowed in HTML.
+
+**Workarounds:**
+- Use AJAX for form submissions instead of traditional form posts
+- Place forms in separate pages/controls that use the MVC pipeline
+- Use JavaScript to submit data without form tags
+
 ## Best Practices
 
 ### 1. Dependency Injection
@@ -398,24 +436,42 @@ public class YourModuleControl : RazorModuleControlBase, IActionable
 }
 ```
 
-### 5. Resource Management
+### 5. Resource Management & Page settings
 
-Implement `IPageContributor` to register CSS and JavaScript:
+Implement `IPageContributor` interface to register CSS and JavaScript files, request AJAX support, and configure page settings:
 
 ```csharp
+using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
+
 public class YourModuleControl : RazorModuleControlBase, IPageContributor
 {
     public void ConfigurePage(PageConfigurationContext context)
     {
+        // Request AJAX support (required for AJAX calls and form submissions)
+        context.ServicesFramework.RequestAjaxAntiForgerySupport();
+        context.ServicesFramework.RequestAjaxScriptSupport();
+        
+        // Register CSS stylesheets
         context.ClientResourceController
             .CreateStylesheet("~/DesktopModules/YourModule/styles.css")
             .Register();
+        
+        // Register JavaScript files
         context.ClientResourceController
-            .CreateScript("~/DesktopModules/YourModule/scripts.js")
+            .CreateScript("~/DesktopModules/YourModule/js/edit.js")
             .Register();
+        
+        // Set page title
+        context.PageService.SetTitle("Your Module - Edit");
     }
 }
 ```
+
+**PageConfigurationContext** provides access to:
+- **`ClientResourceController`**: Register CSS and JavaScript resources
+- **`ServicesFramework`**: Request AJAX support (`RequestAjaxAntiForgerySupport()`, `RequestAjaxScriptSupport()`)
+- **`PageService`**: Set page titles and other page-level settings
+- **`JavaScriptLibraryHelper`**: Manage JavaScript libraries
 
 ### 6. View Organization
 
