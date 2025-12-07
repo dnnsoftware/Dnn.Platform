@@ -223,46 +223,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// The Dependency Service.
         /// </value>
         protected IServiceProvider DependencyProvider => this.serviceScopeContainer.Value.ServiceScope.ServiceProvider;
-        
-        public string EditUrl(string keyName, string keyValue)
-        {
-            return this.EditUrl(keyName, keyValue, string.Empty);
-        }
-
-        public string EditUrl(string keyName, string keyValue, string controlKey)
-        {
-            var parameters = new string[] { };
-            return this.EditUrl(keyName, keyValue, controlKey, parameters);
-        }
-
-        public string EditUrl(string keyName, string keyValue, string controlKey, params string[] additionalParameters)
-        {
-            var parameters = this.GetParameters(controlKey, additionalParameters);
-            return this.moduleContext.EditUrl(keyName, keyValue, controlKey, parameters);
-        }
-
-        private string[] GetParameters(string controlKey, string[] additionalParameters)
-        {
-            if (this.moduleContext.Configuration.ModuleDefinition.ModuleControls.ContainsKey(controlKey))
-            {
-                var moduleControl = this.moduleContext.Configuration.ModuleDefinition.ModuleControls[controlKey];
-                if (!string.IsNullOrEmpty(moduleControl.MvcControlClass))
-                {
-                    var parameters = new string[1 + additionalParameters.Length];
-                    parameters[0] = "mvcpage=yes";
-                    Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
-                    return parameters;
-                }
-            }
-
-            return additionalParameters;
-        }
-
-        public string EditUrl(int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
-        {
-            var parameters = this.GetParameters(controlKey, additionalParameters);
-            return this.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, parameters);
-        }
 
         public int GetNextActionID()
         {
@@ -278,17 +238,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 this.serviceScopeContainer.Value.Dispose();
             }
         }
-
-        protected string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
-        }
-
-        protected string LocalizeSafeJsString(string key)
-        {
-            return Localization.GetSafeJSString(key, this.LocalResourceFile);
-        }
-
+      
         public abstract IHtmlString Html(HtmlHelper htmlHelper);
     }
 }

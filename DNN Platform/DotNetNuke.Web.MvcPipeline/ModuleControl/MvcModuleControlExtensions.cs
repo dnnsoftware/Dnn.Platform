@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     using System.Web.Mvc;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
@@ -19,7 +20,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
     /// </summary>
     public static class MvcModuleControlExtensions
     {
-        
+
         /// <summary>
         /// Gets a localized string for the module control.
         /// </summary>
@@ -63,21 +64,20 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         }
 
         /// <summary>
-        /// Gets an edit URL for the module.
+        /// Gets an edit URL for the module with specific parameters.
         /// </summary>
         /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="keyName">The parameter key name.</param>
+        /// <param name="keyValue">The parameter key value.</param>
         /// <param name="controlKey">The control key for the edit page.</param>
-        /// <returns>The edit URL.</returns>
-        public static string EditUrl(this IMvcModuleControl moduleControl, string controlKey = "")
+        /// <returns>The edit URL with parameters.</returns>
+        public static string EditUrl(this IMvcModuleControl moduleControl)
         {
             if (moduleControl == null)
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
-
-            return string.IsNullOrEmpty(controlKey)
-                ? moduleControl.ModuleContext.EditUrl()
-                : moduleControl.ModuleContext.EditUrl(controlKey);
+            return EditUrl(moduleControl, "Edit", string.Empty, string.Empty);
         }
 
         /// <summary>
@@ -88,16 +88,85 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         /// <param name="keyValue">The parameter key value.</param>
         /// <param name="controlKey">The control key for the edit page.</param>
         /// <returns>The edit URL with parameters.</returns>
-        public static string EditUrl(this IMvcModuleControl moduleControl, string keyName, string keyValue, string controlKey = "")
+        public static string EditUrl(this IMvcModuleControl moduleControl, string controlKey)
         {
             if (moduleControl == null)
             {
                 throw new ArgumentNullException(nameof(moduleControl));
             }
+            return EditUrl(moduleControl, controlKey, string.Empty, string.Empty);
+        }
 
-            return string.IsNullOrEmpty(controlKey)
-                ? moduleControl.ModuleContext.EditUrl(keyName, keyValue)
-                : moduleControl.ModuleContext.EditUrl(keyName, keyValue, controlKey);
+        /// <summary>
+        /// Gets an edit URL for the module with specific parameters.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="keyName">The parameter key name.</param>
+        /// <param name="keyValue">The parameter key value.</param>
+        /// <param name="controlKey">The control key for the edit page.</param>
+        /// <returns>The edit URL with parameters.</returns>
+        public static string EditUrl(this IMvcModuleControl moduleControl, string keyName, string keyValue)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+            return EditUrl(moduleControl, keyName, keyValue, string.Empty);
+        }
+
+        /// <summary>
+        /// Gets an edit URL for the module with specific parameters.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="keyName">The parameter key name.</param>
+        /// <param name="keyValue">The parameter key value.</param>
+        /// <param name="controlKey">The control key for the edit page.</param>
+        /// <returns>The edit URL with parameters.</returns>
+        public static string EditUrl(this IMvcModuleControl moduleControl, string keyName, string keyValue, string controlKey)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+            var parameters = new string[] { };
+            return EditUrl(moduleControl, keyName, keyValue, controlKey, parameters);
+        }
+
+        /// <summary>
+        /// Gets an edit URL for the module with specific parameters.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="keyName">The parameter key name.</param>
+        /// <param name="keyValue">The parameter key value.</param>
+        /// <param name="controlKey">The control key for the edit page.</param>
+        /// <returns>The edit URL with parameters.</returns>
+        public static string EditUrl(this IMvcModuleControl moduleControl, string keyName, string keyValue, string controlKey, params string[] additionalParameters)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+            var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
+            return moduleControl.ModuleContext.EditUrl(keyName, keyValue, controlKey, parameters);
+        }
+
+
+        /// <summary>
+        /// Gets an edit URL for the module with specific parameters.
+        /// </summary>
+        /// <param name="moduleControl">The module control instance.</param>
+        /// <param name="keyName">The parameter key name.</param>
+        /// <param name="keyValue">The parameter key value.</param>
+        /// <param name="controlKey">The control key for the edit page.</param>
+        /// <returns>The edit URL with parameters.</returns>
+        public static string EditUrl(this IMvcModuleControl moduleControl, int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
+        {
+            if (moduleControl == null)
+            {
+                throw new ArgumentNullException(nameof(moduleControl));
+            }
+            var parameters = GetParameters(moduleControl, controlKey, additionalParameters);
+            return moduleControl.ModuleContext.NavigateUrl(tabID, controlKey, pageRedirect, parameters);
         }
 
         /// <summary>
@@ -170,6 +239,23 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
 
             return moduleControl.ModuleContext.IsEditable;
-        }        
+        }
+
+        private static string[] GetParameters(IMvcModuleControl moduleControl, string controlKey, string[] additionalParameters)
+        {
+            if (moduleControl.ModuleContext.Configuration.ModuleDefinition.ModuleControls.ContainsKey(controlKey))
+            {
+                var editModuleControl = moduleControl.ModuleContext.Configuration.ModuleDefinition.ModuleControls[controlKey];
+                if (!string.IsNullOrEmpty(editModuleControl.MvcControlClass))
+                {
+                    var parameters = new string[1 + additionalParameters.Length];
+                    parameters[0] = "mvcpage=yes";
+                    Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
+                    return parameters;
+                }
+            }
+
+            return additionalParameters;
+        }
     }
 }
