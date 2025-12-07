@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString JQuery(this HtmlHelper<PageModel> helper, bool dnnjQueryPlugins = false, bool jQueryHoverIntent = false, bool jQueryUI = false)
         {
-            var javaScript = Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            var javaScript = HtmlHelpers.GetDependencyProvider(helper).GetRequiredService<IJavaScriptLibraryHelper>();
 
             javaScript.RequestRegistration(CommonJs.jQuery);
             javaScript.RequestRegistration(CommonJs.jQueryMigrate);

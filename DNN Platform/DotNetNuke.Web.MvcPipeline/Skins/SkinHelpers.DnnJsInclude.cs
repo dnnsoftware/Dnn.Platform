@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             //todo CSP - implement nonce support
             // htmlAttibs.Add("nonce", helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
 
-            var script = GetClientResourcesController()
+            var script = HtmlHelpers.GetClientResourcesController(helper)
                 .CreateScript(filePath, pathNameAlias)
                 .SetPriority(priority);
             if (!string.IsNullOrEmpty(forceProvider))

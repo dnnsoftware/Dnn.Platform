@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.MvcPipeline.Controllers;
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class SkinHelpers
@@ -23,12 +24,6 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         public static string GetSkinsResourceFile(string fileName)
         {
             return GetResourceFile("/admin/Skins", fileName);
-        }
-
-        private static IClientResourceController GetClientResourcesController()
-        {
-            var serviceProvider = Common.Globals.GetCurrentServiceProvider();
-            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

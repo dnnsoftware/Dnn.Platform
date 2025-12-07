@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString JavaScriptLibraryInclude(this HtmlHelper<PageModel> helper, string name, string version = null, string specificVersion = null)
         {
-            var javaScript = Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+            var javaScript = HtmlHelpers.GetDependencyProvider(helper).GetRequiredService<IJavaScriptLibraryHelper>();
             SpecificVersion specificVer;
             if (version == null)
             {

@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 }
 
                 // register admin.css
-                var controller = GetClientResourcesController();
+                var controller = HtmlHelpers.GetClientResourcesController(htmlHelper);
                 controller.RegisterStylesheet(Globals.HostPath + "admin.css", FileOrder.Css.AdminCss, false);
             }
 

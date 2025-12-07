@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     {
         public static IHtmlString DnnCssInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, string cssMedia = "")
         {
-            var ss = GetClientResourcesController()
+            var ss = HtmlHelpers.GetClientResourcesController(helper)
                 .CreateStylesheet(filePath, pathNameAlias)
                 .SetPriority(priority);
             if (!string.IsNullOrEmpty(forceProvider))

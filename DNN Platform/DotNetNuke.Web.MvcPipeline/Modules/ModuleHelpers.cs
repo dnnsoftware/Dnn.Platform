@@ -107,19 +107,5 @@ namespace DotNetNuke.Web.MvcPipeline.Modules
 
             return htmlHelper.Partial(viewPath, model, dic);
         }
-
-        private static IClientResourceController GetClientResourcesController(HtmlHelper htmlHelper)
-        {
-            var controller = htmlHelper.ViewContext.Controller as DnnPageController;
-
-            if (controller == null)
-            {
-                throw new InvalidOperationException("The DnnHelper class can only be used from DnnPageController");
-            }
-
-            return controller.DependencyProvider.GetRequiredService<IClientResourceController>();
-            //var serviceProvider = Common.Globals.GetCurrentServiceProvider();
-            //return serviceProvider.GetRequiredService<IClientResourceController>();
-        }
     }
 }

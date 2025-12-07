@@ -14,10 +14,8 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Framework;
-    using DotNetNuke.Services.ClientDependency;
-    using DotNetNuke.Web.Client.ResourceManager;
+    using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Framework;
-    using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
     using DotNetNuke.Web.MvcPipeline.Utils;
@@ -77,10 +75,23 @@ namespace DotNetNuke.Web.MvcPipeline
             return new MvcHtmlString(string.Empty);
         }
 
-        private static IClientResourceController GetClientResourcesController()
+        internal static IServiceProvider GetDependencyProvider(HtmlHelper htmlHelper)
         {
-            var serviceProvider = Common.Globals.GetCurrentServiceProvider();
-            return serviceProvider.GetRequiredService<IClientResourceController>();
+            var controller = htmlHelper.ViewContext.Controller as DnnPageController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("The HtmlHelper can only be used from DnnPageController");
+            }
+
+            return controller.DependencyProvider;
+        }
+        internal static IClientResourceController GetClientResourcesController(HtmlHelper htmlHelper)
+        {
+            return GetDependencyProvider(htmlHelper).GetRequiredService<IClientResourceController>();
+
+            //var serviceProvider = Common.Globals.GetCurrentServiceProvider();
+            //return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

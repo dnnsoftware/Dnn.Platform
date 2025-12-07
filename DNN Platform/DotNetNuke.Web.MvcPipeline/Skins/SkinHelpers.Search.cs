@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
             //TODO: CSP - enable when CSP implementation is ready
             var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            var controller = GetClientResourcesController();
+            var controller = HtmlHelpers.GetClientResourcesController(helper);
             controller.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             controller.CreateScript("~/Resources/Search/SearchSkinObjectPreview.js")
                 .SetDefer()
