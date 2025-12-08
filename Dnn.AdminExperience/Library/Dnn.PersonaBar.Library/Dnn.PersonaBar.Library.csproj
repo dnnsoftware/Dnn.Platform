@@ -1,169 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8B50BA8B-0A08-41B8-81B8-EA70707C7379}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dnn.PersonaBar.Library</RootNamespace>
-    <AssemblyName>Dnn.PersonaBar.Library</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <TargetFramework>net48</TargetFramework>
+    <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
+    <NoWarn>CS1591</NoWarn>
+    <WarningsNotAsErrors>CS0618,SA1600,CA1010,CA1018,CA1051,CA1304,CA1305,CA1309,CA1310,CA1311,CA1711,CA1725,CA1822,CA1852,CA1859,CA1860,CA1861,CA2201,CA2251,CA3075</WarningsNotAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Dnn.PersonaBar.Library.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\..\..\SolutionInfo.cs">
-      <Link>Properties\SolutionInfo.cs</Link>
-    </Compile>
-    <Compile Include="AppEvents\EventsController.cs" />
-    <Compile Include="AppEvents\Attributes\IgnoreVersionMatchCheckAttribute.cs" />
-    <Compile Include="AppEvents\IEventsController.cs" />
-    <Compile Include="AppEvents\ISkinEvents.cs" />
-    <Compile Include="AppEvents\IAppEvents.cs" />
-    <Compile Include="Attributes\AdvancedPermissionAttribute.cs" />
-    <Compile Include="Attributes\MenuPermissionAttribute.cs" />
-    <Compile Include="Common\Utilities.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Containers\IPersonaBarContainer.cs" />
-    <Compile Include="Containers\PersonaBarContainer.cs" />
-    <Compile Include="Controllers\ILocalizationController.cs" />
-    <Compile Include="Controllers\IModulesController.cs" />
-    <Compile Include="Controllers\LocalizationController.cs" />
-    <Compile Include="Controllers\ModulesController.cs" />
-    <Compile Include="Dto\Localization.cs" />
-    <Compile Include="Dto\UserSettings.cs" />
-    <Compile Include="Helper\ContentVerifier.cs" />
-    <Compile Include="Helper\IContentVerifier.cs" />
-    <Compile Include="Helper\PortalHelper.cs" />
-    <Compile Include="Helper\TimeZoneHelper.cs" />
-    <Compile Include="Controllers\IExtensionController.cs" />
-    <Compile Include="Controllers\IMenuItemController.cs" />
-    <Compile Include="Controllers\TabsController.cs" />
-    <Compile Include="Data\DataService.cs" />
-    <Compile Include="Data\IDataService.cs" />
-    <Compile Include="Dto\TimeZoneDto.cs" />
-    <Compile Include="Dto\Tabs\LocaleInfoDto.cs" />
-    <Compile Include="Dto\Tabs\NodeCheckedState.cs" />
-    <Compile Include="Dto\Permission.cs" />
-    <Compile Include="Dto\Permissions.cs" />
-    <Compile Include="Dto\RolePermission.cs" />
-    <Compile Include="Dto\Tabs\TabDto.cs" />
-    <Compile Include="Dto\UserPermission.cs" />
-    <Compile Include="Helper\IPermissionGridApi.cs" />
-    <Compile Include="Helper\PermissionHelper.cs" />
-    <Compile Include="HttpRequestMessageExtensions.cs" />
-    <Compile Include="Common\IocUtil.cs" />
-    <Compile Include="PersonaBarApiController.cs" />
-    <Compile Include="Controllers\IPersonaBarController.cs" />
-    <Compile Include="Controllers\IPersonaBarUserSettingsController.cs" />
-    <Compile Include="Controllers\PersonaBarController.cs" />
-    <Compile Include="Controllers\PersonaBarUserSettingsController.cs" />
-    <Compile Include="Model\MenuItem.cs" />
-    <Compile Include="Model\PersonaBarExtension.cs" />
-    <Compile Include="Model\PersonaBarMenu.cs" />
-    <Compile Include="Permissions\CompareMenuPermissions.cs" />
-    <Compile Include="Permissions\MenuPermissionCollection.cs" />
-    <Compile Include="Permissions\MenuPermissionController.cs" />
-    <Compile Include="Model\PermissionInfo.cs" />
-    <Compile Include="Model\MenuPermissionInfo.cs" />
-    <Compile Include="Prompt\Attributes\ConsoleCommandAttribute.cs" />
-    <Compile Include="Prompt\Attributes\FlagParameterAttribute.cs" />
-    <Compile Include="Prompt\Common\EmailValidator.cs" />
-    <Compile Include="Prompt\Common\Extensions.cs" />
-    <Compile Include="Prompt\ConsoleCommandBase.cs" />
-    <Compile Include="Prompt\IConsoleCommand.cs" />
-    <Compile Include="Prompt\Models\ConsoleErrorResultModel.cs" />
-    <Compile Include="Prompt\Models\ConsoleResultModel.cs" />
-    <Compile Include="Prompt\Models\PagingInfo.cs" />
-    <Compile Include="Prompt\Models\ResponseModel.cs" />
-    <Compile Include="Repository\IPersonaBarExtensionRepository.cs" />
-    <Compile Include="Repository\IPersonaBarRepository.cs" />
-    <Compile Include="Repository\PersonaBarExtensionRepository.cs" />
-    <Compile Include="Repository\PersonaBarRepository.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\ISecurityService.cs" />
-    <Compile Include="Security\SecurityService.cs" />
-    <Compile Include="ServiceScope.cs" />
-    <Compile Include="Startup.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
-      <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
-      <Name>DotNetNuke.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
-      <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
-      <Name>DotNetNuke.DependencyInjection</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj">
-      <Project>{3cd5f6b8-8360-4862-80b6-f402892db7dd}</Project>
-      <Name>DotNetNuke.Instrumentation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj">
-      <Project>{04f77171-0634-46e0-a95e-d7477c88712e}</Project>
-      <Name>DotNetNuke.Log4Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web\DotNetNuke.Web.csproj">
-      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
-      <Name>DotNetNuke.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DNN Platform\Library\DotNetNuke.Library.csproj">
-      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
-      <Name>DotNetNuke.Library</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
-      <Project>{5fe5d021-9c8d-47a6-bd34-f328ba3e709c}</Project>
-      <Name>DotNetNuke.Internal.SourceGenerators</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="..\..\..\stylecop.json">
-      <Link>stylecop.json</Link>
-    </AdditionalFiles>
-    <None Include="app.config" />
-  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -175,12 +25,25 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj" />
+    <ProjectReference Include="..\..\..\DNN Platform\DotNetNuke.Web\DotNetNuke.Web.csproj" />
+    <ProjectReference Include="..\..\..\DNN Platform\Library\DotNetNuke.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\..\stylecop.json" Link="stylecop.json" />
+    <Compile Include="..\..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+  </ItemGroup>
+
 </Project>
