@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" />
+    <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
     <ProjectReference Include="..\..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
     <ProjectReference Include="..\..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj" />
