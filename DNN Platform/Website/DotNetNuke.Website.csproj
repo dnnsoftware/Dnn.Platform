@@ -827,7 +827,6 @@
     <Content Include="Licenses\Cake %28MIT%29.txt.resources" />
     <Content Include="Licenses\Cake LongPath Module %28MIT%29.txt.resources" />
     <Content Include="Licenses\CodeMirror %28MIT%29.txt.resources" />
-    <Content Include="Licenses\Effority Ealo %28Ms-RL%29.txt.resources" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\DropDownList.Default.css" />
     <Content Include="Portals\_default\Skins\_default\WebControlSkin\Default\GridView.Default.css" />
     <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
@@ -3141,7 +3140,6 @@
     <None Include="js\ClientAPICaps.config" />
     <None Include="js\Debug\ClientAPICaps.config" />
     <Content Include="Licenses\SimpleMDE %28MIT%29.txt.resources" />
-    <Content Include="Licenses\SolPartMenu %28Ms-PL%29.txt.resources" />
     <Content Include="Licenses\Telerik RadControls for ASP.NET AJAX %28Custom%29.pdf.resources" />
     <None Include="Portals\_default\admin.template" />
     <Content Include="Portals\_default\Blank Website.template" />
