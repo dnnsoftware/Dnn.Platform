@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
             if (!fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
-                return new string[0];
+                return [];
             }
 
             if (fileName.EndsWith(WebConfig, StringComparison.InvariantCultureIgnoreCase))
@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                 return ValidateSchema(configDoc, "Schemas/DotNetConfig.xsd");
             }
 
-            return new string[0];
+            return [];
         }
 
         public void MergeConfigFile(string fileContent)
@@ -135,15 +135,13 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         private static string LoadResource(string relativePath)
         {
-            var segments = relativePath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var segments = relativePath.Split(['/',], StringSplitOptions.RemoveEmptyEntries);
             var relativeName = string.Join(".", segments);
             var name = $"Dnn.PersonaBar.Extensions.Components.ConfigConsole.{relativeName}";
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+            using var reader = new StreamReader(stream);
+            return reader.ReadToEnd();
         }
 
         private static string SaveNonConfig(string document, string filename)

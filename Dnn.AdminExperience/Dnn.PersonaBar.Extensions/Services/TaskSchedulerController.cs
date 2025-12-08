@@ -386,37 +386,35 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 if (SchedulingProvider.Enabled)
                 {
-                    Collection arrScheduleProcessing = SchedulingProvider.Instance().GetScheduleProcessing();
+                    var processing =
+                        from ScheduleHistoryItem item in SchedulingProvider.Instance().GetScheduleProcessing()
+                        select new
+                        {
+                            item.ScheduleID,
+                            item.TypeFullName,
+                            StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString() : string.Empty,
+                            ElapsedTime = Math.Round(item.ElapsedTime, 3),
+                            item.ObjectDependencies,
+                            ScheduleSource = item.ScheduleSource.ToString(),
+                            item.ThreadID,
+                            item.Servers,
+                        };
 
-                    var processing = from ScheduleHistoryItem item in arrScheduleProcessing
-                                     select new
-                                     {
-                                         item.ScheduleID,
-                                         item.TypeFullName,
-                                         StartDate = !Null.IsNull(item.StartDate) ? item.StartDate.ToString() : string.Empty,
-                                         ElapsedTime = Math.Round(item.ElapsedTime, 3),
-                                         item.ObjectDependencies,
-                                         ScheduleSource = item.ScheduleSource.ToString(),
-                                         item.ThreadID,
-                                         item.Servers,
-                                     };
-
-                    Collection arrScheduleQueue = SchedulingProvider.Instance().GetScheduleQueue();
-
-                    var queue = from ScheduleHistoryItem item in arrScheduleQueue
-                                select new
-                                {
-                                    item.ScheduleID,
-                                    item.FriendlyName,
-                                    NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : string.Empty,
-                                    item.Overdue,
-                                    RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
-                                    RemainingSeconds = item.RemainingTime,
-                                    item.ObjectDependencies,
-                                    ScheduleSource = item.ScheduleSource.ToString(),
-                                    item.ThreadID,
-                                    item.Servers,
-                                };
+                    var queue =
+                        from ScheduleHistoryItem item in SchedulingProvider.Instance().GetScheduleQueue()
+                        select new
+                        {
+                            item.ScheduleID,
+                            item.FriendlyName,
+                            NextStart = !Null.IsNull(item.NextStart) ? item.NextStart.ToString() : string.Empty,
+                            item.Overdue,
+                            RemainingTime = GetTimeStringFromSeconds(item.RemainingTime),
+                            RemainingSeconds = item.RemainingTime,
+                            item.ObjectDependencies,
+                            ScheduleSource = item.ScheduleSource.ToString(),
+                            item.ThreadID,
+                            item.Servers,
+                        };
 
                     var response = new
                     {
