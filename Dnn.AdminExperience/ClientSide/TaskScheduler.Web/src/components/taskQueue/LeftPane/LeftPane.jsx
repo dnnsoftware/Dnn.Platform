@@ -2,8 +2,8 @@ import React, {Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./style.module.less";
 import resx from "../../../resources";
-import clockStopIcon from "./../taskStatusItemRow/svg/clock_stop.svg?raw";
-import cycleIcon from "./../taskStatusItemRow/svg/cycle.svg?raw";
+import ClockStopIcon from "./../taskStatusItemRow/svg/clock_stop.svg";
+import CycleIcon from "./../taskStatusItemRow/svg/cycle.svg";
 
 class LeftPane extends Component {
     constructor() {
@@ -18,8 +18,8 @@ class LeftPane extends Component {
         const {props} = this;
         return (
             <div className={styles.taskStatusItemLeftPane}>
-                <div hidden={!this.props.nextStart} className="taskIcon" dangerouslySetInnerHTML={{ __html: clockStopIcon }}></div>
-                <div hidden={!this.props.startDate} className="taskIconProcessing" dangerouslySetInnerHTML={{ __html: cycleIcon }}></div>
+                <div hidden={!this.props.nextStart} className="taskIcon"><ClockStopIcon /></div>
+                <div hidden={!this.props.startDate} className="taskIconProcessing"><CycleIcon /></div>
                 <div className="taskDetail">
                     <div className="taskDetail-name">{props.friendlyName}</div>
                     <div hidden={!this.props.startDate} className="taskDetail-common">

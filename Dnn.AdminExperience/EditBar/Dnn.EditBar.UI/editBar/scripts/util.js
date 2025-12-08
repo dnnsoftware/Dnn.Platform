@@ -1,5 +1,5 @@
 'use strict';
-define(['jquery'], function ($) {
+define(['jquery', 'purify.min'], function ($, DOMPurify) {
     return {
         init: function (config) {
             return {
@@ -58,12 +58,12 @@ define(['jquery'], function ($) {
                 },
 
                 confirm: function(text, confirmBtn, cancelBtn, confirmHandler, cancelHandler) {
-                    $('#confirmation-dialog > p').html(text);
-                    $('#confirmation-dialog a#confirmbtn').html(confirmBtn).unbind('click').bind('click', function() {
+                    $('#confirmation-dialog > p').html(DOMPurify.sanitize(text));
+                    $('#confirmation-dialog a#confirmbtn').html(DOMPurify.sanitize(confirmBtn)).unbind('click').bind('click', function() {
                         if (typeof confirmHandler === 'function') confirmHandler.apply();
                         $('#confirmation-dialog').fadeOut(200, 'linear', function() { $('#mask').hide(); });
                     });
-                    $('#confirmation-dialog a#cancelbtn').html(cancelBtn).unbind('click').bind('click', function() {
+                    $('#confirmation-dialog a#cancelbtn').html(DOMPurify.sanitize(cancelBtn)).unbind('click').bind('click', function() {
                         if (typeof cancelHandler === 'function') cancelHandler.apply();
                         $('#confirmation-dialog').fadeOut(200, 'linear', function() { $('#mask').hide(); });
                     });
@@ -80,7 +80,7 @@ define(['jquery'], function ($) {
                 },
 
                 notify: function(text) {
-                    $('#notification-dialog > p').removeClass().html(text);
+                    $('#notification-dialog > p').removeClass().html(DOMPurify.sanitize(text));
                     $('#notification-dialog').fadeIn(200, 'linear', function() {
                         setTimeout(function() {
                             $('#notification-dialog').fadeOut(200, 'linear');
@@ -89,7 +89,7 @@ define(['jquery'], function ($) {
                 },
 
                 notifyError: function(text) {
-                    $('#notification-dialog > p').removeClass().addClass('errorMessage').html(text);
+                    $('#notification-dialog > p').removeClass().addClass('errorMessage').html(DOMPurify.sanitize(text));
                     $('#notification-dialog').fadeIn(200, 'linear', function () {
                         setTimeout(function() {
                             $('#notification-dialog').fadeOut(200, 'linear');

@@ -18,6 +18,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to include other 3rd party packages.</summary>
     [IsDependentOn(typeof(PackageNewtonsoft))]
     [IsDependentOn(typeof(PackageMailKit))]
+    [IsDependentOn(typeof(PackageHtmlSanitizer))]
     [IsDependentOn(typeof(PackageAspNetWebApi))]
     [IsDependentOn(typeof(PackageAspNetWebPages))]
     [IsDependentOn(typeof(PackageAspNetMvc))]

@@ -242,7 +242,6 @@
             var modulePane = $(".DnnModule-" + moduleId).parent();
             var paneName = modulePane.attr("id").replace("dnn_", "");
 
-            var htmlString;
             var moduleIndex = -1;
             var id = paneName + moduleId;
             var modules = modulePane.children();
@@ -261,40 +260,20 @@
 
             //Add Top/Up actions
             if (moduleIndex > 0) {
-                htmlString = "<li id=\"" + id + "-top\" class=\"common\">" + opts.topText;
-                parent.append(htmlString);
+                var $topItem = $("<li></li>", { id: id + "-top", addClass: "common", text: opts.topText, click: () => moveTop(paneName), });
+                parent.append($topItem);
 
-                //Add click event handler to just added element
-                parent.find("li#" + id + "-top").click(function () {
-                    moveTop(paneName);
-                });
-
-                htmlString = "<li id=\"" + id + "-up\" class=\"common\">" + opts.upText;
-                parent.append(htmlString);
-
-                //Add click event handler to just added element
-                parent.find("li#" + id + "-up").click(function () {
-                    moveUp(paneName, moduleIndex);
-                });
+                var $upItem = $("<li></li>", { id: id + "-up", addClass: "common", text: opts.upText, click: () => moveUp(paneName, moduleIndex), });
+                parent.append($upItem);
             }
 
             //Add Bottom/Down actions
             if (moduleIndex < moduleCount - 1) {
-                htmlString = "<li id=\"" + id + "-down\" class=\"common\">" + opts.downText;
-                parent.append(htmlString);
+                var $downItem = $("<li></li>", { id: id + "-down", addClass: "common", text: opts.downText, click: () => moveDown(paneName, moduleIndex), });
+                parent.append($downItem);
 
-                //Add click event handler to just added element
-                parent.find("li#" + id + "-down").click(function () {
-                    moveDown(paneName, moduleIndex);
-                });
-
-                htmlString = "<li id=\"" + id + "-bottom\" class=\"common\">" + opts.bottomText;
-                parent.append(htmlString);
-
-                //Add click event handler to just added element
-                parent.find("li#" + id + "-bottom").click(function () {
-                    moveBottom(paneName);
-                });
+                var $bottomItem = $("<li></li>", { id: id + "-bottom", addClass: "common", text: opts.bottomText, click: () => moveBottom(paneName), });
+                parent.append($bottomItem);
             }
 
             var htmlStringContainer = "";
@@ -321,7 +300,7 @@
             if (!rootText || rootText.length == 0) {
                 return;                
             }
-            root.append("<li class=\"" + rootClass + "\"><div>" + moduleId + ":" + rootText + "</div>");
+            root.append($('<li></li>', { addClass: rootClass, }).append($('<div></div>', { text: moduleId + ":" + rootText, })));
         }
 
         function buildQuickSettings(root, rootText, rootClass, rootIcon) {

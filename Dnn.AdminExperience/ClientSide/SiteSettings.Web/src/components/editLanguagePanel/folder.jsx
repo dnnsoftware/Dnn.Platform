@@ -27,8 +27,8 @@ class Folder extends Component {
         const isOpenIcon = this.state.isOpen ? SvgIcons.ArrowDownIcon : SvgIcons.ArrowRightIcon;
         return (
             <li>
-                {isFolder && <div onClick={this.toggleCollapse.bind(this)} className="edit-svg" dangerouslySetInnerHTML={{ __html: isOpenIcon }}></div>}
-                <div className="resource-type-icon" onClick={this.toggleCollapse.bind(this)} dangerouslySetInnerHTML={{ __html: svgIcon }}></div>
+                {isFolder && <div onClick={this.toggleCollapse.bind(this)} className="edit-svg"><isOpenIcon /></div>}
+                <div className="resource-type-icon" onClick={this.toggleCollapse.bind(this)}><svgIcon /></div>
                 <span className={props.isSelected ? "selected-resource" : ""} onClick={this.toggleCollapse.bind(this)}>{props.folder.Name}</span>
                 <Collapsible isOpened={this.state.isOpen}>
                     <ul>{props.children}</ul>

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Html from "../../Html";
 import styles from "./style.module.less";
-import checkmarkIcon from "./svg/checkmark.svg?raw";
+import CheckmarkIcon from "./svg/checkmark.svg";
  
 
 class TaskHistoryItemRow extends Component {
@@ -49,7 +50,7 @@ class TaskHistoryItemRow extends Component {
      
     getSucceededDisplay() {
         if (this.props.succeeded) {
-            return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: checkmarkIcon }}></div>;
+            return <div className="checkMarkIcon"><CheckmarkIcon /></div>;
         }
         else return <span>&nbsp; </span>;
     }
@@ -60,7 +61,7 @@ class TaskHistoryItemRow extends Component {
             return (
                 <div>
                     <div>{this.props.friendlyName}</div>
-                    <div dangerouslySetInnerHTML={{ __html: this.props.logNotes }}></div>
+                    <div><Html html={this.props.logNotes } /></div>
                 </div>
             );
         }
@@ -78,7 +79,7 @@ class TaskHistoryItemRow extends Component {
         if (this.props.nextStart) {
             display += "<p>N: " + this.props.nextStart + "</p>";
         }
-        return <div dangerouslySetInnerHTML={{ __html: display }}></div>;
+        return <div><Html html={display } /></div>;
     }
 
     render() {

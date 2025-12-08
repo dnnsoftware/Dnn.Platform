@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
             disableHostCheck: !isProduction,
         },
         resolve: {
-            extensions: ["*", ".js", ".json", ".jsx"],
+            extensions: ["*", ".js", ".json", ".jsx", ".ts", ".tsx"],
             modules: [
                 path.resolve("./src"), // Look in src first
                 path.resolve("./node_modules"), // Try local node_modules
@@ -84,12 +84,12 @@ module.exports = (env, argv) => {
                     ],
                 },
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|jsx)$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
                         options: {
-                            presets: ["@babel/preset-env", "@babel/preset-react"],
+                            presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
                         },
                     },
                 },
@@ -110,9 +110,14 @@ module.exports = (env, argv) => {
                     use: {
                         loader: "url-loader?mimetype=application/font-woff",
                     },
+                },      
+                {
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
                 },
                 {
-                    test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
+                    test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/,
                     use: {
                         loader: "file-loader?name=[name].[ext]",
                     },

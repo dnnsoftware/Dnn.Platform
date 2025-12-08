@@ -18,7 +18,7 @@ class MyContentLoadWrapper extends Component {
         return (
             <ContentLoadWrapper
                 loadComplete={this.state.loaded}
-                svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
+                svgSkeleton={<div><TableEmptyState /></div>}
             >
                 <div>
                     <div className="auditCheckItems">
@@ -41,7 +41,7 @@ export default {
 export const WithLoading = () => (
     <ContentLoadWrapper
         loadComplete={false}
-        svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
+        svgSkeleton={<div><TableEmptyState /></div>}
     >
         <div>
             <div className="auditcheck-topbar">Loading...</div>
@@ -60,7 +60,7 @@ export const WithLoading = () => (
 export const WithContent = () => (
     <ContentLoadWrapper
         loadComplete={true}
-        svgSkeleton={<div dangerouslySetInnerHTML={{ __html: TableEmptyState }} />}
+        svgSkeleton={<div><TableEmptyState /></div>}
     >
         <div>
             <div className="auditcheck-topbar">

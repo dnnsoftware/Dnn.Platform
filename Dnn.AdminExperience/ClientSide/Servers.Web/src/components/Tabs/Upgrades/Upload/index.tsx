@@ -4,6 +4,7 @@ import Localization from "localization";
 import "./style.less";
 import { ChunkToUpload } from "models/ChunkToUpload";
 import upgradeService from "services/upgradeService";
+import UploadIcon from "./img/upload.svg";
 
 interface ErrorData {
   responseJSON: {
@@ -166,8 +167,6 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
     [uploadFile, onDragLeave]
   );
 
-  const svg = require(`!raw-loader!./img/upload.svg`).default;
-
   const buttonsStyle = { width: 67 };
   const className = "overlay" + (draggedOver ? " hover" : "");
 
@@ -190,7 +189,7 @@ const FileUpload: React.FC<FileUploadProps> = (props) => {
                 }
                 onMouseLeave={onMouseLeave}
               >
-                <div dangerouslySetInnerHTML={{ __html: svg }} />
+                <div><UploadIcon /></div>
                 <input type="file" onChange={onFileUpload} aria-label="File" />
               </div>
             </div>

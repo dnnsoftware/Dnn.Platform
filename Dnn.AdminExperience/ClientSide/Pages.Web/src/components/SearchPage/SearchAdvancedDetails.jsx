@@ -117,7 +117,7 @@ class SearchAdvancedDetails extends Component {
                                 startDate={this.props.startDate}
                                 endDate={this.props.endDate}
                                 toggleDropdownCalendar={this.toggleDropdownCalendar.bind(this)}
-                                CalendarIcon={SvgIcons.CalendarIcon}
+                                calendarIcon={SvgIcons.CalendarIcon}
                                 label={this.getDateLabel()}
                             />
                         </GridCell>
