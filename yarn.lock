@@ -4310,7 +4310,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsbuild/plugin-react@npm:^1.4.2":
+"@rsbuild/plugin-react@npm:^1.1.0, @rsbuild/plugin-react@npm:^1.4.2":
   version: 1.4.2
   resolution: "@rsbuild/plugin-react@npm:1.4.2"
   dependencies:
@@ -4319,6 +4319,22 @@ __metadata:
   peerDependencies:
     "@rsbuild/core": 1.x
   checksum: 10/5726a9fba7ddf358ab12764c042273ad400715d853d18dd4fe83b29254504d12db9c39da5a51054f7efc5a3947a8622fc5de7d186e231d6d53a0ec68ca19f6a8
+  languageName: node
+  linkType: hard
+
+"@rsbuild/plugin-svgr@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@rsbuild/plugin-svgr@npm:1.2.2"
+  dependencies:
+    "@rsbuild/plugin-react": "npm:^1.1.0"
+    "@svgr/core": "npm:8.1.0"
+    "@svgr/plugin-jsx": "npm:8.1.0"
+    "@svgr/plugin-svgo": "npm:8.1.0"
+    deepmerge: "npm:^4.3.1"
+    loader-utils: "npm:^3.3.1"
+  peerDependencies:
+    "@rsbuild/core": 1.x
+  checksum: 10/130cc98176dbb9048428f86f1122693be1973e4dc41648eed931f7a420ea80201c6c0bfcafdd98a176d010743def3de85d91699e18a5b6c28718dc1d1bae75eb
   languageName: node
   linkType: hard
 
@@ -15151,6 +15167,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"loader-utils@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "loader-utils@npm:3.3.1"
+  checksum: 10/3f994a948ded4248569773f065b1f6d7c95da059888c8429153e203f9bdadfb1691ca517f9eac6548a8af2fe5c724a8e09cbb79f665db4209426606a57ec7650
+  languageName: node
+  linkType: hard
+
 "localization@npm:^1.0.2":
   version: 1.0.2
   resolution: "localization@npm:1.0.2"
@@ -20146,29 +20169,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
-    "@babel/core": "npm:^7.28.4"
-    "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
-    "@babel/plugin-transform-react-jsx": "npm:^7.27.1"
-    "@babel/preset-env": "npm:^7.28.3"
-    "@babel/preset-react": "npm:^7.27.1"
-    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
-    "@svgr/webpack": "npm:^8.1.0"
-    babel-loader: "npm:10.0.0"
-    babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
+    "@rsbuild/core": "npm:^1.6.3"
+    "@rsbuild/plugin-less": "npm:^1.5.0"
+    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/plugin-svgr": "npm:^1.2.2"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:^7.1.2"
     dompurify: "npm:^3.3.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
-    file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     html-react-parser: "npm:^5.2.10"
     less: "npm:4.4.2"
-    less-loader: "npm:12.3.0"
     prop-types: "npm:^15.8.1"
-    raw-loader: "npm:4.0.2"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
@@ -20177,13 +20191,6 @@ __metadata:
     redux: "npm:^4.2.1"
     redux-immutable-state-invariant: "npm:^2.1.0"
     redux-thunk: "npm:^2.4.2"
-    style-loader: "npm:^4.0.0"
-    typescript: "npm:^5.9.3"
-    url-loader: "npm:4.1.1"
-    webpack: "npm:5.102.1"
-    webpack-bundle-size-analyzer: "npm:3.1.0"
-    webpack-cli: "npm:6.0.1"
-    webpack-dev-server: "npm:5.2.2"
   languageName: unknown
   linkType: soft
 

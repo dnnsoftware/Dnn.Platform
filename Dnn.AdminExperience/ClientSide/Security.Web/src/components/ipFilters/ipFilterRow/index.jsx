@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Collapsible } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../../resources";
-import AllowIcon from "./../../svg/checkbox.svg";
-import DenyIcon from "./../../svg/cross_out.svg";
-import EditIcon from "./../../svg/edit.svg";
-import DeleteIcon from "./../../svg/trash.svg";
+import AllowIcon from "./../../svg/checkbox.svg?react";
+import DenyIcon from "./../../svg/cross_out.svg?react";
+import EditIcon from "./../../svg/edit.svg?react";
+import DeleteIcon from "./../../svg/trash.svg?react";
 
 class IpFilterRow extends Component {
     constructor() {
@@ -28,7 +28,7 @@ class IpFilterRow extends Component {
         }
     }
 
-     
+
     getRuleTypeDisplay() {
         const {props} = this;
         if (props.id !== "add") {
@@ -54,7 +54,7 @@ class IpFilterRow extends Component {
         }
     }
 
-     
+
     render() {
         const {props} = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
