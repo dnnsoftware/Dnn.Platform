@@ -7,6 +7,7 @@ namespace DNNConnect.CKEditorProvider.Web
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq.Expressions;
     using System.Text;
     using System.Web;
@@ -15,12 +16,15 @@ namespace DNNConnect.CKEditorProvider.Web
     using System.Web.UI.WebControls;
 
     using DNNConnect.CKEditorProvider.Utilities;
+    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.ClientDependency;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
@@ -65,7 +69,45 @@ namespace DNNConnect.CKEditorProvider.Web
                 LoadEditorSettings(portalSettings, portalSettings.ActiveTab.TabID, moduleId);
             }
 
-            return htmlHelper.TextAreaFor(expression, attrs);
+            var textArea = htmlHelper.TextAreaFor(expression, attrs);
+            var htmlBuilder = new StringBuilder();
+
+            // Wrap textarea in a div
+            htmlBuilder.Append("<div>");
+            htmlBuilder.Append(textArea.ToString());
+
+            // Add options link div if user is admin
+            if (PortalSecurity.IsInRoles(portalSettings.AdministratorRoleName))
+            {
+                var navigationManager = controller.DependencyProvider.GetRequiredService<INavigationManager>();
+                var editorId = id.ToString().Replace("-", string.Empty).Replace(".", string.Empty);
+                var editorUrl = navigationManager.NavigateURL(
+                    "CKEditorOptions",
+                    "ModuleId=" + moduleId,
+                    "minc=" + id,
+                    "PortalID=" + portalSettings.PortalId,
+                    "langCode=" + CultureInfo.CurrentCulture.Name,
+                    "popUp=true");
+
+                htmlBuilder.Append("<div style=\"text-align:center;\">");
+                htmlBuilder.AppendFormat(
+                    "<a href=\"javascript:void(0)\" onclick='window.open({0},\"Options\", \"width=850,height=750,resizable=yes\")' class=\"CommandButton\" id=\"{1}\">{2}</a>",
+                    HttpUtility.HtmlAttributeEncode(HttpUtility.JavaScriptStringEncode(editorUrl, true)),
+                    string.Format("{0}_ckoptions", editorId),
+                    Localization.GetString("Options.Text", GetResxFileName()));
+                htmlBuilder.Append("</div>");
+            }
+
+            htmlBuilder.Append("</div>");
+
+            return new MvcHtmlString(htmlBuilder.ToString());
+        }
+
+        private static string GetResxFileName()
+        {
+                return
+                    Globals.ResolveUrl(
+                        string.Format("~/Providers/HtmlEditorProviders/DNNConnect.CKE/{0}/Options.aspx.resx", Localization.LocalResourceDirectory));
         }
 
         private static void LoadEditorSettings(PortalSettings portalSettings, int tabId, int moduleId)

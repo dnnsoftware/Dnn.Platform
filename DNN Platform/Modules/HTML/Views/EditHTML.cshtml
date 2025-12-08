@@ -4,7 +4,7 @@
 @model EditHtmlViewModel
 
 <div class="dnnForm dnnEditHtml dnnClear" id="dnnEditHtml" data-returnurl="@Model.RedirectUrl" data-portalid="@Model.PortalId" data-tabid="@Model.TabId" data-moduleid="@Model.ModuleId">
-    @using (Html.BeginForm("Save", "HTML", new {area= "HTML"}))
+    @using (Html.BeginForm("Save", "HTML", new { area = "HTML" }))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(x => x.TabId)
@@ -48,15 +48,7 @@
                 }
                 @if (Model.ShowHistoryView)
                 {
-                    <fieldset>
-                        <div class="ehvContent">
-                            <div class="dnnFormItem">
-                                <label>@Localization.GetString("MaxVersions", Model.LocalResourceFile)</label>
-                                <span>@Model.MaxVersions</span>
-                            </div>
-                            @Html.Partial("~/DesktopModules/HTML/Views/_History.cshtml", Model)
-                        </div>
-                    </fieldset>
+                    @Html.Partial("~/DesktopModules/HTML/Views/_History.cshtml", Model)
                 }
             </div>
         </div>

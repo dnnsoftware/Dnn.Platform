@@ -13,11 +13,12 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
     using DotNetNuke.Web.MvcPipeline.Routing;
     using DotNetNuke.Web.MvcPipeline.Utils;
 
-    public class ModuleControllerBase : Controller, IMvcController
+    public class ModuleControllerBase : DnnPageController, IMvcController
     {
         private readonly Lazy<ModuleInfo> activeModule;
 
-        public ModuleControllerBase()
+        public ModuleControllerBase(IServiceProvider dependencyProvider) :
+            base(dependencyProvider)
         {
             this.activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
         }

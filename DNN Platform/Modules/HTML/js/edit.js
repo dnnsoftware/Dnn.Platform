@@ -202,7 +202,6 @@ $(function () {
                 target: '#dnnEditHtml',
                 success: function () {
                     initPage();
-                    CKEDITOR.replace('EditorContent', editorConfigeditortxtContent);
                 },
             });
             // return false to prevent normal browser submit and page navigation
@@ -219,8 +218,9 @@ $(function () {
                 //target: '.ehccContent',
                 target: '#dnnEditHtml',
                 success: function () {
-                    initPage();
-                    CKEDITOR.replace('EditorContent', editorConfigeditortxtContent);
+                    //initPage();
+                    //CKEDITOR.replace('EditorContent', editorConfigeditortxtContent);
+                    window.location = window.location.href;
                 },
             });
             // return false to prevent normal browser submit and page navigation

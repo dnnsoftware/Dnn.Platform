@@ -31,7 +31,8 @@ namespace DotNetNuke.Modules.Html.Controllers
         private readonly HtmlModuleSettingsRepository settingsRepository;
         private readonly IClientResourceController clientResourceController;
 
-        public HTMLController(INavigationManager navigationManager, IClientResourceController clientResourceController)
+        public HTMLController(IServiceProvider dependencyProvider, INavigationManager navigationManager, IClientResourceController clientResourceController)
+            : base(dependencyProvider)
         {
             this.navigationManager = navigationManager;
             this.htmlTextController = new HtmlTextController(this.navigationManager);
