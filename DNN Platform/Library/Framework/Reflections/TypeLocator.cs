@@ -77,7 +77,6 @@ namespace DotNetNuke.Framework.Reflections
                                                     "DotNetNuke.DNNDropDownNavigationProvider",
                                                     "DotNetNuke.DNNMenuNavigationProvider",
                                                     "DotNetNuke.DNNTreeNavigationProvider",
-                                                    "DotNetNuke.SolpartMenuNavigationProvider",
                                                     "DotNetNuke.HttpModules",
                                                     "DotNetNuke.Instrumentation",
                                                     "DotNetNuke.Log4Net",
@@ -107,7 +106,7 @@ namespace DotNetNuke.Framework.Reflections
                 || assemblyName.StartsWith("newtonsoft") || assemblyName.StartsWith("petapoco")
                 || assemblyName.StartsWith("sharpziplib") || assemblyName.StartsWith("system")
                 || assemblyName.StartsWith("telerik") || assemblyName.StartsWith("webformsmvp")
-                || assemblyName.StartsWith("webmatrix") || assemblyName.StartsWith("solpart"));
+                || assemblyName.StartsWith("webmatrix"));
 
             if (canScan)
             {
