@@ -51,10 +51,6 @@
     <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library\bin\DotNetNuke.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -260,6 +256,10 @@
     <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj">
       <Project>{3D9C3F5F-1D2D-4D89-995B-438055A5E3A6}</Project>
       <Name>DotNetNuke.HttpModules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
