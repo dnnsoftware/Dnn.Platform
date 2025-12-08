@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>NU1701</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Maintenance.xml</DocumentationFile>
