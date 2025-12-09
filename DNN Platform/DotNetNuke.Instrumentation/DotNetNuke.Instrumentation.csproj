@@ -97,9 +97,7 @@
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
   </PropertyGroup>
   <Import Project="..\..\DNN_Platform.build" />
-  <Target Name="AfterBuild" DependsOnTargets="DebugProject">
-  </Target>
-  <Target Name="DebugProject">
+  <Target Name="CopyBin" BeforeTargets="Build">
     <Copy SourceFiles="bin\DotNetNuke.Log4Net.dll" DestinationFolder="$(WebsitePath)\bin\" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="bin\DotNetNuke.Instrumentation.pdb" DestinationFolder="$(WebsitePath)\bin" />
