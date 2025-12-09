@@ -6691,18 +6691,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^5.0.0":
-  version: 5.5.2
-  resolution: "ajv@npm:5.5.2"
-  dependencies:
-    co: "npm:^4.6.0"
-    fast-deep-equal: "npm:^1.0.0"
-    fast-json-stable-stringify: "npm:^2.0.0"
-    json-schema-traverse: "npm:^0.3.0"
-  checksum: 10/944526c6f61e859d2d0e0f54c9a6c046b207410ddde601dc5d0bb65d20fb116cc493a604d02e5a354f6112813d679e46058c876639c8802674b6de8e7dadb31c
-  languageName: node
-  linkType: hard
-
 "ajv@npm:^6.1.0, ajv@npm:^6.12.4, ajv@npm:^6.12.5":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
@@ -7175,7 +7163,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^2.4.1, async@npm:^2.6.0":
+"async@npm:^2.6.0":
   version: 2.6.4
   resolution: "async@npm:2.6.4"
   dependencies:
@@ -11719,27 +11707,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"extract-text-webpack-plugin@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "extract-text-webpack-plugin@npm:3.0.2"
-  dependencies:
-    async: "npm:^2.4.1"
-    loader-utils: "npm:^1.1.0"
-    schema-utils: "npm:^0.3.0"
-    webpack-sources: "npm:^1.0.1"
-  peerDependencies:
-    webpack: ^3.1.0
-  checksum: 10/973a53579cedf4a73bc5af9b6c00fc28a97e946983b16ff8a0ad25c0d2db97cfd41be4e72306c8322d4276931d281bf91cce78dbd6f6d3c2e6f0be8ebfafdd01
-  languageName: node
-  linkType: hard
-
-"fast-deep-equal@npm:^1.0.0":
-  version: 1.1.0
-  resolution: "fast-deep-equal@npm:1.1.0"
-  checksum: 10/69b4c9534d9805f13a341aa72f69641d0b9ae3cc8beb25c64e68a257241c7bb34370266db27ae4fc3c4da0518448c01a5f587a096a211471c86a38facd9a1486
-  languageName: node
-  linkType: hard
-
 "fast-deep-equal@npm:^3.1.1, fast-deep-equal@npm:^3.1.3":
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
@@ -14680,13 +14647,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-schema-traverse@npm:^0.3.0":
-  version: 0.3.1
-  resolution: "json-schema-traverse@npm:0.3.1"
-  checksum: 10/a685c36222023471c25c86cddcff506306ecb8f8941922fd356008419889c41c38e1c16d661d5499d0a561b34f417693e9bb9212ba2b2b2f8f8a345a49e4ec1a
-  languageName: node
-  linkType: hard
-
 "json-schema-traverse@npm:^0.4.1":
   version: 0.4.1
   resolution: "json-schema-traverse@npm:0.4.1"
@@ -15142,17 +15102,6 @@ __metadata:
   version: 4.3.0
   resolution: "loader-runner@npm:4.3.0"
   checksum: 10/555ae002869c1e8942a0efd29a99b50a0ce6c3296efea95caf48f00d7f6f7f659203ed6613688b6181aa81dc76de3e65ece43094c6dffef3127fe1a84d973cd3
-  languageName: node
-  linkType: hard
-
-"loader-utils@npm:^1.1.0":
-  version: 1.4.2
-  resolution: "loader-utils@npm:1.4.2"
-  dependencies:
-    big.js: "npm:^5.2.2"
-    emojis-list: "npm:^3.0.0"
-    json5: "npm:^1.0.1"
-  checksum: 10/2ae94cc88ad9cf2991e322b9ddf547cff80cf6fc0f9c77546b258c5ed9f77b0827f64c2625cb0baa06432f1f441bb4744c9ab1e1412ee6f8e97d31f8e9c730d6
   languageName: node
   linkType: hard
 
@@ -18086,40 +18035,26 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "prompt@workspace:Dnn.AdminExperience/ClientSide/Prompt.Web"
   dependencies:
-    "@babel/core": "npm:^7.28.4"
-    "@babel/preset-env": "npm:^7.28.3"
-    "@babel/preset-react": "npm:^7.27.1"
-    "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.1.0"
+    "@rsbuild/core": "npm:^1.6.3"
+    "@rsbuild/plugin-less": "npm:^1.5.0"
+    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/plugin-svgr": "npm:^1.2.2"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
-    babel-eslint: "npm:^10.1.0"
-    babel-jest: "npm:^30.2.0"
-    babel-loader: "npm:^10.0.0"
-    babel-plugin-transform-object-assign: "npm:6.22.0"
-    babel-plugin-transform-object-rest-spread: "npm:6.26.0"
-    babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
-    babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    css-loader: "npm:^7.1.2"
     dompurify: "npm:^3.3.0"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.38.0"
     eslint-plugin-react: "npm:7.37.5"
-    eslint-webpack-plugin: "npm:^5.0.2"
-    extract-text-webpack-plugin: "npm:^3.0.2"
-    file-loader: "npm:6.2.0"
     globals: "npm:^16.4.0"
     html-react-parser: "npm:^5.2.7"
-    i18n-webpack-plugin: "npm:1.0.0"
     jest: "npm:^30.2.0"
     less: "npm:4.4.2"
-    less-loader: "npm:12.3.0"
     localization: "npm:^1.0.2"
     prop-types: "npm:^15.8.1"
-    raw-loader: "npm:4.0.2"
     react: "npm:^16.14.0"
     react-click-outside: "npm:^3.0.1"
     react-dom: "npm:^16.14.0"
@@ -18133,13 +18068,8 @@ __metadata:
     redux-immutable-state-invariant: "npm:2.1.0"
     redux-mock-store: "npm:^1.5.4"
     redux-thunk: "npm:2.4.2"
-    style-loader: "npm:^4.0.0"
     throttle-debounce: "npm:^5.0.2"
     typescript: "npm:^5.9.3"
-    url-loader: "npm:4.1.1"
-    webpack: "npm:5.102.1"
-    webpack-cli: "npm:6.0.1"
-    webpack-dev-server: "npm:5.2.2"
   languageName: unknown
   linkType: soft
 
@@ -20096,15 +20026,6 @@ __metadata:
   version: 0.26.0
   resolution: "scheduler@npm:0.26.0"
   checksum: 10/1ecf2e5d7de1a7a132796834afe14a2d589ba7e437615bd8c06f3e0786a3ac3434655e67aac8755d9b14e05754c177e49c064261de2673aaa3c926bc98caa002
-  languageName: node
-  linkType: hard
-
-"schema-utils@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "schema-utils@npm:0.3.0"
-  dependencies:
-    ajv: "npm:^5.0.0"
-  checksum: 10/441fa4bd4900afb19eb9da1d8d6271056b71ce3d8b1b73bbece791de1d4c90ac7e97ffc9787607aa53611aaf2996711af7c18ba8669f06b084b218cab1e701e3
   languageName: node
   linkType: hard
 
@@ -23117,7 +23038,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-sources@npm:^1.0.1, webpack-sources@npm:^1.4.0":
+"webpack-sources@npm:^1.4.0":
   version: 1.4.3
   resolution: "webpack-sources@npm:1.4.3"
   dependencies:
