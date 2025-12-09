@@ -304,7 +304,19 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             var subject = new ClaimsIdentity();
             subject.AddClaim(new Claim(SessionClaimType, persistedToken.TokenId));
-            subject.AddClaims(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+
+            // Add roles using both the standard schema URI (ClaimTypes.Role) for standards compliance
+            // and the legacy "role" claim type for backward compatibility with existing consumers
+            foreach (var role in roles)
+            {
+                subject.AddClaim(new Claim(ClaimTypes.Role, role));
+                subject.AddClaim(new Claim("role", role));
+            }
+
+            // Add deprecation notice for the legacy "role" claim format
+            subject.AddClaim(new Claim(
+                "dnn:deprecation:role",
+                "The role claim is deprecated. Use http://schemas.microsoft.com/ws/2008/06/identity/claims/role instead. The role claim will be removed in DNN v12.0.0."));
 
             var notBefore = DateTime.UtcNow.AddMinutes(-ClockSkew);
             var expires = persistedToken.TokenExpiry;
