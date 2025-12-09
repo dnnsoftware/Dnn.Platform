@@ -123,6 +123,7 @@
   <Target Name="AfterBuild" DependsOnTargets="DebugProject">
   </Target>
   <Target Name="DebugProject">
+  <Target Name="CopyBin" BeforeTargets="Build">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Services.Syndication.dll" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Services.Syndication.pdb" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.Services.Syndication.xml" DestinationFolder="$(WebsitePath)\bin" />
