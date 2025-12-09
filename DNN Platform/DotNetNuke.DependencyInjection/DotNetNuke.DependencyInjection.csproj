@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
-    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.DependencyInjection.xml</DocumentationFile>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.DependencyInjection.xml</DocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,12 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
