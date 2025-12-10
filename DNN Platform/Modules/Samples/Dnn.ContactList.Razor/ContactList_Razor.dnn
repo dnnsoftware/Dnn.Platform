@@ -1,0 +1,97 @@
+﻿<dotnetnuke type="Package" version="5.0">
+	<packages>
+		<package name="Dnn.ContactList_Razor" type="Module" version="01.00.00">
+			<friendlyName>Contact List Razor</friendlyName>
+			<description>DNN Contact List using Razor</description>
+			<owner>
+				<name>DNN</name>
+				<organization>DNN Corp.</organization>
+				<url>http://www.dnnsoftware.com</url>
+				<email>support@dnnsoftware.com</email>
+			</owner>
+			<license src="License.txt"></license>
+			<releaseNotes src="ReleaseNotes.txt"></releaseNotes>
+			<azureCompatible>true</azureCompatible>
+			<dependencies>
+				<dependency type="CoreVersion">10.00.00</dependency>
+			</dependencies>
+			<components>
+				<component type="Script">
+					<scripts>
+						<basePath>DesktopModules\Dnn\RazorContactList\</basePath>
+						<script type="Install">
+							<path>Providers\DataProviders\SqlDataProvider</path>
+							<name>01.00.00.SqlDataProvider</name>
+							<version>01.00.00</version>
+						</script>
+						<script type="Install">
+							<path>Providers\DataProviders\SqlDataProvider</path>
+							<name>01.00.01.SqlDataProvider</name>
+							<version>01.00.01</version>
+						</script>
+					</scripts>
+				</component>
+				<component type="Module">
+					<desktopModule>
+						<moduleName>Dnn.ContactList.Razor</moduleName>
+						<foldername>Dnn/RazorContactList</foldername>
+						<businessControllerClass/>
+						<supportedFeatures />
+						<moduleDefinitions>
+							<moduleDefinition>
+								<friendlyName>Contact List Razor</friendlyName>
+								<defaultCacheTime>0</defaultCacheTime>
+								<moduleControls>
+									<moduleControl>
+										<controlKey />
+										<controlSrc>DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms.WrapperModule, DotNetNuke.Web.MvcPipeline</controlSrc>
+										<mvcControlClass>Dnn.ContactList.Razor.ViewControl, Dnn.ContactList.Razor</mvcControlClass>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle />
+										<controlType>View</controlType>
+										<iconFile />
+										<helpUrl/>
+										<supportsPartialRendering>False</supportsPartialRendering>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+									<moduleControl>
+										<controlKey>Edit</controlKey>
+										<controlSrc>DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms.WrapperModule, DotNetNuke.Web.MvcPipeline</controlSrc>
+										<mvcControlClass>Dnn.ContactList.Razor.EditControl, Dnn.ContactList.Razor</mvcControlClass>
+										<supportsPartialRendering>True</supportsPartialRendering>
+										<controlTitle>Add/Update Contact</controlTitle>
+										<controlType>Edit</controlType>
+										<iconFile />
+										<helpUrl/>
+										<supportsPopUps>True</supportsPopUps>
+										<viewOrder>0</viewOrder>
+									</moduleControl>
+								</moduleControls>
+							</moduleDefinition>
+						</moduleDefinitions>
+					</desktopModule>
+				</component>
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>Dnn.ContactList.Razor.dll</name>
+						</assembly>
+						<assembly>
+							<path>bin</path>
+							<name>Dnn.ContactList.Api.dll</name>
+						</assembly>
+					</assemblies>
+				</component>
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>DesktopModules/Dnn/RazorContactList</basePath>
+						<resourceFile>
+							<name>Resources.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+			</components>
+		</package>
+	</packages>
+</dotnetnuke>

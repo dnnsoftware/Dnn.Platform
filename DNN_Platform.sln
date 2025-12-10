@@ -647,6 +647,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.ContactList.Spa", "DNN 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.ContactList.SpaReact", "DNN Platform\Modules\Samples\Dnn.ContactList.SpaReact\Dnn.ContactList.SpaReact.csproj", "{19727E7F-6D3E-917D-920A-112FD03CA96F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.ContactList.Razor", "DNN Platform\Modules\Samples\Dnn.ContactList.Razor\Dnn.ContactList.Razor.csproj", "{B899C9A5-C118-176D-A189-9959DD38C53F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Cloud_Debug|Any CPU = Cloud_Debug|Any CPU
@@ -2559,6 +2561,30 @@ Global
 		{19727E7F-6D3E-917D-920A-112FD03CA96F}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
 		{19727E7F-6D3E-917D-920A-112FD03CA96F}.Release-Net45|x86.ActiveCfg = Release|Any CPU
 		{19727E7F-6D3E-917D-920A-112FD03CA96F}.Release-Net45|x86.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Debug|Any CPU.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Debug|x86.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Debug|x86.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Release|Any CPU.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Release|x86.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Cloud_Release|x86.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug|x86.Build.0 = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug-Net45|Any CPU.ActiveCfg = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug-Net45|Any CPU.Build.0 = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug-Net45|x86.ActiveCfg = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Debug-Net45|x86.Build.0 = Debug|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release|x86.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release|x86.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release-Net45|Any CPU.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release-Net45|Any CPU.Build.0 = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release-Net45|x86.ActiveCfg = Release|Any CPU
+		{B899C9A5-C118-176D-A189-9959DD38C53F}.Release-Net45|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2706,6 +2732,7 @@ Global
 		{A1615D6C-F956-AB32-5B07-C3CC75888398} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{735974ED-BE2B-6C25-CD75-1528175F6206} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{19727E7F-6D3E-917D-920A-112FD03CA96F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B899C9A5-C118-176D-A189-9959DD38C53F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {46B6A641-57EB-4B19-B199-23E6FC2AB40B}

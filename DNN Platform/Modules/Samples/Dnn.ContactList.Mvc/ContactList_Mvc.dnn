@@ -45,6 +45,7 @@
                   <moduleControl>
                     <controlKey />
                     <controlSrc>Dnn.ContactList.Mvc.Controllers/Contact/Index.mvc</controlSrc>
+                    <mvcControlClass>DotNetNuke.Web.MvcPipeline.ModuleControl.MvcModuleControl, DotNetNuke.Web.MvcPipeline</mvcControlClass>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle />
                     <controlType>View</controlType>
