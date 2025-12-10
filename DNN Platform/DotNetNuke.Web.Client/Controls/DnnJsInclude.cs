@@ -9,7 +9,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Web.Client.Cdf;
-    using DotNetNuke.Web.Client.ResourceManager;
 
     /// <summary>Registers a JavaScript resource.</summary>
     public class DnnJsInclude : ClientResourceInclude
@@ -22,7 +21,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// </summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         public DnnJsInclude(IClientResourceController clientResourceController)
-            : base()
         {
             this.clientResourceController = clientResourceController;
             this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
@@ -32,11 +30,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias)
-                        .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
-                        .SetProvider(this.ForceProvider)
-                        .SetPriority(this.Priority)
-                        .Register();
+            var script = this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias);
+            this.RegisterResource(script);
             base.OnLoad(e);
         }
 

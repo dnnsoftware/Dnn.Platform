@@ -16,34 +16,24 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     {
         private readonly IClientResourceController clientResourceController;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DnnCssInclude"/> class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="DnnCssInclude"/> class.</summary>
         /// <param name="clientResourceController">The client resources controller.</param>
         public DnnCssInclude(IClientResourceController clientResourceController)
-            : base()
         {
             this.clientResourceController = clientResourceController;
             this.ForceProvider = ClientResourceProviders.DefaultCssProvider;
             this.DependencyType = ClientDependencyType.Css;
         }
 
+        /// <summary>Gets or sets the <c>media</c> attribute on the stylesheet.</summary>
         public string CssMedia { get; set; }
-
-        /// <inheritdoc/>
-        protected override void OnInit(EventArgs e)
-        {
-        }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
-                        .SetNameAndVersion(this.Name, this.Version, this.ForceVersion)
-                        .SetProvider(this.ForceProvider)
-                        .SetPriority(this.Priority)
-                        .SetMedia(this.CssMedia)
-                        .Register();
+            var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
+                .SetMedia(this.CssMedia);
+            this.RegisterResource(stylesheet);
             base.OnLoad(e);
         }
 
