@@ -68,6 +68,13 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>Gets or sets the value of the <c>referrerpolicy</c> attribute.</summary>
         public ReferrerPolicy ReferrerPolicy { get; set; }
 
+        /// <summary>Gets additional attributes in the HTML markup for the resource.</summary>
+        public IDictionary<string, string> HtmlAttributes { get; private set; } = new Dictionary<string, string>();
+
+        /// <summary>Gets or sets the <see cref="HtmlAttributes"/> for this resource via a string which is parsed.</summary>
+        /// <remarks>The syntax for the string must be: <c>key1:value1,key2:value2</c> etc.</remarks>
+        public string HtmlAttributesAsString { get; set; }
+
         /// <summary>Gets or sets the group for the client resource. Resources in the same group are processed together.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.0. Grouping is no longer supported, there is no replacement within DNN for this functionality. Scheduled removal in v12.0.0.")]
         public int Group { get; set; }
@@ -94,7 +101,91 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                 resource = resource.SetBlocking();
             }
 
+            var attributes = this.HtmlAttributes;
+            ParseHtmlAttributesIntoDictionary(this.HtmlAttributesAsString, attributes);
+
+            foreach (var attribute in attributes)
+            {
+                resource.AddAttribute(attribute.Key, attribute.Value);
+            }
+
             resource.Register();
+        }
+
+        /// <seealso href="https://github.com/dnnsoftware/ClientDependency/blob/7bf46d9a9b8540e71496fa76ed5d122ec4a16257/src/ClientDependency.Core/HtmlAttributesStringParser.cs" />
+        private static void ParseHtmlAttributesIntoDictionary(string attributes, IDictionary<string, string> destination)
+        {
+            if (string.IsNullOrEmpty(attributes))
+            {
+                return;
+            }
+
+            var key = string.Empty;
+            var val = string.Empty;
+            var isKey = true;
+            var isVal = false;
+            var isValDelimited = false;
+            for (var i = 0; i < attributes.Length; i++)
+            {
+                var c = attributes.ToCharArray()[i];
+                if (isKey && c == ':')
+                {
+                    isKey = false;
+                    isVal = true;
+                    continue;
+                }
+
+                if (isKey)
+                {
+                    key += c;
+                }
+
+                if (!isVal)
+                {
+                    continue;
+                }
+
+                if (c == '\'')
+                {
+                    if (!isValDelimited)
+                    {
+                        isValDelimited = true;
+                        continue;
+                    }
+                    else
+                    {
+                        isValDelimited = false;
+                        if (i == attributes.Length - 1)
+                        {
+                            // if it is the end, add/replace the value
+                            destination[key] = val;
+                        }
+
+                        continue;
+                    }
+                }
+
+                if (c == ',' && !isValDelimited)
+                {
+                    // we've reached a comma and the value is no longer delimited, this means we create a new key
+                    isKey = true;
+                    isVal = false;
+
+                    // now we can add/replace the current value to the dictionary
+                    destination[key] = val;
+                    key = string.Empty;
+                    val = string.Empty;
+                    continue;
+                }
+
+                val += c;
+
+                if (i == attributes.Length - 1)
+                {
+                    // if it is the end, add/replace the value
+                    destination[key] = val;
+                }
+            }
         }
     }
 }
