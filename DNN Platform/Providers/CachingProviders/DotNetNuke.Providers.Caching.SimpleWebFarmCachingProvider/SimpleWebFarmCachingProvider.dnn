@@ -36,7 +36,7 @@
 				          <node path="/configuration/system.webServer/handlers" action="update" key="name" collision="overwrite">
                     <add name="SimpleWebFarmSynchronizationHandler"
                          verb="*"
-                         path="SimpleWebFarmSync.aspx"
+                         path="SimpleWebFarmSync.axd"
                          type="DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider.SimpleWebFarmSynchronizationHandler, DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider"
                          preCondition="integratedMode" />
                   </node>
