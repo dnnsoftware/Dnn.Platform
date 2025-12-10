@@ -25,14 +25,22 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.DependencyType = ClientDependencyType.Css;
         }
 
-        /// <summary>Gets or sets the <c>media</c> attribute on the stylesheet.</summary>
+        /// <inheritdoc cref="ILinkResource.Media" />
         public string CssMedia { get; set; }
+
+        /// <inheritdoc cref="ILinkResource.Preload" />
+        public bool Preload { get; set; }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
             var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
                 .SetMedia(this.CssMedia);
+            if (this.Preload)
+            {
+                stylesheet.SetPreload();
+            }
+
             this.RegisterResource(stylesheet);
             base.OnLoad(e);
         }

@@ -47,6 +47,15 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets the value of the <c>referrerpolicy</c> attribute.</summary>
         public ReferrerPolicy ReferrerPolicy { get; set; }
 
+        /// <inheritdoc cref="IScriptResource.Async" />
+        public bool Async { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.Defer" />
+        public bool Defer { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.NoModule" />
+        public bool NoModule { get; set; }
+
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
@@ -65,6 +74,9 @@ namespace DotNetNuke.UI.Skins.Controls
             this.ctlInclude.CrossOrigin = this.CrossOrigin;
             this.ctlInclude.FetchPriority = this.FetchPriority;
             this.ctlInclude.ReferrerPolicy = this.ReferrerPolicy;
+            this.ctlInclude.Async = this.Async;
+            this.ctlInclude.Defer = this.Defer;
+            this.ctlInclude.NoModule = this.NoModule;
         }
     }
 }

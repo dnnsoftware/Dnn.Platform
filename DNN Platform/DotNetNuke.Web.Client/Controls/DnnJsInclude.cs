@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Web.Client.Cdf;
+    using DotNetNuke.Web.Client.ResourceManager;
 
     /// <summary>Registers a JavaScript resource.</summary>
     public class DnnJsInclude : ClientResourceInclude
@@ -27,10 +28,34 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.DependencyType = ClientDependencyType.Javascript;
         }
 
+        /// <inheritdoc cref="IScriptResource.Async" />
+        public bool Async { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.Defer" />
+        public bool Defer { get; set; }
+
+        /// <inheritdoc cref="IScriptResource.NoModule" />
+        public bool NoModule { get; set; }
+
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
             var script = this.clientResourceController.CreateScript(this.FilePath, this.PathNameAlias);
+            if (this.Async)
+            {
+                script = script.SetAsync();
+            }
+
+            if (this.Defer)
+            {
+                script = script.SetDefer();
+            }
+
+            if (this.NoModule)
+            {
+                script = script.SetNoModule();
+            }
+
             this.RegisterResource(script);
             base.OnLoad(e);
         }

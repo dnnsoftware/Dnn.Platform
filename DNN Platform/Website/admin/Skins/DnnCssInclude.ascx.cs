@@ -50,6 +50,9 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets the value of the <c>referrerpolicy</c> attribute.</summary>
         public ReferrerPolicy ReferrerPolicy { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether the client resource should be preloaded.</summary>
+        public bool Preload { get; set; }
+
         /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
@@ -68,6 +71,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.ctlInclude.CrossOrigin = this.CrossOrigin;
             this.ctlInclude.FetchPriority = this.FetchPriority;
             this.ctlInclude.ReferrerPolicy = this.ReferrerPolicy;
+            this.ctlInclude.Preload = this.Preload;
             if (this.CssMedia != CssMediaType.None)
             {
                 this.ctlInclude.CssMedia = this.CssMedia.ToString().ToLowerInvariant();
