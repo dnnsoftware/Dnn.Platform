@@ -14,6 +14,8 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
     /// <summary>Base class for all resource types.</summary>
     public abstract class ResourceBase : IResource
     {
+        private string name;
+
         /// <inheritdoc />
         public string FilePath { get; set; }
 
