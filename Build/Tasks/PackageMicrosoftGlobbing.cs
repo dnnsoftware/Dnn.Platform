@@ -8,7 +8,7 @@ public sealed class PackageMicrosoftGlobbing : PackageComponentTask
 {
     /// <summary>Initializes a new instance of the <see cref="PackageMicrosoftGlobbing"/> class.</summary>
     public PackageMicrosoftGlobbing()
-        : base("MicrosoftGlobbing", "Microsoft.Extensions.FileSystemGlobbing.dll", "Microsoft.Extensions.FileSystemGlobbing")
+        : base("Microsoft.Extensions.FileSystemGlobbing")
     {
     }
 }

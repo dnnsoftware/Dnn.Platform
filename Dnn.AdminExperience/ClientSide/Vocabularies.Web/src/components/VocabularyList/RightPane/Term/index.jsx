@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Collapsible from "react-collapse";
 import { SvgIcons } from "@dnnsoftware/dnn-react-common";
 import util from "utils";
+import Html from "../../../Html";
 import styles from "./style.module.less";
 
 
@@ -61,7 +62,7 @@ class Term extends Component {
                         <div className="edit-svg" onClick={this.toggleTerm.bind(this)}><SvgIcons.ArrowDownIcon /></div>
                     }
                     <div onClick={this.onLiClick.bind(this)}>
-                        <span className="term-name" dangerouslySetInnerHTML={{ __html: props.term.Name }}></span>
+                        <span className="term-name"><Html html={props.term.Name } /></span>
                         {props.isEditable && util.canEdit() && <div className="edit-button" onClick={this.onClick.bind(this)}><SvgIcons.EditIcon /></div>}
                     </div>
                 </div>

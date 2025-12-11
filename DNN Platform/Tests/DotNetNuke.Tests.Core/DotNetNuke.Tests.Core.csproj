@@ -375,6 +375,9 @@
     <Content Include="Resources\DOMPurify\valid_filter.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\invalid_encoded-parenthesis.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\invalid_foreignObject-iframe-src-data.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -1,0 +1,52 @@
+﻿@using DotNetNuke.Collections
+@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<Dnn.ContactList.Api.Contact>
+<div class="contactCard">
+    <div class="contactCard-header">
+        <div class="contactCard-logo">
+            <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                <!-- Left chevron/mountain -->
+                <polyline points="5,55 20,15 35,55" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Middle chevron/mountain -->
+                <polyline points="30,55 50,5 70,55" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Right chevron/mountain (partial) -->
+                <polyline points="65,55 80,15 95,55" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="contactCard-company">
+            <div class="company-name">ACME CORP</div>
+            <div class="company-tagline">INNOVATION &amp; SOLUTIONS</div>
+        </div>
+    @{
+        if (@Dnn.ModuleContext.IsEditable && Convert.ToBoolean(Dnn.ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("AllowContactCreation", false)))
+        {
+                <div class="contactCard-actions">
+                <a href="@Url.Action("Edit", "Contact", new {ctl = "Edit", contactId = Model.ContactId})" title="@Dnn.LocalizeString("Edit")">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a href="@Url.Action("Delete", "Contact", new {contactId = Model.ContactId})" title="@Dnn.LocalizeString("Delete")">
+                    <i class="fa fa-trash"></i>
+                </a>
+            </div>
+        }
+    }
+    </div>
+    <div class="contactCard-body">
+        <div class="contact-name">@Model.FirstName @Model.LastName</div>
+        <div class="contact-title">@Dnn.LocalizeString("ContactPerson")</div>
+        <div class="contact-detail">
+            <i class="fa fa-envelope"></i>
+            <span>@Model.Email.ToLowerInvariant()</span>
+    </div>
+        <div class="contact-detail">
+            <i class="fa fa-phone"></i>
+        <span>@Model.Phone</span>
+    </div>
+        @if (!string.IsNullOrEmpty(Model.Social))
+        {
+            <div class="contact-detail contact-social">
+                <i class="fa fa-twitter"></i>
+                <a href="https://social.com/@Model.Social.TrimStart('@')" target="_blank">@Model.Social.ToLowerInvariant()</a>
+            </div>
+        }
+    </div>
+</div>

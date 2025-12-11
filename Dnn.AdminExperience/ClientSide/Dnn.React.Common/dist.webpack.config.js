@@ -18,7 +18,16 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ["babel-loader"] },
+            { 
+                test: /\.(js|jsx|ts|tsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
+                    },
+                },
+            },
             { test: /\.less$/, use:
                 [
                     "style-loader",
@@ -48,7 +57,7 @@ module.exports = {
     },
     externals: ["react", "prop-types", nodeExternals()], // in order to ignore all modules in node_modules folder
     resolve: {
-        extensions: [".js", ".json", ".jsx"],
+        extensions: [".js", ".json", ".jsx", ".ts", ".tsx"],
         modules: [
             path.resolve(__dirname, "./src"), // Look in src first
             path.resolve("./node_modules"), // Try local node_modules

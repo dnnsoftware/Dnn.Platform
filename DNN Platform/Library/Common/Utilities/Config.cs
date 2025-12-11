@@ -468,21 +468,16 @@ namespace DotNetNuke.Common.Utilities
         {
             var configNav = Load(appStatus).CreateNavigator();
 
-            // Select the location node
-            var locationNav = configNav.SelectSingleNode("configuration/location");
-            XPathNavigator formsNav;
-
-            // Test for the existence of the location node if it exists then include that in the nodes of the XPath Query
-            if (locationNav == null)
+            // Try to get the forms authentication from the default location
+            var formsNav = configNav?.SelectSingleNode("configuration/system.web/authentication/forms");
+            if (formsNav is null)
             {
-                formsNav = configNav.SelectSingleNode("configuration/system.web/authentication/forms");
-            }
-            else
-            {
-                formsNav = configNav.SelectSingleNode("configuration/location/system.web/authentication/forms");
+                // If unable, look for a location node, if found try to get the settings from there
+                formsNav = configNav?.SelectSingleNode("configuration/location/system.web/authentication/forms");
             }
 
-            return formsNav != null ? XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", 30) : 30;
+            const int DefaultTimeout = 30;
+            return formsNav is null ? DefaultTimeout : XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", DefaultTimeout);
         }
 
         /// <summary>Gets optional persistent cookie timeout value from web.config.</summary>

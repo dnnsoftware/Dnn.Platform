@@ -1,6 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <WebsitePath>$(RootDirectory)\Website</WebsitePath>
+    <CopySampleProjects>False</CopySampleProjects>
   </PropertyGroup>
   <Import Project=".\DNN_Platform.local.build" Condition="Exists('.\DNN_Platform.local.build')" />
   <PropertyGroup>
@@ -10,5 +11,6 @@
     <WebsiteBinProvidersPath>$(WebsitePath)\bin\Providers</WebsiteBinProvidersPath>
     <WebsiteInstallPath>$(WebsitePath)\Install</WebsiteInstallPath>
     <WebsiteSkinInstallPath>$(WebsitePath)\Install\Skin</WebsiteSkinInstallPath>
+    <PathToArtifacts>$(RootDirectory)\Artifacts</PathToArtifacts>
   </PropertyGroup>
 </Project>

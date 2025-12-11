@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import resx from "resources";
+import Html from "../../Html";
 import Undo from "./icons/undo.svg";
 import Redo from "./icons/redo.svg";
 import Bold from "./icons/bold.svg";
@@ -107,8 +108,8 @@ class FullEditor extends Component {
         return (
             <div className='fulleditor-editor' 
                 contentEditable
-                ref={(e) => { this.editorControl = e; }}
-                dangerouslySetInnerHTML={{ __html: props.value }}>
+                ref={(e) => { this.editorControl = e; }}>
+                    <Html html={props.value } />
             </div>
         );
     }

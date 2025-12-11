@@ -4,6 +4,7 @@ import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.module.less";
 import ColumnSizes from "../ExtensionColumnSizes";
 import InUseModal from "../InUseModal";
+import Html from "../../../../Html";
 
 class ExtensionDetailRow extends Component {
     constructor() {
@@ -46,7 +47,7 @@ class ExtensionDetailRow extends Component {
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[1]} style={{ padding: "0 35px" }}>
                         <span className="package-name">{props._package.friendlyName}</span>
-                        <p dangerouslySetInnerHTML={{ __html: props._package.description }}></p>
+                        <p><Html html={props._package.description} /></p>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[2]}>
                         <p>{props._package.version}</p>

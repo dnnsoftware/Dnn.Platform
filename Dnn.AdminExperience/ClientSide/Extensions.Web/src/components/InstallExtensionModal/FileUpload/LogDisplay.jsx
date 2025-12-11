@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { GridCell } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
+import Html from "../../Html";
 import "./style.less";
 
 const licenseBoxStyle = {
@@ -24,7 +25,7 @@ class LogDisplay extends Component {
                         {props.logs && props.logs.map((log, i) => {
                             return <p className={log.Type.toLowerCase()} key={i}>{log.Type + " " + log.Description}</p>;
                         })}
-                        {!props.logs && <p className="logs-unknown-error" dangerouslySetInnerHTML={{ __html: Localization.get("InstallExtension_UploadFailedUnknownLogs") }}></p>}
+                        {!props.logs && <p className="logs-unknown-error"><Html html={Localization.get("InstallExtension_UploadFailedUnknownLogs") } /></p>}
                     </div>
                 </Scrollbars>
             </GridCell>

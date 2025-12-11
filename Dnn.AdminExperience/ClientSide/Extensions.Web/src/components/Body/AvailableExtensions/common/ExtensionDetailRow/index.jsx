@@ -4,6 +4,7 @@ import { GridCell, Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-co
 import styles from "./style.module.less";
 import Localization from "localization";
 import ColumnSizes from "../ExtensionColumnSizes";
+import Html from "../../../../Html";
 import util from "utils";
 
  
@@ -14,7 +15,7 @@ const ExtensionDetailRow = ({_package, type, onInstall, onDeploy, doingOperation
         </GridCell>
         <GridCell columnSize={ColumnSizes[1]} style={{ padding: "0 35px" }}>
             <span className="package-name">{_package.friendlyName}</span>
-            <p dangerouslySetInnerHTML={{ __html: _package.description }}></p>
+            <p><Html html={_package.description} /></p>
         </GridCell>
         <GridCell columnSize={ColumnSizes[2]}>
             <p>{_package.version}</p>
