@@ -104,8 +104,7 @@ namespace DotNetNuke.Entities.Urls
                             // Home page redirect loop when using default language not en-US and first request with secondary language
                             // check for correct, default language code in portal object
                             string portalCultureCode = pi.CultureCode;
-                            if (portalCultureCode != null &&
-                                string.CompareOrdinal(portalCultureCode, pi.DefaultLanguage) != 0)
+                            if (portalCultureCode != null && !string.Equals(portalCultureCode, pi.DefaultLanguage, StringComparison.Ordinal))
                             {
                                 // portal culture code and default culture code are not the same.
                                 // this means we will get the incorrect home page tab id

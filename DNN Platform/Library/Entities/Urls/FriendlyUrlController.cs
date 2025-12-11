@@ -807,7 +807,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
-                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) != 0)
+                if (!string.Equals(start, leading, StringComparison.OrdinalIgnoreCase))
                 {
                     // not leading with this
                     path = leading + path;
@@ -823,7 +823,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 && leading.Length <= path.Length && leading != string.Empty)
             {
                 string start = path.Substring(0, leading.Length);
-                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Equals(start, leading, StringComparison.OrdinalIgnoreCase))
                 {
                     // matches start, take leading off
                     path = path.Substring(leading.Length);

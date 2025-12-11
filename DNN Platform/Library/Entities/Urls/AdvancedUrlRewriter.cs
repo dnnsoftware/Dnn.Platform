@@ -132,18 +132,18 @@ namespace DotNetNuke.Entities.Urls
             bool isChildPortalRootUrl = false;
 
             // what we are going to test for here is that if this is a child portal request, for the /default.aspx of the child portal
-            // then we are going to avoid the core 302 redirect to ?alias=portalALias by rewriting to the /default.aspx of the site root
+            // then we are going to avoid the core 302 redirect to ?alias=portalAlias by rewriting to the /default.aspx of the site root
             // 684 : don't convert querystring items to lower case
             // do the check by constructing what a child alias url would look like and compare it with the requested urls
-            // 912 : when requested without a valid portal alias, portalALias is null.  Refuse and return false.
+            // 912 : when requested without a valid portal alias, portalAlias is null.  Refuse and return false.
             aliasQueryString = null;
-            if (result.PortalAlias != null && result.PortalAlias.HTTPAlias != null)
+            if (result.PortalAlias is { HTTPAlias: not null })
             {
                 string defaultPageUrl = result.Scheme + result.PortalAlias.HTTPAlias + "/" +
                                         Globals.glbDefaultPage.ToLowerInvariant(); // child alias Url with /default.aspx
 
                 // 660 : look for a querystring on the site root for a child portal, and handle it if so
-                if (string.CompareOrdinal(requestUrl.ToLowerInvariant(), defaultPageUrl) == 0)
+                if (string.Equals(requestUrl.ToLowerInvariant(), defaultPageUrl, StringComparison.Ordinal))
                 {
                     // exact match : that's the alias root
                     isChildPortalRootUrl = true;
@@ -158,7 +158,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         string rootPart = requestUrlParts[0];
                         string queryString = requestUrlParts[1];
-                        if (string.Compare(rootPart, defaultPageUrl, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (string.Equals(rootPart, defaultPageUrl, StringComparison.OrdinalIgnoreCase))
                         {
                             // rewrite, but put in the querystring on the rewrite path
                             isChildPortalRootUrl = true;
@@ -365,14 +365,14 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    // check to see if it is a custom tab alais - in that case, it is allowed to be requested for the tab
+                    // check to see if it is a custom tab alias - in that case, it is allowed to be requested for the tab
                     if (CheckIfAliasIsCustomTabAlias(ref result, httpAlias, settings))
                     {
                         // change the primary alias to the custom tab alias that has been requested.
                         result.PrimaryAlias = result.PortalAlias;
                     }
                     else
-                        if (httpAlias != null && string.Compare(httpAlias, result.HttpAlias, StringComparison.OrdinalIgnoreCase) != 0)
+                        if (httpAlias != null && !string.Equals(httpAlias, result.HttpAlias, StringComparison.OrdinalIgnoreCase))
                     {
                         incorrectAlias = true;
                     }
@@ -1345,9 +1345,9 @@ namespace DotNetNuke.Entities.Urls
             // to allow for reverse proxy requests, which must change the rewritten alias
             // while leaving the requested alias
             bool internalAliasFound = false;
-            if (doRedirect && internalAliases != null && internalAliases.Count > 0)
+            if (doRedirect && internalAliases is { Count: > 0 })
             {
-                if (internalAliases.Any(ia => string.Compare(ia.HttpAlias, wrongAlias, StringComparison.OrdinalIgnoreCase) == 0))
+                if (internalAliases.Any(ia => string.Equals(ia.HttpAlias, wrongAlias, StringComparison.OrdinalIgnoreCase)))
                 {
                     internalAliasFound = true;
                     doRedirect = false;
@@ -1428,9 +1428,9 @@ namespace DotNetNuke.Entities.Urls
             // 954 : DNN 7.0 compatibility
             // check for /default.aspx which is default Url launched from the Upgrade/Install wizard page
             // 961 : check domain as well as path for the referer
-            if (physicalPath.EndsWith(Globals.glbDefaultPage, true, CultureInfo.InvariantCulture) == false
+            if (!physicalPath.EndsWith(Globals.glbDefaultPage, true, CultureInfo.InvariantCulture)
                 && refererPath != null
-                && string.Compare(requestedDomain, refererDomain, StringComparison.OrdinalIgnoreCase) == 0
+                && string.Equals(requestedDomain, refererDomain, StringComparison.OrdinalIgnoreCase)
                 && (refererPath.EndsWith("install.aspx", true, CultureInfo.InvariantCulture)
                     || refererPath.EndsWith("installwizard.aspx", true, CultureInfo.InvariantCulture)
                     || refererPath.EndsWith("upgradewizard.aspx", true, CultureInfo.InvariantCulture)))
@@ -1918,7 +1918,7 @@ namespace DotNetNuke.Entities.Urls
                     string urlDecodedRedirectPath = HttpUtility.UrlDecode(redirectPathOnly);
 
                     // check for wrong case redirection
-                    if (urlDecodedRedirectPath != null && (settings.RedirectWrongCase && string.CompareOrdinal(urlDecodedRedirectPath, urlDecodedRedirectPath.ToLowerInvariant()) != 0))
+                    if (urlDecodedRedirectPath != null && (settings.RedirectWrongCase && !string.Equals(urlDecodedRedirectPath, urlDecodedRedirectPath.ToLowerInvariant(), StringComparison.Ordinal)))
                     {
                         TabInfo tab;
                         bool allowRedirect = CheckFor301RedirectExclusion(result.TabId, result.PortalId, true, out tab, settings);
@@ -2950,7 +2950,7 @@ namespace DotNetNuke.Entities.Urls
             // first try and identify the portal using the tabId, but only if we identified this tab by looking up the tabid
             // from the original url
             // 668 : error in child portal redirects to child portal home page because of mismatch in tab/domain name
-            if (result.TabId != -1 && result.FriendlyRewrite == false)
+            if (result.TabId != -1 && !result.FriendlyRewrite)
             {
                 // get the alias from the tabid, but only if it is for a tab in that domain
                 // 2.0 : change to compare retrieved alias to the already-set httpAlias
@@ -2958,7 +2958,7 @@ namespace DotNetNuke.Entities.Urls
                 if (httpAliasFromTab != null)
                 {
                     // 882 : account for situation when portalAlias is null.
-                    if ((result.PortalAlias != null && string.Compare(result.PortalAlias.HTTPAlias, httpAliasFromTab, StringComparison.OrdinalIgnoreCase) != 0)
+                    if ((result.PortalAlias != null && !string.Equals(result.PortalAlias.HTTPAlias, httpAliasFromTab, StringComparison.OrdinalIgnoreCase))
                         || result.PortalAlias == null)
                     {
                         // 691 : change logic to force change in portal alias context rather than force back.

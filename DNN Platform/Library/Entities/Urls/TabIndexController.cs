@@ -461,7 +461,7 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 // now add the custom redirect to the tab dictionary
-                if (string.Compare(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Equals(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase))
                 {
                     AddToTabDict(
                         tabIndex,

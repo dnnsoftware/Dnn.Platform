@@ -752,12 +752,12 @@ namespace DotNetNuke.Entities.Urls
         {
             isPhysicalResource = false;
             checkFurtherForRewrite = true;
-            if (File.Exists(physicalPath) && physicalPath.EndsWith("\\_noext.aspx") == false)
+            if (File.Exists(physicalPath) && !physicalPath.EndsWith("\\_noext.aspx"))
             {
                 // resource found
                 string appPath = Globals.ApplicationMapPath + "\\default.aspx";
                 bool isDefaultAspxPath = false;
-                if (string.Compare(physicalPath, appPath, StringComparison.OrdinalIgnoreCase) != 0)
+                if (!string.Equals(physicalPath, appPath, StringComparison.OrdinalIgnoreCase))
                 {
                     string aliasQs;
                     if (AdvancedUrlRewriter.CheckForChildPortalRootUrl(fullUrl, result, out aliasQs))
@@ -766,7 +766,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        // it's not the default.aspx path or a child alias request, so we haven't identifed the resource
+                        // it's not the default.aspx path or a child alias request, so we haven't identified the resource
                         isPhysicalResource = true;
                         checkFurtherForRewrite = false;
                         result.DebugMessages.Add("Resource Identified No Rewrite Used");
@@ -1004,7 +1004,7 @@ namespace DotNetNuke.Entities.Urls
             // we should be checking that the tab path matches //Admin//pagename or //admin
             // in this way we should avoid partial matches (ie //Administrators
             if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
-                || string.Compare(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase) == 0)
+                || string.Equals(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -1217,7 +1217,7 @@ namespace DotNetNuke.Entities.Urls
                                 // if we are looking for a userid parameter in this querystring, check for a match
                                 if (userIdParm != null)
                                 {
-                                    if (string.Compare(keyName, userIdParm, StringComparison.OrdinalIgnoreCase) == 0)
+                                    if (string.Equals(keyName, userIdParm, StringComparison.OrdinalIgnoreCase))
                                     {
                                         isUserParm = true;
                                     }

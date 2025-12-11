@@ -382,7 +382,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
                     path = path.Replace(Globals.AddHTTP(alias.HTTPAlias), string.Empty);
                     int status = 200;
-                    if (customPath != null && (string.Compare(customPath, path, StringComparison.OrdinalIgnoreCase) != 0))
+                    if (customPath != null && !string.Equals(customPath, path, StringComparison.OrdinalIgnoreCase))
                     {
                         // difference in custom/standard URL, so standard is 301
                         status = 301;
@@ -420,7 +420,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         if (tab.TabName.Contains(" ") && friendlyUrlSettings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                         {
                             path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, string.Empty);
-                            if (customPath != null && string.Compare(customPath, path, StringComparison.OrdinalIgnoreCase) != 0)
+                            if (customPath != null && !string.Equals(customPath, path, StringComparison.OrdinalIgnoreCase))
                             {
                                 this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, string.Empty, isRedirected ? 301 : 200, isSystem, friendlyUrlSettings, null);
                             }

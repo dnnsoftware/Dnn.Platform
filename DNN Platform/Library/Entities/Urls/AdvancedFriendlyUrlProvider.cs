@@ -375,7 +375,7 @@ namespace DotNetNuke.Entities.Urls
                     || settings.PageExtensionUsageType == PageExtensionUsageType.PageOnly)
                 {
                     // check whether a 'custom' (other than default.aspx) page was supplied, and insert that as the pageAndExtension
-                    if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
+                    if (!string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                     {
                         extension = "/" + pageName.Replace(".aspx", settings.PageExtension);
                     }
@@ -388,7 +388,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
+                    if (!string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                     {
                         // get rid of the .aspx on the page if it was there
                         extension = "/" + pageName.Replace(".aspx", string.Empty); // +"/"; //610 : don't always end with /
@@ -537,7 +537,7 @@ namespace DotNetNuke.Entities.Urls
                         // lookup the culture code of the portal settings object
                     }
 
-                    PortalAliasInfo redirectAlias;
+                    IPortalAliasInfo redirectAlias;
                     if (aliasMapping == PortalSettings.PortalAliasMapping.Redirect)
                     {
                         // Alias mapping is redirect -> Search for primary alias
@@ -552,13 +552,13 @@ namespace DotNetNuke.Entities.Urls
                     if (redirectAlias != null)
                     {
                         if (!string.IsNullOrEmpty(redirectAlias.CultureCode)
-                            && string.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) != 0)
+                            && !string.Equals(redirectAlias.HttpAlias, httpAlias, StringComparison.OrdinalIgnoreCase))
                         {
                             // found the primary alias, and it's different from the supplied portal alias
                             // and the site is using a redirect portal alias mapping
                             // substitute in the primary Alias for the supplied alias
                             friendlyPath = friendlyPath.Replace(Globals.AddHTTP(httpAlias), string.Empty);
-                            httpAlias = redirectAlias.HTTPAlias;
+                            httpAlias = redirectAlias.HttpAlias;
                             if (!string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
@@ -573,14 +573,14 @@ namespace DotNetNuke.Entities.Urls
                         else
                         {
                             // check to see if we matched for this alias - if so, it's a culture specific alias
-                            if (string.Compare(redirectAlias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0 &&
+                            if (string.Equals(redirectAlias.HttpAlias, httpAlias, StringComparison.OrdinalIgnoreCase) &&
                                 !string.IsNullOrEmpty(redirectAlias.CultureCode))
                             {
                                 cultureSpecificAlias = true;
                             }
                         }
 
-                        // 852 : check to see if the skinSrc is explicityl specified, which we don't want to duplicate if the alias also specifies this
+                        // 852 : check to see if the skinSrc is explicitly specified, which we don't want to duplicate if the alias also specifies this
                         if (path.ToLowerInvariant().Contains("skinsrc=") && primaryAliases.ContainsSpecificSkins())
                         {
                             // path has a skin specified and (at least one) alias has a skin specified
@@ -666,7 +666,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 friendlyPath = queryStringMatch.Groups[1].Value;
                 friendlyPath = DefaultPageRegex.Replace(friendlyPath, string.Empty);
-                if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
+                if (!string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                 {
                     // take out the end page name, it will get re-added
                     var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -1040,7 +1040,7 @@ namespace DotNetNuke.Entities.Urls
                         bool hasPath = newPath != string.Empty;
 
                         // 871 : case insensitive comparison for culture
-                        bool isDefaultLanguage = string.Compare(cultureCode, defaultCode, StringComparison.OrdinalIgnoreCase) == 0;
+                        bool isDefaultLanguage = string.Equals(cultureCode, defaultCode, StringComparison.OrdinalIgnoreCase);
                         bool isCustomUrl;
                         newTabPath = TabPathHelper.GetTabPath(
                             tab,
@@ -1424,7 +1424,7 @@ namespace DotNetNuke.Entities.Urls
                 portalSettings = CheckAndUpdatePortalSettingsForNewAlias(portalSettings, cultureSpecificAlias, portalAlias);
             }
 
-            if (tab == null && path == "~/" && string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) == 0)
+            if (tab == null && path == "~/" && string.Equals(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
             {
                 // this is a request for the site root for the dnn logo skin object (642)
                 // do nothing, the friendly alias is already correct - we don't want to append 'default.aspx' on the end
