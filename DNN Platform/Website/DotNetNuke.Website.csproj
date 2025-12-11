@@ -1269,6 +1269,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.04.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.13.08.SqlDataProvider" />
     <Content Include="Install\Config\10.02.00.config" />
+    <Content Include="Install\Config\10.02.01.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
