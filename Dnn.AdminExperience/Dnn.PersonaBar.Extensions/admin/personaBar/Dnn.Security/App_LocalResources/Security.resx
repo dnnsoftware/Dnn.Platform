@@ -1490,7 +1490,7 @@
     <value>The changes to the CSP settings will be discarded. Do you wish to continue?</value>
   </data>
   <data name="plCspHeaderFixed.Text" xml:space="preserve">
-    <value>Lock CSP Header</value>
+    <value>Disallow Extension Override</value>
   </data>
   <data name="plCspHeaderFixed.Help" xml:space="preserve">
     <value>If enabled, the CSP header will be locked (i.e. set to settings below) and cannot be dynamically modified by skins or modules.</value>
