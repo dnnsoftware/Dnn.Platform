@@ -26,12 +26,11 @@ namespace DotNetNuke.Web.Client.Providers
         public const string DnnBodyPlaceHolderName = "BodySCRIPTS";
 
         /// <summary>Initializes the provider.</summary>
-        /// <param name="name">The friendly name of the provider.
-        ///                 </param><param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.
-        ///                 </param><exception cref="T:System.ArgumentNullException">The name of the provider is null.
-        ///                 </exception><exception cref="T:System.ArgumentException">The name of the provider has a length of zero.
-        ///                 </exception><exception cref="T:System.InvalidOperationException">An attempt is made to call <see cref="M:System.Configuration.Provider.ProviderBase.Initialize(System.String,System.Collections.Specialized.NameValueCollection)"/> on a provider after the provider has already been initialized.
-        ///                 </exception>
+        /// <param name="name">The friendly name of the provider.</param>
+        /// <param name="config">A collection of the name/value pairs representing the provider-specific attributes specified in the configuration for this provider.</param>
+        /// <exception cref="System.ArgumentNullException">The name of the provider is null.</exception>
+        /// <exception cref="System.ArgumentException">The name of the provider has a length of zero.</exception>
+        /// <exception cref="System.InvalidOperationException">An attempt is made to call <see cref="System.Configuration.Provider.ProviderBase.Initialize"/> on a provider after the provider has already been initialized.</exception>
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one

@@ -1326,7 +1326,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the tab.</summary>
         /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id or <see cref="P:DotNetNuke.Common.Utilities.Null.NullInteger" />.</param>
+        /// <param name="portalId">The portal id or <see cref="DotNetNuke.Common.Utilities.Null.NullInteger" />.</param>
         /// <returns>tab info.</returns>
         public TabInfo GetTab(int tabId, int portalId)
         {
@@ -1335,7 +1335,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets the tab.</summary>
         /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id or <see cref="P:DotNetNuke.Common.Utilities.Null.NullInteger" />.</param>
+        /// <param name="portalId">The portal id or <see cref="DotNetNuke.Common.Utilities.Null.NullInteger" />.</param>
         /// <param name="ignoreCache">if set to <see langword="true"/> will get tab info directly from database.</param>
         /// <returns>tab info.</returns>
         public TabInfo GetTab(int tabId, int portalId, bool ignoreCache)
