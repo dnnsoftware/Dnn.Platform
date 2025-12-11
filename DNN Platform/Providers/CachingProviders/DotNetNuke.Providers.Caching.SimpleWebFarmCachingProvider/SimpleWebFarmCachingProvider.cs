@@ -137,7 +137,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 var detailParameter = Host.DebugMode ? detail : UrlUtils.EncryptParameter(detail, Host.GUID);
                 var protocol = HostController.Instance.GetBoolean("UseSSLForCacheSync", false) ? "https://" : "http://";
                 var notificationUrl =
-                    $"{protocol}{server.Url}/SimpleWebFarmSync.aspx?command={commandParameter}&detail={detailParameter}";
+                    $"{protocol}{server.Url}/SimpleWebFarmSync.axd?command={commandParameter}&detail={detailParameter}";
 
                 // Build a webrequest
                 var notificationRequest = WebRequest.CreateHttp(notificationUrl);
