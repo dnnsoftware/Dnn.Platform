@@ -10,7 +10,7 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.Services.Cache;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>Manages http routes for services (WebAPI, MVC, etc).</summary>
+    /// <summary>Manages http routes for services (WebAPI, MVC, etc.).</summary>
     public static class ServicesRoutingManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
@@ -18,18 +18,16 @@ namespace DotNetNuke.Common.Internal
         /// <summary>Registers all the service routes.</summary>
         public static void RegisterServiceRoutes()
         {
-            const string unableToRegisterServiceRoutes = "Unable to register service routes";
-
             try
             {
-                foreach (IRoutingManager routingManager in Globals.GetCurrentServiceProvider().GetServices(typeof(IRoutingManager)))
+                foreach (var routingManager in Globals.GetCurrentServiceProvider().GetServices<IRoutingManager>())
                 {
                     routingManager.RegisterRoutes();
                 }
             }
             catch (Exception e)
             {
-                Logger.Error(unableToRegisterServiceRoutes, e);
+                Logger.Error("Unable to register service routes", e);
             }
         }
 
