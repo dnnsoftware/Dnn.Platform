@@ -1177,9 +1177,9 @@ namespace DotNetNuke.Services.Localization
                 // we should be checking that the tab path matches //Admin//pagename or //admin
                 // in this way we should avoid partial matches (ie //Administrators
                 if (PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Admin//", StringComparison.CurrentCultureIgnoreCase) ||
-                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) == 0 ||
+                    string.Equals(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) ||
                     PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Host//", StringComparison.CurrentCultureIgnoreCase) ||
-                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase) == 0)
+                    string.Equals(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase))
                 {
                     isAdminPage = true;
                 }
