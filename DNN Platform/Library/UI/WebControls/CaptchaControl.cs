@@ -462,7 +462,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Raises the <see cref="E:UserValidated" /> event.
+        /// Raises the <see cref="UserValidated" /> event.
         /// </summary>
         /// <param name="e">The <see cref="ServerValidateEventArgs"/> instance containing the event data.</param>
         protected virtual void OnUserValidated(ServerValidateEventArgs e)

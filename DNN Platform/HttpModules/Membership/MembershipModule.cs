@@ -193,7 +193,7 @@ namespace DotNetNuke.HttpModules.Membership
             application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
-        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.</summary>
+        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="System.Web.IHttpModule" />.</summary>
         public void Dispose()
         {
         }
