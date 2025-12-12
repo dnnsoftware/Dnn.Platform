@@ -9,7 +9,6 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CA1805</WarningsNotAsErrors>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Web.Client.ResourceManager.xml</DocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

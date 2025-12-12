@@ -25,13 +25,13 @@ public class ScriptResource : ResourceBase, IScriptResource
     }
 
     /// <inheritdoc />
-    public bool Async { get; set; } = false;
+    public bool Async { get; set; }
 
     /// <inheritdoc />
-    public bool Defer { get; set; } = false;
+    public bool Defer { get; set; }
 
     /// <inheritdoc />
-    public bool NoModule { get; set; } = false;
+    public bool NoModule { get; set; }
 
     /// <inheritdoc />
     public override void Register()

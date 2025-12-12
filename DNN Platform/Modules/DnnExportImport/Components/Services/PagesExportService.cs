@@ -54,7 +54,6 @@ namespace Dnn.ExportImport.Components.Services
         private ITabController tabController;
         private IModuleController moduleController;
         private ExportImportJob exportImportJob;
-        private ImportDto importDto;
         private ExportDto exportDto;
 
         private IList<int> exportedModuleDefinitions = new List<int>();
@@ -84,11 +83,11 @@ namespace Dnn.ExportImport.Components.Services
         /// <inheritdoc/>
         public override uint Priority => 20;
 
-        public virtual bool IncludeSystem { get; set; } = false;
+        public virtual bool IncludeSystem { get; set; }
 
-        public virtual bool IgnoreParentMatch { get; set; } = false;
+        public virtual bool IgnoreParentMatch { get; set; }
 
-        protected ImportDto ImportDto => this.importDto;
+        protected ImportDto ImportDto { get; private set; }
 
         public static void ResetContentsFlag(ExportImportRepository repository)
         {
@@ -155,7 +154,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             this.exportImportJob = importJob;
-            this.importDto = importDto;
+            this.ImportDto = importDto;
             this.exportDto = importDto.ExportDto;
             this.tabController = TabController.Instance;
             this.moduleController = ModuleController.Instance;
@@ -208,7 +207,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 localTab.TabSettings.Remove("TabImported");
                 otherTab.LocalId = localTab.TabID;
-                switch (this.importDto.CollisionResolution)
+                switch (this.ImportDto.CollisionResolution)
                 {
                     case CollisionResolution.Ignore:
                         this.Result.AddLogEntry("Ignored Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
@@ -279,7 +278,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.totals.TotalTabs++;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(this.importDto.CollisionResolution.ToString());
+                        throw new ArgumentOutOfRangeException(this.ImportDto.CollisionResolution.ToString());
                 }
             }
             else
@@ -638,7 +637,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    switch (this.importDto.CollisionResolution)
+                    switch (this.ImportDto.CollisionResolution)
                     {
                         case CollisionResolution.Overwrite:
                             if (localValue != other.SettingValue)
@@ -666,7 +665,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.Result.AddLogEntry("Ignored tab setting", other.SettingName);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(this.importDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(this.ImportDto.CollisionResolution.ToString());
                     }
                 }
             }
@@ -687,8 +686,8 @@ namespace Dnn.ExportImport.Components.Services
             var localTabPermissions = localTab.TabPermissions.OfType<TabPermissionInfo>().ToList();
             foreach (var other in tabPermissions)
             {
-                var roleId = Util.GetRoleIdByName(this.importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
-                var userId = UserController.GetUserByName(this.importDto.PortalId, other.Username)?.UserID;
+                var roleId = Util.GetRoleIdByName(this.ImportDto.PortalId, other.RoleID ?? noRole, other.RoleName);
+                var userId = UserController.GetUserByName(this.ImportDto.PortalId, other.Username)?.UserID;
 
                 var local = isNew ? null : localTabPermissions.FirstOrDefault(
                     x => x.PermissionCode == other.PermissionCode && x.PermissionKey == other.PermissionKey
@@ -697,7 +696,7 @@ namespace Dnn.ExportImport.Components.Services
                 var isUpdate = false;
                 if (local != null)
                 {
-                    switch (this.importDto.CollisionResolution)
+                    switch (this.ImportDto.CollisionResolution)
                     {
                         case CollisionResolution.Overwrite:
                             isUpdate = true;
@@ -706,7 +705,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.Result.AddLogEntry("Ignored tab permission", other.PermissionKey);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(this.importDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(this.ImportDto.CollisionResolution.ToString());
                     }
                 }
 
@@ -798,13 +797,13 @@ namespace Dnn.ExportImport.Components.Services
                 var local = isNew ? null : localUrls.FirstOrDefault(url => url.SeqNum == other.SeqNum);
                 if (local != null)
                 {
-                    switch (this.importDto.CollisionResolution)
+                    switch (this.ImportDto.CollisionResolution)
                     {
                         case CollisionResolution.Overwrite:
                             try
                             {
                                 local.Url = other.Url;
-                                TabController.Instance.SaveTabUrl(local, this.importDto.PortalId, true);
+                                TabController.Instance.SaveTabUrl(local, this.ImportDto.PortalId, true);
                                 this.Result.AddLogEntry("Update Tab Url", other.Url);
                                 count++;
                             }
@@ -818,12 +817,12 @@ namespace Dnn.ExportImport.Components.Services
                             this.Result.AddLogEntry("Ignored tab url", other.Url);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(this.importDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(this.ImportDto.CollisionResolution.ToString());
                     }
                 }
                 else
                 {
-                    var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(this.importDto.PortalId).FirstOrDefault(a => a.IsPrimary);
+                    var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(this.ImportDto.PortalId).FirstOrDefault(a => a.IsPrimary);
                     local = new TabUrlInfo
                     {
                         TabId = localTab.TabID,
@@ -839,7 +838,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     try
                     {
-                        TabController.Instance.SaveTabUrl(local, this.importDto.PortalId, true);
+                        TabController.Instance.SaveTabUrl(local, this.ImportDto.PortalId, true);
 
                         var createdBy = Util.GetUserIdByName(this.exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         var modifiedBy = Util.GetUserIdByName(this.exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
@@ -1162,7 +1161,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             if (!isNew && this.exportDto.ExportMode == ExportMode.Full &&
-                this.importDto.CollisionResolution == CollisionResolution.Overwrite)
+                this.ImportDto.CollisionResolution == CollisionResolution.Overwrite)
             {
                 // delete left over tab modules for full import in an existing page
                 var unimported = allExistingIds.Distinct().Except(allImportedIds);
@@ -1295,7 +1294,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    switch (this.importDto.CollisionResolution)
+                    switch (this.ImportDto.CollisionResolution)
                     {
                         case CollisionResolution.Overwrite:
                             if (localValue != other.SettingValue)
@@ -1324,7 +1323,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.Result.AddLogEntry("Ignored module setting", other.SettingName);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(this.importDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(this.ImportDto.CollisionResolution.ToString());
                     }
                 }
             }
@@ -1342,8 +1341,8 @@ namespace Dnn.ExportImport.Components.Services
                 : localModule.ModulePermissions.OfType<ModulePermissionInfo>().ToList();
             foreach (var other in modulePermissions)
             {
-                var userId = UserController.GetUserByName(this.importDto.PortalId, other.Username)?.UserID;
-                var roleId = Util.GetRoleIdByName(this.importDto.PortalId, other.RoleID ?? noRole, other.RoleName);
+                var userId = UserController.GetUserByName(this.ImportDto.PortalId, other.Username)?.UserID;
+                var roleId = Util.GetRoleIdByName(this.ImportDto.PortalId, other.RoleID ?? noRole, other.RoleName);
                 var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
 
                 if (permissionId != null)
@@ -1426,7 +1425,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 // Note: there is no check whether the content exists or not to manage conflict resolution
-                if (!isNew && this.importDto.CollisionResolution != CollisionResolution.Overwrite)
+                if (!isNew && this.ImportDto.CollisionResolution != CollisionResolution.Overwrite)
                 {
                     return 0;
                 }
@@ -1522,7 +1521,7 @@ namespace Dnn.ExportImport.Components.Services
             out bool workflowEnabledPortalLevel,
             out bool workflowEnabledTabLevel)
         {
-            var portalId = this.importDto.PortalId;
+            var portalId = this.ImportDto.PortalId;
             versionEnabledPortalLevel = TabVersionSettings.Instance.IsVersioningEnabled(portalId);
             versionEnabledTabLevel = TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId);
             TabVersionSettings.Instance.SetEnabledVersioningForPortal(portalId, false);
@@ -1541,7 +1540,7 @@ namespace Dnn.ExportImport.Components.Services
             bool workflowEnabledPortalLevel,
             bool workflowEnabledTabLevel)
         {
-            var portalId = this.importDto.PortalId;
+            var portalId = this.ImportDto.PortalId;
             TabVersionSettings.Instance.SetEnabledVersioningForPortal(portalId, versionEnabledPortalLevel);
             TabVersionSettings.Instance.SetEnabledVersioningForTab(tabId, versionEnabledTabLevel);
             TabWorkflowSettings.Instance.SetWorkflowEnabled(portalId, workflowEnabledPortalLevel);
@@ -1573,7 +1572,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    switch (this.importDto.CollisionResolution)
+                    switch (this.ImportDto.CollisionResolution)
                     {
                         case CollisionResolution.Overwrite:
                             if (localValue != other.SettingValue)
@@ -1602,7 +1601,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.Result.AddLogEntry("Ignored module setting", other.SettingName);
                             break;
                         default:
-                            throw new ArgumentOutOfRangeException(this.importDto.CollisionResolution.ToString());
+                            throw new ArgumentOutOfRangeException(this.ImportDto.CollisionResolution.ToString());
                     }
                 }
             }
