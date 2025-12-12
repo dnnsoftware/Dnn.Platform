@@ -36,7 +36,7 @@ using RoleProvider = DotNetNuke.Security.Roles.RoleProvider;
 
 public class DnnWebTest : DnnUnitTest
 {
-    private static bool alreadyLoaded = false;
+    private static bool alreadyLoaded;
 
     public int PortalId { get; private set; }
 

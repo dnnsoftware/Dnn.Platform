@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     {
         public int PortalId { get; set; }
 
-        public bool IncludeSystemVocabularies { get; set; } = false;
+        public bool IncludeSystemVocabularies { get; set; }
 
         public bool IncludeTags { get; set; } = true;
 

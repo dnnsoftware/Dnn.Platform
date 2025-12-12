@@ -43,8 +43,6 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ApplicationPath + "/Portals/",
         };
 
-        private static readonly int DefaultDimension = 0;
-
         private readonly IServiceProvider serviceProvider;
         private readonly IApplicationStatusInfo appStatus;
         private string defaultImageFile = string.Empty;
@@ -502,25 +500,23 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static int ParseDimension(string value)
         {
+            const int DefaultDimension = 0;
             if (string.IsNullOrEmpty(value))
             {
                 return DefaultDimension;
             }
 
-            int dimension = DefaultDimension;
-            if (!int.TryParse(value, out dimension))
+            if (!int.TryParse(value, out var dimension))
             {
-                double doubleDimension;
-                if (double.TryParse(value, out doubleDimension))
+                if (double.TryParse(value, out var doubleDimension))
                 {
                     dimension = (int)Math.Round(doubleDimension, 0);
                 }
             }
 
             // The system won't allow a resize for an image bigger than 4K pixels
-            const int maxDimension = 4000;
-
-            if (dimension > maxDimension || dimension < 0)
+            const int MaxDimension = 4000;
+            if (dimension is > MaxDimension or < 0)
             {
                 dimension = DefaultDimension;
             }

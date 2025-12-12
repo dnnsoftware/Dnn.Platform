@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         public string Type { get; set; } = string.Empty;
 
         /// <inheritdoc />
-        public bool Blocking { get; set; } = false;
+        public bool Blocking { get; set; }
 
         /// <inheritdoc />
         public Dictionary<string, string> Attributes { get; set; } = new Dictionary<string, string>();
