@@ -1539,7 +1539,10 @@ namespace DotNetNuke.Common
                 int moduleID = -1;
                 if (HttpContext.Current.Request.QueryString["mid"] != null)
                 {
-                    int.TryParse(HttpContext.Current.Request.QueryString["mid"], out moduleID);
+                    if (!int.TryParse(HttpContext.Current.Request.QueryString["mid"], out moduleID))
+                    {
+                        moduleID = -1;
+                    }
                 }
 
                 isAdminSkin = (!string.IsNullOrEmpty(controlKey) && controlKey != "view" && moduleID != -1) ||
@@ -1589,35 +1592,35 @@ namespace DotNetNuke.Common
             {
                 while (dr.Read())
                 {
-                    int field;
-                    int.TryParse((dr[syndicateField] ?? string.Empty).ToString(), out field);
-                    if (field > 0)
+                    if (!int.TryParse((dr[syndicateField] ?? string.Empty).ToString(), out var field) || field <= 0)
                     {
-                        strRSS.AppendLine(" <item>");
-                        strRSS.AppendLine("  <title>" + dr[titleField] + "</title>");
-                        var drUrl = (dr["URL"] ?? string.Empty).ToString();
-                        if (drUrl.IndexOf("://", StringComparison.InvariantCulture) == -1)
-                        {
-                            strRSS.Append("  <link>");
-                            if (NumberMatchRegex.IsMatch(drUrl))
-                            {
-                                strRSS.Append(domainName + "/" + glbDefaultPage + "?tabid=" + dr[urlField]);
-                            }
-                            else
-                            {
-                                strRSS.Append(strRelativePath + dr[urlField]);
-                            }
+                        continue;
+                    }
 
-                            strRSS.AppendLine("</link>");
+                    strRSS.AppendLine(" <item>");
+                    strRSS.AppendLine("  <title>" + dr[titleField] + "</title>");
+                    var drUrl = (dr["URL"] ?? string.Empty).ToString();
+                    if (drUrl.IndexOf("://", StringComparison.InvariantCulture) == -1)
+                    {
+                        strRSS.Append("  <link>");
+                        if (NumberMatchRegex.IsMatch(drUrl))
+                        {
+                            strRSS.Append(domainName + "/" + glbDefaultPage + "?tabid=" + dr[urlField]);
                         }
                         else
                         {
-                            strRSS.AppendLine("  <link>" + dr[urlField] + "</link>");
+                            strRSS.Append(strRelativePath + dr[urlField]);
                         }
 
-                        strRSS.AppendLine("  <description>" + portalSettings.PortalName + " " + GetMediumDate(dr[createdDateField].ToString()) + "</description>");
-                        strRSS.AppendLine(" </item>");
+                        strRSS.AppendLine("</link>");
                     }
+                    else
+                    {
+                        strRSS.AppendLine("  <link>" + dr[urlField] + "</link>");
+                    }
+
+                    strRSS.AppendLine("  <description>" + portalSettings.PortalName + " " + GetMediumDate(dr[createdDateField].ToString()) + "</description>");
+                    strRSS.AppendLine(" </item>");
                 }
             }
             catch (Exception ex)

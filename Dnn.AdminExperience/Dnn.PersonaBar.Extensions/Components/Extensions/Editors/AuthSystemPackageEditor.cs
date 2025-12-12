@@ -81,9 +81,10 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     if (packageSettings.EditorActions.TryGetValue("enabled", out value)
                         && !string.IsNullOrEmpty(value))
                     {
-                        bool b;
-                        bool.TryParse(value, out b);
-                        authSystem.IsEnabled = b;
+                        if (bool.TryParse(value, out var isEnabled))
+                        {
+                            authSystem.IsEnabled = isEnabled;
+                        }
                     }
 
                     AuthenticationController.UpdateAuthentication(authSystem);

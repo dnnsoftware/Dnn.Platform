@@ -184,9 +184,11 @@ namespace DotNetNuke.Services.GeneratedImage
                         break;
 
                     case "placeholder":
-                        var placeHolderTrans = new PlaceholderTransform();
-                        placeHolderTrans.Width = ParseDimension(parameters["w"]);
-                        placeHolderTrans.Height = ParseDimension(parameters["h"]);
+                        var placeHolderTrans = new PlaceholderTransform
+                        {
+                            Width = ParseDimension(parameters["w"]),
+                            Height = ParseDimension(parameters["h"]),
+                        };
 
                         if (!string.IsNullOrEmpty(parameters["Color"]))
                         {
@@ -195,8 +197,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
                         if (!string.IsNullOrEmpty(parameters["Text"]))
                         {
-                            bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out bool allowDnnImagePlaceholderText);
-                            if (allowDnnImagePlaceholderText)
+                            if (bool.TryParse(Config.GetSetting("AllowDnnImagePlaceholderText"), out var allowDnnImagePlaceholderText) && allowDnnImagePlaceholderText)
                             {
                                 placeHolderTrans.Text = text;
                             }

@@ -41,13 +41,19 @@ namespace DotNetNuke.Services.FileSystem
                 // get TabId
                 if (context.Request.QueryString["tabid"] != null)
                 {
-                    int.TryParse(context.Request.QueryString["tabid"], out tabId);
+                    if (!int.TryParse(context.Request.QueryString["tabid"], out tabId))
+                    {
+                        tabId = -1;
+                    }
                 }
 
                 // get ModuleId
                 if (context.Request.QueryString["mid"] != null)
                 {
-                    int.TryParse(context.Request.QueryString["mid"], out moduleId);
+                    if (!int.TryParse(context.Request.QueryString["mid"], out moduleId))
+                    {
+                        moduleId = -1;
+                    }
                 }
             }
             catch (Exception)
@@ -136,7 +142,10 @@ namespace DotNetNuke.Services.FileSystem
                 bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                    bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
+                    if (!bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload))
+                    {
+                        blnForceDownload = false;
+                    }
                 }
 
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;

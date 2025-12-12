@@ -278,8 +278,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 {
                     foreach (var permission in userPermission.Permissions)
                     {
-                        int roleId;
-                        int.TryParse(Globals.glbRoleNothing, out roleId);
+                        if (!int.TryParse(Globals.glbRoleNothing, out var roleId))
+                        {
+                            roleId = -4;
+                        }
+
                         desktopModulePermissions.Add(new DesktopModulePermissionInfo()
                         {
                             PermissionID = permission.PermissionId,

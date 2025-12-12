@@ -1210,9 +1210,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                             string.Format(Localization.GetString("DuplicateAlias", Components.Constants.Constants.LocalResourcesFile)));
                     }
 
-                    BrowserTypes browser;
-                    Enum.TryParse(request.BrowserType, out browser);
-                    PortalAliasInfo portalAlias = new PortalAliasInfo()
+                    if (!Enum.TryParse(request.BrowserType, out BrowserTypes browser))
+                    {
+                        browser = BrowserTypes.Normal;
+                    }
+
+                    var portalAlias = new PortalAliasInfo
                     {
                         PortalID = pid,
                         HTTPAlias = strAlias,
@@ -1265,11 +1268,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (this.IsHttpAliasValid(strAlias))
                 {
-                    BrowserTypes browser;
-                    Enum.TryParse(request.BrowserType, out browser);
+                    if (!Enum.TryParse(request.BrowserType, out BrowserTypes browser))
+                    {
+                        browser = BrowserTypes.Normal;
+                    }
+
                     if (request.PortalAliasID != null)
                     {
-                        PortalAliasInfo portalAlias = new PortalAliasInfo()
+                        var portalAlias = new PortalAliasInfo
                         {
                             PortalID = pid,
                             PortalAliasID = request.PortalAliasID.Value,

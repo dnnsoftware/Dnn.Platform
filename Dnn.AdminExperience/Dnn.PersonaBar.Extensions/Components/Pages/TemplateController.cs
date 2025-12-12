@@ -234,8 +234,11 @@ namespace Dnn.PersonaBar.Pages.Components
             var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
             foreach (FileItem file in files)
             {
-                int i;
-                int.TryParse(file.Value, out i);
+                if (!int.TryParse(file.Value, out var i))
+                {
+                    i = 0;
+                }
+
                 templates.Add(new Template
                 {
                     Id = file.Text.Replace(".page.template", string.Empty),

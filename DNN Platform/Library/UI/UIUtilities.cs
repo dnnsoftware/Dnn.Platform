@@ -92,12 +92,18 @@ namespace DotNetNuke.UI
             int moduleId = -1;
             if (request.QueryString["mid"] != null)
             {
-                int.TryParse(request.QueryString["mid"], out moduleId);
+                if (!int.TryParse(request.QueryString["mid"], out moduleId))
+                {
+                    moduleId = -1;
+                }
             }
 
             if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
             {
-                int.TryParse(request.QueryString["moduleid"], out moduleId);
+                if (!int.TryParse(request.QueryString["moduleid"], out moduleId))
+                {
+                    moduleId = -1;
+                }
             }
 
             return moduleId;

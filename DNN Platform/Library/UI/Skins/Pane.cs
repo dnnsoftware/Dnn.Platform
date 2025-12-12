@@ -405,11 +405,14 @@ namespace DotNetNuke.UI.Skins
             int previewModuleId = -1;
             if (request.QueryString["ModuleId"] != null)
             {
-                int.TryParse(request.QueryString["ModuleId"], out previewModuleId);
+                if (!int.TryParse(request.QueryString["ModuleId"], out previewModuleId))
+                {
+                    previewModuleId = -1;
+                }
             }
 
             // load user container ( based on cookie )
-            if ((request.QueryString["ContainerSrc"] != null) && (module.ModuleID == previewModuleId || previewModuleId == -1))
+            if (request.QueryString["ContainerSrc"] != null && (module.ModuleID == previewModuleId || previewModuleId == -1))
             {
                 string containerSrc = SkinController.FormatSkinSrc(Globals.QueryStringDecode(request.QueryString["ContainerSrc"]) + ".ascx", this.PortalSettings);
                 container = this.LoadContainerByPath(containerSrc);

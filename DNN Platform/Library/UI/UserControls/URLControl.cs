@@ -226,7 +226,10 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else if (this.Request.QueryString["mid"] != null)
                 {
-                    int.TryParse(this.Request.QueryString["mid"], out myMid);
+                    if (!int.TryParse(this.Request.QueryString["mid"], out myMid))
+                    {
+                        myMid = -2;
+                    }
                 }
 
                 return myMid;

@@ -130,30 +130,30 @@ namespace DNN.Connectors.GoogleTagManager
             // Delete / Deactivation functionality added into SaveConfig because
             // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
             customErrorMessage = string.Empty;
-            bool isValid;
 
             try
             {
-                var isDeactivating = false;
+                if (!bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating))
+                {
+                    isDeactivating = false;
+                }
 
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
-
-                string gtmID;
+                string gtmId;
                 string trackForAdmin;
 
-                isValid = true;
+                var isValid = true;
 
                 if (isDeactivating)
                 {
-                    gtmID = null;
+                    gtmId = null;
                     trackForAdmin = null;
                 }
                 else
                 {
-                    gtmID = values["GtmID"] != null ? values["GtmID"].ToUpperInvariant().Trim() : string.Empty;
+                    gtmId = values["GtmID"] != null ? values["GtmID"].ToUpperInvariant().Trim() : string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (string.IsNullOrEmpty(gtmID))
+                    if (string.IsNullOrEmpty(gtmId))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
@@ -170,7 +170,7 @@ namespace DNN.Connectors.GoogleTagManager
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "GtmId",
-                        SettingValue = gtmID,
+                        SettingValue = gtmId,
                     });
 
                     config.Settings.Add(new AnalyticsSetting
