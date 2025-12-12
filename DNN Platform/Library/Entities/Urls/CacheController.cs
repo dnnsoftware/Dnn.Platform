@@ -130,14 +130,14 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
                         // this happens when portalId = -1
-                        // no long, no handling, just passonwards with null portal
+                        // no long, no handling, just pass onwards with null portal
                     }
                 }
             }
 
             if (exceptionOnNull && pi == null)
             {
-                throw new NullReferenceException("No Portal Found for portalid : " + portalId.ToString());
+                throw new PortalNotFoundException("No Portal Found for portalid : " + portalId.ToString());
             }
 
             return pi;

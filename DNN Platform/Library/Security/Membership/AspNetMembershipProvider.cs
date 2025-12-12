@@ -1545,7 +1545,7 @@ namespace DotNetNuke.Security.Membership
             }
             catch (ProviderException ex)
             {
-                throw new Exception(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
+                throw new UpdateUserException(Localization.GetExceptionMessage("UpdateUserMembershipFailed", "Asp.net membership update user failed."), ex);
             }
 
             DataCache.RemoveCache(GetCacheKey(user.Username));

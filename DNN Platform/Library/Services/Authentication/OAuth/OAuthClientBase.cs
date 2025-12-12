@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                         {
                             if (qs[OAuthCallbackConfirmedKey] != "true")
                             {
-                                throw new Exception("OAuth callback not confirmed.");
+                                throw new OAuthException("OAuth callback not confirmed.");
                             }
                         }
 

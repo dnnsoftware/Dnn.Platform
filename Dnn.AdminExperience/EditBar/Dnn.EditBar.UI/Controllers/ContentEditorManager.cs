@@ -111,7 +111,7 @@ namespace Dnn.EditBar.UI.Controllers
 
             if (GetCurrent(this.Page) != null)
             {
-                throw new Exception("Instance has already initialized");
+                throw new InvalidOperationException("Instance has already initialized");
             }
 
             this.AutoSetUserMode();

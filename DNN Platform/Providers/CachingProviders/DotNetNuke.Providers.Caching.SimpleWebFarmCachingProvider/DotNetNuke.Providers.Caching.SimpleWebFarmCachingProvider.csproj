@@ -9,7 +9,7 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>CS1591,0618</NoWarn>
-    <WarningsNotAsErrors>CA1725,CA2201</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CA1725</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

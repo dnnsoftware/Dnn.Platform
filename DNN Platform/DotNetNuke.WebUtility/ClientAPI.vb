@@ -977,7 +977,7 @@ Namespace DotNetNuke.UI.Utilities
                     ret = False
                 End If
             Else
-                Throw New Exception("Control does not have CallbackMethodAttribute")
+                Throw New InvalidOperationException("Control does not have CallbackMethodAttribute")
             End If
 
             Return ret
@@ -994,14 +994,14 @@ Namespace DotNetNuke.UI.Utilities
             Dim mi As MethodInfo = controlType.GetMethod(methodName, (BindingFlags.Public Or (BindingFlags.Static Or BindingFlags.Instance)))
 
             If (mi Is Nothing) Then
-                Throw New Exception(String.Format("Class: {0} does not have the method: {1}", controlType.FullName, methodName))
+                Throw New InvalidOperationException($"Class: {controlType.FullName} does not have the method: {methodName}")
             End If
             Dim methodParams As ParameterInfo() = mi.GetParameters
 
             'only allow methods with attribute to be called 
             Dim methAttr As ControlMethodAttribute = DirectCast(Attribute.GetCustomAttribute(mi, GetType(ControlMethodAttribute)), ControlMethodAttribute)
             If methAttr Is Nothing OrElse args.Count <> methodParams.Length Then
-                Throw New Exception(String.Format("Class: {0} does not have the method: {1}", controlType.FullName, methodName))
+                Throw New InvalidOperationException($"Class: {controlType.FullName} does not have the method: {methodName}")
             End If
 
             Dim targetArgs As Object() = New Object(args.Count - 1) {}

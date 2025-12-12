@@ -2851,7 +2851,7 @@ namespace DotNetNuke.Entities.Urls
 
                             // but we want to warn against this!
                             var ex =
-                                new Exception(
+                                new IllegalRequestException(
                                     "Illegal request exception : Two TabId parameters provided in a single request: " +
                                     requestUri);
                             UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", result);
@@ -2863,7 +2863,7 @@ namespace DotNetNuke.Entities.Urls
                             // yeah, nothing, divert to 404
                             result.Action = ActionType.Output404;
                             var ex =
-                                new Exception(
+                                new IllegalRequestException(
                                     "Illegal request exception : TabId parameters in query string, but invalid TabId requested : " +
                                     requestUri);
                             UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", result);

@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.Search
                         module.ModuleID,
                         module.TabID,
                         module.PortalID);
-                throw new Exception(message, ex);
+                throw new BusinessControllerClassException(message, ex);
             }
             catch (Exception ex1)
             {

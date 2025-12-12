@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.Localization
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("Error while trying to create resource in {0}", resourceFileRoot), ex);
+                throw new ResourceFileException($"Error while trying to create resource in {resourceFileRoot}", ex);
             }
         }
 
@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.Localization
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("The following resource file caused an error while reading: {0}", filePath), ex);
+                throw new ResourceFileException($"The following resource file caused an error while reading: {filePath}", ex);
             }
 
             return resources;

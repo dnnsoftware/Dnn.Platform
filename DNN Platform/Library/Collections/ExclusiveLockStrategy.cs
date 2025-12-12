@@ -98,7 +98,7 @@ namespace DotNetNuke.Collections.Internal
             }
             else
             {
-                throw new ApplicationException("ExclusiveLockStrategy.GetLock timed out");
+                throw new LockTimeoutException("ExclusiveLockStrategy.GetLock timed out");
             }
         }
 

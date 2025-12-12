@@ -169,7 +169,7 @@ namespace Dnn.AzureConnector.Components
             {
                 if (this.SupportsMultiple)
                 {
-                    throw new Exception(Localization.GetString("ErrorRequiredFields", Constants.LocalResourceFile));
+                    throw new AzureConnectorException(Localization.GetString("ErrorRequiredFields", Constants.LocalResourceFile));
                 }
 
                 this.DeleteAzureFolderMapping(portalId);
@@ -184,7 +184,7 @@ namespace Dnn.AzureConnector.Components
 
             if (this.FolderMappingNameExists(portalId, this.DisplayName, Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
             {
-                throw new Exception(Localization.GetString("ErrorMappingNameExists", Constants.LocalResourceFile));
+                throw new AzureConnectorException(Localization.GetString("ErrorMappingNameExists", Constants.LocalResourceFile));
             }
 
             try
@@ -406,9 +406,7 @@ namespace Dnn.AzureConnector.Components
                     {
                         if (!containers.Any(container => container.Name == azureContainerName))
                         {
-                            throw new Exception(Localization.GetString(
-                                "ErrorInvalidContainerName",
-                                Constants.LocalResourceFile));
+                            throw new AzureConnectorException(Localization.GetString("ErrorInvalidContainerName", Constants.LocalResourceFile));
                         }
                         else
                         {
@@ -422,9 +420,7 @@ namespace Dnn.AzureConnector.Components
                 }
                 else
                 {
-                    throw new Exception(Localization.GetString(
-                        "AccountNotFound.ErrorMessage",
-                        Constants.LocalResourceFile));
+                    throw new AzureConnectorException(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile));
                 }
             }
             catch (StorageException ex)
@@ -433,36 +429,28 @@ namespace Dnn.AzureConnector.Components
                 {
                     if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccountNotFound")
                     {
-                        throw new Exception(Localization.GetString(
-                            "AccountNotFound.ErrorMessage",
-                            Constants.LocalResourceFile));
+                        throw new AzureConnectorException(Localization.GetString("AccountNotFound.ErrorMessage", Constants.LocalResourceFile), ex);
                     }
                     else if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccessDenied")
                     {
-                        throw new Exception(Localization.GetString(
-                            "AccessDenied.ErrorMessage",
-                            Constants.LocalResourceFile));
+                        throw new AzureConnectorException(Localization.GetString("AccessDenied.ErrorMessage", Constants.LocalResourceFile), ex);
                     }
                     else
                     {
-                        throw new Exception(ex.RequestInformation.HttpStatusMessage);
+                        throw new AzureConnectorException(ex.RequestInformation.HttpStatusMessage, ex);
                     }
                 }
 
-                throw new Exception(ex.RequestInformation.HttpStatusMessage ?? ex.Message);
+                throw new AzureConnectorException(ex.RequestInformation.HttpStatusMessage ?? ex.Message, ex);
             }
             catch (FormatException ex)
             {
                 if (ex.GetType() == typeof(UriFormatException))
                 {
-                    throw new ConnectorArgumentException(Localization.GetString(
-                        "InvalidAccountName.ErrorMessage",
-                        Constants.LocalResourceFile));
+                    throw new ConnectorArgumentException(Localization.GetString("InvalidAccountName.ErrorMessage", Constants.LocalResourceFile));
                 }
 
-                throw new ConnectorArgumentException(Localization.GetString(
-                    "InvalidAccountKey.ErrorMessage",
-                    Constants.LocalResourceFile));
+                throw new ConnectorArgumentException(Localization.GetString("InvalidAccountKey.ErrorMessage", Constants.LocalResourceFile));
             }
         }
 

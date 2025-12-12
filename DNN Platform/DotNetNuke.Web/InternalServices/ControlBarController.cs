@@ -582,7 +582,7 @@ namespace DotNetNuke.Web.InternalServices
                 userID = user.UserID;
             }
 
-            if (moduleInfo != null && !moduleInfo.IsDeleted)
+            if (moduleInfo is { IsDeleted: false })
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -592,11 +592,8 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         case ModuleSharing.Unsupported:
                             // Should never happen since the module should not be listed in the first place.
-                            throw new ApplicationException(string.Format(
-                                "Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
-                                moduleInfo.DesktopModule.FriendlyName));
+                            throw new SharingUnsupportedException($"Module '{moduleInfo.DesktopModule.FriendlyName}' does not support Shareable and should not be listed in Add Existing Module from a different source site");
                         case ModuleSharing.Supported:
-                            break;
                         case ModuleSharing.Unknown:
                             break;
                     }

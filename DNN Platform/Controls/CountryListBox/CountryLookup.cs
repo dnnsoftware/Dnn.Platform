@@ -115,8 +115,7 @@ namespace DotNetNuke.UI.WebControls
             }
             catch (FileNotFoundException exc)
             {
-                throw new Exception(exc.Message +
-                                    "  Please set the \"GeoIPFile\" Property to specify the location of this file.  The property value must be set to the virtual path to GeoIP.dat (i.e. \"/controls/CountryListBox/Data/GeoIP.dat\")");
+                throw new GeoIPFileNotFoundException("Please set the \"GeoIPFile\" Property to specify the location of this file.  The property value must be set to the virtual path to GeoIP.dat (i.e. \"/controls/CountryListBox/Data/GeoIP.dat\")", exc);
             }
 
             return memStream;
@@ -212,7 +211,7 @@ namespace DotNetNuke.UI.WebControls
                 byte y;
                 if (depth == 0)
                 {
-                    throw new Exception();
+                    throw new ArgumentOutOfRangeException(nameof(depth), depth, "Depth must not be zero");
                 }
 
                 this.m_MemoryStream.Seek(6 * offset, 0);
@@ -263,7 +262,7 @@ namespace DotNetNuke.UI.WebControls
             }
             catch (Exception exc)
             {
-                throw new Exception("Error seeking country: " + exc.Message);
+                throw new SeekCountryException("Error seeking country", exc);
             }
         }
 

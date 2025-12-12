@@ -49,8 +49,8 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         // NOTE - While making modifications in this method, developer must refer to call tree in Register.ascx.cs.
-        // Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.
-        // This method can easily be modified to pass passowrd, display name, etc.
+        // Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains a bunch of logic.
+        // This method can easily be modified to pass password, display name, etc.
         // It is recommended to write unit tests.
 
         /// <inheritdoc/>
@@ -68,7 +68,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             if (disallowRegistration)
             {
-                throw new Exception(Localization.GetString("RegistrationNotAllowed", Library.Constants.SharedResources));
+                throw new RegistrationException(Localization.GetString("RegistrationNotAllowed", Library.Constants.SharedResources));
             }
 
             // initial creation of the new User object
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Users.Components
             // ensure this user doesn't exist
             if (!string.IsNullOrEmpty(username) && UserController.GetUserByName(portalSettings.PortalId, username) != null)
             {
-                throw new Exception(Localization.GetString(
+                throw new RegistrationException(Localization.GetString(
                     "RegistrationUsernameAlreadyPresent",
                     Library.Constants.SharedResources));
             }
@@ -144,7 +144,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var portalSecurity = PortalSecurity.Instance;
                 if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationProfanityNotAllowed",
                         Library.Constants.SharedResources));
                 }
@@ -158,7 +158,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Email);
                 if (matches.Count == 0)
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationInvalidEmailUsed",
                         Library.Constants.SharedResources));
                 }
@@ -172,7 +172,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count > 0)
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationExcludedTermsUsed",
                         Library.Constants.SharedResources));
                 }
@@ -186,7 +186,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var matches = regExp.Matches(newUser.Username);
                 if (matches.Count == 0)
                 {
-                    throw new Exception(Localization.GetString(
+                    throw new RegistrationException(Localization.GetString(
                         "RegistrationInvalidUserNameUsed",
                         Library.Constants.SharedResources));
                 }
@@ -198,7 +198,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 if (this.GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
                 {
-                    throw new Exception(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
+                    throw new RegistrationException(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
                 }
 
                 var i = 1;
@@ -301,7 +301,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         private static string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
         {
-            // This method could need a custom ArrayList in future notification types. Currently it is null
+            // This method could need a custom ArrayList in future notification types. Currently, it is null
             return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
         }
 

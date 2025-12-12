@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.Sitemap
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
     public class CoreSitemapProvider : SitemapProvider
@@ -70,14 +71,13 @@ namespace DotNetNuke.Services.Sitemap
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(
-                        new Exception(
-                            Localization.GetExceptionMessage(
-                                "SitemapUrlGenerationError",
-                                "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
-                                tab.TabID,
-                                tab.TabName,
-                                ex.Message)));
+                    var exceptionMessage = Localization.GetExceptionMessage(
+                        "SitemapUrlGenerationError",
+                        "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
+                        tab.TabID,
+                        tab.TabName,
+                        ex.Message);
+                    Services.Exceptions.Exceptions.LogException(new SitemapException(exceptionMessage, ex));
                 }
             }
 

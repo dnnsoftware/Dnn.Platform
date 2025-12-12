@@ -310,10 +310,12 @@ namespace DotNetNuke.UI.Skins
         /// <returns>A Container.</returns>
         private Containers.Container LoadContainerByPath(string containerPath)
         {
-            if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("/skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("\\skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 ||
-                containerPath.IndexOf("\\skins/", StringComparison.InvariantCultureIgnoreCase) != -1)
+            if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1
+                || containerPath.IndexOf(@"/skins\", StringComparison.InvariantCultureIgnoreCase) != -1
+                || containerPath.IndexOf(@"\skins\", StringComparison.InvariantCultureIgnoreCase) != -1
+                || containerPath.IndexOf(@"\skins/", StringComparison.InvariantCultureIgnoreCase) != -1)
             {
-                throw new Exception();
+                throw new InvalidContainerPathException($"Invalid container path: {containerPath}");
             }
 
             Containers.Container container = null;

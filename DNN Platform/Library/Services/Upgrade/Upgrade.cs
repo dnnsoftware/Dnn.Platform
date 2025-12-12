@@ -2030,7 +2030,7 @@ namespace DotNetNuke.Services.Upgrade
             return defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant() == currentCulture) ??
                    defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant().StartsWith(currentCulture.Substring(0, 2))) ??
                    defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode)) ??
-                   throw new Exception("Unable to locate specified portal template: " + templateFileName);
+                   throw new TemplateNotFoundException("Unable to locate specified portal template: " + templateFileName);
         }
 
         internal static IPortalTemplateInfo FindBestTemplate(string templateFileName)

@@ -58,7 +58,7 @@ namespace DotNetNuke.HttpModules.Exceptions
                     return;
                 }
 
-                var lex = new Exception("Unhandled Error: ", server.GetLastError());
+                var lex = new UnhandledException("Unhandled Error: ", server.GetLastError());
                 var objExceptionLog = new ExceptionLogController();
                 try
                 {
