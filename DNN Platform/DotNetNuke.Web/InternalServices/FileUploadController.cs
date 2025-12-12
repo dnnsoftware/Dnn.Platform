@@ -166,15 +166,27 @@ namespace DotNetNuke.Web.InternalServices
                                     break;
 
                                 case "\"OVERWRITE\"":
-                                    bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
+                                    if (!bool.TryParse(item.ReadAsStringAsync().Result, out overwrite))
+                                    {
+                                        overwrite = false;
+                                    }
+
                                     break;
 
                                 case "\"ISHOSTMENU\"":
-                                    bool.TryParse(item.ReadAsStringAsync().Result, out isHostMenu);
+                                    if (!bool.TryParse(item.ReadAsStringAsync().Result, out isHostMenu))
+                                    {
+                                        isHostMenu = false;
+                                    }
+
                                     break;
 
                                 case "\"EXTRACT\"":
-                                    bool.TryParse(item.ReadAsStringAsync().Result, out extract);
+                                    if (!bool.TryParse(item.ReadAsStringAsync().Result, out extract))
+                                    {
+                                        extract = false;
+                                    }
+
                                     break;
 
                                 case "\"POSTFILE\"":
@@ -296,21 +308,37 @@ namespace DotNetNuke.Web.InternalServices
                                 break;
 
                             case "\"OVERWRITE\"":
-                                bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
+                                if (!bool.TryParse(item.ReadAsStringAsync().Result, out overwrite))
+                                {
+                                    overwrite = false;
+                                }
+
                                 break;
 
                             case "\"ISHOSTPORTAL\"":
-                                bool.TryParse(item.ReadAsStringAsync().Result, out isHostPortal);
+                                if (!bool.TryParse(item.ReadAsStringAsync().Result, out isHostPortal))
+                                {
+                                    isHostPortal = false;
+                                }
+
                                 break;
 
                             case "\"EXTRACT\"":
-                                bool.TryParse(item.ReadAsStringAsync().Result, out extract);
+                                if (!bool.TryParse(item.ReadAsStringAsync().Result, out extract))
+                                {
+                                    extract = false;
+                                }
+
                                 break;
 
                             case "\"PORTALID\"":
                                 if (userInfo.IsSuperUser)
                                 {
-                                    int.TryParse(item.ReadAsStringAsync().Result, out portalId);
+                                    var originalPortalId = portalId;
+                                    if (!int.TryParse(item.ReadAsStringAsync().Result, out portalId))
+                                    {
+                                        portalId = originalPortalId;
+                                    }
                                 }
 
                                 break;
@@ -324,7 +352,7 @@ namespace DotNetNuke.Web.InternalServices
                                     fileName = Path.GetFileName(fileName);
                                 }
 
-                                if (Globals.FileEscapingRegex.Match(fileName).Success == false)
+                                if (!Globals.FileEscapingRegex.Match(fileName).Success)
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }

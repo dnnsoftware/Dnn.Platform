@@ -14,6 +14,8 @@ namespace Dnn.PersonaBar.Security.Components
     using System.Web.UI;
 
     using Dnn.PersonaBar.Security.Services.Dto;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
@@ -107,14 +109,17 @@ namespace Dnn.PersonaBar.Security.Components
             return tables;
         }
 
-        private void AddChildNodes(TabDto parentNode, PortalInfo portal, string cultureCode)
+        private void AddChildNodes(TabDto parentNode, IPortalInfo portal, string cultureCode)
         {
             if (parentNode.ChildTabs != null)
             {
                 parentNode.ChildTabs.Clear();
-                int parentId;
-                int.TryParse(parentNode.TabId, out parentId);
-                var tabs = this.GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalID).WithCulture(cultureCode, true)).WithParentId(parentId);
+                if (!int.TryParse(parentNode.TabId, out var parentId))
+                {
+                    parentId = 0;
+                }
+
+                var tabs = this.GetFilteredTabs(TabController.Instance.GetTabsByPortal(portal.PortalId).WithCulture(cultureCode, true)).WithParentId(parentId);
 
                 foreach (var tab in tabs)
                 {

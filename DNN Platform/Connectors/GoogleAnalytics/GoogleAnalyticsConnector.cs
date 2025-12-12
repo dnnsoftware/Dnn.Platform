@@ -148,25 +148,25 @@ namespace DNN.Connectors.GoogleAnalytics
             // Delete / Deactivation functionality added into SaveConfig because
             // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
             customErrorMessage = string.Empty;
-            bool isValid;
 
             try
             {
-                var isDeactivating = false;
+                if (!bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating))
+                {
+                    isDeactivating = false;
+                }
 
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
-
-                string trackingID;
+                string trackingId;
                 string urlParameter;
                 string trackForAdmin;
                 string anonymizeIp;
                 string trackUserId;
 
-                isValid = true;
+                var isValid = true;
 
                 if (isDeactivating)
                 {
-                    trackingID = null;
+                    trackingId = null;
                     urlParameter = null;
                     trackForAdmin = null;
                     anonymizeIp = null;
@@ -174,13 +174,13 @@ namespace DNN.Connectors.GoogleAnalytics
                 }
                 else
                 {
-                    trackingID = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
+                    trackingId = values["TrackingID"] != null ? values["TrackingID"].ToUpperInvariant().Trim() : string.Empty;
                     urlParameter = values["UrlParameter"]?.Trim() ?? string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
                     anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
                     trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (string.IsNullOrEmpty(trackingID))
+                    if (string.IsNullOrEmpty(trackingId))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
@@ -197,7 +197,7 @@ namespace DNN.Connectors.GoogleAnalytics
                     config.Settings.Add(new AnalyticsSetting
                     {
                         SettingName = "TrackingId",
-                        SettingValue = trackingID,
+                        SettingValue = trackingId,
                     });
 
                     config.Settings.Add(new AnalyticsSetting

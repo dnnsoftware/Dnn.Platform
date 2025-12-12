@@ -1170,7 +1170,7 @@ namespace DotNetNuke.Entities.Urls
                                 result.Action = ActionType.CheckFor301;
 
                                 // set the value field back to false, because, even if the parameter handling is
-                                // first parm last, this was an old style URl desitned to be redirected.
+                                // first parm last, this was an old style URL designed to be redirected.
                                 // and we would expect old-style urls to have the correct parameter order
                                 // note this assumes tabid is the first parm in the list.
                                 valueField = false;
@@ -1178,8 +1178,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                         else if (!skip)
                         {
-                            bool extReplaced;
-                            string urlParm = CleanExtension(thisParm, pageExtension, out extReplaced);
+                            string urlParm = CleanExtension(thisParm, pageExtension, out var extReplaced);
 
                             if (extReplaced && pageExtension == string.Empty)
                             {
@@ -1195,8 +1194,9 @@ namespace DotNetNuke.Entities.Urls
                                 valueField = false;
                                 if (isUserParm)
                                 {
-                                    int userIdVal;
-                                    int.TryParse(urlParm, out userIdVal);
+                                    ////int userIdVal;
+                                    ////int.TryParse(urlParm, out userIdVal);
+
                                     isUserParm = false;
                                 }
 
@@ -1224,7 +1224,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
-                        else if (skip)
+                        else
                         {
                             skip = false;
                         }

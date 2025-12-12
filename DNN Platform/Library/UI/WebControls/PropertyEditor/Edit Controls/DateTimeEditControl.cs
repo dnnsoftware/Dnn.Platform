@@ -49,7 +49,10 @@ namespace DotNetNuke.UI.WebControls
             DateTime postedValue = Null.NullDate;
             if (!string.IsNullOrEmpty(postedDate))
             {
-                DateTime.TryParse(postedDate, out postedValue);
+                if (!DateTime.TryParse(postedDate, out postedValue))
+                {
+                    postedValue = Null.NullDate;
+                }
             }
 
             if (postedHours != "12" || this.is24HourClock)

@@ -127,62 +127,66 @@ namespace DNN.Connectors.GoogleAnalytics4
             // Delete / Deactivation functionality added into SaveConfig because
             // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
             customErrorMessage = string.Empty;
-            bool isValid;
 
             try
             {
-                bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating);
+                if (!bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out var isDeactivating))
+                {
+                    isDeactivating = false;
+                }
 
-                string ga4ID;
+                string ga4Id;
                 string trackForAdmin;
 
-                isValid = true;
+                var isValid = true;
 
                 if (isDeactivating)
                 {
-                    ga4ID = null;
+                    ga4Id = null;
                     trackForAdmin = null;
                 }
                 else
                 {
-                    ga4ID = values["Ga4ID"] != null ? values["Ga4ID"].ToUpperInvariant().Trim() : string.Empty;
+                    ga4Id = values["Ga4ID"] != null ? values["Ga4ID"].ToUpperInvariant().Trim() : string.Empty;
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (string.IsNullOrEmpty(ga4ID))
+                    if (string.IsNullOrEmpty(ga4Id))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
                     }
                 }
 
-                if (isValid)
+                if (!isValid)
                 {
-                    var config = new AnalyticsConfiguration
-                    {
-                        Settings = new AnalyticsSettingCollection(),
-                    };
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "Ga4Id",
-                        SettingValue = ga4ID,
-                    });
-
-                    config.Settings.Add(new AnalyticsSetting
-                    {
-                        SettingName = "TrackForAdmin",
-                        SettingValue = trackForAdmin,
-                    });
-
-                    AnalyticsConfiguration.SaveConfig("GoogleAnalytics4", config);
-
-                    if (!isDeactivating)
-                    {
-                        this.EnsureScriptInConfig();
-                    }
+                    return false;
                 }
 
-                return isValid;
+                var config = new AnalyticsConfiguration
+                {
+                    Settings = new AnalyticsSettingCollection
+                    {
+                        new AnalyticsSetting
+                        {
+                            SettingName = "Ga4Id",
+                            SettingValue = ga4Id,
+                        },
+                        new AnalyticsSetting
+                        {
+                            SettingName = "TrackForAdmin",
+                            SettingValue = trackForAdmin,
+                        },
+                    },
+                };
+
+                AnalyticsConfiguration.SaveConfig("GoogleAnalytics4", config);
+
+                if (!isDeactivating)
+                {
+                    this.EnsureScriptInConfig();
+                }
+
+                return true;
             }
             catch (Exception ex)
             {

@@ -115,20 +115,24 @@ namespace DotNetNuke.UI.Skins.Controls
                             if (isLocalized)
                             {
                                 string moduleIdKey = arrKeys[i].ToLowerInvariant();
-                                int moduleID;
-                                int tabid;
 
-                                int.TryParse(queryStringCollection[moduleIdKey], out moduleID);
-                                int.TryParse(queryStringCollection["tabid"], out tabid);
-                                ModuleInfo localizedModule = ModuleController.Instance.GetModuleByCulture(moduleID, tabid, settings.PortalId, LocaleController.Instance.GetLocale(newLanguage));
-                                if (localizedModule != null)
+                                if (int.TryParse(queryStringCollection[moduleIdKey], out var moduleId) &&
+                                    int.TryParse(queryStringCollection["tabid"], out var tabid))
                                 {
-                                    if (!string.IsNullOrEmpty(returnValue))
+                                    var localizedModule = ModuleController.Instance.GetModuleByCulture(
+                                        moduleId,
+                                        tabid,
+                                        settings.PortalId,
+                                        LocaleController.Instance.GetLocale(newLanguage));
+                                    if (localizedModule != null)
                                     {
-                                        returnValue += "&";
-                                    }
+                                        if (!string.IsNullOrEmpty(returnValue))
+                                        {
+                                            returnValue += "&";
+                                        }
 
-                                    returnValue += moduleIdKey + "=" + localizedModule.ModuleID;
+                                        returnValue += $"{moduleIdKey}={localizedModule.ModuleID}";
+                                    }
                                 }
                             }
 

@@ -175,7 +175,10 @@ namespace DotNetNuke.Web.Mvc
             var moduleId = Null.NullInteger;
             if (queryString["moduleid"] != null)
             {
-                int.TryParse(queryString["moduleid"], out moduleId);
+                if (!int.TryParse(queryString["moduleid"], out moduleId))
+                {
+                    moduleId = Null.NullInteger;
+                }
             }
 
             if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this.controlKey))

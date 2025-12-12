@@ -942,8 +942,11 @@ namespace Dnn.PersonaBar.Pages.Components
                     var user = UserController.Instance.GetUserById(portalSettings.PortalId, userPermission.UserId);
                     if (user != null)
                     {
-                        int roleId;
-                        int.TryParse(Globals.glbRoleNothing, out roleId);
+                        if (!int.TryParse(Globals.glbRoleNothing, out var roleId))
+                        {
+                            roleId = -4;
+                        }
+
                         foreach (var permission in userPermission.Permissions)
                         {
                             tab.TabPermissions.Add(new TabPermissionInfo
@@ -1116,9 +1119,7 @@ namespace Dnn.PersonaBar.Pages.Components
             switch (pageSettings.PageType)
             {
                 case "tab":
-                    var existingTabRedirectionId = 0;
-                    int.TryParse(pageSettings.ExistingTabRedirection, out existingTabRedirectionId);
-                    if (existingTabRedirectionId <= 0)
+                    if (!int.TryParse(pageSettings.ExistingTabRedirection, out var existingTabRedirectionId) || existingTabRedirectionId <= 0)
                     {
                         errorMessage = Localization.GetString("TabToRedirectIsRequired");
                         invalidField = "ExistingTabRedirection";

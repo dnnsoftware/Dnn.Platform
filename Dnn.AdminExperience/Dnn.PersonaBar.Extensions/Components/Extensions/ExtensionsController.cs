@@ -411,8 +411,11 @@ namespace Dnn.PersonaBar.Extensions.Components
                             package.Name = myCIintl.NativeName;
                             package.PackageType = "CoreLanguagePack";
                             package.Description = cultureCode;
-                            Version ver = null;
-                            Version.TryParse(version, out ver);
+                            if (!Version.TryParse(version, out var ver))
+                            {
+                                ver = null;
+                            }
+
                             package.Version = ver;
 
                             if (

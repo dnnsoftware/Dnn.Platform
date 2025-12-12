@@ -80,38 +80,38 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                     if (name == "ExecuteCommand")
                     {
                         // since sql error is expected here, do not go through DataProvider so that no error will be logged
-                        using (var connection = new SqlConnection(DataProvider.Instance().ConnectionString))
+                        using var connection = new SqlConnection(DataProvider.Instance().ConnectionString);
+                        try
                         {
-                            try
+                            connection.Open();
+                            var command = new SqlCommand(script, connection) { CommandType = CommandType.Text };
+                            using var reader = command.ExecuteReader();
+                            if (reader.Read())
                             {
-                                connection.Open();
-                                var command = new SqlCommand(script, connection) { CommandType = CommandType.Text };
-                                using (var reader = command.ExecuteReader())
+                                if (!int.TryParse(reader[0].ToString(), out var affectCount))
                                 {
-                                    if (reader.Read())
-                                    {
-                                        int affectCount;
-                                        int.TryParse(reader[0].ToString(), out affectCount);
-                                        return affectCount == 0;
-                                    }
+                                    affectCount = 0;
                                 }
+
+                                return affectCount == 0;
                             }
-                            catch (Exception)
-                            {
-                                // ignore;
-                            }
+                        }
+                        catch (Exception)
+                        {
+                            // ignore;
                         }
                     }
                     else
                     {
-                        using (var reader = DataProvider.Instance().ExecuteSQL(script))
+                        using var reader = DataProvider.Instance().ExecuteSQL(script);
+                        if (reader != null && reader.Read())
                         {
-                            if (reader != null && reader.Read())
+                            if (!int.TryParse(reader[0].ToString(), out var affectCount))
                             {
-                                int affectCount;
-                                int.TryParse(reader[0].ToString(), out affectCount);
-                                return affectCount == 0;
+                                affectCount = 0;
                             }
+
+                            return affectCount == 0;
                         }
                     }
                 }

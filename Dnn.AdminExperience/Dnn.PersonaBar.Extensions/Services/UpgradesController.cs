@@ -30,25 +30,28 @@ namespace Dnn.PersonaBar.Extensions.Services
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly ILocalUpgradeService localUpgradeService;
 
+        /// <summary>Initializes a new instance of the <see cref="UpgradesController"/> class.</summary>
+        /// <param name="applicationStatusInfo">The application status.</param>
+        /// <param name="localUpgradeService">The local upgrade service.</param>
         public UpgradesController(IApplicationStatusInfo applicationStatusInfo, ILocalUpgradeService localUpgradeService)
         {
             this.applicationStatusInfo = applicationStatusInfo;
             this.localUpgradeService = localUpgradeService;
         }
 
-        /// <summary>
-        /// Retrieves upgrade settings.
-        /// </summary>
-        /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+        /// <summary>Retrieves upgrade settings.</summary>
         /// <returns>A <see cref="HttpResponseMessage"/> containing the upgrade settings with a status code
         /// of <see cref="HttpStatusCode.OK"/> if successful, or an error message with a status code of
         /// <see cref="HttpStatusCode.InternalServerError"/> if an exception occurs.</returns>
         [HttpGet]
-        public HttpResponseMessage GetSettings(CancellationToken cancellationToken)
+        public HttpResponseMessage GetSettings()
         {
             try
             {
-                bool.TryParse(DotNetNuke.Common.Utilities.Config.GetSetting("AllowDnnUpgradeUpload"), out bool allowDnnUpgradeUpload);
+                if (!bool.TryParse(DotNetNuke.Common.Utilities.Config.GetSetting("AllowDnnUpgradeUpload"), out var allowDnnUpgradeUpload))
+                {
+                    allowDnnUpgradeUpload = false;
+                }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -57,13 +60,11 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
             catch (Exception ex)
             {
-                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Message = ex.Message });
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { ex.Message, });
             }
         }
 
-        /// <summary>
-        /// Retrieves a list of local upgrades.
-        /// </summary>
+        /// <summary>Retrieves a list of local upgrades.</summary>
         /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
         /// <returns>A <see cref="HttpResponseMessage"/> containing the list of local upgrades with a status code
         /// of <see cref="HttpStatusCode.OK"/> if successful, or an error message with a status code of
@@ -146,9 +147,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
         }
 
-        /// <summary>
-        /// Uploads a DNN package for local upgrade.
-        /// </summary>
+        /// <summary>Uploads a DNN package for local upgrade.</summary>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>Either a package info or an error message.</returns>
         [HttpPost]
@@ -157,7 +156,11 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                bool.TryParse(DotNetNuke.Common.Utilities.Config.GetSetting("AllowDnnUpgradeUpload"), out bool allowDnnUpgradeUpload);
+                if (!bool.TryParse(DotNetNuke.Common.Utilities.Config.GetSetting("AllowDnnUpgradeUpload"), out var allowDnnUpgradeUpload))
+                {
+                    allowDnnUpgradeUpload = false;
+                }
+
                 if (!allowDnnUpgradeUpload)
                 {
                     return Task.FromResult(this.Request.CreateResponse(HttpStatusCode.Forbidden, new { message = this.LocalizeString("Upgrade_UploadNotAllowed"), }));
@@ -246,10 +249,18 @@ namespace Dnn.PersonaBar.Extensions.Services
                         stream = await item.ReadAsStreamAsync();
                         break;
                     case "\"START\"":
-                        long.TryParse(await item.ReadAsStringAsync(), out startPosition);
+                        if (!long.TryParse(await item.ReadAsStringAsync(), out startPosition))
+                        {
+                            startPosition = 0;
+                        }
+
                         break;
                     case "\"TOTALSIZE\"":
-                        long.TryParse(await item.ReadAsStringAsync(), out totalSize);
+                        if (!long.TryParse(await item.ReadAsStringAsync(), out totalSize))
+                        {
+                            totalSize = 0;
+                        }
+
                         break;
                     case "\"FILEID\"":
                         fileId = await item.ReadAsStringAsync();

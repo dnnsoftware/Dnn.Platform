@@ -182,17 +182,17 @@ namespace DotNetNuke.Services.Installer.Installers
                     foreach (string skinFile in this.SkinFiles)
                     {
                         strMessage += newSkin.ProcessFile(skinFile, SkinParser.Portable);
-                        skinFile.Replace(Globals.HostMapPath + "\\", "[G]");
+                        var skinSrc = skinFile.Replace($@"{Globals.HostMapPath}\", "[G]");
                         switch (Path.GetExtension(skinFile))
                         {
                             case ".htm":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile.Replace("htm", "ascx"));
+                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinSrc.Replace("htm", "ascx"));
                                 break;
                             case ".html":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile.Replace("html", "ascx"));
+                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinSrc.Replace("html", "ascx"));
                                 break;
                             case ".ascx":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile);
+                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinSrc);
                                 break;
                         }
                     }
