@@ -88,7 +88,7 @@ internal class JournalControllerImpl : IJournalController
         UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
         if (currentUser == null)
         {
-            throw new Exception("Unable to locate the current user");
+            throw new UserDoesNotExistException("Unable to locate the current user");
         }
 
         string xml = null;
@@ -218,7 +218,7 @@ internal class JournalControllerImpl : IJournalController
         UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
         if (currentUser == null)
         {
-            throw new Exception("Unable to locate the current user");
+            throw new UserDoesNotExistException("Unable to locate the current user");
         }
 
         string xml = null;

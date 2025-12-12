@@ -32,7 +32,7 @@ namespace DotNetNuke.Framework
             // Abort if cache key is not available or valid
             if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_"))
             {
-                throw new ApplicationException("Missing valid " + ViewStateCacheKey);
+                throw new InvalidViewStateCacheKeyException("Missing valid " + ViewStateCacheKey);
             }
 
             var state = DataCache.GetCache<Pair>(key);

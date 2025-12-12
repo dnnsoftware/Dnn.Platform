@@ -13,6 +13,8 @@ namespace Dnn.EditBar.UI.Controllers
     using System.Xml;
     using System.Xml.XPath;
 
+    using Dnn.PersonaBar.Library.Controllers;
+
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
@@ -76,12 +78,12 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
+                    throw new LocalizationException($"Resource header '{key}' != '{value}'");
                 }
             }
             else
             {
-                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
+                throw new LocalizationException($"Resource header '{key}' is missing");
             }
         }
 

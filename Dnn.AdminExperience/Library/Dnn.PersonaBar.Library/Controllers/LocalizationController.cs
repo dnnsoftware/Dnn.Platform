@@ -114,12 +114,12 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    throw new ApplicationException(string.Format("Resource header '{0}' != '{1}'", key, value));
+                    throw new LocalizationException($"Resource header '{key}' != '{value}'");
                 }
             }
             else
             {
-                throw new ApplicationException(string.Format("Resource header '{0}' is missing", key));
+                throw new LocalizationException($"Resource header '{key}' is missing");
             }
         }
 

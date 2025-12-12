@@ -1355,7 +1355,7 @@ namespace DotNetNuke.Entities.Portals
             else
             {
                 message += Localization.GetString("CreatePortal.Error");
-                throw new Exception(message);
+                throw new CreatePortalException(message);
             }
 
             try
@@ -1436,7 +1436,7 @@ namespace DotNetNuke.Entities.Portals
             else
             {
                 message += Localization.GetString("CreatePortal.Error");
-                throw new Exception(message);
+                throw new CreatePortalException(message);
             }
 
             try
@@ -2417,12 +2417,12 @@ namespace DotNetNuke.Entities.Portals
                 homeDirectory = "Portals/" + portalId;
             }
 
-            string mappedHomeDirectory = string.Format(Globals.ApplicationMapPath + "\\" + homeDirectory + "\\").Replace("/", "\\");
+            string mappedHomeDirectory = string.Format($@"{Globals.ApplicationMapPath}\{homeDirectory}\").Replace("/", @"\");
 
             if (Directory.Exists(mappedHomeDirectory))
             {
                 message += string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error"), homeDirectory);
-                throw new Exception(message);
+                throw new CreatePortalException(message);
             }
 
             message += portalTemplateImporter.CreateProfileDefinitions(portalId);
@@ -2453,7 +2453,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new Exception(message);
+                    throw new CreatePortalException(message);
                 }
 
                 if (message == Null.NullString)
@@ -2464,7 +2464,7 @@ namespace DotNetNuke.Entities.Portals
                         Directory.CreateDirectory(mappedHomeDirectory);
 
                         // ensure that the Templates folder exists
-                        string templateFolder = string.Format("{0}Templates", mappedHomeDirectory);
+                        string templateFolder = $"{mappedHomeDirectory}Templates";
                         if (!Directory.Exists(templateFolder))
                         {
                             Directory.CreateDirectory(templateFolder);
@@ -2494,7 +2494,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new Exception(message);
+                    throw new CreatePortalException(message);
                 }
 
                 if (message == Null.NullString)
@@ -2511,7 +2511,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new Exception(message);
+                    throw new CreatePortalException(message);
                 }
 
                 LocaleCollection newPortalLocales = null;
@@ -2530,7 +2530,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new Exception(message);
+                    throw new CreatePortalException(message);
                 }
 
                 if (message == Null.NullString)
@@ -2651,13 +2651,13 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    throw new Exception(message);
+                    throw new CreatePortalException(message);
                 }
             }
             else
             {
                 DeletePortalInternal(portalId);
-                throw new Exception(message);
+                throw new CreatePortalException(message);
             }
         }
 

@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             if (this.AsyncPostBackHandlerEnabled && ScriptManager.GetCurrent(this.Page) == null)
             {
-                throw new System.Exception("The ClientResourceLoader control requires a ScriptManager on the page when AsyncPostBackHandlerEnabled is true.");
+                throw new ScriptManagerRequiredException("The ClientResourceLoader control requires a ScriptManager on the page when AsyncPostBackHandlerEnabled is true.");
             }
 
             base.OnInit(e);

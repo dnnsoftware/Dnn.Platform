@@ -833,7 +833,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 var url = absoluteUri; // get local copy because it gets hacked around
 
-                // Remove querystring if exists..
+                // Remove querystring if it exists.
                 if (queryString != string.Empty)
                 {
                     url = url.Replace(queryString, string.Empty);
@@ -842,7 +842,7 @@ namespace DotNetNuke.Entities.Urls
                 var rules = rewriterConfig.Rules;
                 if (rules == null)
                 {
-                    throw new NullReferenceException("DotNetNuke.HttpModules.Config.RewriterRuleCollection is null");
+                    throw new InvalidOperationException("DotNetNuke.HttpModules.Config.RewriterRuleCollection is null");
                 }
 
                 for (var i = 0; i <= rules.Count - 1; i++)

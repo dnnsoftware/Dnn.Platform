@@ -1332,7 +1332,7 @@ namespace DotNetNuke.Services.Localization
                 var portalLocales = GetPortalLocalizations(portalID);
                 if (portalLocales.Count <= 1)
                 {
-                    throw new Exception("You are trying to delete the only Portal localization entry in the system. This is NOT allowd!");
+                    throw new PortalLocalizationRequiredException("You are trying to delete the only Portal localization entry in the system. This is NOT allowed!");
                 }
             }
 

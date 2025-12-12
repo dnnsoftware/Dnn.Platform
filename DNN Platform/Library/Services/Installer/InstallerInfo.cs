@@ -278,7 +278,7 @@ namespace DotNetNuke.Services.Installer
             }
             else
             {
-                this.Log.AddFailure(new Exception(Util.EXCEPTION_FileLoad));
+                this.Log.AddFailure(new ReadManifestException(Util.EXCEPTION_FileLoad));
                 this.Log.EndJob(Util.FILES_ReadingEnd);
             }
 

@@ -1174,7 +1174,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(new Exception($"Delete TabModule Failed: {moduleId}", ex));
+                        Logger.Error(new ImportException($"Delete TabModule Failed: {moduleId}", ex));
                     }
 
                     this.Result.AddLogEntry("Removed existing tab module", "Module ID=" + moduleId);

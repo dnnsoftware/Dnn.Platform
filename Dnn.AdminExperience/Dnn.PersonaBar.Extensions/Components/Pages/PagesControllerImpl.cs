@@ -1237,10 +1237,11 @@ namespace Dnn.PersonaBar.Pages.Components
                 tab.Terms.Clear();
                 var termController = new TermController();
                 var vocabularyController = Util.GetVocabularyController();
-                var vocabulary = vocabularyController.GetVocabularies()
+                var vocabulary =
+                    vocabularyController.GetVocabularies()
                         .Cast<Vocabulary>()
                         .Where(v => v.Name == PageTagsVocabulary && v.ScopeId == tab.PortalID)
-                    .SingleOrDefault();
+                        .SingleOrDefault();
 
                 int vocabularyId;
                 if (vocabulary == null)
@@ -1248,7 +1249,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     var scopeType = Util.GetScopeTypeController().GetScopeTypes().SingleOrDefault(s => s.ScopeType == "Portal");
                     if (scopeType == null)
                     {
-                        throw new Exception("Can't create default vocabulary as scope type 'Portal' can't finded.");
+                        throw new ScopeNotFoundException("Can't create default vocabulary as scope type 'Portal' can't be found.");
                     }
 
                     vocabularyId = vocabularyController.AddVocabulary(

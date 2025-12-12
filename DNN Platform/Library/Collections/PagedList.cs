@@ -72,19 +72,19 @@ namespace DotNetNuke.Collections
             {
                 if (pageIndex > 0)
                 {
-                    throw new IndexOutOfRangeException("Invalid Page Index");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Invalid Page Index");
                 }
             }
             else
             {
                 if (pageIndex < 0)
                 {
-                    throw new IndexOutOfRangeException("Index cannot be negative");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Index cannot be negative");
                 }
 
                 if (pageIndex >= this.PageCount)
                 {
-                    throw new IndexOutOfRangeException("Invalid Page Index");
+                    throw new ArgumentOutOfRangeException(nameof(pageIndex), pageIndex, "Invalid Page Index");
                 }
             }
 

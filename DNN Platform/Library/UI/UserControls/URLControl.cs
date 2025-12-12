@@ -729,7 +729,7 @@ namespace DotNetNuke.UI.UserControls
             catch (Exception exc)
             {
                 // Let's detect possible problems
-                Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
+                Exceptions.LogException(new RenderException("Error rendering URLControl subcontrols.", exc));
             }
         }
 

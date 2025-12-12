@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.UserControls;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Common;
@@ -687,7 +688,7 @@ namespace DotNetNuke.Web.UI.WebControls
             catch (Exception exc)
             {
                 // Let's detect possible problems
-                Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
+                Exceptions.LogException(new RenderException("Error rendering URLControl subcontrols.", exc));
             }
         }
 

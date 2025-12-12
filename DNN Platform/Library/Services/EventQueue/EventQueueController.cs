@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.EventQueue
                     var messageProcessor = (EventMessageProcessorBase)Reflection.CreateObject(serviceProvider, message.ProcessorType, message.ProcessorType);
                     if (!messageProcessor.ProcessMessage(message))
                     {
-                        throw new Exception();
+                        throw new EventMessageException($"Event message of type {message.ProcessorType} returned false");
                     }
 
                     // Set Message complete so it is not run a second time

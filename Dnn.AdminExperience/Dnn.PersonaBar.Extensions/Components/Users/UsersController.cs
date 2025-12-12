@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.Users.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
 
@@ -121,7 +122,7 @@ namespace Dnn.PersonaBar.Users.Components
         {
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
-                throw new Exception(Localization.GetString("CannotChangePassword", Constants.LocalResourcesFile));
+                throw new InvalidOperationException(Localization.GetString("CannotChangePassword", Constants.LocalResourcesFile));
             }
 
             var user = UserController.Instance.GetUserById(portalId, userId);
@@ -137,14 +138,14 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 if (membershipPasswordController.FoundBannedPassword(newPassword) || user.Username == newPassword)
                 {
-                    throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
+                    throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
                 }
             }
 
             // check new password is not in history
             if (membershipPasswordController.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
-                throw new Exception(Localization.GetString("PasswordResetFailed_PasswordInHistory", Constants.LocalResourcesFile));
+                throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed_PasswordInHistory", Constants.LocalResourcesFile));
             }
 
             try
@@ -152,7 +153,7 @@ namespace Dnn.PersonaBar.Users.Components
                 var passwordChanged = UserController.ResetAndChangePassword(user, newPassword);
                 if (!passwordChanged)
                 {
-                    throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
+                    throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
                 }
 
                 return true;
@@ -161,7 +162,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 // Password Answer missing
                 Logger.Error(exc);
-                throw new Exception(Localization.GetString("PasswordInvalid", Constants.LocalResourcesFile));
+                throw new InvalidPasswordException(Localization.GetString("PasswordInvalid", Constants.LocalResourcesFile), exc);
             }
             catch (ThreadAbortException)
             {
@@ -171,15 +172,13 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 // Password validation has failed
                 Logger.Error(exc);
-                throw new InvalidPasswordException(
-                    Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile),
-                    exc);
+                throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile), exc);
             }
             catch (Exception exc)
             {
                 // Fail
                 Logger.Error(exc);
-                throw new Exception(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile));
+                throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile), exc);
             }
         }
 
@@ -270,9 +269,9 @@ namespace Dnn.PersonaBar.Users.Components
 
             var user = UserController.Instance.GetUserById(portalId, userRoleDto.UserId);
             var role = RoleController.Instance.GetRoleById(portalId, userRoleDto.RoleId);
-            if (role == null || role.Status != RoleStatus.Approved)
+            if (role is not { Status: RoleStatus.Approved })
             {
-                throw new Exception(Localization.GetString("RoleIsNotApproved", Constants.LocalResourcesFile));
+                throw new RoleNotApprovedException(Localization.GetString("RoleIsNotApproved", Constants.LocalResourcesFile));
             }
 
             if (currentUserInfo.IsSuperUser || currentUserInfo.Roles.Contains(portalSettings.AdministratorRoleName) ||
@@ -300,7 +299,7 @@ namespace Dnn.PersonaBar.Users.Components
                 };
             }
 
-            throw new Exception(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
+            throw new SecurityException(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
         }
 
         /// <inheritdoc/>
