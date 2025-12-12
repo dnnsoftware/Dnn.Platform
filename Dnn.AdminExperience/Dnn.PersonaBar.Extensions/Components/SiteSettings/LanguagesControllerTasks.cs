@@ -136,13 +136,21 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         internal static LocalizationProgress ReadProgressFile()
         {
             var path = Path.Combine(Globals.ApplicationMapPath, "App_Data", LocalizationProgressFile);
-            using (var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256))
+            using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 256);
+            var bytes = new byte[file.Length];
+            var bytesToRead = file.Length;
+            var bytesRead = 0;
+
+            do
             {
-                var bytes = new byte[file.Length];
-                file.Read(bytes, 0, bytes.Length);
-                var text = Encoding.UTF8.GetString(bytes);
-                return JsonConvert.DeserializeObject<LocalizationProgress>(text);
+                var readCount = file.Read(bytes, bytesRead, bytes.Length);
+                bytesRead += readCount;
+                bytesToRead -= readCount;
             }
+            while (bytesToRead > 0);
+
+            var text = Encoding.UTF8.GetString(bytes);
+            return JsonConvert.DeserializeObject<LocalizationProgress>(text);
         }
 
         private static IList<TabInfo> GetTabsToLocalize(int portalId, string code, string defaultLocale)
