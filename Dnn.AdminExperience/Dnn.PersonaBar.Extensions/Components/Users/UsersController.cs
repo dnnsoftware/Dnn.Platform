@@ -529,7 +529,7 @@ namespace Dnn.PersonaBar.Users.Components
                     }
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(usersContract), usersContract, $"Filter was an unexpected value, supported values include {nameof(UserFilters.All)}, {nameof(UserFilters.Authorized)}, {nameof(UserFilters.SuperUsers)}, {nameof(UserFilters.UnAuthorized)}, {nameof(UserFilters.Deleted)}, {nameof(UserFilters.HasAgreedToTerms)}, {nameof(UserFilters.HasNotAgreedToTerms)}, {nameof(UserFilters.RequestedRemoval)}, and {nameof(UserFilters.RegisteredUsers)}.");
             }
 
             return users;
@@ -541,7 +541,7 @@ namespace Dnn.PersonaBar.Users.Components
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 // only allow updates for non-superuser accounts
-                if (user.IsSuperUser == false)
+                if (!user.IsSuperUser)
                 {
                     return true;
                 }

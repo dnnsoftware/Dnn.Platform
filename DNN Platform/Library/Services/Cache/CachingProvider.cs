@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Cache
         {
             if (string.IsNullOrEmpty(cacheKey))
             {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+                throw new ArgumentException("Argument cannot be null or an empty string", nameof(cacheKey));
             }
 
             return cacheKey.Substring(CachePrefix.Length);
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Cache
         {
             if (string.IsNullOrEmpty(cacheKey))
             {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+                throw new ArgumentException("Argument cannot be null or an empty string", nameof(cacheKey));
             }
 
             return CachePrefix + cacheKey;

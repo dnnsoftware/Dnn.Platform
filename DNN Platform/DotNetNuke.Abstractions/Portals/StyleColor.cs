@@ -96,12 +96,12 @@ namespace DotNetNuke.Abstractions.Portals
         {
             if (string.IsNullOrWhiteSpace(hexValue))
             {
-                throw new ArgumentNullException("You need to provide a CSS color value in the constructor");
+                throw new ArgumentNullException(nameof(hexValue), "You need to provide a CSS color value in the constructor");
             }
 
             if (!HexColorRegex.IsMatch(hexValue))
             {
-                throw new ArgumentOutOfRangeException($"The value {hexValue} that was provided is not valid, it needs to be 3 or 6 character long hexadecimal string without the # sing");
+                throw new ArgumentOutOfRangeException(nameof(hexValue), hexValue, $"The value {hexValue} that was provided is not valid, it needs to be 3 or 6 character long hexadecimal string without the # sing");
             }
         }
 

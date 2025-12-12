@@ -779,10 +779,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                DesktopModuleInfo desktopModule;
-                if (!DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out desktopModule))
+                if (!DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId).TryGetValue(desktopModuleId, out _))
                 {
-                    throw new ArgumentException("desktopModuleId");
+                    throw new ArgumentException($"Could not find desktop module with given ID: {desktopModuleId}", nameof(desktopModuleId));
                 }
             }
             catch (Exception ex)

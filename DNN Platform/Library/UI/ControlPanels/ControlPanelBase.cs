@@ -174,7 +174,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// <summary>Adds a New Module to a Pane. </summary>
         /// <param name="title">The Title for the resulting module.</param>
-        /// <param name="desktopModuleId">The Id of the DesktopModule.</param>
+        /// <param name="desktopModuleId">The ID of the DesktopModule.</param>
         /// <param name="paneName">The pane to add the module to.</param>
         /// <param name="position">The relative position within the pane for the module.</param>
         /// <param name="permissionType">The View Permission Type for the Module.</param>
@@ -185,10 +185,9 @@ namespace DotNetNuke.UI.ControlPanels
             var objPermissionController = new PermissionController();
             try
             {
-                DesktopModuleInfo desktopModule;
-                if (!DesktopModuleController.GetDesktopModules(this.PortalSettings.PortalId).TryGetValue(desktopModuleId, out desktopModule))
+                if (!DesktopModuleController.GetDesktopModules(this.PortalSettings.PortalId).TryGetValue(desktopModuleId, out _))
                 {
-                    throw new ArgumentException("desktopModuleId");
+                    throw new ArgumentException($"Could not find desktop module with given ID: {desktopModuleId}", nameof(desktopModuleId));
                 }
             }
             catch (Exception ex)
