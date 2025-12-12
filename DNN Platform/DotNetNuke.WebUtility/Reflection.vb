@@ -71,7 +71,7 @@ Namespace DotNetNuke.UI.Utilities
                     ' could not load the type
                     If Not IgnoreErrors Then
                         'LogException(exc)
-                        Throw exc
+                        Throw
                     End If
                 End Try
             End If
