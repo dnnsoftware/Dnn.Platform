@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.UI;
 using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.MvcPipeline.Framework.JavascriptLibraries;
-using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
 using DotNetNuke.Web.MvcPipeline.Utils;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Utils
@@ -23,8 +14,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Utils
         {
             this.moduleControl = new T();
             moduleControl.ModuleContext.Configuration = moduleContext.Configuration;
-            moduleControl.ViewContext.HttpContext = new System.Web.HttpContextWrapper(System.Web.HttpContext.Current);
-            //moduleControl.Control = control;
         }
 
         public MvcModuleControlRenderer(PortalModuleBase control)

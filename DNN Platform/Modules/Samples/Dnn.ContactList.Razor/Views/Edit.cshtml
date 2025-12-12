@@ -9,7 +9,6 @@
 @model ContactModel
 @{
     var moduleId = (int)ViewData["ModuleId"];
-    var localResourceFile = "~/DesktopModules/RazorContactList/App_LocalResources/Contact.resx";
 }
 
 <div class="contactEdit-container" data-moduleid="@moduleId" data-returnurl="@Model.ReturnUrl">
@@ -22,8 +21,8 @@
             </svg>
         </div>
         <div class="contactEdit-title">
-            <h2>@(Model.ContactId > 0 ? Html.LocalizeString("Edit", localResourceFile) : Html.LocalizeString("AddContact", localResourceFile))</h2>
-            <p>@Html.LocalizeString("EditDescription", localResourceFile)</p>
+            <h2>@(Model.ContactId > 0 ? Html.LocalizeString("Edit") : Html.LocalizeString("AddContact"))</h2>
+            <p>@Html.LocalizeString("EditDescription")</p>
         </div>
     </div>
 
@@ -34,57 +33,57 @@
             <div class="form-group">
                 <label for="FirstName">
                     <i class="fa fa-user"></i>
-                    @Html.LocalizeString("FirstName", localResourceFile) <span class="required">*</span>
+                    @Html.LocalizeString("FirstName") <span class="required">*</span>
                 </label>
                 @Html.TextBoxFor(m => m.FirstName, new { @class = "form-input", placeholder = "Enter first name" })
-                @Html.ValidationMessageFor(m => m.FirstName, @Html.LocalizeString("FirstNameRequired", localResourceFile).ToHtmlString())
+                @Html.ValidationMessageFor(m => m.FirstName, @Html.LocalizeString("FirstNameRequired").ToHtmlString())
             </div>
 
             <div class="form-group">
                 <label for="LastName">
                     <i class="fa fa-user"></i>
-                    @Html.LocalizeString("LastName", localResourceFile) <span class="required">*</span>
+                    @Html.LocalizeString("LastName") <span class="required">*</span>
                 </label>
                 @Html.TextBoxFor(m => m.LastName, new { @class = "form-input", placeholder = "Enter last name" })
-                @Html.ValidationMessageFor(m => m.LastName, @Html.LocalizeString("LastNameRequired", localResourceFile).ToHtmlString())
+                @Html.ValidationMessageFor(m => m.LastName, @Html.LocalizeString("LastNameRequired").ToHtmlString())
             </div>
         </div>
 
         <div class="form-group">
             <label for="Email">
                 <i class="fa fa-envelope"></i>
-                @Html.LocalizeString("Email", localResourceFile) <span class="required">*</span>
+                @Html.LocalizeString("Email") <span class="required">*</span>
             </label>
             @Html.TextBoxFor(m => m.Email, new { @class = "form-input", placeholder = "email@example.com", type = "email" })
-            @Html.ValidationMessageFor(m => m.Email, @Html.LocalizeString("EmailRequired", localResourceFile).ToHtmlString())
+            @Html.ValidationMessageFor(m => m.Email, @Html.LocalizeString("EmailRequired").ToHtmlString())
         </div>
 
         <div class="form-group">
             <label for="Phone">
                 <i class="fa fa-phone"></i>
-                @Html.LocalizeString("Phone", localResourceFile) <span class="required">*</span>
+                @Html.LocalizeString("Phone") <span class="required">*</span>
             </label>
             @Html.TextBoxFor(m => m.Phone, new { @class = "form-input", placeholder = "+1 555-123-4567", type = "tel" })
-            @Html.ValidationMessageFor(m => m.Phone, @Html.LocalizeString("PhoneRequired", localResourceFile).ToHtmlString())
+            @Html.ValidationMessageFor(m => m.Phone, @Html.LocalizeString("PhoneRequired").ToHtmlString())
         </div>
 
         <div class="form-group">
             <label for="Social">
                 <i class="fa fa-twitter"></i>
-                @Html.LocalizeString("Social", localResourceFile)
+                @Html.LocalizeString("Social")
             </label>
             @Html.TextBoxFor(m => m.Social, new { @class = "form-input", placeholder = "@username or profile URL" })
-            @Html.ValidationMessageFor(m => m.Social, @Html.LocalizeString("SocialRequired", localResourceFile).ToHtmlString())
+            @Html.ValidationMessageFor(m => m.Social, @Html.LocalizeString("SocialRequired").ToHtmlString())
         </div>
 
         <div class="form-actions">
             <button type="submit" id="btnSave" class="btn-primary">
                 <i class="fa fa-save"></i>
-                @Html.LocalizeString("Save", localResourceFile)
+                @Html.LocalizeString("Save")
             </button>
             <a href="@Model.ReturnUrl" class="btn-secondary">
                 <i class="fa fa-times"></i>
-                @Html.LocalizeString("Cancel", localResourceFile)
+                @Html.LocalizeString("Cancel")
             </a>
 
 

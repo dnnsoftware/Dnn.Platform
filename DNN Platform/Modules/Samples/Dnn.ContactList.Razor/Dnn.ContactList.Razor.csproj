@@ -19,6 +19,9 @@
     <AssetTargetFallback>netstandard2.0</AssetTargetFallback>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Remove="App_LocalResources\View.resx" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -45,16 +48,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="App_LocalResources\Contact.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Contact.resx</DependentUpon>
-    </Compile>
+    <Content Include="App_LocalResources\View.resx" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="App_LocalResources\Contact.resx">
+    <EmbeddedResource Update="App_LocalResources\Edit.resx">
+      <LastGenOutput>Edit.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Contact.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="App_LocalResources\View.ascx.resx">
+      <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="Module.build" />

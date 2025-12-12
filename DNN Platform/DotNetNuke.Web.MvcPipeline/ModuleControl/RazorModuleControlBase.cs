@@ -10,7 +10,6 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
-using DotNetNuke.Web.MvcPipeline.Modules;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
@@ -19,7 +18,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         private RazorModuleViewContext _viewContext;
         public override IHtmlString Html(HtmlHelper htmlHelper)
         {
-            this.ViewContext.HttpContext = htmlHelper.ViewContext.HttpContext;      
             this.ViewContext.ViewData = new ViewDataDictionary(htmlHelper.ViewData);
             this.ViewContext.ViewData["ModuleContext"] = this.ModuleContext;
             this.ViewContext.ViewData["ModuleId"] = this.ModuleId;
@@ -60,7 +58,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 throw new ArgumentNullException("message");
             }
 
-            return new ErrorRazorModuleResult(heading, message); 
+            return new ErrorRazorModuleResult(heading, message);
         }
 
         public IRazorModuleResult View()
@@ -81,7 +79,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             if (string.IsNullOrEmpty(viewName))
             {
-                viewName= this.DefaultViewName;
+                viewName = this.DefaultViewName;
             }
             return new ViewRazorModuleResult(viewName, model, ViewData);
         }
@@ -90,10 +88,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             get
             {
-                // This should run only for the ViewComponent unit test scenarios.
                 if (_viewContext == null)
                 {
                     _viewContext = new RazorModuleViewContext();
+                    _viewContext.HttpContext = new System.Web.HttpContextWrapper(System.Web.HttpContext.Current);
                 }
 
                 return _viewContext;

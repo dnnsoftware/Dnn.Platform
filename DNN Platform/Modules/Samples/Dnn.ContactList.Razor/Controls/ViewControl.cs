@@ -19,26 +19,14 @@ namespace Dnn.ContactList.Razor
     public class ViewControl : RazorModuleControlBase, IPageContributor
     {
         private readonly IContactRepository _repository;
-        private readonly IPageService pageService;
 
-        /*
-        public ViewControl() : this(ContactRepository.Instance)
+        public ViewControl(IContactRepository repository)
         {
-
-        }
-        */
-
-        public ViewControl(IPageService pageService)
-        {
-            //Requires.NotNull(repository);
-            this.pageService = pageService;
-            _repository = ContactRepository.Instance;
-            LocalResourceFile = "~/DesktopModules/Dnn/RazorContactList/App_LocalResources/Contact.resx";
-            this.pageService = pageService;
+            Requires.NotNull(repository);
+            _repository = repository;
         }
 
-        public override string ControlName => "View";
-
+        // Configure the page settings when this module is loaded
         public void ConfigurePage(PageConfigurationContext context)
         {
             var contacts = _repository.GetContacts(PortalSettings.PortalId);
@@ -48,9 +36,9 @@ namespace Dnn.ContactList.Razor
             context.PageService.SetKeyWords("keywords1");
 
             context.PageService.AddInfoMessage("", "This is a simple contact list module built using Razor and DNN's MVC Pipeline");
-            //context.pageService.AddErrorMessage("", "This is a simple contact list module built using Razor and DNN's MVC Pipeline");
         }
 
+        // Render the html for module control
         public override IRazorModuleResult Invoke()
         {
             var contacts = _repository.GetContacts(PortalSettings.PortalId);

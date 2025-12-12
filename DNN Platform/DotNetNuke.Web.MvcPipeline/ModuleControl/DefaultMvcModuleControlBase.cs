@@ -126,8 +126,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             get
             {
-                return Path.GetFileNameWithoutExtension(this.ModuleConfiguration.ModuleControl.ControlSrc);
-
+                if (string.IsNullOrEmpty(this.ModuleConfiguration.ModuleControl.ControlKey))
+                {
+                    return "View";
+                }
+                else
+                {
+                    return this.ModuleConfiguration.ModuleControl.ControlKey;
+                }
             }
         }
 
@@ -137,14 +143,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
         {
             get
             {
-                if (this.ModuleConfiguration.DesktopModule == null)
-                {
-                    return Path.GetDirectoryName(this.ModuleConfiguration.ModuleControl.ControlSrc);
-                }
-                else
+                if (this.ModuleConfiguration.DesktopModule != null)
                 {
                     return "DesktopModules/" + this.ModuleConfiguration.DesktopModule.FolderName;
                 }
+                return string.Empty;
             }
         }
 
@@ -199,7 +202,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 string fileRoot;
                 if (string.IsNullOrEmpty(this.localResourceFile))
                 {
-                    fileRoot = Path.Combine(this.ControlPath, Localization.LocalResourceDirectory + "/" + this.ControlName);
+                    fileRoot = "~/" + this.ControlPath + "/" + Localization.LocalResourceDirectory + "/" + this.ControlName + ".resx";
                 }
                 else
                 {
@@ -238,7 +241,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 this.serviceScopeContainer.Value.Dispose();
             }
         }
-      
+
         public abstract IHtmlString Html(HtmlHelper htmlHelper);
     }
 }

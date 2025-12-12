@@ -3,10 +3,6 @@
 
 @model ContactModel
 
-@{
-    var localResourceFile = "~/DesktopModules/RazorContactList/App_LocalResources/Contact.resx";
-}
-
 <div class="contactCard">
     <div class="contactCard-header">
         <div class="contactCard-logo">
@@ -27,7 +23,7 @@
         @if (Model.IsEditable)
         {
             <div class="contactCard-actions">
-                <a href="@Model.EditUrl" title="@Html.LocalizeString("Edit", localResourceFile)">
+                <a href="@Model.EditUrl" title="@Html.LocalizeString("Edit")">
                     <i class="fa fa-pencil"></i>
                 </a>
             </div>
@@ -35,7 +31,7 @@
     </div>
     <div class="contactCard-body">
         <div class="contact-name">@Model.FirstName @Model.LastName</div>
-        <div class="contact-title">@Html.LocalizeString("ContactPerson", localResourceFile)</div>
+        <div class="contact-title">@Html.LocalizeString("ContactPerson")</div>
         <div class="contact-detail">
             <i class="fa fa-envelope"></i>
             <span>@Model.Email.ToLowerInvariant()</span>
