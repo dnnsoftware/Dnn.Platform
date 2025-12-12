@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 WorkflowActionTypes.DiscardState => typeof(DiscardState).AssemblyQualifiedName,
                 WorkflowActionTypes.CompleteState => typeof(CompleteState).AssemblyQualifiedName,
                 WorkflowActionTypes.StartWorkflow => typeof(StartWorkflow).AssemblyQualifiedName,
-                _ => throw new ArgumentOutOfRangeException(),
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, $"Unexpected workflow action type, supported values include {nameof(WorkflowActionTypes.DiscardWorkflow)}, {nameof(WorkflowActionTypes.CompleteWorkflow)}, {nameof(WorkflowActionTypes.DiscardState)}, {nameof(WorkflowActionTypes.CompleteState)}, and {nameof(WorkflowActionTypes.StartWorkflow)}."),
             };
 
             return new WorkflowAction()

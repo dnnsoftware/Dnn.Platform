@@ -9,7 +9,7 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CA1018,CA1305,CA1707,CA1710,CA1716,CA1720,CA2208</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CA1018,CA1305,CA1707,CA1710,CA1716,CA1720</WarningsNotAsErrors>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Abstractions.xml</DocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

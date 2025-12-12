@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             if (string.IsNullOrEmpty(cacheKey))
             {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+                throw new ArgumentException("Argument cannot be null or an empty string", nameof(cacheKey));
             }
 
             return string.Concat(cachePrefix, cacheKey);
