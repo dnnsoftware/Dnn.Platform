@@ -214,7 +214,7 @@ namespace DotNetNuke.UI.Skins
                 case ".html":
                     string contents = objSkinFile.Contents;
                     strMessage += this.ObjectFactory.Parse(ref contents);
-                    strMessage += this.PathFactory.Parse(ref contents, this.PathFactory.HTMLList, objSkinFile.SkinRootPath, parseOption);
+                    strMessage += this.PathFactory.Parse(ref contents, this.PathFactory.HtmlList, objSkinFile.SkinRootPath, parseOption);
                     strMessage += this.ControlFactory.Parse(ref contents, objSkinFile.Attributes);
                     objSkinFile.Contents = contents;
                     var registrations = new ArrayList();
@@ -274,11 +274,6 @@ namespace DotNetNuke.UI.Skins
             private static readonly Regex FindTokenInstance =
                 new Regex("\\[\\s*(?<token>\\w*)\\s*:?\\s*(?<instance>\\w*)\\s*]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-            private readonly Hashtable controlList;
-            private XmlDocument attributes = new XmlDocument { XmlResolver = null };
-            private string parseMessages = string.Empty;
-            private ArrayList registerList = new ArrayList();
-
             /// <summary>
             /// Initializes a new instance of the <see cref="ControlParser"/> class.
             ///     ControlParser class constructor.
@@ -288,7 +283,7 @@ namespace DotNetNuke.UI.Skins
             /// </remarks>
             public ControlParser(Hashtable controlList)
             {
-                this.controlList = (Hashtable)controlList.Clone();
+                this.ControlList = (Hashtable)controlList.Clone();
             }
 
             /// <summary>    Gets registration directives generated as a result of the Parse method.</summary>
@@ -302,68 +297,17 @@ namespace DotNetNuke.UI.Skins
             ///     those directives.  Since they are properly formatted, it is better
             ///     to exclude them from being subject to parsing.
             /// </remarks>
-            internal ArrayList Registrations
-            {
-                get
-                {
-                    return this.RegisterList;
-                }
-            }
+            internal ArrayList Registrations => this.RegisterList;
 
-            private MatchEvaluator Handler
-            {
-                get
-                {
-                    return this.TokenMatchHandler;
-                }
-            }
+            private MatchEvaluator Handler => this.TokenMatchHandler;
 
-            private Hashtable ControlList
-            {
-                get
-                {
-                    return this.ControlList;
-                }
-            }
+            private Hashtable ControlList { get; }
 
-            private ArrayList RegisterList
-            {
-                get
-                {
-                    return this.RegisterList;
-                }
+            private ArrayList RegisterList { get; set; } = new ArrayList();
 
-                set
-                {
-                    this.RegisterList = value;
-                }
-            }
+            private XmlDocument Attributes { get; set; } = new XmlDocument { XmlResolver = null };
 
-            private XmlDocument Attributes
-            {
-                get
-                {
-                    return this.Attributes;
-                }
-
-                set
-                {
-                    this.Attributes = value;
-                }
-            }
-
-            private string Messages
-            {
-                get
-                {
-                    return this.parseMessages;
-                }
-
-                set
-                {
-                    this.parseMessages = value;
-                }
-            }
+            private string Messages { get; set; } = string.Empty;
 
             /// <summary>    Perform parsing on the specified source file using the specified attributes.</summary>
             /// <param name="source">Pointer to Source string to be parsed.</param>
@@ -531,10 +475,6 @@ namespace DotNetNuke.UI.Skins
 
             private static readonly Regex MultiSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
 
-            private readonly Hashtable controlList;
-            private string parseMessages = string.Empty;
-            private ArrayList registerList = new ArrayList();
-
             /// <summary>
             /// Initializes a new instance of the <see cref="ObjectParser"/> class.
             ///     ControlParser class constructor.
@@ -544,7 +484,7 @@ namespace DotNetNuke.UI.Skins
             /// </remarks>
             public ObjectParser(Hashtable controlList)
             {
-                this.controlList = (Hashtable)controlList.Clone();
+                this.ControlList = (Hashtable)controlList.Clone();
             }
 
             /// <summary>    Gets registration directives generated as a result of the Parse method.</summary>
@@ -558,55 +498,15 @@ namespace DotNetNuke.UI.Skins
             ///     those directives.  Since they are properly formatted, it is better
             ///     to exclude them from being subject to parsing.
             /// </remarks>
-            internal ArrayList Registrations
-            {
-                get
-                {
-                    return this.RegisterList;
-                }
-            }
+            internal ArrayList Registrations => this.RegisterList;
 
-            private MatchEvaluator Handler
-            {
-                get
-                {
-                    return this.ObjectMatchHandler;
-                }
-            }
+            private MatchEvaluator Handler => this.ObjectMatchHandler;
 
-            private Hashtable ControlList
-            {
-                get
-                {
-                    return this.ControlList;
-                }
-            }
+            private Hashtable ControlList { get; }
 
-            private ArrayList RegisterList
-            {
-                get
-                {
-                    return this.RegisterList;
-                }
+            private ArrayList RegisterList { get; set; } = new ArrayList();
 
-                set
-                {
-                    this.RegisterList = value;
-                }
-            }
-
-            private string Messages
-            {
-                get
-                {
-                    return this.parseMessages;
-                }
-
-                set
-                {
-                    this.parseMessages = value;
-                }
-            }
+            private string Messages { get; set; } = string.Empty;
 
             /// <summary>    Perform parsing on the specified source file.</summary>
             /// <param name="source">Pointer to Source string to be parsed.</param>
@@ -784,7 +684,7 @@ namespace DotNetNuke.UI.Skins
 
             // retrieve the patterns
             private static readonly Regex[] HtmlArrayPattern =
-            {
+            [
                 new Regex("(?<tag><head[^>]*?\\sprofile\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
                 new Regex("(?<tag><object[^>]*?\\s(?:codebase|data|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
                 new Regex("(?<tag><img[^>]*?\\s(?:src|longdesc|usemap)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
@@ -795,21 +695,20 @@ namespace DotNetNuke.UI.Skins
                 new Regex("(?<tag><(?:base|link|a|area)[^>]*?\\shref\\s*=\\s*\")(?!https://|http://|\\\\|[~/]|javascript:|mailto:)(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
                 new Regex("(?<tag><(?:blockquote|ins|del|q)[^>]*?\\scite\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
                 new Regex("(?<tag><(?:param\\s+name\\s*=\\s*\"(?:movie|src|base)\")[^>]*?\\svalue\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
-                new Regex("(?<tag><embed[^>]*?\\s(?:src)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
-            };
+                new Regex("(?<tag><embed[^>]*?\\s(?:src)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions)
+            ];
 
             // retrieve the patterns
             private static readonly Regex[] CssArrayPattern =
-            {
-                new Regex("(?<tag>\\surl\\u0028)(?<content>[^\\u0029]*)(?<endtag>\\u0029.*;)", PatternOptions),
-            };
+            [
+                new Regex("(?<tag>\\surl\\u0028)(?<content>[^\\u0029]*)(?<endtag>\\u0029.*;)", PatternOptions)
+            ];
 
             private readonly string subst = Util.GetLocalizedString("Substituting");
             private readonly string substDetail = Util.GetLocalizedString("Substituting.Detail");
             private readonly ArrayList cssPatterns = new ArrayList();
             private readonly ArrayList htmlPatterns = new ArrayList();
             private string messages = string.Empty;
-            private string skinPath = string.Empty;
 
             /// <summary>    Gets list of regular expressions for processing HTML syntax.</summary>
             /// <returns>ArrayList of Regex objects formatted for the Parser method.</returns>
@@ -819,7 +718,7 @@ namespace DotNetNuke.UI.Skins
             ///     consideration, this list could be imported from a configuration file to
             ///     provide for greater flexibility.
             /// </remarks>
-            public ArrayList HTMLList
+            public ArrayList HtmlList
             {
                 get
                 {
@@ -863,26 +762,9 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            private MatchEvaluator Handler
-            {
-                get
-                {
-                    return this.MatchHandler;
-                }
-            }
+            private MatchEvaluator Handler => this.MatchHandler;
 
-            private string SkinPath
-            {
-                get
-                {
-                    return this.SkinPath;
-                }
-
-                set
-                {
-                    this.SkinPath = value;
-                }
-            }
+            private string SkinPath { get; set; } = string.Empty;
 
             private SkinParser ParseOption { get; set; }
 
@@ -890,7 +772,7 @@ namespace DotNetNuke.UI.Skins
             /// <param name="source">Pointer to Source string to be parsed.</param>
             /// <param name="regexList">ArrayList of properly formatted regular expression objects.</param>
             /// <param name="skinPath">Path to use in replacement operation.</param>
-            /// <param name="parseOption">Parse Opition.</param>
+            /// <param name="parseOption">Parse Option.</param>
             /// <remarks>
             ///     This procedure iterates through the list of regular expression objects
             ///     and invokes a handler for each match which uses the specified path.
@@ -899,7 +781,7 @@ namespace DotNetNuke.UI.Skins
             {
                 this.messages = string.Empty;
 
-                // set path propery which is file specific
+                // set path property which is file specific
                 this.SkinPath = skinPath;
 
                 // set parse option
