@@ -60,15 +60,15 @@ namespace DotNetNuke.UI.Skins
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+        public static readonly string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+        public static readonly string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+        public static readonly string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
         // ReSharper restore InconsistentNaming
         private readonly ModuleInjectionManager moduleInjectionManager;

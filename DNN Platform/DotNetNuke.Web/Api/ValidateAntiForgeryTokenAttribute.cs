@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Api
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
 
         // ReSharper disable once InconsistentNaming
-        protected static Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
+        protected static readonly Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
 
         private static readonly List<string> BypassedAuthTypes = new List<string>();
 
