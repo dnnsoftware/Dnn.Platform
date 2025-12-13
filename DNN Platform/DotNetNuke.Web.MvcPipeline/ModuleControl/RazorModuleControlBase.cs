@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using DotNetNuke.Web.MvcPipeline.ModuleControl.Razor;
+using DotNetNuke.Web.MvcPipeline.Modules;
 
 namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {

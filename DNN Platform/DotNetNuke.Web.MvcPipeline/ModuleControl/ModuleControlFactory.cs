@@ -1,27 +1,18 @@
-﻿namespace DotNetNuke.Web.MvcPipeline.Utils
+﻿namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Runtime.InteropServices;
-    using System.Security.AccessControl;
-    using System.Web.UI;
-    using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Framework;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl;
-    using Microsoft.Extensions.DependencyInjection;
 
-    public class MvcUtils
+    internal class ModuleControlFactory
     {
         public static IMvcModuleControl CreateModuleControl(ModuleInfo module)
         {
-            return GetModuleControl(module, module.ModuleControl.ControlSrc);
+            return CreateModuleControl(module, module.ModuleControl.ControlSrc);
         }
 
-        public static IMvcModuleControl GetModuleControl(ModuleInfo module, string controlSrc)
+        public static IMvcModuleControl CreateModuleControl(ModuleInfo module, string controlSrc)
         {
             IMvcModuleControl control;
             if (!string.IsNullOrEmpty(module.ModuleControl.MvcControlClass))
@@ -48,7 +39,7 @@
             //{
             //    control = new MvcModuleControl();
             //}
-            else if (controlSrc.EndsWith(".html", System.StringComparison.OrdinalIgnoreCase))
+            else if (controlSrc.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
             {
                 control = new SpaModuleControl();
             }

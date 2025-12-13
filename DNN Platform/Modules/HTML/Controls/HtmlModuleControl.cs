@@ -34,6 +34,10 @@ namespace DotNetNuke.Modules.Html.Controls
             this.clientResourceController = clientResourceController;
         }
 
+        public override string ControlName => "HtmlModule";
+
+        public override string ResourceName => this.ControlName + ".ascx.resx";
+
         public HtmlModuleSettings HtmlSettings
         {
             get
@@ -120,7 +124,6 @@ namespace DotNetNuke.Modules.Html.Controls
 
             var html = HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.HtmlSettings, this.PortalSettings, this.clientResourceController);
 
-            // html = System.Web.HttpUtility.HtmlDecode(html);
             return this.View(new HtmlModuleModel()
             {
                 Html = html,

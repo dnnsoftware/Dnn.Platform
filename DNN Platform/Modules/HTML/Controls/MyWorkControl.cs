@@ -28,6 +28,10 @@ namespace DotNetNuke.Modules.Html.Controls
             this.navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        public override string ControlName => "MyWork";
+
+        public override string ResourceName => this.ControlName + ".ascx.resx";
+
         public ModuleActionCollection ModuleActions
         {
             get

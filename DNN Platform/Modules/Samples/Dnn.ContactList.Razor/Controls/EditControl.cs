@@ -18,12 +18,14 @@ namespace Dnn.ContactList.Razor
         private readonly IContactRepository _repository;
         private Contact _contact = null;
 
+        // Constructor with dependency injection
         public EditControl(IContactRepository repository)
         {
             Requires.NotNull(repository);
             _repository = repository;
         }
 
+        // IPageContributor implementation (separate configuration of the page from control rendering)
         public void ConfigurePage(PageConfigurationContext context)
         {
             // Enable Anti-Forgery support for AJAX calls
@@ -33,70 +35,74 @@ namespace Dnn.ContactList.Razor
             // Register JavaScript file
             context.ClientResourceController.CreateScript("~/DesktopModules/Dnn/RazorContactList/js/edit.js").Register();
             // Set the page title
-            if (TryGetContact(out Contact contact))
+            if (IsEditing())
             {
+                var contact = GetContact();
                 if (contact != null)
                 {
                     context.PageService.SetTitle("Razor - Edit Contact: " + contact.FirstName + " " + contact.LastName);
                 }
-                else
-                {
-                    context.PageService.SetTitle("Razor - Edit Contact");
-                }
+            }
+            else
+            {
+                context.PageService.SetTitle("Razor - Add Contact");
             }
         }
 
+        // Main method to render the control
         public override IRazorModuleResult Invoke()
         {
             var returnUrl = ModuleContext.NavigateUrl(this.TabId, string.Empty, false);
             // Check if we are editing an existing contact
-            if (TryGetContact(out Contact c))
+            if (IsEditing())
             {
+                var c = GetContact();
                 if (c == null)
                 {
-                    return View(new ContactModel()
-                    {
-                        ReturnUrl = returnUrl
-                    });
+                    // Contact does not exist, show error message
+                    return Error("ContactList error", "contact dous not exist");
                 }
-                else
+
+                return View(new ContactModel()
                 {
-                    return View(new ContactModel()
-                    {
-                        ContactId = c.ContactId,
-                        Email = c.Email,
-                        FirstName = c.FirstName,
-                        LastName = c.LastName,
-                        Phone = c.Phone,
-                        Social = c.Social,
-                        ReturnUrl = returnUrl
-                    });
-                }
+                    ContactId = c.ContactId,
+                    Email = c.Email,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    Phone = c.Phone,
+                    Social = c.Social,
+                    ReturnUrl = returnUrl
+                });
             }
             else
             {
-                // Contact does not exist
-                return Error("ContactList error", "contact dous not exist");
+                return View(new ContactModel()
+                {
+                    ReturnUrl = returnUrl
+                });
+
             }
         }
 
-        private bool TryGetContact(out Contact contact)
+        private Contact GetContact()
         {
             if (int.TryParse(Request.QueryString["ContactId"], out int contactId))
             {
                 if (_contact == null)
                 {
+                    // avoid multiple retrievals
                     _contact = _repository.GetContact(contactId, PortalSettings.PortalId);
-                    if (_contact == null)
-                    {
-                        // Contact does not exist
-                        contact = null;
-                        return false;
-                    }
                 }
+                return _contact;
             }
-            contact = _contact;
-            return true;
+            else
+            {
+                return null;
+            }
+        }
+        private bool IsEditing()
+        {
+            return Request.QueryString["ContactId"] != null;
         }
     }
 }

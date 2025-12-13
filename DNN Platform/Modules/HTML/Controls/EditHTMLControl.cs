@@ -38,6 +38,10 @@ namespace DotNetNuke.Modules.Html.Controls
             this.htmlTextController = new HtmlTextController(this.navigationManager);
         }
 
+        public override string ControlName => "HtmlEdit";
+
+        public override string ResourceName => this.ControlName + ".ascx.resx";
+
         public void ConfigurePage(PageConfigurationContext context)
         {
             context.ClientResourceController.CreateStylesheet("~/DesktopModules/HTML/edit.css").Register();

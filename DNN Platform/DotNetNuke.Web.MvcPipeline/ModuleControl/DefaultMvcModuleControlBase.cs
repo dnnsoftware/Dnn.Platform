@@ -151,6 +151,14 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
             }
         }
 
+        public virtual string ResourceName
+        {
+            get
+            {
+                return this.ControlName+".resx";
+            }
+        }
+
         /// <summary>Gets the Module Context for this control.</summary>
         /// <returns>A ModuleInstanceContext.</returns>
         public ModuleInstanceContext ModuleContext
@@ -202,7 +210,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
                 string fileRoot;
                 if (string.IsNullOrEmpty(this.localResourceFile))
                 {
-                    fileRoot = "~/" + this.ControlPath + "/" + Localization.LocalResourceDirectory + "/" + this.ControlName + ".resx";
+                    fileRoot = "~/" + this.ControlPath + "/" + Localization.LocalResourceDirectory + "/" + this.ResourceName;
                 }
                 else
                 {

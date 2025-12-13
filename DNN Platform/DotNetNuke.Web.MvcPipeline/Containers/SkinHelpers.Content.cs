@@ -21,7 +21,6 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
     using DotNetNuke.Web.MvcPipeline.Models;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.Modules;
-    using DotNetNuke.Web.MvcPipeline.Utils;
 
     public static partial class SkinHelpers
     {
@@ -40,7 +39,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
             IMvcModuleControl moduleControl = null;
             try
             {
-                moduleControl = MvcUtils.GetModuleControl(model.ModuleConfiguration, model.ModuleConfiguration.ModuleControl.ControlSrc);
+                moduleControl = ModuleControlFactory.CreateModuleControl(model.ModuleConfiguration, model.ModuleConfiguration.ModuleControl.ControlSrc);
                 moduleDiv.InnerHtml += htmlHelper.Control(moduleControl);
             }
             catch (Exception ex)

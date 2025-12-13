@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.MvcPipeline
     using System;
     using System.IO;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Web;
     using System.Web.Helpers;
     using System.Web.Mvc;
@@ -18,7 +19,6 @@ namespace DotNetNuke.Web.MvcPipeline
     using DotNetNuke.Web.MvcPipeline.Framework;
     using DotNetNuke.Web.MvcPipeline.ModuleControl;
     using DotNetNuke.Web.MvcPipeline.ModuleControl.Page;
-    using DotNetNuke.Web.MvcPipeline.Utils;
     using Microsoft.Extensions.DependencyInjection;
 
     public static partial class HtmlHelpers
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.MvcPipeline
 
         public static IHtmlString Control(this HtmlHelper htmlHelper, string controlSrc, ModuleInfo module)
         {
-            var moduleControl = MvcUtils.GetModuleControl(module, controlSrc);
+            var moduleControl = ModuleControlFactory.CreateModuleControl(module, controlSrc);
             if (moduleControl is IPageContributor)
             {
                 var pageContributor = (IPageContributor)moduleControl;

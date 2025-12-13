@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.WebForms
             base.OnInit(e);
             try
             {
-                var mc = MvcUtils.CreateModuleControl(this.ModuleConfiguration);
+                var mc = ModuleControlFactory.CreateModuleControl(this.ModuleConfiguration);
                 html = MvcViewEngine.RenderHtmlHelperToString(helper => mc.Html(helper));
                 if (mc is IActionable)
                 {
