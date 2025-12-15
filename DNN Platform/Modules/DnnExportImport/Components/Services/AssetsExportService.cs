@@ -79,7 +79,7 @@ namespace Dnn.ExportImport.Components.Services
                     var folders =
                         CBO.FillCollection<ExportFolder>(DataProvider.Instance()
                             .GetFolders(portalId, toDate, fromDate)).ToList();
-                    var totalFolders = folders.Any() ? folders.Count : 0;
+                    var totalFolders = folders.Count != 0 ? folders.Count : 0;
                     folders = folders.Skip(skip).ToList();
 
                     // Update the total items count in the check points. This should be updated only once.
@@ -248,7 +248,7 @@ namespace Dnn.ExportImport.Components.Services
                     // Stage 2 starts
                     var sourceFolders = this.Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
-                    var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
+                    var totalFolders = sourceFolders.Count != 0 ? sourceFolders.Count : 0;
 
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalFolders : this.CheckPoint.TotalItems;

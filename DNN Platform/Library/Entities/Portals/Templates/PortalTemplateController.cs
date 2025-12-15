@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 var currentFileName = Path.GetFileName(templateFilePath);
                 var langs = languageFileNames.Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => GetCultureCode(x)).Distinct().ToList();
 
-                if (langs.Any())
+                if (langs.Count != 0)
                 {
                     langs.ForEach(x => list.Add(new PortalTemplateInfo(templateFilePath, x)));
                 }

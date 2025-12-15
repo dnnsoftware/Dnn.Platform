@@ -129,7 +129,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 var flagAttributes = commandType.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                     .Select(x => x.GetCustomAttributes(typeof(FlagParameterAttribute), false).FirstOrDefault())
                     .Cast<FlagParameterAttribute>().ToList();
-                if (flagAttributes.Any())
+                if (flagAttributes.Count != 0)
                 {
                     var options = flagAttributes.Where(attribute => attribute != null).Select(attribute => new CommandOption
                     {

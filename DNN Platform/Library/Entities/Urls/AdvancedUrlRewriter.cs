@@ -478,7 +478,7 @@ namespace DotNetNuke.Entities.Urls
 
                     bool autoaddAlias;
                     bool isPrimary = false;
-                    if (!aliases.Any())
+                    if (aliases.Count == 0)
                     {
                         autoaddAlias = true;
                         isPrimary = true;

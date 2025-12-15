@@ -1076,7 +1076,7 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual void MoveVersions(IFileInfo file, IFolderInfo destinationFolder, FolderProvider sourceFolderProvider, FolderProvider destinationFolderProvider)
         {
             var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
-            if (!versions.Any())
+            if (versions.Length == 0)
             {
                 return;
             }
@@ -1784,7 +1784,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 // Update the Unpublished version
                 var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
-                if (versions.Any())
+                if (versions.Length != 0)
                 {
                     FileVersionController.Instance.DeleteFileVersion(file, versions.OrderByDescending(f => f.Version).FirstOrDefault().Version);
                 }

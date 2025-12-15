@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.Api
                 return false;
             }
 
-            if (this.denyRolesSplit.Any())
+            if (this.denyRolesSplit.Length != 0)
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
                 if (!currentUser.IsSuperUser && this.denyRolesSplit.Any(currentUser.IsInRole))
@@ -93,7 +93,7 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
-            if (this.staticRolesSplit.Any())
+            if (this.staticRolesSplit.Length != 0)
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
                 if (!this.staticRolesSplit.Any(currentUser.IsInRole))
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Api
             var currentAuthType = (identity.AuthenticationType ?? string.Empty).Trim();
             if (currentAuthType.Length > 0)
             {
-                if (this.authTypesSplit.Any())
+                if (this.authTypesSplit.Length != 0)
                 {
                     return this.authTypesSplit.Contains(currentAuthType);
                 }

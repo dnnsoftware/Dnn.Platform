@@ -398,7 +398,7 @@ namespace DotNetNuke.Services.Assets
         {
             var nonDeletedSubfolders = new List<IFolderInfo>();
             FolderManager.Instance.DeleteFolder(folder, nonDeletedSubfolders);
-            if (!nonDeletedSubfolders.Any())
+            if (nonDeletedSubfolders.Count == 0)
             {
                 return;
             }

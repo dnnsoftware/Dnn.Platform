@@ -440,7 +440,7 @@ namespace DotNetNuke.Web.InternalServices
         private IEnumerable<PortalInfo> GetMyPortalGroup()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-            if (groups.Any())
+            if (groups.Length != 0)
             {
                 var mygroup = (from @group in groups
                                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)

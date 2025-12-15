@@ -2550,7 +2550,7 @@ namespace DotNetNuke.Services.Upgrade
                                 oldPackages.Add(new KeyValuePair<string, PackageInfo>(file, package));
                             }
 
-                            if (oldPackages.Any())
+                            if (oldPackages.Count != 0)
                             {
                                 foreach (var oldPackage in oldPackages)
                                 {

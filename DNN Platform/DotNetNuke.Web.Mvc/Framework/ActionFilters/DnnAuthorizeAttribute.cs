@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 return false;
             }
 
-            if (this.denyRolesSplit.Any())
+            if (this.denyRolesSplit.Length != 0)
             {
                 var currentUser = this.GetCurrentUser();
                 if (!currentUser.IsSuperUser && this.denyRolesSplit.Any(currentUser.IsInRole))
@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 }
             }
 
-            if (this.staticRolesSplit.Any())
+            if (this.staticRolesSplit.Length != 0)
             {
                 var currentUser = this.GetCurrentUser();
                 if (!this.staticRolesSplit.Any(currentUser.IsInRole))

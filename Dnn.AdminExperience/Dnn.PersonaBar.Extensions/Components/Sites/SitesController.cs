@@ -200,7 +200,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 return Localization.GetString("ErrorAncestorPages", this.LocalResourcesFile);
             }
 
-            if (!pages.Any())
+            if (pages.Count == 0)
             {
                 return Localization.GetString("ErrorPages", this.LocalResourcesFile);
             }

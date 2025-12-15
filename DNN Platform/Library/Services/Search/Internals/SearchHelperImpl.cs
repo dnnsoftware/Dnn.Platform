@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Search.Internals
             var list = this.GetSynonymsGroups(portalId, cultureCode);
             var tags = synonymsTags.ToLowerInvariant().Split(',');
 
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.Search.Internals
             var list = this.GetSynonymsGroups(portalId, cultureCode);
             var tags = synonymsTags.ToLowerInvariant().Split(',');
 
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }
@@ -206,7 +206,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var tags = stopWords.ToLowerInvariant().Split(',');
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }
@@ -242,7 +242,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var tags = stopWords.ToLowerInvariant().Split(',');
-            if (!tags.Any())
+            if (tags.Length == 0)
             {
                 return 0;
             }

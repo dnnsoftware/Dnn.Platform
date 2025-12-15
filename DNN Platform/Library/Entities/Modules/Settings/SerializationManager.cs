@@ -151,7 +151,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             string serializer,
             Type destinationType)
         {
-            if (destinationType.GetGenericArguments().Any()
+            if (destinationType.GetGenericArguments().Length != 0
                 && destinationType.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
                 // Nullable type

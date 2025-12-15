@@ -291,7 +291,7 @@ namespace Dnn.ExportImport.Components.Services
                     FolderManager.Instance.GetUserFolder(
                         UserController.GetUserByName(portalId, user.Username)))
                     .ToList();
-            if (!files.Any())
+            if (files.Count == 0)
             {
                 return null;
             }

@@ -157,7 +157,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         public HttpResponseMessage RestorePage(List<PageItem> pages)
         {
             var errors = new StringBuilder();
-            if (pages != null && pages.Any())
+            if (pages != null && pages.Count != 0)
             {
                 foreach (
                     var tab in pages.Select(page => TabController.Instance.GetTab(page.Id, this.PortalSettings.PortalId)))
@@ -195,7 +195,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             // modules dic stores module.Key=moduleId, module.Value=pageId;
             var result = true;
             var errors = new StringBuilder();
-            if (modules != null && modules.Any())
+            if (modules != null && modules.Count != 0)
             {
                 foreach (var module in modules)
                 {
@@ -225,7 +225,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         public HttpResponseMessage RestoreUser(List<UserItem> users)
         {
             var errors = new StringBuilder();
-            if (users != null && users.Any())
+            if (users != null && users.Count != 0)
             {
                 foreach (
                     var user in users.Select(u => UserController.Instance.GetUserById(this.PortalSettings.PortalId, u.Id)))
