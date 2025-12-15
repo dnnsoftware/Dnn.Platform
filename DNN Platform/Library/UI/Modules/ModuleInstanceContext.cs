@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.Modules
 
         public string EditUrl(string keyName, string keyValue, string controlKey)
         {
-            var parameters = new string[] { };
+            var parameters = Array.Empty<string>();
             return this.EditUrl(keyName, keyValue, controlKey, parameters);
         }
 

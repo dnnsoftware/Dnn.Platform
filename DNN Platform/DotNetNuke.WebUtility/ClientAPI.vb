@@ -893,7 +893,7 @@ Namespace DotNetNuke.UI.Utilities
             If Len(ClientAPI.GetClientVariable(objPage, strKey)) > 0 Then
                 Return ClientAPI.GetClientVariable(objPage, strKey).Split(","c)
             Else
-                Return New String() {}
+                Return Array.Empty(Of String)
             End If
         End Function
 

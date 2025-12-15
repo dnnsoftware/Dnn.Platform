@@ -286,15 +286,14 @@ namespace DotNetNuke.Services.EventQueue
         private static string[] GetSubscribers(string eventName)
         {
             // Get the subscribers to this event
-            string[] subscribers = null;
-            PublishedEvent publishedEvent = null;
-            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out publishedEvent))
+            string[] subscribers;
+            if (EventQueueConfiguration.GetConfig().PublishedEvents.TryGetValue(eventName, out var publishedEvent))
             {
                 subscribers = publishedEvent.Subscribers.Split(";".ToCharArray());
             }
             else
             {
-                subscribers = new string[] { };
+                subscribers = [];
             }
 
             return subscribers;

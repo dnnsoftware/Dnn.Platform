@@ -15,18 +15,18 @@ namespace DotNetNuke.Web.Api
     /// <summary>Provides Dnn specific details authorization filter.</summary>
     public sealed class DnnAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        private static readonly List<string> DefaultAuthTypes = new List<string>();
+        private static readonly List<string> DefaultAuthTypes = [];
 
-        private static readonly string[] EmptyArray = new string[0];
+        private static readonly string[] EmptyArray = [];
 
         private string staticRoles;
-        private string[] staticRolesSplit = new string[0];
+        private string[] staticRolesSplit = [];
 
         private string denyRoles;
-        private string[] denyRolesSplit = new string[0];
+        private string[] denyRolesSplit = [];
 
         private string authTypes;
-        private string[] authTypesSplit = new string[0];
+        private string[] authTypesSplit = [];
 
         /// <summary>Gets or sets the authorized roles (separated by comma).</summary>
         public string StaticRoles

@@ -47,9 +47,9 @@ namespace DotNetNuke.Framework.Reflections
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-                    // some assemblies don't want to be reflected but they still
+                    // some assemblies don't want to be reflected, but they still
                     // expose types in the exception
-                    types = ex.Types ?? new Type[0];
+                    types = ex.Types ?? [];
                 }
 
                 foreach (var type in types)

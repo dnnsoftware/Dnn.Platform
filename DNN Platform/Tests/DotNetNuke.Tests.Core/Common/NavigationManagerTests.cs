@@ -203,7 +203,7 @@ namespace DotNetNuke.Tests.Core.Common
         {
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
-            var actual = this.navigationManager.NavigateURL(controlKey, new string[0]);
+            var actual = this.navigationManager.NavigateURL(controlKey, []);
 
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual, Is.EqualTo(expected));
