@@ -161,19 +161,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 else
                 {
                     string foldername = currentFolder;
-                    if (currentFolder.IndexOf("_/", StringComparison.Ordinal) == 0)
+                    if (currentFolder.StartsWith("_/", StringComparison.Ordinal))
                     {
                         foldername = foldername.Substring(2);
                     }
 
                     var directories = GetResxDirectories(server.MapPath("~/" + foldername));
                     var directoryFiles = GetResxFiles(server.MapPath("~/" + foldername));
-                    if (currentFolder.IndexOf("_/", StringComparison.Ordinal) == 0)
+                    if (currentFolder.StartsWith("_/", StringComparison.Ordinal))
                     {
                         folders.AddRange(directories.Select(
-                                s => new KeyValuePair<string, string>(s.Key, s.Value.Replace(foldername.Replace("/", "\\"), currentFolder))));
+                                s => new KeyValuePair<string, string>(s.Key, s.Value.Replace(foldername.Replace("/", @"\"), currentFolder))));
                         files.AddRange(directoryFiles.Select(
-                                f => new KeyValuePair<string, string>(f.Key, f.Value.Replace(foldername.Replace("/", "\\"), currentFolder))));
+                                f => new KeyValuePair<string, string>(f.Key, f.Value.Replace(foldername.Replace("/", @"\"), currentFolder))));
                     }
                     else
                     {

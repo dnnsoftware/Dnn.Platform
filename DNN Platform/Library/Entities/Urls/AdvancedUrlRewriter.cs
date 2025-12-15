@@ -488,7 +488,7 @@ namespace DotNetNuke.Entities.Urls
                         autoaddAlias = true;
                         foreach (var alias in aliases)
                         {
-                            if (result.DomainName.ToLowerInvariant().IndexOf(alias.HTTPAlias, StringComparison.Ordinal) == 0
+                            if (result.DomainName.StartsWith(alias.HTTPAlias, StringComparison.OrdinalIgnoreCase)
                                     && result.DomainName.Length >= alias.HTTPAlias.Length)
                             {
                                 autoaddAlias = false;
