@@ -234,7 +234,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     authorizeUrl = i.GetAuthorizeUrl(portalId),
                 });
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { host = new object[] { }, site = result });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { host = Array.Empty<object>(), site = result });
             }
             catch (Exception exc)
             {

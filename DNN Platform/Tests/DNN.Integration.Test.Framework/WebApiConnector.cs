@@ -902,7 +902,7 @@ namespace DNN.Integration.Test.Framework
                 client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, cachedPage.VerificationToken);
             }
 
-            return cachedPage != null ? cachedPage.InputFields : new string[0];
+            return cachedPage != null ? cachedPage.InputFields : [];
         }
 
         private HttpWebResponse MultipartFormDataPost(

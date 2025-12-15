@@ -59,9 +59,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
         {
             var controller = controllerContext.Controller as IDnnController;
-            if (controller == null || controller.ViewEngineCollectionEx == null)
+            if (controller?.ViewEngineCollectionEx == null)
             {
-                return new ViewEngineResult(new string[0]);
+                return new ViewEngineResult([]);
             }
 
             var result = engineRequest(controller.ViewEngineCollectionEx);

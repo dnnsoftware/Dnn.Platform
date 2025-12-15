@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
 
             telerikUtilsMock
                 .Setup(x => x.GetAssembliesThatDependOnTelerik())
-                .Returns(() => new string[0]);
+                .Returns(() => []);
 
             var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
 

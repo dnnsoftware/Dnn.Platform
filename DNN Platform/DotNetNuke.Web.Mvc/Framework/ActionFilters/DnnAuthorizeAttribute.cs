@@ -15,10 +15,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     public class DnnAuthorizeAttribute : AuthorizeAttributeBase
     {
         private string staticRoles;
-        private string[] staticRolesSplit = new string[0];
+        private string[] staticRolesSplit = [];
 
         private string denyRoles;
-        private string[] denyRolesSplit = new string[0];
+        private string[] denyRolesSplit = [];
 
         /// <summary>Gets or sets the authorized roles (separated by comma).</summary>
         public string StaticRoles

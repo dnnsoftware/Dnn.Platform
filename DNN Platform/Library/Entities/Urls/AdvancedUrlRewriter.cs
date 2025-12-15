@@ -935,7 +935,7 @@ namespace DotNetNuke.Entities.Urls
         {
             // Extract the forms authentication cookie
             var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
-            var currentPrincipal = new GenericPrincipal(new GenericIdentity(string.Empty), new string[0]);
+            var currentPrincipal = new GenericPrincipal(new GenericIdentity(string.Empty), []);
 
             try
             {
