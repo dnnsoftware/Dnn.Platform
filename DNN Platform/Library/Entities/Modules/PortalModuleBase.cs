@@ -270,10 +270,8 @@ namespace DotNetNuke.Entities.Modules
         public override void Dispose()
         {
             base.Dispose();
-            if (this.serviceScopeContainer.IsValueCreated)
-            {
-                this.serviceScopeContainer.Value.Dispose();
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>Gets the file name for the module cache.</summary>
@@ -305,6 +303,17 @@ namespace DotNetNuke.Entities.Modules
         public partial void SynchronizeModule()
         {
             ModuleController.SynchronizeModule(this.ModuleId);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.serviceScopeContainer.IsValueCreated)
+                {
+                    this.serviceScopeContainer.Value.Dispose();
+                }
+            }
         }
 
         /// <inheritdoc/>
