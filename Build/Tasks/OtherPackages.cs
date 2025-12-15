@@ -58,7 +58,7 @@ namespace DotNetNuke.Build.Tasks
             context.Zip(srcFolder, packageZip, files);
         }
 
-        private class OtherPackage
+        private sealed class OtherPackage
         {
             public string Name { get; set; }
 

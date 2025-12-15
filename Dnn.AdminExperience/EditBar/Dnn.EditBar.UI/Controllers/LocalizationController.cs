@@ -20,7 +20,7 @@ namespace Dnn.EditBar.UI.Controllers
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Cache;
 
-    internal class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
+    internal sealed class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);

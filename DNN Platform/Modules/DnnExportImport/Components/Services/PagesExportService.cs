@@ -2281,7 +2281,7 @@ namespace Dnn.ExportImport.Components.Services
         }
 
         [JsonObject]
-        private class ProgressTotals
+        private sealed class ProgressTotals
         {
             // for Export: this is the TabID
             // for Import: this is the exported DB row ID; not the TabID
@@ -2310,7 +2310,7 @@ namespace Dnn.ExportImport.Components.Services
             public int TotalTabModuleSettings { get; set; }
         }
 
-        private class ImportModuleMapping
+        private sealed class ImportModuleMapping
         {
             public int ExportModuleId { get; set; }
 

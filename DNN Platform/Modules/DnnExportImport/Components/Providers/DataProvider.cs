@@ -14,7 +14,7 @@ namespace Dnn.ExportImport.Components.Providers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Permissions;
 
-    internal class DataProvider
+    internal sealed class DataProvider
     {
         private static readonly DataProvider Provider;
 

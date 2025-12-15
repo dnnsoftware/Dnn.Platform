@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Syndication
     using System.Xml;
 
     /// <summary>A helper class for handling RSS XML.</summary>
-    internal class RssXmlHelper
+    internal sealed class RssXmlHelper
     {
         /// <summary>Internal helper class for XML to RSS conversion (and for generating XML from RSS).</summary>
         /// <param name="doc">The XML document.</param>
