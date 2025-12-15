@@ -141,7 +141,7 @@ namespace DotNetNuke.UI
                 slaveModule = new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true };
             }
 
-            if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
+            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.OrdinalIgnoreCase) || key.Equals("help", StringComparison.OrdinalIgnoreCase)))
             {
                 slaveModule.ModuleDefID = -1;
             }

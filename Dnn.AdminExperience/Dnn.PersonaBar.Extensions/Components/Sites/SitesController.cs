@@ -315,7 +315,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     message = string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error", this.LocalResourcesFile), homeDir);
                 }
 
-                if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.ToLowerInvariant() == "portals/")
+                if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.Equals("portals/", StringComparison.InvariantCultureIgnoreCase))
                 {
                     error = true;
                     message = Localization.GetString("InvalidHomeFolder", this.LocalResourcesFile);

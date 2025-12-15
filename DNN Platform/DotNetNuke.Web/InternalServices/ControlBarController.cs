@@ -95,8 +95,8 @@ namespace DotNetNuke.Web.InternalServices
                 filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
 
                 // move Html on top
-                filteredList = filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()).
-                                Concat(filteredList.Except(filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())));
+                filteredList = filteredList.Where(m => m.Key.Equals(topModule, StringComparison.OrdinalIgnoreCase)).
+                                Concat(filteredList.Except(filteredList.Where(m => m.Key.Equals(topModule, StringComparison.OrdinalIgnoreCase))));
             }
 
             filteredList = filteredList

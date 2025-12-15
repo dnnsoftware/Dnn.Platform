@@ -340,7 +340,7 @@ namespace Dnn.PersonaBar.Themes.Components
                         case ".htm":
                         case ".html":
                         case ".css":
-                            if (strFile.ToLower().IndexOf(Globals.glbAboutPage.ToLower()) < 0)
+                            if (strFile.IndexOf(Globals.glbAboutPage, StringComparison.CurrentCultureIgnoreCase) < 0)
                             {
                                 arrSkinFiles.Add(strFile);
                             }
@@ -572,7 +572,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 strDefaultSkinPath = strDefaultSkinPath.Substring(0, strDefaultSkinPath.Length - 1);
             }
 
-            return skinPath.ToLowerInvariant() == strDefaultSkinPath.ToLowerInvariant();
+            return skinPath.Equals(strDefaultSkinPath, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static string FormatThemePath(PortalSettings portalSettings, string themePath, string fileName, ThemeType type)

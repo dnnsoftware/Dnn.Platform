@@ -94,7 +94,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 };
             }
 
-            if (tab.TabUrls.Any(u => u.Url.ToLowerInvariant() == dto.Path.ValueOrEmpty().ToLowerInvariant()
+            if (tab.TabUrls.Any(u => u.Url.Equals(dto.Path.ValueOrEmpty(), StringComparison.OrdinalIgnoreCase)
                                      && (u.PortalAliasId == dto.SiteAliasKey || u.PortalAliasId == -1)))
             {
                 return new PageUrlResult

@@ -111,7 +111,7 @@ namespace DotNetNuke.Framework.Reflections
             if (canScan)
             {
                 // Next eliminate specific assemblies
-                if (ignoreAssemblies.Any(ignoreAssembly => assemblyName == ignoreAssembly.ToLowerInvariant()))
+                if (ignoreAssemblies.Any(ignoreAssembly => assemblyName.Equals(ignoreAssembly, StringComparison.OrdinalIgnoreCase)))
                 {
                     canScan = false;
                 }

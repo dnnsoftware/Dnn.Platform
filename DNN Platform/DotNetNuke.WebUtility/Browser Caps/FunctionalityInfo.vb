@@ -89,7 +89,7 @@ Namespace DotNetNuke.UI.Utilities
                 For Each browser As Browser In browsers
                     'Check if UserAgent contains the string (Contains)
                     If Not String.IsNullOrEmpty(browser.Contains) Then
-                        If strAgent.ToLower().IndexOf(browser.Contains.ToLower()) > -1 Then
+                        If strAgent.IndexOf(browser.Contains, StringComparison.OrdinalIgnoreCase) > -1 Then
                             _hasMatch = True
                             Exit For
                         End If

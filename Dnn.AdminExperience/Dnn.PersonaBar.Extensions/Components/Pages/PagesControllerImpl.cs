@@ -1365,17 +1365,17 @@ namespace Dnn.PersonaBar.Pages.Components
                 return null;
             }
 
-            if (url.ToLower() == "http://")
+            if (url.Equals("http://", StringComparison.OrdinalIgnoreCase))
             {
                 return string.Empty;
             }
 
-            if (url.StartsWith("//"))
+            if (url.StartsWith("//", StringComparison.Ordinal))
             {
                 return url;
             }
 
-            if (url.IndexOf("://") != -1)
+            if (url.IndexOf("://", StringComparison.Ordinal) != -1)
             {
                 return Globals.AddHTTP(url);
             }

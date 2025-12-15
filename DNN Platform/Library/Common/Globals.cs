@@ -2362,14 +2362,14 @@ namespace DotNetNuke.Common
                 return TabType.Normal;
             }
 
-            if (url.ToLowerInvariant().StartsWith("mailto:") == false && url.IndexOf("://") == -1 && url.StartsWith("~") == false && url.StartsWith("\\\\") == false && url.StartsWith("/") == false)
+            if (url.StartsWith("mailto:", StringComparison.InvariantCultureIgnoreCase) == false && url.IndexOf("://") == -1 && url.StartsWith("~") == false && url.StartsWith("\\\\") == false && url.StartsWith("/") == false)
             {
                 if (NumberMatchRegex.IsMatch(url))
                 {
                     return TabType.Tab;
                 }
 
-                if (url.ToLowerInvariant().StartsWith("userid="))
+                if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return TabType.Member;
                 }

@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -156,7 +157,7 @@ namespace DotNetNuke.Services.GeneratedImage
             // Check if domain is allowed to embed image
             if (!string.IsNullOrEmpty(this.AllowedDomains[0]) &&
                 context.Request.UrlReferrer != null &&
-                context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
+                !context.Request.UrlReferrer.Host.Equals(context.Request.Url.Host, StringComparison.OrdinalIgnoreCase))
             {
                 bool allowed = false;
                 string allowedDomains = string.Empty;
@@ -165,7 +166,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     if (!string.IsNullOrEmpty(allowedDomain))
                     {
                         allowedDomains += allowedDomain + ",";
-                        if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
+                        if (context.Request.UrlReferrer.Host.Contains(allowedDomain, StringComparison.OrdinalIgnoreCase))
                         {
                             allowed = true;
                         }
@@ -182,7 +183,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                            LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);

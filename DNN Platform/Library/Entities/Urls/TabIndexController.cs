@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Urls
             bool foundAlias = false;
 
             // Do a specified PortalAlias check first
-            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias == portalAlias.ToLowerInvariant());
+            PortalAliasInfo portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias.Equals(portalAlias, StringComparison.OrdinalIgnoreCase));
             if (portalAliasInfo != null)
             {
                 if (portalAliasInfo.PortalID == portalId)
@@ -264,14 +264,14 @@ namespace DotNetNuke.Entities.Urls
                     if (portalAliasInfo != null)
                     {
                         string httpAlias = portalAliasInfo.HTTPAlias.ToLowerInvariant();
-                        if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
+                        if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;
                         }
 
                         httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
-                        if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
+                        if (httpAlias.StartsWith(portalAlias, StringComparison.InvariantCultureIgnoreCase) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;

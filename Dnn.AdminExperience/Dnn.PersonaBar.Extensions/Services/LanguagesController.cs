@@ -646,7 +646,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 from file in Directory.GetFiles(path, "*.resx")
                 select new FileInfo(file) into fileInfo
                 let match = FileInfoRegex.Match(fileInfo.Name)
-                where !match.Success || match.Groups[1].Value.ToLowerInvariant() == sysLocale
+                where !match.Success || match.Groups[1].Value.Equals(sysLocale, StringComparison.OrdinalIgnoreCase)
                 select new KeyValuePair<string, string>(Path.GetFileNameWithoutExtension(fileInfo.Name), fileInfo.FullName);
         }
 

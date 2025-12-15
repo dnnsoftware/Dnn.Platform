@@ -187,11 +187,11 @@ namespace Dnn.EditBar.UI.Controllers
                 pane.Attributes["class"] = string.Empty;
 
                 var scriptManager = ScriptManager.GetCurrent(this.Page);
-                if (scriptManager != null && scriptManager.IsInAsyncPostBack
-                        && updatePanel.ClientID == this.Request.Form["__EVENTTARGET"]
-                        && !string.IsNullOrEmpty(this.Request.Form["__EVENTARGUMENT"])
-                        && this.Request.Form["__EVENTARGUMENT"].ToLowerInvariant() != "undefined"
-                        && this.Request.Form["__EVENTARGUMENT"].ToLowerInvariant().StartsWith("module-"))
+                if (scriptManager is { IsInAsyncPostBack: true }
+                    && updatePanel.ClientID == this.Request.Form["__EVENTTARGET"]
+                    && !string.IsNullOrEmpty(this.Request.Form["__EVENTARGUMENT"])
+                    && !this.Request.Form["__EVENTARGUMENT"].Equals("undefined", StringComparison.OrdinalIgnoreCase)
+                    && this.Request.Form["__EVENTARGUMENT"].StartsWith("module-", StringComparison.OrdinalIgnoreCase))
                 {
                     var moduleId = Convert.ToInt32(this.Request.Form["__EVENTARGUMENT"].Substring(7));
 

@@ -249,19 +249,19 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (!string.IsNullOrEmpty(pair[1]))
                         {
-                            if (Regex.IsMatch(pair[1], this.regexMatch) == false)
+                            if (!Regex.IsMatch(pair[1], this.regexMatch))
                             {
                                 // Contains Non-AlphaNumeric Characters
-                                if (pair[0].ToLowerInvariant() == "tabid")
+                                if (pair[0].Equals("tabid", StringComparison.OrdinalIgnoreCase))
                                 {
                                     if (Globals.NumberMatchRegex.IsMatch(pair[1]))
                                     {
                                         if (tab != null)
                                         {
-                                            int tabId = Convert.ToInt32(pair[1]);
+                                            var tabId = Convert.ToInt32(pair[1]);
                                             if (tab.TabID == tabId)
                                             {
-                                                if ((string.IsNullOrEmpty(tab.TabPath) == false) && this.IncludePageName)
+                                                if (!string.IsNullOrEmpty(tab.TabPath) && this.IncludePageName)
                                                 {
                                                     pathToAppend = tab.TabPath.Replace("//", "/").TrimStart('/') + "/" + pathToAppend;
                                                 }

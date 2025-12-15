@@ -796,7 +796,7 @@ namespace DotNetNuke.Services.Upgrade
                 superUser.Profile.PreferredLocale = locale;
                 superUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
 
-                if (updatePassword.ToLowerInvariant() == "true")
+                if (updatePassword.Equals("true", StringComparison.InvariantCultureIgnoreCase))
                 {
                     superUser.Membership.UpdatePassword = true;
                 }
@@ -891,7 +891,7 @@ namespace DotNetNuke.Services.Upgrade
                         bool settingIsSecure = false;
                         if (secureAttrib != null)
                         {
-                            if (secureAttrib.Value.ToLowerInvariant() == "true")
+                            if (secureAttrib.Value.Equals("true", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 settingIsSecure = true;
                             }
@@ -1686,7 +1686,7 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, string.Empty);
                 url += "&type=" + packageType;
                 url += "&name=" + packageName;
-                if (packageType.ToLowerInvariant() == "module")
+                if (packageType.Equals("module", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var moduleType = (from m in InstalledModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
                     if (moduleType != null)
@@ -2027,8 +2027,8 @@ namespace DotNetNuke.Services.Upgrade
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
 
-            return defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant() == currentCulture) ??
-                   defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant().StartsWith(currentCulture.Substring(0, 2))) ??
+            return defaultTemplates.FirstOrDefault(x => x.CultureCode.Equals(currentCulture, StringComparison.InvariantCultureIgnoreCase)) ??
+                   defaultTemplates.FirstOrDefault(x => x.CultureCode.StartsWith(currentCulture.Substring(0, 2), StringComparison.InvariantCultureIgnoreCase)) ??
                    defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode)) ??
                    throw new TemplateNotFoundException("Unable to locate specified portal template: " + templateFileName);
         }

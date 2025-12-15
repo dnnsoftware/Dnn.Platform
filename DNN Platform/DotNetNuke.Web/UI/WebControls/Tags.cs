@@ -127,7 +127,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
+                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.InvariantCultureIgnoreCase));
 
                     writer.RenderEndTag();
                 }
@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
+                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.InvariantCultureIgnoreCase));
 
                     writer.RenderEndTag();
                 }
