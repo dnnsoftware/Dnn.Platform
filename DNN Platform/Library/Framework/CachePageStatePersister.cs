@@ -65,7 +65,7 @@ namespace DotNetNuke.Framework
                 key.Append("VS_");
                 key.Append(this.Page.Session == null ? Guid.NewGuid().ToString() : this.Page.Session.SessionID);
                 key.Append("_");
-                key.Append(DateTime.Now.Ticks.ToString());
+                key.Append(DateTime.Now.Ticks);
             }
 
             // Save view state and control state separately

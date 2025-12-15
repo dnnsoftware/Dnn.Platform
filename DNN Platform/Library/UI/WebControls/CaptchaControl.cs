@@ -16,6 +16,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
@@ -774,11 +775,12 @@ namespace DotNetNuke.UI.WebControls
         private string GetUrl()
         {
             var url = this.ResolveUrl(this.RenderUrl);
-            url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
+            var encryptedTicket = Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
+            url += $"?{KEY}={encryptedTicket}";
 
             // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            url += "&alias=" + portalSettings.PortalAlias.HTTPAlias;
+            url += "&alias=" + ((IPortalAliasInfo)portalSettings.PortalAlias).HttpAlias;
             return url;
         }
 
@@ -787,7 +789,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var sb = new StringBuilder();
 
-            sb.Append(this.CaptchaWidth.Value.ToString());
+            sb.Append(this.CaptchaWidth.Value);
             sb.Append(separator + this.CaptchaHeight.Value);
             sb.Append(separator + this.captchaText);
             sb.Append(separator + this.BackGroundImage);
