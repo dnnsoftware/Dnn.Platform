@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         private T Load(CacheItemArgs args)
         {
             var ctlModule = (ModuleInfo)args.ParamList[0];
-            var portalId = ctlModule == null ? (int)args.ParamList[1] : ctlModule.PortalID;
+            var portalId = ctlModule?.PortalID ?? (int)args.ParamList[1];
             var settings = new T();
             var hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettingsService>().GetSettings();
 
@@ -186,9 +186,9 @@ namespace DotNetNuke.Entities.Modules.Settings
                 var property = mapping.Property;
 
                 // TODO: Make more extensible, enable other attributes to be defined
-                if (attribute is HostSettingAttribute hsa && hostSettings.ContainsKey(mapping.FullParameterName))
+                if (attribute is HostSettingAttribute hsa && hostSettings.TryGetValue(mapping.FullParameterName, out var hostSetting))
                 {
-                    settingValue = hostSettings[mapping.FullParameterName].Value;
+                    settingValue = hostSetting.Value;
                 }
                 else if (attribute is PortalSettingAttribute && portalId != -1 && PortalController.Instance.GetPortalSettings(portalId).ContainsKey(mapping.FullParameterName))
                 {

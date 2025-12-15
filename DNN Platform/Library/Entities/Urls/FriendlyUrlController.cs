@@ -732,10 +732,10 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 string ch = c.ToString(CultureInfo.InvariantCulture);
 
                 // do replacement in pre-defined list?
-                if (replacementChars != null && replacementChars.ContainsKey(ch))
+                if (replacementChars != null && replacementChars.TryGetValue(ch, out var replacement))
                 {
                     // replace with value
-                    ch = replacementChars[ch];
+                    ch = replacement;
                     replacedUnwantedChars = true;
                 }
                 else if (convertDiacritics && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.NonSpacingMark)

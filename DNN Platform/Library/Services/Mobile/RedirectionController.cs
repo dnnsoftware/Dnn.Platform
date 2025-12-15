@@ -645,9 +645,9 @@ namespace DotNetNuke.Services.Mobile
             {
                 using (cachedUrls.GetReadLock())
                 {
-                    if (cachedUrls.ContainsKey(cacheKey))
+                    if (cachedUrls.TryGetValue(cacheKey, out var url))
                     {
-                        return cachedUrls[cacheKey];
+                        return url;
                     }
                 }
             }

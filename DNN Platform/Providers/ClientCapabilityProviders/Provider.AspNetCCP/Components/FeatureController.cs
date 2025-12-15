@@ -110,9 +110,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     }
                     else
                     {
-                        if (mapCapabilities.ContainsKey(rule.Capability))
+                        if (mapCapabilities.TryGetValue(rule.Capability, out var capability))
                         {
-                            rule.Capability = mapCapabilities[rule.Capability];
+                            rule.Capability = capability;
                             switch (rule.Expression)
                             {
                                 case "true":

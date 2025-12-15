@@ -177,15 +177,14 @@ namespace DotNetNuke.Services.Search
 
                         // DNN-5740 / DNN-9040: replace split flag if it included in property value.
                         propertyValue = propertyValue.Replace("[$]", "$");
-                        var uniqueKey = string.Format("{0}_{1}", userSearch.UserId, visibilityMode).ToLowerInvariant();
+                        var uniqueKey = $"{userSearch.UserId}_{visibilityMode}".ToLowerInvariant();
                         if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
                         {
-                            uniqueKey = string.Format("{0}_{1}", uniqueKey, extendedVisibility);
+                            uniqueKey = $"{uniqueKey}_{extendedVisibility}";
                         }
 
-                        if (searchDocuments.ContainsKey(uniqueKey))
+                        if (searchDocuments.TryGetValue(uniqueKey, out var document))
                         {
-                            var document = searchDocuments[uniqueKey];
                             document.Keywords.Add(propertyName, propertyValue);
 
                             if (modifiedTime > document.ModifiedTimeUtc)

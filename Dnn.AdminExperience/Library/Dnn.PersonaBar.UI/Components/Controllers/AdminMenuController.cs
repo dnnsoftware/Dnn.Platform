@@ -137,14 +137,14 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
                 this.knownPages = new Dictionary<string, IList<string>>();
             }
 
-            if (this.knownPages.ContainsKey(type))
+            if (this.knownPages.TryGetValue(type, out var pageNames))
             {
-                return this.knownPages[type];
+                return pageNames;
             }
 
             var personaBarPath = Constants.PersonaBarRelativePath.Replace("~/", string.Empty);
             var dataPath = Path.Combine(this.appStatus.ApplicationMapPath, personaBarPath, "data/adminpages.resources");
-            var xmlDocument = new XmlDocument { XmlResolver = null };
+            var xmlDocument = new XmlDocument { XmlResolver = null, };
             xmlDocument.Load(dataPath);
             var pages = xmlDocument.SelectNodes($"//pages//{type}//name")?.Cast<XmlNode>().Select(n => n.InnerXml.Trim()).ToList();
             this.knownPages.Add(type, pages);

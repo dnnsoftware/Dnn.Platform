@@ -118,10 +118,10 @@ namespace DotNetNuke.Services.Localization
             Locale locale = null;
             if (portal != null)
             {
-                Dictionary<string, Locale> locales = this.GetLocales(portal.PortalId);
-                if (locales != null && locales.ContainsKey(portal.DefaultLanguage))
+                var locales = this.GetLocales(portal.PortalId);
+                if (locales != null && locales.TryGetValue(portal.DefaultLanguage, out var locale1))
                 {
-                    locale = locales[portal.DefaultLanguage];
+                    locale = locale1;
                 }
             }
 

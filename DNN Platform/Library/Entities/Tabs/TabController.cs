@@ -553,10 +553,10 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>The tab ID or <c>-1</c>.</returns>
         public static int GetTabByTabPath(int portalId, string tabPath, string cultureCode)
         {
-            Dictionary<string, int> tabpathDic = GetTabPathDictionary(portalId, cultureCode);
-            if (tabpathDic.ContainsKey(tabPath))
+            var tabPathDictionary = GetTabPathDictionary(portalId, cultureCode);
+            if (tabPathDictionary.TryGetValue(tabPath, out var tabId))
             {
-                return tabpathDic[tabPath];
+                return tabId;
             }
 
             return -1;
@@ -2228,10 +2228,10 @@ namespace DotNetNuke.Entities.Tabs
         {
             if (Null.IsNull(portalId))
             {
-                Dictionary<int, int> portalDic = PortalController.GetPortalDictionary();
-                if (portalDic != null && portalDic.ContainsKey(tabId))
+                var portalDic = PortalController.GetPortalDictionary();
+                if (portalDic != null && portalDic.TryGetValue(tabId, out var pid))
                 {
-                    portalId = portalDic[tabId];
+                    portalId = pid;
                 }
             }
 
@@ -2241,14 +2241,14 @@ namespace DotNetNuke.Entities.Tabs
         private static object GetTabPathDictionaryCallback(CacheItemArgs cacheItemArgs)
         {
             string cultureCode = Convert.ToString(cacheItemArgs.ParamList[0]);
-            var portalID = (int)cacheItemArgs.ParamList[1];
-            var tabpathDic = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
-            IDataReader dr = DataProvider.Instance().GetTabPaths(portalID, cultureCode);
+            var portalId = (int)cacheItemArgs.ParamList[1];
+            var tabPathDictionary = new Dictionary<string, int>(StringComparer.CurrentCultureIgnoreCase);
+            IDataReader dr = DataProvider.Instance().GetTabPaths(portalId, cultureCode);
             try
             {
                 while (dr.Read())
                 {
-                    tabpathDic[Null.SetNullString(dr["TabPath"])] = Null.SetNullInteger(dr["TabID"]);
+                    tabPathDictionary[Null.SetNullString(dr["TabPath"])] = Null.SetNullInteger(dr["TabID"]);
                 }
             }
             catch (Exception exc)
@@ -2260,7 +2260,7 @@ namespace DotNetNuke.Entities.Tabs
                 CBO.CloseDataReader(dr, true);
             }
 
-            return tabpathDic;
+            return tabPathDictionary;
         }
 
         private static void UpdateTabVersion(int tabId)
@@ -2652,11 +2652,11 @@ namespace DotNetNuke.Entities.Tabs
 
         private object GetAliasSkinsCallback(CacheItemArgs cacheItemArgs)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
+            var portalId = (int)cacheItemArgs.ParamList[0];
             var dic = new Dictionary<int, List<TabAliasSkinInfo>>();
-            if (portalID > -1)
+            if (portalId > -1)
             {
-                IDataReader dr = DataProvider.Instance().GetTabAliasSkins(portalID);
+                IDataReader dr = DataProvider.Instance().GetTabAliasSkins(portalId);
                 try
                 {
                     while (dr.Read())
@@ -2665,15 +2665,14 @@ namespace DotNetNuke.Entities.Tabs
                         var tabAliasSkin = CBO.FillObject<TabAliasSkinInfo>(dr, false);
 
                         // add Tab Alias Skin to dictionary
-                        if (dic.ContainsKey(tabAliasSkin.TabId))
+                        if (dic.TryGetValue(tabAliasSkin.TabId, out var tabAliasSkins))
                         {
-                            // Add Tab Alias Skin to Tab Alias Skin Collection already in dictionary for TabId
-                            dic[tabAliasSkin.TabId].Add(tabAliasSkin);
+                            tabAliasSkins.Add(tabAliasSkin);
                         }
                         else
                         {
                             // Create new Tab Alias Skin Collection for TabId
-                            var collection = new List<TabAliasSkinInfo> { tabAliasSkin };
+                            var collection = new List<TabAliasSkinInfo> { tabAliasSkin, };
 
                             // Add Collection to Dictionary
                             dic.Add(tabAliasSkin.TabId, collection);
@@ -2723,10 +2722,9 @@ namespace DotNetNuke.Entities.Tabs
                         var cultureCode = (string)dr["cultureCode"];
 
                         // add Custom Alias to dictionary
-                        if (dic.ContainsKey(tabId))
+                        if (dic.TryGetValue(tabId, out var aliases))
                         {
-                            // Add Custom Alias to Custom Alias Collection already in dictionary for TabId
-                            dic[tabId][cultureCode] = customAlias;
+                            aliases[cultureCode] = customAlias;
                         }
                         else
                         {
@@ -2797,12 +2795,12 @@ namespace DotNetNuke.Entities.Tabs
 
         private object GetTabUrlsCallback(CacheItemArgs cacheItemArgs)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
+            var portalId = (int)cacheItemArgs.ParamList[0];
             var dic = new Dictionary<int, List<TabUrlInfo>>();
 
-            if (portalID > -1)
+            if (portalId > -1)
             {
-                IDataReader dr = DataProvider.Instance().GetTabUrls(portalID);
+                IDataReader dr = DataProvider.Instance().GetTabUrls(portalId);
                 try
                 {
                     while (dr.Read())
@@ -2811,15 +2809,14 @@ namespace DotNetNuke.Entities.Tabs
                         var tabRedirect = CBO.FillObject<TabUrlInfo>(dr, false);
 
                         // add Tab Redirect to dictionary
-                        if (dic.ContainsKey(tabRedirect.TabId))
+                        if (dic.TryGetValue(tabRedirect.TabId, out var tabUrls))
                         {
-                            // Add Tab Redirect to Tab Redirect Collection already in dictionary for TabId
-                            dic[tabRedirect.TabId].Add(tabRedirect);
+                            tabUrls.Add(tabRedirect);
                         }
                         else
                         {
                             // Create new Tab Redirect Collection for TabId
-                            var collection = new List<TabUrlInfo> { tabRedirect };
+                            var collection = new List<TabUrlInfo> { tabRedirect, };
 
                             // Add Collection to Dictionary
                             dic.Add(tabRedirect.TabId, collection);

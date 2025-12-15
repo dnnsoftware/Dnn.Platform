@@ -966,11 +966,7 @@ namespace DotNetNuke.Entities.Modules
 
             // get module dictionary from cache
             var modules = DataCache.GetCache<Dictionary<string, ModuleInfo>>(key) ?? new Dictionary<string, ModuleInfo>();
-            if (modules.ContainsKey(definitionName))
-            {
-                module = modules[definitionName];
-            }
-            else
+            if (!modules.TryGetValue(definitionName, out module))
             {
                 // clone the dictionary so that we have a local copy
                 var clonemodules = new Dictionary<string, ModuleInfo>();
@@ -1649,7 +1645,7 @@ namespace DotNetNuke.Entities.Modules
                                 return moduleSettingsDic;
                             });
 
-            return moduleSettings.ContainsKey(moduleId) ? moduleSettings[moduleId] : new Hashtable();
+            return moduleSettings.TryGetValue(moduleId, out var setting) ? setting : new Hashtable();
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
@@ -1688,7 +1684,7 @@ namespace DotNetNuke.Entities.Modules
                                 return tabModuleSettingsDic;
                             });
 
-            return tabModuleSettings.ContainsKey(tabModuleId) ? tabModuleSettings[tabModuleId] : new Hashtable();
+            return tabModuleSettings.TryGetValue(tabModuleId, out var setting) ? setting : new Hashtable();
         }
 
         /// <inheritdoc/>

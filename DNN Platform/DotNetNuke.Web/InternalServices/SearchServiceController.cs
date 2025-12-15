@@ -489,9 +489,9 @@ namespace DotNetNuke.Web.InternalServices
 
         private static string GetFriendlyTitle(SearchResult result)
         {
-            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
+            if (result.Keywords.TryGetValue("title", out var title) && !string.IsNullOrEmpty(title))
             {
-                return result.Keywords["title"];
+                return title;
             }
 
             return result.Title;

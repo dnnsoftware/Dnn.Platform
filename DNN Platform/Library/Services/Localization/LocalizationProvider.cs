@@ -252,9 +252,9 @@ namespace DotNetNuke.Services.Localization
 
             foreach (string key in current.Keys.ToList())
             {
-                if (resFile.ContainsKey(key))
+                if (resFile.TryGetValue(key, out var value))
                 {
-                    current[key] = resFile[key];
+                    current[key] = value;
                 }
             }
 

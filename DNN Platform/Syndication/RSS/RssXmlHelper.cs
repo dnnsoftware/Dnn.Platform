@@ -132,9 +132,9 @@ namespace DotNetNuke.Services.Syndication
             {
                 if (n.NodeType == XmlNodeType.Element && !NodeHasSubElements(n))
                 {
-                    if (attributes.ContainsKey(n.Name))
+                    if (attributes.TryGetValue(n.Name, out var attribute))
                     {
-                        attributes[n.Name] = attributes[n.Name] + ", " + n.InnerText.Trim();
+                        attributes[n.Name] = $"{attribute}, {n.InnerText.Trim()}";
                     }
                     else
                     {

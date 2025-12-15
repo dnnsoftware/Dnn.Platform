@@ -91,11 +91,11 @@ namespace DotNetNuke.Services.Search.Internals
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
-            var key = string.Format("{0}-{1}-{2}", searchResult.SearchTypeId, searchResult.ModuleDefId, Thread.CurrentThread.CurrentCulture);
+            var key = $"{searchResult.SearchTypeId}-{searchResult.ModuleDefId}-{Thread.CurrentThread.CurrentCulture}";
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
                             new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
 
-            return keys.ContainsKey(key) ? keys[key] : string.Empty;
+            return keys.TryGetValue(key, out var documentTypeDisplayName) ? documentTypeDisplayName : string.Empty;
         }
 
         /// <inheritdoc/>

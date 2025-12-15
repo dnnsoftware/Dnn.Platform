@@ -80,10 +80,8 @@ namespace DotNetNuke.Entities.Controllers
         {
             Requires.NotNullOrEmpty("key", key);
 
-            double retValue;
-
             var settings = ((IHostSettingsService)this).GetSettings();
-            if (!settings.ContainsKey(key) || !double.TryParse(settings[key].Value, out retValue))
+            if (!settings.TryGetValue(key, out var value) || !double.TryParse(value.Value, out var retValue))
             {
                 retValue = defaultValue;
             }
@@ -102,10 +100,8 @@ namespace DotNetNuke.Entities.Controllers
         {
             Requires.NotNullOrEmpty("key", key);
 
-            int retValue;
-
             var settings = ((IHostSettingsService)this).GetSettings();
-            if (!settings.ContainsKey(key) || !int.TryParse(settings[key].Value, out retValue))
+            if (!settings.TryGetValue(key, out var value) || !int.TryParse(value.Value, out var retValue))
             {
                 retValue = defaultValue;
             }
@@ -154,12 +150,12 @@ namespace DotNetNuke.Entities.Controllers
             Requires.NotNullOrEmpty("key", key);
 
             var settings = ((IHostSettingsService)this).GetSettings();
-            if (!settings.ContainsKey(key) || settings[key].Value == null)
+            if (!settings.TryGetValue(key, out var value) || value.Value == null)
             {
                 return defaultValue;
             }
 
-            return settings[key].Value;
+            return value.Value;
         }
 
         /// <inheritdoc/>

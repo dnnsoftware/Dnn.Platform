@@ -287,9 +287,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 {
                     case TabVersionDetailAction.Added:
                     case TabVersionDetailAction.Modified:
-                        if (versionModules.ContainsKey(tabVersionDetail.ModuleId))
+                        if (versionModules.TryGetValue(tabVersionDetail.ModuleId, out var versionDetail))
                         {
-                            versionModules[tabVersionDetail.ModuleId] = JoinVersionDetails(versionModules[tabVersionDetail.ModuleId], tabVersionDetail);
+                            versionModules[tabVersionDetail.ModuleId] = JoinVersionDetails(versionDetail, tabVersionDetail);
                         }
                         else
                         {

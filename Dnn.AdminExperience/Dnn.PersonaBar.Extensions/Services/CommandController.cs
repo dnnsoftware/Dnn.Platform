@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     var allCommands = this.oldCommandRepository.GetCommands();
 
                     // if no command found notify
-                    if (!allCommands.ContainsKey(cmdName))
+                    if (!allCommands.TryGetValue(cmdName, out var oldCommand))
                     {
                         var sbError = new StringBuilder();
                         var suggestion = Utilities.GetSuggestedCommand(cmdName);
@@ -169,7 +169,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         return this.AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
                     }
 
-                    return this.TryRunOldCommand(command, allCommands[cmdName].CommandType, args, isHelpCmd, startTime);
+                    return this.TryRunOldCommand(command, oldCommand.CommandType, args, isHelpCmd, startTime);
                 }
                 else
                 {

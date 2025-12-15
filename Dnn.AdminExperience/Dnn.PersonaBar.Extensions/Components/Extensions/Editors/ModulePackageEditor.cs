@@ -215,7 +215,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private static void UpdatePermissions(DesktopModuleInfo desktopModule, PackageSettingsDto packageSettings)
         {
-            if (!packageSettings.EditorActions.ContainsKey("permissions") || string.IsNullOrEmpty(packageSettings.EditorActions["permissions"]))
+            if (!packageSettings.EditorActions.TryGetValue("permissions", out var permissionsJson) || string.IsNullOrEmpty(permissionsJson))
             {
                 return;
             }
@@ -227,8 +227,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
 
             var portalSettings = new PortalSettings(packageSettings.PortalId);
-            var permissions = JsonConvert.DeserializeObject<PermissionsDto>(packageSettings.EditorActions["permissions"]);
-            var hasAdmin = permissions.RolePermissions == null ? false : permissions.RolePermissions.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId);
+            var permissions = JsonConvert.DeserializeObject<PermissionsDto>(permissionsJson);
+            var hasAdmin = permissions.RolePermissions?.Any(permission => permission.RoleId == portalSettings.AdministratorRoleId) ?? false;
 
             var desktopModulePermissions = new DesktopModulePermissionCollection();
 

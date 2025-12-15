@@ -1297,18 +1297,17 @@ namespace DotNetNuke.Entities.Urls
                     if (tabMatch.Success)
                     {
                         string rawTabId = tabMatch.Groups["tabid"].Value;
-                        int tabId;
-                        if (int.TryParse(rawTabId, out tabId))
+                        if (int.TryParse(rawTabId, out var tabId))
                         {
-                            if (rewriteActions.ContainsKey(tabId))
+                            if (rewriteActions.TryGetValue(tabId, out var action))
                             {
                                 // find the right set of rewrite actions for this tab
-                                tabRewrites = rewriteActions[tabId];
+                                tabRewrites = action;
                             }
                         }
                     }
 
-                    if (rewriteActions.ContainsKey(AllTabsRewrite))
+                    if (rewriteActions.TryGetValue(AllTabsRewrite, out var allRewrites))
                     {
                         // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab rewrites
@@ -1318,14 +1317,13 @@ namespace DotNetNuke.Entities.Urls
                         }
 
                         // add in the all rewrites
-                        SharedList<ParameterRewriteAction> allRewrites = rewriteActions[AllTabsRewrite];
                         foreach (ParameterRewriteAction rewrite in allRewrites)
                         {
                             tabRewrites.Add(rewrite); // add the 'all' range to the tab range
                         }
                     }
 
-                    if (isSiteRoot && rewriteActions.ContainsKey(SiteRootRewrite))
+                    if (isSiteRoot && rewriteActions.TryGetValue(SiteRootRewrite, out var siteRootRewrites))
                     {
                         // initialise to empty collection if there are no specific tab rewrites
                         if (tabRewrites == null)
@@ -1333,7 +1331,6 @@ namespace DotNetNuke.Entities.Urls
                             tabRewrites = new SharedList<ParameterRewriteAction>();
                         }
 
-                        SharedList<ParameterRewriteAction> siteRootRewrites = rewriteActions[SiteRootRewrite];
                         foreach (ParameterRewriteAction rewrite in siteRootRewrites)
                         {
                             tabRewrites.Add(rewrite); // add the site root rewrites to the collection
@@ -1526,9 +1523,9 @@ namespace DotNetNuke.Entities.Urls
                         tabKey += "::";
                         using (tabDict.GetReadLock())
                         {
-                            if (tabDict.ContainsKey(tabKey))
+                            if (tabDict.TryGetValue(tabKey, out var tabUrl))
                             {
-                                newUrl = tabDict[tabKey];
+                                newUrl = tabUrl;
                                 reWritten = true;
                             }
                         }
@@ -1588,9 +1585,9 @@ namespace DotNetNuke.Entities.Urls
                                 tabKey += "::";
                                 using (tabDict.GetReadLock())
                                 {
-                                    if (tabDict.ContainsKey(tabKey))
+                                    if (tabDict.TryGetValue(tabKey, out var tabUrl))
                                     {
-                                        newUrl = tabDict[tabKey];
+                                        newUrl = tabUrl;
                                         reWritten = true;
                                         customTabAlias = true; // this alias is used as the alias for a custom tab
                                     }
@@ -1723,12 +1720,13 @@ namespace DotNetNuke.Entities.Urls
                 new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId),
                 c => new Dictionary<string, UserInfo>());
 
-            if (!vanityUrlLookupDictionary.ContainsKey(vanityUrl))
+            if (!vanityUrlLookupDictionary.TryGetValue(vanityUrl, out var user))
             {
-                vanityUrlLookupDictionary[vanityUrl] = UserController.GetUserByVanityUrl(portalId, vanityUrl);
+                user = UserController.GetUserByVanityUrl(portalId, vanityUrl);
+                vanityUrlLookupDictionary[vanityUrl] = user;
             }
 
-            return vanityUrlLookupDictionary[vanityUrl];
+            return user;
         }
 
         private static bool CheckTabPath(string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)

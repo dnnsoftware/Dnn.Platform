@@ -1657,10 +1657,9 @@ namespace Dnn.PersonaBar.Pages.Components
                     // Make reference copies on secondary language
                     foreach (var m in objModule.LocalizedModules.Values)
                     {
-                        if (tab.LocalizedTabs.ContainsKey(m.CultureCode))
+                        if (tab.LocalizedTabs.TryGetValue(m.CultureCode, out var localizedTab))
                         {
                             var newLocalizedModule = m.Clone();
-                            var localizedTab = tab.LocalizedTabs[m.CultureCode];
                             newLocalizedModule.TabID = localizedTab.TabID;
                             newLocalizedModule.CultureCode = localizedTab.CultureCode;
                             newLocalizedModule.ModuleTitle = module.Title;

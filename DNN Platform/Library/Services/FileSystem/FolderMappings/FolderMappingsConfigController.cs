@@ -76,12 +76,12 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public FolderMappingInfo GetFolderMapping(int portalId, string folderPath)
         {
-            if (!this.FolderMappings.ContainsKey(folderPath))
+            if (!this.FolderMappings.TryGetValue(folderPath, out var mapping))
             {
                 return null;
             }
 
-            return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
+            return FolderMappingController.Instance.GetFolderMapping(portalId, mapping);
         }
 
         /// <inheritdoc/>

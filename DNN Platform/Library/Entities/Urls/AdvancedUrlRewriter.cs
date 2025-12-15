@@ -1274,14 +1274,14 @@ namespace DotNetNuke.Entities.Urls
         {
             var customAliasesForTab = TabController.Instance.GetCustomAliases(result.TabId, result.PortalId);
             bool isCurrentTabCustomTabAlias = false;
-            if (customAliasesForTab != null && customAliasesForTab.Count > 0)
+            if (customAliasesForTab is { Count: > 0 })
             {
                 // see if we have a customAlias for the current CultureCode
-                if (customAliasesForTab.ContainsKey(result.CultureCode))
+                if (customAliasesForTab.TryGetValue(result.CultureCode, out var alias))
                 {
                     // if it is for the current culture, we need to know if it's a primary alias
-                    var tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(customAliasesForTab[result.CultureCode]);
-                    if (tabPortalAlias != null && !tabPortalAlias.IsPrimary)
+                    var tabPortalAlias = PortalAliasController.Instance.GetPortalAlias(alias);
+                    if (tabPortalAlias is { IsPrimary: false })
                     {
                         // it's not a primary alias, so must be a custom tab alias
                         isCurrentTabCustomTabAlias = true;

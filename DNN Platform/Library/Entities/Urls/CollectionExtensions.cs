@@ -71,9 +71,9 @@ namespace DotNetNuke.Entities.Urls
                                         }
 
                                         List<ParameterReplaceAction> tabActionCol;
-                                        if (actions.ContainsKey(action.TabId))
+                                        if (actions.TryGetValue(action.TabId, out var parameterReplaceActions))
                                         {
-                                            tabActionCol = actions[action.TabId];
+                                            tabActionCol = parameterReplaceActions;
                                         }
                                         else
                                         {
@@ -206,13 +206,13 @@ namespace DotNetNuke.Entities.Urls
                                         }
 
                                         List<ParameterRedirectAction> tabActionCol;
-                                        if (actions.ContainsKey(action.TabId))
+                                        if (actions.TryGetValue(action.TabId, out var parameterRedirectActions))
                                         {
-                                            tabActionCol = actions[action.TabId];
+                                            tabActionCol = parameterRedirectActions;
                                         }
                                         else
                                         {
-                                            tabActionCol = new List<ParameterRedirectAction>();
+                                            tabActionCol = [];
                                             actions.Add(action.TabId, tabActionCol);
                                         }
 
@@ -307,9 +307,9 @@ namespace DotNetNuke.Entities.Urls
 
                                         action.PortalId = portalId;
                                         SharedList<ParameterRewriteAction> tabActionCol;
-                                        if (actions.ContainsKey(action.TabId))
+                                        if (actions.TryGetValue(action.TabId, out var parameterRewriteActions))
                                         {
-                                            tabActionCol = actions[action.TabId];
+                                            tabActionCol = parameterRewriteActions;
                                         }
                                         else
                                         {

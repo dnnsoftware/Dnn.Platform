@@ -141,7 +141,7 @@ namespace DotNetNuke.Security.Roles
 
             foreach (var setting in role.Settings)
             {
-                if (!currentSettings.ContainsKey(setting.Key) || currentSettings[setting.Key] != setting.Value)
+                if (!currentSettings.TryGetValue(setting.Key, out var settingValue) || settingValue != setting.Value)
                 {
                     this.dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
@@ -149,7 +149,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>AddUserToRole adds a User to a Role.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="user">The user to add.</param>
         /// <param name="userRole">The role to add the user to.</param>
         /// <returns>A Boolean indicating success or failure.</returns>

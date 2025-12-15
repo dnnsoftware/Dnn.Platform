@@ -102,12 +102,12 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             try
             {
-                Dictionary<int, int> portals = PortalController.GetPortalDictionary();
-                if (portals.ContainsKey(tabId) && portals[tabId] > Null.NullInteger)
+                var portals = PortalController.GetPortalDictionary();
+                if (portals.TryGetValue(tabId, out var portalId) && portalId > Null.NullInteger)
                 {
                     var filesNotDeleted = new StringBuilder();
                     int i = 0;
-                    string cacheFolder = GetCacheFolder(portals[tabId]);
+                    string cacheFolder = GetCacheFolder(portalId);
 
                     if (!string.IsNullOrEmpty(cacheFolder))
                     {

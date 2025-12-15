@@ -77,8 +77,8 @@ namespace DotNetNuke.Services.Search
             var totalIndexed = 0;
             startDateLocal = this.GetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, startDateLocal);
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this.searchModules.ContainsKey(portalId)
-                ? this.searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
+            var searchModuleCollection = this.searchModules.TryGetValue(portalId, out var indexes)
+                ? indexes.Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
                 : this.GetSearchModules(portalId);
 
             // Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
@@ -141,8 +141,9 @@ namespace DotNetNuke.Services.Search
         public List<SearchDocument> GetModuleMetaData(int portalId, DateTime startDate)
         {
             var searchDocuments = new List<SearchDocument>();
-            var searchModuleCollection = this.searchModules.ContainsKey(portalId) ?
-                                            this.searchModules[portalId].Select(m => m.ModuleInfo) : this.GetSearchModules(portalId, true);
+            var searchModuleCollection = this.searchModules.TryGetValue(portalId, out var indexes)
+                ? indexes.Select(m => m.ModuleInfo)
+                : this.GetSearchModules(portalId, true);
             foreach (ModuleInfo module in searchModuleCollection)
             {
                 try
