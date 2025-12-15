@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.Api.Auth
             byte[] expireBytes = Encoding.Default.GetBytes(expireStr);
             string nonce = Convert.ToBase64String(expireBytes);
 
-            nonce = nonce.TrimEnd(new[] { '=' });
+            nonce = nonce.TrimEnd('=');
             return nonce;
         }
 

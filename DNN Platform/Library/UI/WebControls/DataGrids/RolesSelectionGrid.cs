@@ -23,6 +23,7 @@ namespace DotNetNuke.UI.WebControls
 
     public class RolesSelectionGrid : Control, INamingContainer
     {
+        private static readonly string[] RoleSeparator = ["##",];
         private readonly DataTable dtRoleSelections = new DataTable();
         private IList<RoleInfo> roles;
         private IList<string> selectedRoles;
@@ -223,7 +224,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     string state = Convert.ToString(myState[1]);
                     this.CurrentRoleSelection = state != string.Empty
-                                        ? new List<string>(state.Split(new[] { "##" }, StringSplitOptions.None))
+                                        ? new List<string>(state.Split(RoleSeparator, StringSplitOptions.None))
                                         : new List<string>();
                 }
             }

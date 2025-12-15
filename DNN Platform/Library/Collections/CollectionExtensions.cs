@@ -83,7 +83,7 @@ namespace DotNetNuke.Collections
         /// <returns>A <see cref="Func{String,Boolean}" /> instance.</returns>
         public static Func<string, bool> GetFlexibleBooleanParsingFunction()
         {
-            return GetFlexibleBooleanParsingFunction(new[] { "true", "on", "1", "yes" });
+            return GetFlexibleBooleanParsingFunction("true", "on", "1", "yes");
         }
 
         /// <summary>Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.</summary>

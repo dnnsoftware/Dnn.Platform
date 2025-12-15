@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Sitemap
             if (roles != null)
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] { ';' }))
+                foreach (string role in roles.Split(';'))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Sitemap
                         if (role.StartsWith("!"))
                         {
                             string denyRole = role.Replace("!", string.Empty);
-                            if (denyRole == Globals.glbRoleUnauthUserName || denyRole == Globals.glbRoleAllUsersName)
+                            if (denyRole is Globals.glbRoleUnauthUserName or Globals.glbRoleAllUsersName)
                             {
                                 hasPublicRole = false;
                                 break;

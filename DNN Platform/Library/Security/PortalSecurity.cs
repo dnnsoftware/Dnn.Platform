@@ -261,7 +261,7 @@ namespace DotNetNuke.Security
             if (roles != null)
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] { ';' }))
+                foreach (string role in roles.Split(';'))
                 {
                     if (!string.IsNullOrEmpty(role))
                     {

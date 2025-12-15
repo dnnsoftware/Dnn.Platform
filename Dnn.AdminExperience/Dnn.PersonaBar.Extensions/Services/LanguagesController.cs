@@ -55,6 +55,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
 
+        private static readonly string[] RootFolders =
+        [
+            "Admin",
+            "Controls",
+            "DesktopModules",
+            "Install",
+            "Providers",
+        ];
+
         private ITabController tabController = TabController.Instance;
         private ILocaleController localeController = LocaleController.Instance;
         private IPortalController portalController = PortalController.Instance;
@@ -132,14 +141,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 if (string.IsNullOrEmpty(currentFolder))
                 {
-                    folders.AddRange(new[]
-                    {
-                        "Admin",
-                        "Controls",
-                        "DesktopModules",
-                        "Install",
-                        "Providers",
-                    }.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + "_/" + s))));
+                    folders.AddRange(RootFolders.Select(s => new KeyValuePair<string, string>(s, server.MapPath("~/" + "_/" + s))));
 
                     const string skins = "Skins";
                     var skinsPath = Path.Combine(Globals.ApplicationMapPath, skins);

@@ -20,6 +20,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class TabPermissionsGrid : PermissionsGrid
     {
+        private static readonly string[] PermissionKeySeparator = ["##",];
         private List<PermissionInfoBase> permissionsList;
         private int tabID = -1;
         private TabPermissionCollection tabPermissions;
@@ -221,7 +222,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
-                        string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
+                        string[] permissionKeys = state.Split(PermissionKeySeparator, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
                             string[] settings = key.Split('|');

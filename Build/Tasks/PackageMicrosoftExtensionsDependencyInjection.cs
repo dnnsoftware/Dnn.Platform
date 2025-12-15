@@ -16,6 +16,9 @@ using Dnn.CakeUtils;
 /// <summary>A cake task to generate the Microsoft.Extensions.DependencyInjection  package.</summary>
 public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask<Context>
 {
+    private static readonly string[] AllFiles = ["*",];
+    private static readonly string[] ManifestFiles = ["*.dnn",];
+
     /// <inheritdoc/>
     public override void Run(Context context)
     {
@@ -30,7 +33,7 @@ public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask
         context.Zip(
             packageDir.ToString(),
             packageZip,
-            context.GetFilesByPatterns(packageDir, new[] { "*" }, new[] { "*.dnn" }));
+            context.GetFilesByPatterns(packageDir, AllFiles, ManifestFiles));
 
         var manifestPath = context.GetFiles(packageDir.Path.CombineWithFilePath("*.dnn").ToString()).Single();
         context.Information($"Reading manifest from {manifestPath}");
