@@ -37,11 +37,11 @@ namespace DotNetNuke.Framework
                 {
                     key.Append("VIEWSTATE_");
                     key.Append(this.Page.Session.SessionID);
-                    key.Append("_");
+                    key.Append('_');
                     key.Append(this.Page.Request.RawUrl);
                 }
 
-                return this.CacheDirectory + "\\" + Globals.CleanFileName(key.ToString()) + ".txt";
+                return $@"{this.CacheDirectory}\{Globals.CleanFileName(key.ToString())}.txt";
             }
         }
 

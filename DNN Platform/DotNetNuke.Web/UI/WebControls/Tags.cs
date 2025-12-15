@@ -258,14 +258,14 @@ namespace DotNetNuke.Web.UI.WebControls
                 sb.Append("<script language='javascript' type='text/javascript' >");
                 sb.Append(Environment.NewLine);
                 sb.Append("function disableEnterKey(e)");
-                sb.Append("{");
+                sb.Append('{');
                 sb.Append("var key;");
                 sb.Append("if(window.event)");
                 sb.Append("key = window.event.keyCode;");
                 sb.Append("else ");
                 sb.Append("key = e.which;");
                 sb.Append("return (key != 13);");
-                sb.Append("}");
+                sb.Append('}');
                 sb.Append("</script>");
 
                 this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), this.UniqueID, sb.ToString());

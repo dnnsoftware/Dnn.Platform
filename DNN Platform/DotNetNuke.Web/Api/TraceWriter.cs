@@ -42,23 +42,23 @@ namespace DotNetNuke.Web.Api
             {
                 if (rec.Request.Method != null)
                 {
-                    message.Append(" ").Append(rec.Request.Method.Method);
+                    message.Append(' ').Append(rec.Request.Method.Method);
                 }
 
                 if (rec.Request.RequestUri != null)
                 {
-                    message.Append(" ").Append(rec.Request.RequestUri.AbsoluteUri);
+                    message.Append(' ').Append(rec.Request.RequestUri.AbsoluteUri);
                 }
             }
 
             if (!string.IsNullOrEmpty(rec.Category))
             {
-                message.Append(" ").Append(rec.Category);
+                message.Append(' ').Append(rec.Category);
             }
 
             if (!string.IsNullOrEmpty(rec.Message))
             {
-                message.Append(" ").Append(rec.Message);
+                message.Append(' ').Append(rec.Message);
             }
 
             string output = message.ToString();

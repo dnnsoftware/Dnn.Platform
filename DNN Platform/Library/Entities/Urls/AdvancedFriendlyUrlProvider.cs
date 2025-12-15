@@ -768,7 +768,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         for (int j = 2; j <= pair.GetUpperBound(0); j++)
                                         {
-                                            valueBuilder.Append("=");
+                                            valueBuilder.Append('=');
                                             valueBuilder.Append(pair[j]);
                                         }
                                     }
@@ -1332,25 +1332,25 @@ namespace DotNetNuke.Entities.Urls
                 // Just append to path, if no value exists
                 if (pathParts.Length <= i + 1)
                 {
-                    pathBuilder.Append(string.Format("/{0}", pathParts[i]));
+                    pathBuilder.Append($"/{pathParts[i]}");
                     continue;
                 }
 
                 // Either add key/value parameter pair to path or to query
                 var key = pathParts[i];
                 var value = pathParts[i + 1];
-                if (notInPath.IsMatch(string.Format("/{0}/{1}", key, value)))
+                if (notInPath.IsMatch($"/{key}/{value}"))
                 {
                     if (queryStringBuilder.Length > 0)
                     {
-                        queryStringBuilder.Append("&");
+                        queryStringBuilder.Append('&');
                     }
 
-                    queryStringBuilder.Append(string.Format("{0}={1}", key, value));
+                    queryStringBuilder.Append($"{key}={value}");
                 }
                 else
                 {
-                    pathBuilder.Append(string.Format("/{0}/{1}", key, value));
+                    pathBuilder.Append($"/{key}/{value}");
                 }
             }
 

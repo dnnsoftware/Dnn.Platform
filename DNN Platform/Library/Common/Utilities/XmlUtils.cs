@@ -743,9 +743,9 @@ namespace DotNetNuke.Common.Utilities
                         sb.Append(", ");
                     }
 
-                    sb.Append("\"");
+                    sb.Append('\"');
                     sb.Append(substrings[i]);
-                    sb.Append("\"");
+                    sb.Append('\"');
                     needComma = true;
                 }
 
@@ -760,7 +760,7 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
 
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
 
