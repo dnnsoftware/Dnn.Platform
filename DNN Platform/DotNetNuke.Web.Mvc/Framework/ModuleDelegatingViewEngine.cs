@@ -40,9 +40,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="view">The view.</param>
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {
-            if (this.viewEngineMappings.ContainsKey(view))
+            if (this.viewEngineMappings.TryGetValue(view, out var viewEngine))
             {
-                this.viewEngineMappings[view].ReleaseView(controllerContext, view);
+                viewEngine.ReleaseView(controllerContext, view);
             }
         }
 

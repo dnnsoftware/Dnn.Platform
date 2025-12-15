@@ -160,7 +160,7 @@ namespace Dnn.AzureConnector.Components
             customErrorMessage = string.Empty;
             var azureAccountName = values[Constants.AzureAccountName];
             var azureAccountKey = values[Constants.AzureAccountKey];
-            var azureContainerName = values.ContainsKey(Constants.AzureContainerName) ? values[Constants.AzureContainerName] : string.Empty;
+            var azureContainerName = values.TryGetValue(Constants.AzureContainerName, out var containerName) ? containerName : string.Empty;
 
             var emptyFields = string.IsNullOrEmpty(azureAccountKey) && string.IsNullOrEmpty(azureAccountName);
 
@@ -224,9 +224,9 @@ namespace Dnn.AzureConnector.Components
                 settings[Constants.AzureAccountName] = folderProvider.EncryptValue(azureAccountName);
                 settings[Constants.AzureAccountKey] = folderProvider.EncryptValue(azureAccountKey);
 
-                if (values.ContainsKey(Constants.AzureContainerName) && !string.IsNullOrEmpty(values[Constants.AzureContainerName]))
+                if (values.TryGetValue(Constants.AzureContainerName, out var container) && !string.IsNullOrEmpty(container))
                 {
-                    settings[Constants.AzureContainerName] = values[Constants.AzureContainerName];
+                    settings[Constants.AzureContainerName] = container;
                 }
                 else
                 {

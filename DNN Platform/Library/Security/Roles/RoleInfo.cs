@@ -601,9 +601,9 @@ namespace DotNetNuke.Security.Roles
                 return defaultValue;
             }
 
-            if (this.Settings.ContainsKey(keyName))
+            if (this.Settings.TryGetValue(keyName, out var settingValue))
             {
-                return this.Settings[keyName];
+                return settingValue;
             }
 
             return defaultValue;

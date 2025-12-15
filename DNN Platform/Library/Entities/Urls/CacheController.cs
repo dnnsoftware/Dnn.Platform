@@ -80,10 +80,10 @@ namespace DotNetNuke.Entities.Urls
 
             using (portals.GetWriteLock())
             {
-                if (portals.ContainsKey(portalId))
+                if (portals.TryGetValue(portalId, out var portal))
                 {
                     // portal found, return
-                    pi = portals[portalId];
+                    pi = portal;
                 }
                 else
                 {
@@ -664,15 +664,15 @@ namespace DotNetNuke.Entities.Urls
                     foreach (int tabId in provider.ProviderConfig.TabIds)
                     {
                         List<ExtensionUrlProvider> thisTabProviders;
-                        if (tabsProviders.ContainsKey(tabId))
+                        if (tabsProviders.TryGetValue(tabId, out var tabProviders))
                         {
-                            thisTabProviders = tabsProviders[tabId];
+                            thisTabProviders = tabProviders;
                             thisTabProviders.Add(provider);
                             tabsProviders[tabId] = thisTabProviders; // assign back to position in tabs
                         }
                         else
                         {
-                            thisTabProviders = new List<ExtensionUrlProvider> { provider };
+                            thisTabProviders = [provider,];
                             tabsProviders.Add(tabId, thisTabProviders);
                             tabIdStr.Add(tabId.ToString());
                         }
@@ -684,14 +684,14 @@ namespace DotNetNuke.Entities.Urls
                 // store the list of providers where the provider might be called with no valid TabId, because
                 // the provider allows for Urls with no DNN Page path, which means the TabId can't be identified
                 // by the Url Rewriter.  This identifies the Provider as using a 'siteRootRewrite'
-                if (provider.AlwaysUsesDnnPagePath(portalId) == false)
+                if (!provider.AlwaysUsesDnnPagePath(portalId))
                 {
                     List<ExtensionUrlProvider> noPathProviders;
 
                     // add this one
-                    if (tabsProviders.ContainsKey(RewriteController.SiteRootRewrite))
+                    if (tabsProviders.TryGetValue(RewriteController.SiteRootRewrite, out var pathProviders))
                     {
-                        noPathProviders = tabsProviders[RewriteController.SiteRootRewrite];
+                        noPathProviders = pathProviders;
                         noPathProviders.Add(provider);
                         tabsProviders[RewriteController.SiteRootRewrite] = noPathProviders;
 
@@ -699,7 +699,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        noPathProviders = new List<ExtensionUrlProvider> { provider };
+                        noPathProviders = [provider,];
                         tabsProviders.Add(RewriteController.SiteRootRewrite, noPathProviders);
                         tabIdStr.Add("NoPath");
                     }

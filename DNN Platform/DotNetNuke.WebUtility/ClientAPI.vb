@@ -321,8 +321,11 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Private Shared Function GetClientVariableNameValuePair(ByVal objPage As Page, ByVal strVar As String) As String
             Dim objDict As Generic.Dictionary(Of String, String) = GetClientVariableList(objPage)
-            If objDict.ContainsKey(strVar) Then
-                Return strVar & COLUMN_DELIMITER & objDict(strVar)
+
+            Dim value As String = Nothing
+
+            If objDict.TryGetValue(strVar, value) Then
+                Return strVar & COLUMN_DELIMITER & value
             End If
             Return ""
         End Function

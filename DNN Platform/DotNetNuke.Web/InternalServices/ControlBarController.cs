@@ -861,7 +861,7 @@ namespace DotNetNuke.Web.InternalServices
                 };
             }
 
-            return this.nameDics.ContainsKey(moduleName) ? this.nameDics[moduleName] : moduleName;
+            return this.nameDics.TryGetValue(moduleName, out var name) ? name : moduleName;
         }
 
         public class ModuleDefDTO

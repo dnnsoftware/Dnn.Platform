@@ -1222,12 +1222,13 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A single folder mapping, <see cref="FolderMappingInfo"/>.</returns>
         internal virtual FolderMappingInfo GetFolderMapping(Dictionary<int, FolderMappingInfo> folderMappings, int folderMappingId)
         {
-            if (!folderMappings.ContainsKey(folderMappingId))
+            if (!folderMappings.TryGetValue(folderMappingId, out var folderMapping))
             {
-                folderMappings.Add(folderMappingId, FolderMappingController.Instance.GetFolderMapping(folderMappingId));
+                folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
+                folderMappings.Add(folderMappingId, folderMapping);
             }
 
-            return folderMappings[folderMappingId];
+            return folderMapping;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>

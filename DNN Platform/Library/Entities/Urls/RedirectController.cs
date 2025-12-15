@@ -112,58 +112,49 @@ namespace DotNetNuke.Entities.Urls
                     int tabId = result.TabId;
                     if (tabId > -1)
                     {
-                        if (redirectActions.ContainsKey(tabId))
+                        if (redirectActions.TryGetValue(tabId, out var parameterRedirectActions))
                         {
                             // find the right set of replaced actions for this tab
-                            parmRedirects = redirectActions[tabId];
+                            parmRedirects = parameterRedirectActions;
                         }
                     }
 
                     // check for 'all tabs' redirections
-                    if (redirectActions.ContainsKey(-1))
+                    if (redirectActions.TryGetValue(-1, out var allRedirects))
                     {
                         // -1 means 'all tabs' - rewriting across all tabs
                         // initialise to empty collection if there are no specific tab redirects
                         if (parmRedirects == null)
                         {
-                            parmRedirects = new List<ParameterRedirectAction>();
+                            parmRedirects = [];
                         }
 
                         // add in the all redirects
-                        List<ParameterRedirectAction> allRedirects = redirectActions[-1];
                         parmRedirects.AddRange(allRedirects); // add the 'all' range to the tab range
                         tabId = result.TabId;
                     }
 
-                    if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
+                    if (redirectActions.TryGetValue(-2, out var defaultRedirects) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
                     {
                         // for the default.aspx page
-                        if (parmRedirects == null)
-                        {
-                            parmRedirects = new List<ParameterRedirectAction>();
-                        }
+                        parmRedirects ??= [];
 
-                        List<ParameterRedirectAction> defaultRedirects = redirectActions[-2];
                         parmRedirects.AddRange(defaultRedirects); // add the default.aspx redirects to the list
                         tabId = result.TabId;
                     }
 
                     // 726 : allow for site-root redirects, ie redirects where no page match
-                    if (redirectActions.ContainsKey(-3))
+                    if (redirectActions.TryGetValue(-3, out var siteRootRedirects))
                     {
                         // request is for site root
-                        if (parmRedirects == null)
-                        {
-                            parmRedirects = new List<ParameterRedirectAction>();
-                        }
+                        parmRedirects ??= [];
 
-                        List<ParameterRedirectAction> siteRootRedirects = redirectActions[-3];
                         parmRedirects.AddRange(siteRootRedirects); // add the site root redirects to the collection
                     }
 
                     // OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
                     // or because there is a replaced for 'all tabs'
-                    if (parmRedirects != null && parmRedirects.Count > 0 && rewrittenUrl != null)
+                    if (parmRedirects is { Count: > 0 } && rewrittenUrl != null)
                     {
                         foreach (ParameterRedirectAction parmRedirect in parmRedirects)
                         {

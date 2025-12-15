@@ -2027,10 +2027,10 @@ namespace DotNetNuke.Common
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validClassLookupDictionary.GetReadLock())
             {
-                if (validClassLookupDictionary.ContainsKey(inputValue))
+                if (validClassLookupDictionary.TryGetValue(inputValue, out var className))
                 {
                     // Return value
-                    returnValue = validClassLookupDictionary[inputValue];
+                    returnValue = className;
                     idFound = true;
                 }
             }
@@ -2082,10 +2082,10 @@ namespace DotNetNuke.Common
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validIDLookupDictionary.GetReadLock())
             {
-                if (validIDLookupDictionary.ContainsKey(inputValue))
+                if (validIDLookupDictionary.TryGetValue(inputValue, out var id))
                 {
                     // Return value
-                    returnValue = validIDLookupDictionary[inputValue];
+                    returnValue = id;
                     idFound = true;
                 }
             }

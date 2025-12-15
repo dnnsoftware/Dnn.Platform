@@ -340,9 +340,9 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        if (queryStringDic.ContainsKey("ctl") && !queryStringDic.ContainsKey("language"))
+                        if (queryStringDic.TryGetValue("ctl", out var controlKey) && !queryStringDic.ContainsKey("language"))
                         {
-                            switch (queryStringDic["ctl"].ToLowerInvariant())
+                            switch (controlKey.ToLowerInvariant())
                             {
                                 case "terms":
                                     friendlyPath = GetFriendlyAlias("~/terms.aspx", portalAlias, true);
@@ -351,13 +351,13 @@ namespace DotNetNuke.Entities.Urls
                                     friendlyPath = GetFriendlyAlias("~/privacy.aspx", portalAlias, true);
                                     break;
                                 case "login":
-                                    friendlyPath = queryStringDic.ContainsKey("returnurl")
-                                                    ? GetFriendlyAlias("~/login.aspx?ReturnUrl=" + queryStringDic["returnurl"], portalAlias, true)
+                                    friendlyPath = queryStringDic.TryGetValue("returnurl", out var loginReturnUrl)
+                                                    ? GetFriendlyAlias("~/login.aspx?ReturnUrl=" + loginReturnUrl, portalAlias, true)
                                                     : GetFriendlyAlias("~/login.aspx", portalAlias, true);
                                     break;
                                 case "register":
-                                    friendlyPath = queryStringDic.ContainsKey("returnurl")
-                                                    ? GetFriendlyAlias("~/register.aspx?returnurl=" + queryStringDic["returnurl"], portalAlias, true)
+                                    friendlyPath = queryStringDic.TryGetValue("returnurl", out var registerReturnUrl)
+                                                    ? GetFriendlyAlias("~/register.aspx?returnurl=" + registerReturnUrl, portalAlias, true)
                                                     : GetFriendlyAlias("~/register.aspx", portalAlias, true);
                                     break;
                                 default:

@@ -831,17 +831,16 @@ namespace DotNetNuke.Web.InternalServices
         private NTree<ItemDto> GetTreePathForPageInternal(string itemId, int sortOrder, bool includePortalTree = false, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "")
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            int itemIdAsInt;
-            if (string.IsNullOrEmpty(itemId) || !int.TryParse(itemId, out itemIdAsInt))
+            if (string.IsNullOrEmpty(itemId) || !int.TryParse(itemId, out var itemIdAsInt))
             {
                 return tree;
             }
 
             var portals = PortalController.GetPortalDictionary();
             int portalId;
-            if (portals.ContainsKey(itemIdAsInt))
+            if (portals.TryGetValue(itemIdAsInt, out var pid))
             {
-                portalId = portals[itemIdAsInt];
+                portalId = pid;
             }
             else
             {

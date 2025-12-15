@@ -2530,11 +2530,8 @@ namespace DotNetNuke.Services.Upgrade
 
                     var isInstalled = false;
                     PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
-                    if (packages.ContainsKey(file))
+                    if (packages.TryGetValue(file, out var package))
                     {
-                        // check whether have version conflict and remove old version.
-                        var package = packages[file];
-
                         var installedPackage = PackageController.Instance.GetExtensionPackage(
                             Null.NullInteger,
                             p => p.Name.Equals(package.Name, StringComparison.OrdinalIgnoreCase)
@@ -2708,21 +2705,17 @@ namespace DotNetNuke.Services.Upgrade
                 cultureCode = Localization.SystemLocale;
             }
 
-            if (resourcesDict.ContainsKey(cultureCode))
+            if (resourcesDict.TryGetValue(cultureCode, out var doc))
             {
-                return resourcesDict[cultureCode];
+                return doc;
             }
 
             try
             {
-                var languageFilePath = Path.Combine(
-                    Globals.HostMapPath,
-                    string.Format("Default Website.template.{0}.resx", cultureCode));
+                var languageFilePath = Path.Combine(Globals.HostMapPath, $"Default Website.template.{cultureCode}.resx");
                 if (!File.Exists(languageFilePath))
                 {
-                    languageFilePath = Path.Combine(
-                        Globals.HostMapPath,
-                        string.Format("Default Website.template.{0}.resx", Localization.SystemLocale));
+                    languageFilePath = Path.Combine(Globals.HostMapPath, $"Default Website.template.{Localization.SystemLocale}.resx");
                 }
 
                 var xmlDocument = new XmlDocument { XmlResolver = null };

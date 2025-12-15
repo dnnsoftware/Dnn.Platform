@@ -33,24 +33,20 @@ namespace DotNetNuke.Entities.Urls
         internal static string AddRedirectReasonToRewritePath(string existingRewritePath, ActionType action, RedirectReason reason)
         {
             string result = existingRewritePath;
-            string token, value;
-            GetRedirectActionTokenAndValue(action, out token, out value);
+            GetRedirectActionTokenAndValue(action, out var token, out var value);
             string tokenAndValue = token + "=" + value;
             bool addToken = true;
 
             // look for existing action
-            bool hasDupes;
-            Dictionary<string, string> tokensAndValues = GetRedirectTokensAndValuesFromRewritePath(
-                existingRewritePath,
-                out hasDupes);
+            Dictionary<string, string> tokensAndValues = GetRedirectTokensAndValuesFromRewritePath(existingRewritePath, out _);
 
             // can't overwrite existing tokens in certain cases
             if (tokensAndValues.Count > 0)
             {
-                // only case we allow is an ovewrite of a do301=check by a do301=true or do302=true
-                if (token == "do301" || token == "do302")
+                // only case we allow is an overwrite of a do301=check by a do301=true or do302=true
+                if (token is "do301" or "do302")
                 {
-                    if (tokensAndValues.ContainsKey("do301") && tokensAndValues["do301"] == "check")
+                    if (tokensAndValues.TryGetValue("do301", out var tokenValue) && tokenValue == "check")
                     {
                         result = existingRewritePath.Replace("do301=check", tokenAndValue);
                     }
@@ -61,7 +57,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (addToken)
             {
-                if (result.Contains(tokenAndValue) == false)
+                if (!result.Contains(tokenAndValue))
                 {
                     if (result.Contains("?"))
                     {

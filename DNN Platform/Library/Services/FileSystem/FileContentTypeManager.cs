@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             var key = extension.TrimStart('.').ToLowerInvariant();
-            return this.ContentTypes.ContainsKey(key) ? this.ContentTypes[key] : "application/octet-stream";
+            return this.ContentTypes.TryGetValue(key, out var contentType) ? contentType : "application/octet-stream";
         }
 
         private static Dictionary<string, string> GetDefaultContentTypes()

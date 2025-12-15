@@ -1020,10 +1020,9 @@ namespace DotNetNuke.Security.Permissions
                     var desktopModulePermissionInfo = CBO.FillObject<DesktopModulePermissionInfo>(dr, false);
 
                     // add DesktopModule Permission to dictionary
-                    if (dic.ContainsKey(desktopModulePermissionInfo.PortalDesktopModuleID))
+                    if (dic.TryGetValue(desktopModulePermissionInfo.PortalDesktopModuleID, out var permissions))
                     {
-                        // Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
-                        dic[desktopModulePermissionInfo.PortalDesktopModuleID].Add(desktopModulePermissionInfo);
+                        permissions.Add(desktopModulePermissionInfo);
                     }
                     else
                     {
@@ -1150,8 +1149,8 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
-            var tabID = (int)cacheItemArgs.ParamList[0];
-            IDataReader dr = this.dataProvider.GetModulePermissionsByTabID(tabID);
+            var tabId = (int)cacheItemArgs.ParamList[0];
+            IDataReader dr = this.dataProvider.GetModulePermissionsByTabID(tabId);
             var dic = new Dictionary<int, ModulePermissionCollection>();
             try
             {
@@ -1161,9 +1160,9 @@ namespace DotNetNuke.Security.Permissions
                     var modulePermissionInfo = CBO.FillObject<ModulePermissionInfo>(dr, false);
 
                     // add Module Permission to dictionary
-                    if (dic.ContainsKey(modulePermissionInfo.ModuleID))
+                    if (dic.TryGetValue(modulePermissionInfo.ModuleID, out var permissions))
                     {
-                        dic[modulePermissionInfo.ModuleID].Add(modulePermissionInfo);
+                        permissions.Add(modulePermissionInfo);
                     }
                     else
                     {
@@ -1218,10 +1217,9 @@ namespace DotNetNuke.Security.Permissions
                         var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
 
                         // add Tab Permission to dictionary
-                        if (dic.ContainsKey(tabPermissionInfo.TabID))
+                        if (dic.TryGetValue(tabPermissionInfo.TabID, out var permissions))
                         {
-                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
-                            dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
+                            permissions.Add(tabPermissionInfo);
                         }
                         else
                         {
@@ -1275,10 +1273,9 @@ namespace DotNetNuke.Security.Permissions
                         var portalPermissionInfo = CBO.FillObject<PortalPermissionInfo>(dr, false);
 
                         // add Portal Permission to dictionary
-                        if (dic.ContainsKey(portalPermissionInfo.PortalID))
+                        if (dic.TryGetValue(portalPermissionInfo.PortalID, out var permissions))
                         {
-                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
-                            dic[portalPermissionInfo.PortalID].Add(portalPermissionInfo);
+                            permissions.Add(portalPermissionInfo);
                         }
                         else
                         {

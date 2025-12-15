@@ -477,15 +477,12 @@ namespace DotNetNuke.UI.Skins
                 {
                     // Check Skin for Container
                     var masterModules = this.PortalSettings.ActiveTab.ChildModules;
-                    if (masterModules.ContainsKey(module.ModuleID) && string.IsNullOrEmpty(masterModules[module.ModuleID].ContainerSrc))
+                    if (masterModules.TryGetValue(module.ModuleID, out var masterModule) && string.IsNullOrEmpty(masterModule.ContainerSrc))
                     {
                         // look for a container specification in the skin pane
-                        if (this.PaneControl != null)
+                        if (this.PaneControl?.Attributes["ContainerSrc"] != null)
                         {
-                            if (this.PaneControl.Attributes["ContainerSrc"] != null)
-                            {
-                                container = this.LoadContainerFromPane();
-                            }
+                            container = this.LoadContainerFromPane();
                         }
                     }
                 }
