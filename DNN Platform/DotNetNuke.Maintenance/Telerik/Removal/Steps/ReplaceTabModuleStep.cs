@@ -14,8 +14,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc />
-    internal partial class ReplaceTabModuleStep : StepBase, IReplaceTabModuleStep, IStepArray
+    /// <inheritdoc cref="IReplaceTabModuleStep" />
+    internal sealed class ReplaceTabModuleStep : StepBase, IReplaceTabModuleStep, IStepArray
     {
         private readonly IServiceProvider serviceProvider;
         private readonly IList<IReplacePortalTabModuleStep> steps;
