@@ -636,7 +636,7 @@ namespace DotNetNuke.Entities.Urls
                 log.AddProperty("Cache Item Key", key);
                 log.AddProperty("PortalId", portalId.ToString());
                 log.AddProperty("Provider With Tabs", string.Join(",", providersWithTabsStr.ToArray()));
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
                 LogController.Instance.AddLog(log);
             }
         }
@@ -727,7 +727,7 @@ namespace DotNetNuke.Entities.Urls
                 log.AddProperty("PortalId/TabIds", portalId.ToString() + "/" + string.Join(",", tabIdStr.ToArray()));
                 log.AddProperty("All Tabs Providers Count", allTabsProviders.Count.ToString());
                 log.AddProperty("Portal Tabs Providers Count", providerCount.ToString());
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
                 LogController.Instance.AddLog(log);
             }
         }
@@ -837,7 +837,7 @@ namespace DotNetNuke.Entities.Urls
                     log.AddProperty("Item Count", urlDict.Values.Count.ToString());
                 }
 
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
                 log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
                 using (customAliasTabs.GetReadLock())
                 {
@@ -882,7 +882,7 @@ namespace DotNetNuke.Entities.Urls
                     log.AddProperty("Item Count", tabDictionary.Count.ToString());
                 }
 
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
                 LogController.Instance.AddLog(log);
             }
         }

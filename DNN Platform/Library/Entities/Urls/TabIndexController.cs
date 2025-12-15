@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             log.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
-            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+            log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
             LogController.Instance.AddLog(log);
         }
 
@@ -1286,7 +1286,7 @@ namespace DotNetNuke.Entities.Urls
                             log.AddProperty(
                                 "Hide this message",
                                 "To stop this message from appearing in the log, uncheck the option for 'Produce an Exception in the Site Log if two pages have the same name/path?' in the Advanced Url Rewriting settings.");
-                            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                            log.AddProperty("Thread Id", Environment.CurrentManagedThreadId.ToString());
                             LogController.Instance.AddLog(log);
                         }
                     }

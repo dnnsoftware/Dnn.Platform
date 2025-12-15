@@ -1918,7 +1918,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static FolderPermissionCollection GetFolderPermissionsFromSyncData(int portalId, string relativePath)
         {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
+            var threadId = Environment.CurrentManagedThreadId;
             FolderPermissionCollection permissions = null;
             if (SyncFoldersData.ContainsKey(threadId))
             {
@@ -1940,7 +1940,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static void InitialiseSyncFoldersData(int portalId, string relativePath)
         {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
+            var threadId = Environment.CurrentManagedThreadId;
             var permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
             if (SyncFoldersData.ContainsKey(threadId))
             {
@@ -1961,7 +1961,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static void RemoveSyncFoldersData()
         {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
+            var threadId = Environment.CurrentManagedThreadId;
             if (SyncFoldersData.ContainsKey(threadId))
             {
                 SyncFoldersData.TryRemove(threadId, out _);

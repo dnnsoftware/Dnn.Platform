@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Scheduling
         public event WorkErrored ProcessErrored;
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public int ThreadID => Thread.CurrentThread.ManagedThreadId;
+        public int ThreadID => Environment.CurrentManagedThreadId;
 
         public ScheduleHistoryItem ScheduleHistoryItem { get; set; }
 
