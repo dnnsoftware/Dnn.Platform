@@ -277,7 +277,7 @@ Namespace DotNetNuke.UI.Utilities
                 If String.IsNullOrEmpty(strValue) = False Then
                     Try
                         'fix serialization issues with invalid json objects
-                        If strValue.IndexOf("`") = 0 Then
+                        If strValue.StartsWith("`"c) Then
                             strValue = strValue.Substring(1).Replace("`", """")
                         End If
 
