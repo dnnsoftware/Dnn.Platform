@@ -358,7 +358,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
         }
 
-        private static List<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
+        private static List<UserInfo> IncludeSuperUsers(List<UserInfo> users)
         {
             var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
             foreach (UserInfo superUser in superUsers)

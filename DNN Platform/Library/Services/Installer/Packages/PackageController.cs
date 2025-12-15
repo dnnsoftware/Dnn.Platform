@@ -467,7 +467,7 @@ namespace DotNetNuke.Services.Installer.Packages
             ClearCache(Null.NullInteger);
         }
 
-        private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()
+        private static List<PackageDependencyInfo> GetPackageDependencies()
         {
             return CBO.GetCachedObject<List<PackageDependencyInfo>>(
                 new CacheItemArgs(

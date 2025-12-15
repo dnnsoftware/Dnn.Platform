@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuPermissionController));
 
-        private static readonly IDataService DataService = new DataService();
+        private static readonly DataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();
         private static readonly object DefaultPermissionLocker = new object();
 

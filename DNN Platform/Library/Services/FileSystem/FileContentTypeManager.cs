@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.FileSystem
     public class FileContentTypeManager : ComponentBase<IFileContentTypeManager, FileContentTypeManager>, IFileContentTypeManager
     {
         private static readonly object ThreadLocker = new object();
-        private IDictionary<string, string> contentTypes;
+        private Dictionary<string, string> contentTypes;
 
         /// <inheritdoc/>
         public virtual IDictionary<string, string> ContentTypes

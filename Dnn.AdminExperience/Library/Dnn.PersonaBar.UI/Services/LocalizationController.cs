@@ -127,7 +127,7 @@ namespace Dnn.PersonaBar.UI.Services
             return expired;
         }
 
-        private IDictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
+        private Dictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
         {
             var resources = new Dictionary<string, IDictionary<string, string>>();
             var resourceFiles = this.GetAllResourceFiles(culture);
@@ -155,7 +155,7 @@ namespace Dnn.PersonaBar.UI.Services
             return resources;
         }
 
-        private IDictionary<string, string> GetLocalizedDictionary(string relativePath, string culture)
+        private Dictionary<string, string> GetLocalizedDictionary(string relativePath, string culture)
         {
             var localizedDict = Dnn.PersonaBar.Library.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
             if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
@@ -199,7 +199,7 @@ namespace Dnn.PersonaBar.UI.Services
             return Localization.SystemLocale;
         }
 
-        private IDictionary<string, string> GetAllResourceFiles(string culture)
+        private Dictionary<string, string> GetAllResourceFiles(string culture)
         {
             var physicalPath = HttpContext.Current.Server.MapPath(Constants.PersonaBarRelativePath);
             var allFiles = Directory.GetFiles(physicalPath, "*.resx", SearchOption.AllDirectories);

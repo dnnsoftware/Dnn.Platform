@@ -278,7 +278,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return Globals.DependencyProvider.GetRequiredService<ITabVersionBuilder>;
         }
 
-        private static IEnumerable<TabVersionDetail> GetSnapShot(IEnumerable<TabVersionDetail> tabVersionDetails)
+        private static List<TabVersionDetail> GetSnapShot(IEnumerable<TabVersionDetail> tabVersionDetails)
         {
             var versionModules = new Dictionary<int, TabVersionDetail>();
             foreach (var tabVersionDetail in tabVersionDetails)
@@ -340,7 +340,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             };
         }
 
-        private static IEnumerable<TabVersionDetail> CopyVersionDetails(IEnumerable<TabVersionDetail> tabVersionDetails)
+        private static List<TabVersionDetail> CopyVersionDetails(IEnumerable<TabVersionDetail> tabVersionDetails)
         {
             return tabVersionDetails.Select(tabVersionDetail => new TabVersionDetail
             {
@@ -630,13 +630,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        private IEnumerable<TabVersionDetail> GetVersionModulesDetails(int tabId, int version)
+        private List<TabVersionDetail> GetVersionModulesDetails(int tabId, int version)
         {
             var tabVersionDetails = this.tabVersionDetailController.GetVersionHistory(tabId, version);
             return GetSnapShot(tabVersionDetails);
         }
 
-        private TabVersion PublishVersion(int portalId, int tabId, int createdByUserID, TabVersion tabVersion)
+        private TabVersion PublishVersion(int portalId, int tabId, int createdByUserId, TabVersion tabVersion)
         {
             var unPublishedDetails = this.tabVersionDetailController.GetTabVersionDetails(tabVersion.TabVersionId);
             foreach (var unPublishedDetail in unPublishedDetails)
@@ -648,7 +648,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             tabVersion.IsPublished = true;
-            this.tabVersionController.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, createdByUserID);
+            this.tabVersionController.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, createdByUserId);
             var tab = TabController.Instance.GetTab(tabId, portalId);
             if (!tab.HasBeenPublished)
             {
@@ -753,7 +753,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        private IEnumerable<ModuleInfo> ConvertToModuleInfo(IEnumerable<TabVersionDetail> details, int tabId)
+        private List<ModuleInfo> ConvertToModuleInfo(IEnumerable<TabVersionDetail> details, int tabId)
         {
             var modules = new List<ModuleInfo>();
             try

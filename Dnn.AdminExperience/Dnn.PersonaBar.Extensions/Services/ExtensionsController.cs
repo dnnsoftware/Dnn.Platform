@@ -1332,7 +1332,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             return returnValue.ToString();
         }
 
-        private static void AddFiles(ICollection<KeyValuePair<string, string>> collection, string path, string root, string filter)
+        private static void AddFiles(List<KeyValuePair<string, string>> collection, string path, string root, string filter)
         {
             var files = Directory.GetFiles(path, filter);
             foreach (var strFile in files)
@@ -1368,7 +1368,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             return path;
         }
 
-        private static IList<ModuleFolderDto> GetRootModuleDefinitionFolders()
+        private static List<ModuleFolderDto> GetRootModuleDefinitionFolders()
         {
             var moduleFolders = new List<ModuleFolderDto>();
             var rootFolders = Directory.GetDirectories($@"{Globals.ApplicationMapPath}\DesktopModules\").ToList();
@@ -1405,7 +1405,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower()));
         }
 
-        private static IList<ModuleFolderDto> GetModulesFolders(string ownerFolder)
+        private static List<ModuleFolderDto> GetModulesFolders(string ownerFolder)
         {
             if (!string.IsNullOrEmpty(ownerFolder))
             {
@@ -1417,7 +1417,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             return GetRootModuleDefinitionFolders();
         }
 
-        private static IList<string> GetFiles(string rootFolder, string extension)
+        private static List<string> GetFiles(string rootFolder, string extension)
         {
             return Directory.GetFiles(rootFolder, extension).Select(Path.GetFileName).ToList();
         }

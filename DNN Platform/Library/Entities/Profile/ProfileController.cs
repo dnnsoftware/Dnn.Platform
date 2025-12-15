@@ -571,7 +571,7 @@ namespace DotNetNuke.Entities.Profile
             return PortalController.GetEffectivePortalId(portalId);
         }
 
-        private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(IHostSettings hostSettings, int portalId)
+        private static List<ProfilePropertyDefinition> GetPropertyDefinitions(IHostSettings hostSettings, int portalId)
         {
             // Get the Cache Key
             string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);

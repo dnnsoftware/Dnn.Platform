@@ -371,7 +371,7 @@ namespace DotNetNuke.Security.Permissions
                    && HasPermission(tab.TabPermissions.ToString(exactKey), tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
-        private IEnumerable<RoleInfo> GetOrCreateAdvancedRoles(int portalId)
+        private List<RoleInfo> GetOrCreateAdvancedRoles(int portalId)
             => portalId >= 0
             ? this.advancedRoles.Select(roleName => this.GetOrCreateAdvancedRole(portalId, roleName)).ToList()
             : [];

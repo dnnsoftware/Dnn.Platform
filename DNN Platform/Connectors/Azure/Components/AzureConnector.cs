@@ -496,7 +496,7 @@ namespace Dnn.AzureConnector.Components
             return folderMapping;
         }
 
-        private IList<FolderMappingInfo> FindAzureFolderMappings(int portalId)
+        private List<FolderMappingInfo> FindAzureFolderMappings(int portalId)
         {
             return this.folderMappingController.GetFolderMappings(portalId)
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType).ToList();

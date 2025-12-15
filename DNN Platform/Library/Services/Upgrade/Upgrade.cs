@@ -1019,7 +1019,7 @@ namespace DotNetNuke.Services.Upgrade
                 Globals.SetStatus(Globals.UpgradeStatus.None);
 
                 // download LP (and templates) if not using en-us
-                IInstallationStep ensureLpAndTemplate = new UpdateLanguagePackStep();
+                var ensureLpAndTemplate = new UpdateLanguagePackStep();
                 ensureLpAndTemplate.Execute();
 
                 // install LP that contains templates if installing in a different language
@@ -1028,7 +1028,7 @@ namespace DotNetNuke.Services.Upgrade
                 if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
                 {
                     string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
-                    string lpAndTemplates = installFolder + "\\installlanguage.resources";
+                    string lpAndTemplates = $@"{installFolder}\installlanguage.resources";
 
                     if (File.Exists(lpAndTemplates))
                     {

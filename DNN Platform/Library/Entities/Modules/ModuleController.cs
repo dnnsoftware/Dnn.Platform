@@ -290,21 +290,15 @@ namespace DotNetNuke.Entities.Modules
                 // ReSharper restore AssignNullToNotNullAttribute
             }
 
-            XmlNode newNode = xmlModule.CreateElement("definition");
-            ModuleDefinitionInfo objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
+            var newNode = xmlModule.CreateElement("definition");
+            var objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
             newNode.InnerText = DesktopModuleController.GetDesktopModule(objModuleDef.DesktopModuleID, module.PortalID).ModuleName;
-            if (moduleNode != null)
-            {
-                moduleNode.AppendChild(newNode);
-            }
+            moduleNode?.AppendChild(newNode);
 
             // Add Module Definition Info
-            XmlNode definitionNode = xmlModule.CreateElement("moduledefinition");
+            var definitionNode = xmlModule.CreateElement("moduledefinition");
             definitionNode.InnerText = objModuleDef.FriendlyName;
-            if (moduleNode != null)
-            {
-                moduleNode.AppendChild(definitionNode);
-            }
+            moduleNode?.AppendChild(definitionNode);
 
             return moduleNode;
         }
@@ -1728,7 +1722,7 @@ namespace DotNetNuke.Entities.Modules
                     nodeModule.OwnerDocument.RemoveChild(existing);
                 }
 
-                XmlNode newNode = nodeModule.OwnerDocument.CreateElement("content");
+                var newNode = nodeModule.OwnerDocument.CreateElement("content");
                 var xmlAttr = nodeModule.OwnerDocument.CreateAttribute("type");
                 xmlAttr.Value = Globals.CleanName(module.DesktopModule.ModuleName);
                 newNode.Attributes?.Append(xmlAttr);

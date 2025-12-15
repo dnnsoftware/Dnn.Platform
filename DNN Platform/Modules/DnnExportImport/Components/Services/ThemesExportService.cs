@@ -219,13 +219,14 @@ namespace Dnn.ExportImport.Components.Services
             return this.importCount;
         }
 
-        private IList<string> GetExportThemes()
+        private List<string> GetExportThemes()
         {
-            var exportThemes = new List<string>();
-
-            // get site level themes
-            exportThemes.Add(this.portalSettings.DefaultPortalSkin);
-            exportThemes.Add(this.portalSettings.DefaultPortalContainer);
+            var exportThemes = new List<string>
+            {
+                // get site level themes
+                this.portalSettings.DefaultPortalSkin,
+                this.portalSettings.DefaultPortalContainer,
+            };
 
             if (!exportThemes.Contains(this.portalSettings.DefaultAdminSkin))
             {
@@ -254,7 +255,7 @@ namespace Dnn.ExportImport.Components.Services
             return themePackages;
         }
 
-        private IList<string> LoadExportThemesForPages()
+        private List<string> LoadExportThemesForPages()
         {
             var exportThemes = new List<string>();
 
@@ -274,7 +275,7 @@ namespace Dnn.ExportImport.Components.Services
             return exportThemes;
         }
 
-        private IList<string> LoadExportContainersForModules()
+        private List<string> LoadExportContainersForModules()
         {
             var exportThemes = new List<string>();
 

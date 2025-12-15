@@ -661,10 +661,10 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>An <see cref="XmlNode"/> representing the page's data.</returns>
         public static XmlNode SerializeTab(IBusinessControllerProvider businessControllerProvider, XmlDocument tabXml, Hashtable tabs, TabInfo tab, PortalInfo portal, bool includeContent)
         {
-            XmlNode newnode;
+            XmlElement newElement;
             CBO.SerializeObject(tab, tabXml);
 
-            XmlNode tabNode = tabXml.SelectSingleNode("tab");
+            var tabNode = tabXml.SelectSingleNode("tab");
             if (tabNode != null)
             {
                 if (tabNode.Attributes != null)
@@ -688,16 +688,16 @@ namespace DotNetNuke.Entities.Tabs
                 tabNode.RemoveChildNode("versionguid");
                 tabNode.RemoveChildNode("defaultLanguageGuid");
                 tabNode.RemoveChildNode("localizedVersionGuid");
-                XmlNodeList xmlNodeList = tabNode.SelectNodes("tabpermissions/permission");
-                if (xmlNodeList != null && xmlNodeList.Count == 0)
+                var xmlNodeList = tabNode.SelectNodes("tabpermissions/permission");
+                if (xmlNodeList is { Count: 0, })
                 {
                     // for some reason serialization of permissions did not work
                     // we are using a different method here to make sure that
                     // permissions are included in the tabinfo xml
-                    XmlDocument tabPermissions = new XmlDocument { XmlResolver = null };
+                    var tabPermissions = new XmlDocument { XmlResolver = null, };
                     CBO.SerializeObject(tab.TabPermissions, tabPermissions);
 
-                    XmlNode permissionsNode = tabXml.CreateElement("tabpermissions");
+                    var permissionsNode = tabXml.CreateElement("tabpermissions");
                     var tabPermissionsNodeList = tabPermissions.SelectNodes("tabpermissions/TabPermissionInfo");
                     if (tabPermissionsNodeList != null)
                     {
@@ -766,57 +766,57 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (tab.TabID == portal.SplashTabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "splashtab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "splashtab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.HomeTabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "hometab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "hometab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.UserTabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "usertab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "usertab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.LoginTabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "logintab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "logintab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.SearchTabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "searchtab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "searchtab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.Custom404TabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "404tab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "404tab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.Custom500TabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "500tab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "500tab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.TermsTabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "termstab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "termstab";
+                    tabNode.AppendChild(newElement);
                 }
                 else if (tab.TabID == portal.PrivacyTabId)
                 {
-                    newnode = tabXml.CreateElement("tabtype");
-                    newnode.InnerXml = "privacytab";
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("tabtype");
+                    newElement.InnerXml = "privacytab";
+                    tabNode.AppendChild(newElement);
                 }
             }
 
@@ -825,9 +825,9 @@ namespace DotNetNuke.Entities.Tabs
                 // Manage Parent Tab
                 if (!Null.IsNull(tab.ParentId))
                 {
-                    newnode = tabXml.CreateElement("parent");
-                    newnode.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.ParentId].ToString());
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("parent");
+                    newElement.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.ParentId].ToString());
+                    tabNode.AppendChild(newElement);
 
                     // save tab as: ParentTabName/CurrentTabName
                     tabs.Add(tab.TabID, tabs[tab.ParentId] + "/" + tab.TabName);
@@ -844,9 +844,9 @@ namespace DotNetNuke.Entities.Tabs
             {
                 try
                 {
-                    newnode = tabXml.CreateElement("defaultLanguageTab");
-                    newnode.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.DefaultLanguageTab.TabID].ToString());
-                    tabNode.AppendChild(newnode);
+                    newElement = tabXml.CreateElement("defaultLanguageTab");
+                    newElement.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.DefaultLanguageTab.TabID].ToString());
+                    tabNode.AppendChild(newElement);
                 }
                 catch
                 {
@@ -854,34 +854,26 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            XmlNode panesNode;
-            XmlNode paneNode;
-            XmlNode nameNode;
-            XmlNode modulesNode;
-            XmlNode moduleNode;
-            XmlDocument moduleXml;
-            ModuleInfo module;
-
             // Serialize modules
-            panesNode = tabNode.AppendChild(tabXml.CreateElement("panes"));
-            foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(tab.TabID))
+            var panesNode = tabNode.AppendChild(tabXml.CreateElement("panes"));
+            foreach (var kvp in ModuleController.Instance.GetTabModules(tab.TabID))
             {
-                module = kvp.Value;
+                var module = kvp.Value;
                 if (!module.IsDeleted)
                 {
-                    moduleXml = new XmlDocument { XmlResolver = null };
-                    moduleNode = ModuleController.SerializeModule(businessControllerProvider, moduleXml, module, includeContent);
-                    if (panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']") == null)
+                    var moduleXml = new XmlDocument { XmlResolver = null };
+                    var moduleNode = ModuleController.SerializeModule(businessControllerProvider, moduleXml, module, includeContent);
+                    if (panesNode.SelectSingleNode($"descendant::pane[name='{module.PaneName}']") == null)
                     {
                         // new pane found
-                        paneNode = moduleXml.CreateElement("pane");
-                        nameNode = paneNode.AppendChild(moduleXml.CreateElement("name"));
+                        var paneNode = moduleXml.CreateElement("pane");
+                        var nameNode = paneNode.AppendChild(moduleXml.CreateElement("name"));
                         nameNode.InnerText = module.PaneName;
                         paneNode.AppendChild(moduleXml.CreateElement("modules"));
                         panesNode.AppendChild(tabXml.ImportNode(paneNode, true));
                     }
 
-                    modulesNode = panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']/modules");
+                    var modulesNode = panesNode.SelectSingleNode($"descendant::pane[name='{module.PaneName}']/modules");
                     modulesNode.AppendChild(tabXml.ImportNode(moduleNode, true));
                 }
             }
@@ -2750,7 +2742,7 @@ namespace DotNetNuke.Entities.Tabs
             return dic;
         }
 
-        private IEnumerable<TabInfo> GetSiblingTabs(TabInfo objTab)
+        private List<TabInfo> GetSiblingTabs(TabInfo objTab)
         {
             return this.GetTabsByPortal(objTab.PortalID).WithCulture(objTab.CultureCode, true).WithParentId(objTab.ParentId);
         }

@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Library.Repository
     {
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
         private static readonly object ThreadLocker = new object();
-        private readonly IDataService dataService = new DataService();
+        private readonly DataService dataService = new DataService();
 
         /// <inheritdoc/>
         public void SaveExtension(PersonaBarExtension extension)

@@ -306,15 +306,12 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
         private static void UpdateResourceFileNode(XmlDocument xmlDoc, string key, string text)
         {
-            XmlNode node;
-            XmlNode nodeData;
-            XmlAttribute attr;
-            node = xmlDoc.SelectSingleNode("//root/data[@name='" + key + "']/value");
+            var node = xmlDoc.SelectSingleNode("//root/data[@name='" + key + "']/value");
             if (node == null)
             {
                 // missing entry
-                nodeData = xmlDoc.CreateElement("data");
-                attr = xmlDoc.CreateAttribute("name");
+                var nodeData = xmlDoc.CreateElement("data");
+                var attr = xmlDoc.CreateAttribute("name");
                 attr.Value = key;
                 nodeData.Attributes.Append(attr);
                 xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);

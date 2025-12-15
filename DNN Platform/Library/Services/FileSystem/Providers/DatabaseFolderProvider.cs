@@ -274,7 +274,7 @@ namespace DotNetNuke.Services.FileSystem
             UpdateFileInternal(file.FileId, content);
         }
 
-        private static Stream GetFileStreamInternal(IDataReader dr)
+        private static MemoryStream GetFileStreamInternal(IDataReader dr)
         {
             byte[] bytes = null;
             try

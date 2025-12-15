@@ -2157,7 +2157,7 @@ namespace DotNetNuke.Entities.Portals
             return objPortalSettings;
         }
 
-        private static PortalInfo GetPortalInternal(IPortalController portalController, int portalId, string cultureCode)
+        private static PortalInfo GetPortalInternal(PortalController portalController, int portalId, string cultureCode)
         {
             return portalController.GetPortalList(cultureCode).SingleOrDefault(p => ((IPortalInfo)p).PortalId == portalId);
         }

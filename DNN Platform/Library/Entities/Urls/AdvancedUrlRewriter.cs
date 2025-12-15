@@ -931,7 +931,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        private static IPrincipal GetCurrentPrincipal(HttpContext context)
+        private static GenericPrincipal GetCurrentPrincipal(HttpContext context)
         {
             // Extract the forms authentication cookie
             var authCookie = context.Request.Cookies[FormsAuthentication.FormsCookieName];
@@ -942,7 +942,7 @@ namespace DotNetNuke.Entities.Urls
                 if (authCookie != null)
                 {
                     var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                    if (authTicket != null && !authTicket.Expired)
+                    if (authTicket is { Expired: false, })
                     {
                         var roles = authTicket.UserData.Split('|');
                         var id = new FormsIdentity(authTicket);
@@ -966,7 +966,7 @@ namespace DotNetNuke.Entities.Urls
             if (debugEnabled)
             {
                 const string debugToken = "_aumdebug";
-                if (queryStringCol != null && queryStringCol[debugToken] != null)
+                if (queryStringCol?[debugToken] != null)
                 {
                     debugValue = queryStringCol[debugToken];
                 }

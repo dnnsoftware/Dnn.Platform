@@ -606,8 +606,8 @@ namespace DotNetNuke.Entities.Modules
 
         private static void CreateContentItem(DesktopModuleInfo desktopModule)
         {
-            IContentTypeController typeController = new ContentTypeController();
-            ContentType contentType = ContentType.DesktopModule;
+            var typeController = new ContentTypeController();
+            var contentType = ContentType.DesktopModule;
 
             if (contentType == null)
             {
@@ -615,7 +615,7 @@ namespace DotNetNuke.Entities.Modules
                 contentType.ContentTypeId = typeController.AddContentType(contentType);
             }
 
-            IContentController contentController = Util.GetContentController();
+            var contentController = Util.GetContentController();
             desktopModule.Content = desktopModule.FriendlyName;
             desktopModule.Indexed = false;
             desktopModule.ContentTypeId = contentType.ContentTypeId;

@@ -392,7 +392,7 @@ namespace DotNetNuke.Services.FileSystem
             MoveFiles(folder, newFolder, folderMapping);
         }
 
-        private static void MoveFiles(IFolderInfo folder, IFolderInfo newFolder, FolderMappingInfo folderMapping)
+        private static void MoveFiles(FolderInfo folder, IFolderInfo newFolder, FolderMappingInfo folderMapping)
         {
             var folderProvider = Instance(folderMapping.FolderProviderType);
             var files = folderProvider.GetFiles(folder);

@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
     public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
         private readonly IApplicationStatusInfo appStatus;
-        private IDictionary<string, IList<string>> knownPages;
+        private Dictionary<string, IList<string>> knownPages;
 
         /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
         [Obsolete("Deprecated in IApplicationStatusInfo 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]

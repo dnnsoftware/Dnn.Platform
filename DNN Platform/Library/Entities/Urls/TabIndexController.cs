@@ -656,7 +656,7 @@ namespace DotNetNuke.Entities.Urls
             IEnumerable<PortalAliasInfo> chosenAliases,
             bool hasSiteRootRedirect,
             Dictionary<string, DupKeyCheck> dupCheck,
-            ICollection<string> usingHttpAliases)
+            List<string> usingHttpAliases)
         {
             foreach (PortalAliasInfo alias in chosenAliases)
             {

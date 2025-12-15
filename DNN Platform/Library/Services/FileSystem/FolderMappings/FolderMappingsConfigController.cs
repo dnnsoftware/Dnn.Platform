@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
-        private IDictionary<string, string> FolderMappings { get; set; }
+        private Dictionary<string, string> FolderMappings { get; set; }
 
         /// <inheritdoc/>
         public void LoadConfig()

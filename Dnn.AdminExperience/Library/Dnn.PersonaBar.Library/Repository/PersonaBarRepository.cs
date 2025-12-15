@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Library.Repository
     {
         private const string PersonaBarMenuCacheKey = "PersonaBarMenu";
         private static readonly object ThreadLocker = new object();
-        private readonly IDataService dataService = new DataService();
+        private readonly DataService dataService = new DataService();
 
         /// <inheritdoc/>
         public PersonaBarMenu GetMenu()

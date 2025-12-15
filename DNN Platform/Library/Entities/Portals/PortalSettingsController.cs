@@ -361,7 +361,7 @@ namespace DotNetNuke.Entities.Portals
             activeTab.ContainerPath = SkinController.FormatSkinPath(activeTab.ContainerSrc);
         }
 
-        private static void GetBreadCrumbs(IList<TabInfo> breadCrumbs, int tabId, int portalId)
+        private static void GetBreadCrumbs(List<TabInfo> breadCrumbs, int tabId, int portalId)
         {
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
             var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);

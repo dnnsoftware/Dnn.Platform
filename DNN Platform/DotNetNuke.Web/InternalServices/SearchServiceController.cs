@@ -408,15 +408,15 @@ namespace DotNetNuke.Web.InternalServices
             });
         }
 
-        private static ArrayList GetModulesByDefinition(int portalID, string friendlyName)
+        private static ArrayList GetModulesByDefinition(int portalId, string friendlyName)
         {
-            var cacheKey = string.Format(ModuleInfosCacheKey, portalID);
+            var cacheKey = string.Format(ModuleInfosCacheKey, portalId);
             return CBO.GetCachedObject<ArrayList>(
                 new CacheItemArgs(cacheKey, ModuleInfosCacheTimeOut, ModuleInfosCachePriority),
-                args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, friendlyName), typeof(ModuleInfo)));
+                args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalId, friendlyName), typeof(ModuleInfo)));
         }
 
-        private static List<int> GetSearchTypeIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
+        private static List<int> GetSearchTypeIds(Hashtable settings, IEnumerable<SearchContentSource> searchContentSources)
         {
             var list = new List<int>();
             var configuredList = new List<string>();
@@ -450,7 +450,7 @@ namespace DotNetNuke.Web.InternalServices
             return list.Distinct().ToList();
         }
 
-        private static IEnumerable<int> GetSearchModuleDefIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
+        private static List<int> GetSearchModuleDefIds(Hashtable settings, IEnumerable<SearchContentSource> searchContentSources)
         {
             var list = new List<int>();
             var configuredList = new List<string>();
@@ -570,7 +570,7 @@ namespace DotNetNuke.Web.InternalServices
             return defaultValue;
         }
 
-        private List<int> GetSearchPortalIds(IDictionary settings, int portalId)
+        private List<int> GetSearchPortalIds(Hashtable settings, int portalId)
         {
             var list = new List<int>();
             if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForPortals"])))
@@ -598,7 +598,7 @@ namespace DotNetNuke.Web.InternalServices
             return list;
         }
 
-        private IList<SearchContentSource> GetSearchContentSources(IList<string> typesList)
+        private List<SearchContentSource> GetSearchContentSources(IList<string> typesList)
         {
             var sources = new List<SearchContentSource>();
             var list = InternalSearchController.Instance.GetSearchContentSourceList(this.PortalSettings.PortalId);

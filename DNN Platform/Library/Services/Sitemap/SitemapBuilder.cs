@@ -339,56 +339,53 @@ namespace DotNetNuke.Services.Sitemap
             }
             finally
             {
-                if (sitemapOutput != null)
-                {
-                    sitemapOutput.Dispose();
-                }
+                sitemapOutput?.Dispose();
             }
         }
 
-        /// <summary>  Generates a sitemapindex file.</summary>
+        /// <summary>Generates a sitemap index file.</summary>
         /// <param name="output">The output stream.</param>
         /// <param name="totalFiles">Number of files that are included in the sitemap index.</param>
         private void WriteSitemapIndex(TextWriter output, int totalFiles)
         {
-            TextWriter sitemapOutput;
-            using (sitemapOutput = new StreamWriter(this.portalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + this.CacheFileName, false, Encoding.UTF8))
+            using var sitemapOutput = new StreamWriter($@"{this.portalSettings.HomeSystemDirectoryMapPath}Sitemap\{this.CacheFileName}", false, Encoding.UTF8);
+
+            // Initialize writer
+            var settings = new XmlWriterSettings
             {
-                // Initialize writer
-                var settings = new XmlWriterSettings();
-                settings.Indent = true;
-                settings.Encoding = Encoding.UTF8;
-                settings.OmitXmlDeclaration = false;
+                Indent = true,
+                Encoding = Encoding.UTF8,
+                OmitXmlDeclaration = false,
+            };
 
-                using (var writer = XmlWriter.Create(sitemapOutput, settings))
+            using (var writer = XmlWriter.Create(sitemapOutput, settings))
+            {
+                // build header
+                writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SitemapVersion);
+
+                // write urls to output
+                for (int index = 1; index <= totalFiles; index++)
                 {
-                    // build header
-                    writer.WriteStartElement("sitemapindex", "http://www.sitemaps.org/schemas/sitemap/" + SitemapVersion);
+                    string url = null;
 
-                    // write urls to output
-                    for (int index = 1; index <= totalFiles; index++)
+                    url = "~/Sitemap.aspx?i=" + index;
+                    if (IsChildPortal(this.portalSettings, HttpContext.Current))
                     {
-                        string url = null;
-
-                        url = "~/Sitemap.aspx?i=" + index;
-                        if (IsChildPortal(this.portalSettings, HttpContext.Current))
-                        {
-                            url += "&portalid=" + this.portalSettings.PortalId;
-                        }
-
-                        writer.WriteStartElement("sitemap");
-                        writer.WriteElementString("loc", Globals.AddHTTP(HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(url)));
-                        writer.WriteElementString("lastmod", DateTime.Now.ToString("yyyy-MM-dd"));
-                        writer.WriteEndElement();
+                        url += "&portalid=" + this.portalSettings.PortalId;
                     }
 
+                    writer.WriteStartElement("sitemap");
+                    writer.WriteElementString("loc", Globals.AddHTTP(HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(url)));
+                    writer.WriteElementString("lastmod", DateTime.Now.ToString("yyyy-MM-dd"));
                     writer.WriteEndElement();
-                    writer.Close();
                 }
 
-                sitemapOutput.Flush();
-                sitemapOutput.Close();
+                writer.WriteEndElement();
+                writer.Close();
             }
+
+            sitemapOutput.Flush();
+            sitemapOutput.Close();
         }
 
         /// <summary>  Is sitemap is cached, verifies is the cached file exists and is still valid.</summary>

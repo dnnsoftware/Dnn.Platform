@@ -1245,7 +1245,7 @@ namespace DotNetNuke.Security.Membership
             return arrUsers;
         }
 
-        private static IList<UserInfo> FillUserList(int portalId, IDataReader dr)
+        private static List<UserInfo> FillUserList(int portalId, IDataReader dr)
         {
             var users = new List<UserInfo>();
             try

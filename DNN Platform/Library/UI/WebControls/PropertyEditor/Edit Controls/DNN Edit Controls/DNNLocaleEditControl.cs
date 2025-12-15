@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnLeft");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            IList<CultureInfo> cultures = new List<CultureInfo>();
+            var cultures = new List<CultureInfo>();
             switch (this.ListType)
             {
                 case LanguagesListType.All:

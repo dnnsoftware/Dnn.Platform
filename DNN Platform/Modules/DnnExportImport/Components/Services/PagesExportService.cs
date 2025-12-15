@@ -56,10 +56,10 @@ namespace Dnn.ExportImport.Components.Services
         private ExportImportJob exportImportJob;
         private ExportDto exportDto;
 
-        private IList<int> exportedModuleDefinitions = new List<int>();
+        private List<int> exportedModuleDefinitions = [];
         private Dictionary<int, int> partialImportedTabs = new Dictionary<int, int>();
         private Dictionary<int, bool> searchedParentTabs = new Dictionary<int, bool>();
-        private IList<ImportModuleMapping> importContentList = new List<ImportModuleMapping>(); // map the exported module and local module.
+        private List<ImportModuleMapping> importContentList = []; // map the exported module and local module.
 
         /// <summary>Initializes a new instance of the <see cref="PagesExportService"/> class.</summary>
         public PagesExportService()
@@ -482,14 +482,14 @@ namespace Dnn.ExportImport.Components.Services
             return false;
         }
 
-        private static bool ModuleOrderMatched(ModuleInfo module, ExportTabModule exportTabModule, IDictionary<int, int> localOrders, IDictionary<int, int> exportOrders)
+        private static bool ModuleOrderMatched(ModuleInfo module, ExportTabModule exportTabModule, Dictionary<int, int> localOrders, Dictionary<int, int> exportOrders)
         {
             return localOrders.ContainsKey(module.ModuleID)
                    && exportOrders.ContainsKey(exportTabModule.ModuleID)
                    && localOrders[module.ModuleID] == exportOrders[exportTabModule.ModuleID];
         }
 
-        private static IDictionary<int, int> BuildModuleOrders(IList<ModuleInfo> modules)
+        private static Dictionary<int, int> BuildModuleOrders(IList<ModuleInfo> modules)
         {
             var moduleOrders = new Dictionary<int, int>();
             var moduleOrder = 1;
@@ -521,11 +521,11 @@ namespace Dnn.ExportImport.Components.Services
             return moduleOrders;
         }
 
-        private static IDictionary<int, int> BuildModuleOrders(IList<ExportTabModule> modules)
+        private static Dictionary<int, int> BuildModuleOrders(IList<ExportTabModule> modules)
         {
             var moduleOrders = new Dictionary<int, int>();
             var moduleOrder = 1;
-            Action resetModulOrder = () => { moduleOrder = 1; };
+            var resetModuleOrder = () => { moduleOrder = 1; };
             var lastPane = string.Empty;
             var lastIsDeleted = false;
             foreach (var module in modules.OrderBy(m => m.PaneName.ToLowerInvariant()).ThenBy(m => m.IsDeleted))
@@ -534,7 +534,7 @@ namespace Dnn.ExportImport.Components.Services
                 var isDeleted = module.IsDeleted;
                 if (paneName != lastPane || isDeleted != lastIsDeleted)
                 {
-                    resetModulOrder();
+                    resetModuleOrder();
                 }
 
                 var currentOrder = moduleOrder + 2;

@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
             return null;
         }
 
-        private static IDictionary<string, string> GetPathQuery(MenuItem menuItem)
+        private static Dictionary<string, string> GetPathQuery(MenuItem menuItem)
         {
             var path = menuItem.Path;
             if (!path.Contains("?"))

@@ -22,12 +22,12 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     /// <summary>Installer for persona bar menus.</summary>
     public class PersonaBarMenuInstaller : ComponentInstallerBase
     {
-        private readonly IList<MenuItem> menuItems = new List<MenuItem>();
-        private readonly IList<PersonaBarExtension> extensions = new List<PersonaBarExtension>();
-        private readonly IList<PermissionDefinition> permissionDefinitions = new List<PermissionDefinition>();
-        private readonly IDictionary<string, string> extensionMenus = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> menuRoles = new Dictionary<string, string>();
-        private readonly IDictionary<string, string> parentMaps = new Dictionary<string, string>();
+        private readonly List<MenuItem> menuItems = [];
+        private readonly List<PersonaBarExtension> extensions = [];
+        private readonly List<PermissionDefinition> permissionDefinitions = [];
+        private readonly Dictionary<string, string> extensionMenus = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> menuRoles = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> parentMaps = new Dictionary<string, string>();
 
         /// <inheritdoc/>
         public override void Commit()
@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
                 this.SavePermissionDefinitions();
 
-                if (this.menuItems.Any())
+                if (this.menuItems.Count != 0)
                 {
                     foreach (var menuItem in this.menuItems)
                     {
@@ -141,7 +141,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SavePermissionDefinitions()
         {
-            if (!this.menuItems.Any())
+            if (this.menuItems.Count == 0)
             {
                 return;
             }

@@ -102,7 +102,7 @@ namespace DotNetNuke.Prompt
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
 
-        private static ICommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
+        private static CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand)
         {
             var commandHelp = new CommandHelp();
             if (consoleCommand != null)

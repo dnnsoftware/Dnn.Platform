@@ -22,7 +22,7 @@ namespace DotNetNuke.HttpModules
     /// <summary>An <see cref="IHttpModule"/> for mobile redirection.</summary>
     public class MobileRedirectModule : IHttpModule
     {
-        private static readonly IList<string> SpecialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
+        private static readonly List<string> SpecialPages = ["/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy",];
         private static readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private readonly IRedirectionController redirectionController;
         private readonly IPortalController portalController;

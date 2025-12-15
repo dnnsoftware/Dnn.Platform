@@ -696,7 +696,7 @@ namespace Dnn.ExportImport.Components.Engines
             return files.Sum(file => new FileInfo(file).Length);
         }
 
-        private static void CleanupDatabaseIfDirty(IExportImportRepository repository)
+        private static void CleanupDatabaseIfDirty(ExportImportRepository repository)
         {
             var exportDto = repository.GetSingleItem<ExportDto>();
             var isDirty = exportDto.IsDirty;

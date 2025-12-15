@@ -330,7 +330,7 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
         }
 
-        private IEnumerable<IEnumerable<string>> GetPaneClientIdCollection()
+        private List<List<string>> GetPaneClientIdCollection()
         {
             var panelClientIds = new List<List<string>>(this.PortalSettings.ActiveTab.Panes.Count);
 

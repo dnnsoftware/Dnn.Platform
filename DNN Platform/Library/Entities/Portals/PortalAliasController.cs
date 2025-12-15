@@ -281,7 +281,7 @@ namespace DotNetNuke.Entities.Portals
             return portalAlias.All(c => validChars.Contains(c.ToString()));
         }
 
-        private IPortalAliasInfo GetPortalAliasLookupInternal(string alias)
+        private PortalAliasInfo GetPortalAliasLookupInternal(string alias)
         {
             return this.GetPortalAliasesInternal().SingleOrDefault(pa => pa.Key == alias).Value;
         }

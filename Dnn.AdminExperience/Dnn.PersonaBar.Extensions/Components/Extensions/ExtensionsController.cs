@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IDictionary<string, PackageType> GetPackageTypes()
         {
-            IDictionary<string, PackageType> installedPackageTypes = new Dictionary<string, PackageType>();
+            var installedPackageTypes = new Dictionary<string, PackageType>();
             foreach (var packageType in PackageController.Instance.GetExtensionPackageTypes())
             {
                 installedPackageTypes[packageType.PackageType] = packageType;
