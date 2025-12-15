@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            return this.GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId));
+            return GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId));
         }
 
         /// <inheritdoc/>
@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var file = FileManager.Instance.GetFile(folder, fileName, true);
 
-            return file != null ? this.GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId)) : null;
+            return file != null ? GetFileStreamInternal(DataProvider.Instance().GetFileContent(file.FileId)) : null;
         }
 
         /// <inheritdoc/>
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            return file != null ? this.GetFileStreamInternal(DataProvider.Instance().GetFileVersionContent(file.FileId, version)) : null;
+            return file != null ? GetFileStreamInternal(DataProvider.Instance().GetFileVersionContent(file.FileId, version)) : null;
         }
 
         /// <inheritdoc/>
@@ -255,7 +255,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("file", file);
 
-            this.UpdateFileInternal(file.FileId, content);
+            UpdateFileInternal(file.FileId, content);
         }
 
         /// <inheritdoc/>
@@ -271,10 +271,10 @@ namespace DotNetNuke.Services.FileSystem
                 return;
             }
 
-            this.UpdateFileInternal(file.FileId, content);
+            UpdateFileInternal(file.FileId, content);
         }
 
-        private Stream GetFileStreamInternal(IDataReader dr)
+        private static Stream GetFileStreamInternal(IDataReader dr)
         {
             byte[] bytes = null;
             try
@@ -292,7 +292,7 @@ namespace DotNetNuke.Services.FileSystem
             return bytes != null ? new MemoryStream(bytes) : null;
         }
 
-        private void UpdateFileInternal(int fileId, Stream content)
+        private static void UpdateFileInternal(int fileId, Stream content)
         {
             byte[] fileContent = null;
 

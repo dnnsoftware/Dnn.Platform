@@ -30,13 +30,8 @@ namespace DotNetNuke.Services.Scheduling
 
         public event WorkErrored ProcessErrored;
 
-        public int ThreadID
-        {
-            get
-            {
-                return Thread.CurrentThread.ManagedThreadId;
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public int ThreadID => Thread.CurrentThread.ManagedThreadId;
 
         public ScheduleHistoryItem ScheduleHistoryItem { get; set; }
 

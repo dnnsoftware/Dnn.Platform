@@ -4,6 +4,7 @@
 namespace DotNetNuke.HttpModules.Personalization
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -32,6 +33,7 @@ namespace DotNetNuke.HttpModules.Personalization
         }
 
         /// <summary>Gets the HttpModule module name.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ModuleName => "PersonalizationModule";
 
         /// <inheritdoc/>

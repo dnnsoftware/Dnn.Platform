@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Configuration;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Threading;
     using System.Web.Caching;
@@ -143,6 +144,7 @@ namespace DotNetNuke.Entities.Urls
             return pi;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void RemovedPageIndexCallBack(string k, object v, CacheItemRemovedReason r)
         {
             cacheItemRemovedReason = r;
@@ -744,6 +746,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="urlDict">A dictionary of tabs for all portals.</param>
         /// <param name="urlPortals">The portal IDs.</param>
         /// <param name="customAliasTabs">A dictionary of portals for which we've retrieved the tabs.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void GetFriendlyUrlIndexFromCache(
             out SharedDictionary<int, SharedDictionary<string, string>> urlDict,
             out ConcurrentBag<int> urlPortals,
@@ -775,6 +778,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void GetPageIndexFromCache(
             out SharedDictionary<string, string> dict,
             out SharedDictionary<int, PathSizes> portalDepthInfo,
@@ -818,7 +822,7 @@ namespace DotNetNuke.Entities.Urls
 
             logRemovedReason = settings.LogCacheMessages;
 
-            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(this.GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
+            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
             SetPageCache(UrlPortalsKey, urlPortals, settings);
             SetPageCache(CustomAliasTabsKey, customAliasTabs, settings);
 
@@ -860,7 +864,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // 783 : use cache dependency to manage page index instead of triggerDictionaryRebuild regex.
-            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(this.GetTabsCacheDependency(portalIds)), settings, this.onRemovePageIndex);
+            SetPageCache(PageIndexKey, tabDictionary, new DNNCacheDependency(GetTabsCacheDependency(portalIds)), settings, this.onRemovePageIndex);
 
             SetPageCache(PageIndexDepthKey, portalDepthInfo, settings);
 
@@ -883,12 +887,13 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void StoreTabPathsInCache(int portalId, SharedDictionary<string, string> tabPathDictionary, FriendlyUrlSettings settings)
         {
             SetPageCache(
                 string.Format(TabPathsKey, portalId),
                 tabPathDictionary,
-                new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
+                new DNNCacheDependency(GetTabsCacheDependency(new List<int> { portalId })),
                 settings,
                 null);
         }
@@ -942,7 +947,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        private CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
+        private static CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
         {
             var keys = new List<string>();
             foreach (int portalId in portalIds)

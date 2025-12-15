@@ -97,7 +97,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-            this.rolePermissionsGrid.ItemDataBound += this.RolePermissionsGrid_ItemDataBound;
+            this.rolePermissionsGrid.ItemDataBound += RolePermissionsGrid_ItemDataBound;
         }
 
         /// <inheritdoc/>
@@ -165,7 +165,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <inheritdoc />
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
-            return !this.IsImplicitRole(role.PortalID, role.RoleID);
+            return !IsImplicitRole(role.PortalID, role.RoleID);
         }
 
         /// <inheritdoc />
@@ -291,6 +291,28 @@ namespace DotNetNuke.Security.Permissions.Controls
             return true;
         }
 
+        private static void RolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                {
+                    if (item.Controls.Cast<Control>().Last().Controls[0] is ImageButton actionImage)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
+        }
+
+        private static bool IsImplicitRole(int portalId, int roleId)
+        {
+            return TabPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
+        }
+
         /// <summary>Gets the TabPermissions from the Data Store.</summary>
         private void GetTabPermissions()
         {
@@ -318,29 +340,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             objTabPermission.TabID = this.TabID;
 
             return objTabPermission;
-        }
-
-        private void RolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            var item = e.Item;
-
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
-                {
-                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
-                    if (actionImage != null)
-                    {
-                        actionImage.Visible = false;
-                    }
-                }
-            }
-        }
-
-        private bool IsImplicitRole(int portalId, int roleId)
-        {
-            return TabPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -27,6 +28,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         private const string ROBOTSEXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<string> GetConfigFilesList()
         {
             var files = Directory
@@ -37,9 +39,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             return fileList;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetConfigFile(string configFile)
         {
-            this.ValidateFilePath(configFile);
+            ValidateFilePath(configFile);
 
             if (configFile.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -62,9 +65,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdateConfigFile(string fileName, string fileContent)
         {
-            this.ValidateFilePath(fileName);
+            ValidateFilePath(fileName);
 
             if (fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -82,9 +86,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         /// <param name="fileName">The config file name.</param>
         /// <param name="fileContent">The contents of the config file.</param>
         /// <returns>A list of validation errors.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<string> ValidateConfigFile(string fileName, string fileContent)
         {
-            this.ValidateFilePath(fileName);
+            ValidateFilePath(fileName);
 
             if (!fileName.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -101,9 +106,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             return [];
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void MergeConfigFile(string fileContent)
         {
-            if (this.IsValidXmlMergDocument(fileContent))
+            if (IsValidXmlMergeDocument(fileContent))
             {
                 var doc = new XmlDocument { XmlResolver = null };
                 doc.LoadXml(fileContent);
@@ -199,7 +205,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             return retMsg;
         }
 
-        private bool IsValidXmlMergDocument(string mergeDocText)
+        private static bool IsValidXmlMergeDocument(string mergeDocText)
         {
             if (string.IsNullOrEmpty(mergeDocText.Trim()))
             {
@@ -210,7 +216,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             return true;
         }
 
-        private void ValidateFilePath(string filePath)
+        private static void ValidateFilePath(string filePath)
         {
             var physicalPath = Path.Combine(Globals.ApplicationMapPath, filePath);
             var fileInfo = new FileInfo(physicalPath);

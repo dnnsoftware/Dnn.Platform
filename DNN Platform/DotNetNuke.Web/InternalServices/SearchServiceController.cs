@@ -270,7 +270,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 // first entry
                 var first = results[0];
-                @group.Title = showFriendlyTitle ? this.GetFriendlyTitle(first) : first.Title;
+                @group.Title = showFriendlyTitle ? GetFriendlyTitle(first) : first.Title;
                 @group.DocumentUrl = first.Url;
 
                 // Find a different title for multiple entries with same url
@@ -311,7 +311,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 foreach (var result in results)
                 {
-                    var title = showFriendlyTitle ? this.GetFriendlyTitle(result) : result.Title;
+                    var title = showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
                     var detail = new DetailedView
                     {
                         Title = title != null && title.Contains("<") ? HttpUtility.HtmlEncode(title) : title,
@@ -487,6 +487,16 @@ namespace DotNetNuke.Web.InternalServices
             return list;
         }
 
+        private static string GetFriendlyTitle(SearchResult result)
+        {
+            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
+            {
+                return result.Keywords["title"];
+            }
+
+            return result.Title;
+        }
+
         private bool IsWildCardEnabledForModule()
         {
             var searchModuleSettings = this.GetSearchModuleSettings();
@@ -602,21 +612,11 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                // no types fitler specified, add all available content sources
+                // no types filter specified, add all available content sources
                 sources.AddRange(list);
             }
 
             return sources;
-        }
-
-        private string GetFriendlyTitle(SearchResult result)
-        {
-            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
-            {
-                return result.Keywords["title"];
-            }
-
-            return result.Title;
         }
 
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
@@ -636,7 +636,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return showFriendlyTitle ? this.GetFriendlyTitle(result) : result.Title;
+            return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
         }
 
         private string GetTabTitleFromModuleId(int moduleId)

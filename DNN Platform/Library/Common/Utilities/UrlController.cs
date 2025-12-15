@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.Collections;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
 
     using DotNetNuke.Data;
@@ -14,16 +15,19 @@ namespace DotNetNuke.Common.Utilities
 
     public class UrlController
     {
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ArrayList GetUrls(int portalID)
         {
             return CBO.FillCollection(DataProvider.Instance().GetUrls(portalID), typeof(UrlInfo));
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public UrlInfo GetUrl(int portalID, string url)
         {
             return CBO.FillObject<UrlInfo>(DataProvider.Instance().GetUrl(portalID, url));
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public UrlTrackingInfo GetUrlTracking(int portalID, string url, int moduleId)
         {
             return CBO.FillObject<UrlTrackingInfo>(DataProvider.Instance().GetUrlTracking(portalID, url, moduleId));
@@ -58,6 +62,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeleteUrl(int portalID, string url)
         {
             DataProvider.Instance().DeleteUrl(portalID, url);

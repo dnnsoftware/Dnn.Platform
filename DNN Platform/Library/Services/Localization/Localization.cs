@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Localization
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Reflection;
@@ -177,24 +178,12 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>Gets the current Culture being used.</summary>
-        public string CurrentCulture
-        {
-            get
-            {
-                // _CurrentCulture
-                return Thread.CurrentThread.CurrentCulture.ToString();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string CurrentCulture => Thread.CurrentThread.CurrentCulture.ToString();
 
         /// <summary>Gets the CurrentUICulture for the Thread.</summary>
-        public string CurrentUICulture
-        {
-            // _CurrentCulture
-            get
-            {
-                return Thread.CurrentThread.CurrentUICulture.ToString();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string CurrentUICulture => Thread.CurrentThread.CurrentUICulture.ToString();
 
         public static int ActiveLanguagesByPortalID(int portalID)
         {

@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool ShowTags { get; set; }
 
-        private Vocabulary TagVocabulary
+        private static Vocabulary TagVocabulary
         {
             get
             {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Category Links
-                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat;
+                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= categories.Count() - 1; i++)
                 {
@@ -143,7 +143,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Tag Links
-                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat;
+                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= tags.Count() - 1; i++)
                 {
@@ -339,12 +339,12 @@ namespace DotNetNuke.Web.UI.WebControls
                             // Not tagged
                             TermController termController = new TermController();
                             Term term =
-                                (from te in termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
+                                (from te in termController.GetTermsByVocabulary(TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
                                     SingleOrDefault();
                             if (term == null)
                             {
                                 // Add term
-                                term = new Term(this.TagVocabulary.VocabularyId);
+                                term = new Term(TagVocabulary.VocabularyId);
                                 term.Name = tagName;
                                 termController.AddTerm(term);
                             }

@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
@@ -299,6 +300,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="writer">The XmlWriter.</param>
         /// <param name="manifest">The manifest.</param>
         /// <remarks>This overload takes a package manifest and writes it to a Writer.</remarks>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void WriteManifest(XmlWriter writer, string manifest)
         {
             WriteManifestStartElement(writer);
@@ -386,7 +388,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
 
             // Close Package
-            this.WritePackageEndElement(writer);
+            WritePackageEndElement(writer);
 
             if (!packageFragment)
             {
@@ -606,6 +608,15 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
+        private static void WritePackageEndElement(XmlWriter writer)
+        {
+            // Close components Element
+            writer.WriteEndElement();
+
+            // Close package Element
+            writer.WriteEndElement();
+        }
+
         private void AddFilesToZip(ZipArchive stream, IDictionary<string, InstallFile> files, string basePath)
         {
             foreach (InstallFile packageFile in files.Values)
@@ -681,20 +692,8 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             finally
             {
-                if (strmZipFile != null)
-                {
-                    strmZipFile.Close();
-                }
+                strmZipFile?.Close();
             }
-        }
-
-        private void WritePackageEndElement(XmlWriter writer)
-        {
-            // Close components Element
-            writer.WriteEndElement();
-
-            // Close package Element
-            writer.WriteEndElement();
         }
 
         private void WritePackageStartElement(XmlWriter writer)

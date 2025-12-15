@@ -92,6 +92,21 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             this.DeleteMenus();
         }
 
+        private static void SaveMenuPermission(MenuItem menuItem, string roleName)
+        {
+            var portals = PortalController.Instance.GetPortals();
+            foreach (IPortalInfo portal in portals)
+            {
+                var portalId = portal.PortalId;
+
+                // when default permission already initialized, then package need to save default permission immediately.
+                if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
+                {
+                    MenuPermissionController.SaveMenuDefaultPermissions(portalId, menuItem, roleName);
+                }
+            }
+        }
+
         private void SaveMenuItems()
         {
             foreach (var menuItem in this.menuItems.Where(x => !string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
@@ -210,21 +225,6 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             this.permissionDefinitions.Add(permission);
         }
 
-        private void SaveMenuPermission(MenuItem menuItem, string roleName)
-        {
-            var portals = PortalController.Instance.GetPortals();
-            foreach (IPortalInfo portal in portals)
-            {
-                var portalId = portal.PortalId;
-
-                // when default permission already initialized, then package need to save default permission immediately.
-                if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
-                {
-                    MenuPermissionController.SaveMenuDefaultPermissions(portalId, menuItem, roleName);
-                }
-            }
-        }
-
         private void SaveMenuPermissions(MenuItem menuItem)
         {
             if (!this.menuRoles.TryGetValue(menuItem.Identifier, out var role))
@@ -245,7 +245,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             {
                 if (!string.IsNullOrEmpty(roleName.Trim()))
                 {
-                    this.SaveMenuPermission(menuItem, roleName.Trim());
+                    SaveMenuPermission(menuItem, roleName.Trim());
                 }
             }
         }

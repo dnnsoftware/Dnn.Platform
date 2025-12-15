@@ -1954,7 +1954,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 else
                 {
-                    this.UpdateContentItem(updatedTab);
+                    UpdateContentItem(updatedTab);
                 }
             }
 
@@ -2087,7 +2087,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <inheritdoc />
         public bool IsHostOrAdminPage(TabInfo tab)
         {
-            return this.IsHostTab(tab) || this.IsAdminTab(tab);
+            return IsHostTab(tab) || this.IsAdminTab(tab);
         }
 
         internal Dictionary<int, List<TabUrlInfo>> GetTabUrls(int portalId)
@@ -2307,6 +2307,24 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        private static bool IsHostTab(TabInfo tab)
+        {
+            return tab.PortalID == Null.NullInteger;
+        }
+
+        /// <summary>update content item for the tab when tab name changed.</summary>
+        /// <param name="tab">The updated tab.</param>
+        private static void UpdateContentItem(TabInfo tab)
+        {
+            IContentController contentController = Util.GetContentController();
+            var newContent = string.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
+            if (tab.Content != newContent)
+            {
+                tab.Content = newContent;
+                contentController.UpdateContentItem(tab);
+            }
+        }
+
         /// <summary>
         /// Checks if the page is root or has a localized parent.
         /// If neither is true, then we cannot create localized version of the page for the given locale.
@@ -2348,11 +2366,6 @@ namespace DotNetNuke.Entities.Tabs
 
             var parentTab = this.GetTab(tab.ParentId, tab.PortalID);
             return this.IsAdminTabRecursive(parentTab, adminTabId);
-        }
-
-        private bool IsHostTab(TabInfo tab)
-        {
-            return tab.PortalID == Null.NullInteger;
         }
 
         private int AddTabInternal(TabInfo tab, int afterTabId, int beforeTabId, bool includeAllTabsModules)
@@ -2990,19 +3003,6 @@ namespace DotNetNuke.Entities.Tabs
             {
                 string sKey = sKeyLoopVariable;
                 this.UpdateTabSettingInternal(updatedTab.TabID, sKey, Convert.ToString(updatedTab.TabSettings[sKey]), false);
-            }
-        }
-
-        /// <summary>update content item for the tab when tab name changed.</summary>
-        /// <param name="tab">The updated tab.</param>
-        private void UpdateContentItem(TabInfo tab)
-        {
-            IContentController contentController = Util.GetContentController();
-            var newContent = string.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
-            if (tab.Content != newContent)
-            {
-                tab.Content = newContent;
-                contentController.UpdateContentItem(tab);
             }
         }
     }

@@ -500,7 +500,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var installFolder = this.GetPackageInstallFolder(package.PackageType);
+                var installFolder = GetPackageInstallFolder(package.PackageType);
                 if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
@@ -552,7 +552,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var installFolder = this.GetPackageInstallFolder(package.PackageType);
+                var installFolder = GetPackageInstallFolder(package.PackageType);
                 if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(package.FileName))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
@@ -584,7 +584,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var installFolder = this.GetPackageInstallFolder(packageType);
+                var installFolder = GetPackageInstallFolder(packageType);
                 if (string.IsNullOrEmpty(installFolder) || string.IsNullOrEmpty(fileName))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidPackage");
@@ -856,14 +856,14 @@ namespace Dnn.PersonaBar.Extensions.Services
             try
             {
                 var folders = new List<string>();
-                foreach (var folder in this.GetRootModuleDefinitionFolders())
+                foreach (var folder in GetRootModuleDefinitionFolders())
                 {
                     var files = Directory.GetFiles(folder.Path, "*.ascx");
 
                     // exclude module folders
                     if (files.Length == 0 || folder.Path.ToLowerInvariant() == "admin")
                     {
-                        var path = this.GetFolderPath(folder);
+                        var path = GetFolderPath(folder);
                         folders.Add(path);
                     }
                 }
@@ -891,9 +891,9 @@ namespace Dnn.PersonaBar.Extensions.Services
             try
             {
                 var folders = new List<string>();
-                foreach (var moduleFolder in this.GetModulesFolders(ownerFolder))
+                foreach (var moduleFolder in GetModulesFolders(ownerFolder))
                 {
-                    var path = this.GetFolderPath(moduleFolder);
+                    var path = GetFolderPath(moduleFolder);
                     folders.Add(path);
                 }
 
@@ -922,17 +922,17 @@ namespace Dnn.PersonaBar.Extensions.Services
                 switch (type)
                 {
                     case FileType.Control:
-                        files.AddRange(this.GetFiles(folder, "*.ascx"));
-                        files.AddRange(this.GetFiles(folder, "*.html"));
-                        files.AddRange(this.GetFiles(folder, "*.htm"));
-                        files.AddRange(this.GetFiles(folder, "*.cshtml"));
-                        files.AddRange(this.GetFiles(folder, "*.vbhtml"));
+                        files.AddRange(GetFiles(folder, "*.ascx"));
+                        files.AddRange(GetFiles(folder, "*.html"));
+                        files.AddRange(GetFiles(folder, "*.htm"));
+                        files.AddRange(GetFiles(folder, "*.cshtml"));
+                        files.AddRange(GetFiles(folder, "*.vbhtml"));
                         break;
                     case FileType.Template:
-                        files.AddRange(this.GetFiles(Globals.HostMapPath + "Templates\\", ".module.template"));
+                        files.AddRange(GetFiles(Globals.HostMapPath + "Templates\\", ".module.template"));
                         break;
                     case FileType.Manifest:
-                        files.AddRange(this.GetFiles(folder, "*.dnn*").Where(file => ManifestExensionsRegex.IsMatch(file)));
+                        files.AddRange(GetFiles(folder, "*.dnn*").Where(file => ManifestExensionsRegex.IsMatch(file)));
                         break;
                 }
 
@@ -1071,13 +1071,13 @@ namespace Dnn.PersonaBar.Extensions.Services
                         foreach (var file in Directory.GetFiles(filePath, "*.dnn"))
                         {
                             var fileName = file.Replace(filePath + "\\", string.Empty);
-                            packageManifestDto.Manifests.Add(fileName, this.GetFileContent(writer.BasePath, fileName));
+                            packageManifestDto.Manifests.Add(fileName, GetFileContent(writer.BasePath, fileName));
                         }
 
                         foreach (var file in Directory.GetFiles(filePath, "*.dnn.resources"))
                         {
                             var fileName = file.Replace(filePath + "\\", string.Empty);
-                            packageManifestDto.Manifests.Add(fileName, this.GetFileContent(writer.BasePath, fileName));
+                            packageManifestDto.Manifests.Add(fileName, GetFileContent(writer.BasePath, fileName));
                         }
                     }
                 }
@@ -1357,6 +1357,102 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        private static string GetFolderPath(ModuleFolderDto folder)
+        {
+            var path = folder.Path.Replace(Path.GetDirectoryName(folder.Path) + "\\", string.Empty);
+            if (folder.IsSpecial)
+            {
+                path = folder.SpecialType + "\\" + path;
+            }
+
+            return path;
+        }
+
+        private static IList<ModuleFolderDto> GetRootModuleDefinitionFolders()
+        {
+            var moduleFolders = new List<ModuleFolderDto>();
+            var rootFolders = Directory.GetDirectories($@"{Globals.ApplicationMapPath}\DesktopModules\").ToList();
+
+            foreach (var folderPath in rootFolders)
+            {
+                var folderName = folderPath.Replace($@"{Path.GetDirectoryName(folderPath)}\", string.Empty);
+                if (IsSpecialFolder(folderName))
+                {
+                    Directory.GetDirectories(folderPath).ToList()
+                        .ForEach(specialFolderChild =>
+                            moduleFolders.Add(new ModuleFolderDto
+                            {
+                                Path = specialFolderChild,
+                                IsSpecial = true,
+                                SpecialType = folderName,
+                            }));
+                }
+                else
+                {
+                    moduleFolders.Add(new ModuleFolderDto
+                    {
+                        Path = folderPath,
+                        IsSpecial = false,
+                    });
+                }
+            }
+
+            return moduleFolders;
+        }
+
+        private static bool IsSpecialFolder(string folderName)
+        {
+            return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower()));
+        }
+
+        private static IList<ModuleFolderDto> GetModulesFolders(string ownerFolder)
+        {
+            if (!string.IsNullOrEmpty(ownerFolder))
+            {
+                return Directory.GetDirectories($@"{Globals.ApplicationMapPath}\DesktopModules\{ownerFolder}")
+                    .Select(folder => new ModuleFolderDto { Path = folder, IsSpecial = false })
+                    .ToList();
+            }
+
+            return GetRootModuleDefinitionFolders();
+        }
+
+        private static IList<string> GetFiles(string rootFolder, string extension)
+        {
+            return Directory.GetFiles(rootFolder, extension).Select(Path.GetFileName).ToList();
+        }
+
+        private static string GetPackageInstallFolder(string packageType)
+        {
+            switch ((packageType ?? string.Empty).ToLowerInvariant())
+            {
+                case "authsystem":
+                case "auth_system":
+                    return "AuthSystem";
+                case "corelanguagepack":
+                case "extensionlanguagepack":
+                    return "Language";
+                case "javascriptlibrary":
+                case "javascript_library":
+                    return "JavaScriptLibrary";
+                case "module":
+                case "skin":
+                case "container":
+                case "provider":
+                case "library":
+                    return packageType;
+                default:
+                    return string.Empty;
+            }
+        }
+
+        private static string GetFileContent(string basePath, string fileName)
+        {
+            var filename = Path.Combine(Globals.ApplicationMapPath, basePath, fileName);
+            using var objStreamReader = File.OpenText(filename);
+            return objStreamReader.ReadToEnd();
+        }
+
         private HttpResponseMessage CreateManifestInternal(PackageInfo package, PackageManifestDto packageManifestDto)
         {
             var writer = PackageWriterFactory.GetWriter(package);
@@ -1464,71 +1560,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             return task;
         }
 
-        private string GetFolderPath(ModuleFolderDto folder)
-        {
-            var path = folder.Path.Replace(Path.GetDirectoryName(folder.Path) + "\\", string.Empty);
-            if (folder.IsSpecial)
-            {
-                path = folder.SpecialType + "\\" + path;
-            }
-
-            return path;
-        }
-
-        private IList<ModuleFolderDto> GetRootModuleDefinitionFolders()
-        {
-            var moduleFolders = new List<ModuleFolderDto>();
-            var rootFolders = Directory.GetDirectories(Globals.ApplicationMapPath + "\\DesktopModules\\").ToList();
-
-            foreach (var folderPath in rootFolders)
-            {
-                var folderName = folderPath.Replace(Path.GetDirectoryName(folderPath) + "\\", string.Empty);
-                if (this.IsSpecialFolder(folderName))
-                {
-                    Directory.GetDirectories(folderPath).ToList()
-                        .ForEach(specialFolderChild =>
-                            moduleFolders.Add(new ModuleFolderDto
-                            {
-                                Path = specialFolderChild,
-                                IsSpecial = true,
-                                SpecialType = folderName,
-                            }));
-                }
-                else
-                {
-                    moduleFolders.Add(new ModuleFolderDto
-                    {
-                        Path = folderPath,
-                        IsSpecial = false,
-                    });
-                }
-            }
-
-            return moduleFolders;
-        }
-
-        private bool IsSpecialFolder(string folderName)
-        {
-            return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower()));
-        }
-
-        private IList<ModuleFolderDto> GetModulesFolders(string ownerFolder)
-        {
-            if (!string.IsNullOrEmpty(ownerFolder))
-            {
-                return Directory.GetDirectories(Globals.ApplicationMapPath + "\\DesktopModules\\" + ownerFolder)
-                    .Select(folder => new ModuleFolderDto { Path = folder, IsSpecial = false })
-                    .ToList();
-            }
-
-            return this.GetRootModuleDefinitionFolders();
-        }
-
-        private IList<string> GetFiles(string rootFolder, string extension)
-        {
-            return Directory.GetFiles(rootFolder, extension).Select(Path.GetFileName).ToList();
-        }
-
         private ParseResultDto ParsePackageFile(string filePath)
         {
             if (!File.Exists(filePath))
@@ -1536,10 +1567,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return new ParseResultDto() { Success = false, Message = "FileNotFound" };
             }
 
-            using (var stream = new FileStream(filePath, FileMode.Open))
-            {
-                return InstallController.Instance.ParsePackage(this.PortalSettings, this.UserInfo, filePath, stream);
-            }
+            using var stream = new FileStream(filePath, FileMode.Open);
+            return InstallController.Instance.ParsePackage(this.PortalSettings, this.UserInfo, filePath, stream);
         }
 
         private InstallResultDto InstallPackageFile(string filePath)
@@ -1549,34 +1578,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return new InstallResultDto() { Success = false, Message = "FileNotFound" };
             }
 
-            using (var stream = new FileStream(filePath, FileMode.Open))
-            {
-                return InstallController.Instance.InstallPackage(this.PortalSettings, this.UserInfo, null, filePath, stream);
-            }
-        }
-
-        private string GetPackageInstallFolder(string packageType)
-        {
-            switch ((packageType ?? string.Empty).ToLowerInvariant())
-            {
-                case "authsystem":
-                case "auth_system":
-                    return "AuthSystem";
-                case "corelanguagepack":
-                case "extensionlanguagepack":
-                    return "Language";
-                case "javascriptlibrary":
-                case "javascript_library":
-                    return "JavaScriptLibrary";
-                case "module":
-                case "skin":
-                case "container":
-                case "provider":
-                case "library":
-                    return packageType;
-                default:
-                    return string.Empty;
-            }
+            using var stream = new FileStream(filePath, FileMode.Open);
+            return InstallController.Instance.InstallPackage(this.PortalSettings, this.UserInfo, null, filePath, stream);
         }
 
         private HttpResponseMessage DownLoadFile(string packagePath)
@@ -1594,15 +1597,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
             result.Content.Headers.ContentDisposition.FileName = fileName;
             return result;
-        }
-
-        private string GetFileContent(string basePath, string fileName)
-        {
-            var filename = Path.Combine(Globals.ApplicationMapPath, basePath, fileName);
-            using (var objStreamReader = File.OpenText(filename))
-            {
-                return objStreamReader.ReadToEnd();
-            }
         }
     }
 }

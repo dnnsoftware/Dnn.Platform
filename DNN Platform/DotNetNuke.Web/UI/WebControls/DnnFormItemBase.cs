@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -98,10 +99,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        protected PortalSettings PortalSettings
-        {
-            get { return PortalController.Instance.GetCurrentPortalSettings(); }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         protected PropertyInfo Property
         {

@@ -6,6 +6,7 @@ namespace DotNetNuke.Security.Permissions
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
 
@@ -98,6 +99,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.AddDefinition" />
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int AddPermission(IPermissionDefinitionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
@@ -108,11 +110,12 @@ namespace DotNetNuke.Security.Permissions
                 permission.PermissionName,
                 UserController.Instance.GetCurrentUserInfo().UserID));
 
-            this.ClearCache();
+            ClearCache();
             return permissionId;
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.DeleteDefinition" />
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeletePermission(int permissionID)
         {
             EventLogController.Instance.AddLog(
@@ -122,10 +125,11 @@ namespace DotNetNuke.Security.Permissions
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogController.EventLogType.PERMISSION_DELETED);
             Provider.DeletePermission(permissionID);
-            this.ClearCache();
+            ClearCache();
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.GetDefinition" />
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PermissionInfo GetPermission(int permissionID)
         {
             return GetPermissions().SingleOrDefault(p => p.PermissionID == permissionID);
@@ -159,6 +163,7 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <inheritdoc cref="IPermissionDefinitionService.UpdateDefinition" />
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdatePermission(IPermissionDefinitionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
@@ -169,7 +174,7 @@ namespace DotNetNuke.Security.Permissions
                 permission.PermissionKey,
                 permission.PermissionName,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            this.ClearCache();
+            ClearCache();
         }
 
         public T RemapPermission<T>(T permission, int portalId)
@@ -267,7 +272,7 @@ namespace DotNetNuke.Security.Permissions
         void IPermissionDefinitionService.UpdateDefinition(IPermissionDefinitionInfo permission) => this.UpdatePermission(permission);
 
         /// <inheritdoc />
-        void IPermissionDefinitionService.ClearCache() => this.ClearCache();
+        void IPermissionDefinitionService.ClearCache() => ClearCache();
 
         private static IEnumerable<PermissionInfo> GetPermissions()
         {
@@ -313,7 +318,7 @@ namespace DotNetNuke.Security.Permissions
             return GetPermissions().Where(p => p.ModuleDefID == moduleDefId || p.PermissionCode == "SYSTEM_MODULE_DEFINITION");
         }
 
-        private void ClearCache()
+        private static void ClearCache()
         {
             DataCache.RemoveCache(DataCache.PermissionsCacheKey);
         }

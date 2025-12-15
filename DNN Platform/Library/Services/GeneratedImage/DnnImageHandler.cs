@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <inheritdoc/>
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
-            this.SetupCulture();
+            SetupCulture();
 
             // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
@@ -545,6 +545,21 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        private static void SetupCulture()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            if (settings == null)
+            {
+                return;
+            }
+
+            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
+            if (pageLocale != null)
+            {
+                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
+            }
+        }
+
         private ImageInfo GetEmptyImageInfo()
         {
             return new ImageInfo(this.EmptyImage)
@@ -602,21 +617,6 @@ namespace DotNetNuke.Services.GeneratedImage
                         this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
                         break;
                 }
-            }
-        }
-
-        private void SetupCulture()
-        {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null)
-            {
-                return;
-            }
-
-            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
-            if (pageLocale != null)
-            {
-                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
             }
         }
     }

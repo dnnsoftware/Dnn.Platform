@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Syndication
                                     if (Convert.ToDateTime(objModule.StartDate == Null.NullDate ? DateTime.MinValue : objModule.StartDate) < DateTime.Now &&
                                         Convert.ToDateTime(objModule.EndDate == Null.NullDate ? DateTime.MaxValue : objModule.EndDate) > DateTime.Now)
                                     {
-                                        this.Channel.Items.Add(this.GetRssItem(result));
+                                        this.Channel.Items.Add(GetRssItem(result));
                                     }
                                 }
                             }
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Syndication
         /// <summary>Creates an RSS Item.</summary>
         /// <param name="searchResult">The search result to convert to an RSS item.</param>
         /// <returns>A new <see cref="GenericRssElement"/> instance.</returns>
-        private GenericRssElement GetRssItem(SearchResult searchResult)
+        private static GenericRssElement GetRssItem(SearchResult searchResult)
         {
             var item = new GenericRssElement();
             var url = searchResult.Url;

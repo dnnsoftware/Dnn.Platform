@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             try
             {
                 IList<string> modifiedFiles;
-                var fileModified = this.CheckDefaultPageModified(out modifiedFiles);
+                var fileModified = CheckDefaultPageModified(out modifiedFiles);
                 if (fileModified)
                 {
                     if (modifiedFiles.Count == 0)
@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             return result;
         }
 
-        private bool CheckDefaultPageModified(out IList<string> modifiedFiles)
+        private static bool CheckDefaultPageModified(out IList<string> modifiedFiles)
         {
             modifiedFiles = new List<string>();
 

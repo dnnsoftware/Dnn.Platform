@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -74,6 +75,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
         protected INavigationManager NavigationManager { get; }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IDictionary<string, PackageType> GetPackageTypes()
         {
             IDictionary<string, PackageType> installedPackageTypes = new Dictionary<string, PackageType>();

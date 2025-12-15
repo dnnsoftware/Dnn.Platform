@@ -333,7 +333,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 // switch to secure connection
                                 strURL = requestedPath.Replace("http://", "https://");
-                                strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
+                                strURL = FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
                             }
 
                             if (portalSettings.SSLEnforced)
@@ -345,7 +345,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                     if (request.QueryString["ssl"] == null)
                                     {
                                         strURL = requestedPath.Replace("https://", "http://");
-                                        strURL = this.FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                        strURL = FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
                                     }
                                 }
                             }
@@ -402,7 +402,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
         }
 
         // Note these formerly lived in the 'UrlRewriteModule.cs' class
-        private string FormatDomain(string url, string replaceDomain, string withDomain)
+        private static string FormatDomain(string url, string replaceDomain, string withDomain)
         {
             if (!string.IsNullOrEmpty(replaceDomain) && !string.IsNullOrEmpty(withDomain))
             {

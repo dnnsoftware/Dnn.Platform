@@ -247,7 +247,7 @@ namespace DotNetNuke.Security.Roles
                 roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(),
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            this.ClearRoleGroupCache(roleGroup.PortalID);
+            ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
         }
 
@@ -256,7 +256,7 @@ namespace DotNetNuke.Security.Roles
         public override void DeleteRoleGroup(RoleGroupInfo roleGroup)
         {
             this.dataProvider.DeleteRoleGroup(roleGroup.RoleGroupID);
-            this.ClearRoleGroupCache(roleGroup.PortalID);
+            ClearRoleGroupCache(roleGroup.PortalID);
         }
 
         /// <summary>GetRoleGroup gets a RoleGroup from the Data Store.</summary>
@@ -293,7 +293,17 @@ namespace DotNetNuke.Security.Roles
                 roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(),
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            this.ClearRoleGroupCache(roleGroup.PortalID);
+            ClearRoleGroupCache(roleGroup.PortalID);
+        }
+
+        private static void ClearRoleGroupCache(int portalId)
+        {
+            DataCache.ClearCache(GetRoleGroupsCacheKey(portalId));
+        }
+
+        private static string GetRoleGroupsCacheKey(int portalId)
+        {
+            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
         }
 
         private void AddDNNUserRole(UserRoleInfo userRole)
@@ -311,20 +321,10 @@ namespace DotNetNuke.Security.Roles
                     UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
-        private void ClearRoleGroupCache(int portalId)
-        {
-            DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
-        }
-
-        private string GetRoleGroupsCacheKey(int portalId)
-        {
-            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
-        }
-
         private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
         {
             var cacheArgs = new CacheItemArgs(
-                this.GetRoleGroupsCacheKey(portalId),
+                GetRoleGroupsCacheKey(portalId),
                 DataCache.RoleGroupsCacheTimeOut,
                 DataCache.RoleGroupsCachePriority);
 

@@ -105,7 +105,7 @@ namespace DNN.Connectors.GoogleAnalytics4
                             ga4Id = setting.SettingValue;
                             break;
                         case "trackforadmin":
-                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
+                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -115,7 +115,7 @@ namespace DNN.Connectors.GoogleAnalytics4
             {
                 { "Ga4ID", ga4Id },
                 { "TrackAdministrators", trackForAdmin },
-                { "isDeactivating", this.HandleCustomBoolean("false") },
+                { "isDeactivating", HandleCustomBoolean("false") },
             };
 
             return configItems;
@@ -183,7 +183,7 @@ namespace DNN.Connectors.GoogleAnalytics4
 
                 if (!isDeactivating)
                 {
-                    this.EnsureScriptInConfig();
+                    EnsureScriptInConfig();
                 }
 
                 return true;
@@ -196,10 +196,10 @@ namespace DNN.Connectors.GoogleAnalytics4
         }
 
         /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
-        private void EnsureScriptInConfig()
+        private static void EnsureScriptInConfig()
         {
-            var applicationMappath = HttpContext.Current.Server.MapPath("\\");
-            var file = applicationMappath + "\\SiteAnalytics.config";
+            var applicationMapPath = HttpContext.Current.Server.MapPath(@"\");
+            var file = applicationMapPath + @"\SiteAnalytics.config";
             var xdoc = new XmlDocument();
             xdoc.Load(file);
             var found = false;
@@ -214,7 +214,7 @@ namespace DNN.Connectors.GoogleAnalytics4
 
             if (!found)
             {
-                var fileGa4 = applicationMappath + "\\DesktopModules\\Connectors\\GoogleAnalytics4\\GoogleAnalytics4.config";
+                var fileGa4 = applicationMapPath + @"\DesktopModules\Connectors\GoogleAnalytics4\GoogleAnalytics4.config";
                 var xdocGa4 = new XmlDocument();
                 xdocGa4.Load(fileGa4);
 
@@ -236,7 +236,7 @@ namespace DNN.Connectors.GoogleAnalytics4
         /// </summary>
         /// <param name="value">The string representing a boolean.</param>
         /// <returns>The string representing a boolean after the correction.</returns>
-        private string HandleCustomBoolean(string value)
+        private static string HandleCustomBoolean(string value)
         {
             if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
             {

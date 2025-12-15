@@ -231,6 +231,46 @@ namespace Dnn.PersonaBar.Pages.Components
             return Null.NullInteger;
         }
 
+        private static bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
+        {
+            var valid = true;
+            errorMessage = null;
+
+            // get default culture if the tab's culture is null
+            var cultureCode = tab.CultureCode;
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                cultureCode = portalSettings.DefaultLanguage;
+            }
+
+            // Validate Tab Path
+            var tabId = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
+            if (tabId != Null.NullInteger && tabId != tab.TabID)
+            {
+                var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
+                if (existingTab != null && existingTab.IsDeleted)
+                {
+                    errorMessage = Localization.GetString("TabRecycled");
+                }
+                else
+                {
+                    errorMessage = Localization.GetString("TabExists");
+                }
+
+                valid = false;
+            }
+
+            // check whether have conflict between tab path and portal alias.
+            if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
+            {
+                errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);
+                valid = false;
+            }
+
+            return valid;
+        }
+
         private int CreateTabFromParent(PortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
         {
             var tab = new TabInfo
@@ -295,7 +335,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             // Validate Tab Path
-            if (!this.IsValidTabPath(tab, tab.TabPath, out errorMessage))
+            if (!IsValidTabPath(tab, tab.TabPath, out errorMessage))
             {
                 return Null.NullInteger;
             }
@@ -376,46 +416,6 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 throw new DotNetNukeException("Unable to process page template.", ex, DotNetNukeErrorCode.DeserializePanesFailed);
             }
-        }
-
-        private bool IsValidTabPath(TabInfo tab, string newTabPath, out string errorMessage)
-        {
-            var valid = true;
-            errorMessage = null;
-
-            // get default culture if the tab's culture is null
-            var cultureCode = tab.CultureCode;
-            if (string.IsNullOrEmpty(cultureCode))
-            {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                cultureCode = portalSettings.DefaultLanguage;
-            }
-
-            // Validate Tab Path
-            var tabId = TabController.GetTabByTabPath(tab.PortalID, newTabPath, cultureCode);
-            if (tabId != Null.NullInteger && tabId != tab.TabID)
-            {
-                var existingTab = TabController.Instance.GetTab(tabId, tab.PortalID, false);
-                if (existingTab != null && existingTab.IsDeleted)
-                {
-                    errorMessage = Localization.GetString("TabRecycled");
-                }
-                else
-                {
-                    errorMessage = Localization.GetString("TabExists");
-                }
-
-                valid = false;
-            }
-
-            // check whether have conflict between tab path and portal alias.
-            if (TabController.IsDuplicateWithPortalAlias(tab.PortalID, newTabPath))
-            {
-                errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), tab.TabName, newTabPath);
-                valid = false;
-            }
-
-            return valid;
         }
     }
 }

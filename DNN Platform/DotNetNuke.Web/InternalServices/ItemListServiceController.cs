@@ -376,6 +376,46 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        private static List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
+        {
+            var filterTabs = new List<int>();
+            if (!string.IsNullOrEmpty(roles))
+            {
+                var roleList = roles.Split(';').Select(int.Parse);
+
+                filterTabs.AddRange(
+                    tabs.Where(
+                            t =>
+                                t.TabPermissions.Cast<TabPermissionInfo>()
+                                    .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
+                        .Where(t => !disabledNotSelectable || !t.DisableLink)
+                        .Select(t => t.TabID));
+            }
+            else
+            {
+                filterTabs.AddRange(tabs.Where(t => !disabledNotSelectable || !t.DisableLink).Select(t => t.TabID));
+            }
+
+            return filterTabs;
+        }
+
+        private static IEnumerable<IFileInfo> GetFiles(IFolderInfo parentFolder, string filter, string searchText)
+        {
+            Func<IFileInfo, bool> searchFunc;
+            var filterList = string.IsNullOrEmpty(filter) ? null : filter.ToLowerInvariant().Split(',').ToList();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                searchFunc = f => filterList == null || filterList.Contains(f.Extension.ToLowerInvariant());
+            }
+            else
+            {
+                searchFunc = f => f.FileName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
+                                  && (filterList == null || filterList.Contains(f.Extension.ToLowerInvariant()));
+            }
+
+            return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
+        }
+
         private NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
         {
             var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
@@ -429,7 +469,7 @@ namespace DotNetNuke.Web.InternalServices
                 return sortedTree;
             }
 
-            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
             var children = ApplySort(GetChildrenOf(tabs, Null.NullInteger, filterTabs), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             sortedTree.Children = children;
             return sortedTree;
@@ -536,7 +576,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
 
             var pages = tabs.Select(tab => new ItemDto
             {
@@ -611,7 +651,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
 
             var pages = tabs.Select(tab => new ItemDto
             {
@@ -847,7 +887,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var parentId = page.ParentId;
             var parentTab = parentId > 0 ? pages.SingleOrDefault(t => t.TabID == parentId) : null;
-            var filterTabs = this.FilterTabsByRole(pages, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(pages, roles, disabledNotSelectable);
             while (parentTab != null)
             {
                 // load all sibiling
@@ -928,29 +968,6 @@ namespace DotNetNuke.Web.InternalServices
             tree.Children = rootTree;
 
             return tree;
-        }
-
-        private List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
-        {
-            var filterTabs = new List<int>();
-            if (!string.IsNullOrEmpty(roles))
-            {
-                var roleList = roles.Split(';').Select(int.Parse);
-
-                filterTabs.AddRange(
-                    tabs.Where(
-                            t =>
-                                t.TabPermissions.Cast<TabPermissionInfo>()
-                                    .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
-                        .Where(t => !disabledNotSelectable || !t.DisableLink)
-                        .Select(t => t.TabID));
-            }
-            else
-            {
-                filterTabs.AddRange(tabs.Where(t => !disabledNotSelectable || !t.DisableLink).Select(t => t.TabID));
-            }
-
-            return filterTabs;
         }
 
         private NTree<ItemDto> GetFoldersInternal(int portalId, int sortOrder, string permissions, int parentFolderId = -1)
@@ -1301,7 +1318,7 @@ namespace DotNetNuke.Web.InternalServices
                 return new List<ItemDto>();
             }
 
-            var files = this.GetFiles(parentFolder, filter, searchText);
+            var files = GetFiles(parentFolder, filter, searchText);
 
             var filesDto = files.Select(f => new ItemDto
             {
@@ -1314,23 +1331,6 @@ namespace DotNetNuke.Web.InternalServices
             var sortedList = ApplySort(filesDto, sortOrder);
 
             return sortedList;
-        }
-
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo parentFolder, string filter, string searchText)
-        {
-            Func<IFileInfo, bool> searchFunc;
-            var filterList = string.IsNullOrEmpty(filter) ? null : filter.ToLowerInvariant().Split(',').ToList();
-            if (string.IsNullOrEmpty(searchText))
-            {
-                searchFunc = f => filterList == null || filterList.Contains(f.Extension.ToLowerInvariant());
-            }
-            else
-            {
-                searchFunc = f => f.FileName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
-                                  && (filterList == null || filterList.Contains(f.Extension.ToLowerInvariant()));
-            }
-
-            return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
         }
 
         private bool IsPortalIdValid(int portalId)

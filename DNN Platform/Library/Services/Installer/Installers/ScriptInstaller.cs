@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Xml.XPath;
 
@@ -22,76 +23,29 @@ namespace DotNetNuke.Services.Installer.Installers
         private InstallFile installScript;
 
         /// <inheritdoc />
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "*dataprovider, sql";
-            }
-        }
+        public override string AllowableFiles => "*dataprovider, sql";
 
         /// <summary>Gets the base Install Script (if present).</summary>
-        protected InstallFile InstallScript
-        {
-            get
-            {
-                return this.installScript;
-            }
-        }
+        protected InstallFile InstallScript => this.installScript;
 
         /// <summary>Gets the collection of versioned Install Scripts.</summary>
-        protected SortedList<Version, InstallFile> InstallScripts
-        {
-            get
-            {
-                return this.installScripts;
-            }
-        }
+        protected SortedList<Version, InstallFile> InstallScripts => this.installScripts;
 
         /// <summary>Gets the collection of UnInstall Scripts.</summary>
-        protected SortedList<Version, InstallFile> UnInstallScripts
-        {
-            get
-            {
-                return this.unInstallScripts;
-            }
-        }
+        protected SortedList<Version, InstallFile> UnInstallScripts => this.unInstallScripts;
 
         /// <summary>Gets the name of the Collection Node (<c>scripts</c>).</summary>
-        protected override string CollectionNodeName
-        {
-            get
-            {
-                return "scripts";
-            }
-        }
+        protected override string CollectionNodeName => "scripts";
 
         /// <summary>Gets the name of the Item Node (<c>script</c>).</summary>
-        protected override string ItemNodeName
-        {
-            get
-            {
-                return "script";
-            }
-        }
+        protected override string ItemNodeName => "script";
 
-        protected ProviderConfiguration ProviderConfiguration
-        {
-            get
-            {
-                return ProviderConfiguration.GetProviderConfiguration("data");
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected ProviderConfiguration ProviderConfiguration => ProviderConfiguration.GetProviderConfiguration("data");
 
         /// <summary>Gets a list of Pre-Upgrade Scripts (if present) - these scripts will always run before any upgrade scripts but not upon initial installation.</summary>
         /// <value>A list of <see cref="InstallFile"/> instances.</value>
-        protected IList<InstallFile> PreUpgradeScripts
-        {
-            get
-            {
-                return this.preUpgradeScripts;
-            }
-        }
+        protected IList<InstallFile> PreUpgradeScripts => this.preUpgradeScripts;
 
         [Obsolete("Deprecated in DotNetNuke 9.9.0. This is now the first of the PostUpgrade scripts. Scheduled for removal in v11.0.0.")]
         protected InstallFile UpgradeScript => this.PostUpgradeScripts[0];

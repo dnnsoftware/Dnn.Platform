@@ -308,7 +308,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 objStream.WriteLine(strSkin);
                 objStream.Close();
 
-                this.UpdateManifest(portalSettings, updateTheme);
+                UpdateManifest(portalSettings, updateTheme);
             }
         }
 
@@ -603,13 +603,13 @@ namespace Dnn.PersonaBar.Themes.Components
             return "[" + strSkinType + "]" + strUrl;
         }
 
-        private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
+        private static void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
         {
             var themePath = SkinController.FormatSkinSrc(updateTheme.Path, portalSettings);
             if (File.Exists(themePath.Replace(".ascx", ".htm")))
             {
                 var strFile = themePath.Replace(".ascx", ".xml");
-                if (File.Exists(strFile) == false)
+                if (!File.Exists(strFile))
                 {
                     strFile = strFile.Replace(Path.GetFileName(strFile), "skin.xml");
                 }

@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Scheduling
                 // This is called from RunPooledThread()
                 ticksElapsed = Environment.TickCount - ticksElapsed;
                 serviceScope = Globals.DependencyProvider.CreateScope();
-                process = this.GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
+                process = GetSchedulerClient(serviceScope.ServiceProvider, objScheduleHistoryItem.TypeFullName, objScheduleHistoryItem);
                 process.ScheduleHistoryItem = objScheduleHistoryItem;
 
                 // Set up the handlers for the CoreScheduler
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        private SchedulerClient GetSchedulerClient(IServiceProvider services, string strProcess, ScheduleHistoryItem objScheduleHistoryItem)
+        private static SchedulerClient GetSchedulerClient(IServiceProvider services, string strProcess, ScheduleHistoryItem objScheduleHistoryItem)
         {
             // This is a method to encapsulate returning
             // an object whose class inherits SchedulerClient.

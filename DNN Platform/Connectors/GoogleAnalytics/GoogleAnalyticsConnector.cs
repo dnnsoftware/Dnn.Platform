@@ -111,13 +111,13 @@ namespace DNN.Connectors.GoogleAnalytics
                             urlParameter = setting.SettingValue;
                             break;
                         case "trackforadmin":
-                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
+                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "anonymizeip":
-                            anonymizeIp = this.HandleCustomBoolean(setting.SettingValue);
+                            anonymizeIp = HandleCustomBoolean(setting.SettingValue);
                             break;
                         case "trackuserid":
-                            trackUserId = this.HandleCustomBoolean(setting.SettingValue);
+                            trackUserId = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -135,8 +135,8 @@ namespace DNN.Connectors.GoogleAnalytics
                 { "TrackAdministrators", trackForAdmin },
                 { "AnonymizeIp", anonymizeIp },
                 { "TrackUserId", trackUserId },
-                { "DataConsent", this.HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
-                { "isDeactivating", this.HandleCustomBoolean("false") },
+                { "DataConsent", HandleCustomBoolean(portalSettings.DataConsentActive.ToString()) },
+                { "isDeactivating", HandleCustomBoolean("false") },
             };
 
             return configItems;
@@ -242,7 +242,7 @@ namespace DNN.Connectors.GoogleAnalytics
         /// </summary>
         /// <param name="value">The string representing a boolean.</param>
         /// <returns>The string representing a boolean after the correction.</returns>
-        private string HandleCustomBoolean(string value)
+        private static string HandleCustomBoolean(string value)
         {
             if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
             {

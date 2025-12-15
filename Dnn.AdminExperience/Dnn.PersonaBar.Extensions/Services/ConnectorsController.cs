@@ -104,7 +104,7 @@ namespace Dnn.PersonaBar.Connectors.Services
                 bool validated = false;
                 if (connector != null)
                 {
-                    var configs = this.GetConfigAsDictionary(postObject.configurations);
+                    var configs = GetConfigAsDictionary(postObject.configurations);
                     string customErrorMessage;
                     var saved = connector.SaveConfig(this.PortalSettings.PortalId, configs, ref validated, out customErrorMessage);
 
@@ -235,19 +235,7 @@ namespace Dnn.PersonaBar.Connectors.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, localizedStrings);
         }
 
-        private IList<IConnector> GetConnections(int portalId)
-        {
-            var connectors = this.connectionsManager.GetConnectors(this.serviceProvider);
-            var allConnectors = new List<IConnector>();
-            foreach (var con in connectors)
-            {
-                allConnectors.AddRange(con.GetConnectors(portalId));
-            }
-
-            return allConnectors;
-        }
-
-        private IDictionary<string, string> GetConfigAsDictionary(dynamic configurations)
+        private static IDictionary<string, string> GetConfigAsDictionary(dynamic configurations)
         {
             var configs = new Dictionary<string, string>();
 
@@ -265,6 +253,18 @@ namespace Dnn.PersonaBar.Connectors.Services
             }
 
             return configs;
+        }
+
+        private IList<IConnector> GetConnections(int portalId)
+        {
+            var connectors = this.connectionsManager.GetConnectors(this.serviceProvider);
+            var allConnectors = new List<IConnector>();
+            foreach (var con in connectors)
+            {
+                allConnectors.AddRange(con.GetConnectors(portalId));
+            }
+
+            return allConnectors;
         }
     }
 }

@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web;
     using System.Web.UI;
@@ -108,23 +109,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        protected int PortalId
-        {
-            get
-            {
-                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected int PortalId => PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
 
         /// <summary>Gets oldStringValue returns the Boolean representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
-        protected string OldStringValue
-        {
-            get
-            {
-                return Convert.ToString(this.OldValue);
-            }
-        }
+        protected string OldStringValue => Convert.ToString(this.OldValue);
 
         /// <summary>Gets or sets a value indicating whether the List Auto Posts Back.</summary>
         protected bool AutoPostBack { get; set; }

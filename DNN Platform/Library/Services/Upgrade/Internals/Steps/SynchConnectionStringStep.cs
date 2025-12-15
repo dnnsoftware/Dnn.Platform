@@ -83,9 +83,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             else
             {
-                dbowner = string.IsNullOrEmpty(this.GetUpgradeConnectionStringUserID())
+                dbowner = string.IsNullOrEmpty(GetUpgradeConnectionStringUserId())
                                            ? connectionConfig.User + "."
-                                           : this.GetUpgradeConnectionStringUserID();
+                                           : GetUpgradeConnectionStringUserId();
             }
 
             var connectionString = builder.ToString();
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Status = modified ? StepStatus.AppRestart : StepStatus.Done;
         }
 
-        private string GetUpgradeConnectionStringUserID()
+        private static string GetUpgradeConnectionStringUserId()
         {
             string dbUser = string.Empty;
             string connection = Config.GetUpgradeConnectionString();

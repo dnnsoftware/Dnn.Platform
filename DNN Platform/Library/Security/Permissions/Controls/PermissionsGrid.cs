@@ -63,81 +63,30 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.dtRolePermissions = new DataTable();
         }
 
-        public TableItemStyle AlternatingItemStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.AlternatingItemStyle;
-            }
-        }
+        public TableItemStyle AlternatingItemStyle => this.rolePermissionsGrid.AlternatingItemStyle;
 
-        public DataGridColumnCollection Columns
-        {
-            get
-            {
-                return this.rolePermissionsGrid.Columns;
-            }
-        }
+        public DataGridColumnCollection Columns => this.rolePermissionsGrid.Columns;
 
-        public TableItemStyle FooterStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.FooterStyle;
-            }
-        }
+        public TableItemStyle FooterStyle => this.rolePermissionsGrid.FooterStyle;
 
-        public TableItemStyle HeaderStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.HeaderStyle;
-            }
-        }
+        public TableItemStyle HeaderStyle => this.rolePermissionsGrid.HeaderStyle;
 
-        public TableItemStyle ItemStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.ItemStyle;
-            }
-        }
+        public TableItemStyle ItemStyle => this.rolePermissionsGrid.ItemStyle;
 
-        public DataGridItemCollection Items
-        {
-            get
-            {
-                return this.rolePermissionsGrid.Items;
-            }
-        }
+        public DataGridItemCollection Items => this.rolePermissionsGrid.Items;
 
-        public TableItemStyle SelectedItemStyle
-        {
-            get
-            {
-                return this.rolePermissionsGrid.SelectedItemStyle;
-            }
-        }
+        public TableItemStyle SelectedItemStyle => this.rolePermissionsGrid.SelectedItemStyle;
 
-        /// <summary>Gets the Id of the Administrator Role.</summary>
-        public int AdministratorRoleId
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleId;
-            }
-        }
+        /// <summary>Gets the ID of the Administrator Role.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public int AdministratorRoleId => PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleId;
 
-        /// <summary>Gets the Id of the Registered Users Role.</summary>
-        public int RegisteredUsersRoleId
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleId;
-            }
-        }
+        /// <summary>Gets the ID of the Registered Users Role.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public int RegisteredUsersRoleId => PortalController.Instance.GetCurrentPortalSettings().RegisteredRoleId;
 
-        /// <summary>Gets the Id of the Portal.</summary>
+        /// <summary>Gets the ID of the Portal.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int PortalId
         {
             get
@@ -307,13 +256,14 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// <summary>Builds the key used to store the "permission" information in the ViewState.</summary>
         /// <param name="allowAccess">The type of permission ( grant / deny ).</param>
-        /// <param name="permissionId">The Id of the permission.</param>
-        /// <param name="objectPermissionId">The Id of the object permission.</param>
+        /// <param name="permissionId">The ID of the permission.</param>
+        /// <param name="objectPermissionId">The ID of the object permission.</param>
         /// <param name="roleId">The role id.</param>
         /// <param name="roleName">The role name.</param>
         /// <param name="userID">The user id.</param>
         /// <param name="displayName">The user display name.</param>
         /// <returns>The permission state key.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string BuildKey(bool allowAccess, int permissionId, int objectPermissionId, int roleId, string roleName, int userID, string displayName)
         {
             string key;
@@ -784,6 +734,28 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        private static string GetCommandType(string commandName)
+        {
+            var command = commandName.ToLower(CultureInfo.InvariantCulture);
+            if (command.Contains("rolename"))
+            {
+                return "ROLE";
+            }
+
+            if (command.Contains("displayname"))
+            {
+                return "USER";
+            }
+
+            return Null.NullString;
+        }
+
+        private static string GetGridCommand(string commandName)
+        {
+            var commandParts = commandName.Split('/');
+            return commandParts[0].ToUpper(CultureInfo.InvariantCulture);
+        }
+
         private void BindData()
         {
             this.EnsureChildControls();
@@ -1032,8 +1004,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         private void Grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             var entityID = int.Parse(e.CommandArgument.ToString());
-            var command = this.GetGridCommand(e.CommandName);
-            var entityType = this.GetCommandType(e.CommandName);
+            var command = GetGridCommand(e.CommandName);
+            var entityType = GetCommandType(e.CommandName);
             switch (command)
             {
                 case "DELETE":
@@ -1068,28 +1040,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 this.RemovePermission(permission.PermissionID, permission.RoleID, entityID);
             }
-        }
-
-        private string GetCommandType(string commandName)
-        {
-            var command = commandName.ToLower(CultureInfo.InvariantCulture);
-            if (command.Contains("rolename"))
-            {
-                return "ROLE";
-            }
-
-            if (command.Contains("displayname"))
-            {
-                return "USER";
-            }
-
-            return Null.NullString;
-        }
-
-        private string GetGridCommand(string commandName)
-        {
-            var commandParts = commandName.Split('/');
-            return commandParts[0].ToUpper(CultureInfo.InvariantCulture);
         }
 
         private void SetUpRolesGrid()

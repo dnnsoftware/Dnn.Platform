@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
@@ -198,13 +199,8 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        public DNNPageForwardType ForwardExternalUrlsType
-        {
-            get
-            {
-                return DNNPageForwardType.Redirect301;
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public DNNPageForwardType ForwardExternalUrlsType => DNNPageForwardType.Redirect301;
 
         public bool EnableCustomProviders
         {

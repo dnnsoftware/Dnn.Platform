@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Cache
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web;
     using System.Web.Caching;
@@ -251,13 +252,14 @@ namespace DotNetNuke.Services.Cache
                     this.ClearTabCacheInternal(int.Parse(data), clearRuntime);
                     break;
                 case "ServiceFrameworkRoutes":
-                    this.ReloadServicesFrameworkRoutes();
+                    ReloadServicesFrameworkRoutes();
                     break;
             }
         }
 
         /// <summary>Removes value from the cache.</summary>
         /// <param name="cacheKey">The cache key.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected void RemoveInternal(string cacheKey)
         {
             // attempt remove from private dictionary
@@ -268,6 +270,14 @@ namespace DotNetNuke.Services.Cache
             {
                 Cache.Remove(cacheKey);
             }
+        }
+
+        private static void ReloadServicesFrameworkRoutes()
+        {
+            // registration of routes when the servers is operating is done as part of the cache
+            // because the web request caching provider is the only inter-server communication channel
+            // that is reliable
+            ServicesRoutingManager.RegisterServiceRoutes();
         }
 
         private void ClearCacheInternal(string prefix, bool clearRuntime)
@@ -483,14 +493,6 @@ namespace DotNetNuke.Services.Cache
                 // Call provider's remove method
                 this.Remove(string.Format(GetCacheKey(cacheKeyBase), parameters));
             }
-        }
-
-        private void ReloadServicesFrameworkRoutes()
-        {
-            // registration of routes when the servers is operating is done as part of the cache
-            // because the web request caching provider is the only inter-server communication channel
-            // that is reliable
-            ServicesRoutingManager.RegisterServiceRoutes();
         }
     }
 }

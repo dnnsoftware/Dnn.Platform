@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Skins
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -58,22 +59,11 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <summary>Gets a Dictionary of Containers.</summary>
-        protected Dictionary<string, Containers.Container> Containers
-        {
-            get
-            {
-                return this.containers ?? (this.containers = new Dictionary<string, Containers.Container>());
-            }
-        }
+        protected Dictionary<string, Containers.Container> Containers => this.containers ??= new Dictionary<string, Containers.Container>();
 
         /// <summary>Gets the PortalSettings of the Portal.</summary>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <summary>Gets or sets the name (ID) of the Pane.</summary>
         protected string Name { get; set; }
@@ -97,7 +87,7 @@ namespace DotNetNuke.UI.Skins
                 sanitizedModuleName = Globals.CreateValidClass(module.DesktopModule.ModuleName, false);
             }
 
-            if (this.IsVersionableModule(module))
+            if (IsVersionableModule(module))
             {
                 classFormatString += " DnnVersionableControl";
             }
@@ -269,6 +259,17 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
             }
+        }
+
+        private static bool IsVersionableModule(ModuleInfo moduleInfo)
+        {
+            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
+            {
+                return false;
+            }
+
+            var controllerType = Framework.Reflection.CreateType(moduleInfo.DesktopModule.BusinessControllerClass);
+            return typeof(IVersionable).IsAssignableFrom(controllerType);
         }
 
         private bool CanCollapsePane()
@@ -555,17 +556,6 @@ namespace DotNetNuke.UI.Skins
                 // Redirect to the same page to pick up changes
                 this.PaneControl.Page.Response.Redirect(this.PaneControl.Page.Request.RawUrl, true);
             }
-        }
-
-        private bool IsVersionableModule(ModuleInfo moduleInfo)
-        {
-            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
-            {
-                return false;
-            }
-
-            var controllerType = Framework.Reflection.CreateType(moduleInfo.DesktopModule.BusinessControllerClass);
-            return typeof(IVersionable).IsAssignableFrom(controllerType);
         }
     }
 }

@@ -284,7 +284,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     scheduleDto.RetryTimeLapse = Null.NullInteger;
                 }
 
-                if (!this.VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
+                if (!VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
@@ -329,7 +329,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     scheduleDto.RetryTimeLapse = Null.NullInteger;
                 }
 
-                if (!this.VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
+                if (!VerifyValidTimeLapseRetry(scheduleDto.TimeLapse, scheduleDto.TimeLapseMeasurement, scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("InvalidFrequencyAndRetry", localResourcesFile));
                 }
@@ -618,7 +618,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             return Localization.GetString("LessThanMinute", localResourcesFile);
         }
 
-        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
+        private static bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
         {
             if (retryTimeLapse == 0)
             {

@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -214,7 +215,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this.settings = new FriendlyUrlSettings(-1);
 
-                    this.SecurityCheck(app);
+                    SecurityCheck(app);
                 }
             }
             catch (Exception ex)
@@ -257,6 +258,7 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected bool IsPortalAliasIncorrect(
             HttpContext context,
             HttpRequest request,
@@ -1987,7 +1989,7 @@ namespace DotNetNuke.Entities.Urls
             return doRedirect;
         }
 
-        private PortalAliasInfo GetPortalAlias(FriendlyUrlSettings settings, string requestUrl, out bool redirectAlias, out bool isPrimaryAlias, out string wrongAlias)
+        private static PortalAliasInfo GetPortalAlias(FriendlyUrlSettings settings, string requestUrl, out bool redirectAlias, out bool isPrimaryAlias, out string wrongAlias)
         {
             PortalAliasInfo aliasInfo = null;
             redirectAlias = false;
@@ -2043,6 +2045,155 @@ namespace DotNetNuke.Entities.Urls
             return aliasInfo;
         }
 
+        private static bool CheckForSecureRedirect(
+            PortalSettings portalSettings,
+            Uri requestUri,
+            UrlAction result,
+            NameValueCollection queryStringCol,
+            FriendlyUrlSettings settings)
+        {
+            bool redirectSecure = false;
+            string url = requestUri.ToString();
+
+            // 889 : don't run secure redirect code for physical resources or requests that aren't a rewritten Url
+            if (result.IsPhysicalResource == false && result.TabId >= 0)
+            {
+                // no secure redirection for physical resources, only tab-specific requests can be redirected for ssl connections
+                if (portalSettings.ActiveTab != null)
+                {
+                    result.DebugMessages.Add("ActiveTab: " + portalSettings.ActiveTab.TabID.ToString() + "/" +
+                                             portalSettings.ActiveTab.TabName + " IsSecure: " +
+                                             portalSettings.ActiveTab.IsSecure.ToString());
+
+                    switch (portalSettings.SSLSetup)
+                    {
+                        case Abstractions.Security.SiteSslSetup.On:
+                            if (!result.IsSecureConnection)
+                            {
+                                redirectSecure = true;
+                                url = url.Replace("http://", "https://");
+                            }
+
+                            break;
+                        case Abstractions.Security.SiteSslSetup.Advanced:
+                            // 717 : check page is secure, connection is not secure
+                            // 952 : support SSl Offloading in DNN 6.2+
+                            if (portalSettings.ActiveTab.IsSecure && !result.IsSecureConnection && !result.IsSSLOffloaded)
+                            {
+                                redirectSecure = true;
+                                string stdUrl = portalSettings.STDURL;
+                                string sslUrl = portalSettings.SSLURL;
+                                if (string.IsNullOrEmpty(result.HttpAlias) == false)
+                                {
+                                    stdUrl = result.HttpAlias;
+                                }
+
+                                url = url.Replace("http://", "https://");
+                                url = ReplaceDomainName(url, stdUrl, sslUrl);
+                            }
+
+                            if (portalSettings.SSLEnforced)
+                            {
+                                // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe
+                                // from an unsecure page
+                                if (!portalSettings.ActiveTab.IsSecure &&
+                                    result.IsSecureConnection &&
+                                    !UrlUtils.IsPopUp(url))
+                                {
+                                    // has connection already been forced to secure?
+                                    if (queryStringCol["ssl"] == null)
+                                    {
+                                        // no? well this page shouldn't be secure
+                                        string stdUrl = portalSettings.STDURL;
+                                        string sslUrl = portalSettings.SSLURL;
+                                        url = url.Replace("https://", "http://");
+                                        url = ReplaceDomainName(url, sslUrl, stdUrl);
+                                        redirectSecure = true;
+                                    }
+                                }
+                            }
+
+                            break;
+                    }
+                }
+
+                if (redirectSecure)
+                {
+                    // now check to see if excluded.  Why now? because less requests are made to redirect secure,
+                    // so we don't have to check the exclusion as often.
+                    bool exclude = false;
+                    string doNotRedirectSecureRegex = settings.DoNotRedirectSecureRegex;
+                    if (!string.IsNullOrEmpty(doNotRedirectSecureRegex))
+                    {
+                        // match the raw url
+                        exclude = Regex.IsMatch(result.RawUrl, doNotRedirectSecureRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    }
+
+                    if (!exclude)
+                    {
+                        result.Action = ActionType.Redirect302Now;
+                        result.Reason = RedirectReason.Secure_Page_Requested;
+
+                        // 760 : get the culture specific home page tabid for a redirect comparison
+                        int homePageTabId = portalSettings.HomeTabId;
+                        homePageTabId = TabPathHelper.GetHomePageTabIdForCulture(
+                            portalSettings.DefaultLanguage,
+                            portalSettings.PortalId,
+                            result.CultureCode,
+                            homePageTabId);
+                        if (result.TabId == homePageTabId)
+                        {
+                            // replace the /default.aspx in the Url if it was found
+                            url = DefaultPageRegex.Replace(url, "/");
+                        }
+
+                        result.FinalUrl = url;
+                    }
+                    else
+                    {
+                        // 702 : change return value if exclusion has occured
+                        redirectSecure = false;
+                    }
+                }
+            }
+
+            return redirectSecure;
+        }
+
+        private static string ReplaceDomainName(string url, string replaceDomain, string withDomain)
+        {
+            if (replaceDomain != string.Empty && withDomain != string.Empty)
+            {
+                // 951 : change find/replace routine to regex for more accurate replacement
+                // (previous method gives false positives if the SSL Url is contained within the STD url)
+                string find = @"(?<=https?://)" + Regex.Escape(withDomain);
+                if (Regex.IsMatch(url, find, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) == false)
+                {
+                    string replaceFind = @"(?<=https?://)" + Regex.Escape(replaceDomain);
+                    url = Regex.Replace(url, replaceFind, withDomain, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                }
+            }
+
+            return url;
+        }
+
+        private static void SecurityCheck(HttpApplication app)
+        {
+            HttpRequest request = app.Request;
+            HttpServerUtility server = app.Server;
+
+            // 675 : unnecessarily strict url validation
+            // URL validation
+            // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
+            // the application should always use the exact relative location of the resource it is requesting
+            var strURL = request.Url.AbsolutePath;
+            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? string.Empty;
+            if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
+            {
+                throw new HttpException(404, "Not Found");
+            }
+        }
+
         private void ProcessRequest(
             HttpContext context,
             Uri requestUri,
@@ -2091,7 +2242,7 @@ namespace DotNetNuke.Entities.Urls
                     result.SetRedirectAllowed(result.OriginalPath, settings);
 
                     // find the portal alias first
-                    var requestedAlias = this.GetPortalAlias(settings, fullUrl, out redirectAlias, out _, out var wrongAlias);
+                    var requestedAlias = GetPortalAlias(settings, fullUrl, out redirectAlias, out _, out var wrongAlias);
                     if (requestedAlias != null)
                     {
                         // 827 : now get the correct settings for this portal (if not a test request)
@@ -2448,7 +2599,7 @@ namespace DotNetNuke.Entities.Urls
 
                             // check if a secure redirection is needed
                             // this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
-                            bool redirectSecure = this.CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
+                            bool redirectSecure = CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
                             if (redirectSecure)
                             {
                                 if (response != null)
@@ -2679,138 +2830,6 @@ namespace DotNetNuke.Entities.Urls
                     EventQueueController.ProcessMessages("Application_Start_FirstRequest");
                 }
             }
-        }
-
-        private bool CheckForSecureRedirect(
-            PortalSettings portalSettings,
-            Uri requestUri,
-            UrlAction result,
-            NameValueCollection queryStringCol,
-            FriendlyUrlSettings settings)
-        {
-            bool redirectSecure = false;
-            string url = requestUri.ToString();
-
-            // 889 : don't run secure redirect code for physical resources or requests that aren't a rewritten Url
-            if (result.IsPhysicalResource == false && result.TabId >= 0)
-            {
-                // no secure redirection for physical resources, only tab-specific requests can be redirected for ssl connections
-                if (portalSettings.ActiveTab != null)
-                {
-                    result.DebugMessages.Add("ActiveTab: " + portalSettings.ActiveTab.TabID.ToString() + "/" +
-                                             portalSettings.ActiveTab.TabName + " IsSecure: " +
-                                             portalSettings.ActiveTab.IsSecure.ToString());
-
-                    switch (portalSettings.SSLSetup)
-                    {
-                        case Abstractions.Security.SiteSslSetup.On:
-                            if (!result.IsSecureConnection)
-                            {
-                                redirectSecure = true;
-                                url = url.Replace("http://", "https://");
-                            }
-
-                            break;
-                        case Abstractions.Security.SiteSslSetup.Advanced:
-                            // 717 : check page is secure, connection is not secure
-                            // 952 : support SSl Offloading in DNN 6.2+
-                            if (portalSettings.ActiveTab.IsSecure && !result.IsSecureConnection && !result.IsSSLOffloaded)
-                            {
-                                redirectSecure = true;
-                                string stdUrl = portalSettings.STDURL;
-                                string sslUrl = portalSettings.SSLURL;
-                                if (string.IsNullOrEmpty(result.HttpAlias) == false)
-                                {
-                                    stdUrl = result.HttpAlias;
-                                }
-
-                                url = url.Replace("http://", "https://");
-                                url = this.ReplaceDomainName(url, stdUrl, sslUrl);
-                            }
-
-                            if (portalSettings.SSLEnforced)
-                            {
-                                // Prevent browser's mixed-content error in case we open a secure PopUp or a secure iframe
-                                // from an unsecure page
-                                if (!portalSettings.ActiveTab.IsSecure &&
-                                    result.IsSecureConnection &&
-                                    !UrlUtils.IsPopUp(url))
-                                {
-                                    // has connection already been forced to secure?
-                                    if (queryStringCol["ssl"] == null)
-                                    {
-                                        // no? well this page shouldn't be secure
-                                        string stdUrl = portalSettings.STDURL;
-                                        string sslUrl = portalSettings.SSLURL;
-                                        url = url.Replace("https://", "http://");
-                                        url = this.ReplaceDomainName(url, sslUrl, stdUrl);
-                                        redirectSecure = true;
-                                    }
-                                }
-                            }
-
-                            break;
-                    }
-                }
-
-                if (redirectSecure)
-                {
-                    // now check to see if excluded.  Why now? because less requests are made to redirect secure,
-                    // so we don't have to check the exclusion as often.
-                    bool exclude = false;
-                    string doNotRedirectSecureRegex = settings.DoNotRedirectSecureRegex;
-                    if (!string.IsNullOrEmpty(doNotRedirectSecureRegex))
-                    {
-                        // match the raw url
-                        exclude = Regex.IsMatch(result.RawUrl, doNotRedirectSecureRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                    }
-
-                    if (!exclude)
-                    {
-                        result.Action = ActionType.Redirect302Now;
-                        result.Reason = RedirectReason.Secure_Page_Requested;
-
-                        // 760 : get the culture specific home page tabid for a redirect comparison
-                        int homePageTabId = portalSettings.HomeTabId;
-                        homePageTabId = TabPathHelper.GetHomePageTabIdForCulture(
-                            portalSettings.DefaultLanguage,
-                            portalSettings.PortalId,
-                            result.CultureCode,
-                            homePageTabId);
-                        if (result.TabId == homePageTabId)
-                        {
-                            // replace the /default.aspx in the Url if it was found
-                            url = DefaultPageRegex.Replace(url, "/");
-                        }
-
-                        result.FinalUrl = url;
-                    }
-                    else
-                    {
-                        // 702 : change return value if exclusion has occured
-                        redirectSecure = false;
-                    }
-                }
-            }
-
-            return redirectSecure;
-        }
-
-        private string ReplaceDomainName(string url, string replaceDomain, string withDomain)
-        {
-            if (replaceDomain != string.Empty && withDomain != string.Empty)
-            {
-                // 951 : change find/replace routine to regex for more accurate replacement
-                // (previous method gives false positives if the SSL Url is contained within the STD url)
-                string find = @"(?<=https?://)" + Regex.Escape(withDomain);
-                if (Regex.IsMatch(url, find, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant) == false)
-                {
-                    string replaceFind = @"(?<=https?://)" + Regex.Escape(replaceDomain);
-                    url = Regex.Replace(url, replaceFind, withDomain, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                }
-            }
-
-            return url;
         }
 
         private void IdentifyPortalAlias(
@@ -3124,23 +3143,6 @@ namespace DotNetNuke.Entities.Urls
                 {
                     RewriteAsChildAliasRoot(context, result, aliasQuerystring, settings);
                 }
-            }
-        }
-
-        private void SecurityCheck(HttpApplication app)
-        {
-            HttpRequest request = app.Request;
-            HttpServerUtility server = app.Server;
-
-            // 675 : unnecessarily strict url validation
-            // URL validation
-            // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
-            // the application should always use the exact relative location of the resource it is requesting
-            var strURL = request.Url.AbsolutePath;
-            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? string.Empty;
-            if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
-            {
-                throw new HttpException(404, "Not Found");
             }
         }
     }

@@ -289,7 +289,7 @@ namespace DotNetNuke.Services.Installer
             {
                 Task.Run(() =>
                 {
-                    this.BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
+                    BackupStreamIntoFile(this.inputStream, this.Packages[0].Package);
                 });
             }
 
@@ -353,6 +353,32 @@ namespace DotNetNuke.Services.Installer
             // log installation event
             this.LogInstallEvent("Package", "UnInstall");
             return true;
+        }
+
+        private static void BackupStreamIntoFile(Stream stream, PackageInfo package)
+        {
+            try
+            {
+                var filePath = Util.GetPackageBackupPath(package);
+
+                if (File.Exists(filePath))
+                {
+                    File.SetAttributes(filePath, FileAttributes.Normal);
+                    File.Delete(filePath);
+                }
+
+                using var fileStream = File.Create(filePath);
+                if (stream.CanSeek)
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                }
+
+                stream.CopyTo(fileStream);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         /// <summary>The InstallPackages method installs the packages.</summary>
@@ -492,34 +518,6 @@ namespace DotNetNuke.Services.Installer
                 {
                     this.InstallerInfo.Log.AddInfo(Util.UNINSTALL_Success + " - " + installer.Package.Name);
                 }
-            }
-        }
-
-        private void BackupStreamIntoFile(Stream stream, PackageInfo package)
-        {
-            try
-            {
-                var filePath = Util.GetPackageBackupPath(package);
-
-                if (File.Exists(filePath))
-                {
-                    File.SetAttributes(filePath, FileAttributes.Normal);
-                    File.Delete(filePath);
-                }
-
-                using (var fileStream = File.Create(filePath))
-                {
-                    if (stream.CanSeek)
-                    {
-                        stream.Seek(0, SeekOrigin.Begin);
-                    }
-
-                    stream.CopyTo(fileStream);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
             }
         }
     }

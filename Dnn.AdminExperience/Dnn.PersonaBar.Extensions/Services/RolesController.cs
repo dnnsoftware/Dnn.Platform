@@ -118,7 +118,7 @@ namespace Dnn.PersonaBar.Roles.Services
         {
             try
             {
-                this.Validate(roleGroupDto);
+                Validate(roleGroupDto);
 
                 var roleGroup = roleGroupDto.ToRoleGroupInfo();
                 roleGroup.PortalID = this.PortalId;
@@ -387,6 +387,11 @@ namespace Dnn.PersonaBar.Roles.Services
             }
         }
 
+        private static void Validate(RoleGroupDto role)
+        {
+            Requires.NotNullOrHasNoWhiteSpace("Name", role.Name);
+        }
+
         private void Validate(RoleDto role)
         {
             Requires.NotNullOrEmpty("Name", role.Name);
@@ -395,11 +400,6 @@ namespace Dnn.PersonaBar.Roles.Services
             {
                 throw new SecurityException(Localization.GetString("InvalidRequest", Components.Constants.LocalResourcesFile));
             }
-        }
-
-        private void Validate(RoleGroupDto role)
-        {
-            Requires.NotNullOrHasNoWhiteSpace("Name", role.Name);
         }
 
         private void Validate(UserRoleDto userRoleDto)

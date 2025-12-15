@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Pages.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
@@ -30,17 +31,12 @@ namespace Dnn.PersonaBar.Pages.Components
             Status = 3,
         }
 
-        protected IEnumerable<KeyValuePair<int, string>> StatusCodes
-        {
-            get
-            {
-                return new[]
-                {
-                    new KeyValuePair<int, string>(200, "Active (200)"),
-                    new KeyValuePair<int, string>(301, "Redirect (301)"),
-                };
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected IEnumerable<KeyValuePair<int, string>> StatusCodes =>
+        [
+            new KeyValuePair<int, string>(200, "Active (200)"),
+            new KeyValuePair<int, string>(301, "Redirect (301)")
+        ];
 
         /// <inheritdoc/>
         public IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId)
@@ -330,6 +326,19 @@ namespace Dnn.PersonaBar.Pages.Components
             return () => new PageUrlsController();
         }
 
+        private static string GetCleanPath(string path, FriendlyUrlSettings friendlyUrlSettings)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return path;
+            }
+
+            var urlPath = path.TrimStart('/');
+            urlPath = UrlRewriterUtils.CleanExtension(urlPath, friendlyUrlSettings, string.Empty);
+
+            return $"/{urlPath}";
+        }
+
         private IEnumerable<Url> GetSortedUrls(TabInfo tab, int portalId, Lazy<Dictionary<string, Locale>> locales, int sortColumn, bool sortOrder, bool isSystem)
         {
             var friendlyUrlSettings = new FriendlyUrlSettings(tab.PortalID);
@@ -506,7 +515,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 Id = id,
                 SiteAlias = new KeyValuePair<int, string>(alias.KeyID, alias.HTTPAlias),
                 Path = path,
-                PathWithNoExtension = this.GetCleanPath(path, friendlyUrlSettings),
+                PathWithNoExtension = GetCleanPath(path, friendlyUrlSettings),
                 QueryString = queryString,
                 Locale = (urlLocale != null) ? new KeyValuePair<int, string>(urlLocale.KeyID, urlLocale.EnglishName)
                                              : new KeyValuePair<int, string>(-1, string.Empty),
@@ -515,19 +524,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 IsSystem = isSystem,
                 UserName = userName,
             });
-        }
-
-        private string GetCleanPath(string path, FriendlyUrlSettings friendlyUrlSettings)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                return path;
-            }
-
-            var urlPath = path.TrimStart('/');
-            urlPath = UrlRewriterUtils.CleanExtension(urlPath, friendlyUrlSettings, string.Empty);
-
-            return string.Format("/{0}", urlPath);
         }
 
         public class KeyValuePairComparer : IComparer<KeyValuePair<int, string>>

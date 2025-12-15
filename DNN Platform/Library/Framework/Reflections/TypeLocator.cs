@@ -24,7 +24,7 @@ namespace DotNetNuke.Framework.Reflections
             get
             {
                 return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                    where this.CanScan(assembly)
+                    where CanScan(assembly)
                     select new AssemblyWrapper(assembly);
             }
         }
@@ -65,38 +65,38 @@ namespace DotNetNuke.Framework.Reflections
             }
         }
 
-        private bool CanScan(Assembly assembly)
+        private static bool CanScan(Assembly assembly)
         {
-            string[] ignoreAssemblies = new string[]
-                                                {
-                                                    "DotNetNuke.Authentication.Facebook",
-                                                    "DotNetNuke.Authentication.Google",
-                                                    "DotNetNuke.Authentication.LiveConnect",
-                                                    "DotNetNuke.Authentication.Twitter",
-                                                    "DotNetNuke.ASP2MenuNavigationProvider",
-                                                    "DotNetNuke.DNNDropDownNavigationProvider",
-                                                    "DotNetNuke.DNNMenuNavigationProvider",
-                                                    "DotNetNuke.DNNTreeNavigationProvider",
-                                                    "DotNetNuke.HttpModules",
-                                                    "DotNetNuke.Instrumentation",
-                                                    "DotNetNuke.Log4Net",
-                                                    "DotNetNuke.Modules.Groups",
-                                                    "DotNetNuke.Modules.Html",
-                                                    "DotNetNuke.Modules.HtmlEditorManager",
-                                                    "DotNetNuke.Modules.MobileManagement",
-                                                    "DotNetNuke.Modules.PreviewProfileManagement",
-                                                    "DotNetNuke.Modules.RazorHost",
-                                                    "DotNetNuke.Modules.Taxonomy",
-                                                    "DotNetNuke.Modules.UrlManagement",
-                                                    "DotNetNuke.RadEditorProvider",
-                                                    "DotNetNuke.Services.Syndication",
-                                                    "DotNetNuke.Web.Client",
-                                                    "DotNetNuke.Web.DDRMenu",
-                                                    "DotNetNuke.Web.Razor",
-                                                    "DotNetNuke.Web.Mvc",
-                                                    "DotNetNuke.WebControls",
-                                                    "DotNetNuke.WebUtility",
-                                                };
+            string[] ignoreAssemblies =
+            [
+                "DotNetNuke.Authentication.Facebook",
+                "DotNetNuke.Authentication.Google",
+                "DotNetNuke.Authentication.LiveConnect",
+                "DotNetNuke.Authentication.Twitter",
+                "DotNetNuke.ASP2MenuNavigationProvider",
+                "DotNetNuke.DNNDropDownNavigationProvider",
+                "DotNetNuke.DNNMenuNavigationProvider",
+                "DotNetNuke.DNNTreeNavigationProvider",
+                "DotNetNuke.HttpModules",
+                "DotNetNuke.Instrumentation",
+                "DotNetNuke.Log4Net",
+                "DotNetNuke.Modules.Groups",
+                "DotNetNuke.Modules.Html",
+                "DotNetNuke.Modules.HtmlEditorManager",
+                "DotNetNuke.Modules.MobileManagement",
+                "DotNetNuke.Modules.PreviewProfileManagement",
+                "DotNetNuke.Modules.RazorHost",
+                "DotNetNuke.Modules.Taxonomy",
+                "DotNetNuke.Modules.UrlManagement",
+                "DotNetNuke.RadEditorProvider",
+                "DotNetNuke.Services.Syndication",
+                "DotNetNuke.Web.Client",
+                "DotNetNuke.Web.DDRMenu",
+                "DotNetNuke.Web.Razor",
+                "DotNetNuke.Web.Mvc",
+                "DotNetNuke.WebControls",
+                "DotNetNuke.WebUtility"
+            ];
 
             // First eliminate by "class"
             var assemblyName = assembly.FullName.ToLowerInvariant();

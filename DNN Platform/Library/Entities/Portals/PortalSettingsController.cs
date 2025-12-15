@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Portals
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
@@ -279,6 +280,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
         {
             var breadCrumbs = new List<TabInfo>();

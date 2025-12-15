@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Definitions
 {
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web;
     using System.Xml;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
     public class ModuleDefinitionValidator : XmlValidatorBase
     {
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ModuleDefinitionVersion GetModuleDefinitionVersion(Stream xmlStream)
         {
             ModuleDefinitionVersion retValue;

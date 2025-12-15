@@ -169,7 +169,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <inheritdoc />
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
-            return !this.IsImplicitRole(role.PortalID, role.RoleID);
+            return !IsImplicitRole(role.PortalID, role.RoleID);
         }
 
         /// <inheritdoc />
@@ -305,6 +305,11 @@ namespace DotNetNuke.Security.Permissions.Controls
             return this.IsSystemFolderPermission(permissionInfo);
         }
 
+        private static bool IsImplicitRole(int portalId, int roleId)
+        {
+            return FolderPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
+        }
+
         /// <summary>Parse the Permission Keys used to persist the Permissions in the ViewState.</summary>
         /// <param name="settings">A string array of settings.</param>
         private FolderPermissionInfo ParseKeys(string[] settings)
@@ -333,7 +338,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
                 var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                if (IsImplicitRole(PortalSettings.Current.PortalId, roleID))
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
                     if (actionImage != null)
@@ -352,11 +357,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
         {
             return this.systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
-        }
-
-        private bool IsImplicitRole(int portalId, int roleId)
-        {
-            return FolderPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
     }
 }

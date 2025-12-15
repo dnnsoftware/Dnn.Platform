@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.FileSystem
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Security.Cryptography;
@@ -215,6 +216,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="settingName">Setting name.</param>
         /// <exception cref="ArgumentNullException">the input parameters of the method cannot be null.</exception>
         /// <returns>decrypted value.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetEncryptedSetting(Hashtable folderMappingSettings, string settingName)
         {
             Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);
@@ -223,6 +225,7 @@ namespace DotNetNuke.Services.FileSystem
             return PortalSecurity.Instance.Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string EncryptValue(string settingValue)
         {
             return PortalSecurity.Instance.Encrypt(Host.GUID, settingValue.Trim());
@@ -230,13 +233,8 @@ namespace DotNetNuke.Services.FileSystem
 
         public virtual string GetHashCode(IFileInfo file)
         {
-            var currentHashCode = string.Empty;
-            using (var fileContent = this.GetFileStream(file))
-            {
-                currentHashCode = this.GetHashCode(file, fileContent);
-            }
-
-            return currentHashCode;
+            using var fileContent = this.GetFileStream(file);
+            return this.GetHashCode(file, fileContent);
         }
 
         public virtual string GetHashCode(IFileInfo file, Stream fileContent)

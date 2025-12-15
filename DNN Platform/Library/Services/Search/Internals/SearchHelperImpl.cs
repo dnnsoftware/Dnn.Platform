@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             var cacheKey = string.Format(CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
             var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IList<SynonymsGroup>>(cachArg, this.GetSynonymsGroupsCallBack);
+            return CBO.GetCachedObject<IList<SynonymsGroup>>(cachArg, GetSynonymsGroupsCallBack);
         }
 
         /// <inheritdoc/>
@@ -466,7 +466,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <returns>cleaned and pre-processed search phrase.</returns>
         public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {
-            searchPhrase = this.CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
+            searchPhrase = CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));
 
             if (!useWildCard && !searchPhrase.Contains("\""))
             {
@@ -474,7 +474,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             // we have a quotation marks and/or wildcard search, adjust accordingly
-            var chars = this.FoldToASCII(searchPhrase).ToCharArray();
+            var chars = FoldToAscii(searchPhrase).ToCharArray();
             var insideQuote = false;
             var newPhraseBulder = new StringBuilder();
             var currentWord = new StringBuilder();
@@ -497,7 +497,7 @@ namespace DotNetNuke.Services.Search.Internals
                         if (!insideQuote && useWildCard)
                         {
                             // end of a word; we need to append a wild card to search when needed
-                            newPhraseBulder.Append(this.FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
+                            newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
                             currentWord.Clear();
                         }
 
@@ -513,7 +513,7 @@ namespace DotNetNuke.Services.Search.Internals
             }
             else if (useWildCard)
             {
-                newPhraseBulder.Append(this.FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard));
+                newPhraseBulder.Append(FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard));
             }
             else
             {
@@ -548,21 +548,14 @@ namespace DotNetNuke.Services.Search.Internals
             return datim;
         }
 
-        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
-        {
-            var cacheKey = string.Format("{0}_{1}_{2}", SynonymTermsCacheKey, portalId, cultureCode);
-            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cachArg, this.SynonymTermsCallBack);
-        }
-
-        private string FixLastWord(string lastWord, bool allowLeadingWildcard)
+        private static string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
             if (string.IsNullOrEmpty(lastWord))
             {
                 return string.Empty;
             }
 
-            if (lastWord.IndexOfAny(new[] { '~', '*' }) < 0)
+            if (lastWord.IndexOfAny(['~', '*',]) < 0)
             {
                 var beginIsGroup = false;
                 var endIsGroup = false;
@@ -610,7 +603,7 @@ namespace DotNetNuke.Services.Search.Internals
             return lastWord;
         }
 
-        private string CleanSearchPhrase(string searchPhrase)
+        private static string CleanSearchPhrase(string searchPhrase)
         {
             var chars = searchPhrase.ToCharArray();
             var hasExactMatch = false;
@@ -660,6 +653,98 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return cleaned;
+        }
+
+        private static void EnsurePortalDefaultsAreSet(int portalId)
+        {
+            const string setting = "SearchAdminInitialization";
+
+            // check portal settings first
+            if (PortalController.GetPortalSetting(setting, portalId, "false") != "false")
+            {
+                return;
+            }
+
+            // Portal may not be present, especially during installation
+            if (PortalController.Instance.GetPortal(portalId) == null)
+            {
+                return;
+            }
+
+            foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
+            {
+                var resourceFile = GetResourceFile(locale.Code);
+
+                var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code));
+                if (currentStopWords == null || currentStopWords.Count == 0)
+                {
+                    // Add Default StopWord
+                    var defaultStopWords = Localization.GetString("DefaultStopwordGroup", resourceFile);
+                    if (!string.IsNullOrEmpty(defaultStopWords))
+                    {
+                        DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
+                    }
+                }
+
+                var currentSynonymGroups = CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, locale.Code));
+                if (currentSynonymGroups == null || currentSynonymGroups.Count == 0)
+                {
+                    // Add Default Synonym
+                    var defaultSynonymsGroup = Localization.GetString("DefaultSynonymGroup", resourceFile);
+                    if (!string.IsNullOrEmpty(defaultSynonymsGroup))
+                    {
+                        DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);
+                    }
+                }
+            }
+
+            // Update Portal Settings
+            PortalController.UpdatePortalSetting(portalId, setting, "true", true);
+        }
+
+        private static string GetResourceFile(string cultureCode)
+        {
+            var cultureRelativePath = "~" + ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx";
+            const string regularRelativePath = "~" + ResourceFileRelativePathWithoutExt + ".resx";
+            return File.Exists(Path.Combine(Globals.ApplicationMapPath, ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx")) ? cultureRelativePath : regularRelativePath;
+        }
+
+        private static object GetSynonymsGroupsCallBack(CacheItemArgs cacheItem)
+        {
+            var portalId = int.Parse(cacheItem.CacheKey.Split('_')[1]);
+            var cultureCode = cacheItem.CacheKey.Split('_')[2];
+
+            EnsurePortalDefaultsAreSet(portalId);
+
+            return CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, cultureCode));
+        }
+
+        private static string FoldToAscii(string searchPhrase)
+        {
+            var sb = new StringBuilder();
+
+            var cleanedPhrase = searchPhrase.Trim('\0');
+
+            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
+
+            string space = string.Empty;
+            while (asciiFilter.IncrementToken())
+            {
+                sb.AppendFormat("{0}{1}", space ?? string.Empty, asciiFilter.GetAttribute<ITermAttribute>().Term);
+                if (string.IsNullOrEmpty(space))
+                {
+                    space = " ";
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
+        {
+            var cacheKey = $"{SynonymTermsCacheKey}_{portalId}_{cultureCode}";
+            var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
+            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cacheArg, this.SynonymTermsCallBack);
         }
 
         private object SynonymTermsCallBack(CacheItemArgs cacheItem)
@@ -715,94 +800,9 @@ namespace DotNetNuke.Services.Search.Internals
             var portalId = int.Parse(splittedKeys[1]);
             var cultureCode = splittedKeys[2];
 
-            this.EnsurePortalDefaultsAreSet(portalId);
+            EnsurePortalDefaultsAreSet(portalId);
 
             return CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, cultureCode));
-        }
-
-        private void EnsurePortalDefaultsAreSet(int portalId)
-        {
-            const string setting = "SearchAdminInitialization";
-
-            // check portal settings first
-            if (PortalController.GetPortalSetting(setting, portalId, "false") != "false")
-            {
-                return;
-            }
-
-            // Portal may not be present, especially during installation
-            if (PortalController.Instance.GetPortal(portalId) == null)
-            {
-                return;
-            }
-
-            foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
-            {
-                var resourceFile = this.GetResourceFile(locale.Code);
-
-                var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code));
-                if (currentStopWords == null || currentStopWords.Count == 0)
-                {
-                    // Add Default StopWord
-                    var defaultStopWords = Localization.GetString("DefaultStopwordGroup", resourceFile);
-                    if (!string.IsNullOrEmpty(defaultStopWords))
-                    {
-                        DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
-                    }
-                }
-
-                var currentSynonymGroups = CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, locale.Code));
-                if (currentSynonymGroups == null || currentSynonymGroups.Count == 0)
-                {
-                    // Add Default Synonym
-                    var defaultSynonymsGroup = Localization.GetString("DefaultSynonymGroup", resourceFile);
-                    if (!string.IsNullOrEmpty(defaultSynonymsGroup))
-                    {
-                        DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);
-                    }
-                }
-            }
-
-            // Update Portal Settings
-            PortalController.UpdatePortalSetting(portalId, setting, "true", true);
-        }
-
-        private string GetResourceFile(string cultureCode)
-        {
-            var cultureRelativePath = "~" + ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx";
-            const string regularRelativePath = "~" + ResourceFileRelativePathWithoutExt + ".resx";
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, ResourceFileRelativePathWithoutExt + "." + cultureCode + ".resx")) ? cultureRelativePath : regularRelativePath;
-        }
-
-        private object GetSynonymsGroupsCallBack(CacheItemArgs cacheItem)
-        {
-            var portalId = int.Parse(cacheItem.CacheKey.Split('_')[1]);
-            var cultureCode = cacheItem.CacheKey.Split('_')[2];
-
-            this.EnsurePortalDefaultsAreSet(portalId);
-
-            return CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, cultureCode));
-        }
-
-        private string FoldToASCII(string searchPhrase)
-        {
-            var sb = new StringBuilder();
-
-            var cleanedPhrase = searchPhrase.Trim('\0');
-
-            var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
-
-            string space = string.Empty;
-            while (asciiFilter.IncrementToken())
-            {
-                sb.AppendFormat("{0}{1}", space ?? string.Empty, asciiFilter.GetAttribute<ITermAttribute>().Term);
-                if (string.IsNullOrEmpty(space))
-                {
-                    space = " ";
-                }
-            }
-
-            return sb.ToString();
         }
     }
 }

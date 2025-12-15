@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             string cacheFolder = GetCacheFolder(portalId);
             if (!string.IsNullOrEmpty(cacheFolder))
             {
-                this.PurgeCache(cacheFolder);
+                PurgeCache(cacheFolder);
             }
         }
 
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 foreach (string file in Directory.GetFiles(cacheFolder, "*" + AttribFileExtension))
                 {
-                    if (this.IsFileExpired(file))
+                    if (IsFileExpired(file))
                     {
                         string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
                         if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
@@ -276,7 +276,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return cacheFolder;
         }
 
-        private bool IsFileExpired(string file)
+        private static bool IsFileExpired(string file)
         {
             StreamReader oRead = null;
             try
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        private void PurgeCache(string folder)
+        private static void PurgeCache(string folder)
         {
             try
             {

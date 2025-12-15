@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Search
                         // remove existing indexes
                         DeleteDocuments(portalId, indexedUsers);
                         var values = searchDocuments.Values;
-                        totalIndexed += this.IndexCollectedDocs(indexer, values);
+                        totalIndexed += IndexCollectedDocs(indexer, values);
                         this.SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
                         this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
                         searchDocuments.Clear();
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Search
                     // remove existing indexes
                     DeleteDocuments(portalId, indexedUsers);
                     var values = searchDocuments.Values;
-                    totalIndexed += this.IndexCollectedDocs(indexer, values);
+                    totalIndexed += IndexCollectedDocs(indexer, values);
                     checkpointModified = true;
                 }
 
@@ -381,7 +381,7 @@ namespace DotNetNuke.Services.Search
             return schema != null && schema.Select("ColumnName = '" + col + "'").Length > 0;
         }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
+        private static int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();

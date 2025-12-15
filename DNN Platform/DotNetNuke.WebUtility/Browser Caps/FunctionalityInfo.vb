@@ -1,4 +1,4 @@
-' Copyright (c) .NET Foundation. All rights reserved.
+﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System.Xml.Serialization
@@ -66,7 +66,7 @@ Namespace DotNetNuke.UI.Utilities
             Return _hasMatch
         End Function
 
-        Private Function HasMatch(ByVal browsers As BrowserCollection, ByVal strAgent As String, ByVal strBrowser As String, ByVal dblVersion As Double) As Boolean
+        Private Shared Function HasMatch(ByVal browsers As BrowserCollection, ByVal strAgent As String, ByVal strBrowser As String, ByVal dblVersion As Double) As Boolean
             Dim _hasMatch As Boolean = False
 
             'Parse through the browsers to find a match based on name/minversion

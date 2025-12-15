@@ -24,24 +24,19 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         /// <inheritdoc/>
         public bool LazyLoad => false;
 
-        private string LocalResourceFile
-        {
-            get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
-        }
+        private static string LocalResourceFile => "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
 
         public static string LoadScript(string name)
         {
-            var resourceName = string.Format("Dnn.PersonaBar.Extensions.Components.Security.Resources.{0}.resources", name);
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            var resourceName = $"Dnn.PersonaBar.Extensions.Components.Security.Resources.{name}.resources";
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+            if (stream != null)
             {
-                if (stream != null)
-                {
-                    var script = new StreamReader(stream).ReadToEnd();
-                    return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
-                }
-
-                return null;
+                var script = new StreamReader(stream).ReadToEnd();
+                return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
             }
+
+            return null;
         }
 
         /// <inheritdoc/>
@@ -63,7 +58,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 if (!VerifyScript(name))
                 {
                     result.Severity = SeverityEnum.Warning;
-                    result.Notes.Add(Localization.GetString(name + ".Error", this.LocalResourceFile));
+                    result.Notes.Add(Localization.GetString(name + ".Error", LocalResourceFile));
                 }
             }
 

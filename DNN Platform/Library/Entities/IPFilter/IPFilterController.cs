@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Host
         /// <inheritdoc/>
         public bool IsIPBanned(string ipAddress)
         {
-            return this.CheckIfBannedIPAddress(ipAddress);
+            return CheckIfBannedIPAddress(ipAddress);
         }
 
         /// <inheritdoc/>
@@ -176,7 +176,7 @@ namespace DotNetNuke.Entities.Host
             }
         }
 
-        private bool CheckIfBannedIPAddress(string ipAddress)
+        private static bool CheckIfBannedIPAddress(string ipAddress)
         {
             IList<IPFilterInfo> filterList = Instance.GetIPFilters();
             bool ipAllowed = true;
@@ -188,7 +188,7 @@ namespace DotNetNuke.Entities.Host
                     if (NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
                     {
                         // log
-                        this.LogBannedIPAttempt(ipAddress);
+                        LogBannedIPAttempt(ipAddress);
                         return true;
                     }
                 }
@@ -206,11 +206,11 @@ namespace DotNetNuke.Entities.Host
             return ipAllowed;
         }
 
-        private void LogBannedIPAttempt(string ipAddress)
+        private static void LogBannedIPAttempt(string ipAddress)
         {
             var log = new LogInfo
             {
-                LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.IP_LOGIN_BANNED.ToString(),
+                LogTypeKey = nameof(DotNetNuke.Abstractions.Logging.EventLogType.IP_LOGIN_BANNED),
             };
             log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
             LogController.Instance.AddLog(log);

@@ -37,16 +37,16 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var friendlyUrlProvider = this.GetProviderConfiguration("friendlyUrl");
+                var friendlyUrlProvider = GetProviderConfiguration("friendlyUrl");
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     product = DotNetNukeContext.Current.Application.Description,
                     version = DotNetNukeContext.Current.Application.Version.ToString(3),
                     guid = DotNetNuke.Entities.Host.Host.GUID,
-                    htmlEditorProvider = this.GetProviderConfiguration("htmlEditor"),
-                    dataProvider = this.GetProviderConfiguration("data"),
-                    cachingProvider = this.GetProviderConfiguration("caching"),
-                    loggingProvider = this.GetProviderConfiguration("logging"),
+                    htmlEditorProvider = GetProviderConfiguration("htmlEditor"),
+                    dataProvider = GetProviderConfiguration("data"),
+                    cachingProvider = GetProviderConfiguration("caching"),
+                    loggingProvider = GetProviderConfiguration("logging"),
                     friendlyUrlProvider,
                     friendlyUrlsEnabled = DotNetNuke.Entities.Host.Host.UseFriendlyUrls.ToString(),
                     friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.Servers.Services
             return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : FirstCharToUpper(urlFormat);
         }
 
-        private string GetProviderConfiguration(string providerName)
+        private static string GetProviderConfiguration(string providerName)
         {
             return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
         }

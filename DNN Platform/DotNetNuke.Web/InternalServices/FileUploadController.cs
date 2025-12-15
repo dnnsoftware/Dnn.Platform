@@ -675,7 +675,7 @@ namespace DotNetNuke.Web.InternalServices
             return mygroup;
         }
 
-        private string GetFileName(WebResponse response)
+        private static string GetFileName(WebResponse response)
         {
             if (!response.Headers.AllKeys.Contains("Content-Disposition"))
             {
@@ -686,10 +686,10 @@ namespace DotNetNuke.Web.InternalServices
             return new ContentDisposition(contentDisposition).FileName;
         }
 
-        private bool VerifySafeUrl(string url)
+        private static bool VerifySafeUrl(string url)
         {
             Uri uri = new Uri(url);
-            if (uri.Scheme == "http" || uri.Scheme == "https")
+            if (uri.Scheme is "http" or "https")
             {
                 if (!uri.Host.Contains("."))
                 {
