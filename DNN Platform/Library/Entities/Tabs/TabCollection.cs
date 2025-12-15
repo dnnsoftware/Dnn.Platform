@@ -140,7 +140,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         collection = !includeNeutral
                                         ? new TabCollection(from t in tabs
-                                                            where t.CultureCode.ToLowerInvariant() == cultureCode
+                                                            where t.CultureCode.Equals(cultureCode, StringComparison.OrdinalIgnoreCase)
                                                             select t)
                                         : new TabCollection(tabs);
                     }

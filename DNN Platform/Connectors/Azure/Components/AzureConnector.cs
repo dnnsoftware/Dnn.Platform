@@ -507,7 +507,7 @@ namespace Dnn.AzureConnector.Components
             return this.folderMappingController.GetFolderMappings(portalId)
                 .Any(
                     f =>
-                        f.MappingName.ToLowerInvariant() == mappingName.ToLowerInvariant() &&
+                        f.MappingName.Equals(mappingName, StringComparison.OrdinalIgnoreCase) &&
                         (f.FolderMappingID != exceptMappingId));
         }
 

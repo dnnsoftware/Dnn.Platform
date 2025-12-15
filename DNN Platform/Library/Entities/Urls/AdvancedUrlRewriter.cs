@@ -166,7 +166,7 @@ namespace DotNetNuke.Entities.Urls
                             aliasQueryString = "?" + queryString;
 
                             // 674: check for 301 if this value is a tabid/xx - otherwise the url will just evaluate as is
-                            if (queryString.ToLowerInvariant().StartsWith("tabid="))
+                            if (queryString.StartsWith("tabid=", StringComparison.OrdinalIgnoreCase))
                             {
                                 result.Action = ActionType.CheckFor301;
                             }

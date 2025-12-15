@@ -149,7 +149,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                             break;
                         default:
-                            if ((arrKeys[i].ToLowerInvariant() == "portalid") && this.objPortal.ActiveTab.IsSuperTab)
+                            if (arrKeys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && this.objPortal.ActiveTab.IsSuperTab)
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab

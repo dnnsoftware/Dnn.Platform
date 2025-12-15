@@ -397,7 +397,7 @@ namespace DotNetNuke.Services.Localization
             language = language.ToLowerInvariant();
             if (resourceFileRoot != null)
             {
-                if (language == Localization.SystemLocale.ToLowerInvariant() || string.IsNullOrEmpty(language))
+                if (language.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(language))
                 {
                     switch (resourceFileRoot.Substring(resourceFileRoot.Length - 5, 5).ToLowerInvariant())
                     {
@@ -436,7 +436,7 @@ namespace DotNetNuke.Services.Localization
             }
             else
             {
-                if (language == Localization.SystemLocale.ToLowerInvariant() || string.IsNullOrEmpty(language))
+                if (language.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(language))
                 {
                     resourceFile = Localization.SharedResourceFile;
                 }
@@ -552,12 +552,12 @@ namespace DotNetNuke.Services.Localization
             bool bFound = TryGetFromResourceFile(key, resourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
             if (!bFound)
             {
-                if (Localization.SharedResourceFile.ToLowerInvariant() != resourceFile.ToLowerInvariant())
+                if (!Localization.SharedResourceFile.Equals(resourceFile, StringComparison.OrdinalIgnoreCase))
                 {
                     // try to use a module specific shared resource file
                     string localSharedFile = resourceFile.Substring(0, resourceFile.LastIndexOf("/", StringComparison.Ordinal) + 1) + Localization.LocalSharedResourceFile;
 
-                    if (localSharedFile.ToLowerInvariant() != resourceFile.ToLowerInvariant())
+                    if (!localSharedFile.Equals(resourceFile, StringComparison.OrdinalIgnoreCase))
                     {
                         bFound = TryGetFromResourceFile(key, localSharedFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
                     }
@@ -566,7 +566,7 @@ namespace DotNetNuke.Services.Localization
 
             if (!bFound)
             {
-                if (Localization.SharedResourceFile.ToLowerInvariant() != resourceFile.ToLowerInvariant())
+                if (!Localization.SharedResourceFile.Equals(resourceFile, StringComparison.OrdinalIgnoreCase))
                 {
                     bFound = TryGetFromResourceFile(key, Localization.SharedResourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
                 }
@@ -575,7 +575,7 @@ namespace DotNetNuke.Services.Localization
             return bFound;
         }
 
-        private static bool TryGetFromResourceFile(string key, string resourceFile, int portalID, CustomizedLocale resourceType, ref string resourceValue)
+        private static bool TryGetFromResourceFile(string key, string resourceFile, int portalId, CustomizedLocale resourceType, ref string resourceValue)
         {
             bool bFound = Null.NullBoolean;
             string resourceFileName = resourceFile;
@@ -585,7 +585,7 @@ namespace DotNetNuke.Services.Localization
                     resourceFileName = resourceFile.Replace(".resx", ".Host.resx");
                     break;
                 case CustomizedLocale.Portal:
-                    resourceFileName = resourceFile.Replace(".resx", ".Portal-" + portalID + ".resx");
+                    resourceFileName = resourceFile.Replace(".resx", ".Portal-" + portalId + ".resx");
                     break;
             }
 

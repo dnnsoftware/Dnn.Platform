@@ -477,7 +477,7 @@ namespace DotNetNuke.Services.Assets
 
         private static string GetNewFolderPath(string newFolderName, IFolderInfo folder)
         {
-            if (folder.FolderName.ToLowerInvariant() == newFolderName.ToLowerInvariant())
+            if (folder.FolderName.Equals(newFolderName, StringComparison.InvariantCultureIgnoreCase))
             {
                 return folder.FolderPath;
             }

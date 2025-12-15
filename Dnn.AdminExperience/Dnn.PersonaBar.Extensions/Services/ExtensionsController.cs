@@ -861,7 +861,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     var files = Directory.GetFiles(folder.Path, "*.ascx");
 
                     // exclude module folders
-                    if (files.Length == 0 || folder.Path.ToLowerInvariant() == "admin")
+                    if (files.Length == 0 || folder.Path.Equals("admin", StringComparison.InvariantCultureIgnoreCase))
                     {
                         var path = GetFolderPath(folder);
                         folders.Add(path);

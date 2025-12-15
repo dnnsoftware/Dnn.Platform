@@ -905,8 +905,8 @@ namespace DotNetNuke.UI.Skins
 
                 // determine and store path to portals skin root folder
                 string strTemp = fileName.Replace(Path.GetFileName(fileName), string.Empty);
-                strTemp = strTemp.Replace("\\", "/");
-                this.skinRootPath = Globals.ApplicationPath + strTemp.Substring(strTemp.ToUpper().IndexOf("/PORTALS"));
+                strTemp = strTemp.Replace(@"\", "/");
+                this.skinRootPath = Globals.ApplicationPath + strTemp.Substring(strTemp.IndexOf("/PORTALS", StringComparison.OrdinalIgnoreCase));
 
                 // read file contents
                 this.Contents = Read(fileName);

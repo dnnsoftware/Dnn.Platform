@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     }
                 }
 
-                if (packageType.ToLowerInvariant() == "corelanguagepack")
+                if (packageType.Equals("corelanguagepack", StringComparison.InvariantCultureIgnoreCase))
                 {
                     GetAvailableLanguagePacks(validPackages);
                 }
@@ -247,7 +247,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return string.Empty;
             }
 
-            if (packageInfo.PackageType.ToUpper() == "MODULE")
+            if (packageInfo.PackageType.Equals("MODULE", StringComparison.CurrentCultureIgnoreCase))
             {
                 if (portalId == Null.NullInteger)
                 {

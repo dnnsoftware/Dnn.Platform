@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             connectionConfig.Password = value;
                             break;
                         case "integrated security":
-                            connectionConfig.Integrated = value.ToLowerInvariant() == "true";
+                            connectionConfig.Integrated = value.Equals("true", StringComparison.OrdinalIgnoreCase);
                             break;
                         case "attachdbfilename":
                             connectionConfig.File = value.Replace("|DataDirectory|", string.Empty);
@@ -311,10 +311,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 connectionConfig.Server = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "server");
                 connectionConfig.Database = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "database");
                 connectionConfig.File = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "file");
-                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").ToLowerInvariant() == "true";
+                connectionConfig.Integrated = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "integrated").Equals("true", StringComparison.OrdinalIgnoreCase);
                 connectionConfig.User = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "user");
                 connectionConfig.Password = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "password");
-                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").ToLowerInvariant() == "true";
+                connectionConfig.RunAsDbowner = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "runasdbowner").Equals("true", StringComparison.OrdinalIgnoreCase);
                 connectionConfig.Qualifier = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "qualifier");
                 connectionConfig.UpgradeConnectionString = XmlUtils.GetNodeValue(connectionNode.CreateNavigator(), "upgradeconnectionstring");
 
@@ -333,7 +333,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 superUserConfig.Password = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "password");
                 superUserConfig.Email = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "email");
                 superUserConfig.Locale = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "locale");
-                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").ToLowerInvariant() == "true";
+                superUserConfig.UpdatePassword = XmlUtils.GetNodeValue(superUserNode.CreateNavigator(), "updatepassword").Equals("true", StringComparison.OrdinalIgnoreCase);
 
                 installConfig.SuperUser = superUserConfig;
             }
@@ -352,7 +352,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             XmlAttribute secureAttrib = settingNode.Attributes["Secure"];
                             if (secureAttrib != null)
                             {
-                                if (secureAttrib.Value.ToLowerInvariant() == "true")
+                                if (secureAttrib.Value.Equals("true", StringComparison.OrdinalIgnoreCase))
                                 {
                                     settingIsSecure = true;
                                 }
@@ -392,18 +392,18 @@ namespace DotNetNuke.Services.Upgrade.Internals
                         portalConfig.Description = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "description");
                         portalConfig.Keywords = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "keywords");
                         portalConfig.TemplateFileName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "templatefile");
-                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").ToLowerInvariant() == "true";
+                        portalConfig.IsChild = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "ischild").Equals("true", StringComparison.OrdinalIgnoreCase);
                         portalConfig.HomeDirectory = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "homedirectory");
 
                         // Get the Portal Alias
                         XmlNodeList portalAliases = portalNode.SelectNodes("portalaliases/portalalias");
                         if (portalAliases != null)
                         {
-                            foreach (XmlNode portalAliase in portalAliases)
+                            foreach (XmlNode portalAlias in portalAliases)
                             {
-                                if (!string.IsNullOrEmpty(portalAliase.InnerText))
+                                if (!string.IsNullOrEmpty(portalAlias.InnerText))
                                 {
-                                    portalConfig.PortAliases.Add(portalAliase.InnerText);
+                                    portalConfig.PortAliases.Add(portalAlias.InnerText);
                                 }
                             }
                         }
@@ -486,14 +486,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         public bool IsSqlServerDbo()
         {
             string dbo = DataProvider.Instance().Settings["databaseOwner"];
-            if (dbo.Trim().ToLowerInvariant() != "dbo.")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !dbo.Trim().Equals("dbo.", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <inheritdoc/>
@@ -506,7 +499,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
 
                 // no need to download english, always there
-                if (cultureCode != "en-us" && string.IsNullOrEmpty(downloadUrl) != true)
+                if (cultureCode != "en-us" && !string.IsNullOrEmpty(downloadUrl))
                 {
                     var newCulture = new CultureInfo(cultureCode);
                     Thread.CurrentThread.CurrentCulture = newCulture;

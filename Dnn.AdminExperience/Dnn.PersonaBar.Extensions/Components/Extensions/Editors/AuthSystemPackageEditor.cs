@@ -170,7 +170,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                         }
 
                         if (packageSettings.EditorActions.TryGetValue("appEnabled", out value)
-                            && config.Enabled.ToString().ToUpperInvariant() != value.ToUpperInvariant())
+                            && !config.Enabled.ToString().Equals(value, StringComparison.OrdinalIgnoreCase))
                         {
                             config.Enabled = "TRUE".Equals(value, StringComparison.OrdinalIgnoreCase);
                             dirty = true;

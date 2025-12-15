@@ -3217,9 +3217,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             {
                 var objFolder = new DirectoryInfo(folder);
 
-                bool resxFilesDirectory = (objFolder.Name.ToLowerInvariant() == Localization.LocalResourceDirectory.ToLowerInvariant()) ||
-                                          (objFolder.Name.ToLowerInvariant() == Localization.ApplicationResourceDirectory.Replace("~/", string.Empty).ToLowerInvariant()) ||
-                                          folder.ToLowerInvariant().EndsWith("\\portals\\_default");
+                bool resxFilesDirectory = objFolder.Name.Equals(Localization.LocalResourceDirectory, StringComparison.OrdinalIgnoreCase) ||
+                                          objFolder.Name.Equals(Localization.ApplicationResourceDirectory.Replace("~/", string.Empty), StringComparison.OrdinalIgnoreCase) ||
+                                          folder.EndsWith("\\portals\\_default", StringComparison.OrdinalIgnoreCase);
 
                 if (resxFilesDirectory)
                 {
@@ -3229,7 +3229,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         var fileInfo = new FileInfo(file);
                         var match = LanguagesController.FileInfoRegex.Match(fileInfo.Name);
 
-                        if (match.Success && match.Groups[1].Value.ToLowerInvariant() != sysLocale)
+                        if (match.Success && !match.Groups[1].Value.Equals(sysLocale, StringComparison.OrdinalIgnoreCase))
                         {
                             continue;
                         }

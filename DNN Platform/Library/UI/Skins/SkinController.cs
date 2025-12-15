@@ -415,7 +415,7 @@ namespace DotNetNuke.UI.Skins
                             case ".html":
                             case ".ascx":
                             case ".css":
-                                if (strFileName.ToLowerInvariant().IndexOf(Globals.glbAboutPage.ToLowerInvariant()) < 0)
+                                if (strFileName.IndexOf(Globals.glbAboutPage, StringComparison.InvariantCultureIgnoreCase) < 0)
                                 {
                                     arrSkinFiles.Add(strFileName);
                                 }

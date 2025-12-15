@@ -57,14 +57,14 @@ namespace DotNetNuke.Entities.Portals
                     // this allows the parent domain name to resolve to the child alias ( the tabid still identifies the child portalid )
                     IPortalAliasInfo currentAliasInfo = currentAlias.Value;
                     string httpAlias = currentAliasInfo.HttpAlias.ToLowerInvariant();
-                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAliasInfo.PortalId == portalId)
+                    if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && currentAliasInfo.PortalId == portalId)
                     {
                         retValue = currentAliasInfo.HttpAlias;
                         break;
                     }
 
                     httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
-                    if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAliasInfo.PortalId == portalId)
+                    if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && currentAliasInfo.PortalId == portalId)
                     {
                         retValue = currentAliasInfo.HttpAlias;
                         break;

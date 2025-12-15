@@ -715,7 +715,7 @@ namespace DotNetNuke.Entities.Urls
                                 if (rx.IsMatch(pair[1]) == false)
                                 {
                                     // Contains Non-AlphaNumeric Characters
-                                    if (pair[0].ToLowerInvariant() == "tabid")
+                                    if (pair[0].Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                                     {
                                         int tabId;
                                         if (int.TryParse(pair[1], out tabId))

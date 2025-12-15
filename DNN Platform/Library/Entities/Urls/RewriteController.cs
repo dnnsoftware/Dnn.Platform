@@ -1204,7 +1204,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
 
                                 // 786 : redirect ctl/terms etc
-                                if (keyName != null && keyName.ToLowerInvariant() == "ctl")
+                                if (keyName != null && keyName.Equals("ctl", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     RequestRedirectOnBuiltInUrl(urlParm, parmString.ToString(), result);
                                 }
