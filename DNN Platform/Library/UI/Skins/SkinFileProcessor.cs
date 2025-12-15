@@ -909,7 +909,7 @@ namespace DotNetNuke.UI.Skins
                 this.skinRootPath = Globals.ApplicationPath + strTemp.Substring(strTemp.ToUpper().IndexOf("/PORTALS"));
 
                 // read file contents
-                this.Contents = this.Read(fileName);
+                this.Contents = Read(fileName);
 
                 // setup some attributes based on file extension
                 switch (this.FileExtension)
@@ -1067,14 +1067,12 @@ namespace DotNetNuke.UI.Skins
                 return messages;
             }
 
-            private string Read(string fileName)
+            private static string Read(string fileName)
             {
-                using (var objStreamReader = new StreamReader(fileName))
-                {
-                    string strFileContents = objStreamReader.ReadToEnd();
-                    objStreamReader.Close();
-                    return strFileContents;
-                }
+                using var objStreamReader = new StreamReader(fileName);
+                string strFileContents = objStreamReader.ReadToEnd();
+                objStreamReader.Close();
+                return strFileContents;
             }
         }
     }

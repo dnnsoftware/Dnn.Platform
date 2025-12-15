@@ -73,7 +73,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             foreach (string templateFilePath in templateFilePaths)
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
-                var langs = languageFileNames.Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => this.GetCultureCode(x)).Distinct().ToList();
+                var langs = languageFileNames.Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase)).Select(x => GetCultureCode(x)).Distinct().ToList();
 
                 if (langs.Any())
                 {
@@ -95,13 +95,13 @@ namespace DotNetNuke.Entities.Portals.Templates
             return Globals.DependencyProvider.GetRequiredService<IPortalTemplateController>;
         }
 
-        private string GetTemplateName(string languageFileName)
+        private static string GetTemplateName(string languageFileName)
         {
             // e.g. "default template.template.en-US.resx"
             return languageFileName.GetFileNameFromLocalizedResxFile();
         }
 
-        private string GetCultureCode(string languageFileName)
+        private static string GetCultureCode(string languageFileName)
         {
             // e.g. "default template.template.en-US.resx"
             return languageFileName.GetLocaleCodeFromFileName();

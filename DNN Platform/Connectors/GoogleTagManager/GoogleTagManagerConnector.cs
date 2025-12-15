@@ -108,7 +108,7 @@ namespace DNN.Connectors.GoogleTagManager
                             gtmId = setting.SettingValue;
                             break;
                         case "trackforadmin":
-                            trackForAdmin = this.HandleCustomBoolean(setting.SettingValue);
+                            trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }
                 }
@@ -118,7 +118,7 @@ namespace DNN.Connectors.GoogleTagManager
             {
                 { "GtmID", gtmId },
                 { "TrackAdministrators", trackForAdmin },
-                { "isDeactivating", this.HandleCustomBoolean("false") },
+                { "isDeactivating", HandleCustomBoolean("false") },
             };
 
             return configItems;
@@ -183,7 +183,7 @@ namespace DNN.Connectors.GoogleTagManager
 
                     if (!isDeactivating)
                     {
-                        this.EnsureScriptInConfig();
+                        EnsureScriptInConfig();
                     }
                 }
 
@@ -197,10 +197,10 @@ namespace DNN.Connectors.GoogleTagManager
         }
 
         /// <summary>Check if there's an AnalyticsEngine element in siteanalytics.config for this connector. If not, adds the default one.</summary>
-        private void EnsureScriptInConfig()
+        private static void EnsureScriptInConfig()
         {
-            var applicationMappath = HttpContext.Current.Server.MapPath("\\");
-            var file = applicationMappath + "\\SiteAnalytics.config";
+            var applicationMapPath = HttpContext.Current.Server.MapPath(@"\");
+            var file = applicationMapPath + @"\SiteAnalytics.config";
             var xdoc = new XmlDocument();
             xdoc.Load(file);
             var found = false;
@@ -215,7 +215,7 @@ namespace DNN.Connectors.GoogleTagManager
 
             if (!found)
             {
-                var fileGtm = applicationMappath + "\\DesktopModules\\Connectors\\GoogleTagManager\\GoogleTagManager.config";
+                var fileGtm = applicationMapPath + @"\DesktopModules\Connectors\GoogleTagManager\GoogleTagManager.config";
                 var xdocGtm = new XmlDocument();
                 xdocGtm.Load(fileGtm);
 
@@ -237,7 +237,7 @@ namespace DNN.Connectors.GoogleTagManager
         /// </summary>
         /// <param name="value">The string representing a boolean.</param>
         /// <returns>The string representing a boolean after the correction.</returns>
-        private string HandleCustomBoolean(string value)
+        private static string HandleCustomBoolean(string value)
         {
             if ((value ?? string.Empty).Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
             {

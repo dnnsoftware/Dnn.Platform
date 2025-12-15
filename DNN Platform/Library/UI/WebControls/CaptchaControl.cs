@@ -85,24 +85,12 @@ namespace DotNetNuke.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Description("Set the Style for the Error Message Control.")]
-        public Style ErrorStyle
-        {
-            get
-            {
-                return this.errorStyle;
-            }
-        }
+        public Style ErrorStyle => this.errorStyle;
 
         /// <summary>Gets a value indicating whether the control is valid.</summary>
         [Category("Validation")]
         [Description("Returns True if the user was CAPTCHA validated after a postback.")]
-        public bool IsValid
-        {
-            get
-            {
-                return this.isValid;
-            }
-        }
+        public bool IsValid => this.isValid;
 
         /// <summary>Gets the Style to use for the Text Box.</summary>
         [Browsable(true)]
@@ -110,28 +98,15 @@ namespace DotNetNuke.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Description("Set the Style for the Text Box Control.")]
-        public Style TextBoxStyle
-        {
-            get
-            {
-                return this.textBoxStyle;
-            }
-        }
+        public Style TextBoxStyle => this.textBoxStyle;
 
         /// <summary>Gets or sets the BackGroundColor.</summary>
         [Category("Appearance")]
         [Description("The Background Color to use for the Captcha Image.")]
         public Color BackGroundColor
         {
-            get
-            {
-                return this.backGroundColor;
-            }
-
-            set
-            {
-                this.backGroundColor = value;
-            }
+            get => this.backGroundColor;
+            set => this.backGroundColor = value;
         }
 
         /// <summary>Gets or sets the BackGround Image.</summary>
@@ -139,15 +114,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("A Background Image to use for the Captcha Image.")]
         public string BackGroundImage
         {
-            get
-            {
-                return this.backGroundImage;
-            }
-
-            set
-            {
-                this.backGroundImage = value;
-            }
+            get => this.backGroundImage;
+            set => this.backGroundImage = value;
         }
 
         /// <summary>Gets or sets the list of characters.</summary>
@@ -156,15 +124,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("Characters used to render CAPTCHA text. A character will be picked randomly from the string.")]
         public string CaptchaChars
         {
-            get
-            {
-                return this.captchaChars;
-            }
-
-            set
-            {
-                this.captchaChars = value;
-            }
+            get => this.captchaChars;
+            set => this.captchaChars = value;
         }
 
         /// <summary>Gets or sets the height of the Captcha image.</summary>
@@ -172,15 +133,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("Height of Captcha Image.")]
         public Unit CaptchaHeight
         {
-            get
-            {
-                return this.captchaHeight;
-            }
-
-            set
-            {
-                this.captchaHeight = value;
-            }
+            get => this.captchaHeight;
+            set => this.captchaHeight = value;
         }
 
         /// <summary>Gets or sets the length of the Captcha string.</summary>
@@ -189,15 +143,8 @@ namespace DotNetNuke.UI.WebControls
         [Description("Number of CaptchaChars used in the CAPTCHA text")]
         public int CaptchaLength
         {
-            get
-            {
-                return this.captchaLength;
-            }
-
-            set
-            {
-                this.captchaLength = value;
-            }
+            get => this.captchaLength;
+            set => this.captchaLength = value;
         }
 
         /// <summary>Gets or sets the width of the Captcha image.</summary>
@@ -205,30 +152,16 @@ namespace DotNetNuke.UI.WebControls
         [Description("Width of Captcha Image.")]
         public Unit CaptchaWidth
         {
-            get
-            {
-                return this.captchaWidth;
-            }
-
-            set
-            {
-                this.captchaWidth = value;
-            }
+            get => this.captchaWidth;
+            set => this.captchaWidth = value;
         }
 
         /// <summary>Gets or sets a value indicating whether the Viewstate is enabled.</summary>
         [Browsable(false)]
         public override bool EnableViewState
         {
-            get
-            {
-                return base.EnableViewState;
-            }
-
-            set
-            {
-                base.EnableViewState = value;
-            }
+            get => base.EnableViewState;
+            set => base.EnableViewState = value;
         }
 
         /// <summary>Gets or sets the ErrorMessage to display if the control is invalid.</summary>
@@ -243,15 +176,8 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue(EXPIRATIONDEFAULT)]
         public int Expiration
         {
-            get
-            {
-                return this.expiration;
-            }
-
-            set
-            {
-                this.expiration = value;
-            }
+            get => this.expiration;
+            set => this.expiration = value;
         }
 
         /// <summary>Gets or sets the Url to use to render the control.</summary>
@@ -260,15 +186,8 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue(RENDERURLDEFAULT)]
         public string RenderUrl
         {
-            get
-            {
-                return this.renderUrl;
-            }
-
-            set
-            {
-                this.renderUrl = value;
-            }
+            get => this.renderUrl;
+            set => this.renderUrl = value;
         }
 
         /// <summary>Gets or sets the Help Text to use.</summary>
@@ -277,13 +196,7 @@ namespace DotNetNuke.UI.WebControls
         [Description("Instructional text displayed next to CAPTCHA image.")]
         public string Text { get; set; }
 
-        private bool IsDesignMode
-        {
-            get
-            {
-                return HttpContext.Current == null;
-            }
-        }
+        private static bool IsDesignMode => HttpContext.Current == null;
 
         /// <summary>LoadPostData loads the Post Back Data and determines whether the value has change.</summary>
         /// <param name="postDataKey">A key to the PostBack Data to load.</param>

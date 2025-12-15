@@ -485,7 +485,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -529,7 +529,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -563,7 +563,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -597,7 +597,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
                 }
 
-                if (this.IsDefaultLanguage(pid, cultureCode))
+                if (IsDefaultLanguage(pid, cultureCode))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidCulture");
                 }
@@ -753,7 +753,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return nodeData.AppendChild(resourceDoc.CreateElement("value"));
         }
 
-        private bool IsDefaultLanguage(int portalId, string cultureCode)
+        private static bool IsDefaultLanguage(int portalId, string cultureCode)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var portalSettings = new PortalSettings(portal);

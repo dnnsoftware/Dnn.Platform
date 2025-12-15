@@ -294,7 +294,7 @@ namespace DotNetNuke.Security.Membership
                 var settings = UserController.GetUserSettings(portalSettings.PortalId);
 
                 // User Name Validation
-                var userNameValidator = this.GetStringSetting(settings, "Security_UserNameValidation");
+                var userNameValidator = GetStringSetting(settings, "Security_UserNameValidation");
                 if (!string.IsNullOrEmpty(userNameValidator))
                 {
                     var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -367,7 +367,7 @@ namespace DotNetNuke.Security.Membership
         /// <inheritdoc />
         public override UserCreateStatus CreateUser(ref UserInfo user)
         {
-            UserCreateStatus createStatus = this.ValidateForProfanity(user);
+            UserCreateStatus createStatus = ValidateForProfanity(user);
             string service = HttpContext.Current != null ? HttpContext.Current.Request.Params["state"] : string.Empty;
 
             if (createStatus == UserCreateStatus.AddUser)
@@ -1598,6 +1598,46 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.ValidateUser(username, password);
         }
 
+        private static string GetStringSetting(Hashtable settings, string settingKey)
+        {
+            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
+        }
+
+        private static UserCreateStatus ValidateForProfanity(UserInfo user)
+        {
+            var portalSecurity = PortalSecurity.Instance;
+            var createStatus = UserCreateStatus.AddUser;
+
+            Hashtable settings = UserController.GetUserSettings(user.PortalID);
+            bool useProfanityFilter = Convert.ToBoolean(settings["Registration_UseProfanityFilter"]);
+
+            // Validate Profanity
+            if (useProfanityFilter)
+            {
+                if (!portalSecurity.ValidateInput(user.Username, PortalSecurity.FilterFlag.NoProfanity))
+                {
+                    createStatus = UserCreateStatus.InvalidUserName;
+                }
+
+                if (!string.IsNullOrEmpty(user.DisplayName))
+                {
+                    if (!portalSecurity.ValidateInput(user.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
+                    {
+                        createStatus = UserCreateStatus.InvalidDisplayName;
+                    }
+                }
+            }
+
+            return createStatus;
+        }
+
+        private static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
         private UserCreateStatus CreateDNNUser(ref UserInfo user)
         {
             var objSecurity = PortalSecurity.Instance;
@@ -1645,39 +1685,6 @@ namespace DotNetNuke.Security.Membership
             return createStatus;
         }
 
-        private string GetStringSetting(Hashtable settings, string settingKey)
-        {
-            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
-        }
-
-        private UserCreateStatus ValidateForProfanity(UserInfo user)
-        {
-            var portalSecurity = PortalSecurity.Instance;
-            var createStatus = UserCreateStatus.AddUser;
-
-            Hashtable settings = UserController.GetUserSettings(user.PortalID);
-            bool useProfanityFilter = Convert.ToBoolean(settings["Registration_UseProfanityFilter"]);
-
-            // Validate Profanity
-            if (useProfanityFilter)
-            {
-                if (!portalSecurity.ValidateInput(user.Username, PortalSecurity.FilterFlag.NoProfanity))
-                {
-                    createStatus = UserCreateStatus.InvalidUserName;
-                }
-
-                if (!string.IsNullOrEmpty(user.DisplayName))
-                {
-                    if (!portalSecurity.ValidateInput(user.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
-                    {
-                        createStatus = UserCreateStatus.InvalidDisplayName;
-                    }
-                }
-            }
-
-            return createStatus;
-        }
-
         private void ValidateForDuplicateDisplayName(UserInfo user, ref UserCreateStatus createStatus)
         {
             Hashtable settings = UserController.GetUserSettings(user.PortalID);
@@ -1693,23 +1700,14 @@ namespace DotNetNuke.Security.Membership
             }
         }
 
-        private string RandomString(int length)
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-            return new string(Enumerable.Repeat(chars, length)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
-
         /// <summary>GetUserByUserNameFromDataStore retrieves a User from the DataStore.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="username">The username of the user being retrieved from the Data Store.</param>
         /// <returns>The User as a UserInfo object.</returns>
         private UserInfo GetUserByUserNameFromDataStore(int portalId, string username)
         {
-            using (var dr = this.dataProvider.GetUserByUsername(portalId, username))
-            {
-                return FillUserInfo(portalId, dr, true);
-            }
+            using var dr = this.dataProvider.GetUserByUsername(portalId, username);
+            return FillUserInfo(portalId, dr, true);
         }
     }
 }

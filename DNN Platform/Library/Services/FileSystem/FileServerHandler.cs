@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception)
             {
                 // The TabId or ModuleId are incorrectly formatted (potential DOS)
-                this.Handle404Exception(context, context.Request.RawUrl);
+                Handle404Exception(context, context.Request.RawUrl);
             }
 
             // get Language
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.FileSystem
                     // verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(url), portalSettings.PortalId, false) == null)
                     {
-                        this.Handle404Exception(context, context.Request.RawUrl);
+                        Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
 
@@ -162,7 +162,7 @@ namespace DotNetNuke.Services.FileSystem
                             var file = fileManager.GetFile(int.Parse(UrlUtils.GetParameterValue(url)));
                             if (file != null)
                             {
-                                if (!file.IsEnabled || !this.HasAPublishedVersion(file))
+                                if (!file.IsEnabled || !HasAPublishedVersion(file))
                                 {
                                     if (context.Request.IsAuthenticated)
                                     {
@@ -218,7 +218,7 @@ namespace DotNetNuke.Services.FileSystem
 
                             if (!download)
                             {
-                                this.Handle404Exception(context, url);
+                                Handle404Exception(context, url);
                             }
 
                             break;
@@ -241,16 +241,16 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception)
                 {
-                    this.Handle404Exception(context, url);
+                    Handle404Exception(context, url);
                 }
             }
             else
             {
-                this.Handle404Exception(context, url);
+                Handle404Exception(context, url);
             }
         }
 
-        private bool HasAPublishedVersion(IFileInfo file)
+        private static bool HasAPublishedVersion(IFileInfo file)
         {
             if (file.HasBeenPublished)
             {
@@ -262,7 +262,7 @@ namespace DotNetNuke.Services.FileSystem
             return user != null && user.UserID == file.CreatedByUserID;
         }
 
-        private void Handle404Exception(HttpContext context, string url)
+        private static void Handle404Exception(HttpContext context, string url)
         {
             try
             {

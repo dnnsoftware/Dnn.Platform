@@ -4,6 +4,7 @@
 namespace DotNetNuke.HttpModules.Membership
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Security.Principal;
@@ -63,6 +64,7 @@ namespace DotNetNuke.HttpModules.Membership
         }
 
         /// <summary>Gets the name of the module.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ModuleName => "DNNMembershipModule";
 
         /// <summary>Called when unverified user skin initialize.</summary>

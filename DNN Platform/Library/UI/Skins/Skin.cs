@@ -694,6 +694,26 @@ namespace DotNetNuke.UI.Skins
             return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
         }
 
+        private static void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
+        {
+            // If tab exists but ContentItem not, then we create it
+            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
+            {
+                TabController.Instance.CreateContentItem(tabInfo);
+                TabController.Instance.UpdateTab(tabInfo);
+            }
+        }
+
+        private static void EnsureContentItemForModule(ModuleInfo module)
+        {
+            // If module exists but ContentItem not, then we create it
+            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            {
+                ModuleController.Instance.CreateContentItem(module);
+                ModuleController.Instance.UpdateModule(module);
+            }
+        }
+
         private bool CheckExpired()
         {
             bool blnExpired = false;
@@ -821,7 +841,7 @@ namespace DotNetNuke.UI.Skins
             }
 
             // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
-            this.EnsureContentItemForModule(module);
+            EnsureContentItemForModule(module);
 
             var pane = this.GetPane(module);
             if (pane != null)
@@ -857,7 +877,7 @@ namespace DotNetNuke.UI.Skins
             if (TabPermissionController.CanViewPage())
             {
                 // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
-                this.EnsureContentItemForTab(this.PortalSettings.ActiveTab);
+                EnsureContentItemForTab(this.PortalSettings.ActiveTab);
 
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
@@ -922,26 +942,6 @@ namespace DotNetNuke.UI.Skins
             }
 
             return success;
-        }
-
-        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
-        {
-            // If tab exists but ContentItem not, then we create it
-            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
-            {
-                TabController.Instance.CreateContentItem(tabInfo);
-                TabController.Instance.UpdateTab(tabInfo);
-            }
-        }
-
-        private void EnsureContentItemForModule(ModuleInfo module)
-        {
-            // If module exists but ContentItem not, then we create it
-            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
-            {
-                ModuleController.Instance.CreateContentItem(module);
-                ModuleController.Instance.UpdateModule(module);
-            }
         }
 
         private void ProcessPanes()

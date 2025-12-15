@@ -1471,8 +1471,8 @@ namespace DotNetNuke.Entities.Portals
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
                 var langs = languageFileNames
-                                .Where(x => this.GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase))
-                                .Select(x => this.GetCultureCode(x))
+                                .Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase))
+                                .Select(x => GetCultureCode(x))
                                 .Distinct()
                                 .ToList();
 
@@ -2398,6 +2398,18 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
+        private static string GetCultureCode(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetLocaleCodeFromFileName();
+        }
+
+        private static string GetTemplateName(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetFileNameFromLocalizedResxFile();
+        }
+
         private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, IPortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal, ref string message)
         {
             // Add default workflows
@@ -2701,12 +2713,6 @@ namespace DotNetNuke.Entities.Portals
             return ensuredSettingValue;
         }
 
-        private string GetCultureCode(string languageFileName)
-        {
-            // e.g. "default template.template.en-US.resx"
-            return languageFileName.GetLocaleCodeFromFileName();
-        }
-
         private FolderMappingInfo GetFolderMappingFromConfig(FolderTypeConfig node, int portalId)
         {
             var folderMapping = new FolderMappingInfo
@@ -2723,12 +2729,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return folderMapping;
-        }
-
-        private string GetTemplateName(string languageFileName)
-        {
-            // e.g. "default template.template.en-US.resx"
-            return languageFileName.GetFileNameFromLocalizedResxFile();
         }
 
         private void UpdatePortalInternal(PortalInfo portal, bool clearCache)

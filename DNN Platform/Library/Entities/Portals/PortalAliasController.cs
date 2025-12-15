@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Portals;
@@ -218,6 +219,7 @@ namespace DotNetNuke.Entities.Portals
             ClearCache(false);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal Dictionary<string, PortalAliasInfo> GetPortalAliasesInternal()
         {
             return CBO.GetCachedObject<Dictionary<string, PortalAliasInfo>>(

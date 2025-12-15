@@ -146,11 +146,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             var publishedDetails = this.GetVersionModulesDetails(tabId, lastTabVersion.Version).ToArray();
 
-            var rollbackDetails = this.CopyVersionDetails(this.GetVersionModulesDetails(tabId, version)).ToArray();
+            var rollbackDetails = CopyVersionDetails(this.GetVersionModulesDetails(tabId, version)).ToArray();
             var newVersion = this.CreateNewVersion(tabId, createdByUserId);
 
             // Save Reset detail
-            this.tabVersionDetailController.SaveTabVersionDetail(this.GetResetTabVersionDetail(newVersion), createdByUserId);
+            this.tabVersionDetailController.SaveTabVersionDetail(GetResetTabVersionDetail(newVersion), createdByUserId);
 
             foreach (var rollbackDetail in rollbackDetails)
             {
@@ -326,6 +326,30 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
 
             return newVersionDetail;
+        }
+
+        private static TabVersionDetail GetResetTabVersionDetail(TabVersion tabVersion)
+        {
+            return new TabVersionDetail
+            {
+                PaneName = "none_resetAction",
+                TabVersionId = tabVersion.TabVersionId,
+                Action = TabVersionDetailAction.Reset,
+                ModuleId = Null.NullInteger,
+                ModuleVersion = Null.NullInteger,
+            };
+        }
+
+        private static IEnumerable<TabVersionDetail> CopyVersionDetails(IEnumerable<TabVersionDetail> tabVersionDetails)
+        {
+            return tabVersionDetails.Select(tabVersionDetail => new TabVersionDetail
+            {
+                ModuleId = tabVersionDetail.ModuleId,
+                ModuleOrder = tabVersionDetail.ModuleOrder,
+                ModuleVersion = tabVersionDetail.ModuleVersion,
+                PaneName = tabVersionDetail.PaneName,
+                Action = tabVersionDetail.Action,
+            }).ToList();
         }
 
         private void DiscardVersion(int tabId, TabVersion tabVersion)
@@ -596,18 +620,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this.moduleController.UpdateModule(module);
         }
 
-        private TabVersionDetail GetResetTabVersionDetail(TabVersion tabVersion)
-        {
-            return new TabVersionDetail
-            {
-                PaneName = "none_resetAction",
-                TabVersionId = tabVersion.TabVersionId,
-                Action = TabVersionDetailAction.Reset,
-                ModuleId = Null.NullInteger,
-                ModuleVersion = Null.NullInteger,
-            };
-        }
-
         private void RestoreModuleInfo(int tabId, TabVersionDetail detailsToRestore)
         {
             var restoredModule = this.moduleController.GetModule(detailsToRestore.ModuleId, tabId, true);
@@ -645,18 +657,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             this.moduleController.ClearCache(tabId);
             return tabVersion;
-        }
-
-        private IEnumerable<TabVersionDetail> CopyVersionDetails(IEnumerable<TabVersionDetail> tabVersionDetails)
-        {
-            return tabVersionDetails.Select(tabVersionDetail => new TabVersionDetail
-            {
-                ModuleId = tabVersionDetail.ModuleId,
-                ModuleOrder = tabVersionDetail.ModuleOrder,
-                ModuleVersion = tabVersionDetail.ModuleVersion,
-                PaneName = tabVersionDetail.PaneName,
-                Action = tabVersionDetail.Action,
-            }).ToList();
         }
 
         private void CheckVersioningEnabled(int tabId)

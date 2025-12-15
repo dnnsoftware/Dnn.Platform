@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             Requires.NotNull("fileContent", fileContent);
 
             var extension = Path.GetExtension(fileName);
-            var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
+            var checker = GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
 
             // when there is no specific file check for the file type, then treat it as validated.
             if (checker == null)
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
 
             // use copy of the stream as we can't make sure how the check process the stream.
-            using (var copyStream = this.CopyStream(fileContent))
+            using (var copyStream = CopyStream(fileContent))
             {
                 return checker.Validate(copyStream);
             }
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             int bytesRead = fileContent.Read(firstBytes, 0, 2);
             fileContent.Position = 0;
 
-            // Windows exectuable files start with 0x4D 0x5A
+            // Windows executable files start with 0x4D 0x5A
             return bytesRead < 2 || firstBytes[0] != 0x4D || firstBytes[1] != 0x5A;
         }
 
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return () => new FileSecurityController();
         }
 
-        private IFileSecurityChecker GetSecurityChecker(string extension)
+        private static IFileSecurityChecker GetSecurityChecker(string extension)
         {
             var listEntry = new ListController().GetListEntryInfo("FileSecurityChecker", extension);
             if (listEntry != null && !string.IsNullOrEmpty(listEntry.Text))
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             return null;
         }
 
-        private Stream CopyStream(Stream stream)
+        private static Stream CopyStream(Stream stream)
         {
             var folderPath = ((FileManager)FileManager.Instance).GetHostMapPath();
             string filePath;

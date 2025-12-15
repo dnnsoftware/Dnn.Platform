@@ -480,7 +480,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                this.Validate(userBasicDto);
+                Validate(userBasicDto);
                 KeyValuePair<HttpStatusCode, string> response;
                 var user = Components.UsersController.GetUser(userBasicDto.UserId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
@@ -612,7 +612,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                this.Validate(userRoleDto);
+                Validate(userRoleDto);
                 KeyValuePair<HttpStatusCode, string> response;
                 var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
@@ -643,7 +643,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                this.Validate(userRoleDto);
+                Validate(userRoleDto);
                 KeyValuePair<HttpStatusCode, string> response;
                 var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out response);
                 if (user == null)
@@ -703,13 +703,13 @@ namespace Dnn.PersonaBar.Users.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, passwordSettings);
         }
 
-        private void Validate(UserRoleDto userRoleDto)
+        private static void Validate(UserRoleDto userRoleDto)
         {
             Requires.NotNegative("UserId", userRoleDto.UserId);
             Requires.NotNegative("RoleId", userRoleDto.RoleId);
         }
 
-        private void Validate(UserBasicDto userBasicDto)
+        private static void Validate(UserBasicDto userBasicDto)
         {
             Requires.NotNegative("UserId", userBasicDto.UserId);
         }

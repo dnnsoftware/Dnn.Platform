@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Library.Repository
                 extension.Enabled,
                 UserController.Instance.GetCurrentUserInfo().UserID);
 
-            this.ClearCache();
+            ClearCache();
         }
 
         /// <inheritdoc/>
@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Library.Repository
         {
             this.dataService.DeletePersonaBarExtension(identifier);
 
-            this.ClearCache();
+            ClearCache();
         }
 
         /// <inheritdoc/>
@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.Library.Repository
             return () => new PersonaBarExtensionRepository();
         }
 
-        private void ClearCache()
+        private static void ClearCache()
         {
             DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
         }

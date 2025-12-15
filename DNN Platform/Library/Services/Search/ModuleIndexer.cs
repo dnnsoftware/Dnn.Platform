@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Search
     using System;
     using System.Collections.Generic;
     using System.Data.SqlTypes;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Modules;
@@ -61,10 +62,10 @@ namespace DotNetNuke.Services.Search
                 var portals = PortalController.Instance.GetPortals();
                 foreach (var portal in portals.Cast<PortalInfo>())
                 {
-                    this.searchModules.Add(portal.PortalID, this.GetModulesForIndex(portal.PortalID));
+                    this.searchModules.Add(portal.PortalID, GetModulesForIndex(portal.PortalID));
                 }
 
-                this.searchModules.Add(Null.NullInteger, this.GetModulesForIndex(Null.NullInteger));
+                this.searchModules.Add(Null.NullInteger, GetModulesForIndex(Null.NullInteger));
             }
         }
 
@@ -188,9 +189,10 @@ namespace DotNetNuke.Services.Search
             return this.GetSearchModules(portalId, false);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
         {
-            return from mii in this.GetModulesForIndex(portalId)
+            return from mii in GetModulesForIndex(portalId)
                    where allModules || mii.SupportSearch
                    select mii.ModuleInfo;
         }
@@ -234,7 +236,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        private IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
+        private static IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
         {
             var businessControllers = new Dictionary<string, bool>();
             var searchModuleIds = new HashSet<int>();

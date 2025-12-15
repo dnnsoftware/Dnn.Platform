@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Xml;
 
@@ -367,6 +368,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>DeleteDesktopModule deletes a Desktop Module By ID.</summary>
         /// <param name="desktopModuleID">The ID of the Desktop Module to delete.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void DeleteDesktopModule(int desktopModuleID)
         {
             DataProvider.DeleteDesktopModule(desktopModuleID);
@@ -384,9 +386,10 @@ namespace DotNetNuke.Entities.Modules
             this.UpdateModuleInterfaces(ref desktopModuleInfo, (UserController.Instance.GetCurrentUserInfo() == null) ? string.Empty : UserController.Instance.GetCurrentUserInfo().Username, true);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void UpdateModuleInterfaces(ref DesktopModuleInfo desktopModuleInfo, string sender, bool forceAppRestart)
         {
-            this.CheckInterfacesImplementation(ref desktopModuleInfo);
+            CheckInterfacesImplementation(ref desktopModuleInfo);
             var oAppStartMessage = new EventMessage
             {
                 Sender = sender,
@@ -619,7 +622,7 @@ namespace DotNetNuke.Entities.Modules
             desktopModule.ContentItemId = contentController.AddContentItem(desktopModule);
         }
 
-        private void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
+        private static void CheckInterfacesImplementation(ref DesktopModuleInfo desktopModuleInfo)
         {
             var businessControllerType = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
 

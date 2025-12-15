@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.Mvc
             {
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
 
-                var moduleExecutionEngine = this.GetModuleExecutionEngine();
+                var moduleExecutionEngine = GetModuleExecutionEngine();
 
                 this.result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.Mvc
                     return;
                 }
 
-                var mvcString = this.RenderModule(this.result);
+                var mvcString = RenderModule(this.result);
                 if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
                 {
                     this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.Mvc
             };
         }
 
-        private IModuleExecutionEngine GetModuleExecutionEngine()
+        private static IModuleExecutionEngine GetModuleExecutionEngine()
         {
             var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
 
@@ -146,6 +146,16 @@ namespace DotNetNuke.Web.Mvc
             }
 
             return moduleExecutionEngine;
+        }
+
+        private static MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
+        {
+            using var writer = new StringWriter(CultureInfo.CurrentCulture);
+            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+
+            moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
+
+            return MvcHtmlString.Create(writer.ToString());
         }
 
         private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
@@ -218,21 +228,6 @@ namespace DotNetNuke.Web.Mvc
             }
 
             return actions;
-        }
-
-        private MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
-        {
-            MvcHtmlString moduleOutput;
-
-            using (var writer = new StringWriter(CultureInfo.CurrentCulture))
-            {
-                var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
-
-                moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
-                moduleOutput = MvcHtmlString.Create(writer.ToString());
-            }
-
-            return moduleOutput;
         }
     }
 }

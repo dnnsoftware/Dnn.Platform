@@ -143,10 +143,10 @@ namespace Dnn.AzureConnector.Components
 
             var settings = folderMapping != null ? folderMapping.FolderMappingSettings : new Hashtable();
 
-            configs.Add("AccountName", this.GetSetting(settings, Constants.AzureAccountName, true));
-            configs.Add("AccountKey", this.GetSetting(settings, Constants.AzureAccountKey, true));
-            configs.Add("Container", this.GetSetting(settings, Constants.AzureContainerName));
-            configs.Add("Connected", !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
+            configs.Add("AccountName", GetSetting(settings, Constants.AzureAccountName, true));
+            configs.Add("AccountKey", GetSetting(settings, Constants.AzureAccountKey, true));
+            configs.Add("Container", GetSetting(settings, Constants.AzureContainerName));
+            configs.Add("Connected", !string.IsNullOrEmpty(GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
 
             // This setting will improve the UI to set password-type inputs on secure settings
             configs.Add("SecureSettings", "AccountKey");
@@ -176,7 +176,7 @@ namespace Dnn.AzureConnector.Components
                 return true;
             }
 
-            if (!this.Validation(azureAccountName, azureAccountKey, azureContainerName))
+            if (!Validation(azureAccountName, azureAccountKey, azureContainerName))
             {
                 validated = false;
                 return true;
@@ -202,9 +202,9 @@ namespace Dnn.AzureConnector.Components
 
                 var settings = folderMapping.FolderMappingSettings;
 
-                var savedAccount = this.GetSetting(settings, Constants.AzureAccountName, true);
-                var savedKey = this.GetSetting(settings, Constants.AzureAccountKey, true);
-                var savedContainer = this.GetSetting(settings, Constants.AzureContainerName);
+                var savedAccount = GetSetting(settings, Constants.AzureAccountName, true);
+                var savedKey = GetSetting(settings, Constants.AzureAccountKey, true);
+                var savedContainer = GetSetting(settings, Constants.AzureContainerName);
 
                 var accountChanged = savedAccount != azureAccountName || savedKey != azureAccountKey;
 
@@ -304,78 +304,7 @@ namespace Dnn.AzureConnector.Components
             return folderMapping;
         }
 
-        private void DeleteAzureFolderMapping(int portalId, int folderMappingId)
-        {
-            this.folderMappingController.DeleteFolderMapping(portalId, folderMappingId);
-        }
-
-        private void DeleteAzureFolderMapping(int portalId)
-        {
-            var folderMapping = this.folderMappingController.GetFolderMappings(portalId)
-                .FirstOrDefault(f => f.FolderProviderType == Constants.FolderProviderType);
-
-            if (folderMapping != null)
-            {
-                this.folderMappingController.DeleteFolderMapping(portalId, folderMapping.FolderMappingID);
-            }
-        }
-
-        private void DeleteAzureFolders(int portalId, int folderMappingId)
-        {
-            var folderManager = FolderManager.Instance;
-            var folders = folderManager.GetFolders(portalId);
-
-            var folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingId);
-
-            if (folderMappingFolders.Any())
-            {
-                // Delete files in folders with the provided mapping (only in the database)
-                foreach (
-                    var file in
-                    folderMappingFolders.Select<IFolderInfo, IEnumerable<IFileInfo>>(folderManager.GetFiles)
-                        .SelectMany(files => files))
-                {
-                    DataProvider.DeleteFile(portalId, file.FileName, file.FolderId);
-                }
-
-                // Remove the folders with the provided mapping that doesn't have child folders with other mapping (only in the database and filesystem)
-                var folders1 = folders; // copy the variable to not access a modified closure
-                var removableFolders =
-                    folders.Where(
-                        f => f.FolderMappingID == folderMappingId && !folders1.Any(f2 => f2.FolderID != f.FolderID &&
-                                                                                         f2.FolderPath.StartsWith(
-                                                                                             f.FolderPath) &&
-                                                                                         f2.FolderMappingID !=
-                                                                                         folderMappingId));
-
-                if (removableFolders.Count() > 0)
-                {
-                    foreach (var removableFolder in removableFolders.OrderByDescending(rf => rf.FolderPath))
-                    {
-                        DirectoryWrapper.Instance.Delete(removableFolder.PhysicalPath, false);
-                        DataProvider.DeleteFolder(portalId, removableFolder.FolderPath);
-                    }
-                }
-
-                // Update the rest of folders with the provided mapping to use the standard mapping
-                folders = folderManager.GetFolders(portalId, false); // re-fetch the folders
-
-                folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingId);
-
-                if (folderMappingFolders.Count() > 0)
-                {
-                    var defaultFolderMapping = this.folderMappingController.GetDefaultFolderMapping(portalId);
-
-                    foreach (var folderMappingFolder in folderMappingFolders)
-                    {
-                        folderMappingFolder.FolderMappingID = defaultFolderMapping.FolderMappingID;
-                        folderManager.UpdateFolder(folderMappingFolder);
-                    }
-                }
-            }
-        }
-
-        private bool Validation(string azureAccountName, string azureAccountKey, string azureContainerName)
+        private static bool Validation(string azureAccountName, string azureAccountKey, string azureContainerName)
         {
             try
             {
@@ -454,7 +383,7 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
-        private string GetSetting(Hashtable settings, string name, bool encrypt = false)
+        private static string GetSetting(Hashtable settings, string name, bool encrypt = false)
         {
             if (!settings.ContainsKey(name))
             {
@@ -468,6 +397,77 @@ namespace Dnn.AzureConnector.Components
             }
 
             return settings[name].ToString();
+        }
+
+        private void DeleteAzureFolderMapping(int portalId, int folderMappingId)
+        {
+            this.folderMappingController.DeleteFolderMapping(portalId, folderMappingId);
+        }
+
+        private void DeleteAzureFolderMapping(int portalId)
+        {
+            var folderMapping = this.folderMappingController.GetFolderMappings(portalId)
+                .FirstOrDefault(f => f.FolderProviderType == Constants.FolderProviderType);
+
+            if (folderMapping != null)
+            {
+                this.folderMappingController.DeleteFolderMapping(portalId, folderMapping.FolderMappingID);
+            }
+        }
+
+        private void DeleteAzureFolders(int portalId, int folderMappingId)
+        {
+            var folderManager = FolderManager.Instance;
+            var folders = folderManager.GetFolders(portalId);
+
+            var folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingId);
+
+            if (folderMappingFolders.Any())
+            {
+                // Delete files in folders with the provided mapping (only in the database)
+                foreach (
+                    var file in
+                    folderMappingFolders.Select<IFolderInfo, IEnumerable<IFileInfo>>(folderManager.GetFiles)
+                        .SelectMany(files => files))
+                {
+                    DataProvider.DeleteFile(portalId, file.FileName, file.FolderId);
+                }
+
+                // Remove the folders with the provided mapping that doesn't have child folders with other mapping (only in the database and filesystem)
+                var folders1 = folders; // copy the variable to not access a modified closure
+                var removableFolders =
+                    folders.Where(
+                        f => f.FolderMappingID == folderMappingId && !folders1.Any(f2 => f2.FolderID != f.FolderID &&
+                                                                                         f2.FolderPath.StartsWith(
+                                                                                             f.FolderPath) &&
+                                                                                         f2.FolderMappingID !=
+                                                                                         folderMappingId));
+
+                if (removableFolders.Count() > 0)
+                {
+                    foreach (var removableFolder in removableFolders.OrderByDescending(rf => rf.FolderPath))
+                    {
+                        DirectoryWrapper.Instance.Delete(removableFolder.PhysicalPath, false);
+                        DataProvider.DeleteFolder(portalId, removableFolder.FolderPath);
+                    }
+                }
+
+                // Update the rest of folders with the provided mapping to use the standard mapping
+                folders = folderManager.GetFolders(portalId, false); // re-fetch the folders
+
+                folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingId);
+
+                if (folderMappingFolders.Count() > 0)
+                {
+                    var defaultFolderMapping = this.folderMappingController.GetDefaultFolderMapping(portalId);
+
+                    foreach (var folderMappingFolder in folderMappingFolders)
+                    {
+                        folderMappingFolder.FolderMappingID = defaultFolderMapping.FolderMappingID;
+                        folderManager.UpdateFolder(folderMappingFolder);
+                    }
+                }
+            }
         }
 
         private FolderMappingInfo FindAzureFolderMapping(int portalId, bool autoCreate = true, bool checkId = false)

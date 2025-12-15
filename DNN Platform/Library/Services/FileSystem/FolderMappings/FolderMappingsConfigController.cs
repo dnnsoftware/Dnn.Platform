@@ -90,37 +90,7 @@ namespace DotNetNuke.Services.FileSystem
             return () => new FolderMappingsConfigController();
         }
 
-        private void FillFolderMappings(XmlDocument configDocument)
-        {
-            var folderMappingsNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderMappings");
-            if (folderMappingsNode == null)
-            {
-                return;
-            }
-
-            this.FolderMappings.Clear();
-            foreach (XmlNode folderMappingNode in folderMappingsNode)
-            {
-                this.FolderMappings.Add(XmlUtils.GetNodeValue(folderMappingNode, "folderPath"), XmlUtils.GetNodeValue(folderMappingNode, "folderTypeName"));
-            }
-        }
-
-        private void FillFolderTypes(XmlDocument configDocument)
-        {
-            var folderTypesNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderTypes");
-            if (folderTypesNode == null)
-            {
-                return;
-            }
-
-            this.FolderTypes.Clear();
-            foreach (XmlNode folderTypeNode in folderTypesNode)
-            {
-                this.FolderTypes.Add(this.GetFolderMappingFromConfigNode(folderTypeNode));
-            }
-        }
-
-        private FolderTypeConfig GetFolderMappingFromConfigNode(XmlNode node)
+        private static FolderTypeConfig GetFolderMappingFromConfigNode(XmlNode node)
         {
             var nodeNavigator = node.CreateNavigator();
             var folderType = new FolderTypeConfig()
@@ -147,6 +117,36 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return folderType;
+        }
+
+        private void FillFolderMappings(XmlDocument configDocument)
+        {
+            var folderMappingsNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderMappings");
+            if (folderMappingsNode == null)
+            {
+                return;
+            }
+
+            this.FolderMappings.Clear();
+            foreach (XmlNode folderMappingNode in folderMappingsNode)
+            {
+                this.FolderMappings.Add(XmlUtils.GetNodeValue(folderMappingNode, "folderPath"), XmlUtils.GetNodeValue(folderMappingNode, "folderTypeName"));
+            }
+        }
+
+        private void FillFolderTypes(XmlDocument configDocument)
+        {
+            var folderTypesNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderTypes");
+            if (folderTypesNode == null)
+            {
+                return;
+            }
+
+            this.FolderTypes.Clear();
+            foreach (XmlNode folderTypeNode in folderTypesNode)
+            {
+                this.FolderTypes.Add(GetFolderMappingFromConfigNode(folderTypeNode));
+            }
         }
     }
 }

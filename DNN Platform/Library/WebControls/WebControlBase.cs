@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -19,62 +20,33 @@ namespace DotNetNuke.UI.WebControls
         private string theme = string.Empty;
 
         /// <summary>Gets a url to the web control resources folder.</summary>
-        public string ResourcesFolderUrl
-        {
-            get
-            {
-                return Globals.ResolveUrl("~/Resources/");
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public string ResourcesFolderUrl => Globals.ResolveUrl("~/Resources/");
 
         /// <summary>Gets a value indicating whether the control is currently in a page visible only to hosts.</summary>
-        public bool IsHostMenu
-        {
-            get
-            {
-                return Globals.IsHostTab(TabController.CurrentPage.TabID);
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public bool IsHostMenu => Globals.IsHostTab(TabController.CurrentPage.TabID);
 
         /// <summary>Gets the portal settings for the portal where the WebControl is displayed.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use PortalController.Instance.GetCurrentSettings() instead, if you need access to the ActiveTab, use TabController.CurrentPage. Scheduled for removal in v11.0.0.")]
-        public PortalSettings PortalSettings
-        {
-            get
-            {
 #pragma warning disable 612, 618 // GetCurrentPortalSettings is obsolete
-                return PortalController.Instance.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 #pragma warning restore 612, 618
-            }
-        }
 
         /// <summary>Gets the Html content for this WebControl rendering.</summary>
         public abstract string HtmlOutput { get; }
 
         /// <summary>Gets a value indicating whether this WebControl is currently displayed in the admin menu.</summary>
         [Obsolete("Deprecated in DotNetNuke 7.0.0. There is no longer the concept of an Admin Page.  All pages are controlled by Permissions. Scheduled for removal in v11.0.0.", true)]
-        public bool IsAdminMenu
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsAdminMenu => false;
 
         /// <summary>Gets or sets a string representing the theme to use for this WebControl.</summary>
         public string Theme
         {
-            get
-            {
-                return this.theme;
-            }
-
-            set
-            {
-                this.theme = value;
-            }
+            get => this.theme;
+            set => this.theme = value;
         }
 
         /// <summary>Gets or sets the url to the stylesheet to use for this WebControl.</summary>

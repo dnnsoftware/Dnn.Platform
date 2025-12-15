@@ -5,6 +5,7 @@
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.IO;
@@ -49,15 +50,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 return this.GetSecureFileExtensionIconImage();
             }
 
-            using (var content = FileManager.Instance.GetFileContent(this.SecureFile))
-            {
-                return this.CopyImage(content);
-            }
+            using var content = FileManager.Instance.GetFileContent(this.SecureFile);
+            return this.CopyImage(content);
         }
 
         /// <summary>Checks if the current user have READ permission on a given folder.</summary>
         /// <param name="folder">Folder info object.</param>
         /// <returns>True if the user has READ permission, false otherwise.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public bool DoesHaveReadFolderPermission(IFolderInfo folder)
         {
             return FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "Read");

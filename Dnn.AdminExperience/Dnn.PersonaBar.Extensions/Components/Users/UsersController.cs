@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Users.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
 
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public static UserInfo GetUser(int userId, PortalSettings portalSettings, UserInfo userInfo, out KeyValuePair<HttpStatusCode, string> response)
         {
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.Users.Components
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.SuperUsers)));
             }
 
-            if (!this.PortalSettings.DataConsentActive)
+            if (!PortalSettings.DataConsentActive)
             {
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasAgreedToTerms)));
                 userFilters.Remove(userFilters.FirstOrDefault(x => x.Value == Convert.ToInt32(UserFilters.HasNotAgreedToTerms)));
@@ -185,8 +185,8 @@ namespace Dnn.PersonaBar.Users.Components
         /// <inheritdoc/>
         public UserBasicDto UpdateUserBasicInfo(UserBasicDto userBasicDto, int requestPortalId = -1)
         {
-            int portalId = this.PortalSettings.PortalId;
-            PortalSettings requestPortalSettings = this.PortalSettings;
+            int portalId = PortalSettings.PortalId;
+            PortalSettings requestPortalSettings = PortalSettings;
 
             if (requestPortalId != -1)
             {
@@ -225,7 +225,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             // either update the username or update the user details
             // only call ChangeUsername when the username has actually changed
-            if (userBasicDto.Username != user.Username && this.CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
+            if (userBasicDto.Username != user.Username && CanUpdateUsername(user) && !requestPortalSettings.Registration.UseEmailAsUserName)
             {
                 UserController.ChangeUsername(user.UserID, userBasicDto.Username);
                 user.Username = userBasicDto.Username;
@@ -255,11 +255,11 @@ namespace Dnn.PersonaBar.Users.Components
         /// <inheritdoc/>
         public UserRoleDto SaveUserRole(int portalId, UserInfo currentUserInfo, UserRoleDto userRoleDto, bool notifyUser, bool isOwner)
         {
-            PortalSettings portalSettings = this.PortalSettings;
+            PortalSettings portalSettings = PortalSettings;
 
-            if (this.PortalSettings.PortalId != portalId)
+            if (PortalSettings.PortalId != portalId)
             {
-                portalSettings = this.GetPortalSettings(portalId);
+                portalSettings = GetPortalSettings(portalId);
             }
 
             if (!UserRoleDto.AllowExpiredRole(portalSettings, userRoleDto.UserId, userRoleDto.RoleId))
@@ -376,7 +376,7 @@ namespace Dnn.PersonaBar.Users.Components
                 return null;
             }
 
-            if (role.RoleID == this.PortalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
+            if (role.RoleID == PortalSettings.AdministratorRoleId && !IsAdmin(portalSettings))
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.BadRequest, Localization.GetString("InvalidRequest", Constants.LocalResourcesFile));
                 return null;
@@ -399,16 +399,16 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 // Update User Roles if needed
                 if (!userInfo.IsSuperUser && userInfo.IsInRole("Unverified Users") &&
-                    this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
+                    PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                 {
                     UserController.ApproveUser(userInfo);
                 }
 
-                Mail.SendMail(userInfo, MessageType.UserAuthorized, this.PortalSettings);
+                Mail.SendMail(userInfo, MessageType.UserAuthorized, PortalSettings);
             }
             else if (PortalController.GetPortalSettingAsBoolean("AlwaysSendUserUnAuthorizedEmail", portalId, false))
             {
-                Mail.SendMail(userInfo, MessageType.UserUnAuthorized, this.PortalSettings);
+                Mail.SendMail(userInfo, MessageType.UserUnAuthorized, PortalSettings);
             }
         }
 
@@ -465,6 +465,45 @@ namespace Dnn.PersonaBar.Users.Components
         private static bool IsAdmin(UserInfo user, PortalSettings portalSettings)
         {
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
+        }
+
+        private static bool CanUpdateUsername(UserInfo user)
+        {
+            // can only update username if a host/admin and account being managed is not a superuser
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                // only allow updates for non-superuser accounts
+                if (!user.IsSuperUser)
+                {
+                    return true;
+                }
+            }
+
+            // if an admin, check if the user is only within this portal
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.AdministratorRoleName))
+            {
+                // only allow updates for non-superuser accounts
+                if (user.IsSuperUser)
+                {
+                    return false;
+                }
+
+                if (PortalController.GetPortalsByUser(user.UserID).Count == 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static PortalSettings GetPortalSettings(int portalId)
+        {
+            var portalSettings = new PortalSettings(portalId);
+            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            portalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
+            portalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
+            return portalSettings;
         }
 
         private IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
@@ -535,36 +574,6 @@ namespace Dnn.PersonaBar.Users.Components
             return users;
         }
 
-        private bool CanUpdateUsername(UserInfo user)
-        {
-            // can only update username if a host/admin and account being managed is not a superuser
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-            {
-                // only allow updates for non-superuser accounts
-                if (!user.IsSuperUser)
-                {
-                    return true;
-                }
-            }
-
-            // if an admin, check if the user is only within this portal
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(this.PortalSettings.AdministratorRoleName))
-            {
-                // only allow updates for non-superuser accounts
-                if (user.IsSuperUser)
-                {
-                    return false;
-                }
-
-                if (PortalController.GetPortalsByUser(user.UserID).Count == 1)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? string.Empty : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
@@ -587,15 +596,6 @@ namespace Dnn.PersonaBar.Users.Components
 
             totalRecords = records.Count == 0 ? 0 : records[0].TotalCount;
             return records;
-        }
-
-        private PortalSettings GetPortalSettings(int portalId)
-        {
-            var portalSettings = new PortalSettings(portalId);
-            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-            portalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
-            portalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
-            return portalSettings;
         }
     }
 }

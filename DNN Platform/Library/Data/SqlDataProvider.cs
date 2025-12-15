@@ -7,6 +7,7 @@ namespace DotNetNuke.Data
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text.RegularExpressions;
 
@@ -101,7 +102,7 @@ namespace DotNetNuke.Data
         /// <inheritdoc/>
         public override string ExecuteScript(string script, int timeoutSec)
         {
-            string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
+            string exceptions = ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
 
             // if the upgrade connection string is specified or or db_owner setting is not set to dbo
             if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
@@ -144,25 +145,25 @@ namespace DotNetNuke.Data
         /// <inheritdoc/>
         public override string ExecuteScript(string connectionString, string script)
         {
-            return this.ExecuteScriptInternal(connectionString, script);
+            return ExecuteScriptInternal(connectionString, script);
         }
 
         /// <inheritdoc/>
         public override string ExecuteScript(string connectionString, string script, int timeoutSec)
         {
-            return this.ExecuteScriptInternal(connectionString, script, timeoutSec);
+            return ExecuteScriptInternal(connectionString, script, timeoutSec);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteSQL(string sql)
         {
-            return this.ExecuteSQLInternal(this.ConnectionString, sql);
+            return ExecuteSQLInternal(this.ConnectionString, sql);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteSQL(string sql, int timeoutSec)
         {
-            return this.ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
+            return ExecuteSQLInternal(this.ConnectionString, sql, timeoutSec);
         }
 
         /// <inheritdoc/>
@@ -182,35 +183,16 @@ namespace DotNetNuke.Data
         /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, out string errorMessage)
         {
-            return this.ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, 0, out errorMessage);
         }
 
         /// <inheritdoc/>
         public override IDataReader ExecuteSQLTemp(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
-            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
-        private bool CanConnect()
-        {
-            bool connectionValid = true;
-
-            try
-            {
-                this.ExecuteNonQuery("GetDatabaseVersion");
-            }
-            catch (SqlException ex)
-            {
-                if (ex.Errors.Cast<SqlError>().Any(c => !(c.Number == 2812 && c.Class == 16)))
-                {
-                    connectionValid = false;
-                }
-            }
-
-            return connectionValid;
-        }
-
-        private string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
+        private static string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
         {
             string exceptions = string.Empty;
 
@@ -241,13 +223,13 @@ namespace DotNetNuke.Data
             return exceptions;
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec = 0)
+        private static IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec = 0)
         {
             string errorMessage;
-            return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
+            return ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
 
-        private IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec, out string errorMessage)
+        private static IDataReader ExecuteSQLInternal(string connectionString, string sql, int timeoutSec, out string errorMessage)
         {
             try
             {
@@ -275,6 +257,25 @@ namespace DotNetNuke.Data
 
             errorMessage += Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
             return null;
+        }
+
+        private bool CanConnect()
+        {
+            bool connectionValid = true;
+
+            try
+            {
+                this.ExecuteNonQuery("GetDatabaseVersion");
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Errors.Cast<SqlError>().Any(c => !(c.Number == 2812 && c.Class == 16)))
+                {
+                    connectionValid = false;
+                }
+            }
+
+            return connectionValid;
         }
 
         private string GetConnectionStringUserID()

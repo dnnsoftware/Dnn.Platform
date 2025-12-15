@@ -176,6 +176,11 @@ namespace DotNetNuke.Web.Api.Internal
             return false;
         }
 
+        private static void RegisterSystemRoutes()
+        {
+            ////_routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+        }
+
         private void RegisterAuthenticationHandlers()
         {
             // authentication message handlers from web.config file
@@ -233,7 +238,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         private void LocateServicesAndMapRoutes()
         {
-            this.RegisterSystemRoutes();
+            RegisterSystemRoutes();
             this.ClearCachedRouteData();
 
             this.moduleUsage.Clear();
@@ -256,11 +261,6 @@ namespace DotNetNuke.Web.Api.Internal
         private void ClearCachedRouteData()
         {
             this.portalAliasRouteManager.ClearCachedData();
-        }
-
-        private void RegisterSystemRoutes()
-        {
-            // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private IEnumerable<IServiceRouteMapper> GetServiceRouteMappers(IServiceProvider serviceProvider)

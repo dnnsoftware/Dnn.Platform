@@ -217,13 +217,13 @@ namespace DotNetNuke.Entities.Urls
                 throw new ArgumentNullException("portalSettings");
             }
 
-            return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
+            return FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
         }
 
         /// <inheritdoc/>
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
-            return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
+            return FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
         }
 
         private static string AddPage(string path, string pageName)
@@ -1399,7 +1399,7 @@ namespace DotNetNuke.Entities.Urls
             return builtInUrl;
         }
 
-        private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
+        private static string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
         {
             var parentTraceId = Guid.Empty;
             var portalId = portalSettings?.PortalId ?? tab.PortalID;

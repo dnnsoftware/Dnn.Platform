@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Sites.Components
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.IO.Compression;
@@ -46,7 +47,10 @@ namespace Dnn.PersonaBar.Sites.Components
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
         private readonly TabsController tabsController = new TabsController();
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
+
+        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         private CultureDropDownTypes DisplayType { get; set; }
 
@@ -70,8 +74,7 @@ namespace Dnn.PersonaBar.Sites.Components
         private string AllUsersIcon { get; } = Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Everyone.png");
 #endif
 
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
-
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IList<HttpAliasDto> FormatPortalAliases(int portalId)
         {
             var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).OrderByDescending(a => a.IsPrimary).FirstOrDefault();
@@ -87,6 +90,7 @@ namespace Dnn.PersonaBar.Sites.Components
             return new List<HttpAliasDto> { new HttpAliasDto { Url = alias.HTTPAlias, Link = httpAlias } };
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string FormatExpiryDate(DateTime dateTime)
         {
             var strDate = string.Empty;
@@ -98,6 +102,7 @@ namespace Dnn.PersonaBar.Sites.Components
             return strDate;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IList<IPortalTemplateInfo> GetPortalTemplates()
         {
             var templates = PortalTemplateController.Instance.GetPortalTemplates();
@@ -105,6 +110,7 @@ namespace Dnn.PersonaBar.Sites.Components
             return templates;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IPortalTemplateInfo GetPortalTemplate(string fileName, string cultureCode)
         {
             return PortalTemplateController.Instance.GetPortalTemplate(fileName, cultureCode);
@@ -117,7 +123,7 @@ namespace Dnn.PersonaBar.Sites.Components
             if (string.IsNullOrEmpty(template.CultureCode))
             {
                 text = template.Name;
-                value = string.Format("{0}|{1}", fileName, this.GetThumbnail(fileName));
+                value = $"{fileName}|{GetThumbnail(fileName)}";
             }
             else
             {
@@ -138,14 +144,15 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
                 }
 
-                text = string.Format("{0} - {1}", template.Name, Localization.GetLocaleName(template.CultureCode, this.DisplayType));
+                text = $"{template.Name} - {Localization.GetLocaleName(template.CultureCode, this.DisplayType)}";
 
-                value = string.Format("{0}|{1}|{2}", fileName, template.CultureCode, this.GetThumbnail(fileName));
+                value = $"{fileName}|{template.CultureCode}|{GetThumbnail(fileName)}";
             }
 
             return new ListItem(text, value);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetDefaultTemplate()
         {
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
@@ -223,7 +230,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
         public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias, string siteDescription, string siteKeywords, bool isChildSite, string homeDirectory, int siteGroupId, bool useCurrent, string firstname, string lastname, string username, string email, string password, string confirm, string question = "", string answer = "")
         {
-            var template = this.LoadPortalTemplateInfoForSelectedItem(siteTemplate);
+            var template = LoadPortalTemplateInfoForSelectedItem(siteTemplate);
 
             var strChildPath = string.Empty;
             var closePopUpStr = string.Empty;
@@ -257,7 +264,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
             // check whether have conflict between tab path and portal alias.
             var checkTabPath = string.Format("//{0}", strPortalAlias);
-            if (TabController.GetTabByTabPath(this.PortalSettings.PortalId, checkTabPath, string.Empty) != Null.NullInteger
+            if (TabController.GetTabByTabPath(PortalSettings.PortalId, checkTabPath, string.Empty) != Null.NullInteger
                 || TabController.GetTabByTabPath(Null.NullInteger, checkTabPath, string.Empty) != Null.NullInteger)
             {
                 error = true;
@@ -401,7 +408,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     intPortalId = Null.NullInteger;
                     message = ex.Message;
 
-                    this.TryDeleteCreatingPortal(serverPath, isChildSite ? strChildPath : string.Empty);
+                    TryDeleteCreatingPortal(serverPath, isChildSite ? strChildPath : string.Empty);
                 }
 
                 if (intPortalId != -1)
@@ -450,7 +457,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
 
                     // mark default language as published if content localization is enabled
-                    var contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", this.PortalSettings.PortalId, false);
+                    var contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", PortalSettings.PortalId, false);
                     if (contentLocalizationEnabled)
                     {
                         var lc = new LocaleController();
@@ -471,6 +478,55 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             return intPortalId;
+        }
+
+        private static IPortalTemplateInfo LoadPortalTemplateInfoForSelectedItem(string template)
+        {
+            var values = template.Split('|');
+            return PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
+        }
+
+        private static void TryDeleteCreatingPortal(string serverPath, string childPath)
+        {
+            try
+            {
+                if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
+                {
+                    var creatingPortalId = Convert.ToInt32(HttpContext.Current.Items["CreatingPortalId"]);
+                    var portalInfo = PortalController.Instance.GetPortal(creatingPortalId);
+                    PortalController.DeletePortal(portalInfo, serverPath);
+                }
+
+                if (!string.IsNullOrEmpty(childPath))
+                {
+                    PortalController.DeletePortalFolder(string.Empty, childPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
+
+        private static string GetThumbnail(string templateName)
+        {
+            var filePath = Path.Combine(Globals.HostMapPath, templateName);
+            var imagePath = string.Empty;
+            foreach (var ext in ImageExtensions)
+            {
+                var path = Path.ChangeExtension(filePath, ext);
+                if (File.Exists(path))
+                {
+                    imagePath = path;
+                    break;
+                }
+            }
+
+            imagePath = "~/" + imagePath.Replace(Globals.ApplicationMapPath, string.Empty)
+                .TrimStart('\\')
+                .Replace("\\", "/");
+
+            return Globals.ResolveUrl(imagePath);
         }
 
         private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
@@ -518,55 +574,6 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             return selectedTabs;
-        }
-
-        private IPortalTemplateInfo LoadPortalTemplateInfoForSelectedItem(string template)
-        {
-            var values = template.Split('|');
-            return PortalTemplateController.Instance.GetPortalTemplate(Path.Combine(TestableGlobals.Instance.HostMapPath, values[0]), values.Length > 1 ? values[1] : null);
-        }
-
-        private void TryDeleteCreatingPortal(string serverPath, string childPath)
-        {
-            try
-            {
-                if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
-                {
-                    var creatingPortalId = Convert.ToInt32(HttpContext.Current.Items["CreatingPortalId"]);
-                    var portalInfo = PortalController.Instance.GetPortal(creatingPortalId);
-                    PortalController.DeletePortal(portalInfo, serverPath);
-                }
-
-                if (!string.IsNullOrEmpty(childPath))
-                {
-                    PortalController.DeletePortalFolder(string.Empty, childPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-        }
-
-        private string GetThumbnail(string templateName)
-        {
-            var filePath = Path.Combine(Globals.HostMapPath, templateName);
-            var imagePath = string.Empty;
-            foreach (var ext in ImageExtensions)
-            {
-                var path = Path.ChangeExtension(filePath, ext);
-                if (File.Exists(path))
-                {
-                    imagePath = path;
-                    break;
-                }
-            }
-
-            imagePath = "~/" + imagePath.Replace(Globals.ApplicationMapPath, string.Empty)
-                            .TrimStart('\\')
-                            .Replace("\\", "/");
-
-            return Globals.ResolveUrl(imagePath);
         }
 
         private class TemplateDisplayComparer : IComparer<IPortalTemplateInfo>

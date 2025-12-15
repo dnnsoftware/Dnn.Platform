@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.WebControls
         public string LookupCountryCode(IPAddress ipAddress)
         {
             // Look up the country code, e.g. US, for the passed in IP Address
-            return CountryCode[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(ipAddress), 31))];
+            return CountryCode[Convert.ToInt32(this.SeekCountry(0, ConvertIPAddressToNumber(ipAddress), 31))];
         }
 
         /// <summary>Looks up the country code from an IP address.</summary>
@@ -173,7 +173,7 @@ namespace DotNetNuke.UI.WebControls
         public string LookupCountryName(IPAddress addr)
         {
             // Look up the country name, e.g. United States, for the IP Address
-            return CountryName[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(addr), 31))];
+            return CountryName[Convert.ToInt32(this.SeekCountry(0, ConvertIPAddressToNumber(addr), 31))];
         }
 
         /// <summary>Looks up the country name from an IP address.</summary>
@@ -266,10 +266,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private long ConvertIPAddressToNumber(IPAddress ipAddress)
+        private static long ConvertIPAddressToNumber(IPAddress ipAddress)
         {
             // Convert an IP Address, (e.g. 127.0.0.1), to the numeric equivalent
-            string[] address = ipAddress.ToString().Split('.');
+            var address = ipAddress.ToString().Split('.');
             if (address.Length == 4)
             {
                 return Convert.ToInt64((16777216 * Convert.ToDouble(address[0])) + (65536 * Convert.ToDouble(address[1])) + (256 * Convert.ToDouble(address[2])) + Convert.ToDouble(address[3]));
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private string ConvertIPNumberToAddress(long ipNumber)
+        private static string ConvertIPNumberToAddress(long ipNumber)
         {
             // Convert an IP Number to the IP Address equivalent
             string ipNumberPart1 = Convert.ToString(((int)(ipNumber / 16777216)) % 256);

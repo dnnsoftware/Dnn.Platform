@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <inheritdoc/>
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsBasicAuth(response.RequestMessage))
+            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsBasicAuth(response.RequestMessage))
             {
                 response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, "realm=\"DNNAPI\""));
             }
@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.Api.Auth
             return base.OnOutboundResponse(response, cancellationToken);
         }
 
-        private bool SupportsBasicAuth(HttpRequestMessage request)
+        private static bool SupportsBasicAuth(HttpRequestMessage request)
         {
             return !IsXmlHttpRequest(request);
         }

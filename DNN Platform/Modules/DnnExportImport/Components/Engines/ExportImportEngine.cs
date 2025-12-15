@@ -7,6 +7,7 @@ namespace Dnn.ExportImport.Components.Engines
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -483,6 +484,7 @@ namespace Dnn.ExportImport.Components.Engines
         /// <summary>Adds the logs to the database.</summary>
         /// <param name="jobId">The ID of the job to log.</param>
         /// <param name="completeLog">A collection of log items.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
         {
             if (completeLog == null || completeLog.Count == 0)

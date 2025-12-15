@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -602,7 +603,7 @@ namespace DotNetNuke.Services.FileSystem
                     this.ProcessMergedTreeItemInAddMode(item, portalId);
                 }
 
-                this.RemoveSyncFoldersData();
+                RemoveSyncFoldersData();
 
                 // Step 2: Delete Files and Folders
                 for (var i = mergedTree.Count - 1; i >= 0; i--)
@@ -900,6 +901,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         /// <param name="portalId">The site (portal) ID.</param>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal void ClearFolderProviderCachedLists(int portalId)
         {
             foreach (var folderMapping in FolderMappingController.Instance.GetFolderMappings(portalId))
@@ -1957,6 +1959,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        private static void RemoveSyncFoldersData()
+        {
+            var threadId = Thread.CurrentThread.ManagedThreadId;
+            if (SyncFoldersData.ContainsKey(threadId))
+            {
+                SyncFoldersData.TryRemove(threadId, out _);
+            }
+        }
+
         private int AddFolderInternal(IFolderInfo folder)
         {
             // Check this is not a duplicate
@@ -2238,15 +2249,6 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return folders.Where(f => f.ParentID == parentFolder.FolderID);
-        }
-
-        private void RemoveSyncFoldersData()
-        {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-            if (SyncFoldersData.ContainsKey(threadId))
-            {
-                SyncFoldersData.TryRemove(threadId, out _);
-            }
         }
 
         /// <summary>This class and its members are reserved for internal use and are not intended to be used in your code.</summary>

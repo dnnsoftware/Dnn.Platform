@@ -101,6 +101,16 @@ namespace DotNetNuke.Entities.Modules.Settings
             return mapping;
         }
 
+        /// <summary>Deserializes the property.</summary>
+        /// <param name="settings">The settings.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="propertyValue">The property value.</param>
+        /// <exception cref="InvalidCastException">Thrown if string value cannot be deserialized to desired type.</exception>
+        private static void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, string propertyValue)
+        {
+            SerializationManager.DeserializeProperty(settings, property, propertyValue, attribute.Serializer);
+        }
+
         private void SaveSettings(int portalId, ModuleInfo moduleContext, T settings)
         {
             var hostSettingsService = Globals.GetCurrentServiceProvider().GetRequiredService<Abstractions.Application.IHostSettingsService>();
@@ -207,7 +217,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
                 if (settingValue != null && property.CanWrite)
                 {
-                    this.DeserializeProperty(settings, property, attribute, settingValue);
+                    DeserializeProperty(settings, property, attribute, settingValue);
                 }
             });
 
@@ -225,15 +235,5 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <param name="portalId">The portal ID.</param>
         /// <returns>The cache key prefix.</returns>
         private string CacheKeyPortalPrefix(int portalId) => $"Settings{this.MappingCacheKey}_{portalId}_";
-
-        /// <summary>Deserializes the property.</summary>
-        /// <param name="settings">The settings.</param>
-        /// <param name="property">The property.</param>
-        /// <param name="propertyValue">The property value.</param>
-        /// <exception cref="InvalidCastException">Thrown if string value cannot be deserialized to desired type.</exception>
-        private void DeserializeProperty(T settings, PropertyInfo property, ParameterAttributeBase attribute, string propertyValue)
-        {
-            SerializationManager.DeserializeProperty(settings, property, propertyValue, attribute.Serializer);
-        }
     }
 }

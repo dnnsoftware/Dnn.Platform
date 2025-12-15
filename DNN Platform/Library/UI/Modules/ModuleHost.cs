@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.Modules
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -76,14 +77,9 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// <summary>Gets the current POrtal Settings.</summary>
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        /// <summary>Gets the current Portal Settings.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public Containers.Container Container { get; private set; }
 
@@ -165,7 +161,7 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !this.IsVersionRequest())
+                if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !Globals.IsAdminControl() && !IsVersionRequest())
                 {
                     // Render to cache
                     var tempWriter = new StringWriter();
@@ -203,30 +199,22 @@ namespace DotNetNuke.UI.Modules
             container.Controls.Add(messagePlaceholder);
         }
 
-        private bool IsVersionRequest()
-        {
-            int version;
-            return TabVersionUtils.TryGetUrlVersion(out version);
-        }
+        private static bool IsVersionRequest() => TabVersionUtils.TryGetUrlVersion(out _);
 
         private void InjectVersionToTheModuleIfSupported()
         {
-            if (!(this.control is IVersionableControl))
+            if (this.control is not IVersionableControl versionableControl)
             {
                 return;
             }
 
-            var versionableControl = this.control as IVersionableControl;
             if (this.moduleConfiguration.ModuleVersion != Null.NullInteger)
             {
                 versionableControl.SetModuleVersion(this.moduleConfiguration.ModuleVersion);
             }
         }
 
-        private void InjectModuleContent(Control content)
-        {
-                this.Controls.Add(content);
-            }
+        private void InjectModuleContent(Control content) => this.Controls.Add(content);
 
         /// <summary>Gets a flag that indicates whether the Module Content should be displayed.</summary>
         /// <returns>A Boolean.</returns>
@@ -265,7 +253,7 @@ namespace DotNetNuke.UI.Modules
                 if (this.DisplayContent())
                 {
                     // if the module supports caching and caching is enabled for the instance and the user does not have Edit rights or is currently in View mode
-                    if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !this.IsVersionRequest())
+                    if (this.SupportsCaching() && IsViewMode(this.moduleConfiguration, this.PortalSettings) && !IsVersionRequest())
                     {
                         // attempt to load the cached content
                         this.isCached = this.TryLoadCached();

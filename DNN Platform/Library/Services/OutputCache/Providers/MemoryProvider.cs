@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         /// <inheritdoc/>
         public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
-            return this.GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
+            return GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
         }
 
         /// <inheritdoc/>
@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return keys;
         }
 
-        private string GetCacheKey(string cacheKey)
+        private static string GetCacheKey(string cacheKey)
         {
             if (string.IsNullOrEmpty(cacheKey))
             {

@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.Pages
         /// </remarks>
         public void SetDescription(string value, int priority = 100)
         {
-            this.SetHighestPriorityValue(ref this.description, value, priority);
+            SetHighestPriorityValue(ref this.description, value, priority);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Pages
         /// </remarks>
         public void SetKeyWords(string value, int priority = 100)
         {
-            this.SetHighestPriorityValue(ref this.keywords, value, priority);
+            SetHighestPriorityValue(ref this.keywords, value, priority);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Pages
         /// </remarks>
         public void SetTitle(string value, int priority = 100)
         {
-            this.SetHighestPriorityValue(ref this.title, value, priority);
+            SetHighestPriorityValue(ref this.title, value, priority);
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.Pages
         /// <param name="priority">The priority level for this canonical link URL. Higher values take precedence. Default is 100.</param>
         public void SetCanonicalLinkUrl(string value, int priority = 100)
         {
-            this.SetHighestPriorityValue(ref this.canonicalLinkUrl, value, priority);
+            SetHighestPriorityValue(ref this.canonicalLinkUrl, value, priority);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace DotNetNuke.Services.Pages
         /// if the new priority is higher than the existing priority, or if no item is currently set.
         /// This ensures that higher priority values always take precedence.
         /// </remarks>
-        private void SetHighestPriorityValue(ref PageTag currentItem, string value, int priority)
+        private static void SetHighestPriorityValue(ref PageTag currentItem, string value, int priority)
         {
             if (currentItem == null || priority > currentItem.Priority)
             {

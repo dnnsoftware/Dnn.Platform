@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
     using System;
     using System.Data.Common;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Net;
     using System.Threading;
@@ -507,7 +508,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     var newCulture = new CultureInfo(cultureCode);
                     Thread.CurrentThread.CurrentCulture = newCulture;
-                    this.GetLanguagePack(downloadUrl, installFolder);
+                    GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
 
@@ -525,7 +526,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             CultureInfo pageCulture = null;
 
             // 1. querystring
-            pageCulture = this.GetCultureFromQs();
+            pageCulture = GetCultureFromQs();
 
             // 2. cookie
             pageCulture = this.GetCultureFromCookie();
@@ -577,6 +578,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public CultureInfo GetCultureFromBrowser()
         {
             CultureInfo culture = null;
@@ -602,7 +604,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return newNode;
         }
 
-        private CultureInfo GetCultureFromQs()
+        private static CultureInfo GetCultureFromQs()
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
             {
@@ -614,7 +616,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
-        private void GetLanguagePack(string downloadUrl, string installFolder)
+        private static void GetLanguagePack(string downloadUrl, string installFolder)
         {
             string myfile = string.Empty;
             WebResponse wr = Util.GetExternalRequest(

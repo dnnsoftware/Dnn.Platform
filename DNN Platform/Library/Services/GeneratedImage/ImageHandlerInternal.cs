@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics;
+    using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
     using System.Drawing.Imaging;
     using System.Globalization;
@@ -74,12 +75,14 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public long ImageCompression { get; set; }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public int IPCountMax
         {
             get { return IPCount.MaxCount; }
             set { IPCount.MaxCount = value; }
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public TimeSpan IpCountPurgeInterval
         {
             get { return IPCount.PurgeInterval; }
@@ -257,7 +260,7 @@ namespace DotNetNuke.Services.GeneratedImage
             if (this.EnableServerCache)
             {
                 var isAnonymousUser = userId <= 0 ? true : false;
-                if (isProfilePic && !isAnonymousUser && !this.IsPicVisibleToCurrentUser(userId))
+                if (isProfilePic && !isAnonymousUser && !IsPicVisibleToCurrentUser(userId))
                 {
                     string message = "Not allowed to see profile picture";
 
@@ -405,6 +408,21 @@ namespace DotNetNuke.Services.GeneratedImage
             return e;
         }
 
+        private static bool IsPicVisibleToCurrentUser(int profileUserId)
+        {
+            var settings = PortalController.Instance.GetCurrentSettings();
+            var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
+
+            var photoProperty = profileUser?.Profile.GetProperty("Photo");
+            if (photoProperty == null)
+            {
+                return false;
+            }
+
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
+            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
+        }
+
         private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
         {
             var builder = new StringBuilder();
@@ -501,25 +519,6 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 image?.Dispose();
             }
-        }
-
-        private bool IsPicVisibleToCurrentUser(int profileUserId)
-        {
-            var settings = PortalController.Instance.GetCurrentSettings();
-            var profileUser = UserController.Instance.GetUser(settings.PortalId, profileUserId);
-            if (profileUser == null)
-            {
-                return false;
-            }
-
-            var photoProperty = profileUser.Profile.GetProperty("Photo");
-            if (photoProperty == null)
-            {
-                return false;
-            }
-
-            var currentUser = UserController.Instance.GetCurrentUserInfo();
-            return ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, currentUser, profileUser);
         }
     }
 }

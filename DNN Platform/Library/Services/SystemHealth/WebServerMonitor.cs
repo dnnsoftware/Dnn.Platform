@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.SystemHealth
@@ -40,9 +40,9 @@ namespace DotNetNuke.Services.SystemHealth
             {
                 Logger.Info("Starting WebServerMonitor");
 
-                this.UpdateCurrentServerActivity();
-                this.DisableServersWithoutRecentActivity();
-                this.RemoveInActiveServers();
+                UpdateCurrentServerActivity();
+                DisableServersWithoutRecentActivity();
+                RemoveInActiveServers();
 
                 Logger.Info("Finished WebServerMonitor");
                 this.ScheduleHistoryItem.Succeeded = true;
@@ -50,14 +50,14 @@ namespace DotNetNuke.Services.SystemHealth
             catch (Exception exc)
             {
                 this.ScheduleHistoryItem.Succeeded = false;
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Updating server health failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote($"Updating server health failed: {exc}.");
                 this.Errored(ref exc);
                 Logger.ErrorFormat("Error in WebServerMonitor: {0}. {1}", exc.Message, exc.StackTrace);
                 Exceptions.LogException(exc);
             }
         }
 
-        private void UpdateCurrentServerActivity()
+        private static void UpdateCurrentServerActivity()
         {
             Logger.Info("Starting UpdateCurrentServerActivity");
 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.SystemHealth
             Logger.Info("Finished UpdateCurrentServerActivity");
         }
 
-        private void DisableServersWithoutRecentActivity()
+        private static void DisableServersWithoutRecentActivity()
         {
             var serversWithActivity = ServerController.GetEnabledServersWithActivity();
             var newServer = serversWithActivity.FirstOrDefault();
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.SystemHealth
             }
         }
 
-        private void RemoveInActiveServers()
+        private static void RemoveInActiveServers()
         {
             Logger.Info("Starting RemoveInActiveServers");
             var serversWithActivity = ServerController.GetEnabledServersWithActivity();

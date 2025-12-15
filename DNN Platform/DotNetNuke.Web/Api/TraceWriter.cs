@@ -31,10 +31,10 @@ namespace DotNetNuke.Web.Api
 
             var rec = new TraceRecord(request, category, level);
             traceAction(rec);
-            this.Log(rec);
+            Log(rec);
         }
 
-        private void Log(TraceRecord rec)
+        private static void Log(TraceRecord rec)
         {
             var message = new StringBuilder();
 

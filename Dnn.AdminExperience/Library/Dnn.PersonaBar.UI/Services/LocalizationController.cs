@@ -74,11 +74,23 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
+        private static string GetJsonFileContent(string culture)
+        {
+            var path = GetResourcesJsonFilePath(culture);
+            return File.Exists(path) ? File.ReadAllText(path, Encoding.UTF8) : null;
+        }
+
+        private static string GetResourcesJsonFilePath(string culture)
+        {
+            var path = Path.Combine(Constants.PersonaBarRelativePath, "Resources", $"LocalResources.{culture}.resources");
+            return HttpContext.Current.Server.MapPath(path);
+        }
+
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
             if (!this.Expired(culture))
             {
-                var jsonFileContent = this.GetJsonFileContent(culture);
+                var jsonFileContent = GetJsonFileContent(culture);
                 return jsonFileContent != null
                     ? JsonConvert.DeserializeObject<IDictionary<string, IDictionary<string, string>>>(jsonFileContent)
                     : null;
@@ -95,7 +107,7 @@ namespace Dnn.PersonaBar.UI.Services
                 return false;
             }
 
-            var jsonFilePath = this.GetResourcesJsonFilePath(culture);
+            var jsonFilePath = GetResourcesJsonFilePath(culture);
             var jsonFile = new FileInfo(jsonFilePath);
             if (!jsonFile.Exists)
             {
@@ -115,12 +127,6 @@ namespace Dnn.PersonaBar.UI.Services
             return expired;
         }
 
-        private string GetJsonFileContent(string culture)
-        {
-            var path = this.GetResourcesJsonFilePath(culture);
-            return File.Exists(path) ? File.ReadAllText(path, Encoding.UTF8) : null;
-        }
-
         private IDictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
         {
             var resources = new Dictionary<string, IDictionary<string, string>>();
@@ -137,7 +143,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
             var content = JsonConvert.SerializeObject(resources);
-            var filePath = this.GetResourcesJsonFilePath(culture);
+            var filePath = GetResourcesJsonFilePath(culture);
             var folderPath = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(folderPath))
             {
@@ -191,12 +197,6 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
             return Localization.SystemLocale;
-        }
-
-        private string GetResourcesJsonFilePath(string culture)
-        {
-            var path = Path.Combine(Constants.PersonaBarRelativePath, "Resources", $"LocalResources.{culture}.resources");
-            return HttpContext.Current.Server.MapPath(path);
         }
 
         private IDictionary<string, string> GetAllResourceFiles(string culture)

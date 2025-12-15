@@ -4,6 +4,7 @@
 namespace DotNetNuke.HttpModules.Exceptions
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using DotNetNuke.Common;
@@ -16,6 +17,7 @@ namespace DotNetNuke.HttpModules.Exceptions
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExceptionModule));
 
         /// <summary>Gets the name of the module.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ModuleName => "ExceptionModule";
 
         /// <summary>Initializes the error handling for the specified application.</summary>

@@ -139,7 +139,7 @@ namespace Dnn.PersonaBar.Users.Components
             var settings = UserController.GetUserSettings(portalSettings.PortalId);
 
             // Verify Profanity filter
-            if (this.GetBoolSetting(settings, "Registration_UseProfanityFilter"))
+            if (GetBoolSetting(settings, "Registration_UseProfanityFilter"))
             {
                 var portalSecurity = PortalSecurity.Instance;
                 if (!portalSecurity.ValidateInput(newUser.Username, PortalSecurity.FilterFlag.NoProfanity) || !portalSecurity.ValidateInput(newUser.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
@@ -151,7 +151,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             // Email Address Validation
-            var emailValidator = this.GetStringSetting(settings, "Security_EmailValidation");
+            var emailValidator = GetStringSetting(settings, "Security_EmailValidation");
             if (!string.IsNullOrEmpty(emailValidator))
             {
                 var regExp = RegexUtils.GetCachedRegex(emailValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             // Excluded Terms Verification
-            var excludeRegex = this.GetExcludeTermsRegex(settings);
+            var excludeRegex = GetExcludeTermsRegex(settings);
             if (!string.IsNullOrEmpty(excludeRegex))
             {
                 var regExp = RegexUtils.GetCachedRegex(excludeRegex, RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -179,7 +179,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             // User Name Validation
-            var userNameValidator = this.GetStringSetting(settings, "Security_UserNameValidation");
+            var userNameValidator = GetStringSetting(settings, "Security_UserNameValidation");
             if (!string.IsNullOrEmpty(userNameValidator))
             {
                 var regExp = RegexUtils.GetCachedRegex(userNameValidator, RegexOptions.IgnoreCase | RegexOptions.Multiline);
@@ -196,7 +196,7 @@ namespace Dnn.PersonaBar.Users.Components
             var user = UserController.GetUserByName(portalSettings.PortalId, newUser.Username);
             if (user != null)
             {
-                if (this.GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
+                if (GetBoolSetting(settings, "Registration_UseEmailAsUserName"))
                 {
                     throw new RegistrationException(UserController.GetUserCreateStatus(UserCreateStatus.DuplicateEmail));
                 }
@@ -214,7 +214,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             // ensure unique display name
-            if (this.GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
+            if (GetBoolSetting(settings, "Registration_RequireUniqueDisplayName"))
             {
                 user = UserController.Instance.GetUserByDisplayname(portalSettings.PortalId, newUser.DisplayName);
                 if (user != null)
@@ -233,7 +233,7 @@ namespace Dnn.PersonaBar.Users.Components
             }
 
             // Update display name format
-            var displaynameFormat = this.GetStringSetting(settings, "Security_DisplayNameFormat");
+            var displaynameFormat = GetStringSetting(settings, "Security_DisplayNameFormat");
             if (!string.IsNullOrEmpty(displaynameFormat))
             {
                 newUser.UpdateDisplayName(displaynameFormat);
@@ -311,19 +311,19 @@ namespace Dnn.PersonaBar.Users.Components
             return LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
 
-        private bool GetBoolSetting(Hashtable settings, string settingKey)
+        private static bool GetBoolSetting(Hashtable settings, string settingKey)
         {
             return settings[settingKey] != null && Convert.ToBoolean(settings[settingKey]);
         }
 
-        private string GetStringSetting(Hashtable settings, string settingKey)
+        private static string GetStringSetting(Hashtable settings, string settingKey)
         {
             return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
         }
 
-        private string GetExcludeTermsRegex(Hashtable settings)
+        private static string GetExcludeTermsRegex(Hashtable settings)
         {
-            var excludeTerms = this.GetStringSetting(settings, "Registration_ExcludeTerms");
+            var excludeTerms = GetStringSetting(settings, "Registration_ExcludeTerms");
             var regex = string.Empty;
             if (!string.IsNullOrEmpty(excludeTerms))
             {

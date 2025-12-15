@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Net;
@@ -92,21 +93,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public string Service { get; set; }
 
-        protected virtual string UserGuidKey
-        {
-            get { return string.Empty; }
-        }
+        protected virtual string UserGuidKey => string.Empty;
 
         // oAuth 1
-        protected string OAuthVerifier
-        {
-            get { return HttpContext.Current.Request.Params[OAuthVerifierKey]; }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected string OAuthVerifier => HttpContext.Current.Request.Params[OAuthVerifierKey];
 
-        protected string VerificationCode
-        {
-            get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected string VerificationCode => HttpContext.Current.Request.Params[OAuthCodeKey];
 
         protected string APIKey { get; set; }
 
@@ -319,7 +313,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 Key = Encoding.ASCII.GetBytes($"{UrlEncode(this.APISecret)}&{(string.IsNullOrEmpty(tokenSecret) ? string.Empty : UrlEncode(tokenSecret))}"),
             };
 
-            return this.GenerateSignatureUsingHash(signatureBase, hmacsha1);
+            return GenerateSignatureUsingHash(signatureBase, hmacsha1);
         }
 
         public virtual TUserData GetCurrentUser<TUserData>()
@@ -335,7 +329,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             var accessToken = string.IsNullOrEmpty(this.AccessToken) ? "access_token=" + this.AuthToken : this.AccessToken + "=" + this.AuthToken;
             string responseText = (this.OAuthVersion == "1.0")
                             ? this.ExecuteAuthorizedRequest(HttpMethod.GET, this.MeGraphEndpoint)
-                            : this.ExecuteWebRequest(HttpMethod.GET, this.GenerateRequestUri(this.MeGraphEndpoint.ToString(), accessToken), null, string.Empty);
+                            : this.ExecuteWebRequest(HttpMethod.GET, GenerateRequestUri(this.MeGraphEndpoint.ToString(), accessToken), null, string.Empty);
             var user = Json.Deserialize<TUserData>(responseText);
             return user;
         }
@@ -407,6 +401,72 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
         }
 
+        private static string ComputeHash(HashAlgorithm hashAlgorithm, string data)
+        {
+            if (hashAlgorithm == null)
+            {
+                throw new ArgumentNullException("hashAlgorithm");
+            }
+
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new ArgumentNullException("data");
+            }
+
+            byte[] dataBuffer = Encoding.ASCII.GetBytes(data);
+            byte[] hashBytes = hashAlgorithm.ComputeHash(dataBuffer);
+
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        private static string GenerateSignatureUsingHash(string signatureBase, HashAlgorithm hash)
+        {
+            return ComputeHash(hash, signatureBase);
+        }
+
+        private static List<QueryParameter> GetQueryParameters(string parameters)
+        {
+            if (parameters.StartsWith("?"))
+            {
+                parameters = parameters.Remove(0, 1);
+            }
+
+            var result = new List<QueryParameter>();
+
+            if (!string.IsNullOrEmpty(parameters))
+            {
+                string[] p = parameters.Split('&');
+                foreach (string s in p)
+                {
+                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix))
+                    {
+                        if (s.IndexOf('=') > -1)
+                        {
+                            string[] temp = s.Split('=');
+                            result.Add(new QueryParameter(temp[0], temp[1]));
+                        }
+                        else
+                        {
+                            result.Add(new QueryParameter(s, string.Empty));
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static Uri GenerateRequestUri(string url, string parameters)
+        {
+            if (string.IsNullOrEmpty(parameters))
+            {
+                return new Uri(url);
+            }
+
+            var separator = url.Contains("?") ? "&" : "?";
+            return new Uri($"{url}{separator}{parameters}");
+        }
+
         private AuthorisationResult AuthorizeV1()
         {
             if (!this.IsCurrentUserAuthorized())
@@ -466,13 +526,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
             if (!this.HaveVerificationCode())
             {
                 var parameters = new List<QueryParameter>
-                                        {
-                                            new QueryParameter("scope", this.Scope),
-                                            new QueryParameter(OAuthClientIdKey, this.APIKey),
-                                            new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(this.CallbackUri.ToString())),
-                                            new QueryParameter("state", this.Service),
-                                            new QueryParameter("response_type", "code"),
-                                        };
+                {
+                    new QueryParameter("scope", this.Scope),
+                    new QueryParameter(OAuthClientIdKey, this.APIKey),
+                    new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(this.CallbackUri.ToString())),
+                    new QueryParameter("state", this.Service),
+                    new QueryParameter("response_type", "code"),
+                };
 
                 HttpContext.Current.Response.Redirect(this.AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), false);
                 return AuthorisationResult.RequestingCode;
@@ -481,24 +541,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
             this.ExchangeCodeForToken();
 
             return string.IsNullOrEmpty(this.AuthToken) ? AuthorisationResult.Denied : AuthorisationResult.Authorized;
-        }
-
-        private string ComputeHash(HashAlgorithm hashAlgorithm, string data)
-        {
-            if (hashAlgorithm == null)
-            {
-                throw new ArgumentNullException("hashAlgorithm");
-            }
-
-            if (string.IsNullOrEmpty(data))
-            {
-                throw new ArgumentNullException("data");
-            }
-
-            byte[] dataBuffer = Encoding.ASCII.GetBytes(data);
-            byte[] hashBytes = hashAlgorithm.ComputeHash(dataBuffer);
-
-            return Convert.ToBase64String(hashBytes);
         }
 
         private void ExchangeCodeForToken()
@@ -627,7 +669,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
             else
             {
-                request = WebRequest.CreateDefault(this.GenerateRequestUri(uri.ToString(), parameters));
+                request = WebRequest.CreateDefault(GenerateRequestUri(uri.ToString(), parameters));
             }
 
             // Add Headers
@@ -681,7 +723,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 throw new ArgumentNullException("httpMethod");
             }
 
-            requestParameters = this.GetQueryParameters(url.Query);
+            requestParameters = GetQueryParameters(url.Query);
             requestParameters.Add(new QueryParameter(OAuthVersionKey, this.OAuthVersion));
             requestParameters.Add(new QueryParameter(OAuthNonceKey, nonce));
             requestParameters.Add(new QueryParameter(OAuthTimestampKey, timeStamp));
@@ -705,7 +747,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             requestParameters.Sort(new QueryParameterComparer());
 
-            normalizedUrl = string.Format("{0}://{1}", url.Scheme, url.Host);
+            normalizedUrl = $"{url.Scheme}://{url.Host}";
             if (!((url.Scheme == "http" && url.Port == 80) || (url.Scheme == "https" && url.Port == 443)))
             {
                 normalizedUrl += ":" + url.Port;
@@ -720,43 +762,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
             signatureBase.AppendFormat("{0}", UrlEncode(normalizedRequestParameters));
 
             return signatureBase.ToString();
-        }
-
-        private string GenerateSignatureUsingHash(string signatureBase, HashAlgorithm hash)
-        {
-            return this.ComputeHash(hash, signatureBase);
-        }
-
-        private List<QueryParameter> GetQueryParameters(string parameters)
-        {
-            if (parameters.StartsWith("?"))
-            {
-                parameters = parameters.Remove(0, 1);
-            }
-
-            var result = new List<QueryParameter>();
-
-            if (!string.IsNullOrEmpty(parameters))
-            {
-                string[] p = parameters.Split('&');
-                foreach (string s in p)
-                {
-                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix))
-                    {
-                        if (s.IndexOf('=') > -1)
-                        {
-                            string[] temp = s.Split('=');
-                            result.Add(new QueryParameter(temp[0], temp[1]));
-                        }
-                        else
-                        {
-                            result.Add(new QueryParameter(s, string.Empty));
-                        }
-                    }
-                }
-            }
-
-            return result;
         }
 
         private string RequestToken()
@@ -804,16 +809,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             authTokenCookie.Expires = DateTime.Now.Add(this.AuthTokenExpiry);
             HttpContext.Current.Response.SetCookie(authTokenCookie);
-        }
-
-        private Uri GenerateRequestUri(string url, string parameters)
-        {
-            if (string.IsNullOrEmpty(parameters))
-            {
-                return new Uri(url);
-            }
-
-            return new Uri(string.Format("{0}{1}{2}", url, url.Contains("?") ? "&" : "?", parameters));
         }
     }
 }

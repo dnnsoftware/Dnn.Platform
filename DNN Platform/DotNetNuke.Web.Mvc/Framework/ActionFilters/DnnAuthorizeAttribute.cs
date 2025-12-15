@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             set
             {
                 this.staticRoles = value;
-                this.staticRolesSplit = this.SplitString(this.staticRoles);
+                this.staticRolesSplit = SplitString(this.staticRoles);
             }
         }
 
@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             set
             {
                 this.denyRoles = value;
-                this.denyRolesSplit = this.SplitString(this.denyRoles);
+                this.denyRolesSplit = SplitString(this.denyRoles);
             }
         }
 
@@ -89,11 +89,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return true;
         }
 
-        private string[] SplitString(string original)
+        private static string[] SplitString(string original)
         {
             if (string.IsNullOrEmpty(original))
             {
-                return new string[0];
+                return [];
             }
 
             IEnumerable<string> split = from piece in original.Split(',')

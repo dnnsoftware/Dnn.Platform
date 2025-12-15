@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
@@ -69,44 +70,22 @@ namespace DotNetNuke.UI.Containers
 
         /// <summary>Gets and sets the ModuleInfo object that this container is displaying.</summary>
         /// <returns>A ModuleInfo object.</returns>
-        public ModuleInfo ModuleConfiguration
-        {
-            get
-            {
-                return this.moduleConfiguration;
-            }
-        }
+        public ModuleInfo ModuleConfiguration => this.moduleConfiguration;
 
         /// <summary>Gets the ModuleHost object that this container is displaying.</summary>
         /// <returns>A ModuleHost object.</returns>
-        public ModuleHost ModuleHost
-        {
-            get
-            {
-                return this.moduleHost;
-            }
-        }
+        public ModuleHost ModuleHost => this.moduleHost;
 
         /// <summary>Gets the Parent Container for this container.</summary>
         /// <returns>A String.</returns>
-        public Skins.Skin ParentSkin
-        {
-            get
-            {
-                // This finds a reference to the containing skin
-                return Skins.Skin.GetParentSkin(this);
-            }
-        }
+        public Skins.Skin ParentSkin =>
+
+            // This finds a reference to the containing skin
+            Skins.Skin.GetParentSkin(this);
 
         /// <summary>Gets the Path for this container.</summary>
         /// <returns>A String.</returns>
-        public string ContainerPath
-        {
-            get
-            {
-                return this.TemplateSourceDirectory + "/";
-            }
-        }
+        public string ContainerPath => this.TemplateSourceDirectory + "/";
 
         /// <summary>Gets or sets the Source for this container.</summary>
         /// <returns>A String.</returns>
@@ -116,23 +95,12 @@ namespace DotNetNuke.UI.Containers
 
         /// <summary>Gets the Content Pane Control (Id="ContentPane").</summary>
         /// <returns>An HtmlContainerControl.</returns>
-        protected HtmlContainerControl ContentPane
-        {
-            get
-            {
-                return this.contentPane ?? (this.contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
-            }
-        }
+        protected HtmlContainerControl ContentPane => this.contentPane ??= this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl;
 
         /// <summary>Gets the Portal Settings for the current Portal.</summary>
         /// <returns>A PortalSettings object.</returns>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public void SetModuleConfiguration(ModuleInfo configuration)
         {

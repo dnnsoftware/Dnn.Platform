@@ -80,6 +80,17 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        private static string GetCleanUrl(string url)
+        {
+            var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+            if (url != cleanUrl)
+            {
+                return string.Empty;
+            }
+
+            return url;
+        }
+
         /// <summary>
         /// getQSParams builds up a new querystring. This is necessary
         /// in order to prep for navigateUrl.
@@ -252,7 +263,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     if (!string.IsNullOrEmpty(fullurl))
                     {
-                        return this.GetCleanUrl(fullurl);
+                        return GetCleanUrl(fullurl);
                     }
                 }
             }
@@ -278,18 +289,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var isSuperTab = this.objPortal.ActiveTab.IsSuperTab;
             var url = $"{TestableGlobals.Instance.NavigateURL(tabId, isSuperTab, this.objPortal, controlKey, newLanguage, queryStrings)}{rawQueryString}";
 
-            return this.GetCleanUrl(url);
-        }
-
-        private string GetCleanUrl(string url)
-        {
-            var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
-            if (url != cleanUrl)
-            {
-                return string.Empty;
-            }
-
-            return url;
+            return GetCleanUrl(url);
         }
     }
 }

@@ -100,6 +100,11 @@ namespace DotNetNuke.Common.Utilities
             return new FileExtensionWhitelist(string.Join(",", this.extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
         }
 
+        private static IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
+        {
+            return additionalExtensions.Select(ext => (ext.StartsWith(".") ? ext : "." + ext).ToLowerInvariant());
+        }
+
         private IEnumerable<string> CombineLists(IEnumerable<string> additionalExtensions)
         {
             if (additionalExtensions == null)
@@ -114,13 +119,8 @@ namespace DotNetNuke.Common.Utilities
                 return this.extensions;
             }
 
-            var normalizedExtensions = this.NormalizeExtensions(additionalExtensionsList);
+            var normalizedExtensions = NormalizeExtensions(additionalExtensionsList);
             return this.extensions.Union(normalizedExtensions);
-        }
-
-        private IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
-        {
-            return additionalExtensions.Select(ext => (ext.StartsWith(".") ? ext : "." + ext).ToLowerInvariant());
         }
     }
 }

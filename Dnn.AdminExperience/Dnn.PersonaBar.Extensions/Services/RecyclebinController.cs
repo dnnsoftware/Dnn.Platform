@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.Recyclebin.Services
         {
             var totalRecords = 0;
             var users = Components.RecyclebinController.Instance.GetDeletedUsers(out totalRecords, pageIndex, pageSize, sortType, sortDirection);
-            var deletedusers = from t in users select this.ConvertToUserItem(t);
+            var deletedusers = from t in users select ConvertToUserItem(t);
             var response = new
             {
                 Success = true,
@@ -286,6 +286,26 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
+        private static UserItem ConvertToUserItem(UserInfo user)
+        {
+            return new UserItem
+            {
+                Id = user.UserID,
+                Username = user.Username,
+                PortalId = user.PortalID,
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                LastModifiedOnDate =
+                    user.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
+                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
+                FriendlyLastModifiedOnDate =
+                    user.LastModifiedOnDate.ToString(
+                        "MM/dd/yyyy h:mm:ss tt",
+                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
+            };
+        }
+
         private PageItem ConvertToPageItem(TabInfo tab, IEnumerable<TabInfo> portalTabs)
         {
             return new PageItem
@@ -338,26 +358,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                     mod.LastModifiedOnDate.ToString(
                         "MM/dd/yyyy h:mm:ss tt",
                         CultureInfo.CreateSpecificCulture(mod.CultureCode ?? "en-US")),
-            };
-        }
-
-        private UserItem ConvertToUserItem(UserInfo user)
-        {
-            return new UserItem
-            {
-                Id = user.UserID,
-                Username = user.Username,
-                PortalId = user.PortalID,
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                LastModifiedOnDate =
-                    user.LastModifiedOnDate.ToString(
-                        "MM/dd/yyyy h:mm:ss tt",
-                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
-                FriendlyLastModifiedOnDate =
-                    user.LastModifiedOnDate.ToString(
-                        "MM/dd/yyyy h:mm:ss tt",
-                        CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US")),
             };
         }
     }
