@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.Search
                 !(SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal))
                 .OrderBy(m => m.LastContentModifiedOnDate).ThenBy(m => m.ModuleID).ToArray();
 
-            if (modulesInDateRange.Any())
+            if (modulesInDateRange.Length != 0)
             {
                 foreach (var module in modulesInDateRange)
                 {

@@ -627,7 +627,7 @@ namespace Dnn.ExportImport.Components.Engines
             additionalItems.ForEach(i => includedItems.Add(i));
 
             // must be included always when there is at least one other object to process
-            if (includedItems.Any())
+            if (includedItems.Count != 0)
             {
                 includedItems.Add(Constants.Category_Portal);
             }

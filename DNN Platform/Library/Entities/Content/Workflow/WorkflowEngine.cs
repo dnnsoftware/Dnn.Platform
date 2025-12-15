@@ -615,7 +615,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var reviewers = this.GetUserAndRolesForStateReviewers(portalSettings, state);
 
-                if (!reviewers.Roles.Any() && !reviewers.Users.Any())
+                if (reviewers.Roles.Count == 0 && reviewers.Users.Count == 0)
                 {
                     return; // If there are no receivers, the notification is avoided
                 }

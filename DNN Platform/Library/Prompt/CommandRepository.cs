@@ -114,7 +114,7 @@ namespace DotNetNuke.Prompt
                 var commandParameters = cmd.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
                     .Select(x => x.GetCustomAttributes(typeof(ConsoleCommandParameterAttribute), false).FirstOrDefault())
                     .Cast<ConsoleCommandParameterAttribute>().ToList();
-                if (commandParameters.Any())
+                if (commandParameters.Count != 0)
                 {
                     var options = commandParameters.Where(attribute => attribute != null).Select(attribute => new CommandOption
                     {

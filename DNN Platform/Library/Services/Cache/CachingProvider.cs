@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Cache
         {
             var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
             var tabModules = Cache.Get(cacheKey) as Dictionary<int, ModuleInfo>;
-            if (tabModules != null && tabModules.Any())
+            if (tabModules != null && tabModules.Count != 0)
             {
                 foreach (var moduleInfo in tabModules.Values)
                 {

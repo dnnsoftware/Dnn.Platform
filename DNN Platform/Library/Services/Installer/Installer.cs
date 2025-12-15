@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Installer
             this.LogInstallEvent("Package", "Install");
 
             // when the installer initialized by file stream, we need save the file stream into backup folder.
-            if (this.inputStream != null && succeeded && this.Packages.Any())
+            if (this.inputStream != null && succeeded && this.Packages.Count != 0)
             {
                 Task.Run(() =>
                 {

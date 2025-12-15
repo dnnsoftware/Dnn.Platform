@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Search
                 where t.LastModifiedOnDate > startDateLocal && t.AllowIndex
                 select t).OrderBy(t => t.LastModifiedOnDate).ThenBy(t => t.TabID).ToArray();
 
-            if (tabs.Any())
+            if (tabs.Length != 0)
             {
                 foreach (var tab in tabs)
                 {

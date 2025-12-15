@@ -71,7 +71,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var modules = this.moduleController.GetTabModules(tabId).Where(m => m.Value.IsDeleted == false).Select(m => m.Value).ToArray();
 
             // Check if the page has modules
-            if (!modules.Any())
+            if (modules.Length == 0)
             {
                 return;
             }

@@ -97,7 +97,7 @@ namespace Dnn.AzureConnector.Components
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             var connectors = this.FindAzureFolderMappings(portalId);
-            if (connectors != null && connectors.Any())
+            if (connectors != null && connectors.Count != 0)
             {
                 connectors.ForEach(x => { this.Id = x.FolderMappingID.ToString(); });
                 var finalCon = connectors.Select(x => (IConnector)Activator.CreateInstance(this.GetType())).ToList();
@@ -476,7 +476,7 @@ namespace Dnn.AzureConnector.Components
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType).ToList();
 
             // Create new mapping if none is found.
-            if (!folderMappings.Any() && autoCreate)
+            if (folderMappings.Count == 0 && autoCreate)
             {
                 return this.CreateAzureFolderMapping(portalId, DefaultDisplayName);
             }

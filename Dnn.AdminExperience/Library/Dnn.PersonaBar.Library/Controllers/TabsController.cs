@@ -185,7 +185,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
 
             var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
-            rootNode.HasChildren = tabs.Any();
+            rootNode.HasChildren = tabs.Count != 0;
             rootNode.Selectable = SecurityService.Instance.IsPagesAdminUser();
             foreach (var tab in tabs)
             {
@@ -387,7 +387,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         private IEnumerable<TabDto> GetDescendantsForTabs(IEnumerable<int> tabIds, IEnumerable<TabDto> tabs, int selectedTabId, int portalId, string cultureCode, bool isMultiLanguage)
         {
             var enumerable = tabIds as int[] ?? tabIds.ToArray();
-            if (tabs == null || tabIds == null || !enumerable.Any())
+            if (tabs == null || tabIds == null || enumerable.Length == 0)
             {
                 return tabs;
             }

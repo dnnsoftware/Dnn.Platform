@@ -35,7 +35,7 @@ namespace DotNetNuke.Common.Utilities
         /// <inheritdoc />
         public string ToDisplayString(IEnumerable<string> additionalExtensions)
         {
-            IEnumerable<string> allExtensions = this.CombineLists(additionalExtensions);
+            var allExtensions = this.CombineLists(additionalExtensions);
             return "*" + string.Join(", *", allExtensions.ToArray());
         }
 
@@ -48,8 +48,8 @@ namespace DotNetNuke.Common.Utilities
         /// <inheritdoc />
         public bool IsAllowedExtension(string extension, IEnumerable<string> additionalExtensions)
         {
-            List<string> allExtensions = this.CombineLists(additionalExtensions).ToList();
-            if (!allExtensions.Any())
+            var allExtensions = this.CombineLists(additionalExtensions).ToList();
+            if (allExtensions.Count == 0)
             {
                 return true;
             }
@@ -114,7 +114,7 @@ namespace DotNetNuke.Common.Utilities
 
             // toList required to ensure that multiple enumerations of the list are possible
             var additionalExtensionsList = additionalExtensions.ToList();
-            if (!additionalExtensionsList.Any())
+            if (additionalExtensionsList.Count == 0)
             {
                 return this.extensions;
             }

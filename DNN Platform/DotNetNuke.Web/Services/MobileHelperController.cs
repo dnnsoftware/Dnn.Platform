@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Services
             var modules = modulesController.GetAllTabsModules(portalId, false).OfType<ModuleInfo>()
                 .Where(tabmodule => monikers.ContainsKey(tabmodule.TabModuleID)).ToArray();
 
-            if (modules.Any())
+            if (modules.Length != 0)
             {
                 foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {

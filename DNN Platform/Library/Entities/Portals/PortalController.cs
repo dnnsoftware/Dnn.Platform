@@ -1476,7 +1476,7 @@ namespace DotNetNuke.Entities.Portals
                                 .Distinct()
                                 .ToList();
 
-                if (langs.Any())
+                if (langs.Count != 0)
                 {
                     langs.ForEach(x => list.Add(new PortalTemplateInfo(this.hostSettings, templateFilePath, x)));
                 }

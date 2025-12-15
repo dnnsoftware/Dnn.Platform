@@ -434,9 +434,9 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     using (ScheduleInProgress.GetReadLock(LockTimeout))
                     {
-                        if (scheduleItem.ObjectDependencies.Any())
+                        if (scheduleItem.ObjectDependencies.Length != 0)
                         {
-                            foreach (ScheduleHistoryItem item in ScheduleInProgress.Where(si => si.ObjectDependencies.Any()))
+                            foreach (ScheduleHistoryItem item in ScheduleInProgress.Where(si => si.ObjectDependencies.Length != 0))
                             {
                                 if (item.HasObjectDependencies(scheduleItem.ObjectDependencies))
                                 {

@@ -80,8 +80,8 @@ namespace DotNetNuke.Web.InternalServices
             var userSearchSource = contentSources.FirstOrDefault(s => s.SearchTypeId == userSearchTypeId);
 
             var results = new List<GroupedBasicView>();
-            if (portalIds.Any() && searchTypeIds.Any() &&
-                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
+            if (portalIds.Count != 0 && searchTypeIds.Count != 0 &&
+                (!string.IsNullOrEmpty(cleanedKeywords) || tags.Count > 0))
             {
                 var query = new SearchQuery
                 {
@@ -133,7 +133,7 @@ namespace DotNetNuke.Web.InternalServices
             var more = false;
             var totalHits = 0;
             var results = new List<GroupedDetailView>();
-            if (portalIds.Any() && searchTypeIds.Any() &&
+            if (portalIds.Count != 0 && searchTypeIds.Count != 0 &&
                 (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
                 if (pageSize > maximumPageSize)

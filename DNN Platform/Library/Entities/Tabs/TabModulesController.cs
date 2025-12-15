@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Tabs
             var items = this.GetTabModuleSettingsByName(settingName);
             var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase));
             var keyValuePairs = matches as KeyValuePair<int, string>[] ?? matches.ToArray();
-            if (keyValuePairs.Any())
+            if (keyValuePairs.Length != 0)
             {
                 return keyValuePairs.Select(kpv => kpv.Key).ToList();
             }

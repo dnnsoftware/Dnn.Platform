@@ -320,7 +320,7 @@ namespace DotNetNuke.Entities.Portals.Templates
         private static void SerializeExtensionUrlProviders(XmlWriter writer, int portalId)
         {
             var providers = ExtensionUrlProviderController.GetModuleProviders(portalId);
-            if (!providers.Any())
+            if (providers.Count == 0)
             {
                 return;
             }
@@ -333,7 +333,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 writer.WriteElementString("name", provider.ProviderConfig.ProviderName);
                 writer.WriteElementString("active", provider.ProviderConfig.IsActive.ToString());
                 var settings = provider.ProviderConfig.Settings;
-                if (settings.Any())
+                if (settings.Count != 0)
                 {
                     writer.WriteStartElement("settings");
                     foreach (var setting in settings)
