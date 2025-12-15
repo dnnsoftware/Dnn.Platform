@@ -23,6 +23,8 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(CreateSymbols))]
     public sealed class GeneratePackagesChecksums : FrostingTask<Context>
     {
+        private static readonly string[] ZipFiles = ["*.zip",];
+
         /// <inheritdoc/>
         public override void Run(Context context)
         {
@@ -33,7 +35,7 @@ namespace DotNetNuke.Build.Tasks
                 .AppendLine($"| File       | Checksum |")
                 .AppendLine($"|------------|----------|");
 
-            var files = context.GetFilesByPatterns(context.ArtifactsFolder, new[] { "*.zip" });
+            var files = context.GetFilesByPatterns(context.ArtifactsFolder, ZipFiles);
             foreach (var file in files)
             {
                 string hash;

@@ -24,6 +24,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// <summary>The Controller class for Installer.</summary>
     internal class InstallControllerImpl : IInstallController
     {
+        private static readonly string[] VersionSeparator = [".",];
+
         /// <inheritdoc/>
         public string InstallerLogName
         {
@@ -428,7 +430,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     var serverVersion = sqlConnection.ServerVersion;
                     if (serverVersion != null)
                     {
-                        var serverVersionDetails = serverVersion.Split(new[] { "." }, StringSplitOptions.None);
+                        var serverVersionDetails = serverVersion.Split(VersionSeparator, StringSplitOptions.None);
 
                         var versionNumber = int.Parse(serverVersionDetails[0]);
 

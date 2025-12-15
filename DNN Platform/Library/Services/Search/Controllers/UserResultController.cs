@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
         private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
+        private static readonly char[] RoleSeparator = [',',];
 
         /// <inheritdoc/>
         public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
@@ -70,7 +71,7 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 var scopeForRoles =
                     PortalController.GetPortalSetting("SearchResult_ScopeForRoles", searchResult.PortalId, string.Empty)
-                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        .Split(RoleSeparator, StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 if (scopeForRoles.Count > 0)
                 {

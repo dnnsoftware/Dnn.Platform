@@ -26,6 +26,9 @@ namespace DotNetNuke.Entities.Urls
     {
         internal const int SiteRootRewrite = -3;
         internal const int AllTabsRewrite = -1;
+        private const string TabKeySeparator = "::";
+
+        private static readonly string[] TabKeySeparators = [TabKeySeparator,];
 
         private static readonly Regex TabIdRegex = new Regex(
             @"(?:\?|\&)tabid\=(?<tabid>[\d]+)",
@@ -362,7 +365,7 @@ namespace DotNetNuke.Entities.Urls
                             int parmStart = i + 1; // determine if any parameters on this value
 
                             // make up the index that is looked for in the Tab Dictionary
-                            string urlPart = aliasPath + "::" + tabPath;
+                            string urlPart = aliasPath + TabKeySeparator + tabPath;
 
                             // the :: allows separation of pagename and portal alias
                             string tabKeyVal = urlPart.ToLowerInvariant(); // force lower case lookup, all keys are lower case
@@ -383,7 +386,7 @@ namespace DotNetNuke.Entities.Urls
                             if (!found && tabPathLength == 1)
                             {
                                 // look for special case where the site root has a * value
-                                string siteRootLookup = aliasPath + "::" + "*";
+                                string siteRootLookup = aliasPath + TabKeySeparator + "*";
                                 using (tabDict.GetReadLock())
                                 {
                                     found = tabDict.ContainsKey(siteRootLookup);
@@ -1520,7 +1523,7 @@ namespace DotNetNuke.Entities.Urls
                             tabKey = tabKey.TrimEnd('/');
                         }
 
-                        tabKey += "::";
+                        tabKey += TabKeySeparator;
                         using (tabDict.GetReadLock())
                         {
                             if (tabDict.TryGetValue(tabKey, out var tabUrl))
@@ -1582,7 +1585,7 @@ namespace DotNetNuke.Entities.Urls
                                     tabKey = tabKey.Substring(0, tabKey.Length - 13); // 13 = "/default.aspx".length
                                 }
 
-                                tabKey += "::";
+                                tabKey += TabKeySeparator;
                                 using (tabDict.GetReadLock())
                                 {
                                     if (tabDict.TryGetValue(tabKey, out var tabUrl))
@@ -1681,7 +1684,7 @@ namespace DotNetNuke.Entities.Urls
         private static bool CheckSpecialCase(string tabKeyVal, SharedDictionary<string, string> tabDict)
         {
             bool found = false;
-            int pathStart = tabKeyVal.LastIndexOf("::", StringComparison.Ordinal); // look for portal alias separator
+            int pathStart = tabKeyVal.LastIndexOf(TabKeySeparator, StringComparison.Ordinal); // look for portal alias separator
             int lastPath = tabKeyVal.LastIndexOf('/');
 
             // get any path separator in the tab path portion
@@ -1750,7 +1753,7 @@ namespace DotNetNuke.Entities.Urls
             var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex);
             if (!found && !Globals.ServicesFrameworkRegex.IsMatch(result.RawUrl) && !doNotRedirectRegex.IsMatch(result.RawUrl))
             {
-                string[] urlParams = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None);
+                string[] urlParams = tabLookUpKey.Split(TabKeySeparators, StringSplitOptions.None);
                 if (urlParams.Length > 1)
                 {
                     // Extract the first Url parameter
@@ -1778,7 +1781,7 @@ namespace DotNetNuke.Entities.Urls
                             string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
 
                             // modify lookup key;
-                            tabLookUpKey = tabLookUpKey.Replace("::" + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), "::" + profilePagePath.TrimStart('/').ToLowerInvariant());
+                            tabLookUpKey = tabLookUpKey.Replace(TabKeySeparator + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), TabKeySeparator + profilePagePath.TrimStart('/').ToLowerInvariant());
 
                             using (tabDict.GetReadLock())
                             {
@@ -1808,10 +1811,10 @@ namespace DotNetNuke.Entities.Urls
 
                     if (!newUrl.Contains(currentLocale))
                     {
-                        var tabPath = tabLookUpKey.Split(new[] { "::" }, StringSplitOptions.None)[1];
+                        var tabPath = tabLookUpKey.Split(TabKeySeparators, StringSplitOptions.None)[1];
                         using (tabDict.GetReadLock())
                         {
-                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith("::" + tabPath)))
+                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith(TabKeySeparator + tabPath)))
                             {
                                 if (tabDict[key].Contains("language=" + currentLocale))
                                 {

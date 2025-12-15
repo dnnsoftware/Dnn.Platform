@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.InternalServices
     public class UserFileController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
+        private static readonly char[] FileExtensionSeparator = [',',];
         private readonly IFolderManager folderManager = FolderManager.Instance;
 
         [DnnAuthorize]
@@ -41,7 +42,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (!string.IsNullOrEmpty(fileExtensions))
                 {
                     fileExtensions = fileExtensions.ToLowerInvariant();
-                    extensions.AddRange(fileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+                    extensions.AddRange(fileExtensions.Split(FileExtensionSeparator, StringSplitOptions.RemoveEmptyEntries));
                 }
 
                 var folderStructure = new

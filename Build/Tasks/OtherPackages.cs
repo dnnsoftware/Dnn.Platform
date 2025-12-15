@@ -29,6 +29,8 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(PackageMicrosoftWebInfrastructure))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
+        private static readonly string[] IncludeAll = ["**/*",];
+
         /// <inheritdoc/>
         public override void Run(Context context)
         {
@@ -44,7 +46,7 @@ namespace DotNetNuke.Build.Tasks
             var srcFolder = "./" + package.Folder;
             var files = package.Excludes.Length == 0
                             ? context.GetFiles(srcFolder + "**/*")
-                            : context.GetFilesByPatterns(srcFolder, new[] { "**/*" }, package.Excludes);
+                            : context.GetFilesByPatterns(srcFolder, IncludeAll, package.Excludes);
             var version = "00.00.00";
             foreach (var dnn in context.GetFiles(srcFolder + "**/*.dnn"))
             {

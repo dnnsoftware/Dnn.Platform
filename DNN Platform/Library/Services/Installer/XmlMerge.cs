@@ -233,7 +233,7 @@ namespace DotNetNuke.Services.Installer
 
             var index = rootNodePath.IndexOf("configuration");
             var adjustedPath = rootNodePath.Substring(index + "configuration".Length);
-            adjustedPath = adjustedPath.TrimStart(new[] { '/' });
+            adjustedPath = adjustedPath.TrimStart('/');
             if (string.IsNullOrEmpty(adjustedPath))
             {
                 adjustedPath = ".";

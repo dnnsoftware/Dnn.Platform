@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// <summary>The SkinInstaller installs Skin Components to a DotNetNuke site.</summary>
     public class SkinInstaller : FileInstaller
     {
+        private static readonly string[] MessageSeparator = ["<br />",];
         private readonly ArrayList skinFiles = new ArrayList();
 
         private SkinPackageInfo skinPackage;
@@ -197,7 +198,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         }
                     }
 
-                    Array arrMessage = strMessage.Split(new[] { "<br />" }, StringSplitOptions.None);
+                    Array arrMessage = strMessage.Split(MessageSeparator, StringSplitOptions.None);
                     foreach (string strRow in arrMessage)
                     {
                         this.Log.AddInfo(HtmlUtils.StripTags(strRow, true));

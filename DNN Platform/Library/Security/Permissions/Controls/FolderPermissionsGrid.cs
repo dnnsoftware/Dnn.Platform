@@ -27,6 +27,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         // ReSharper disable once InconsistentNaming
         protected FolderPermissionCollection FolderPermissions;
 
+        private static readonly string[] PermissionKeySeparator = ["##",];
+
         private string folderPath = string.Empty;
         private List<PermissionInfoBase> permissionsList;
         private bool refreshGrid;
@@ -237,7 +239,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
-                        string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
+                        string[] permissionKeys = state.Split(PermissionKeySeparator, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
                             string[] settings = key.Split('|');

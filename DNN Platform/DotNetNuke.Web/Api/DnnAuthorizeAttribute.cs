@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.Api
         private static readonly List<string> DefaultAuthTypes = [];
 
         private static readonly string[] EmptyArray = [];
+        private static readonly char[] Separator = [',',];
 
         private string staticRoles;
         private string[] staticRolesSplit = [];
@@ -135,7 +136,7 @@ namespace DotNetNuke.Web.Api
                 return EmptyArray;
             }
 
-            var split = original.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            var split = original.Split(Separator, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s));
             return split.ToArray();
         }

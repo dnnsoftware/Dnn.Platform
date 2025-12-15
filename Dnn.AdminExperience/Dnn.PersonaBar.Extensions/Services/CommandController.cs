@@ -37,7 +37,9 @@ namespace Dnn.PersonaBar.Prompt.Services
     public class CommandController : ControllerBase, IServiceRouteMapper
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
-        private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
+        private static readonly string[] DenyList = ["smtppassword", "password", "pwd", "pass", "apikey",];
+        private static readonly string[] Namespaces = ["Dnn.PersonaBar.Prompt.Services",];
+        private static readonly char[] Separators = [',', '|', ' ',];
 
         private readonly IServiceProvider serviceProvider;
         private readonly ICommandRepository commandRepository;
@@ -186,20 +188,20 @@ namespace Dnn.PersonaBar.Prompt.Services
         /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
+            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, Namespaces);
         }
 
         private static string FilterCommand(string command)
         {
-            var blackList = BlackList;
-            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
-                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (promptBlackList.Length > 0)
+            var blackList = DenyList;
+            var promptDenyList = HostController.Instance.GetString("PromptBlackList", string.Empty)
+                .Split(Separators, StringSplitOptions.RemoveEmptyEntries);
+            if (promptDenyList.Length > 0)
             {
-                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
+                blackList = blackList.Concat(promptDenyList).Distinct().ToArray();
             }
 
-            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
+            var args = command.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
             foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
                         .Where(lowerKey => args.Any(arg => arg.Replace("-", string.Empty) == lowerKey)))
             {

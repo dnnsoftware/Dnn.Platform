@@ -48,6 +48,8 @@ namespace DotNetNuke.UI.Modules
             @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly char[] ArgsSeparator = [',',];
+
         private readonly ModuleInfo moduleConfiguration;
         private readonly IModuleControlPipeline moduleControlPipeline = Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
         private Control control;
@@ -460,7 +462,7 @@ namespace DotNetNuke.UI.Modules
                         ClientResourceManager.RegisterStyleSheet(this.Page, filePath, priority, forceProvider);
                         break;
                     case "JS-LIBRARY":
-                        var args = filePath.Split(new[] { ',', }, StringSplitOptions.None);
+                        var args = filePath.Split(ArgsSeparator, StringSplitOptions.None);
                         if (string.IsNullOrEmpty(args[1]))
                         {
                             JavaScript.RequestRegistration(args[0]);
