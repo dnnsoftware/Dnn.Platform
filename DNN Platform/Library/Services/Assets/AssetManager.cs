@@ -104,11 +104,11 @@ namespace DotNetNuke.Services.Assets
             var files = GetFiles(folder, sortProperties, startIndex, recursive).ToList();
 
             IEnumerable<object> content;
-            if (startIndex + numItems <= folders.Count())
+            if (startIndex + numItems <= folders.Count)
             {
                 content = folders.Skip(startIndex).Take(numItems);
             }
-            else if (startIndex >= folders.Count())
+            else if (startIndex >= folders.Count)
             {
                 content = files.Skip(startIndex - folders.Count).Take(numItems);
             }
@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.Assets
             {
                 Folder = folder,
                 Items = content.ToList(),
-                TotalCount = folders.Count() + files.Count(),
+                TotalCount = folders.Count + files.Count,
             };
         }
 
@@ -143,7 +143,7 @@ namespace DotNetNuke.Services.Assets
             {
                 Folder = folder,
                 Items = content.ToList(),
-                TotalCount = sortedFiles.Count(),
+                TotalCount = sortedFiles.Count,
             };
         }
 

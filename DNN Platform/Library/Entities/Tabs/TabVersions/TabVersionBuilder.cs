@@ -674,7 +674,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private int GetCurrentPortalId()
         {
-            return this.portalSettings == null ? Null.NullInteger : this.portalSettings.PortalId;
+            return this.portalSettings?.PortalId ?? Null.NullInteger;
         }
 
         private void CreateSnapshotOverVersion(int tabId, TabVersion snapshotTabVersion, TabVersion deletedTabVersion = null)
@@ -682,7 +682,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var snapShotTabVersionDetails = this.GetVersionModulesDetails(tabId, snapshotTabVersion.Version).ToArray();
             var existingTabVersionDetails = this.tabVersionDetailController.GetTabVersionDetails(snapshotTabVersion.TabVersionId).ToArray();
 
-            for (var i = existingTabVersionDetails.Count(); i > 0; i--)
+            for (var i = existingTabVersionDetails.Length; i > 0; i--)
             {
                 var existingDetail = existingTabVersionDetails.ElementAtOrDefault(i - 1);
 
@@ -739,11 +739,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private void DeleteOldVersions(IEnumerable<TabVersion> tabVersionsOrdered, TabVersion snapShotTabVersion)
         {
             var oldVersions = tabVersionsOrdered.Where(tv => tv.Version < snapShotTabVersion.Version).ToArray();
-            for (var i = oldVersions.Count(); i > 0; i--)
+            for (var i = oldVersions.Length; i > 0; i--)
             {
                 var oldVersion = oldVersions.ElementAtOrDefault(i - 1);
                 var oldVersionDetails = this.tabVersionDetailController.GetTabVersionDetails(oldVersion.TabVersionId).ToArray();
-                for (var j = oldVersionDetails.Count(); j > 0; j--)
+                for (var j = oldVersionDetails.Length; j > 0; j--)
                 {
                     var oldVersionDetail = oldVersionDetails.ElementAtOrDefault(j - 1);
                     this.tabVersionDetailController.DeleteTabVersionDetail(oldVersionDetail.TabVersionId, oldVersionDetail.TabVersionDetailId);

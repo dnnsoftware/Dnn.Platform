@@ -129,14 +129,14 @@ namespace DotNetNuke.Services.Search.Internals
             else
             {
                 var fields = this.luceneQuery.Sort.GetSort();
-                if (fields == null || fields.Count() != 1)
+                if (fields is not { Length: 1 })
                 {
                     useRelevance = true;
                 }
                 else
                 {
                     var field = fields[0];
-                    if (field.Type == SortField.INT || field.Type == SortField.LONG)
+                    if (field.Type is SortField.INT or SortField.LONG)
                     {
                         if (field.Reverse)
                         {

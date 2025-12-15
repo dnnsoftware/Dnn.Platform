@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Roles.Components
             var isAdmin = IsAdmin(portalSettings);
 
             List<RoleInfo> foundRoles = null;
-            if (rolesFilter.Count() > 0)
+            if (rolesFilter.Count > 0)
             {
                 var allRoles = groupId < Null.NullInteger
                 ? RoleController.Instance.GetRoles(portalSettings.PortalId)
