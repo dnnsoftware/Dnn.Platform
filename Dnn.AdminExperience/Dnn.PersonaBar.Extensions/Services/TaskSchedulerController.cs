@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 {
                     Success = true,
                     Results = availableServers,
-                    TotalResults = servers.Count(),
+                    TotalResults = servers.Count,
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                         NextStart = (v.Enabled && !Null.IsNull(v.NextStart)) ? v.NextStart.ToString() : string.Empty,
                         Frequency = this.controller.GetTimeLapse(v.TimeLapse, v.TimeLapseMeasurement),
                     }),
-                    TotalResults = arrSchedule.Count(),
+                    TotalResults = arrSchedule.Length,
                 };
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }

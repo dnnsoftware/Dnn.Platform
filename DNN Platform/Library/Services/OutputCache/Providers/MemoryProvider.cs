@@ -55,21 +55,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
         /// <inheritdoc/>
         public override int GetItemCount(int tabId)
         {
-            return GetCacheKeys(tabId).Count();
+            return GetCacheKeys(tabId).Count;
         }
 
         /// <inheritdoc/>
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             object output = Cache[cacheKey];
-            if (output != null)
-            {
-                return (byte[])output;
-            }
-            else
-            {
-                return null;
-            }
+            return (byte[])output;
         }
 
         /// <inheritdoc/>

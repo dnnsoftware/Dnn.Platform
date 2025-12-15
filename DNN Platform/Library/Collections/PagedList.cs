@@ -24,7 +24,7 @@ namespace DotNetNuke.Collections
         public PagedList(IEnumerable<T> source, int pageIndex, int pageSize)
         {
             var enumerable = source as T[] ?? source.ToArray();
-            this.CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Count(), pageIndex, pageSize);
+            this.CommonConstruct(enumerable.Skip(pageIndex * pageSize).Take(pageSize).ToList(), enumerable.Length, pageIndex, pageSize);
         }
 
         /// <summary>
