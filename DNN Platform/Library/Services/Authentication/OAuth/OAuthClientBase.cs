@@ -545,14 +545,16 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private void ExchangeCodeForToken()
         {
-            IList<QueryParameter> parameters = new List<QueryParameter>();
-            parameters.Add(new QueryParameter(OAuthClientIdKey, this.APIKey));
-            parameters.Add(new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(this.CallbackUri.ToString())));
+            var parameters = new List<QueryParameter>
+            {
+                new QueryParameter(OAuthClientIdKey, this.APIKey),
+                new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(this.CallbackUri.ToString())),
 
-            // DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
-            parameters.Add(new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(this.APISecret.ToString())));
-            parameters.Add(new QueryParameter(OAuthGrantTypeKey, "authorization_code"));
-            parameters.Add(new QueryParameter(OAuthCodeKey, this.VerificationCode));
+                // DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
+                new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(this.APISecret)),
+                new QueryParameter(OAuthGrantTypeKey, "authorization_code"),
+                new QueryParameter(OAuthCodeKey, this.VerificationCode),
+            };
 
             // DNN-6265 Support for OAuth V2 optional parameter
             if (!string.IsNullOrEmpty(this.APIResource))
@@ -560,7 +562,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 parameters.Add(new QueryParameter("resource", this.APIResource));
             }
 
-            string responseText = this.ExecuteWebRequest(this.TokenMethod, this.TokenEndpoint, parameters.ToNormalizedString(), string.Empty);
+            var responseText = this.ExecuteWebRequest(this.TokenMethod, this.TokenEndpoint, parameters.ToNormalizedString(), string.Empty);
 
             this.AuthToken = this.GetToken(responseText);
             this.AuthTokenExpiry = this.GetExpiry(responseText);

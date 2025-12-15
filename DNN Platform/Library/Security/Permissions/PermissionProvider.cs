@@ -1126,23 +1126,23 @@ namespace DotNetNuke.Security.Permissions
             return isDenied;
         }
 
-        private static IEnumerable<RoleInfo> DefaultImplicitRoles(int portalId)
+        private static List<RoleInfo> DefaultImplicitRoles(int portalId)
         {
-            return new List<RoleInfo>
-            {
+            return
+            [
                 RoleController.Instance.GetRoleById(
                     portalId,
                     PortalController.Instance.GetPortal(portalId).AdministratorRoleId),
-            };
+            ];
         }
 
         /// <summary>GetModulePermissions gets a Dictionary of ModulePermissionCollections by Module.</summary>
-        /// <param name="tabID">The ID of the tab.</param>
-        private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabID)
+        /// <param name="tabId">The ID of the tab.</param>
+        private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabId)
         {
-            string cacheKey = string.Format(DataCache.ModulePermissionCacheKey, tabID);
+            string cacheKey = string.Format(DataCache.ModulePermissionCacheKey, tabId);
             return CBO.GetCachedObject<Dictionary<int, ModulePermissionCollection>>(
-                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabID), this.GetModulePermissionsCallBack);
+                new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabId), this.GetModulePermissionsCallBack);
         }
 
         /// <summary>GetModulePermissionsCallBack gets a Dictionary of ModulePermissionCollections by Module from the the Database.</summary>

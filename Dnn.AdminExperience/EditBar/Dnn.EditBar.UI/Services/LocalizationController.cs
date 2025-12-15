@@ -101,7 +101,7 @@ namespace Dnn.EditBar.UI.Services
             return File.Exists(path) ? File.ReadAllText(path, Encoding.UTF8) : null;
         }
 
-        private static IDictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
+        private static Dictionary<string, IDictionary<string, string>> GenerateJsonFile(string culture)
         {
             var resources = new Dictionary<string, IDictionary<string, string>>();
             var resourceFiles = GetAllResourceFiles(culture);
@@ -134,7 +134,7 @@ namespace Dnn.EditBar.UI.Services
             return HttpContext.Current.Server.MapPath(path);
         }
 
-        private static IList<string> GetAllResourceFiles(string culture)
+        private static string[] GetAllResourceFiles(string culture)
         {
             var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
             var physicalPath = HttpContext.Current.Server.MapPath(editBarResourcesPath);

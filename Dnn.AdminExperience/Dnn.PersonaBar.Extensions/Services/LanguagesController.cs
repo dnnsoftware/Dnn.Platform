@@ -689,7 +689,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         ///   First=>value to be edited
         ///   Second=>default value.
         /// </remarks>
-        private static void LoadResource(IDictionary ht, string filepath)
+        private static void LoadResource(Hashtable ht, string filepath)
         {
             var d = new XmlDocument { XmlResolver = null };
             bool xmlLoaded;
@@ -744,7 +744,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private static XmlNode AddResourceKey(XmlDocument resourceDoc, string resourceKey)
         {
             // missing entry
-            XmlNode nodeData = resourceDoc.CreateElement("data");
+            var nodeData = resourceDoc.CreateElement("data");
             var attr = resourceDoc.CreateAttribute("name");
             attr.Value = resourceKey;
             nodeData.Attributes?.Append(attr);
@@ -969,7 +969,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return string.Format(LocalizeString("Updated"), this.ResourceFile(portalId, locale, mode));
         }
 
-        private IList<LanguageTabDto> GetTabsForTranslationInternal(int portalId, string cultureCode)
+        private List<LanguageTabDto> GetTabsForTranslationInternal(int portalId, string cultureCode)
         {
             var locale = new LocaleController().GetLocale(portalId, cultureCode);
             var portal = PortalController.Instance.GetPortal(portalId);

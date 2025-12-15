@@ -88,7 +88,7 @@ namespace DotNetNuke.Collections.Internal
             this.isDisposed = true;
         }
 
-        private ISharedCollectionLock GetLock(TimeSpan timeout)
+        private MonitorLock GetLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
             if (this.IsThreadLocked())

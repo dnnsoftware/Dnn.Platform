@@ -208,7 +208,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return FolderManager.Instance.AddFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
         }
 
-        private static IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
+        private static List<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
         {
             var templates = new List<Template>();
             if (templateFolder == null)

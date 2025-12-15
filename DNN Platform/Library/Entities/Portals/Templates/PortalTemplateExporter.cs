@@ -425,7 +425,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteEndElement();
         }
 
-        private static string GetActualFileName(IFileInfo objFile)
+        private static string GetActualFileName(Services.FileSystem.FileInfo objFile)
         {
             return (objFile.StorageLocation == (int)FolderController.StorageLocationTypes.SecureFileSystem)
                 ? objFile.FileName + Globals.glbProtectedExtension

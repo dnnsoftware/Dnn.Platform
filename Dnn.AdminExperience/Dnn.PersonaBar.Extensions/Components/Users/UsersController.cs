@@ -574,13 +574,13 @@ namespace Dnn.PersonaBar.Users.Components
             return users;
         }
 
-        private IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
+        private List<UserBasicDto2> GetUsers(GetUsersContract usersContract, bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
             var parsedSearchText = string.IsNullOrEmpty(usersContract.SearchText) ? string.Empty : SearchTextFilter.CleanWildcards(usersContract.SearchText.Trim());
 
-            usersContract.SearchText = string.Format("{0}*", parsedSearchText);
+            usersContract.SearchText = $"{parsedSearchText}*";
 
-            List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
+            var records = CBO.FillCollection<UserBasicDto2>(
                 this.CallGetUsersBySearchTerm(
                     usersContract,
                     includeAuthorized,

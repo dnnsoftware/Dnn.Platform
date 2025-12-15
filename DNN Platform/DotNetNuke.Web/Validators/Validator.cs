@@ -8,12 +8,12 @@ namespace DotNetNuke.Web.Validators
 
     public class Validator
     {
-        private readonly IList<ObjectValidator> validators;
+        private readonly List<ObjectValidator> validators;
 
         /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>
         public Validator()
         {
-            this.validators = new List<ObjectValidator>();
+            this.validators = [];
         }
 
         /// <summary>Initializes a new instance of the <see cref="Validator"/> class.</summary>

@@ -180,7 +180,7 @@ namespace DotNetNuke.Entities.Content
             this.contentController.UpdateContentItem(contentItem);
         }
 
-        private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
+        private int[] GetFilesByContent(int contentItemId, string type)
         {
             var contentItem = this.contentController.GetContentItem(contentItemId);
             if (contentItem == null)

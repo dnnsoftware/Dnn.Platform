@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Search.Internals
             return results;
         }
 
-        private static Query NumericValueQuery(string numericName, int numericVal)
+        private static NumericRangeQuery<int> NumericValueQuery(string numericName, int numericVal)
         {
             return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
         }

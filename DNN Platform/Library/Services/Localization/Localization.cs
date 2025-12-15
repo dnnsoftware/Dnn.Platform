@@ -1884,14 +1884,14 @@ namespace DotNetNuke.Services.Localization
             return culture;
         }
 
-        private static IList<object> GetPortalLocalizations(int portalID)
+        private static List<object> GetPortalLocalizations(int portalId)
         {
-            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalID));
+            return CBO.FillCollection<object>(DataProvider.Instance().GetPortalLocalizations(portalId));
         }
 
         /// <summary>
         /// When portal allows users to select their preferred UI language, this method
-        /// will return the user UI preferred language if defined. Otherwise defaults
+        /// will return the user UI preferred language if defined; otherwise, defaults
         /// to the current culture.
         /// </summary>
         /// <param name="currentCulture">Current culture.</param>

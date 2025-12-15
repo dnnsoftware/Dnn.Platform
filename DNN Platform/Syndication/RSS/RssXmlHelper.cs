@@ -22,15 +22,15 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                XmlNode root = doc.DocumentElement;
+                var root = doc.DocumentElement;
                 if (root.Name == "rss")
                 {
                     // RSS
-                    for (XmlNode c = root.FirstChild; c != null; c = c.NextSibling)
+                    for (var c = root.FirstChild; c != null; c = c.NextSibling)
                     {
                         if (c.NodeType == XmlNodeType.Element && c.Name == "channel")
                         {
-                            for (XmlNode n = c.FirstChild; n != null; n = n.NextSibling)
+                            for (var n = c.FirstChild; n != null; n = n.NextSibling)
                             {
                                 if (n.NodeType == XmlNodeType.Element)
                                 {
@@ -110,13 +110,13 @@ namespace DotNetNuke.Services.Syndication
         /// <returns>The new XML element.</returns>
         internal static XmlNode SaveRssElementAsXml(XmlNode parentNode, RssElementBase element, string elementName)
         {
-            XmlDocument doc = parentNode.OwnerDocument;
-            XmlNode node = doc.CreateElement(elementName);
+            var doc = parentNode.OwnerDocument;
+            var node = doc.CreateElement(elementName);
             parentNode.AppendChild(node);
 
-            foreach (KeyValuePair<string, string> attr in element.Attributes)
+            foreach (var attr in element.Attributes)
             {
-                XmlNode attrNode = doc.CreateElement(attr.Key);
+                var attrNode = doc.CreateElement(attr.Key);
                 attrNode.InnerText = ResolveAppRelativeLinkToUrl(attr.Value);
                 node.AppendChild(attrNode);
             }
@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Syndication
         {
             var attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            for (XmlNode n = node.FirstChild; n != null; n = n.NextSibling)
+            for (var n = node.FirstChild; n != null; n = n.NextSibling)
             {
                 if (n.NodeType == XmlNodeType.Element && !NodeHasSubElements(n))
                 {

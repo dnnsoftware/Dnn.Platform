@@ -479,14 +479,14 @@ namespace Dnn.PersonaBar.Themes.Components
             return () => new ThemesController();
         }
 
-        private static IList<ThemeInfo> GetThemes(ThemeType type, string strRoot)
+        private static List<ThemeInfo> GetThemes(ThemeType type, string strRoot)
         {
             var themes = new List<ThemeInfo>();
             if (Directory.Exists(strRoot))
             {
                 foreach (var strFolder in Directory.GetDirectories(strRoot))
                 {
-                    var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
+                    var strName = strFolder.Substring(strFolder.LastIndexOf(@"\") + 1);
                     if (strName != "_default")
                     {
                         var themePath = strFolder.Replace(Globals.ApplicationMapPath, string.Empty).TrimStart('\\').ToLowerInvariant();
@@ -651,7 +651,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 if (blnUpdate == false)
                 {
                     var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
-                    XmlNode xmlSetting = xmlDoc.CreateElement("Setting");
+                    var xmlSetting = xmlDoc.CreateElement("Setting");
                     xmlSetting.InnerXml = strSetting;
                     xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
                 }

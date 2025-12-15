@@ -76,7 +76,7 @@ Namespace DotNetNuke.UI.Utilities
 
                 Dim objDoc As XPathDocument = Nothing
                 Dim objReader As FileStream = Nothing
-                Dim tr As TextReader = Nothing
+                Dim tr As StreamReader = Nothing
                 Dim fileExists As Boolean = File.Exists(strPath)
                 Try
                     objCaps = New BrowserCaps()

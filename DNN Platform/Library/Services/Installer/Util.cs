@@ -905,7 +905,7 @@ namespace DotNetNuke.Services.Installer
         public static void DeployExtension(WebResponse wr, string myfile, string installFolder)
         {
             Stream remoteStream = null;
-            Stream localStream = null;
+            FileStream localStream = null;
 
             try
             {

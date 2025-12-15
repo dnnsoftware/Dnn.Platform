@@ -321,7 +321,7 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);
         }
 
-        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, int parentId, IList<int> filterTabs = null)
+        private static List<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, int parentId, List<int> filterTabs = null)
         {
             return tabs.Where(tab => tab.ParentId == parentId).Select(tab => new ItemDto
             {
@@ -332,14 +332,14 @@ namespace DotNetNuke.Web.InternalServices
             }).ToList();
         }
 
-        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, string parentId)
+        private static List<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, string parentId)
         {
             int id;
             id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
             return GetChildrenOf(tabs, id);
         }
 
-        private static void SortPagesRecursevely(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
+        private static void SortPagesRecursively(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
         {
             if (openedNode == null)
             {
@@ -358,7 +358,7 @@ namespace DotNetNuke.Web.InternalServices
                         continue;
                     }
 
-                    SortPagesRecursevely(tabs, treeNodeChild, openedNodeChild, sortOrder);
+                    SortPagesRecursively(tabs, treeNodeChild, openedNodeChild, sortOrder);
                 }
             }
         }
@@ -717,7 +717,7 @@ namespace DotNetNuke.Web.InternalServices
                 return sortedTree;
             }
 
-            SortPagesRecursevely(pages, sortedTree, openedNodesTree, sortOrder);
+            SortPagesRecursively(pages, sortedTree, openedNodesTree, sortOrder);
             return sortedTree;
         }
 
@@ -889,10 +889,9 @@ namespace DotNetNuke.Web.InternalServices
             var filterTabs = FilterTabsByRole(pages, roles, disabledNotSelectable);
             while (parentTab != null)
             {
-                // load all sibiling
-                var siblingTabs = GetChildrenOf(pages, parentId, filterTabs);
-                siblingTabs = ApplySort(siblingTabs, sortOrder);
-                var siblingTabsTree = siblingTabs.Select(t => new NTree<ItemDto> { Data = t }).ToList();
+                // load all siblings
+                var siblingTabs = ApplySort(GetChildrenOf(pages, parentId, filterTabs), sortOrder);
+                var siblingTabsTree = siblingTabs.Select(t => new NTree<ItemDto> { Data = t, }).ToList();
 
                 // attach the tree
                 if (selfTree.Children != null)
@@ -924,8 +923,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             // retain root pages
-            var rootTabs = GetChildrenOf(pages, Null.NullInteger, filterTabs);
-            rootTabs = ApplySort(rootTabs, sortOrder);
+            var rootTabs = ApplySort(GetChildrenOf(pages, Null.NullInteger, filterTabs), sortOrder);
             var rootTree = rootTabs.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
 
             foreach (var node in rootTree)

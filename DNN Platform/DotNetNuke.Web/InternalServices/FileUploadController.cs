@@ -391,7 +391,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static SavedFileDTO SaveFile(
             Stream stream,
-            IPortalSettings portalSettings,
+            PortalSettings portalSettings,
             UserInfo userInfo,
             string folder,
             string filter,
@@ -664,15 +664,13 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static IEnumerable<PortalInfo> GetMyPortalGroup()
+        private static PortalInfo[] GetMyPortalGroup()
         {
-            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-            var mygroup = (from @group in groups
-                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                               into portals
-                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                           select portals.ToArray()).FirstOrDefault();
-            return mygroup;
+            return (from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
+                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                into portals
+                where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+                select portals.ToArray()).FirstOrDefault();
         }
 
         private static string GetFileName(WebResponse response)

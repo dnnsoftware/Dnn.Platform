@@ -1546,10 +1546,10 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private static Stream ToStream(Image image, ImageFormat formaw)
+        private static MemoryStream ToStream(Image image, ImageFormat format)
         {
             var stream = new MemoryStream();
-            image.Save(stream, formaw);
+            image.Save(stream, format);
             stream.Position = 0;
             return stream;
         }
@@ -1703,7 +1703,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private static void AddFile(IFileInfo file, int createdByUserId)
+        private static void AddFile(FileInfo file, int createdByUserId)
         {
             file.FileId = DataProvider.Instance().AddFile(
                 file.PortalId,
@@ -1728,7 +1728,7 @@ namespace DotNetNuke.Services.FileSystem
                 file.ContentItemID);
         }
 
-        private static string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserId)
+        private static string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, FileInfo file, int createdByUserId)
         {
             if (oldFile != null && FileVersionController.Instance.IsFolderVersioned(folder) && oldFile.SHA1Hash != file.SHA1Hash)
             {
@@ -1760,7 +1760,7 @@ namespace DotNetNuke.Services.FileSystem
             return false;
         }
 
-        private static string UpdateWhileApproving(IFolderInfo folder, int createdByUserId, IFileInfo file, IFileInfo oldFile, Stream content)
+        private static string UpdateWhileApproving(IFolderInfo folder, int createdByUserId, FileInfo file, IFileInfo oldFile, Stream content)
         {
             var contentController = new ContentController();
             bool workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
@@ -1889,9 +1889,9 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void SetContentItem(IFileInfo file)
+        private void SetContentItem(FileInfo file)
         {
-            // Create Content Item if does not exists
+            // Create Content Item if it does not exist
             if (file.ContentItemID == Null.NullInteger)
             {
                 file.ContentItemID = this.CreateFileContentItem().ContentItemId;
@@ -1915,15 +1915,13 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private void SetImageProperties(IFileInfo file, Stream fileContent)
+        private void SetImageProperties(FileInfo file, Stream fileContent)
         {
             try
             {
-                using (var image = this.GetImageFromStream(fileContent))
-                {
-                    file.Width = image.Width;
-                    file.Height = image.Height;
-                }
+                using var image = this.GetImageFromStream(fileContent);
+                file.Width = image.Width;
+                file.Height = image.Height;
             }
             catch
             {

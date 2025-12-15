@@ -1969,7 +1969,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private int AddFolderInternal(IFolderInfo folder)
+        private int AddFolderInternal(FolderInfo folder)
         {
             // Check this is not a duplicate
             var existingFolder = this.GetFolder(folder.PortalID, folder.FolderPath);
@@ -2011,9 +2011,7 @@ namespace DotNetNuke.Services.FileSystem
                     parentId);
 
                 // Refetch folder for logging
-                folder = this.GetFolder(folder.PortalID, folder.FolderPath);
-
-                this.AddLogEntry(folder, EventLogController.EventLogType.FOLDER_CREATED);
+                this.AddLogEntry(this.GetFolder(folder.PortalID, folder.FolderPath), EventLogController.EventLogType.FOLDER_CREATED);
 
                 if (parentFolder != null)
                 {

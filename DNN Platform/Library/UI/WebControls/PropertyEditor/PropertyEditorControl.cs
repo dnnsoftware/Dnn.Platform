@@ -767,7 +767,7 @@ namespace DotNetNuke.UI.WebControls
         /// GetProperties will return an array of public properties for the current DataSource
         /// object.  The properties will be sorted according to the SortMode property.
         /// </remarks>
-        private IEnumerable<PropertyInfo> GetProperties()
+        private PropertyInfo[] GetProperties()
         {
             if (this.DataSource != null)
             {

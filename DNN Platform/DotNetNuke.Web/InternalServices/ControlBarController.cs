@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.InternalServices
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly PersonalizationController personalizationController;
         private readonly Components.Controllers.IControlBarController controller;
-        private IDictionary<string, string> nameDics;
+        private Dictionary<string, string> nameDics;
 
         /// <summary>Initializes a new instance of the <see cref="ControlBarController"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
@@ -472,7 +472,7 @@ namespace DotNetNuke.Web.InternalServices
                 cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
-        private static IList<ModuleInfo> GetModules(int tabID)
+        private static List<ModuleInfo> GetModules(int tabID)
         {
             var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
             var tabModules = ModuleController.Instance.GetTabModules(tabID);

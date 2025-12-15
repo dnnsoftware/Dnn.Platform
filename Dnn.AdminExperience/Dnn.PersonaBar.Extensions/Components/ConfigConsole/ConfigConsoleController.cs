@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
-        private static IEnumerable<string> ValidateSchema(XmlDocument configDoc, string schemaRelPath)
+        private static List<string> ValidateSchema(XmlDocument configDoc, string schemaRelPath)
         {
             var errors = new List<string>();
 

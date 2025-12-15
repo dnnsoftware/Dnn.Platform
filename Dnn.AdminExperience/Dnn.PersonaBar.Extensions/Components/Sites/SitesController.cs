@@ -529,12 +529,12 @@ namespace Dnn.PersonaBar.Sites.Components
             return Globals.ResolveUrl(imagePath);
         }
 
-        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
+        private List<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, IEnumerable<TabDto> userSelection, List<TabDto> tabsCollection)
         {
             if (tabsCollection == null)
             {
                 var tab = this.tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
-                tabsCollection = tab.ChildTabs;
+                tabsCollection = tab.ChildTabs.ToList();
                 tab.ChildTabs = null;
                 tab.HasChildren = false;
                 tabsCollection.Add(tab);

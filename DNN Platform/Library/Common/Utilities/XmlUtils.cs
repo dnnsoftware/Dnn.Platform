@@ -78,42 +78,36 @@ namespace DotNetNuke.Common.Utilities
 
         public static object Deserialize(Stream objStream, Type type)
         {
-            object obj = Activator.CreateInstance(type);
-            var tabDic = obj as Dictionary<int, TabInfo>;
-            if (tabDic != null)
+            var obj = Activator.CreateInstance(type);
+            if (obj is Dictionary<int, TabInfo>)
             {
                 obj = DeSerializeDictionary<TabInfo>(objStream, "dictionary");
                 return obj;
             }
 
-            var moduleDic = obj as Dictionary<int, ModuleInfo>;
-            if (moduleDic != null)
+            if (obj is Dictionary<int, ModuleInfo>)
             {
                 obj = DeSerializeDictionary<ModuleInfo>(objStream, "dictionary");
                 return obj;
             }
 
-            var tabPermDic = obj as Dictionary<int, TabPermissionCollection>;
-            if (tabPermDic != null)
+            if (obj is Dictionary<int, TabPermissionCollection>)
             {
                 obj = DeSerializeDictionary<TabPermissionCollection>(objStream, "dictionary");
                 return obj;
             }
 
-            var modPermDic = obj as Dictionary<int, ModulePermissionCollection>;
-            if (modPermDic != null)
+            if (obj is Dictionary<int, ModulePermissionCollection>)
             {
                 obj = DeSerializeDictionary<ModulePermissionCollection>(objStream, "dictionary");
                 return obj;
             }
 
             var serializer = new XmlSerializer(type);
-            using (TextReader tr = new StreamReader(objStream))
-            {
-                obj = serializer.Deserialize(tr);
-                tr.Close();
-                return obj;
-            }
+            using var tr = new StreamReader(objStream);
+            obj = serializer.Deserialize(tr);
+            tr.Close();
+            return obj;
         }
 
         public static Dictionary<int, TValue> DeSerializeDictionary<TValue>(Stream objStream, string rootname)
@@ -675,21 +669,20 @@ namespace DotNetNuke.Common.Utilities
         public static string Serialize(object obj)
         {
             string xmlObject;
-            var dic = obj as IDictionary;
-            if (dic != null)
+            if (obj is IDictionary dic)
             {
                 xmlObject = SerializeDictionary(dic, "dictionary");
             }
             else
             {
                 var xmlDoc = new XmlDocument { XmlResolver = null };
-                var xser = new XmlSerializer(obj.GetType());
+                var serializer = new XmlSerializer(obj.GetType());
                 var sw = new StringWriter();
 
-                xser.Serialize(sw, obj);
+                serializer.Serialize(sw, obj);
 
                 xmlDoc.LoadXml(sw.GetStringBuilder().ToString());
-                XmlNode xmlDocEl = xmlDoc.DocumentElement;
+                var xmlDocEl = xmlDoc.DocumentElement;
                 xmlDocEl.Attributes.Remove(xmlDocEl.Attributes["xmlns:xsd"]);
                 xmlDocEl.Attributes.Remove(xmlDocEl.Attributes["xmlns:xsi"]);
 

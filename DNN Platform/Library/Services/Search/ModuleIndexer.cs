@@ -10,6 +10,7 @@ namespace DotNetNuke.Services.Search
     using System.Linq;
 
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -32,7 +33,7 @@ namespace DotNetNuke.Services.Search
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         private readonly IBusinessControllerProvider businessControllerProvider;
-        private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
+        private readonly Dictionary<int, IEnumerable<ModuleIndexInfo>> searchModules;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleIndexer"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
@@ -60,9 +61,9 @@ namespace DotNetNuke.Services.Search
             if (needSearchModules)
             {
                 var portals = PortalController.Instance.GetPortals();
-                foreach (var portal in portals.Cast<PortalInfo>())
+                foreach (var portal in portals.Cast<IPortalInfo>())
                 {
-                    this.searchModules.Add(portal.PortalID, GetModulesForIndex(portal.PortalID));
+                    this.searchModules.Add(portal.PortalId, GetModulesForIndex(portal.PortalId));
                 }
 
                 this.searchModules.Add(Null.NullInteger, GetModulesForIndex(Null.NullInteger));
@@ -98,7 +99,7 @@ namespace DotNetNuke.Services.Search
                         var contentInfo = new SearchContentModuleInfo { ModSearchBaseControllerType = controller, ModInfo = module };
                         var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
 
-                        if (searchItems != null && searchItems.Count > 0)
+                        if (searchItems is { Count: > 0, })
                         {
                             AddModuleMetaData(searchItems, module);
                             searchDocuments.AddRange(searchItems);
@@ -237,7 +238,7 @@ namespace DotNetNuke.Services.Search
             }
         }
 
-        private static IEnumerable<ModuleIndexInfo> GetModulesForIndex(int portalId)
+        private static List<ModuleIndexInfo> GetModulesForIndex(int portalId)
         {
             var businessControllers = new Dictionary<string, bool>();
             var searchModuleIds = new HashSet<int>();
@@ -281,7 +282,7 @@ namespace DotNetNuke.Services.Search
         }
 
         private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
+            Action<IEnumerable<SearchDocument>> indexer, List<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
         {
             indexer.Invoke(searchDocuments);
             var total = searchDocuments.Count;
