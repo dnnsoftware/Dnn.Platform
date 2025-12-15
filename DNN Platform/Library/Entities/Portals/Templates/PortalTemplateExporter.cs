@@ -568,17 +568,13 @@ namespace DotNetNuke.Entities.Portals.Templates
                         var defaultTab = tab.DefaultLanguageTab;
                         if (defaultTab == null
                             || tabsToExport.All(p => p != defaultTab.TabID)
-                            ||
-                            tabsToExport.Count(p => p == defaultTab.TabID) > 0)
+                            || tabsToExport.Any(p => p == defaultTab.TabID))
                         {
                             tabNode = TabController.SerializeTab(businessControllerProvider, new XmlDocument { XmlResolver = null }, tabs, tab, portal, chkContent);
                         }
                     }
 
-                    if (tabNode != null)
-                    {
-                        tabNode.WriteTo(writer);
-                    }
+                    tabNode?.WriteTo(writer);
                 }
             }
         }

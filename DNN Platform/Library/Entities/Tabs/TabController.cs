@@ -2587,19 +2587,16 @@ namespace DotNetNuke.Entities.Tabs
             string cacheKey = string.Format(DataCache.TabSettingsCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
 
-            // aslo clear the settings from tab object in cache.
+            // also clear the settings from tab object in cache.
             var tab = this.GetTab(tabId, portalId, false);
-            if (tab != null)
-            {
-                tab.ClearSettingsCache();
-            }
+            tab?.ClearSettingsCache();
         }
 
         private void CreateTabRedirect(TabInfo tab)
         {
             var settings = PortalController.Instance.GetCurrentPortalSettings();
 
-            if (settings != null && tab.TabID != settings.HomeTabId && tab.TabUrls.Count(u => u.HttpStatus == "200") == 0)
+            if (settings != null && tab.TabID != settings.HomeTabId && tab.TabUrls.All(u => u.HttpStatus != "200"))
             {
                 var domainRoot = TestableGlobals.Instance.AddHTTP(settings.PortalAlias.HTTPAlias);
 
