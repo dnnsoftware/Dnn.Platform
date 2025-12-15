@@ -569,7 +569,7 @@ namespace DotNetNuke.Services.Search.Internals
                 }
 
                 doc.Add(field);
-                sb.Append(SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true)).Append(" ");
+                sb.Append(SearchHelper.Instance.StripTagsNoAttributes(kvp.Value, true)).Append(' ');
             }
 
             foreach (var kvp in searchDocument.NumericKeys)

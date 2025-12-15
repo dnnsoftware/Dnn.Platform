@@ -11,7 +11,7 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1591</NoWarn>
-    <WarningsNotAsErrors>CS0618,SA1600,CA1051,CA1304,CA1305,CA1309,CA1310,CA1311,CA1507,CA1514,CA1707,CA1711,CA1716,CA1725,CA1834,CA1854,CA1858,CA1859,CA1860,CA1861,CA1862,CA3075,CA5366,CA5371,CA5372</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,CA1051,CA1304,CA1305,CA1309,CA1310,CA1311,CA1507,CA1514,CA1707,CA1711,CA1716,CA1725,CA1854,CA1858,CA1859,CA1860,CA1861,CA1862,CA3075,CA5366,CA5371,CA5372</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

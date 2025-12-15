@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Connections
         /// <inheritdoc/>
         public override IEnumerable<Type> SupportedTypes
         {
-            get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
+            get { return new ReadOnlyCollection<Type>(new List<Type>([typeof(object)])); }
         }
 
         /// <inheritdoc/>
@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.Connections
                 {
                     if (!firstInDictionary)
                     {
-                        sb.Append(",");
+                        sb.Append(',');
                     }
 
                     firstInDictionary = false;
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Connections
                         {
                             if (!firstInArray)
                             {
-                                sb.Append(",");
+                                sb.Append(',');
                             }
 
                             firstInArray = false;
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Connections
                             }
                         }
 
-                        sb.Append("]");
+                        sb.Append(']');
                     }
                     else
                     {
@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.Connections
                     }
                 }
 
-                sb.Append("}");
+                sb.Append('}');
             }
         }
     }

@@ -338,17 +338,17 @@ namespace DotNetNuke.Services.Search
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
                     {
-                        // max cluaseCount is 1024, if reach the max value, perform a delete action.
-                        keyword.Append(")");
+                        // max clauseCount is 1024, if reach the max value, perform a delete action.
+                        keyword.Append(')');
                         PerformDelete(portalId, keyword.ToString().ToLowerInvariant());
-                        keyword.Clear().Append("(");
+                        keyword.Clear().Append('(');
                         clauseCount = 0;
                     }
                 }
 
                 if (keyword.Length > 1)
                 {
-                    keyword.Append(")");
+                    keyword.Append(')');
                     PerformDelete(portalId, keyword.ToString().ToLowerInvariant());
                 }
             }

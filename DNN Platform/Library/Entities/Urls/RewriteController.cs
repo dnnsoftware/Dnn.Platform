@@ -1189,7 +1189,7 @@ namespace DotNetNuke.Entities.Urls
                             if (valueField)
                             {
                                 // this parameter is going into the value half of a &key=value pair
-                                parmString.Append("=");
+                                parmString.Append('=');
                                 parmString.Append(urlParm);
                                 valueField = false;
                                 if (isUserParm)
@@ -1210,7 +1210,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 // this parameter is going into the key half of a &key=value pair
                                 keyName = urlParm;
-                                parmString.Append("&");
+                                parmString.Append('&');
                                 parmString.Append(urlParm);
                                 valueField = true;
 
