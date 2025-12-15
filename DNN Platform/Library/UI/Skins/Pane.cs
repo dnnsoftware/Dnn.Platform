@@ -108,24 +108,20 @@ namespace DotNetNuke.UI.Skins
                 this.Containers.Add(container.ID, container);
 
                 // hide anything of type ActionsMenu - as we're injecting our own menu now.
-                container.InjectActionMenu = container.Controls.OfType<ActionBase>().Count() == 0;
+                container.InjectActionMenu = !container.Controls.OfType<ActionBase>().Any();
                 if (!container.InjectActionMenu)
                 {
                     foreach (var actionControl in container.Controls.OfType<IActionControl>())
                     {
-                        if (actionControl is ActionsMenu)
+                        if (actionControl is ActionsMenu and Control control)
                         {
-                            Control control = actionControl as Control;
-                            if (control != null)
-                            {
-                                control.Visible = false;
-                                container.InjectActionMenu = true;
-                            }
+                            control.Visible = false;
+                            container.InjectActionMenu = true;
                         }
                     }
                 }
 
-                if (Globals.IsLayoutMode() && Globals.IsAdminControl() == false)
+                if (Globals.IsLayoutMode() && !Globals.IsAdminControl())
                 {
                     // provide Drag-N-Drop capabilities
                     var dragDropContainer = new Panel();

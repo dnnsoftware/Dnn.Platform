@@ -21,10 +21,10 @@ namespace DotNetNuke.Services.Journal
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeId;
 
-            if (colContentTypes.Count() > 0)
+            if (colContentTypes.Any())
             {
                 var contentType = colContentTypes.Single();
-                contentTypeId = contentType == null ? CreateContentType(contentTypeName) : contentType.ContentTypeId;
+                contentTypeId = contentType?.ContentTypeId ?? CreateContentType(contentTypeName);
             }
             else
             {

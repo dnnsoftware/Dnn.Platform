@@ -449,7 +449,7 @@ namespace DotNetNuke.Services.Mobile
                 DataProvider.Instance().SaveRedirectionRule(rule.Id, id, rule.Capability, rule.Expression);
             }
 
-            var logContent = string.Format("'{0}' {1}", redirection.Name, redirection.Id == Null.NullInteger ? "Added" : "Updated");
+            var logContent = $"'{redirection.Name}' {(redirection.Id == Null.NullInteger ? "Added" : "Updated")}";
             this.AddLog(logContent);
 
             ClearCache(redirection.PortalId);
@@ -463,14 +463,14 @@ namespace DotNetNuke.Services.Mobile
             var redirects = this.GetRedirectionsByPortal(portalId);
 
             // remove rules for deleted source tabs
-            foreach (var r in redirects.Where(r => r.SourceTabId != Null.NullInteger && allTabs.Where(t => t.Key == r.SourceTabId).Count() < 1))
+            foreach (var r in redirects.Where(r => r.SourceTabId != Null.NullInteger && allTabs.All(t => t.Key != r.SourceTabId)))
             {
                 this.Delete(portalId, r.Id);
             }
 
             // remove rules for deleted target tabs
             redirects = this.GetRedirectionsByPortal(portalId); // fresh get of rules in case some were deleted above
-            foreach (var r in redirects.Where(r => r.TargetType == TargetType.Tab && allTabs.Where(t => t.Key == int.Parse(r.TargetValue.ToString())).Count() < 1))
+            foreach (var r in redirects.Where(r => r.TargetType == TargetType.Tab && allTabs.All(t => t.Key != int.Parse(r.TargetValue.ToString()))))
             {
                 this.Delete(portalId, r.Id);
             }

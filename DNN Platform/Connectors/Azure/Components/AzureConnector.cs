@@ -443,7 +443,7 @@ namespace Dnn.AzureConnector.Components
                                                                                          f2.FolderMappingID !=
                                                                                          folderMappingId));
 
-                if (removableFolders.Count() > 0)
+                if (removableFolders.Any())
                 {
                     foreach (var removableFolder in removableFolders.OrderByDescending(rf => rf.FolderPath))
                     {
@@ -457,7 +457,7 @@ namespace Dnn.AzureConnector.Components
 
                 folderMappingFolders = folders.Where(f => f.FolderMappingID == folderMappingId);
 
-                if (folderMappingFolders.Count() > 0)
+                if (folderMappingFolders.Any())
                 {
                     var defaultFolderMapping = this.folderMappingController.GetDefaultFolderMapping(portalId);
 

@@ -425,7 +425,7 @@ namespace DotNetNuke.Common
             {
                 var listController = new ListController();
                 var listEntries = listController.GetListEntryInfoItems("ImageTypes");
-                if (listEntries == null || listEntries.Count() == 0)
+                if (listEntries == null || !listEntries.Any())
                 {
                     return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
                 }
@@ -435,13 +435,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets a value indicating for how long the application has been running.</summary>
-        public static TimeSpan ElapsedSinceAppStart
-        {
-            get
-            {
-                return AppStopwatch.Elapsed;
-            }
-        }
+        public static TimeSpan ElapsedSinceAppStart => AppStopwatch.Elapsed;
 
         /// <summary>Gets or sets the name of the IIS app.</summary>
         /// <value>
@@ -451,7 +445,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets or sets the name of the server.</summary>
         /// <value>
-        /// server name in config file or the server's marchine name.
+        /// server name in config file or the server's machine name.
         /// </value>
         public static string ServerName { get; set; }
 
