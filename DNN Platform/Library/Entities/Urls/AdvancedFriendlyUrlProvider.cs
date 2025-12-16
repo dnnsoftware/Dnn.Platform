@@ -214,7 +214,7 @@ namespace DotNetNuke.Entities.Urls
         {
             if (portalSettings == null)
             {
-                throw new ArgumentNullException("portalSettings");
+                throw new ArgumentNullException(nameof(portalSettings));
             }
 
             return FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);

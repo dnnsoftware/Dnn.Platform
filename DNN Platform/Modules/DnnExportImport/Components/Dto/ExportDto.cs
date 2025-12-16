@@ -90,7 +90,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// </summary>
         public bool IncludeRoles { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether to incldue permissions with each entity in export file or not.</summary>
+        /// <summary>Gets or sets a value indicating whether to include permissions with each entity in export file or not.</summary>
         public bool IncludePermissions { get; set; }
 
         /// <summary>Gets or sets export mode. Differential or Complete.</summary>
@@ -101,14 +101,14 @@ namespace Dnn.ExportImport.Components.Dto
         /// This time format should be local time with offset in order to bae sure to export
         /// items properly and reduce the possibility of export issues.
         /// </summary>
-        [JsonProperty("FromDate")]
+        [JsonProperty(nameof(FromDate))]
         public DateTime? FromDateUtc { get; set; }
 
         /// <summary>
         /// Gets or sets date when job was created.
         /// NOTE: This will be set internally only by the engine and not by the UI.
         /// </summary>
-        [JsonProperty("ToDate")]
+        [JsonProperty(nameof(ToDate))]
         public DateTime ToDateUtc { get; set; }
 
         /// <summary>

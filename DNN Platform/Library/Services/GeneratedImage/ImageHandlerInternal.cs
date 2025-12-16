@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     {
                         LogUserID = PortalSettings.Current.UserId,
                         LogPortalID = PortalSettings.Current.PortalId,
-                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
+                        LogTypeKey = nameof(EventLogType.ADMIN_ALERT),
                     };
                     logInfo.AddProperty("DnnImageHandler", message);
                     logInfo.AddProperty("IP", ipAddress);
@@ -187,7 +187,11 @@ namespace DotNetNuke.Services.GeneratedImage
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
+
+#pragma warning disable CA1507 // Use nameof in place of string
                         logInfo.AddProperty("AllowedDomains", allowedDomains);
+#pragma warning restore CA1507
+
                         logController.AddLog(logInfo);
                     }
 

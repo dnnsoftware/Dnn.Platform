@@ -17,10 +17,10 @@ namespace DotNetNuke.Entities.Urls
         {
             if (messages == null)
             {
-                throw new ArgumentNullException("messages");
+                throw new ArgumentNullException(nameof(messages));
             }
 
-            messages = new List<string>();
+            messages = [];
             if (File.Exists(fileName))
             {
                 var rdr = new XmlTextReader(fileName)

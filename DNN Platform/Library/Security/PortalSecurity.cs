@@ -569,7 +569,7 @@ namespace DotNetNuke.Security
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
                 default:
-                    throw new ArgumentOutOfRangeException("configType");
+                    throw new ArgumentOutOfRangeException(nameof(configType));
             }
 
             return inputString;
@@ -628,7 +628,7 @@ namespace DotNetNuke.Security
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
                 default:
-                    throw new ArgumentOutOfRangeException("configType");
+                    throw new ArgumentOutOfRangeException(nameof(configType));
             }
 
             return inputString;
