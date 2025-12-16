@@ -31,12 +31,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<string> GetConfigFilesList()
         {
-            var files = Directory
-                .EnumerateFiles(Globals.ApplicationMapPath)
-                .Where(file => file.ToLower().EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase) || file.ToLower().EndsWith(ROBOTSEXT, StringComparison.InvariantCultureIgnoreCase))
+            var files = Directory.EnumerateFiles(Globals.ApplicationMapPath)
+                .Where(file => file.EndsWith(CONFIGEXT, StringComparison.OrdinalIgnoreCase) || file.EndsWith(ROBOTSEXT, StringComparison.OrdinalIgnoreCase))
                 .ToList();
-            IEnumerable<string> fileList = from file in files select Path.GetFileName(file);
-            return fileList;
+            return from file in files select Path.GetFileName(file);
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
@@ -47,16 +45,14 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             if (configFile.EndsWith(CONFIGEXT, StringComparison.InvariantCultureIgnoreCase))
             {
                 var configDoc = Config.Load(configFile);
-                using (var txtWriter = new StringWriter())
+                using var txtWriter = new StringWriter();
+                using (var writer = new XmlTextWriter(txtWriter))
                 {
-                    using (var writer = new XmlTextWriter(txtWriter))
-                    {
-                        writer.Formatting = Formatting.Indented;
-                        configDoc.WriteTo(writer);
-                    }
-
-                    return txtWriter.ToString();
+                    writer.Formatting = Formatting.Indented;
+                    configDoc.WriteTo(writer);
                 }
+
+                return txtWriter.ToString();
             }
             else
             {

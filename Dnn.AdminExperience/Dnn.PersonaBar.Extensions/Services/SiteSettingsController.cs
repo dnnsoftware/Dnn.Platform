@@ -149,7 +149,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     portal.PortalName,
                     portal.Description,
                     portal.KeyWords,
-                    GUID = portal.GUID.ToString().ToUpper(),
+                    GUID = portal.GUID.ToString().ToUpperInvariant(),
                     portal.FooterText,
                     TimeZone = portalSettings.TimeZone.Id,
                     portal.HomeDirectory,

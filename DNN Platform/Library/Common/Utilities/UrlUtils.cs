@@ -298,7 +298,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     closingUrl = (closingUrl != Null.NullString) ? closingUrl : string.Empty;
                     popUpUrl =
-                        $"javascript:dnnModal.show('{HttpUtility.JavaScriptStringEncode(popUpUrl)}{delimiter}popUp=true',/*showReturn*/{onClickEvent.ToString().ToLowerInvariant()},{windowHeight},{windowWidth},{refresh.ToString().ToLower()},'{HttpUtility.JavaScriptStringEncode(closingUrl)}')";
+                        $"javascript:dnnModal.show('{HttpUtility.JavaScriptStringEncode(popUpUrl)}{delimiter}popUp=true',/*showReturn*/{onClickEvent.ToString().ToLowerInvariant()},{windowHeight},{windowWidth},{refresh.ToString().ToLowerInvariant()},'{HttpUtility.JavaScriptStringEncode(closingUrl)}')";
                 }
                 else
                 {

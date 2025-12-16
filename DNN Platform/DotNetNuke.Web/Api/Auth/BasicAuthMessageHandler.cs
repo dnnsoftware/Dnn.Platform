@@ -99,7 +99,7 @@ namespace DotNetNuke.Web.Api.Auth
                 return null;
             }
 
-            if (!(request?.Headers.Authorization.Scheme.ToLower()).Equals(this.AuthScheme, StringComparison.OrdinalIgnoreCase))
+            if (!request.Headers.Authorization.Scheme.Equals(this.AuthScheme, StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }

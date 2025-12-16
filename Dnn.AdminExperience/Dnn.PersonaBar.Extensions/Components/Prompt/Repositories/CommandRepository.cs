@@ -73,7 +73,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
         private static string CreateCommandFromClass(string className)
         {
             var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+            return string.Join("-", camelCasedParts.Select(x => x.ToLowerInvariant()));
         }
 
         private static string[] SplitCamelCase(string source)
@@ -83,13 +83,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
 
         private SortedDictionary<string, Command> GetCommandsInternal()
         {
-            var commands = new SortedDictionary<string, Command>();
+            var commands = new SortedDictionary<string, Command>(StringComparer.OrdinalIgnoreCase);
             var typeLocator = new TypeLocator();
             var allCommandTypes = typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible &&
+                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } &&
                      typeof(IConsoleCommand).IsAssignableFrom(t));
 
             using var serviceScope = this.serviceScopeFactory.CreateScope();
@@ -99,7 +96,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 var assemblyName = commandType.Assembly.GetName();
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
-                var key = commandAttribute.Name.ToUpper();
+                var key = commandAttribute.Name;
 
                 var command = (IConsoleCommand)ActivatorUtilities.GetServiceOrCreateInstance(serviceScope.ServiceProvider, commandType);
                 var localResourceFile = command?.LocalResourceFile;

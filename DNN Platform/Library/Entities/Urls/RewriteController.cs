@@ -1132,7 +1132,7 @@ namespace DotNetNuke.Entities.Urls
                             if (cultureMatch.Success)
                             {
                                 cultureId = cultureMatch.Groups[1].Value + "-" +
-                                            cultureMatch.Groups[2].ToString().ToUpper();
+                                            cultureMatch.Groups[2].ToString().ToUpperInvariant();
                             }
 
                             // set procedure level culture code, which indicates a language was found in the path

@@ -3551,17 +3551,15 @@ namespace DotNetNuke.Common
             bool result = string.IsNullOrEmpty(strExtensions);
             if (!result)
             {
-                filename = filename.ToUpper();
-                strExtensions = strExtensions.ToUpper();
                 foreach (string extension in strExtensions.Split(','))
                 {
                     string ext = extension.Trim();
-                    if (!ext.StartsWith("."))
+                    if (!ext.StartsWith(".", StringComparison.Ordinal))
                     {
                         ext = "." + extension;
                     }
 
-                    result = filename.EndsWith(extension);
+                    result = filename.EndsWith(ext, StringComparison.OrdinalIgnoreCase);
                     if (result)
                     {
                         break;

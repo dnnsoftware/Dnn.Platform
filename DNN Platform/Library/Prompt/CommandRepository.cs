@@ -59,7 +59,6 @@ namespace DotNetNuke.Prompt
         /// <inheritdoc/>
         public IConsoleCommand GetCommand(IServiceProvider serviceProvider, string commandName)
         {
-            commandName = commandName.ToUpper();
             var allCommands = this.CommandList();
             if (allCommands.TryGetValue(commandName, out var command))
             {
@@ -94,7 +93,7 @@ namespace DotNetNuke.Prompt
         private static string CreateCommandFromClass(string className)
         {
             var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+            return string.Join("-", camelCasedParts.Select(x => x.ToLowerInvariant()));
         }
 
         private static string[] SplitCamelCase(string source)
@@ -139,13 +138,10 @@ namespace DotNetNuke.Prompt
 
         private SortedDictionary<string, ICommand> GetCommandsInternal()
         {
-            var commands = new SortedDictionary<string, ICommand>();
+            var commands = new SortedDictionary<string, ICommand>(StringComparer.OrdinalIgnoreCase);
             var typeLocator = new TypeLocator();
             var allCommandTypes = typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible &&
+                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } &&
                      typeof(IConsoleCommand).IsAssignableFrom(t));
 
             using var serviceScope = this.serviceScopeFactory.CreateScope();
@@ -155,7 +151,7 @@ namespace DotNetNuke.Prompt
                 var assemblyName = cmd.Assembly.GetName();
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
-                var key = commandAttribute.Name.ToUpper();
+                var key = commandAttribute.Name;
 
                 var command = (IConsoleCommand)ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, cmd);
                 var localResourceFile = command?.LocalResourceFile;

@@ -113,7 +113,7 @@ namespace DotNetNuke.Data
                     // necesary because the UpgradeConnectionString will create stored procedures
                     // which restrict execute permissions for the ConnectionString user account. This is also
                     // necessary when db_owner is not set to "dbo"
-                    exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
+                    exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserId());
                 }
                 catch (SqlException objException)
                 {
@@ -129,7 +129,7 @@ namespace DotNetNuke.Data
                     // necesary because the UpgradeConnectionString will create user defined functions
                     // which restrict execute permissions for the ConnectionString user account.  This is also
                     // necessary when db_owner is not set to "dbo"
-                    exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
+                    exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserId());
                 }
                 catch (SqlException objException)
                 {
@@ -278,23 +278,23 @@ namespace DotNetNuke.Data
             return connectionValid;
         }
 
-        private string GetConnectionStringUserID()
+        private string GetConnectionStringUserId()
         {
             string dbUser = "public";
 
             // If connection string does not use integrated security, then get user id.
-            // Normalize to uppercase before all of the comparisons
-            var connectionStringUppercase = this.ConnectionString.ToUpper();
-            if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
+            // Normalize to uppercase before all the comparisons
+            if (this.ConnectionString.Contains("USER ID", StringComparison.OrdinalIgnoreCase)
+                || this.ConnectionString.Contains("UID", StringComparison.OrdinalIgnoreCase)
+                || this.ConnectionString.Contains("USER", StringComparison.OrdinalIgnoreCase))
             {
-                string[] connSettings = connectionStringUppercase.Split(';');
-
-                foreach (string s in connSettings)
+                var connSettings = this.ConnectionString.Split(';');
+                foreach (var s in connSettings)
                 {
                     if (s != string.Empty)
                     {
-                        string[] connSetting = s.Split('=');
-                        if ("USER ID|UID|USER".Contains(connSetting[0].Trim()))
+                        var connSetting = s.Split('=');
+                        if ("USER ID|UID|USER".Contains(connSetting[0].Trim(), StringComparison.OrdinalIgnoreCase))
                         {
                             dbUser = connSetting[1].Trim();
                         }

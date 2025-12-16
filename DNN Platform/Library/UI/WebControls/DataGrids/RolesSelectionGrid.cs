@@ -444,7 +444,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.dgRoleSelection.Columns.Clear();
             var textCol = new BoundColumn { HeaderText = "&nbsp;", DataField = "RoleName" };
-            textCol.ItemStyle.Width = Unit.Parse("150px");
+            textCol.ItemStyle.Width = Unit.Parse("150px", CultureInfo.InvariantCulture);
             this.dgRoleSelection.Columns.Add(textCol);
             var idCol = new BoundColumn { HeaderText = string.Empty, DataField = "roleid", Visible = false };
             this.dgRoleSelection.Columns.Add(idCol);

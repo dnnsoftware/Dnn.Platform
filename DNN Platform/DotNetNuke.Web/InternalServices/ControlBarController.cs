@@ -667,7 +667,7 @@ namespace DotNetNuke.Web.InternalServices
         private void ToggleUserMode(string mode)
         {
             var personalization = this.personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
-            personalization.Profile["Usability:UserMode" + this.PortalSettings.PortalId] = mode.ToUpper();
+            personalization.Profile["Usability:UserMode" + this.PortalSettings.PortalId] = mode.ToUpperInvariant();
             personalization.IsModified = true;
             this.personalizationController.SaveProfile(personalization);
         }

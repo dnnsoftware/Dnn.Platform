@@ -1047,8 +1047,8 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var hasPermission = string.IsNullOrEmpty(permission) ?
-                (this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ")) :
-                this.HasPermission(parentFolder, permission.ToUpper());
+                this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ") :
+                this.HasPermission(parentFolder, permission);
             if (!hasPermission)
             {
                 return new List<ItemDto>();
@@ -1132,7 +1132,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var hasPermission = string.IsNullOrEmpty(permission) ?
                 (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
-                this.HasPermission(folder, permission.ToUpper());
+                this.HasPermission(folder, permission);
             if (!hasPermission)
             {
                 return new NTree<ItemDto>();
@@ -1203,14 +1203,14 @@ namespace DotNetNuke.Web.InternalServices
 
         private bool HasPermission(IFolderInfo folder, string permissionKey)
         {
-            var hasPermision = this.PortalSettings.UserInfo.IsSuperUser;
+            var hasPermission = this.PortalSettings.UserInfo.IsSuperUser;
 
-            if (!hasPermision && folder != null)
+            if (!hasPermission && folder != null)
             {
-                hasPermision = FolderPermissionController.HasFolderPermission(folder.FolderPermissions, permissionKey);
+                hasPermission = FolderPermissionController.HasFolderPermission(folder.FolderPermissions, permissionKey);
             }
 
-            return hasPermision;
+            return hasPermission;
         }
 
         private IEnumerable<IFolderInfo> GetFolderDescendants(IFolderInfo parentFolder, string searchText, string permission)
@@ -1225,10 +1225,9 @@ namespace DotNetNuke.Web.InternalServices
                 searchFunc = folder => folder.FolderName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
 
-            permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(parentFolder).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
-                    (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
+                    this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ") :
                     this.HasPermission(folder, permission)) && searchFunc(folder));
         }
 
@@ -1249,20 +1248,18 @@ namespace DotNetNuke.Web.InternalServices
                 searchFunc = folder => folder.FolderName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
 
-            permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(portalId).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
-                    (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
+                    this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ") :
                     this.HasPermission(folder, permission)) && searchFunc(folder));
         }
 
         private bool HasChildren(IFolderInfo parentFolder, string permission)
         {
-            permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(parentFolder).Any(folder =>
-                (string.IsNullOrEmpty(permission) ?
-                    (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
-                    this.HasPermission(folder, permission)));
+                string.IsNullOrEmpty(permission) ?
+                    this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ") :
+                    this.HasPermission(folder, permission));
         }
 
         private NTree<ItemDto> GetFilesInternal(int portalId, int parentId, string filter, string searchText, int sortOrder, string permissions)
@@ -1303,8 +1300,8 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var hasPermission = string.IsNullOrEmpty(permission) ?
-                (this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ")) :
-                this.HasPermission(parentFolder, permission.ToUpper());
+                this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ") :
+                this.HasPermission(parentFolder, permission);
             if (!hasPermission)
             {
                 return new List<ItemDto>();

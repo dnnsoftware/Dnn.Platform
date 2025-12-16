@@ -974,7 +974,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     if (request != null)
                     {
-                        debugValue = request.Params.Get("HTTP_" + debugToken.ToUpper());
+                        debugValue = request.Params.Get("HTTP_" + debugToken.ToUpperInvariant());
                     }
 
                     if (debugValue == null)

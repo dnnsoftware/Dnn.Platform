@@ -1064,7 +1064,7 @@ Namespace DotNetNuke.UI.Utilities
             For Each pair As KeyValuePair(Of String, Object) In dict
                 pi = TheType.GetProperty(pair.Key)
                 If Not pi Is Nothing AndAlso pi.CanWrite AndAlso Not pair.Value Is Nothing Then
-                    TheType.InvokeMember(pair.Key, System.Reflection.BindingFlags.SetProperty, Nothing, item, New Object() {pair.Value})
+                    TheType.InvokeMember(pair.Key, BindingFlags.SetProperty, Nothing, item, New Object() {pair.Value}, CultureInfo.InvariantCulture)
                 End If
             Next
             Return item

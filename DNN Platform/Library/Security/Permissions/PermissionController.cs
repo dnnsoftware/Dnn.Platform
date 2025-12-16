@@ -44,7 +44,7 @@ namespace DotNetNuke.Security.Permissions
                     }
                     else
                     {
-                        permissionString = prefix + "[" + permission.UserID + "];";
+                        permissionString = $"{prefix}[{permission.UserID}];";
                     }
 
                     // build permissions string ensuring that Deny permissions are inserted at the beginning and Grant permissions at the end
