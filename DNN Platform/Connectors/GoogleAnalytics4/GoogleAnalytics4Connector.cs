@@ -99,12 +99,12 @@ namespace DNN.Connectors.GoogleAnalytics4
             {
                 foreach (AnalyticsSetting setting in ga4Config.Settings)
                 {
-                    switch (setting.SettingName.ToLower())
+                    switch (setting.SettingName.ToUpperInvariant())
                     {
-                        case "ga4id":
+                        case "GA4ID":
                             ga4Id = setting.SettingValue;
                             break;
-                        case "trackforadmin":
+                        case "TRACKFORADMIN":
                             trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }

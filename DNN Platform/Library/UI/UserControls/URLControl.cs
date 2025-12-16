@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.UserControls
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -620,13 +621,13 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(value))
                 {
-                    this.cboUrls.Width = Unit.Parse(value);
-                    this.txtUrl.Width = Unit.Parse(value);
-                    this.cboImages.Width = Unit.Parse(value);
-                    this.cboTabs.Width = Unit.Parse(value);
-                    this.cboFolders.Width = Unit.Parse(value);
-                    this.cboFiles.Width = Unit.Parse(value);
-                    this.txtUser.Width = Unit.Parse(value);
+                    this.cboUrls.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.txtUrl.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboImages.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboTabs.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboFolders.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.cboFiles.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
+                    this.txtUser.Width = Unit.Parse(value, CultureInfo.InvariantCulture);
                     this.ViewState["SkinControlWidth"] = value;
                 }
             }

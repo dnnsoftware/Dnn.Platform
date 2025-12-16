@@ -172,7 +172,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 foreach (string file in Directory.GetFiles(packagePath))
                 {
-                    if (file.ToLower().EndsWith(".zip") || file.ToLower().EndsWith(".resources"))
+                    if (file.EndsWith(".zip", StringComparison.OrdinalIgnoreCase) || file.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
                     {
                         PackageController.ParsePackage(file, packagePath, validPackages, invalidPackages);
                     }

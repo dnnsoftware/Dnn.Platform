@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                 var isHelpCmd = args.First().Equals("HELP", StringComparison.OrdinalIgnoreCase);
                 var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].Equals("LEARN", StringComparison.OrdinalIgnoreCase);
                 var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].Equals("SYNTAX", StringComparison.OrdinalIgnoreCase);
-                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : string.Empty) : args.First().ToUpper();
+                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpperInvariant() : string.Empty) : args.First().ToUpperInvariant();
                 if (isHelpSyntax)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
@@ -148,7 +148,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         startTime,
                         string.Format(
                             Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
-                            cmdName.ToLower()));
+                            cmdName.ToLowerInvariant()));
                 }
 
                 // first look in new commands, then in the old commands
@@ -162,7 +162,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     {
                         var sbError = new StringBuilder();
                         var suggestion = Utilities.GetSuggestedCommand(cmdName);
-                        sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLower());
+                        sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLowerInvariant());
                         if (!string.IsNullOrEmpty(suggestion))
                         {
                             sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);

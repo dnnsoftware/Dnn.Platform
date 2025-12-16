@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
@@ -18,6 +19,8 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// <summary>Secure File ImageTransform class.</summary>
     public class SecureFileTransform : ImageTransform
     {
+        private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", };
+
         /// <summary>Initializes a new instance of the <see cref="SecureFileTransform"/> class.</summary>
         public SecureFileTransform()
         {
@@ -70,25 +73,21 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 extension = $".{extension}";
             }
 
-            var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
-            return imageExtensions.Contains(extension.ToUpper());
+            return ImageExtensions.Contains(extension);
         }
 
         private Image GetSecureFileExtensionIconImage()
         {
-            var extensionImageAbsolutePath = Globals.ApplicationMapPath + "\\" +
-                       PortalSettings.Current.DefaultIconLocation.Replace("/", "\\") + "\\" +
-                       "Ext" + this.SecureFile.Extension + "_32x32_Standard.png";
+            var iconLocation = PortalSettings.Current.DefaultIconLocation.Replace("/", @"\");
+            var extensionImageAbsolutePath = $@"{Globals.ApplicationMapPath}\{iconLocation}\Ext{this.SecureFile.Extension}_32x32_Standard.png";
 
             if (!File.Exists(extensionImageAbsolutePath))
             {
                 return this.EmptyImage;
             }
 
-            using (var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open))
-            {
-                return this.CopyImage(stream);
-            }
+            using var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open);
+            return this.CopyImage(stream);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -146,7 +147,7 @@ namespace DotNetNuke.UI.Skins
                     // set width of control
                     if (!string.IsNullOrEmpty(this.width))
                     {
-                        this.cboSkin.Width = Unit.Parse(this.width);
+                        this.cboSkin.Width = Unit.Parse(this.width, CultureInfo.InvariantCulture);
                     }
 
                     // set selected skin

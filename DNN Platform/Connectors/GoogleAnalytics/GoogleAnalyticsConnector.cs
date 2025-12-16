@@ -102,21 +102,21 @@ namespace DNN.Connectors.GoogleAnalytics
             {
                 foreach (AnalyticsSetting setting in analyticsConfig.Settings)
                 {
-                    switch (setting.SettingName.ToLower())
+                    switch (setting.SettingName.ToUpperInvariant())
                     {
-                        case "trackingid":
+                        case "TRACKINGID":
                             trackingId = setting.SettingValue;
                             break;
-                        case "urlparameter":
+                        case "URLPARAMETER":
                             urlParameter = setting.SettingValue;
                             break;
-                        case "trackforadmin":
+                        case "TRACKFORADMIN":
                             trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
-                        case "anonymizeip":
+                        case "ANONYMIZEIP":
                             anonymizeIp = HandleCustomBoolean(setting.SettingValue);
                             break;
-                        case "trackuserid":
+                        case "TRACKUSERID":
                             trackUserId = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }

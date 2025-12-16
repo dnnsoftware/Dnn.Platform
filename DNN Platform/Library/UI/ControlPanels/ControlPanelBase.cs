@@ -345,7 +345,7 @@ namespace DotNetNuke.UI.ControlPanels
         /// <param name="userMode">The userMode to set.</param>
         protected void SetUserMode(string userMode)
         {
-            Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpper());
+            Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpperInvariant());
         }
 
         /// <summary>Sets the current Visible Mode.</summary>

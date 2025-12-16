@@ -102,12 +102,12 @@ namespace DNN.Connectors.GoogleTagManager
             {
                 foreach (AnalyticsSetting setting in gtmConfig.Settings)
                 {
-                    switch (setting.SettingName.ToLower())
+                    switch (setting.SettingName.ToUpperInvariant())
                     {
-                        case "gtmid":
+                        case "GTMID":
                             gtmId = setting.SettingValue;
                             break;
-                        case "trackforadmin":
+                        case "TRACKFORADMIN":
                             trackForAdmin = HandleCustomBoolean(setting.SettingValue);
                             break;
                     }

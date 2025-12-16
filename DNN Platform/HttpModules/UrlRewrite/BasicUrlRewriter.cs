@@ -625,18 +625,18 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         // Start of patch
                         string cultureCode = string.Empty;
 
-                        Dictionary<string, Locale> dicLocales = LocaleController.Instance.GetLocales(portalId);
+                        var dicLocales = LocaleController.Instance.GetLocales(portalId);
                         if (dicLocales.Count > 1)
                         {
-                            string[] splitUrl = app.Request.Url.ToString().Split('/');
+                            var splitUrl = app.Request.Url.ToString().Split('/');
 
-                            foreach (string culturePart in splitUrl)
+                            foreach (var culturePart in splitUrl)
                             {
                                 if (culturePart.IndexOf("-", StringComparison.Ordinal) > -1)
                                 {
-                                    foreach (KeyValuePair<string, Locale> key in dicLocales)
+                                    foreach (var key in dicLocales)
                                     {
-                                        if (key.Key.ToLower().Equals(culturePart.ToLower(), StringComparison.Ordinal))
+                                        if (key.Key.Equals(culturePart, StringComparison.OrdinalIgnoreCase))
                                         {
                                             cultureCode = key.Value.Code;
                                             tabPath = tabPath.Replace("/" + culturePart, string.Empty);
@@ -647,25 +647,25 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             }
                         }
 
-                        // Check to see if the tab exists (if localization is enable, check for the specified culture)
-                        int tabID = TabController.GetTabByTabPath(
+                        // Check to see if the tab exists (if localization is enabled, check for the specified culture)
+                        int tabId = TabController.GetTabByTabPath(
                             portalId,
                             tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
                             cultureCode);
 
                         // Check to see if neutral culture tab exists
-                        if (tabID == Null.NullInteger && cultureCode.Length > 0)
+                        if (tabId == Null.NullInteger && cultureCode.Length > 0)
                         {
-                            tabID = TabController.GetTabByTabPath(
+                            tabId = TabController.GetTabByTabPath(
                                 portalId,
                                 tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
                                 string.Empty);
                         }
 
                         // End of patch
-                        if (tabID != Null.NullInteger)
+                        if (tabId != Null.NullInteger)
                         {
-                            string sendToUrl = "~/" + Globals.glbDefaultPage + "?TabID=" + tabID;
+                            string sendToUrl = "~/" + Globals.glbDefaultPage + "?TabID=" + tabId;
                             if (!cultureCode.Equals(string.Empty, StringComparison.Ordinal))
                             {
                                 sendToUrl = sendToUrl + "&language=" + cultureCode;

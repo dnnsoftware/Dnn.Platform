@@ -596,17 +596,17 @@ namespace Dnn.EditBar.UI.Controllers
 
         private void SetUserMode(string userMode)
         {
-            Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpper());
+            Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, userMode.ToUpperInvariant());
         }
 
         private void AutoSetUserMode()
         {
             int tabId = this.PortalSettings.ActiveTab.TabID;
             int portalId = PortalSettings.Current.PortalId;
-            string pageId = string.Format("{0}:{1}", portalId, tabId);
+            string pageId = $"{portalId}:{tabId}";
 
             HttpCookie cookie = this.Request.Cookies["StayInEditMode"];
-            if (cookie != null && cookie.Value == "YES")
+            if (cookie is { Value: "YES", })
             {
                 if (Personalization.GetUserMode() != PortalSettings.Mode.Edit)
                 {

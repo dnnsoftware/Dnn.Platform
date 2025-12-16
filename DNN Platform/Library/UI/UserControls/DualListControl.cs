@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.UserControls
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
@@ -162,14 +163,14 @@ namespace DotNetNuke.UI.UserControls
                     // set dimensions of control
                     if (!string.IsNullOrEmpty(this.ListBoxWidth))
                     {
-                        this.lstAvailable.Width = Unit.Parse(this.ListBoxWidth);
-                        this.lstAssigned.Width = Unit.Parse(this.ListBoxWidth);
+                        this.lstAvailable.Width = Unit.Parse(this.ListBoxWidth, CultureInfo.InvariantCulture);
+                        this.lstAssigned.Width = Unit.Parse(this.ListBoxWidth, CultureInfo.InvariantCulture);
                     }
 
                     if (!string.IsNullOrEmpty(this.ListBoxHeight))
                     {
-                        this.lstAvailable.Height = Unit.Parse(this.ListBoxHeight);
-                        this.lstAssigned.Height = Unit.Parse(this.ListBoxHeight);
+                        this.lstAvailable.Height = Unit.Parse(this.ListBoxHeight, CultureInfo.InvariantCulture);
+                        this.lstAssigned.Height = Unit.Parse(this.ListBoxHeight, CultureInfo.InvariantCulture);
                     }
 
                     // load available

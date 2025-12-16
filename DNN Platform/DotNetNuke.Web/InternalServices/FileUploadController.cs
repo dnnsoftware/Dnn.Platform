@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.InternalServices
                         foreach (var item in provider.Contents)
                         {
                             var name = item.Headers.ContentDisposition.Name;
-                            switch (name.ToUpper())
+                            switch (name.ToUpperInvariant())
                             {
                                 case "\"FOLDER\"":
                                     folder = item.ReadAsStringAsync().Result ?? string.Empty;

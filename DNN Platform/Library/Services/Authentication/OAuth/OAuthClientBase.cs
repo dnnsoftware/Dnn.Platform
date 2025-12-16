@@ -759,7 +759,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string normalizedRequestParameters = requestParameters.ToNormalizedString();
 
             var signatureBase = new StringBuilder();
-            signatureBase.AppendFormat("{0}&", httpMethod.ToUpper());
+            signatureBase.AppendFormat("{0}&", httpMethod.ToUpperInvariant());
             signatureBase.AppendFormat("{0}&", UrlEncode(normalizedUrl));
             signatureBase.AppendFormat("{0}", UrlEncode(normalizedRequestParameters));
 
@@ -768,9 +768,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private string RequestToken()
         {
-            string outUrl;
-            List<QueryParameter> requestParameters;
-
             string nonce = this.GenerateNonce();
             string timeStamp = this.GenerateTimeStamp();
 
@@ -783,8 +780,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 this.RequestTokenMethod.ToString(),
                 timeStamp,
                 nonce,
-                out outUrl,
-                out requestParameters);
+                out var outUrl,
+                out _);
 
             var headerParameters = new List<QueryParameter>
                                        {

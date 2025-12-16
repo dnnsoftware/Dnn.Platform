@@ -215,7 +215,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 if (moduleControls > 0)
                 {
                     var shortFolder = folder.Substring(appPathLen).Replace('\\', '/');
-                    var item = new KeyValuePair<string, string>(shortFolder.ToLower(), shortFolder);
+                    var item = new KeyValuePair<string, string>(shortFolder.ToLowerInvariant(), shortFolder);
                     response.Add(item);
                 }
             }
@@ -277,7 +277,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                                 path = Path.GetFileName(file);
                                 if (path != null)
                                 {
-                                    var item = new KeyValuePair<string, string>(path.ToLower(), Path.GetFileName(file));
+                                    var item = new KeyValuePair<string, string>(path.ToLowerInvariant(), Path.GetFileName(file));
                                     response.Add(item);
                                 }
                             }
@@ -1338,7 +1338,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             foreach (var strFile in files)
             {
                 var file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
-                var item = new KeyValuePair<string, string>(file.ToLower(), file);
+                var item = new KeyValuePair<string, string>(file.ToLowerInvariant(), file);
                 collection.Add(item);
             }
         }
@@ -1402,7 +1402,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private static bool IsSpecialFolder(string folderName)
         {
-            return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower(), StringComparison.Ordinal));
+            return SpecialModuleFolders.Any(specialFolder => specialFolder.Equals(folderName, StringComparison.OrdinalIgnoreCase));
         }
 
         private static List<ModuleFolderDto> GetModulesFolders(string ownerFolder)
@@ -1410,7 +1410,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             if (!string.IsNullOrEmpty(ownerFolder))
             {
                 return Directory.GetDirectories($@"{Globals.ApplicationMapPath}\DesktopModules\{ownerFolder}")
-                    .Select(folder => new ModuleFolderDto { Path = folder, IsSpecial = false })
+                    .Select(folder => new ModuleFolderDto { Path = folder, IsSpecial = false, })
                     .ToList();
             }
 
@@ -1515,16 +1515,16 @@ namespace Dnn.PersonaBar.Extensions.Services
                     foreach (var item in provider.Contents)
                     {
                         var name = item.Headers.ContentDisposition.Name;
-                        switch (name.ToUpper())
+                        switch (name.ToUpperInvariant())
                         {
                             case "\"POSTFILE\"":
                                 fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                                if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                                if (fileName.IndexOf(@"\", StringComparison.Ordinal) != -1)
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
 
-                                if (Globals.FileEscapingRegex.Match(fileName).Success == false)
+                                if (!Globals.FileEscapingRegex.Match(fileName).Success)
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }

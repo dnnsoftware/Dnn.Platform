@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Common.Internal
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Threading;
@@ -54,7 +55,8 @@ namespace DotNetNuke.Web.Common.Internal
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
                         null,
                         null,
-                        null);
+                        null,
+                        CultureInfo.InvariantCulture);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
 
                     // enable our monitor only when fcnMode="Disabled"

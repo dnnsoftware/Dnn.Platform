@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Drawing;
@@ -17,6 +18,8 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// <summary>User Profile Picture ImageTransform class.</summary>
     public class UserProfilePicTransform : ImageTransform
     {
+        private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", };
+
         /// <summary>Initializes a new instance of the <see cref="UserProfilePicTransform"/> class.</summary>
         public UserProfilePicTransform()
         {
@@ -110,8 +113,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 extension = $".{extension}";
             }
 
-            var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
-            return imageExtensions.Contains(extension.ToUpper());
+            return ImageExtensions.Contains(extension);
         }
     }
 }

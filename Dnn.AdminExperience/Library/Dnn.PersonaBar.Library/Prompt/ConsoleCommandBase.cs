@@ -188,7 +188,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                 flagName = flagName.Substring(2);
             }
 
-            return flagName.ToLower().Trim();
+            return flagName.ToLowerInvariant().Trim();
         }
 
         private void ParseFlags()
@@ -226,7 +226,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                     }
                 }
 
-                this.Flags.Add(flagName.ToLower(), flagValue);
+                this.Flags.Add(flagName.ToLowerInvariant(), flagValue);
             }
         }
 
