@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Search.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
 
@@ -99,7 +100,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private static int GetUserId(SearchDocumentToDelete searchResult)
         {
             var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
-            return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
+            return match.Success ? Convert.ToInt32(match.Groups[1].Value, CultureInfo.InvariantCulture) : Null.NullInteger;
         }
 
         private static bool HasSocialRelationship(UserInfo targetUser, UserInfo accessingUser, string extendedVisibility)

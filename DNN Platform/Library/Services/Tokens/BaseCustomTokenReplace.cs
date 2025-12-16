@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.Tokens
                     message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
                 }
 
-                result = string.Format(message, objectName, propertyName);
+                result = string.Format(CultureInfo.CurrentCulture, message, objectName, propertyName);
             }
 
             if (this.DebugMessages && propertyNotFound)
@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Tokens
                     message = "Error accessing [{0}:{1}], {1} is unknown for datasource {0}";
                 }
 
-                result = string.Format(message, objectName, propertyName);
+                result = string.Format(CultureInfo.CurrentCulture, message, objectName, propertyName);
             }
 
             return result;

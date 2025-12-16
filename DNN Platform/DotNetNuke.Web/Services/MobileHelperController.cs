@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -78,11 +79,11 @@ namespace DotNetNuke.Web.Services
 
         private static IEnumerable<TabModule> GetTabModules(string moduleName)
         {
-            var portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+            var portalId = PortalController.Instance.GetCurrentSettings().PortalId;
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
             if (desktopModule != null)
             {
-                var cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalId) + "_" +
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalId) + "_" +
                                desktopModule.DesktopModuleID;
                 var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId, desktopModule);
 

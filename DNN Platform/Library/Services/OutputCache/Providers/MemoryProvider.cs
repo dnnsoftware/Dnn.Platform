@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -134,7 +135,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, tabId.ToString(), "_")))
+                if (cacheEnum.Key.ToString().StartsWith($"{cachePrefix}{tabId.ToString(CultureInfo.InvariantCulture)}_"))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }

@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Xml;
@@ -132,7 +133,7 @@ namespace DotNetNuke.Services.Installer.Installers
                             // Close files Element
                             writer.WriteEndElement();
 
-                            this.Log.AddInfo(string.Format(Util.FILE_Created, entry.FullName));
+                            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.FILE_Created, entry.FullName));
                         }
 
                         // Close files Element

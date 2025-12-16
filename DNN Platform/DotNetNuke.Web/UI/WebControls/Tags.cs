@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Web.UI;
@@ -39,7 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 bool isEditMode = false;
                 if (this.ViewState["IsEditMode"] != null)
                 {
-                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
+                    isEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"], CultureInfo.InvariantCulture);
                 }
 
                 return isEditMode;
@@ -290,7 +291,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RenderButton(HtmlTextWriter writer, string buttonType, string imageUrl)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString(string.Format("{0}.ToolTip", buttonType)));
+            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString($"{buttonType}.ToolTip"));
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
@@ -308,7 +309,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void RenderTerm(HtmlTextWriter writer, Term term, bool renderSeparator)
         {
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(this.NavigateUrlFormatString, term.Name));
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(CultureInfo.InvariantCulture, this.NavigateUrlFormatString, term.Name));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, term.Name);
             writer.AddAttribute(HtmlTextWriterAttribute.Rel, "tag");
             writer.RenderBeginTag(HtmlTextWriterTag.A);

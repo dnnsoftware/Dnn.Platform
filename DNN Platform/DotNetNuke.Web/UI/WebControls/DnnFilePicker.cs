@@ -5,6 +5,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -74,7 +75,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var cssClass = Convert.ToString(this.ViewState["CommandCssClass"]);
+                var cssClass = Convert.ToString(this.ViewState["CommandCssClass"], CultureInfo.InvariantCulture);
                 return string.IsNullOrEmpty(cssClass) ? "dnnSecondaryAction" : cssClass;
             }
 
@@ -115,13 +116,13 @@ namespace DotNetNuke.Web.UI.WebControls
                     var fileId = Null.NullInteger;
                     if (this.cboFiles.SelectedItem != null)
                     {
-                        fileId = int.Parse(this.cboFiles.SelectedItem.Value);
+                        fileId = int.Parse(this.cboFiles.SelectedItem.Value, CultureInfo.InvariantCulture);
                     }
 
                     this.ViewState["FileID"] = fileId;
                 }
 
-                return Convert.ToInt32(this.ViewState["FileID"]);
+                return Convert.ToInt32(this.ViewState["FileID"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -143,15 +144,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String.</value>
         public string FilePath
         {
-            get
-            {
-                return Convert.ToString(this.ViewState["FilePath"]);
-            }
-
-            set
-            {
-                this.ViewState["FilePath"] = value;
-            }
+            get => Convert.ToString(this.ViewState["FilePath"], CultureInfo.InvariantCulture);
+            set => this.ViewState["FilePath"] = value;
         }
 
         /// <summary>  Gets or sets a value indicating whether to Include Personal Folder.</summary>
@@ -163,7 +157,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["UsePersonalFolder"] != null && Convert.ToBoolean(this.ViewState["UsePersonalFolder"]);
+                return this.ViewState["UsePersonalFolder"] != null && Convert.ToBoolean(this.ViewState["UsePersonalFolder"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -178,7 +172,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var cssClass = Convert.ToString(this.ViewState["LabelCssClass"]);
+                var cssClass = Convert.ToString(this.ViewState["LabelCssClass"], CultureInfo.InvariantCulture);
                 return string.IsNullOrEmpty(cssClass) ? string.Empty : cssClass;
             }
 
@@ -192,7 +186,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                var permissions = Convert.ToString(this.ViewState["Permissions"]);
+                var permissions = Convert.ToString(this.ViewState["Permissions"], CultureInfo.InvariantCulture);
                 return string.IsNullOrEmpty(permissions) ? "BROWSE,ADD" : permissions;
             }
 
@@ -211,7 +205,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["Required"] != null && Convert.ToBoolean(this.ViewState["Required"]);
+                return this.ViewState["Required"] != null && Convert.ToBoolean(this.ViewState["Required"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -224,7 +218,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["ShowFolders"] == null || Convert.ToBoolean(this.ViewState["ShowFolders"]);
+                return this.ViewState["ShowFolders"] == null || Convert.ToBoolean(this.ViewState["ShowFolders"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -242,7 +236,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["ShowUpLoad"] == null || Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
+                return this.ViewState["ShowUpLoad"] == null || Convert.ToBoolean(this.ViewState["ShowUpLoad"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -308,7 +302,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if ((this.Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    return int.Parse(this.Page.Request.QueryString["pid"]);
+                    return int.Parse(this.Page.Request.QueryString["pid"], CultureInfo.InvariantCulture);
                 }
 
                 if (!this.IsHost)
@@ -433,7 +427,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    this.FileID = int.Parse(this.cboFiles.SelectedItem.Value);
+                    this.FileID = int.Parse(this.cboFiles.SelectedItem.Value, CultureInfo.InvariantCulture);
                 }
 
                 if (this.cboFolders.Items.Count > 1 && this.ShowFolders)
@@ -579,7 +573,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool IsUserFolder(string folderPath)
         {
             UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
-            return folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format("/{0}/", user.UserID));
+            return folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format(CultureInfo.InvariantCulture, "/{0}/", user.UserID));
         }
 
         private void LoadFiles()
@@ -688,7 +682,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 catch (Exception)
                 {
-                    Logger.WarnFormat("Unable to create thumbnail for {0}", image.PhysicalPath);
+                    Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to create thumbnail for {0}", image.PhysicalPath);
                     this.pnlRightDiv.Visible = false;
                 }
             }
@@ -696,7 +690,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.imgPreview.Visible = false;
 
-                Panel imageHolderPanel = new Panel { CssClass = "dnnFilePickerImageHolder" };
+                Panel imageHolderPanel = new Panel { CssClass = "dnnFilePickerImageHolder", };
                 this.pnlRightDiv.Controls.Add(imageHolderPanel);
                 this.pnlRightDiv.Visible = true;
             }
@@ -734,7 +728,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         localizedString = Utilities.GetLocalizedString("UploadError");
                     }
 
-                    this.lblMessage.Text = string.Format(localizedString, this.FileFilter, extension);
+                    this.lblMessage.Text = string.Format(CultureInfo.CurrentCulture, localizedString, this.FileFilter, extension);
                 }
                 else
                 {
@@ -771,21 +765,21 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     catch (PermissionsNotMetException)
                     {
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
                     }
                     catch (NoSpaceAvailableException)
                     {
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("DiskSpaceExceeded"), fileName);
                     }
                     catch (InvalidFileExtensionException)
                     {
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
                     }
                     catch (Exception ex)
                     {
                         Logger.Error(ex);
 
-                        this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
+                        this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("SaveFileError"), fileName);
                     }
                 }
 

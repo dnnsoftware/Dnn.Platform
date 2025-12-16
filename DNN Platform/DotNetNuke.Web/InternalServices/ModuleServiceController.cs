@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (desktopModule == null)
             {
-                var message = string.Format("Cannot find module ID {0} (tab ID {1}, portal ID {2})", moduleId, tabId, portalId);
+                var message = $"Cannot find module ID {moduleId} (tab ID {tabId}, portal ID {portalId})";
                 Logger.Error(message);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
             }

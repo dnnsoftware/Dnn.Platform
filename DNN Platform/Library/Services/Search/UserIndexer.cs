@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Search
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlTypes;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -87,7 +88,7 @@ namespace DotNetNuke.Services.Search
                         DeleteDocuments(portalId, indexedUsers);
                         var values = searchDocuments.Values;
                         totalIndexed += IndexCollectedDocs(indexer, values);
-                        this.SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString());
+                        this.SetLastCheckpointData(portalId, schedule.ScheduleID, startUserId.ToString(CultureInfo.InvariantCulture));
                         this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, values.Last().ModifiedTimeUtc.ToLocalTime());
                         searchDocuments.Clear();
                         checkpointModified = true;
@@ -118,7 +119,7 @@ namespace DotNetNuke.Services.Search
             if (checkpointModified)
             {
                 // at last reset start user pointer
-                this.SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
+                this.SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
                 this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
             }
 
@@ -165,9 +166,9 @@ namespace DotNetNuke.Services.Search
                     var splitValues = Regex.Split(propertyValue, Regex.Escape(ValueSplitFlag));
 
                     propertyValue = splitValues[0];
-                    var visibilityMode = (UserVisibilityMode)Convert.ToInt32(splitValues[1]);
+                    var visibilityMode = (UserVisibilityMode)Convert.ToInt32(splitValues[1], CultureInfo.InvariantCulture);
                     var extendedVisibility = splitValues[2];
-                    var modifiedTime = Convert.ToDateTime(splitValues[3]).ToUniversalTime();
+                    var modifiedTime = Convert.ToDateTime(splitValues[3], CultureInfo.InvariantCulture).ToUniversalTime();
 
                     if (string.IsNullOrEmpty(propertyValue))
                     {
@@ -248,9 +249,7 @@ namespace DotNetNuke.Services.Search
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
             }
 
-            if (!searchDocuments.ContainsKey(
-                            string.Format("{0}_{1}", userSearch.UserId, UserVisibilityMode.AdminOnly)
-                                .ToLowerInvariant()))
+            if (!searchDocuments.ContainsKey($"{userSearch.UserId}_{UserVisibilityMode.AdminOnly}".ToLowerInvariant()))
             {
                 if (!indexedUsers.Contains(userSearch.UserId))
                 {
@@ -273,7 +272,7 @@ namespace DotNetNuke.Services.Search
                 searchDoc.NumericKeys.Add("superuser", Convert.ToInt32(userSearch.SuperUser));
                 searchDoc.Keywords.Add("username", userSearch.UserName);
                 searchDoc.Keywords.Add("email", userSearch.Email);
-                searchDoc.Keywords.Add("createdondate", userSearch.CreatedOnDate.ToString(Constants.DateTimeFormat));
+                searchDoc.Keywords.Add("createdondate", userSearch.CreatedOnDate.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture));
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
             }
         }
@@ -286,13 +285,13 @@ namespace DotNetNuke.Services.Search
                 var modifiedOn = reader["LastModifiedOnDate"] as DateTime? ?? createdOn;
                 var userSearch = new UserSearch
                 {
-                    UserId = Convert.ToInt32(reader["UserId"]),
+                    UserId = Convert.ToInt32(reader["UserId"], CultureInfo.InvariantCulture),
                     DisplayName = reader["DisplayName"].ToString(),
                     Email = reader["Email"].ToString(),
                     UserName = reader["Username"].ToString(),
-                    SuperUser = Convert.ToBoolean(reader["IsSuperUser"]),
-                    LastModifiedOnDate = Convert.ToDateTime(modifiedOn).ToUniversalTime(),
-                    CreatedOnDate = Convert.ToDateTime(createdOn).ToUniversalTime(),
+                    SuperUser = Convert.ToBoolean(reader["IsSuperUser"], CultureInfo.InvariantCulture),
+                    LastModifiedOnDate = Convert.ToDateTime(modifiedOn, CultureInfo.InvariantCulture).ToUniversalTime(),
+                    CreatedOnDate = Convert.ToDateTime(createdOn, CultureInfo.InvariantCulture).ToUniversalTime(),
                 };
 
                 if (!string.IsNullOrEmpty(userSearch.FirstName) && userSearch.FirstName.Contains(ValueSplitFlag))
@@ -326,6 +325,7 @@ namespace DotNetNuke.Services.Search
                 {
                     var mode = Enum.GetName(typeof(UserVisibilityMode), item);
                     keyword.AppendFormat(
+                        CultureInfo.InvariantCulture,
                         "{2} {0}_{1} OR {0}_{1}* ",
                         userId,
                         mode,

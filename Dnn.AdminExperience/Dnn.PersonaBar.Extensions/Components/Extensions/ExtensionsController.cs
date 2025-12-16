@@ -220,7 +220,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 if (index < tab.BreadCrumbs.Count - 1)
                 {
-                    returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                    returnValue.Append(t.LocalizedTabName);
                 }
                 else
                 {
@@ -231,7 +231,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                                                             .OrderBy(pa => pa.IsPrimary ? 0 : 1)
                                                             .First();
                     var url = this.NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
-                    returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
+                    returnValue.AppendFormat(CultureInfo.InvariantCulture, "<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
 
                 index = index + 1;

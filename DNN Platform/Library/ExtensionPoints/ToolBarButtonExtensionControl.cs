@@ -5,6 +5,7 @@
 namespace DotNetNuke.ExtensionPoints
 {
     using System.ComponentModel;
+    using System.Globalization;
     using System.Text;
     using System.Web;
     using System.Web.UI;
@@ -37,14 +38,14 @@ namespace DotNetNuke.ExtensionPoints
                 if (extension is IToolBarMenuButtonExtensionPoint)
                 {
                     this.btnRenderer = new ToolBarMenuButtonRenderer();
-                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
                 }
                 else
                 {
                     extension.ModuleContext = this.ModuleContext;
                     this.btnRenderer = new ToolBarButtonRenderer();
-                    str.AppendFormat(this.btnRenderer.GetOutput(extension));
                 }
+
+                str.AppendFormat(CultureInfo.InvariantCulture, this.btnRenderer.GetOutput(extension));
             }
 
             output.Write(str.ToString());

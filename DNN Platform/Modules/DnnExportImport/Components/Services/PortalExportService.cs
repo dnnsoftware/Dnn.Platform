@@ -77,7 +77,7 @@ namespace Dnn.ExportImport.Components.Services
                     this.Repository.CreateItems(portalSettings);
                 }
 
-                this.Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
+                this.Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString(CultureInfo.InvariantCulture));
 
                 this.CheckPoint.Progress = 50;
                 this.CheckPoint.ProcessedItems = portalSettings.Count;
@@ -102,7 +102,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(portalLanguages);
-                this.Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());
+                this.Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Stage++;
@@ -131,7 +131,7 @@ namespace Dnn.ExportImport.Components.Services
                 var portalSettings = this.Repository.GetAllItems<ExportPortalSetting>().ToList();
                 this.ProcessPortalSettings(importJob, importDto, portalSettings);
                 this.CheckPoint.TotalItems = this.GetImportTotal();
-                this.Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString());
+                this.Result.AddSummary("Imported Portal Settings", portalSettings.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress += 50;
                 this.CheckPoint.Stage++;
                 this.CheckPoint.ProcessedItems = portalSettings.Count;
@@ -145,7 +145,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var portalLanguages = this.Repository.GetAllItems<ExportPortalLanguage>().ToList();
                 this.ProcessPortalLanguages(importJob, importDto, portalLanguages);
-                this.Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString());
+                this.Result.AddSummary("Imported Portal Languages", portalLanguages.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress += 50;
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Stage++;

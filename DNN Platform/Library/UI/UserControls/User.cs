@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToInt32(this.ViewState["ModuleId"]);
+                return Convert.ToInt32(this.ViewState["ModuleId"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -120,7 +120,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["LabelColumnWidth"]);
+                return Convert.ToString(this.ViewState["LabelColumnWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["ControlColumnWidth"]);
+                return Convert.ToString(this.ViewState["ControlColumnWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -325,7 +325,7 @@ namespace DotNetNuke.UI.UserControls
                         this.ConfirmPasswordRow.Visible = true;
                     }
 
-                    this.ViewState["ModuleId"] = Convert.ToString(this.ModuleId);
+                    this.ViewState["ModuleId"] = Convert.ToString(this.ModuleId, CultureInfo.InvariantCulture);
                     this.ViewState["LabelColumnWidth"] = this.LabelColumnWidth;
                     this.ViewState["ControlColumnWidth"] = this.ControlColumnWidth;
                 }

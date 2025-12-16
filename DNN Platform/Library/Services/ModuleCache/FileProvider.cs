@@ -79,14 +79,14 @@ namespace DotNetNuke.Services.ModuleCache
                 string cacheFolder = GetCacheFolder(portalId);
                 if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
                 {
-                    foreach (string file in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
+                    foreach (string file in Directory.GetFiles(cacheFolder, $"*{AttribFileExtension}"))
                     {
                         if (IsFileExpired(file))
                         {
                             string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
                             if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                             {
-                                filesNotDeleted.Append(string.Format("{0};", fileToDelete));
+                                filesNotDeleted.Append($"{fileToDelete};");
                             }
                             else
                             {
@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.ModuleCache
 
                 if (filesNotDeleted.Length > 0)
                 {
-                    throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                    throw new IOException(string.Format(CultureInfo.InvariantCulture, "Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
                 }
             }
             catch (Exception ex)
@@ -176,7 +176,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         private static int GetCachedItemCount(int tabModuleId)
         {
-            return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
+            return Directory.GetFiles(GetCacheFolder(), $"*{DataFileExtension}").Length;
         }
 
         private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)

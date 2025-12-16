@@ -526,7 +526,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (string.IsNullOrEmpty(this.Text))
             {
-                return this.GetString(string.Format("Tool.{0}.Text", this.ToolInfo.ToolName));
+                return this.GetString($"Tool.{this.ToolInfo.ToolName}.Text");
             }
 
             return this.Text;
@@ -544,10 +544,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (string.IsNullOrEmpty(this.Text))
             {
-                string tip = this.GetString(string.Format("Tool.{0}.ToolTip", this.ToolInfo.ToolName));
+                string tip = this.GetString($"Tool.{this.ToolInfo.ToolName}.ToolTip");
                 if (string.IsNullOrEmpty(tip))
                 {
-                    tip = this.GetString(string.Format("Tool.{0}.Text", this.ToolInfo.ToolName));
+                    tip = this.GetString($"Tool.{this.ToolInfo.ToolName}.Text");
                 }
 
                 return tip;

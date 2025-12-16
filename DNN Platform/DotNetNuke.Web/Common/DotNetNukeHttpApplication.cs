@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.Common.Internal
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -174,12 +175,12 @@ namespace DotNetNuke.Web.Common.Internal
 
         private void Application_Start(object sender, EventArgs eventArgs)
         {
-            Logger.InfoFormat("Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
 
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
-            Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
 
             // register the assembly-lookup to correct the breaking rename in DNN 9.2

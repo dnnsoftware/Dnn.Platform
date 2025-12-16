@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Xml.XPath;
 
     using DotNetNuke.Common;
@@ -142,7 +143,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                         }
                                         catch (FormatException)
                                         {
-                                            this.Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
+                                            this.Log.AddWarning(string.Format(CultureInfo.InvariantCulture, Util.MODULE_InvalidVersion, version));
                                         }
 
                                         if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install))

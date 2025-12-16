@@ -5,11 +5,10 @@
 namespace DotNetNuke.Abstractions.Portals
 {
     using System;
+    using System.Globalization;
     using System.Text.RegularExpressions;
 
-    /// <summary>
-    /// Represents a CSS color and its components.
-    /// </summary>
+    /// <summary>Represents a CSS color and its components.</summary>
     public struct StyleColor
     {
         private static readonly Regex HexColorRegex = new Regex(@"([\da-f]{3}){1,2}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -19,26 +18,22 @@ namespace DotNetNuke.Abstractions.Portals
         private readonly byte blue;
         private string hex;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StyleColor"/> struct.
-        /// </summary>
+        /// <summary> Initializes a new instance of the <see cref="StyleColor"/> struct.</summary>
         public StyleColor()
             : this("FFFFFF")
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StyleColor"/> struct.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="StyleColor"/> struct.</summary>
         /// <param name="hexValue">The hex value to use.</param>
         public StyleColor(string hexValue)
         {
             AssertIsValidCssColor(hexValue);
 
             this.HexValue = hexValue;
-            this.red = byte.Parse(this.HexValue.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-            this.green = byte.Parse(this.HexValue.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-            this.blue = byte.Parse(this.HexValue.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+            this.red = byte.Parse(this.HexValue.Substring(0, 2), System.Globalization.NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            this.green = byte.Parse(this.HexValue.Substring(2, 2), System.Globalization.NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+            this.blue = byte.Parse(this.HexValue.Substring(4, 2), System.Globalization.NumberStyles.HexNumber, CultureInfo.InvariantCulture);
         }
 
         private enum Component

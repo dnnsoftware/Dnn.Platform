@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Journal;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -572,7 +573,7 @@ internal class JournalControllerImpl : IJournalController
         return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
             this.hostSettings,
             new CacheItemArgs(
-                string.Format(DataCache.JournalTypesCacheKey, portalId),
+                string.Format(CultureInfo.InvariantCulture, DataCache.JournalTypesCacheKey, portalId),
                 DataCache.JournalTypesTimeOut,
                 DataCache.JournalTypesCachePriority,
                 portalId),
@@ -801,7 +802,7 @@ internal class JournalControllerImpl : IJournalController
         {
             PortalId = portalId,
             AuthorUserId = currentUserId,
-            UniqueKey = ji.ContentItemId.ToString("D"),
+            UniqueKey = ji.ContentItemId.ToString("D", CultureInfo.InvariantCulture),
 
             // QueryString = "journalid=" + journalId,
             SearchTypeId = this.searchHelper.GetSearchTypeByName("module").SearchTypeId,

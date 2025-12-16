@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -15,6 +16,7 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web.Http;
 
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -208,7 +210,7 @@ namespace DotNetNuke.Web.InternalServices
                 int permissionType;
                 try
                 {
-                    permissionType = int.Parse(dto.Visibility);
+                    permissionType = int.Parse(dto.Visibility, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -216,16 +218,15 @@ namespace DotNetNuke.Web.InternalServices
                     permissionType = 0;
                 }
 
-                int positionID = -1;
+                int positionId = -1;
                 if (!string.IsNullOrEmpty(dto.Sort))
                 {
-                    int sortID = 0;
                     try
                     {
-                        sortID = int.Parse(dto.Sort);
-                        if (sortID >= 0)
+                        var sortId = int.Parse(dto.Sort, CultureInfo.InvariantCulture);
+                        if (sortId >= 0)
                         {
-                            positionID = GetPaneModuleOrder(dto.Pane, sortID);
+                            positionId = GetPaneModuleOrder(dto.Pane, sortId);
                         }
                     }
                     catch (Exception exc)
@@ -234,58 +235,58 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
 
-                if (positionID == -1)
+                if (positionId == -1)
                 {
                     switch (dto.Position)
                     {
                         case "TOP":
                         case "0":
-                            positionID = 0;
+                            positionId = 0;
                             break;
                         case "BOTTOM":
                         case "-1":
-                            positionID = -1;
+                            positionId = -1;
                             break;
                     }
                 }
 
-                int moduleLstID;
+                int moduleLstId;
                 try
                 {
-                    moduleLstID = int.Parse(dto.Module);
+                    moduleLstId = int.Parse(dto.Module, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-                    moduleLstID = -1;
+                    moduleLstId = -1;
                 }
 
                 try
                 {
                     int tabModuleId = -1;
-                    if (moduleLstID > -1)
+                    if (moduleLstId > -1)
                     {
                         if (dto.AddExistingModule == "true")
                         {
-                            int pageID;
+                            int pageId;
                             try
                             {
-                                pageID = int.Parse(dto.Page);
+                                pageId = int.Parse(dto.Page, CultureInfo.InvariantCulture);
                             }
                             catch (Exception exc)
                             {
                                 Logger.Error(exc);
-                                pageID = -1;
+                                pageId = -1;
                             }
 
-                            if (pageID > -1)
+                            if (pageId > -1)
                             {
-                                tabModuleId = this.DoAddExistingModule(moduleLstID, pageID, dto.Pane, positionID, string.Empty, dto.CopyModule == "true");
+                                tabModuleId = this.DoAddExistingModule(moduleLstId, pageId, dto.Pane, positionId, string.Empty, dto.CopyModule == "true");
                             }
                         }
                         else
                         {
-                            tabModuleId = DoAddNewModule(string.Empty, moduleLstID, dto.Pane, positionID, permissionType, string.Empty);
+                            tabModuleId = DoAddNewModule(string.Empty, moduleLstId, dto.Pane, positionId, permissionType, string.Empty);
                         }
                     }
 
@@ -343,18 +344,18 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (!string.IsNullOrEmpty(dto.Site))
                     {
-                        int selectedPortalID = int.Parse(dto.Site);
-                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
+                        int selectedPortalId = int.Parse(dto.Site, CultureInfo.InvariantCulture);
+                        var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalId).ToList();
 
                         if (portalAliases.Count > 0 && (portalAliases[0] != null))
                         {
-                            return this.Request.CreateResponse(HttpStatusCode.OK, new { RedirectURL = Globals.AddHTTP(((PortalAliasInfo)portalAliases[0]).HTTPAlias) });
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { RedirectURL = Globals.AddHTTP(((IPortalAliasInfo)portalAliases[0]).HttpAlias), });
                         }
                     }
                 }
                 catch (System.Threading.ThreadAbortException)
                 {
-                    // Do nothing we are not logging ThreadAbortxceptions caused by redirects
+                    // Do nothing we are not logging ThreadAbortExceptions caused by redirects
                 }
                 catch (Exception ex)
                 {
@@ -680,7 +681,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 if (!string.IsNullOrEmpty(portal))
                 {
-                    var selectedPortalId = int.Parse(portal);
+                    var selectedPortalId = int.Parse(portal, CultureInfo.InvariantCulture);
                     if (this.PortalSettings.PortalId != selectedPortalId)
                     {
                         portalSettings = new PortalSettings(selectedPortalId);

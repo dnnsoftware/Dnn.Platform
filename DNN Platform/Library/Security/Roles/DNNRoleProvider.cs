@@ -303,7 +303,7 @@ namespace DotNetNuke.Security.Roles
 
         private static string GetRoleGroupsCacheKey(int portalId)
         {
-            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.RoleGroupsCacheKey, portalId);
         }
 
         private void AddDNNUserRole(UserRoleInfo userRole)

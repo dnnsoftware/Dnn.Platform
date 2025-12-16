@@ -16,7 +16,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var valueAsJson = Json.Serialize(value);
 
-            var script = string.Format("var {0} = {1};", variableName, valueAsJson);
+            var script = $"var {variableName} = {valueAsJson};";
 
             if (ScriptManager.GetCurrent(page) != null)
             {

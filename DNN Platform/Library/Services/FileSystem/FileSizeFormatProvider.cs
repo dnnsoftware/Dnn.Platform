@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.FileSystem
 
             try
             {
-                size = Convert.ToDecimal(arg);
+                size = Convert.ToDecimal(arg, formatProvider);
             }
             catch (InvalidCastException)
             {
@@ -66,13 +66,12 @@ namespace DotNetNuke.Services.FileSystem
                 suffix = Localization.GetString("SizeB");
             }
 
-            return string.Format("{0:N1} {1}", size, suffix);
+            return string.Format(formatProvider, "{0:N1} {1}", size, suffix);
         }
 
         private static string DefaultFormat(string format, object arg, IFormatProvider formatProvider)
         {
-            var formattableArg = arg as IFormattable;
-            if (formattableArg != null)
+            if (arg is IFormattable formattableArg)
             {
                 return formattableArg.ToString(format, formatProvider);
             }

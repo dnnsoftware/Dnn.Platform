@@ -7,6 +7,7 @@ namespace Dnn.ExportImport.Components.Controllers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -301,7 +302,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 LogUserID = userId,
             };
 
-            log.AddProperty("JobID", jobId.ToString());
+            log.AddProperty("JobID", jobId.ToString(CultureInfo.InvariantCulture));
             LogController.Instance.AddLog(log);
         }
 
@@ -314,7 +315,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 JobId = job.JobId,
                 PortalId = job.PortalId,
-                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(),
+                User = user?.DisplayName ?? user?.Username ?? job.CreatedByUserId.ToString(CultureInfo.InvariantCulture),
                 JobType = Localization.GetString("JobType_" + job.JobType, Constants.SharedResources),
                 Status = (int)job.JobStatus,
                 Cancelled = job.IsCancelled,

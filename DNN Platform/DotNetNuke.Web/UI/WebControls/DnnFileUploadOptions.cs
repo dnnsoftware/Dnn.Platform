@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 CloseButtonText = Utilities.GetLocalizedString("FileUpload.CloseButton.Text"),
                 UploadFromWebButtonText = Utilities.GetLocalizedString("FileUpload.UploadFromWebButton.Text"),
                 DecompressingFile = Utilities.GetLocalizedString("FileUpload.DecompressingFile.Text"),
-                FileIsTooLarge = string.Format(Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Mb", (this.MaxFileSize / (1024 * 1024)).ToString(CultureInfo.InvariantCulture)),
+                FileIsTooLarge = string.Format(CultureInfo.CurrentCulture, Utilities.GetLocalizedString("FileUpload.FileIsTooLarge.Error") + " Mb", (this.MaxFileSize / (1024 * 1024)).ToString(CultureInfo.InvariantCulture)),
                 FileUploadCancelled = Utilities.GetLocalizedString("FileUpload.FileUploadCancelled.Error"),
                 FileUploadFailed = Utilities.GetLocalizedString("FileUpload.FileUploadFailed.Error"),
                 TooManyFiles = Utilities.GetLocalizedString("FileUpload.TooManyFiles.Error"),

@@ -231,6 +231,7 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     AlreadyExists = alreadyExists,
                                     Message = string.Format(
+                                        CultureInfo.CurrentCulture,
                                         GetLocalizedString("ErrorMessage"),
                                         fileName,
                                         errorMessage),
@@ -480,7 +481,7 @@ namespace DotNetNuke.Web.InternalServices
         private static bool IsUserFolder(string folderPath, out int userId)
         {
             var match = UserFolderEx.Match(folderPath);
-            userId = match.Success ? int.Parse(match.Groups[1].Value) : Null.NullInteger;
+            userId = match.Success ? int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture) : Null.NullInteger;
 
             return match.Success;
         }

@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Syndication
         {
             try
             {
-                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
+                return $"{uri.Host.Replace('.', '_')}_{uri.AbsolutePath.GetHashCode():x8}";
             }
             catch
             {
@@ -226,9 +226,9 @@ namespace DotNetNuke.Services.Syndication
                 return;
             }
 
-            doc.InsertBefore(doc.CreateComment(string.Format("{0}@{1}", utcExpiry.ToBinary(), uri.AbsoluteUri)), doc.DocumentElement);
+            doc.InsertBefore(doc.CreateComment($"{utcExpiry.ToBinary()}@{uri.AbsoluteUri}"), doc.DocumentElement);
 
-            string fileName = string.Format("{0}_{1:x8}.opml.resources", GetTempFileNamePrefixFromUrl(uri), Guid.NewGuid().ToString().GetHashCode());
+            string fileName = $"{GetTempFileNamePrefixFromUrl(uri)}_{Guid.NewGuid().ToString().GetHashCode():x8}.opml.resources";
 
             try
             {

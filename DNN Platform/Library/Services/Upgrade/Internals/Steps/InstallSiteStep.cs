@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Web;
 
@@ -35,7 +36,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             foreach (var portal in installConfig.Portals)
             {
                 string description = Localization.GetString("CreatingSite", this.LocalInstallResourceFile);
-                this.Details = string.Format(description, portal.PortalName);
+                this.Details = string.Format(CultureInfo.CurrentCulture, description, portal.PortalName);
                 this.CreateSite(portal, installConfig);
 
                 counter++;
@@ -68,7 +69,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
             {
                 string description = Localization.GetString("SkipCreatingSite", this.LocalInstallResourceFile);
-                this.Details = string.Format(description, portalAlias);
+                this.Details = string.Format(CultureInfo.CurrentCulture, description, portalAlias);
                 return;
             }
 

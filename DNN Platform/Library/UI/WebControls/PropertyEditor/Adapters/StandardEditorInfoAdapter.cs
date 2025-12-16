@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Set ResourceKey Field
-            editInfo.ResourceKey = string.Format("{0}_{1}", dataSource.GetType().Name, objProperty.Name);
+            editInfo.ResourceKey = $"{dataSource.GetType().Name}_{objProperty.Name}";
 
             // Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;

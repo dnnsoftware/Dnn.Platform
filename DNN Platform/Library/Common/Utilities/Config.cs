@@ -351,8 +351,8 @@ namespace DotNetNuke.Common.Utilities
                             configNav.SelectSingleNode("configuration//location//system.web//httpRuntime");
             if (httpNode != null)
             {
-                httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#");
-                httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#");
+                httpNode.Attributes["maxRequestLength"].InnerText = (newSize / 1024).ToString("#", CultureInfo.InvariantCulture);
+                httpNode.Attributes["requestLengthDiskThreshold"].InnerText = (newSize / 1024).ToString("#", CultureInfo.InvariantCulture);
             }
 
             httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
@@ -364,7 +364,7 @@ namespace DotNetNuke.Common.Utilities
                     httpNode.Attributes.Append(configNav.CreateAttribute("maxAllowedContentLength"));
                 }
 
-                httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#");
+                httpNode.Attributes["maxAllowedContentLength"].InnerText = newSize.ToString("#", CultureInfo.InvariantCulture);
             }
 
             Save(appStatus, configNav);
@@ -499,7 +499,7 @@ namespace DotNetNuke.Common.Utilities
             var persistentCookieTimeout = 0;
             if (!string.IsNullOrEmpty(GetSetting("PersistentCookieTimeout")))
             {
-                persistentCookieTimeout = int.Parse(GetSetting("PersistentCookieTimeout"));
+                persistentCookieTimeout = int.Parse(GetSetting("PersistentCookieTimeout"), CultureInfo.InvariantCulture);
             }
 
             return persistentCookieTimeout == 0 ? GetAuthCookieTimeout(appStatus) : persistentCookieTimeout;

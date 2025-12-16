@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.UI
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Xml;
 
@@ -448,10 +449,10 @@ namespace DotNetNuke.Web.UI
             // create the page from a template
             if (!string.IsNullOrEmpty(templateFileId))
             {
-                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
+                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null, };
                 try
                 {
-                    var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId));
+                    var templateFile = FileManager.Instance.GetFile(Convert.ToInt32(templateFileId, CultureInfo.InvariantCulture));
                     xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
                     TabController.DeserializePanes(businessControllerProvider, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
 
@@ -511,10 +512,10 @@ namespace DotNetNuke.Web.UI
                 switch (roleName)
                 {
                     case Globals.glbRoleAllUsersName:
-                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
                         break;
                     case Globals.glbRoleUnauthUserName:
-                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                         break;
                     default:
                         var portal = PortalController.Instance.GetPortal(tab.PortalID);

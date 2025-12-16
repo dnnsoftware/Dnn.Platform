@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -22,6 +23,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Dnn.PersonaBar.SiteSettings.Components.Constants;
     using Dnn.PersonaBar.SiteSettings.Services.Dto;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -238,7 +240,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
-                        string.Format(LocalizeString("InvalidLocale.ErrorMessage"), locale));
+                        string.Format(CultureInfo.InvariantCulture, LocalizeString("InvalidLocale.ErrorMessage"), locale));
                 }
 
                 this.selectedResourceFile = !string.IsNullOrEmpty(resourceFile)
@@ -346,19 +348,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 {
                     return this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
-                        string.Format(LocalizeString("InvalidLocale.ErrorMessage"), request.Locale));
+                        string.Format(CultureInfo.InvariantCulture, LocalizeString("InvalidLocale.ErrorMessage"), request.Locale));
                 }
 
                 if (string.IsNullOrEmpty(request.ResourceFile))
                 {
                     return this.Request.CreateErrorResponse(
                         HttpStatusCode.BadRequest,
-                        string.Format(LocalizeString("MissingResourceFileName"), request.Locale));
+                        string.Format(CultureInfo.InvariantCulture, LocalizeString("MissingResourceFileName"), request.Locale));
                 }
 
                 this.selectedResourceFile = HttpContext.Current.Server.MapPath("~/" + request.ResourceFile);
                 var message = this.SaveResourceFileFile(pid, resourceMode, request.Locale, request.Entries);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = message });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = message, });
             }
             catch (Exception ex)
             {
@@ -962,13 +964,13 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             if (changedResources.Count > 0)
             {
                 var values = string.Join("; ", changedResources.Select(x => x.Key + "=" + x.Value));
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.ADMIN_ALERT) };
                 log.LogProperties.Add(new LogDetailInfo(LocalizeString("ResourceUpdated"), this.ResourceFile(portalId, locale, mode)));
                 log.LogProperties.Add(new LogDetailInfo("Updated Values", values));
                 LogController.Instance.AddLog(log);
             }
 
-            return string.Format(LocalizeString("Updated"), this.ResourceFile(portalId, locale, mode));
+            return string.Format(CultureInfo.InvariantCulture, LocalizeString("Updated"), this.ResourceFile(portalId, locale, mode));
         }
 
         private List<LanguageTabDto> GetTabsForTranslationInternal(int portalId, string cultureCode)

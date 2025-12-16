@@ -2,6 +2,7 @@
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 Imports System
+Imports System.Globalization
 Imports System.IO
 Imports System.Web.Caching
 Imports System.Xml.Serialization
@@ -9,7 +10,7 @@ Imports System.Xml.XPath
 
 Namespace DotNetNuke.UI.Utilities
 
-    <Serializable(), XmlRoot("capabilities")> _
+    <Serializable(), XmlRoot("capabilities")>
     Public Class BrowserCaps
 
 #Region "Private Members"
@@ -22,7 +23,7 @@ Namespace DotNetNuke.UI.Utilities
 
 #Region "Public Properties"
 
-        <XmlElement("functionality")> _
+        <XmlElement("functionality")>
         Public Property Functionality() As FunctionalityCollection
             Get
                 Return m_objFunctionality
@@ -51,7 +52,7 @@ Namespace DotNetNuke.UI.Utilities
             Dim strMinVersion As String = objNav.GetAttribute("minversion", "")
             'If Not String.IsNullOrEmpty(strMinVersion) Then    '.NET 2.0 specific
             If Len(strMinVersion) > 0 Then
-                objBrowser.MinVersion = Double.Parse(strMinVersion)
+                objBrowser.MinVersion = Double.Parse(strMinVersion, CultureInfo.InvariantCulture)
             End If
             Return objBrowser
         End Function

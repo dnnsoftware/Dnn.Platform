@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Profile;
@@ -34,7 +35,7 @@ namespace DotNetNuke.Services.GeneratedImage
             var oldPhotoVisibilityMode = oldProfile.GetProperty(Entities.Users.UserProfile.USERPROFILE_Photo)?.ProfileVisibility.VisibilityMode;
             if (newProfile.Photo != oldProfile.Photo || newPhotoVisibilityMode != oldPhotoVisibilityMode)
             {
-                var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, user.PortalID);
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserIdListToClearDiskImageCacheKey, user.PortalID);
                 Dictionary<int, DateTime> userIds;
                 if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null)
                 {
@@ -42,10 +43,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
 
                 // Add the userid to the clear cache list, if not already in the list.
-                if (userIds.ContainsKey(user.UserID))
-                {
-                    userIds.Remove(user.UserID);
-                }
+                userIds.Remove(user.UserID);
 
                 userIds.Add(user.UserID, DateTime.UtcNow);
                 DataCache.SetCache(cacheKey, userIds);

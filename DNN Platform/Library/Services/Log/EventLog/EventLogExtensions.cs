@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System.Globalization;
+
     using DotNetNuke.Abstractions.Logging;
 
     /// <summary>Extensions methods for types related to the Event Log.</summary>
@@ -20,7 +22,7 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             ILogInfo log = new LogInfo { LogTypeKey = logTypeKey.ToString(), };
             log.LogUserId = userId;
-            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
+            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString(CultureInfo.InvariantCulture)));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
 

@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxWidth"]);
+                return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxHeight"]);
+                return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxHeight"], CultureInfo.InvariantCulture);
             }
 
             set

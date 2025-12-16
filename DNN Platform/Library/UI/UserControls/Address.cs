@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -153,7 +154,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToInt32(this.ViewState["ModuleId"]);
+                return Convert.ToInt32(this.ViewState["ModuleId"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -166,7 +167,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["LabelColumnWidth"]);
+                return Convert.ToString(this.ViewState["LabelColumnWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -179,7 +180,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["ControlColumnWidth"]);
+                return Convert.ToString(this.ViewState["ControlColumnWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -575,7 +576,7 @@ namespace DotNetNuke.UI.UserControls
                         this.chkFax.Visible = true;
                     }
 
-                    this.ViewState["ModuleId"] = Convert.ToString(this.moduleId);
+                    this.ViewState["ModuleId"] = Convert.ToString(this.moduleId, CultureInfo.InvariantCulture);
                     this.ViewState["LabelColumnWidth"] = this.labelColumnWidth;
                     this.ViewState["ControlColumnWidth"] = this.controlColumnWidth;
 

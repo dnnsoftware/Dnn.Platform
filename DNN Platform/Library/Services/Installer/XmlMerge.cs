@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Xml;
@@ -620,6 +621,7 @@ namespace DotNetNuke.Services.Installer
                             }
 
                             string commentHeaderText = string.Format(
+                                CultureInfo.InvariantCulture,
                                 Localization.GetString("XMLMERGE_Upgrade", Localization.SharedResourceFile),
                                 Environment.NewLine,
                                 this.Sender,

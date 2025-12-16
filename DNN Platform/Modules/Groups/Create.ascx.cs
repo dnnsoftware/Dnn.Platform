@@ -6,6 +6,7 @@ namespace DotNetNuke.Modules.Groups;
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Web.UI;
 
@@ -106,7 +107,7 @@ public partial class Create : GroupsModuleBase
         {
             if (modulePermissionInfo.PermissionKey == "MODGROUP" && modulePermissionInfo.AllowAccess)
             {
-                if (modulePermissionInfo.RoleId > int.Parse(Globals.glbRoleNothing))
+                if (modulePermissionInfo.RoleId > int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture))
                 {
                     modRoles.Add(this.roleController.GetRoleById(this.PortalId, modulePermissionInfo.RoleId));
                 }

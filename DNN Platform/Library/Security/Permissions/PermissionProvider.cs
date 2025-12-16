@@ -8,6 +8,7 @@ namespace DotNetNuke.Security.Permissions
     using System.Collections.Generic;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Collections.Internal;
@@ -186,7 +187,7 @@ namespace DotNetNuke.Security.Permissions
             }
             return folderPermissions;
 #else
-            var cacheKey = string.Format(DataCache.FolderPathPermissionCacheKey, portalID, folder);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.FolderPathPermissionCacheKey, portalID, folder);
             return CBO.GetCachedObject<FolderPermissionCollection>(
                 new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority)
                 {
@@ -925,7 +926,7 @@ namespace DotNetNuke.Security.Permissions
             if (dependency == null)
             {
                 var startAt = DateTime.UtcNow;
-                var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.FolderPermissionCacheKey, portalId);
                 DataCache.SetCache(cacheKey, portalId); // no expiration set for this
                 dependency = new DNNCacheDependency(null, new[] { cacheKey }, startAt);
                 using (cacheDependencyDict.GetWriteLock())
@@ -1000,7 +1001,7 @@ namespace DotNetNuke.Security.Permissions
 
         private Dictionary<string, FolderPermissionCollection> GetFolderPermissions(int PortalID)
         {
-            string cacheKey = string.Format(DataCache.FolderPermissionCacheKey, PortalID);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.FolderPermissionCacheKey, PortalID);
             return
                 CBO.GetCachedObject<Dictionary<string, FolderPermissionCollection>>(
                     new CacheItemArgs(cacheKey, DataCache.FolderPermissionCacheTimeOut, DataCache.FolderPermissionCachePriority, PortalID), GetFolderPermissionsCallBack);
@@ -1140,7 +1141,7 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="tabId">The ID of the tab.</param>
         private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabId)
         {
-            string cacheKey = string.Format(DataCache.ModulePermissionCacheKey, tabId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ModulePermissionCacheKey, tabId);
             return CBO.GetCachedObject<Dictionary<int, ModulePermissionCollection>>(
                 new CacheItemArgs(cacheKey, DataCache.ModulePermissionCacheTimeOut, DataCache.ModulePermissionCachePriority, tabId), this.GetModulePermissionsCallBack);
         }
@@ -1193,7 +1194,7 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="portalID">The ID of the portal.</param>
         private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
         {
-            string cacheKey = string.Format(DataCache.TabPermissionCacheKey, portalID);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabPermissionCacheKey, portalID);
             return CBO.GetCachedObject<Dictionary<int, TabPermissionCollection>>(
                 new CacheItemArgs(cacheKey, DataCache.TabPermissionCacheTimeOut, DataCache.TabPermissionCachePriority, portalID),
                 this.GetTabPermissionsCallBack);
@@ -1249,7 +1250,7 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="portalID">The ID of the portal.</param>
         private Dictionary<int, PortalPermissionCollection> GetPortalPermissionsDic(int portalID)
         {
-            string cacheKey = string.Format(DataCache.PortalPermissionCacheKey, portalID);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalPermissionCacheKey, portalID);
             return CBO.GetCachedObject<Dictionary<int, PortalPermissionCollection>>(
                 new CacheItemArgs(cacheKey, DataCache.PortalPermissionCacheTimeOut, DataCache.PortalPermissionCachePriority, portalID),
                 this.GetPortalPermissionsCallBack);

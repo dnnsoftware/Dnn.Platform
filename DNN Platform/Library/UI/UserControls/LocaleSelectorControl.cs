@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Framework;
@@ -56,7 +57,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (string.IsNullOrEmpty(this.viewType))
                 {
-                    this.viewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", this.PortalSettings.PortalId)));
+                    this.viewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format(CultureInfo.InvariantCulture, "ViewType{0}", this.PortalSettings.PortalId)), CultureInfo.InvariantCulture);
                 }
 
                 if (string.IsNullOrEmpty(this.viewType))

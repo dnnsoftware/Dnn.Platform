@@ -152,7 +152,7 @@ namespace DotNetNuke.Common
                         null,
                         CultureInfo.InvariantCulture) is not HttpRuntime runtime)
                 {
-                    Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
+                    Logger.InfoFormat(CultureInfo.InvariantCulture, "Application shutting down. Reason: {0}", shutdownDetail);
                 }
                 else
                 {

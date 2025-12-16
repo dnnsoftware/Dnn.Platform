@@ -129,7 +129,7 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 if (this.DisplayType == 0)
                 {
-                    var viewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.Current.PortalId));
+                    var viewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.Current.PortalId), CultureInfo.InvariantCulture);
                     switch (viewType)
                     {
                         case "NATIVE":
@@ -172,7 +172,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 match = defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode));
             }
 
-            return match != null ? string.Format("{0}|{1}", Path.GetFileName(match.TemplateFilePath), match.CultureCode) : string.Empty;
+            return match != null ? $"{Path.GetFileName(match.TemplateFilePath)}|{match.CultureCode}" : string.Empty;
         }
 
         public TabDto GetTabByCulture(int tabId, int portalId, string cultureCode)
@@ -207,7 +207,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
             var portal = PortalController.Instance.GetPortal(request.PortalId);
             var tabsToExport = this.GetTabsToExport(userInfo, request.PortalId, portal.DefaultLanguage, request.IsMultilanguage, pages, null)
-                                    .Select(t => int.Parse(t.TabId))
+                                    .Select(t => int.Parse(t.TabId, CultureInfo.InvariantCulture))
                                     .ToList();
 
             var exportResult = DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ExportPortalTemplate(
@@ -262,8 +262,8 @@ namespace Dnn.PersonaBar.Sites.Components
                 message = Localization.GetString("InvalidName", this.LocalResourcesFile);
             }
 
-            // check whether have conflict between tab path and portal alias.
-            var checkTabPath = string.Format("//{0}", strPortalAlias);
+            // check whether there are conflicts between tab path and portal alias.
+            var checkTabPath = $"//{strPortalAlias}";
             if (TabController.GetTabByTabPath(PortalSettings.PortalId, checkTabPath, string.Empty) != Null.NullInteger
                 || TabController.GetTabByTabPath(Null.NullInteger, checkTabPath, string.Empty) != Null.NullInteger)
             {
@@ -303,16 +303,16 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             // Get Home Directory
-            var homeDir = homeDirectory != @"Portals/[PortalID]" ? homeDirectory : string.Empty;
+            var homeDir = homeDirectory != "Portals/[PortalID]" ? homeDirectory : string.Empty;
 
             // Validate Home Folder
             if (!string.IsNullOrEmpty(homeDir))
             {
-                var fullHomeDir = string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, homeDir).Replace("/", "\\");
+                var fullHomeDir = $@"{Globals.ApplicationMapPath}\{homeDir}\".Replace("/", @"\");
                 if (Directory.Exists(fullHomeDir))
                 {
                     error = true;
-                    message = string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error", this.LocalResourcesFile), homeDir);
+                    message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("CreatePortalHomeFolderExists.Error", this.LocalResourcesFile), homeDir);
                 }
 
                 if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.Equals("portals/", StringComparison.OrdinalIgnoreCase))
@@ -436,7 +436,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     try
                     {
                         message = string.IsNullOrEmpty(Host.HostEmail)
-                            ? string.Format(Localization.GetString("UnknownEmailAddress.Error", this.LocalResourcesFile), message, webUrl, closePopUpStr)
+                            ? string.Format(CultureInfo.InvariantCulture, Localization.GetString("UnknownEmailAddress.Error", this.LocalResourcesFile), message, webUrl, closePopUpStr)
                             : Mail.SendMail(
                                 Host.HostEmail,
                                 email,
@@ -453,7 +453,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     catch (Exception exc)
                     {
                         Logger.Error(exc);
-                        message = string.Format(Localization.GetString("UnknownSendMail.Error", this.LocalResourcesFile), webUrl, closePopUpStr);
+                        message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UnknownSendMail.Error", this.LocalResourcesFile), webUrl, closePopUpStr);
                     }
 
                     // mark default language as published if content localization is enabled
@@ -467,7 +467,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     // Redirect to this new site
                     if (message != Null.NullString)
                     {
-                        message = string.Format(Localization.GetString("SendMail.Error", this.LocalResourcesFile), message, webUrl, closePopUpStr);
+                        message = string.Format(CultureInfo.InvariantCulture, Localization.GetString("SendMail.Error", this.LocalResourcesFile), message, webUrl, closePopUpStr);
                     }
                 }
             }
@@ -492,7 +492,7 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 if (HttpContext.Current != null && HttpContext.Current.Items.Contains("CreatingPortalId"))
                 {
-                    var creatingPortalId = Convert.ToInt32(HttpContext.Current.Items["CreatingPortalId"]);
+                    var creatingPortalId = Convert.ToInt32(HttpContext.Current.Items["CreatingPortalId"], CultureInfo.InvariantCulture);
                     var portalInfo = PortalController.Instance.GetPortal(creatingPortalId);
                     PortalController.DeletePortal(portalInfo, serverPath);
                 }
@@ -566,7 +566,7 @@ namespace Dnn.PersonaBar.Sites.Components
                         checkedState = NodeCheckedState.Checked;
                     }
 
-                    var descendants = this.tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode, isMultiLanguage).ToList();
+                    var descendants = this.tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId, CultureInfo.InvariantCulture), cultureCode, isMultiLanguage).ToList();
                     descendants.ForEach(x => { x.CheckedState = checkedState; });
 
                     selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs, descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));

@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.GeneratedImage
             Color backColor = string.IsNullOrEmpty(parameters["backcolor"]) ? Color.White : (parameters["backcolor"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["backcolor"]) : Color.FromName(parameters["backcolor"]));
 
             // Do we have a border ?
-            int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"]);
+            int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"], CultureInfo.InvariantCulture);
 
             // Do we have a resizemode defined ?
             var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
@@ -215,7 +215,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         var secureFileTrans = new SecureFileTransform();
                         if (!string.IsNullOrEmpty(parameters["FileId"]))
                         {
-                            var fileId = Convert.ToInt32(parameters["FileId"]);
+                            var fileId = Convert.ToInt32(parameters["FileId"], CultureInfo.InvariantCulture);
                             var file = FileManager.Instance.GetFile(fileId);
                             if (file == null)
                             {
@@ -316,7 +316,7 @@ namespace DotNetNuke.Services.GeneratedImage
                                         switch (pi.PropertyType.Name)
                                         {
                                             case "Int32":
-                                                pi.SetValue(imageTransform, Convert.ToInt32(parameters[key]), null);
+                                                pi.SetValue(imageTransform, Convert.ToInt32(parameters[key], CultureInfo.InvariantCulture), null);
                                                 break;
                                             case "String":
                                                 pi.SetValue(imageTransform, parameters[key], null);
@@ -584,37 +584,37 @@ namespace DotNetNuke.Services.GeneratedImage
                 switch (name)
                 {
                     case "enableclientcache":
-                        this.EnableClientCache = Convert.ToBoolean(setting[1]);
+                        this.EnableClientCache = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "clientcacheexpiration":
-                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                     case "enableservercache":
-                        this.EnableServerCache = Convert.ToBoolean(setting[1]);
+                        this.EnableServerCache = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "servercacheexpiration":
-                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                     case "allowstandalone":
-                        this.AllowStandalone = Convert.ToBoolean(setting[1]);
+                        this.AllowStandalone = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "logsecurity":
-                        this.LogSecurity = Convert.ToBoolean(setting[1]);
+                        this.LogSecurity = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "imagecompression":
-                        this.ImageCompression = Convert.ToInt32(setting[1]);
+                        this.ImageCompression = Convert.ToInt32(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "alloweddomains":
                         this.AllowedDomains = setting[1].Split(',');
                         break;
                     case "enableipcount":
-                        this.EnableIPCount = Convert.ToBoolean(setting[1]);
+                        this.EnableIPCount = Convert.ToBoolean(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "ipcountmax":
-                        this.IPCountMaxCount = Convert.ToInt32(setting[1]);
+                        this.IPCountMaxCount = Convert.ToInt32(setting[1], CultureInfo.InvariantCulture);
                         break;
                     case "ipcountpurgeinterval":
-                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1], CultureInfo.InvariantCulture));
                         break;
                 }
             }

@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Content.Common
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
 
@@ -40,24 +41,24 @@ namespace DotNetNuke.Entities.Content.Common
             return sb.ToString();
         }
 
-        /// <summary>Toes the delimitted string.</summary>
+        /// <summary>Toes the delimited string.</summary>
         /// <param name="terms">The terms.</param>
         /// <param name="format">The format.</param>
-        /// <param name="delimitter">The delimitter.</param>
-        /// <returns> formatted terms' name as a string and split with the given delimitter order by name A-Z.</returns>
+        /// <param name="delimitter">The delimiter.</param>
+        /// <returns> formatted terms' name as a string and split with the given delimiter order by name A-Z.</returns>
         public static string ToDelimittedString(this List<Term> terms, string format, string delimitter)
         {
             var sb = new StringBuilder();
             if (terms != null)
             {
-                foreach (Term term in terms.OrderBy(term => term.Name))
+                foreach (var term in terms.OrderBy(term => term.Name))
                 {
                     if (sb.Length > 0)
                     {
                         sb.Append(delimitter);
                     }
 
-                    sb.Append(string.Format(format, term.Name));
+                    sb.Append(string.Format(CultureInfo.InvariantCulture, format, term.Name));
                 }
             }
 

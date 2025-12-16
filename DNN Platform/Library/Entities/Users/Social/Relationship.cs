@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Users.Social
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -109,13 +110,13 @@ namespace DotNetNuke.Entities.Users.Social
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.RelationshipId = Convert.ToInt32(dr["RelationshipID"]);
+            this.RelationshipId = Convert.ToInt32(dr["RelationshipID"], CultureInfo.InvariantCulture);
             this.UserId = Null.SetNullInteger(dr["UserID"]);
             this.PortalId = Null.SetNullInteger(dr["PortalID"]);
             this.Name = dr["Name"].ToString();
             this.Description = dr["Description"].ToString();
-            this.DefaultResponse = (RelationshipStatus)Convert.ToInt32(dr["DefaultResponse"]);
-            this.RelationshipTypeId = Convert.ToInt32(dr["RelationshipTypeID"]);
+            this.DefaultResponse = (RelationshipStatus)Convert.ToInt32(dr["DefaultResponse"], CultureInfo.InvariantCulture);
+            this.RelationshipTypeId = Convert.ToInt32(dr["RelationshipTypeID"], CultureInfo.InvariantCulture);
 
             // add audit column data
             this.FillInternal(dr);

@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -220,7 +221,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                         }
                                         else if (iconFileNav.Value.StartsWith("DesktopModules", StringComparison.InvariantCultureIgnoreCase))
                                         {
-                                            package.IconFile = string.Format("~/{0}", iconFileNav.Value);
+                                            package.IconFile = $"~/{iconFileNav.Value}";
                                         }
                                         else
                                         {
@@ -325,7 +326,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <inheritdoc/>
         public IList<PackageInfo> GetExtensionPackages(int portalId)
         {
-            var cacheKey = string.Format(DataCache.PackagesCacheKey, portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PackagesCacheKey, portalId);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.PackagesCacheTimeout, DataCache.PackagesCachePriority, portalId);
             return CBO.GetCachedObject<List<PackageInfo>>(
                 cacheItemArgs,

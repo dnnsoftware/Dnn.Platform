@@ -7,6 +7,7 @@ namespace DotNetNuke.UI.WebControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.UI;
@@ -50,7 +51,7 @@ namespace DotNetNuke.UI.WebControls
 
                 try
                 {
-                    intValue = Convert.ToInt32(this.Value);
+                    intValue = Convert.ToInt32(this.Value, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -61,7 +62,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <summary>Gets the ListEntryInfo objects associated witht the control.</summary>
+        /// <summary>Gets the ListEntryInfo objects associated with the control.</summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
             get
@@ -98,7 +99,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
                     // Try and cast the value to an Integer
-                    intValue = Convert.ToInt32(this.OldValue);
+                    intValue = Convert.ToInt32(this.OldValue, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
@@ -114,7 +115,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Gets oldStringValue returns the Boolean representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
-        protected string OldStringValue => Convert.ToString(this.OldValue);
+        protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
         /// <summary>Gets or sets a value indicating whether the List Auto Posts Back.</summary>
         protected bool AutoPostBack { get; set; }
@@ -156,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Convert.ToString(this.Value);
+                return Convert.ToString(this.Value, CultureInfo.InvariantCulture);
             }
 
             set
@@ -164,7 +165,7 @@ namespace DotNetNuke.UI.WebControls
                 if (this.ValueField == ListBoundField.Id)
                 {
                     // Integer type field
-                    this.Value = int.Parse(value);
+                    this.Value = int.Parse(value, CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -231,7 +232,7 @@ namespace DotNetNuke.UI.WebControls
             switch (this.ValueField)
             {
                 case ListBoundField.Id:
-                    entry = objListController.GetListEntryInfo(this.ListName, Convert.ToInt32(this.Value));
+                    entry = objListController.GetListEntryInfo(this.ListName, Convert.ToInt32(this.Value, CultureInfo.InvariantCulture));
                     break;
                 case ListBoundField.Text:
                     entryText = this.StringValue;
@@ -248,7 +249,7 @@ namespace DotNetNuke.UI.WebControls
                 switch (this.TextField)
                 {
                     case ListBoundField.Id:
-                        writer.Write(entry.EntryID.ToString());
+                        writer.Write(entry.EntryID.ToString(CultureInfo.InvariantCulture));
                         break;
                     case ListBoundField.Text:
                         writer.Write(entry.Text);
@@ -315,7 +316,7 @@ namespace DotNetNuke.UI.WebControls
                 switch (this.ValueField)
                 {
                     case ListBoundField.Id:
-                        itemValue = item.EntryID.ToString();
+                        itemValue = item.EntryID.ToString(CultureInfo.InvariantCulture);
                         break;
                     case ListBoundField.Text:
                         itemValue = item.Text;
@@ -337,7 +338,7 @@ namespace DotNetNuke.UI.WebControls
                 switch (this.TextField)
                 {
                     case ListBoundField.Id:
-                        writer.Write(item.EntryID.ToString());
+                        writer.Write(item.EntryID.ToString(CultureInfo.InvariantCulture));
                         break;
                     case ListBoundField.Text:
                         writer.Write(item.Text);

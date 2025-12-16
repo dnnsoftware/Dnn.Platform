@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -204,9 +205,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     Convert.ToInt32((languageCount + ((float)stepNo / total)) / totalLanguages * 100);
 
                 progress.CurrentOperationText = string.Format(
-                    Localization.GetString(
-                        "ProcessingPage",
-                        LocalResourcesFile),
+                    CultureInfo.CurrentCulture,
+                    Localization.GetString("ProcessingPage", LocalResourcesFile),
                     locale.Code,
                     stepNo,
                     total,

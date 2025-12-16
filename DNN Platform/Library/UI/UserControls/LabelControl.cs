@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -202,7 +203,7 @@ namespace DotNetNuke.UI.UserControls
 
                 if (!string.IsNullOrEmpty(this.AssociateFormat))
                 {
-                    clientId = string.Format(this.AssociateFormat, clientId);
+                    clientId = string.Format(CultureInfo.InvariantCulture, this.AssociateFormat, clientId);
                 }
 
                 this.label.Attributes["for"] = clientId;

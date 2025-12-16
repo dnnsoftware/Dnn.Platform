@@ -49,9 +49,9 @@ namespace DotNetNuke.Services.Tokens
                 switch (valueObject.GetType().Name)
                 {
                     case "String":
-                        return PropertyAccess.FormatString(Convert.ToString(valueObject), format);
+                        return PropertyAccess.FormatString(Convert.ToString(valueObject, CultureInfo.InvariantCulture), format);
                     case "Boolean":
-                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject), formatProvider);
+                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject, CultureInfo.InvariantCulture), formatProvider);
                     case "DateTime":
                     case "Double":
                     case "Single":

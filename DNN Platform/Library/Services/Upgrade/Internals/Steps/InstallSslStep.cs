@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Portals;
@@ -31,9 +32,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
             foreach (var portalConfig in installConfig.Portals)
             {
-                var portal = (IPortalInfo)portals.FirstOrDefault(p => p.PortalName == portalConfig.PortalName);
+                IPortalInfo portal = portals.FirstOrDefault(p => p.PortalName == portalConfig.PortalName);
                 var description = Localization.GetString("InstallingSslStep", this.LocalInstallResourceFile);
-                this.Details = string.Format(description, portalConfig.PortalName);
+                this.Details = string.Format(CultureInfo.CurrentCulture, description, portalConfig.PortalName);
                 if (portal != null)
                 {
                     PortalController.UpdatePortalSetting(portal.PortalId, "SSLSetup", portalConfig.IsSsl ? "1" : "0", false);
@@ -41,7 +42,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
                 }
                 else
                 {
-                    this.Errors.Add(string.Format(Localization.GetString("InstallingSslStepSiteNotFound", this.LocalInstallResourceFile), portalConfig.PortalName));
+                    this.Errors.Add(string.Format(CultureInfo.CurrentCulture, Localization.GetString("InstallingSslStepSiteNotFound", this.LocalInstallResourceFile), portalConfig.PortalName));
                 }
 
                 counter++;

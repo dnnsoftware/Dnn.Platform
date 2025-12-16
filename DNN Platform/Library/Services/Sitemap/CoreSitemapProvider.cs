@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Sitemap
                             }
                             catch (Exception)
                             {
-                                Logger.ErrorFormat("Error has occurred getting PageUrl for {0}", tab.TabName);
+                                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error has occurred getting PageUrl for {0}", tab.TabName);
                             }
                         }
                     }

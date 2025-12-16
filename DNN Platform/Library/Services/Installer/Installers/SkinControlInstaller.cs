@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -50,7 +51,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.skinControl.SkinControlID = SkinControlController.SaveSkinControl(this.skinControl);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.skinControl.ControlKey));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_Registered, this.skinControl.ControlKey));
             }
             catch (Exception ex)
             {
@@ -108,7 +109,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     SkinControlController.DeleteSkinControl(skinControl);
                 }
 
-                this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_UnRegistered, skinControl.ControlKey));
             }
             catch (Exception ex)
             {

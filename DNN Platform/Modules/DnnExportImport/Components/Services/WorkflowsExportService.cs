@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -59,14 +60,11 @@ namespace Dnn.ExportImport.Components.Services
             {
                 var defaultWorkflowId = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(exportDto.PortalId);
                 var defaultWorkflow = contentWorkflows.FirstOrDefault(w => w.WorkflowID == defaultWorkflowId);
-                if (defaultWorkflow != null)
-                {
-                    defaultWorkflow.IsDefault = true;
-                }
+                defaultWorkflow?.IsDefault = true;
 
                 this.CheckPoint.TotalItems = contentWorkflows.Count;
                 this.Repository.CreateItems(contentWorkflows);
-                this.Result.AddLogEntry("Exported ContentWorkflows", contentWorkflows.Count.ToString());
+                this.Result.AddLogEntry("Exported ContentWorkflows", contentWorkflows.Count.ToString(CultureInfo.InvariantCulture));
 
                 foreach (var workflow in contentWorkflows)
                 {
@@ -153,7 +151,7 @@ namespace Dnn.ExportImport.Components.Services
                             workflowState.SendNotification = importState.SendNotification;
                             workflowState.SendNotificationToAdministrators = importState.SendNotificationToAdministrators;
                             workflowStateManager.UpdateWorkflowState(workflowState);
-                            this.Result.AddLogEntry("Updated workflow state", workflowState.StateID.ToString());
+                            this.Result.AddLogEntry("Updated workflow state", workflowState.StateID.ToString(CultureInfo.InvariantCulture));
                         }
                     }
                     else
@@ -168,7 +166,7 @@ namespace Dnn.ExportImport.Components.Services
                             SendNotificationToAdministrators = importState.SendNotificationToAdministrators,
                         };
                         WorkflowStateManager.Instance.AddWorkflowState(workflowState);
-                        this.Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());
+                        this.Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString(CultureInfo.InvariantCulture));
                     }
 
                     importState.LocalId = workflowState.StateID;
@@ -182,7 +180,7 @@ namespace Dnn.ExportImport.Components.Services
 
                             if (permissionId != null)
                             {
-                                var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+                                var noRole = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
                                 var userId = UserController.GetUserByName(importDto.PortalId, importPermission.Username)?.UserID;
                                 var roleId = Util.GetRoleIdByName(importDto.PortalId, importPermission.RoleID ?? noRole, importPermission.RoleName);
 
@@ -195,7 +193,7 @@ namespace Dnn.ExportImport.Components.Services
                                     AllowAccess = importPermission.AllowAccess,
                                 };
 
-                                if (importPermission.UserID != null && importPermission.UserID > 0 && !string.IsNullOrEmpty(importPermission.Username))
+                                if (importPermission.UserID is > 0 && !string.IsNullOrEmpty(importPermission.Username))
                                 {
                                     if (userId == null)
                                     {
@@ -237,7 +235,7 @@ namespace Dnn.ExportImport.Components.Services
                                         importPermission.LocalId = permission.WorkflowStatePermissionID;
                                         this.Result.AddLogEntry(
                                             "Added workflow state permission",
-                                            permission.WorkflowStatePermissionID.ToString());
+                                            permission.WorkflowStatePermissionID.ToString(CultureInfo.InvariantCulture));
                                     }
                                     else
                                     {
@@ -254,7 +252,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.UpdateItems(importStates);
-                this.Result.AddSummary("Imported Workflow", importWorkflows.Count.ToString());
+                this.Result.AddSummary("Imported Workflow", importWorkflows.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.ProcessedItems++;
                 this.CheckPointStageCallback(this); // no need to return; very small amount of data processed
             }

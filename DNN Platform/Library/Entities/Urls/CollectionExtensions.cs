@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Urls
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Xml;
 
@@ -84,7 +85,7 @@ namespace DotNetNuke.Entities.Urls
                                         tabActionCol.Add(action);
 
                                         actionCount++;
-                                        messages.Add(name + " replace actions added:" + actionCount.ToString());
+                                        messages.Add(name + " replace actions added:" + actionCount.ToString(CultureInfo.InvariantCulture));
                                     }
                                 }
                             }
@@ -220,7 +221,7 @@ namespace DotNetNuke.Entities.Urls
                                         actionCount++;
                                     }
 
-                                    messages.Add(name + " redirect actions added:" + actionCount.ToString());
+                                    messages.Add(name + " redirect actions added:" + actionCount.ToString(CultureInfo.InvariantCulture));
                                 }
 
                                 if (tabMessages.Count > 0)
@@ -321,7 +322,7 @@ namespace DotNetNuke.Entities.Urls
                                         actionCount++;
                                     }
 
-                                    messages.Add(name + " rewrite actions added:" + actionCount.ToString());
+                                    messages.Add(name + " rewrite actions added:" + actionCount.ToString(CultureInfo.InvariantCulture));
                                 }
                             }
 

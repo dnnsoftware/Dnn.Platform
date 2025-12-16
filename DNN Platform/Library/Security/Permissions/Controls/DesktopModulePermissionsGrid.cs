@@ -6,6 +6,7 @@ namespace DotNetNuke.Security.Permissions.Controls
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
 
@@ -115,7 +116,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     if (objPermission.PermissionKey == "DEPLOY")
                     {
-                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
+                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture), Null.NullString, user.UserID, user.DisplayName, true);
                     }
                 }
             }
@@ -163,14 +164,14 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Load DesktopModuleId
                 if (myState[1] != null)
                 {
-                    this.PortalDesktopModuleID = Convert.ToInt32(myState[1]);
+                    this.PortalDesktopModuleID = Convert.ToInt32(myState[1], CultureInfo.InvariantCulture);
                 }
 
                 // Load DesktopModulePermissions
                 if (myState[2] != null)
                 {
                     this.desktopModulePermissions = new DesktopModulePermissionCollection();
-                    string state = Convert.ToString(myState[2]);
+                    string state = Convert.ToString(myState[2], CultureInfo.InvariantCulture);
                     if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
@@ -262,7 +263,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(settings[2]);
+                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(settings[2], CultureInfo.InvariantCulture);
             }
 
             objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;

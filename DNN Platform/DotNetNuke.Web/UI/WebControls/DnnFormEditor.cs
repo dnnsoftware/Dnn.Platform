@@ -149,7 +149,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void CreateControlHierarchy(bool useDataSource)
         {
-            this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
+            this.CssClass = string.IsNullOrEmpty(this.CssClass)
+                ? "dnnForm"
+                : this.CssClass.Contains("dnnForm")
+                    ? this.CssClass
+                    : $"dnnForm {this.CssClass}";
 
             this.SetUpTabs();
 

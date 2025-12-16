@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Modules
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -81,7 +82,7 @@ namespace DotNetNuke.Entities.Modules
                     moduleControl.ControlTitle,
                     moduleControl.ControlSrc,
                     moduleControl.IconFile,
-                    Convert.ToInt32(moduleControl.ControlType),
+                    (int)moduleControl.ControlType,
                     moduleControl.ViewOrder,
                     moduleControl.HelpURL,
                     moduleControl.SupportsPartialRendering,
@@ -98,7 +99,7 @@ namespace DotNetNuke.Entities.Modules
                     moduleControl.ControlTitle,
                     moduleControl.ControlSrc,
                     moduleControl.IconFile,
-                    Convert.ToInt32(moduleControl.ControlType),
+                    (int)moduleControl.ControlType,
                     moduleControl.ViewOrder,
                     moduleControl.HelpURL,
                     moduleControl.SupportsPartialRendering,

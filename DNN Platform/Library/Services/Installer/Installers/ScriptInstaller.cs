@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer.Installers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -208,7 +209,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 else
                 {
                     // we couldn't determine the file type
-                    this.Log.AddFailure(string.Format(Util.SQL_Manifest_BadFile, file.Name));
+                    this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.SQL_Manifest_BadFile, file.Name));
                     return;
                 }
             }
@@ -245,33 +246,33 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             bool bSuccess = true;
 
-            this.Log.AddInfo(string.Format(Util.SQL_BeginFile, scriptFile.Name));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SQL_BeginFile, scriptFile.Name));
 
             // read script file for installation
             string strScript = FileSystemUtils.ReadFile(this.PhysicalBasePath + scriptFile.FullName);
 
-            // This check needs to be included because the unicode Byte Order mark results in an extra character at the start of the file
+            // This check needs to be included because the Unicode Byte Order mark results in an extra character at the start of the file
             // The extra character - '?' - causes an error with the database.
             if (strScript.StartsWith("?"))
             {
                 strScript = strScript.Substring(1);
             }
 
-            string strSQLExceptions = DataProvider.Instance().ExecuteScript(strScript);
-            if (!string.IsNullOrEmpty(strSQLExceptions))
+            string strSqlExceptions = DataProvider.Instance().ExecuteScript(strScript);
+            if (!string.IsNullOrEmpty(strSqlExceptions))
             {
                 if (this.Package.InstallerInfo.IsLegacyMode)
                 {
-                    this.Log.AddWarning(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
+                    this.Log.AddWarning(string.Format(CultureInfo.InvariantCulture, Util.SQL_Exceptions, Environment.NewLine, strSqlExceptions));
                 }
                 else
                 {
-                    this.Log.AddFailure(string.Format(Util.SQL_Exceptions, Environment.NewLine, strSQLExceptions));
+                    this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.SQL_Exceptions, Environment.NewLine, strSqlExceptions));
                     bSuccess = false;
                 }
             }
 
-            this.Log.AddInfo(string.Format(Util.SQL_EndFile, scriptFile.Name));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SQL_EndFile, scriptFile.Name));
             return bSuccess;
         }
 

@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.InternalServices
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -263,7 +264,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var showFriendlyTitle = this.ActiveModule == null
                                     || !this.ActiveModule.ModuleSettings.ContainsKey("ShowFriendlyTitle")
-                                    || Convert.ToBoolean(this.ActiveModule.ModuleSettings["ShowFriendlyTitle"]);
+                                    || Convert.ToBoolean(this.ActiveModule.ModuleSettings["ShowFriendlyTitle"], CultureInfo.InvariantCulture);
             foreach (var results in tabGroups.Values)
             {
                 var group = new GroupedDetailView();
@@ -286,7 +287,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                     else if (first.ModuleId > 0)
                     {
-                        var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
+                        var tabTitle = GetTabTitleFromModuleId(first.ModuleId);
                         if (!string.IsNullOrEmpty(tabTitle))
                         {
                             @group.Title = tabTitle;
@@ -296,7 +297,7 @@ namespace DotNetNuke.Web.InternalServices
                 else if (first.ModuleDefId > 0 && first.ModuleDefId == this.htmlModuleDefinitionId)
                 {
                     // special handling for Html module
-                    var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
+                    var tabTitle = GetTabTitleFromModuleId(first.ModuleId);
                     if (!string.IsNullOrEmpty(tabTitle))
                     {
                         @group.Title = tabTitle;
@@ -347,7 +348,7 @@ namespace DotNetNuke.Web.InternalServices
                     var match = GroupedBasicViewRegex.Match(preview.DocumentUrl);
                     if (match.Success)
                     {
-                        var userid = Convert.ToInt32(match.Groups[2].Value);
+                        var userid = Convert.ToInt32(match.Groups[2].Value, CultureInfo.InvariantCulture);
                         var user = UserController.Instance.GetUserById(portalId, userid);
                         if (user != null)
                         {
@@ -410,7 +411,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static ArrayList GetModulesByDefinition(int portalId, string friendlyName)
         {
-            var cacheKey = string.Format(ModuleInfosCacheKey, portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, ModuleInfosCacheKey, portalId);
             return CBO.GetCachedObject<ArrayList>(
                 new CacheItemArgs(cacheKey, ModuleInfosCacheTimeOut, ModuleInfosCachePriority),
                 args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalId, friendlyName), typeof(ModuleInfo)));
@@ -420,9 +421,10 @@ namespace DotNetNuke.Web.InternalServices
         {
             var list = new List<int>();
             var configuredList = new List<string>();
-            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForFilters"])))
+            var scopeForFilters = Convert.ToString(settings["ScopeForFilters"], CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(scopeForFilters))
             {
-                configuredList = Convert.ToString(settings["ScopeForFilters"]).Split('|').ToList();
+                configuredList = scopeForFilters.Split('|').ToList();
             }
 
             // check content source in configured list or not
@@ -454,9 +456,10 @@ namespace DotNetNuke.Web.InternalServices
         {
             var list = new List<int>();
             var configuredList = new List<string>();
-            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForFilters"])))
+            var scopeForFilters = Convert.ToString(settings["ScopeForFilters"], CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(scopeForFilters))
             {
-                configuredList = Convert.ToString(settings["ScopeForFilters"]).Split('|').ToList();
+                configuredList = scopeForFilters.Split('|').ToList();
             }
 
             // check content source in configured list or not
@@ -497,13 +500,35 @@ namespace DotNetNuke.Web.InternalServices
             return result.Title;
         }
 
+        private static string GetTabTitleFromModuleId(int moduleId)
+        {
+            // no manual clearing of the cache exists; let it just expire
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, ModuleTitleCacheKey, moduleId);
+
+            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, ModuleTitleCacheTimeOut, ModuleTitleCachePriority, moduleId), GetTabTitleCallBack);
+        }
+
+        private static object GetTabTitleCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var moduleId = (int)cacheItemArgs.ParamList[0];
+            var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
+            if (moduleInfo != null)
+            {
+                var tab = moduleInfo.ParentTab;
+
+                return !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
+            }
+
+            return string.Empty;
+        }
+
         private bool IsWildCardEnabledForModule()
         {
             var searchModuleSettings = this.GetSearchModuleSettings();
             var enableWildSearch = true;
-            if (!string.IsNullOrEmpty(Convert.ToString(searchModuleSettings["EnableWildSearch"])))
+            if (!string.IsNullOrEmpty(Convert.ToString(searchModuleSettings["EnableWildSearch"], CultureInfo.InvariantCulture)))
             {
-                enableWildSearch = Convert.ToBoolean(searchModuleSettings["EnableWildSearch"]);
+                enableWildSearch = Convert.ToBoolean(searchModuleSettings["EnableWildSearch"], CultureInfo.InvariantCulture);
             }
 
             return enableWildSearch;
@@ -529,7 +554,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var searchModule = this.GetSearchModule();
-            return searchModule != null ? searchModule.ModuleSettings : null;
+            return searchModule?.ModuleSettings;
         }
 
         private bool GetBooleanSetting(string settingName, bool defaultValue)
@@ -545,7 +570,7 @@ namespace DotNetNuke.Web.InternalServices
                 return defaultValue;
             }
 
-            return Convert.ToBoolean(settings[settingName]);
+            return Convert.ToBoolean(settings[settingName], CultureInfo.InvariantCulture);
         }
 
         private int GetIntegerSetting(string settingName, int defaultValue)
@@ -561,10 +586,10 @@ namespace DotNetNuke.Web.InternalServices
                 return defaultValue;
             }
 
-            var settingValue = Convert.ToString(settings[settingName]);
+            var settingValue = Convert.ToString(settings[settingName], CultureInfo.InvariantCulture);
             if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
             {
-                return Convert.ToInt32(settingValue);
+                return Convert.ToInt32(settingValue, CultureInfo.InvariantCulture);
             }
 
             return defaultValue;
@@ -573,9 +598,10 @@ namespace DotNetNuke.Web.InternalServices
         private List<int> GetSearchPortalIds(Hashtable settings, int portalId)
         {
             var list = new List<int>();
-            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForPortals"])))
+            var scopeForPortals = Convert.ToString(settings["ScopeForPortals"], CultureInfo.InvariantCulture);
+            if (!string.IsNullOrEmpty(scopeForPortals))
             {
-                list = Convert.ToString(settings["ScopeForPortals"]).Split('|').Select(s => Convert.ToInt32(s)).ToList();
+                list = scopeForPortals.Split('|').Select(s => Convert.ToInt32(s, CultureInfo.InvariantCulture)).ToList();
             }
 
             if (portalId == -1)
@@ -624,7 +650,7 @@ namespace DotNetNuke.Web.InternalServices
             if (result.ModuleDefId > 0 && result.ModuleDefId == this.htmlModuleDefinitionId)
             {
                 // special handling for Html module
-                var tabTitle = this.GetTabTitleFromModuleId(result.ModuleId);
+                var tabTitle = GetTabTitleFromModuleId(result.ModuleId);
                 if (!string.IsNullOrEmpty(tabTitle))
                 {
                     if (result.Title != "Enter Title" && result.Title != "Text/HTML")
@@ -637,28 +663,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return showFriendlyTitle ? GetFriendlyTitle(result) : result.Title;
-        }
-
-        private string GetTabTitleFromModuleId(int moduleId)
-        {
-            // no manual clearing of the cache exists; let is just expire
-            var cacheKey = string.Format(ModuleTitleCacheKey, moduleId);
-
-            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, ModuleTitleCacheTimeOut, ModuleTitleCachePriority, moduleId), this.GetTabTitleCallBack);
-        }
-
-        private object GetTabTitleCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var moduleId = (int)cacheItemArgs.ParamList[0];
-            var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-            if (moduleInfo != null)
-            {
-                var tab = moduleInfo.ParentTab;
-
-                return !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
-            }
-
-            return string.Empty;
         }
 
         public class SynonymsGroupDto

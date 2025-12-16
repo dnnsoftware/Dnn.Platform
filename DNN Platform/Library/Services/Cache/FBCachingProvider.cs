@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Cache
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Security.Cryptography;
     using System.Text;
@@ -102,7 +103,7 @@ namespace DotNetNuke.Services.Cache
             var sOutput = new StringBuilder(arrInput.Length);
             for (i = 0; i <= arrInput.Length - 1; i++)
             {
-                sOutput.Append(arrInput[i].ToString("X2"));
+                sOutput.Append(arrInput[i].ToString("X2", CultureInfo.InvariantCulture));
             }
 
             return sOutput.ToString();
@@ -213,7 +214,7 @@ namespace DotNetNuke.Services.Cache
             }
 
             // return a summary message for the job
-            return string.Format("Cache Synchronization Files Processed: " + f.Length + ", Purged: " + purgedFiles + ", Errors: " + purgeErrors);
+            return $"Cache Synchronization Files Processed: {f.Length}, Purged: {purgedFiles}, Errors: {purgeErrors}";
         }
     }
 }

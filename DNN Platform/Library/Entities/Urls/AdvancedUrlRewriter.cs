@@ -423,7 +423,7 @@ namespace DotNetNuke.Entities.Urls
                     var ps = (PortalSettings)context.Items["PortalSettings"];
                     if (ps != null)
                     {
-                        portalSettings = ps.PortalId.ToString();
+                        portalSettings = ps.PortalId.ToString(CultureInfo.InvariantCulture);
                         if (ps.PortalAlias != null)
                         {
                             portalSettings += ":" + ps.PortalAlias.HTTPAlias;
@@ -434,6 +434,7 @@ namespace DotNetNuke.Entities.Urls
                 response.AppendHeader(
                     "X-" + ProductName + "-Debug",
                     string.Format(
+                        CultureInfo.InvariantCulture,
                         debugMsg,
                         requestUri,
                         finalUrl,
@@ -447,7 +448,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     foreach (string msg in result.DebugMessages)
                     {
-                        response.AppendHeader("X-" + ProductName + "-Debug-" + msgNum.ToString("00"), msg);
+                        response.AppendHeader("X-" + ProductName + "-Debug-" + msgNum.ToString("00", CultureInfo.InvariantCulture), msg);
                         msgNum++;
                     }
                 }
@@ -654,9 +655,10 @@ namespace DotNetNuke.Entities.Urls
                             response.AppendHeader(
                                 errRH,
                                 string.Format(
+                                    CultureInfo.InvariantCulture,
                                     errRV,
                                     "DNN Tab",
-                                    errTab.TabName + "(Tabid:" + errTabId.ToString() + ")",
+                                    $"{errTab.TabName}(Tabid:{errTabId})",
                                     reason));
 
                             // show debug messages even if in debug mode
@@ -805,7 +807,7 @@ namespace DotNetNuke.Entities.Urls
                     // 912 : change to new if statement to handle cases where the TabId404 couldn't be handled correctly
                     if (unhandled404)
                     {
-                        // proces the error on the external Url by rewriting to the external url
+                        // process the error on the external Url by rewriting to the external url
                         if (!string.IsNullOrEmpty(errUrl))
                         {
                             response.ClearContent();
@@ -816,7 +818,7 @@ namespace DotNetNuke.Entities.Urls
                                 reason = result.Reason.ToString();
                             }
 
-                            response.AppendHeader(errRH, string.Format(errRV, "Url", errUrl, reason));
+                            response.AppendHeader(errRH, string.Format(CultureInfo.InvariantCulture, errRV, "Url", errUrl, reason));
                             if (reason404 != null)
                             {
                                 response.AppendHeader("X-Url-Master-404-Data", reason404);
@@ -2061,9 +2063,7 @@ namespace DotNetNuke.Entities.Urls
                 // no secure redirection for physical resources, only tab-specific requests can be redirected for ssl connections
                 if (portalSettings.ActiveTab != null)
                 {
-                    result.DebugMessages.Add("ActiveTab: " + portalSettings.ActiveTab.TabID.ToString() + "/" +
-                                             portalSettings.ActiveTab.TabName + " IsSecure: " +
-                                             portalSettings.ActiveTab.IsSecure.ToString());
+                    result.DebugMessages.Add($"ActiveTab: {portalSettings.ActiveTab.TabID}/{portalSettings.ActiveTab.TabName} IsSecure: {portalSettings.ActiveTab.IsSecure}");
 
                     switch (portalSettings.SSLSetup)
                     {

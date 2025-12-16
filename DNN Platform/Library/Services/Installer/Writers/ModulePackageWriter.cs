@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.IO;
     using System.Xml;
     using System.Xml.XPath;
@@ -158,7 +159,7 @@ namespace DotNetNuke.Services.Installer.Writers
             string viewOrder = Util.ReadElement(controlNav, "vieworder");
             if (!string.IsNullOrEmpty(viewOrder))
             {
-                moduleControl.ViewOrder = int.Parse(viewOrder);
+                moduleControl.ViewOrder = int.Parse(viewOrder, CultureInfo.InvariantCulture);
             }
 
             moduleControl.HelpURL = Util.ReadElement(controlNav, "helpurl");
@@ -214,7 +215,7 @@ namespace DotNetNuke.Services.Installer.Writers
             string cacheTime = Util.ReadElement(moduleNav, "cachetime");
             if (!string.IsNullOrEmpty(cacheTime))
             {
-                definition.DefaultCacheTime = int.Parse(cacheTime);
+                definition.DefaultCacheTime = int.Parse(cacheTime, CultureInfo.InvariantCulture);
             }
 
             // Process legacy controls Node

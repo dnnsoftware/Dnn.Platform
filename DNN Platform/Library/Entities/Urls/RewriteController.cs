@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -142,7 +143,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (!string.IsNullOrEmpty(tab.SkinSrc))
                 {
-                    message = "Tab " + tab.TabID.ToString() + " has skin specified : " + tab.SkinSrc;
+                    message = "Tab " + tab.TabID.ToString(CultureInfo.InvariantCulture) + " has skin specified : " + tab.SkinSrc;
                     if (skin != tab.SkinSrc)
                     {
                         message += " - " + skin + " not applied due to tab specific skin";
@@ -1598,18 +1599,18 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
 
-                        if (customTabAlias == false)
+                        if (!customTabAlias)
                         {
                             int tabId;
                             if (!string.IsNullOrEmpty(querystringCol["TabId"]))
                             {
-                                tabId = Convert.ToInt32(querystringCol["TabId"]);
+                                tabId = Convert.ToInt32(querystringCol["TabId"], CultureInfo.InvariantCulture);
                                 result.Action = ActionType.CheckFor301;
                             }
                             else
                             {
                                 // not a custom alias for a specific tab, so it must be the home page for the portal we identified,
-                                // if its first request and splash page defined, then redirec to splash page.
+                                // if its first request and splash page defined, then redirect to splash page.
                                 if (portal.SplashTabId > Null.NullInteger && HttpContext.Current != null &&
                                     !HttpContext.Current.Request.Cookies.AllKeys.Contains("SplashPageView"))
                                 {
@@ -1718,10 +1719,10 @@ namespace DotNetNuke.Entities.Urls
 
         private static UserInfo GetUser(int portalId, string vanityUrl)
         {
-            string cacheKey = string.Format(CacheController.VanityUrlLookupKey, portalId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, CacheController.VanityUrlLookupKey, portalId);
             var vanityUrlLookupDictionary = CBO.GetCachedObject<Dictionary<string, UserInfo>>(
                 new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId),
-                c => new Dictionary<string, UserInfo>());
+                static c => new Dictionary<string, UserInfo>());
 
             if (!vanityUrlLookupDictionary.TryGetValue(vanityUrl, out var user))
             {
@@ -1771,7 +1772,7 @@ namespace DotNetNuke.Entities.Urls
                         var user = GetUser(PortalController.GetEffectivePortalId(result.PortalId), vanityUrl);
                         if (user != null)
                         {
-                            userParam = "UserId=" + user.UserID.ToString();
+                            userParam = "UserId=" + user.UserID.ToString(CultureInfo.InvariantCulture);
 
                             // Get the User profile Tab
                             var portal = PortalController.Instance.GetPortal(result.PortalId);
@@ -1781,7 +1782,7 @@ namespace DotNetNuke.Entities.Urls
                             string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
 
                             // modify lookup key;
-                            tabLookUpKey = tabLookUpKey.Replace(TabKeySeparator + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), TabKeySeparator + profilePagePath.TrimStart('/').ToLowerInvariant());
+                            tabLookUpKey = tabLookUpKey.Replace($"{TabKeySeparator}{settings.VanityUrlPrefix}/{vanityUrl}", TabKeySeparator + profilePagePath.TrimStart('/').ToLowerInvariant());
 
                             using (tabDict.GetReadLock())
                             {

@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -182,7 +183,7 @@ namespace DotNetNuke.UI.UserControls
                                 this.lblURL.Text = this.FormattedURL;
                             }
 
-                            this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString();
+                            this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString(CultureInfo.CurrentCulture);
 
                             if (objUrlTracking.TrackClicks)
                             {
@@ -201,10 +202,10 @@ namespace DotNetNuke.UI.UserControls
                                     this.lblTrackingURL.Text = this.TrackingURL;
                                 }
 
-                                this.lblClicks.Text = objUrlTracking.Clicks.ToString();
+                                this.lblClicks.Text = objUrlTracking.Clicks.ToString(CultureInfo.CurrentCulture);
                                 if (!Null.IsNull(objUrlTracking.LastClick))
                                 {
-                                    this.lblLastClick.Text = objUrlTracking.LastClick.ToString();
+                                    this.lblLastClick.Text = objUrlTracking.LastClick.ToString(CultureInfo.CurrentCulture);
                                 }
                             }
 
@@ -249,7 +250,12 @@ namespace DotNetNuke.UI.UserControls
 
                 // localize datagrid
                 Localization.LocalizeDataGrid(ref this.grdLog, this.LocalResourceFile);
-                this.grdLog.DataSource = objUrls.GetUrlLog(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID, Convert.ToDateTime(strStartDate), Convert.ToDateTime(strEndDate));
+                this.grdLog.DataSource = objUrls.GetUrlLog(
+                    this.PortalSettings.PortalId,
+                    this.lblLogURL.Text,
+                    this.ModuleID,
+                    Convert.ToDateTime(strStartDate, CultureInfo.CurrentCulture),
+                    Convert.ToDateTime(strEndDate, CultureInfo.CurrentCulture));
                 this.grdLog.DataBind();
             }
             catch (Exception exc)

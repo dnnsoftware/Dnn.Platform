@@ -248,7 +248,7 @@ namespace DotNetNuke.Instrumentation
             {
                 try
                 {
-                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
+                    GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D", CultureInfo.InvariantCulture);
                 }
                 catch
                 {

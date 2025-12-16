@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Caching;
 
@@ -256,7 +257,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 defaultPermissions.RemoveAt(0);
                 var administratorRole = PortalController.Instance.GetPortal(portalId).AdministratorRoleName;
 
-                var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing);
+                var nullRoleId = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
                 var permissions = GetPermissions(menuItem.MenuId)
                     .Where(p => p.MenuId == Null.NullInteger
                                     || (roleName == administratorRole && defaultPermissions.Count == 0) // Administrator gets all granular permissions only if no permission specified explicity.
@@ -266,10 +267,10 @@ namespace Dnn.PersonaBar.Library.Permissions
                 switch (roleName)
                 {
                     case Globals.glbRoleUnauthUserName:
-                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        roleId = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                         break;
                     case Globals.glbRoleAllUsersName:
-                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        roleId = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
                         break;
                     default:
                         var role = RoleController.Instance.GetRoleByName(portalId, roleName);
@@ -334,7 +335,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private static string GetCacheKey(int portalId)
         {
-            return string.Format(PersonaBarMenuPermissionsCacheKey, portalId);
+            return string.Format(CultureInfo.InvariantCulture, PersonaBarMenuPermissionsCacheKey, portalId);
         }
 
         private static IList<PermissionInfo> GetAllPermissions()

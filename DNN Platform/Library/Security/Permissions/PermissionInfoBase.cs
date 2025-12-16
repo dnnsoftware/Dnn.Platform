@@ -5,6 +5,7 @@ namespace DotNetNuke.Security.Permissions
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -35,7 +36,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Initializes a new instance of the <see cref="PermissionInfoBase"/> class.</summary>
         public PermissionInfoBase()
         {
-            this.roleId = int.Parse(Globals.glbRoleNothing);
+            this.roleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
             this.allowAccess = false;
             this.roleName = Null.NullString;
             this.userId = Null.NullInteger;
@@ -171,7 +172,7 @@ namespace DotNetNuke.Security.Permissions
             }
             else
             {
-                @this.RoleId = int.Parse(Globals.glbRoleNothing);
+                @this.RoleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
                 @this.RoleName = string.Empty;
             }
 

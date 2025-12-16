@@ -6,6 +6,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using Dnn.ExportImport.Components.Common;
@@ -63,7 +64,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
 
                 this.Repository.CreateItems(roleGroups);
-                this.Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString());
+                this.Result.AddSummary("Exported Role Groups", roleGroups.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.ProcessedItems = roleGroups.Count;
                 this.CheckPoint.Progress = 30;
                 this.CheckPoint.Stage++;
@@ -87,7 +88,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(roles);
-                this.Result.AddSummary("Exported Roles", roles.Count.ToString());
+                this.Result.AddSummary("Exported Roles", roles.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 80;
                 this.CheckPoint.ProcessedItems += roles.Count;
                 this.CheckPoint.Stage++;
@@ -111,7 +112,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 this.Repository.CreateItems(roleSettings);
-                this.Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
+                this.Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += roleSettings.Count;
                 this.CheckPoint.Completed = true;
@@ -142,7 +143,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 this.ProcessRoleGroups(importJob, importDto, otherRoleGroups);
                 this.Repository.UpdateItems(otherRoleGroups);
-                this.Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString());
+                this.Result.AddSummary("Imported Role Groups", otherRoleGroups.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 40;
                 this.CheckPoint.ProcessedItems = otherRoleGroups.Count;
                 this.CheckPoint.Stage++;
@@ -160,7 +161,7 @@ namespace Dnn.ExportImport.Components.Services
             var otherRoles = this.Repository.GetAllItems<ExportRole>().ToList();
             if (this.CheckPoint.Stage == 1)
             {
-                this.Result.AddSummary("Imported Roles", otherRoles.Count.ToString());
+                this.Result.AddSummary("Imported Roles", otherRoles.Count.ToString(CultureInfo.InvariantCulture));
                 this.ProcessRoles(importJob, importDto, otherRoleGroups, otherRoles);
                 this.Repository.UpdateItems(otherRoles);
                 this.CheckPoint.Progress = 50;
@@ -182,7 +183,7 @@ namespace Dnn.ExportImport.Components.Services
                 var otherRoleSettings = this.Repository.GetAllItems<ExportRoleSetting>().ToList();
                 this.ProcessRoleSettings(importJob, importDto, otherRoles, otherRoleSettings);
                 this.Repository.UpdateItems(otherRoleSettings);
-                this.Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString());
+                this.Result.AddSummary("Imported Role Settings", otherRoleSettings.Count.ToString(CultureInfo.InvariantCulture));
                 this.CheckPoint.Progress = 100;
                 this.CheckPoint.ProcessedItems += otherRoleSettings.Count;
                 this.CheckPoint.Completed = true;
@@ -273,7 +274,7 @@ namespace Dnn.ExportImport.Components.Services
                             };
                             RoleController.UpdateRoleGroup(roleGroup, false);
                             changedGroups.Add(new RoleGroupItem(roleGroup.RoleGroupID, createdBy, modifiedBy));
-                            DataCache.ClearCache(string.Format(DataCache.RoleGroupsCacheKey, local.RoleGroupID));
+                            DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.RoleGroupsCacheKey, local.RoleGroupID));
                             this.Result.AddLogEntry("Updated role group", other.RoleGroupName);
                             break;
                         default:

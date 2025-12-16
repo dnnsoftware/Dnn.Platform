@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions.TabActions
 {
     using System.Data;
     using System.Data.SqlClient;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -80,6 +81,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions.TabActions
         /// <param name="params">The parameters to format the string.</param>
         /// <returns>The formatted localized string value.</returns>
         internal static string GetString(string key, string defaultValue, params object[] @params)
-            => string.Format(GetString(key, defaultValue), @params);
+            => string.Format(CultureInfo.CurrentCulture, GetString(key, defaultValue), @params);
     }
 }

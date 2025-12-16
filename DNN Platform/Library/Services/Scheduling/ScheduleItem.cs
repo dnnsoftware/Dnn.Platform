@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections;
     using System.Data;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -175,7 +176,7 @@ namespace DotNetNuke.Services.Scheduling
 
             if (this.scheduleItemSettings != null && this.scheduleItemSettings.ContainsKey(key))
             {
-                return Convert.ToString(this.scheduleItemSettings[key]);
+                return Convert.ToString(this.scheduleItemSettings[key], CultureInfo.InvariantCulture);
             }
             else
             {

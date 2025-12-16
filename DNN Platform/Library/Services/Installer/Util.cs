@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Net;
     using System.Text;
@@ -452,7 +453,7 @@ namespace DotNetNuke.Services.Installer
             if (File.Exists(fullFileName))
             {
                 RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.DeleteFile(fullFileName), "Delete file " + fullFileName);
-                log.AddInfo(string.Format(FILE_Deleted, fileName));
+                log.AddInfo(string.Format(CultureInfo.InvariantCulture, FILE_Deleted, fileName));
                 string folderName = Path.GetDirectoryName(fullFileName);
                 if (folderName != null)
                 {
@@ -675,7 +676,7 @@ namespace DotNetNuke.Services.Installer
             // Copy File back over install file
             FileSystemUtils.CopyFile(backupFileName, fullFileName);
 
-            log.AddInfo(string.Format(FILE_RestoreBackup, installFile.FullName));
+            log.AddInfo(string.Format(CultureInfo.InvariantCulture, FILE_RestoreBackup, installFile.FullName));
         }
 
         /// <summary>
@@ -966,7 +967,7 @@ namespace DotNetNuke.Services.Installer
 
             // Copy file to the backup location
             RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(fullFileName, backupFileName), "Backup file " + fullFileName);
-            log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
+            log.AddInfo(string.Format(CultureInfo.InvariantCulture, FILE_CreateBackup, installFile.FullName));
         }
 
         /// <summary>The CopyFile method copies a file from the temporary extract location.</summary>
@@ -978,20 +979,20 @@ namespace DotNetNuke.Services.Installer
             string filePath = Path.Combine(basePath, installFile.Path);
             string fullFileName = Path.Combine(basePath, installFile.FullName);
 
-            // create the folder if neccessary
+            // create the folder if necessary
             if (!Directory.Exists(filePath))
             {
-                log.AddInfo(string.Format(FOLDER_Created, filePath));
+                log.AddInfo(string.Format(CultureInfo.InvariantCulture, FOLDER_Created, filePath));
                 Directory.CreateDirectory(filePath);
             }
 
             // Copy file from temp location
             RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(installFile.TempFileName, fullFileName), "Copy file to " + fullFileName);
 
-            log.AddInfo(string.Format(FILE_Created, installFile.FullName));
+            log.AddInfo(string.Format(CultureInfo.InvariantCulture, FILE_Created, installFile.FullName));
         }
 
-        /// <summary>The StreamToStream method reads a source stream and wrtites it to a destination stream.</summary>
+        /// <summary>The StreamToStream method reads a source stream and writes it to a destination stream.</summary>
         /// <param name="sourceStream">The Source Stream.</param>
         /// <param name="destStream">The Destination Stream.</param>
         private static void StreamToStream(Stream sourceStream, Stream destStream)
@@ -1015,19 +1016,19 @@ namespace DotNetNuke.Services.Installer
             if (folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0)
             {
                 folder.Delete();
-                log.AddInfo(string.Format(FOLDER_Deleted, folder.Name));
+                log.AddInfo(string.Format(CultureInfo.InvariantCulture, FOLDER_Deleted, folder.Name));
                 TryDeleteFolder(folder.Parent, log);
             }
         }
 
-        private static string ValidateNode(string propValue, bool isRequired, Logger log, string logmessage, string defaultValue)
+        private static string ValidateNode(string propValue, bool isRequired, Logger log, string logMessage, string defaultValue)
         {
             if (string.IsNullOrEmpty(propValue))
             {
                 if (isRequired)
                 {
                     // Log Error
-                    log.AddFailure(logmessage);
+                    log.AddFailure(logMessage);
                 }
                 else
                 {

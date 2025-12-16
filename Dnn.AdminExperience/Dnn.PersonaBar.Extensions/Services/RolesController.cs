@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Roles.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -82,8 +83,7 @@ namespace Dnn.PersonaBar.Roles.Services
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = "Edit")]
         public HttpResponseMessage DeleteRole(RoleDto roleDto)
         {
-            KeyValuePair<HttpStatusCode, string> message;
-            var roleName = Components.RolesController.Instance.DeleteRole(this.PortalSettings, roleDto.Id, out message);
+            var roleName = Components.RolesController.Instance.DeleteRole(this.PortalSettings, roleDto.Id, out var message);
             return !string.IsNullOrEmpty(roleName) ? this.Request.CreateResponse(HttpStatusCode.OK, new { roleId = roleDto.Id })
                 : this.Request.CreateErrorResponse(message.Key, message.Value);
         }
@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.Roles.Services
             {
                 if (reload)
                 {
-                    DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, this.PortalId));
+                    DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RoleGroupsCacheKey, this.PortalId));
                 }
 
                 var groups = RoleController.GetRoleGroups(this.PortalId)

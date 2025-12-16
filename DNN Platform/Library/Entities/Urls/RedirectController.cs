@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using System.Web;
 
@@ -220,7 +221,7 @@ namespace DotNetNuke.Entities.Urls
                                             // changes the tabid of page, effects a page redirect along with a parameter redirect
                                             if (int.TryParse(parmPart, out tabId))
                                             {
-                                                parms = parms.Replace("tabid/" + tabId.ToString(), string.Empty);
+                                                parms = parms.Replace("tabid/" + tabId.ToString(CultureInfo.InvariantCulture), string.Empty);
                                             }
 
                                             // remove the tabid/xx from the path
@@ -276,16 +277,16 @@ namespace DotNetNuke.Entities.Urls
                                         {
                                             result.DebugMessages.Add(parmRedirect.Name +
                                                                      " tabId in redirect rule (tabId:" +
-                                                                     tabId.ToString() + ", portalId:" +
-                                                                     result.PortalId.ToString() +
+                                                                     tabId.ToString(CultureInfo.InvariantCulture) + ", portalId:" +
+                                                                     result.PortalId.ToString(CultureInfo.InvariantCulture) +
                                                                      " ), tab was not found");
                                         }
                                         else
                                         {
                                             result.DebugMessages.Add(parmRedirect.Name +
                                                                      " tabId in redirect rule (tabId:" +
-                                                                     tabId.ToString() + ", portalId:" +
-                                                                     result.PortalId.ToString() + " ), tab found : " +
+                                                                     tabId.ToString(CultureInfo.InvariantCulture) + ", portalId:" +
+                                                                     result.PortalId.ToString(CultureInfo.InvariantCulture) + " ), tab found : " +
                                                                      tab.TabName);
                                         }
                                     }

@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private static string GetModifiedTime(DateTime dateTime)
         {
-            return string.Format("{0:MMM} {0:dd}, {0:yyyy} at {0:t}", dateTime);
+            return string.Format(CultureInfo.CurrentCulture, "{0:MMM} {0:dd}, {0:yyyy} at {0:t}", dateTime);
         }
 
         private static string GetTypeName(IFileInfo file)

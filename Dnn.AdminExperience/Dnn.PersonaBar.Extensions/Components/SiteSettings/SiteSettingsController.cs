@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             {
                 try
                 {
-                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select string.Format("{0}, {1}", t.FullName, assembly.GetName().Name));
+                    analyzers.AddRange(from t in assembly.GetTypes() where IsAnalyzerType(t) && IsAllowType(t) select $"{t.FullName}, {assembly.GetName().Name}");
                 }
                 catch (Exception)
                 {

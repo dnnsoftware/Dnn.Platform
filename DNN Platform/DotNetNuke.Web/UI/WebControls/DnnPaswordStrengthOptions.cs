@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Runtime.Serialization;
 
     using DotNetNuke.Entities.Portals;
@@ -104,17 +105,17 @@ namespace DotNetNuke.Web.UI.WebControls
         [OnSerializing]
         public void OnSerializing(StreamingContext context)
         {
-            int portalId = PortalController.Instance.GetCurrentPortalSettings() != null ? PortalController.Instance.GetCurrentPortalSettings().PortalId : -1;
+            int portalId = PortalController.Instance.GetCurrentSettings()?.PortalId ?? -1;
             var settings = new MembershipPasswordSettings(portalId);
 
             this.MinLength = settings.MinPasswordLength;
-            this.CriteriaAtLeastNCharsText = string.Format(this.CriteriaAtLeastNCharsText, this.MinLength);
+            this.CriteriaAtLeastNCharsText = string.Format(CultureInfo.CurrentCulture, this.CriteriaAtLeastNCharsText, this.MinLength);
 
             this.MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters;
-            this.CriteriaAtLeastNSpecialCharsText = string.Format(this.CriteriaAtLeastNSpecialCharsText, this.MinNumberOfSpecialChars);
+            this.CriteriaAtLeastNSpecialCharsText = string.Format(CultureInfo.CurrentCulture, this.CriteriaAtLeastNSpecialCharsText, this.MinNumberOfSpecialChars);
 
             this.ValidationExpression = settings.ValidationExpression;
-            this.CriteriaValidationExpressionText = string.Format(this.CriteriaValidationExpressionText, this.ValidationExpression);
+            this.CriteriaValidationExpressionText = string.Format(CultureInfo.CurrentCulture, this.CriteriaValidationExpressionText, this.ValidationExpression);
         }
     }
 }

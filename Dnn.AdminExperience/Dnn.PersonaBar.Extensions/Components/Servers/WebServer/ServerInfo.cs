@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Servers.Components.WebServer
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Net;
     using System.Security.Principal;
     using System.Web;
@@ -42,6 +43,6 @@ namespace Dnn.PersonaBar.Servers.Components.WebServer
         public string RelativePath => string.IsNullOrEmpty(Globals.ApplicationPath) ? "/" : Globals.ApplicationPath;
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string ServerTime => DateTime.Now.ToString();
+        public string ServerTime => DateTime.Now.ToString(CultureInfo.CurrentCulture);
     }
 }

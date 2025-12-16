@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Tabs
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -24,11 +25,11 @@ namespace DotNetNuke.Entities.Tabs
         /// <inheritdoc/>
         public bool IsTabPublished(int tabID, int portalID)
         {
-            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
             var tab = TabController.Instance.GetTab(tabID, portalID);
 
             var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
-            return existPermission != null && existPermission.AllowAccess;
+            return existPermission is { AllowAccess: true, };
         }
 
         /// <inheritdoc/>
@@ -65,14 +66,14 @@ namespace DotNetNuke.Entities.Tabs
             Hashtable settings = TabController.Instance.GetTabSettings(tabID);
             if (settings["WorkflowID"] != null)
             {
-                return Convert.ToInt32(settings["WorkflowID"]) == 1; // If workflowID is 1, then the Page workflow is Direct Publish
+                return Convert.ToInt32(settings["WorkflowID"], CultureInfo.InvariantCulture) == 1; // If workflowID is 1, then the Page workflow is Direct Publish
             }
 
             // If workflowID is 1, then the Page workflow is Direct Publish
             // If WorkflowID is -1, then there is no Workflow setting
-            var workflowID = Convert.ToInt32(PortalController.GetPortalSetting("WorkflowID", portalID, "-1"));
+            var workflowId = Convert.ToInt32(PortalController.GetPortalSetting("WorkflowID", portalID, "-1"), CultureInfo.InvariantCulture);
 
-            return workflowID is 1 or -1;
+            return workflowId is 1 or -1;
         }
 
         /// <inheritdoc/>
@@ -83,7 +84,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private static void PublishTabInternal(TabInfo tab)
         {
-            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
             var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             if (existPermission != null)

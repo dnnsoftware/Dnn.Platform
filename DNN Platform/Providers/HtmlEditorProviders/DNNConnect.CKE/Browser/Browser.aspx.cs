@@ -10,6 +10,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -1385,7 +1386,7 @@ public partial class Browser : PageBase
                 {
                     FolderID = folderInfo.FolderID,
                     UserID = currentUserInfo.UserID,
-                    RoleID = Convert.ToInt32(Globals.glbRoleNothing),
+                    RoleID = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture),
                     AllowAccess = true,
                 };
         foreach (var folderPermission in folderPermissions)

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Syndication
 {
     using System;
+    using System.Globalization;
     using System.Xml;
 
     using DotNetNuke.Instrumentation;
@@ -122,12 +123,12 @@ namespace DotNetNuke.Services.Syndication
 
                 if (dateCreated != null)
                 {
-                    @out.DateCreated = DateTime.Parse(dateCreated.InnerText);
+                    @out.DateCreated = DateTime.Parse(dateCreated.InnerText, CultureInfo.InvariantCulture);
                 }
 
                 if (dateModified != null)
                 {
-                    @out.DateModified = DateTime.Parse(dateModified.InnerText);
+                    @out.DateModified = DateTime.Parse(dateModified.InnerText, CultureInfo.InvariantCulture);
                 }
 
                 if (ownerName != null)
@@ -340,7 +341,7 @@ namespace DotNetNuke.Services.Syndication
             newOutline.IsBreakpoint = ParseElement(node, "isBreakpoint") == "true" ? true : false;
             try
             {
-                newOutline.Created = DateTime.Parse(ParseElement(node, "created"));
+                newOutline.Created = DateTime.Parse(ParseElement(node, "created"), CultureInfo.InvariantCulture);
             }
             catch (Exception ex)
             {

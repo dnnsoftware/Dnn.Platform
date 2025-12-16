@@ -154,7 +154,7 @@ namespace Dnn.PersonaBar.Pages.Components
             if (tabId != Null.NullInteger && (tab == null || tabId != tab.TabID))
             {
                 var existingTab = this.tabController.GetTab(tabId, portalSettings.PortalId, false);
-                if (existingTab != null && existingTab.IsDeleted)
+                if (existingTab is { IsDeleted: true })
                 {
                     errorMessage = Localization.GetString("TabRecycled");
                 }
@@ -166,20 +166,19 @@ namespace Dnn.PersonaBar.Pages.Components
                 valid = false;
             }
 
-            // check whether have conflict between tab path and portal alias.
+            // check whether there is a conflict between tab path and portal alias.
             if (valid && TabController.IsDuplicateWithPortalAlias(portalSettings.PortalId, newTabPath))
             {
-                errorMessage = string.Format(Localization.GetString("PathDuplicateWithAlias"), newTabName, newTabPath);
+                errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("PathDuplicateWithAlias"), newTabName, newTabPath);
                 valid = false;
             }
 
             if (valid)
             {
-                bool modified;
-                FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger, portalSettings, out modified);
+                FriendlyUrlController.ValidateUrl(newTabPath.TrimStart('/'), tab?.TabID ?? Null.NullInteger, portalSettings, out var modified);
                 if (modified)
                 {
-                    errorMessage = string.Format(Localization.GetString("PathDuplicateWithPage"), newTabPath);
+                    errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("PathDuplicateWithPage"), newTabPath);
                     valid = false;
                 }
             }
@@ -190,7 +189,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         public List<int> GetPageHierarchy(int pageId)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var tab = TabController.Instance.GetTab(pageId, portalSettings.PortalId);
             if (tab == null)
             {
@@ -213,7 +212,7 @@ namespace Dnn.PersonaBar.Pages.Components
         /// <inheritdoc/>
         public TabInfo MovePage(PageMoveRequest request)
         {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var tab = TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);
             if (tab == null)
             {
@@ -222,14 +221,12 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (request.Action == "parent" && tab.ParentId != request.ParentId)
             {
-                string errorMessage;
-
-                if (!this.IsValidTabPath(tab, Globals.GenerateTabPath(request.ParentId, tab.TabName), tab.TabName, out errorMessage))
+                if (!this.IsValidTabPath(tab, Globals.GenerateTabPath(request.ParentId, tab.TabName), tab.TabName, out var errorMessage))
                 {
                     throw new PageException(errorMessage);
                 }
             }
-            else if (request.Action == "before" || request.Action == "after")
+            else if (request.Action is "before" or "after")
             {
                 var relatedTab = TabController.Instance.GetTab(request.RelatedPageId, portalSettings.PortalId);
                 if (relatedTab == null)
@@ -237,9 +234,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     throw new PageNotFoundException();
                 }
 
-                string errorMessage;
-
-                if (tab.ParentId != relatedTab.ParentId && !this.IsValidTabPath(tab, Globals.GenerateTabPath(relatedTab.ParentId, tab.TabName), tab.TabName, out errorMessage))
+                if (tab.ParentId != relatedTab.ParentId && !this.IsValidTabPath(tab, Globals.GenerateTabPath(relatedTab.ParentId, tab.TabName), tab.TabName, out var errorMessage))
                 {
                     throw new PageException(errorMessage);
                 }
@@ -264,7 +259,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     break;
             }
 
-            // as tab's parent may changed, url need refresh.
+            // as tab's parent may have changed, url need refresh.
             return TabController.Instance.GetTab(request.PageId, portalSettings.PortalId);
         }
 
@@ -919,8 +914,8 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 foreach (var rolePermission in permissions.RolePermissions.Where(NoLocked()))
                 {
-                    if (rolePermission.RoleId.ToString() == Globals.glbRoleAllUsers
-                        || rolePermission.RoleId.ToString() == Globals.glbRoleUnauthUser
+                    if (rolePermission.RoleId.ToString(CultureInfo.InvariantCulture) == Globals.glbRoleAllUsers
+                        || rolePermission.RoleId.ToString(CultureInfo.InvariantCulture) == Globals.glbRoleUnauthUser
                         || RoleController.Instance.GetRoleById(portalSettings.PortalId, rolePermission.RoleId) != null)
                     {
                         foreach (var permission in rolePermission.Permissions)
@@ -1087,7 +1082,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
                 else if (errorMessage.Equals("InvalidTabName", StringComparison.OrdinalIgnoreCase))
                 {
-                    errorMessage = string.Format(Localization.GetString("InvalidTabName"), pageSettings.Name);
+                    errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("InvalidTabName"), pageSettings.Name);
                 }
                 else
                 {
@@ -1571,7 +1566,7 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 if (sourceTab.TabSettings.ContainsKey(key))
                 {
-                    this.tabController.UpdateTabSetting(tab.TabID, key, Convert.ToString(sourceTab.TabSettings[key]));
+                    this.tabController.UpdateTabSetting(tab.TabID, key, Convert.ToString(sourceTab.TabSettings[key], CultureInfo.InvariantCulture));
                 }
             }
         }

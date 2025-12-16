@@ -447,7 +447,7 @@ Namespace DotNetNuke.UI.Utilities
             Return GetCallbackEventReference(objControl, strArgument, strClientCallBack, strContext, srtClientErrorCallBack, strClientStatusCallBack, strPostChildrenOfId, ClientAPICallBackResponse.CallBackTypeCode.Simple)
         End Function
         Public Shared Function GetCallbackEventReference(ByVal objControl As Control, ByVal strArgument As String, ByVal strClientCallBack As String, ByVal strContext As String, ByVal srtClientErrorCallBack As String, ByVal strClientStatusCallBack As String, ByVal strPostChildrenOfId As String, ByVal eCallbackType As ClientAPICallBackResponse.CallBackTypeCode) As String
-            Dim strCallbackType As String = CInt(eCallbackType).ToString
+            Dim strCallbackType As String = CInt(eCallbackType).ToString(CultureInfo.InvariantCulture)
             If strArgument Is Nothing Then strArgument = "null"
             If strContext Is Nothing Then strContext = "null"
             If srtClientErrorCallBack Is Nothing Then srtClientErrorCallBack = "null"
@@ -470,7 +470,7 @@ Namespace DotNetNuke.UI.Utilities
                     strControlID = strControlID & " " & objControl.ClientID                   'ID is not unique (obviously)
                 End If
 
-                Return String.Format("dnn.xmlhttp.doCallBack('{0}',{1},{2},{3},{4},{5},{6},{7},{8});", strControlID, strArgument, strClientCallBack, strContext, srtClientErrorCallBack, strClientStatusCallBack, "null", strPostChildrenOfId, strCallbackType)
+                Return String.Format(CultureInfo.InvariantCulture, "dnn.xmlhttp.doCallBack('{0}',{1},{2},{3},{4},{5},{6},{7},{8});", strControlID, strArgument, strClientCallBack, strContext, srtClientErrorCallBack, strClientStatusCallBack, "null", strPostChildrenOfId, strCallbackType)
             Else
                 Return ""
             End If
@@ -975,7 +975,7 @@ Namespace DotNetNuke.UI.Utilities
                 If String.IsNullOrEmpty(FriendlyID) Then
                     format = "{0}={2} "
                 End If
-                ClientAPI.RegisterClientVariable(CallbackControl.Page, "__dnncbm", String.Format(format, name, FriendlyID, CallbackControl.UniqueID), False)
+                ClientAPI.RegisterClientVariable(CallbackControl.Page, "__dnncbm", String.Format(CultureInfo.InvariantCulture, format, name, FriendlyID, CallbackControl.UniqueID), False)
 
                 If BrowserSupportsFunctionality(ClientFunctionality.XMLHTTP) AndAlso BrowserSupportsFunctionality(ClientFunctionality.XML) Then
                     DotNetNuke.UI.Utilities.ClientAPI.RegisterClientReference(CallbackControl.Page, DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn_xml)

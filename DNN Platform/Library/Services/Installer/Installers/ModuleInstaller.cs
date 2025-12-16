@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -60,7 +61,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 // Add custom Attributes for this message
                 oAppStartMessage.Attributes.Add("BusinessControllerClass", this.desktopModule.BusinessControllerClass);
-                oAppStartMessage.Attributes.Add("desktopModuleID", this.desktopModule.DesktopModuleID.ToString());
+                oAppStartMessage.Attributes.Add("desktopModuleID", this.desktopModule.DesktopModuleID.ToString(CultureInfo.InvariantCulture));
 
                 // send it to occur on next App_Start Event
                 EventQueueController.SendMessage(oAppStartMessage, "Application_Start_FirstRequest");
@@ -71,7 +72,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (!string.IsNullOrEmpty(this.eventMessage.Attributes["UpgradeVersionsList"]))
                 {
-                    this.eventMessage.Attributes.Set("desktopModuleID", this.desktopModule.DesktopModuleID.ToString());
+                    this.eventMessage.Attributes.Set("desktopModuleID", this.desktopModule.DesktopModuleID.ToString(CultureInfo.InvariantCulture));
                     EventQueueController.SendMessage(this.eventMessage, "Application_Start");
                 }
             }
@@ -85,19 +86,19 @@ namespace DotNetNuke.Services.Installer.Installers
             // Add DesktopModule to all portals
             if (!string.IsNullOrEmpty(this.desktopModule.AdminPage))
             {
-                foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+                foreach (IPortalInfo portal in PortalController.Instance.GetPortals())
                 {
                     bool createdNewPage = false, addedNewModule = false;
-                    DesktopModuleController.AddDesktopModulePageToPortal(this.desktopModule, this.desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
+                    DesktopModuleController.AddDesktopModulePageToPortal(this.desktopModule, this.desktopModule.AdminPage, portal.PortalId, ref createdNewPage, ref addedNewModule);
 
                     if (createdNewPage)
                     {
-                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPageAdded, this.desktopModule.AdminPage, portal.PortalID));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPageAdded, this.desktopModule.AdminPage, portal.PortalId));
                     }
 
                     if (addedNewModule)
                     {
-                        this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleAdded, this.desktopModule.AdminPage, portal.PortalID));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPagemoduleAdded, this.desktopModule.AdminPage, portal.PortalId));
                     }
                 }
             }
@@ -110,12 +111,12 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 if (createdNewPage)
                 {
-                    this.Log.AddInfo(string.Format(Util.MODULE_HostPageAdded, this.desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPageAdded, this.desktopModule.HostPage));
                 }
 
                 if (addedNewModule)
                 {
-                    this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleAdded, this.desktopModule.HostPage));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPagemoduleAdded, this.desktopModule.HostPage));
                 }
             }
         }
@@ -136,7 +137,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.desktopModule.Category = this.installedDesktopModule.Category;
                 }
 
-                // Clear ModuleControls and Module Definitions caches in case script has modifed the contents
+                // Clear ModuleControls and Module Definitions caches in case script has modified the contents
                 DataCache.RemoveCache(DataCache.ModuleDefinitionCacheKey);
                 DataCache.RemoveCache(DataCache.ModuleControlsCacheKey);
 
@@ -145,7 +146,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.desktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(this.desktopModule, true, false);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.MODULE_Registered, this.desktopModule.ModuleName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_Registered, this.desktopModule.ModuleName));
             }
             catch (Exception ex)
             {
@@ -252,7 +253,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     var controller = new DesktopModuleController();
 
-                    this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
 
                     // remove admin/host pages
                     if (!string.IsNullOrEmpty(tempDesktopModule.AdminPage))
@@ -283,11 +284,11 @@ namespace DotNetNuke.Services.Installer.Installers
 
                                 if (noOtherTabModule)
                                 {
-                                    this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalId));
+                                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalId));
                                     TabController.Instance.DeleteTab(moduleAdminTabId, portal.PortalId);
                                 }
 
-                                this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalId));
+                                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalId));
                             }
                         }
                     }
@@ -295,8 +296,8 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (!string.IsNullOrEmpty(tempDesktopModule.HostPage))
                     {
                         Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
-                        this.Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
-                        this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
+                        this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);

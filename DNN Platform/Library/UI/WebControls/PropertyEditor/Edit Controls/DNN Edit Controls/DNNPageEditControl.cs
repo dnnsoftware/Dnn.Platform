@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -38,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
                 TabInfo tab = listTabs[tabIndex];
 
                 // Add the Value Attribute
-                writer.AddAttribute(HtmlTextWriterAttribute.Value, tab.TabID.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Value, tab.TabID.ToString(CultureInfo.InvariantCulture));
 
                 if (tab.TabID == this.IntegerValue)
                 {

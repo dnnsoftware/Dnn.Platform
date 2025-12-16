@@ -5,6 +5,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -367,11 +368,11 @@ namespace DotNetNuke.Entities.Portals
                     LogTypeKey = eventType.ToString(),
                 };
                 log.LogProperties.Add(new LogDetailInfo("PortalGroup:", portalGroup.PortalGroupName));
-                log.LogProperties.Add(new LogDetailInfo("PortalGroupID:", portalGroup.PortalGroupId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("PortalGroupID:", portalGroup.PortalGroupId.ToString(CultureInfo.InvariantCulture)));
                 if (portal != null)
                 {
                     log.LogProperties.Add(new LogDetailInfo("Portal:", portal.PortalName));
-                    log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalID.ToString()));
+                    log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalID.ToString(CultureInfo.InvariantCulture)));
                 }
 
                 LogController.Instance.AddLog(log);

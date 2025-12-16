@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
@@ -102,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         formatPrice = this.FormatPrice(price);
                         break;
                     default:
-                        formatPrice = string.Format(Localization.GetString("Fee", this.LocalResourceFile), this.FormatPrice(price), period, Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
+                        formatPrice = string.Format(CultureInfo.CurrentCulture, Localization.GetString("Fee", this.LocalResourceFile), this.FormatPrice(price), period, Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
                         break;
                 }
             }

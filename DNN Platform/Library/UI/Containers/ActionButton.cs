@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Containers
 {
+    using System.Globalization;
+
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Internal.SourceGenerators;
 
@@ -149,7 +151,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>  Action_Click responds to an Action Event in the contained actionButtonList.</summary>
         private void Action_Click(object sender, ActionEventArgs e)
         {
-            this.ProcessAction(e.Action.ID.ToString());
+            this.ProcessAction(e.Action.ID.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

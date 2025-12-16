@@ -4,6 +4,7 @@
 namespace DotNetNuke.Modules.Admin.Modules
 {
     using System;
+    using System.Globalization;
     using System.IO;
 
     using DotNetNuke.Abstractions;
@@ -160,7 +161,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 if (displaySource)
                 {
                     srcFile = this.GetSourceFileName(srcVirtualPath);
-                    this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), srcFile);
+                    this.lblSourceFile.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SourceFile", this.LocalResourceFile), srcFile);
 
                     var objStreamReader = File.OpenText(srcFile);
                     this.txtSource.Text = objStreamReader.ReadToEnd();

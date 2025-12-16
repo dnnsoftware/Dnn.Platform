@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var parentFolder = FolderManager.Instance.GetFolder(selectedFolder.ParentID);
                 while (parentFolder != null)
                 {
-                    folderLevel = string.Format("{0},{1}", parentFolder.FolderID, folderLevel);
+                    folderLevel = $"{parentFolder.FolderID},{folderLevel}";
                     parentFolder = (parentFolder.ParentID < 0) ? null : FolderManager.Instance.GetFolder(parentFolder.ParentID);
                 }
 

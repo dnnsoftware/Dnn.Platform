@@ -5,6 +5,7 @@
 namespace DotNetNuke.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
 
     using DotNetNuke.Common.Utilities;
@@ -50,13 +51,13 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
             if (length > Null.NullInteger)
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString(CultureInfo.InvariantCulture));
             }
 
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.AddAttribute("data-name", this.Name);
-            writer.AddAttribute("data-pid", Entities.Portals.PortalSettings.Current.PortalId.ToString());
+            writer.AddAttribute("data-pid", Entities.Portals.PortalSettings.Current.PortalId.ToString(CultureInfo.InvariantCulture));
             writer.AddAttribute("data-editor", "AutoCompleteControl");
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();

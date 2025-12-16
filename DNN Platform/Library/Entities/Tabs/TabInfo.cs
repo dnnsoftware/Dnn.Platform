@@ -386,7 +386,7 @@ namespace DotNetNuke.Entities.Tabs
                                 break;
                             case TabType.Tab:
                                 // alternate tab url
-                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(this.Url));
+                                fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(this.Url, CultureInfo.InvariantCulture));
                                 break;
                             case TabType.File:
                                 // file url
@@ -851,7 +851,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case "sitemappriority":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(), format);
+                    result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(formatProvider), format);
                     break;
             }
 
@@ -1100,9 +1100,9 @@ namespace DotNetNuke.Entities.Tabs
             else if (iconFile == null && !string.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
             {
                 IFileInfo fileInfo;
-                if (iconRaw.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))
+                if (iconRaw.StartsWith("FileID=", StringComparison.OrdinalIgnoreCase))
                 {
-                    var fileId = Convert.ToInt32(iconRaw.Substring(7));
+                    var fileId = Convert.ToInt32(iconRaw.Substring(7), CultureInfo.InvariantCulture);
                     fileInfo = FileManager.Instance.GetFile(fileId);
                 }
                 else

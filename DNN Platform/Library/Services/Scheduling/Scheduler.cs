@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Scheduling
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Security.Principal;
     using System.Text;
@@ -278,7 +279,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         foreach (ScheduleHistoryItem item in ScheduleInProgress)
                         {
-                            c.Add(item, item.ScheduleID.ToString(), null, null);
+                            c.Add(item, item.ScheduleID.ToString(CultureInfo.InvariantCulture), null, null);
                         }
                     }
                 }
@@ -333,7 +334,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         foreach (ScheduleItem item in ScheduleQueue)
                         {
-                            c.Add(item, item.ScheduleID.ToString(), null, null);
+                            c.Add(item, item.ScheduleID.ToString(CultureInfo.InvariantCulture), null, null);
                         }
                     }
 
@@ -930,15 +931,15 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_COMPLETED" };
                         log.AddProperty("TYPE", schedulerClient.GetType().FullName);
-                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart, CultureInfo.InvariantCulture));
                         log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
-                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
-                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString(CultureInfo.InvariantCulture));
                         LogController.Instance.AddLog(log);
                     }
                 }
@@ -1019,21 +1020,21 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         // Write out the log entry for this event
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_FAILURE" };
-                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString(CultureInfo.InvariantCulture));
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         if (exception != null)
                         {
                             log.AddProperty("EXCEPTION", exception.Message);
                         }
 
-                        log.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
+                        log.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart, CultureInfo.InvariantCulture));
                         log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
-                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
-                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString(CultureInfo.InvariantCulture));
                         LogController.Instance.AddLog(log);
                     }
                 }
@@ -1053,15 +1054,15 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         // Write out the log entry for this event
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_PROGRESSING" };
-                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString(CultureInfo.InvariantCulture));
                         log.AddProperty("TYPE", schedulerClient.GetType().FullName);
                         log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
-                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
-                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString(CultureInfo.InvariantCulture));
                         LogController.Instance.AddLog(log);
                     }
                 }
@@ -1102,15 +1103,15 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         // Write out the log entry for this event
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_STARTED" };
-                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString(CultureInfo.InvariantCulture));
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
-                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString());
-                        log.AddProperty("FREE THREADS", FreeThreads.ToString());
-                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString());
-                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString());
-                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString());
-                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString());
+                        log.AddProperty("ACTIVE THREADS", activeThreadCount.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("FREE THREADS", FreeThreads.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("READER TIMEOUTS", readerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("WRITER TIMEOUTS", writerTimeouts.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN PROGRESS", GetScheduleInProgressCount().ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("IN QUEUE", GetScheduleQueueCount().ToString(CultureInfo.InvariantCulture));
                         LogController.Instance.AddLog(log);
                     }
                 }
@@ -1246,8 +1247,8 @@ namespace DotNetNuke.Services.Scheduling
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_COMPLETED" };
                         log.AddProperty("REASON", "Scheduler task has been stopped manually");
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
-                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
-                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
+                        log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart, CultureInfo.InvariantCulture));
                         LogController.Instance.AddLog(log);
                     }
                 }
@@ -1494,7 +1495,7 @@ namespace DotNetNuke.Services.Scheduling
 
                     var log = new LogInfo();
                     log.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
-                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString(CultureInfo.InvariantCulture));
                     log.AddProperty("TYPE FULL NAME", scheduleItem.TypeFullName);
                     log.LogTypeKey = "DEBUG";
                     LogController.Instance.AddLog(log);
@@ -1507,7 +1508,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     var log = new LogInfo();
                     log.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);
-                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString(CultureInfo.InvariantCulture));
                     log.LogTypeKey = "DEBUG";
                     LogController.Instance.AddLog(log);
                 }

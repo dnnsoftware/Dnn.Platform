@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Xml.XPath;
@@ -278,7 +279,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         private bool ProcessCleanupFile()
         {
-            this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
                 var strListFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this.fileName);
@@ -289,19 +290,19 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-                this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
+                this.Log.AddWarning(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessError, ex.Message));
 
                 // DNN-9202: MUST NOT fail installation when cleanup files deletion fails
                 // return false;
             }
 
-            this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
 
         private bool ProcessGlob()
         {
-            this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_Processing, this.Version.ToString(3)));
             try
             {
                 if (this.glob.Contains(".."))
@@ -318,10 +319,10 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-                this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
+                this.Log.AddWarning(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessError, ex.Message));
             }
 
-            this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
+            this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
     }

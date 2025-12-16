@@ -151,7 +151,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["FileFilter"] != null)
                 {
-                    return Convert.ToString(this.ViewState["FileFilter"]);
+                    return Convert.ToString(this.ViewState["FileFilter"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -175,7 +175,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["IncludeActiveTab"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["IncludeActiveTab"]);
+                    return Convert.ToBoolean(this.ViewState["IncludeActiveTab"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.UserControls
                 int myMid = -2;
                 if (this.ViewState["ModuleId"] != null)
                 {
-                    myMid = Convert.ToInt32(this.ViewState["ModuleId"]);
+                    myMid = Convert.ToInt32(this.ViewState["ModuleId"], CultureInfo.InvariantCulture);
                 }
                 else if (this.Request.QueryString["mid"] != null)
                 {
@@ -261,7 +261,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["Required"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["Required"]);
+                    return Convert.ToBoolean(this.ViewState["Required"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -285,7 +285,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["ShowFiles"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowFiles"]);
+                    return Convert.ToBoolean(this.ViewState["ShowFiles"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -309,7 +309,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["ShowImages"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowImages"]);
+                    return Convert.ToBoolean(this.ViewState["ShowImages"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -359,7 +359,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["ShowNone"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowNone"]);
+                    return Convert.ToBoolean(this.ViewState["ShowNone"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -383,7 +383,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["ShowTabs"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowTabs"]);
+                    return Convert.ToBoolean(this.ViewState["ShowTabs"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -420,7 +420,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["ShowUpLoad"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUpLoad"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -444,7 +444,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["ShowUrls"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowUrls"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUrls"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -468,7 +468,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.ViewState["ShowUsers"] != null)
                 {
-                    return Convert.ToBoolean(this.ViewState["ShowUsers"]);
+                    return Convert.ToBoolean(this.ViewState["ShowUsers"], CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -534,7 +534,7 @@ namespace DotNetNuke.UI.UserControls
                         if (this.cboTabs.SelectedItem != null)
                         {
                             strTab = this.cboTabs.SelectedItem.Value;
-                            if (Globals.NumberMatchRegex.IsMatch(strTab) && (Convert.ToInt32(strTab) >= 0))
+                            if (Globals.NumberMatchRegex.IsMatch(strTab) && (Convert.ToInt32(strTab, CultureInfo.InvariantCulture) >= 0))
                             {
                                 r = strTab;
                             }
@@ -594,7 +594,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["UrlType"]);
+                return Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -614,7 +614,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlWidth"]);
+                return Convert.ToString(this.ViewState["SkinControlWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -667,7 +667,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
+                    this.objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"], CultureInfo.InvariantCulture));
                 }
                 else
                 {
@@ -878,10 +878,10 @@ namespace DotNetNuke.UI.UserControls
             parentFolderName += this.cboFolders.SelectedItem.Value;
 
             string strExtension = Path.GetExtension(this.txtFile.PostedFile.FileName).Replace(".", string.Empty);
-            if (!string.IsNullOrEmpty(this.FileFilter) && ("," + this.FileFilter.ToLowerInvariant()).IndexOf("," + strExtension.ToLowerInvariant()) == -1)
+            if (!string.IsNullOrEmpty(this.FileFilter) && !("," + this.FileFilter).Contains("," + strExtension, StringComparison.OrdinalIgnoreCase))
             {
                 // trying to upload a file not allowed for current filter
-                this.lblMessage.Text = string.Format(Localization.GetString("UploadError", this.LocalResourceFile), this.FileFilter, strExtension);
+                this.lblMessage.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UploadError", this.LocalResourceFile), this.FileFilter, strExtension);
                 this.ErrorRow.Visible = true;
             }
             else
@@ -890,12 +890,12 @@ namespace DotNetNuke.UI.UserControls
                 var folderManager = FolderManager.Instance;
 
                 var settings = PortalController.Instance.GetCurrentPortalSettings();
-                var portalID = (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
+                var portalId = (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
 
                 var fileName = Path.GetFileName(this.txtFile.PostedFile.FileName);
-                var folderPath = Globals.GetSubFolderPath(parentFolderName.Replace("/", "\\") + fileName, portalID);
+                var folderPath = Globals.GetSubFolderPath(parentFolderName.Replace("/", @"\") + fileName, portalId);
 
-                var folder = folderManager.GetFolder(portalID, folderPath);
+                var folder = folderManager.GetFolder(portalId, folderPath);
                 this.ErrorRow.Visible = false;
 
                 try
@@ -904,22 +904,22 @@ namespace DotNetNuke.UI.UserControls
                 }
                 catch (Services.FileSystem.PermissionsNotMetException)
                 {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
+                    this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
                     this.ErrorRow.Visible = true;
                 }
                 catch (NoSpaceAvailableException)
                 {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+                    this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("DiskSpaceExceeded"), fileName);
                     this.ErrorRow.Visible = true;
                 }
                 catch (InvalidFileExtensionException)
                 {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+                    this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
                     this.ErrorRow.Visible = true;
                 }
                 catch (Exception)
                 {
-                    this.lblMessage.Text += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
+                    this.lblMessage.Text += "<br />" + string.Format(CultureInfo.CurrentCulture, Localization.GetString("SaveFileError"), fileName);
                     this.ErrorRow.Visible = true;
                 }
             }
@@ -1120,8 +1120,8 @@ namespace DotNetNuke.UI.UserControls
 
         private void DoChangeURL()
         {
-            string url = Convert.ToString(this.ViewState["Url"]);
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string url = Convert.ToString(this.ViewState["Url"], CultureInfo.InvariantCulture);
+            string urltype = Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
             if (!string.IsNullOrEmpty(url))
             {
                 var objUrls = new UrlController();
@@ -1139,7 +1139,7 @@ namespace DotNetNuke.UI.UserControls
                     if (url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                     {
                         trackingUrl = url;
-                        var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7)));
+                        var objFile = FileManager.Instance.GetFile(int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
                         if (objFile != null)
                         {
                             url = objFile.Folder + objFile.FileName;
@@ -1161,7 +1161,7 @@ namespace DotNetNuke.UI.UserControls
                             }
                         }
 
-                        trackingUrl = "FileID=" + fileId.ToString();
+                        trackingUrl = "FileID=" + fileId.ToString(CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -1169,7 +1169,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7)));
+                        UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
                         if (objUser != null)
                         {
                             url = objUser.Username;
@@ -1355,7 +1355,7 @@ namespace DotNetNuke.UI.UserControls
 
         private void DoCorrectRadioButtonList()
         {
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string urltype = Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
 
             if (this.optType.Items.Count > 0)
             {
@@ -1384,8 +1384,8 @@ namespace DotNetNuke.UI.UserControls
 
         private void DoRenderTypeControls()
         {
-            string url = Convert.ToString(this.ViewState["Url"]);
-            string urltype = Convert.ToString(this.ViewState["UrlType"]);
+            string url = Convert.ToString(this.ViewState["Url"], CultureInfo.InvariantCulture);
+            string urltype = Convert.ToString(this.ViewState["UrlType"], CultureInfo.InvariantCulture);
             var objUrls = new UrlController();
             if (!string.IsNullOrEmpty(urltype))
             {
@@ -1412,14 +1412,11 @@ namespace DotNetNuke.UI.UserControls
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
                             string img = strImage.Replace(strImagesFolder, string.Empty).Trim('/').Trim('\\');
-                            this.cboImages.Items.Add(new ListItem(img, string.Format("~/{0}/{1}", this.PortalSettings.DefaultIconLocation, img).ToLowerInvariant()));
+                            this.cboImages.Items.Add(new ListItem(img, $"~/{this.PortalSettings.DefaultIconLocation}/{img}".ToLowerInvariant()));
                         }
 
-                        ListItem selecteItem = this.cboImages.Items.FindByValue(url.ToLowerInvariant());
-                        if (selecteItem != null)
-                        {
-                            selecteItem.Selected = true;
-                        }
+                        var selectedItem = this.cboImages.Items.FindByValue(url.ToLowerInvariant());
+                        selectedItem?.Selected = true;
 
                         break;
 
@@ -1464,9 +1461,9 @@ namespace DotNetNuke.UI.UserControls
                             this.cboTabs.Items.FindByValue(url).Selected = true;
                         }
 
-                        if (!this.IncludeActiveTab && this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString()) != null)
+                        if (!this.IncludeActiveTab && this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture)) != null)
                         {
-                            this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString()).Attributes.Add("disabled", "disabled");
+                            this.cboTabs.Items.FindByValue(settings.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture)).Attributes.Add("disabled", "disabled");
                         }
 
                         break;
@@ -1502,12 +1499,12 @@ namespace DotNetNuke.UI.UserControls
                         // Let's try to remember last selection
                         if (this.ViewState["LastFolderPath"] != null)
                         {
-                            lastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
+                            lastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"], CultureInfo.InvariantCulture);
                         }
 
                         if (this.ViewState["LastFileName"] != null)
                         {
-                            lastFileName = Convert.ToString(this.ViewState["LastFileName"]);
+                            lastFileName = Convert.ToString(this.ViewState["LastFileName"], CultureInfo.InvariantCulture);
                         }
 
                         if (url != string.Empty)

@@ -6,6 +6,7 @@ namespace Dnn.EditBar.UI.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -108,7 +109,7 @@ namespace Dnn.EditBar.UI.Controllers
 
             if (user.UserID > 0)
             {
-                ClientAPI.RegisterClientVariable(this.Page, "dnn_current_userid", this.PortalSettings.UserInfo.UserID.ToString(), true);
+                ClientAPI.RegisterClientVariable(this.Page, "dnn_current_userid", this.PortalSettings.UserInfo.UserID.ToString(CultureInfo.InvariantCulture), true);
             }
 
             var isInViewMode = Personalization.GetUserMode() != PortalSettings.Mode.Edit;
@@ -193,7 +194,7 @@ namespace Dnn.EditBar.UI.Controllers
                     && !this.Request.Form["__EVENTARGUMENT"].Equals("undefined", StringComparison.OrdinalIgnoreCase)
                     && this.Request.Form["__EVENTARGUMENT"].StartsWith("module-", StringComparison.OrdinalIgnoreCase))
                 {
-                    var moduleId = Convert.ToInt32(this.Request.Form["__EVENTARGUMENT"].Substring(7));
+                    var moduleId = Convert.ToInt32(this.Request.Form["__EVENTARGUMENT"].Substring(7), CultureInfo.InvariantCulture);
 
                     var moduleContainer = this.FindModuleContainer(moduleId);
                     if (moduleContainer != null)
@@ -381,7 +382,8 @@ namespace Dnn.EditBar.UI.Controllers
             var panes = string.Join(",", this.PortalSettings.ActiveTab.Panes.Cast<string>());
             var panesClientIds = GetPanesClientIds(this.GetPaneClientIdCollection());
             var script = string.Format(
-                @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});",
+                CultureInfo.InvariantCulture,
+                "dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});",
                 HttpUtility.JavaScriptStringEncode(panes),
                 this.SupportAjax ? "true" : "false",
                 HttpUtility.JavaScriptStringEncode(panesClientIds));
@@ -501,13 +503,13 @@ namespace Dnn.EditBar.UI.Controllers
                 var callbackData = cookie.Value;
                 if (!string.IsNullOrEmpty(callbackData) && callbackData.StartsWith("module-"))
                 {
-                    var moduleId = Convert.ToInt32(callbackData.Substring(7));
+                    var moduleId = Convert.ToInt32(callbackData.Substring(7), CultureInfo.InvariantCulture);
 
                     var moduleContainer = this.FindModuleContainer(moduleId);
                     var moduleInfo = this.FindModuleInfo(moduleId);
-                    if (moduleContainer != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
+                    if (moduleContainer != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl parent)
                     {
-                        ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
+                        parent.Attributes["data-module-title"] = moduleInfo.ModuleTitle;
                         this.ProcessDragTipShown(moduleContainer);
                     }
                 }
@@ -516,11 +518,11 @@ namespace Dnn.EditBar.UI.Controllers
 
         private void ProcessDragTipShown(Container moduleContainer)
         {
-            var dragTipShown = Convert.ToString(Personalization.GetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId));
-            if (string.IsNullOrEmpty(dragTipShown) && moduleContainer.Parent is HtmlContainerControl && this.Request.Cookies["noFloat"] == null)
+            var dragTipShown = Convert.ToString(Personalization.GetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId), CultureInfo.InvariantCulture);
+            if (string.IsNullOrEmpty(dragTipShown) && moduleContainer.Parent is HtmlContainerControl parent && this.Request.Cookies["noFloat"] == null)
             {
                 Personalization.SetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId, "true");
-                ((HtmlContainerControl)moduleContainer.Parent).Attributes["class"] += " dragtip";
+                parent.Attributes["class"] += " dragtip";
             }
         }
 

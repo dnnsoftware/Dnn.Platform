@@ -39,11 +39,7 @@ namespace DotNetNuke.Web.Mvc
 
             var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
 
-            moduleControl.LocalResourceFile = string.Format(
-                "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                moduleConfiguration.DesktopModule.FolderName,
-                Localization.LocalResourceDirectory,
-                segments[0]);
+            moduleControl.LocalResourceFile = $"~/DesktopModules/MVC/{moduleConfiguration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
 
             return moduleControl;
         }

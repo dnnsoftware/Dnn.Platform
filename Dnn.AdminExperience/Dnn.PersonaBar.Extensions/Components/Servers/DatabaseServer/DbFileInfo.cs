@@ -19,7 +19,9 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
                     return this.FileName;
                 }
 
-                return string.Format("{0}...{1}", this.FileName.Substring(0, this.FileName.IndexOf('\\') + 1), this.FileName.Substring(this.FileName.LastIndexOf('\\', this.FileName.LastIndexOf('\\') - 1)));
+                var root = this.FileName.Substring(0, this.FileName.IndexOf('\\') + 1);
+                var leaf = this.FileName.Substring(this.FileName.LastIndexOf('\\', this.FileName.LastIndexOf('\\') - 1));
+                return $"{root}...{leaf}";
             }
         }
 

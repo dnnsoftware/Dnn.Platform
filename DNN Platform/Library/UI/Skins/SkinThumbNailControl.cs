@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
@@ -41,7 +42,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlBorder"]);
+                return Convert.ToString(this.ViewState["SkinControlBorder"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -61,7 +62,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToInt32(this.ViewState["SkinControlColumns"]);
+                return Convert.ToInt32(this.ViewState["SkinControlColumns"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -78,7 +79,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlHeight"]);
+                return Convert.ToString(this.ViewState["SkinControlHeight"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -95,7 +96,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinRoot"]);
+                return Convert.ToString(this.ViewState["SkinRoot"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -130,7 +131,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return Convert.ToString(this.ViewState["SkinControlWidth"]);
+                return Convert.ToString(this.ViewState["SkinControlWidth"], CultureInfo.InvariantCulture);
             }
 
             set
@@ -256,7 +257,7 @@ namespace DotNetNuke.UI.Skins
                 case "default":
                     return strSkinFolder;
                 default:
-                    return string.Format("<span class=\"NormalBold\">{0} - {1}</span>", strSkinFolder, strSkinFile);
+                    return $"<span class=\"NormalBold\">{strSkinFolder} - {strSkinFile}</span>";
             }
         }
 

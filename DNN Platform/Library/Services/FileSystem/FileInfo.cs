@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.FileSystem
     using System;
     using System.Data;
     using System.Drawing;
+    using System.Globalization;
     using System.IO;
     using System.Web;
     using System.Xml.Serialization;
@@ -481,7 +482,7 @@ namespace DotNetNuke.Services.FileSystem
             this.EndDate = Null.SetNullDateTime(dr["EndDate"]);
             this.ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
             this.PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
-            this.HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
+            this.HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"], CultureInfo.InvariantCulture);
             this.FillBaseProperties(dr);
         }
 

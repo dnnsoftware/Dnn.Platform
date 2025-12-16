@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Tokens
             }
             else if (value != string.Empty)
             {
-                return string.Format(format, value);
+                return string.Format(CultureInfo.CurrentCulture, format, value);
             }
             else
             {
@@ -80,9 +80,8 @@ namespace DotNetNuke.Services.Tokens
         /// <returns>Localized Property.</returns>
         public static string GetObjectProperty(object objObject, string strPropertyName, string strFormat, CultureInfo formatProvider, ref bool propertyNotFound)
         {
-            PropertyInfo objProperty = null;
             propertyNotFound = false;
-            if (CBO.GetProperties(objObject.GetType()).TryGetValue(strPropertyName, out objProperty))
+            if (CBO.GetProperties(objObject.GetType()).TryGetValue(strPropertyName, out var objProperty))
             {
                 object propValue = objProperty.GetValue(objObject, null);
                 Type t = typeof(string);
@@ -91,9 +90,9 @@ namespace DotNetNuke.Services.Tokens
                     switch (objProperty.PropertyType.Name)
                     {
                         case "String":
-                            return FormatString(Convert.ToString(propValue), strFormat);
+                            return FormatString(Convert.ToString(propValue, CultureInfo.InvariantCulture), strFormat);
                         case "Boolean":
-                            return Boolean2LocalizedYesNo(Convert.ToBoolean(propValue), formatProvider);
+                            return Boolean2LocalizedYesNo(Convert.ToBoolean(propValue, CultureInfo.InvariantCulture), formatProvider);
                         case "DateTime":
                         case "Double":
                         case "Single":

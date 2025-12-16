@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
 
@@ -45,6 +46,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 catch (Exception e)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "{0}.ApplicationStart threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName,
                         e.Message,
@@ -65,6 +67,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 catch (Exception e)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "{0}.ApplicationEnd threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName,
                         e.Message,
@@ -94,6 +97,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 catch (Exception e)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "Unable to create {0} while calling Application start implementors.  {1}",
                         type.FullName,
                         e.Message);
@@ -137,6 +141,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
             if (!matched)
             {
                 Logger.InfoFormat(
+                    CultureInfo.InvariantCulture,
                     "Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored",
                     t.FullName,
                     typeVersion,

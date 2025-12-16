@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.IO;
     using System.Xml.XPath;
 
@@ -169,7 +170,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     SkinController.UpdateSkinPackage(this.skinPackage);
                 }
 
-                this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.skinPackage.SkinName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SKIN_Registered, this.skinPackage.SkinName));
 
                 // install (copy the files) by calling the base class
                 base.Install();
@@ -314,7 +315,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     SkinController.DeleteSkinPackage(skinPackage);
                 }
 
-                this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.SKIN_UnRegistered, skinPackage.SkinName));
             }
             catch (Exception ex)
             {

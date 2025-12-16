@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
@@ -341,17 +342,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (this.DataSource != null)
             {
-                if (this.DataSource is IDictionary<string, string>)
+                if (this.DataSource is IDictionary<string, string> dict)
                 {
-                    var dictionary = this.DataSource as IDictionary<string, string>;
-                    if (dictionary.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
+                    if (dict.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
                     {
-                        dictionary[dataField] = newValue as string;
+                        dict[dataField] = newValue as string;
                     }
                 }
-                else if (this.DataSource is IIndexable)
+                else if (this.DataSource is IIndexable indexer)
                 {
-                    var indexer = this.DataSource as IIndexable;
                     indexer[dataField] = newValue;
                 }
                 else
@@ -368,7 +367,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                 }
                                 else
                                 {
-                                    this.Property.SetValue(this.DataSource, Convert.ChangeType(newValue, this.Property.PropertyType), null);
+                                    this.Property.SetValue(this.DataSource, Convert.ChangeType(newValue, this.Property.PropertyType, CultureInfo.InvariantCulture), null);
                                 }
                             }
                         }
@@ -380,18 +379,16 @@ namespace DotNetNuke.Web.UI.WebControls
                             object parentValue = this.Property.GetValue(this.DataSource, null);
                             if (parentValue != null)
                             {
-                                if (parentValue is IDictionary<string, string>)
+                                if (parentValue is IDictionary<string, string> parentDict)
                                 {
-                                    var dictionary = parentValue as IDictionary<string, string>;
-                                    if (dictionary.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
+                                    if (parentDict.ContainsKey(dataField) && !ReferenceEquals(newValue, oldValue))
                                     {
-                                        dictionary[dataField] = newValue as string;
+                                        parentDict[dataField] = newValue as string;
                                     }
                                 }
-                                else if (parentValue is IIndexable)
+                                else if (parentValue is IIndexable parentIndexer)
                                 {
-                                    var indexer = parentValue as IIndexable;
-                                    indexer[dataField] = newValue;
+                                    parentIndexer[dataField] = newValue;
                                 }
                                 else if (this.ChildProperty != null)
                                 {
@@ -401,7 +398,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                     }
                                     else
                                     {
-                                        this.ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, this.ChildProperty.PropertyType), null);
+                                        this.ChildProperty.SetValue(parentValue, Convert.ChangeType(newValue, this.ChildProperty.PropertyType, CultureInfo.InvariantCulture), null);
                                     }
                                 }
                             }

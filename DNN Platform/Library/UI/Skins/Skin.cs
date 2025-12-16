@@ -531,7 +531,7 @@ namespace DotNetNuke.UI.Skins
             if (!TabPermissionController.CanAdminPage() && !success)
             {
                 // only display the warning to non-administrators (administrators will see the errors)
-                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
+                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(CultureInfo.CurrentCulture, Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
             }
 
             this.InvokeSkinEvents(SkinEventType.OnSkinInit);
@@ -672,7 +672,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     // only display the error to administrators
                     var skinError = (Label)page.FindControl("SkinError");
-                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
+                    skinError.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
                     skinError.Visible = true;
                 }
 
@@ -920,7 +920,7 @@ namespace DotNetNuke.UI.Skins
                     AddPageMessage(
                         this,
                         string.Empty,
-                        string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
+                        string.Format(CultureInfo.CurrentCulture, Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
                         ModuleMessage.ModuleMessageType.RedError,
                         string.Empty);
                 }

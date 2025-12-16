@@ -5,6 +5,7 @@ namespace DotNetNuke.Security.Permissions
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
@@ -179,11 +180,11 @@ namespace DotNetNuke.Security.Permissions
             return () => new FolderPermissionController();
         }
 
-        private static void ClearPermissionCache(int portalID)
+        private static void ClearPermissionCache(int portalId)
         {
-            DataCache.ClearFolderPermissionsCache(portalID);
-            DataCache.ClearCache(string.Format("Folders|{0}|", portalID));
-            DataCache.ClearFolderCache(portalID);
+            DataCache.ClearFolderPermissionsCache(portalId);
+            DataCache.ClearCache(string.Format(CultureInfo.CurrentCulture, "Folders|{0}|", portalId));
+            DataCache.ClearFolderCache(portalId);
         }
 
         private static bool CopyPermissionsToSubfoldersRecursive(IFolderInfo folder, FolderPermissionCollection newPermissions)

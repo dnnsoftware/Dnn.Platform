@@ -154,26 +154,24 @@ namespace DotNetNuke.Entities.Users
                             formatString = "g";
                         }
 
-                        result = int.Parse(property.PropertyValue).ToString(formatString, formatProvider);
+                        result = int.Parse(property.PropertyValue, CultureInfo.InvariantCulture).ToString(formatString, formatProvider);
                         break;
                     case "page":
-                        int tabid;
-                        if (int.TryParse(property.PropertyValue, out tabid))
+                        if (int.TryParse(property.PropertyValue, out var tabId))
                         {
-                            TabInfo tab = TabController.Instance.GetTab(tabid, Null.NullInteger, false);
+                            TabInfo tab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
                             if (tab != null)
                             {
-                                result = string.Format("<a href='{0}'>{1}</a>", TestableGlobals.Instance.NavigateURL(tabid), tab.LocalizedTabName);
+                                result = $"<a href='{TestableGlobals.Instance.NavigateURL(tabId)}'>{tab.LocalizedTabName}</a>";
                             }
                         }
 
                         break;
                     case "image":
                         // File is stored as a FileID
-                        int fileID;
-                        if (int.TryParse(property.PropertyValue, out fileID) && fileID > 0)
+                        if (int.TryParse(property.PropertyValue, out var fileId) && fileId > 0)
                         {
-                            result = Globals.LinkClick(string.Format("fileid={0}", fileID), Null.NullInteger, Null.NullInteger);
+                            result = Globals.LinkClick($"fileid={fileId}", Null.NullInteger, Null.NullInteger);
                         }
                         else
                         {
@@ -199,8 +197,8 @@ namespace DotNetNuke.Entities.Users
         /// <returns>A string representing the data type such as: truefalse, date, datetime, integer, page, image or richtext.</returns>
         public static string DisplayDataType(ProfilePropertyDefinition definition)
         {
-            string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
-            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + string.Empty;
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, "DisplayDataType:{0}", definition.DataType);
+            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey), CultureInfo.InvariantCulture) + string.Empty;
             if (strDataType == string.Empty)
             {
                 var objListController = new ListController();

@@ -4,8 +4,10 @@
 namespace DotNetNuke.Entities.Urls
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
@@ -69,10 +71,10 @@ namespace DotNetNuke.Entities.Urls
         {
             var log = new LogInfo
             {
-                LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                LogTypeKey = nameof(EventLogType.PAGE_NOT_FOUND_404),
                 LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1,
             };
-            log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : string.Empty));
+            log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString(CultureInfo.InvariantCulture) : string.Empty));
             log.LogProperties.Add(new LogDetailInfo("PortalAlias", (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : string.Empty));
             log.LogProperties.Add(new LogDetailInfo("OriginalUrl", result.RawUrl));
 
@@ -140,8 +142,8 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Redirect Location", string.IsNullOrEmpty(result.FinalUrl) ? "[no redirect]" : result.FinalUrl);
                         log.AddProperty("Action", result.Action.ToString());
                         log.AddProperty("Reason", result.Reason.ToString());
-                        log.AddProperty("Portal Id", result.PortalId.ToString());
-                        log.AddProperty("Tab Id", result.TabId.ToString());
+                        log.AddProperty("Portal Id", result.PortalId.ToString(CultureInfo.InvariantCulture));
+                        log.AddProperty("Tab Id", result.TabId.ToString(CultureInfo.InvariantCulture));
                         log.AddProperty("Http Alias", result.PortalAlias != null ? result.PortalAlias.HTTPAlias : "Null");
 
                         if (result.DebugMessages != null)
@@ -149,7 +151,7 @@ namespace DotNetNuke.Entities.Urls
                             int i = 1;
                             foreach (string msg in result.DebugMessages)
                             {
-                                log.AddProperty("Debug Message " + i.ToString(), msg);
+                                log.AddProperty("Debug Message " + i.ToString(CultureInfo.InvariantCulture), msg);
                                 i++;
                             }
                         }

@@ -9,6 +9,7 @@ namespace DotNetNuke.Common.Lists
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
 
@@ -456,7 +457,7 @@ namespace DotNetNuke.Common.Lists
 
         private static void ClearEntriesCache(string listName, int portalId)
         {
-            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListEntriesCacheKey, portalId, listName);
             DataCache.RemoveCache(cacheKey);
         }
 
@@ -477,18 +478,18 @@ namespace DotNetNuke.Common.Lists
 
             if (canContinue)
             {
-                list = new ListInfo(Convert.ToString(dr["ListName"]));
+                list = new ListInfo(Convert.ToString(dr["ListName"], CultureInfo.InvariantCulture));
                 {
-                    list.Level = Convert.ToInt32(dr["Level"]);
-                    list.PortalID = Convert.ToInt32(dr["PortalID"]);
-                    list.DefinitionID = Convert.ToInt32(dr["DefinitionID"]);
-                    list.EntryCount = Convert.ToInt32(dr["EntryCount"]);
-                    list.ParentID = Convert.ToInt32(dr["ParentID"]);
-                    list.ParentKey = Convert.ToString(dr["ParentKey"]);
-                    list.Parent = Convert.ToString(dr["Parent"]);
-                    list.ParentList = Convert.ToString(dr["ParentList"]);
-                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"]) > 0;
-                    list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
+                    list.Level = Convert.ToInt32(dr["Level"], CultureInfo.InvariantCulture);
+                    list.PortalID = Convert.ToInt32(dr["PortalID"], CultureInfo.InvariantCulture);
+                    list.DefinitionID = Convert.ToInt32(dr["DefinitionID"], CultureInfo.InvariantCulture);
+                    list.EntryCount = Convert.ToInt32(dr["EntryCount"], CultureInfo.InvariantCulture);
+                    list.ParentID = Convert.ToInt32(dr["ParentID"], CultureInfo.InvariantCulture);
+                    list.ParentKey = Convert.ToString(dr["ParentKey"], CultureInfo.InvariantCulture);
+                    list.Parent = Convert.ToString(dr["Parent"], CultureInfo.InvariantCulture);
+                    list.ParentList = Convert.ToString(dr["ParentList"], CultureInfo.InvariantCulture);
+                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"], CultureInfo.InvariantCulture) > 0;
+                    list.SystemList = Convert.ToInt32(dr["SystemList"], CultureInfo.InvariantCulture) > 0;
                 }
             }
 
@@ -525,7 +526,7 @@ namespace DotNetNuke.Common.Lists
 
         private static Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
-            string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListsCacheKey, portalId);
             return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
                 new CacheItemArgs(
                 cacheKey,
@@ -536,7 +537,7 @@ namespace DotNetNuke.Common.Lists
 
         private static IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
         {
-            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ListEntriesCacheKey, portalId, listName);
             return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
                 new CacheItemArgs(
                 cacheKey,

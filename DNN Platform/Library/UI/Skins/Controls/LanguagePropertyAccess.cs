@@ -249,7 +249,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             break;
                         case TabType.Tab:
                             // alternate tab url
-                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url));
+                            fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url, CultureInfo.InvariantCulture));
                             break;
                         case TabType.File:
                             // file url

@@ -112,7 +112,7 @@ namespace DotNetNuke.Application
 
                 this.status = tempStatus;
 
-                Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
+                Logger.Trace($"result of getting providerpath: {strMessage}");
                 Logger.Trace("Application status is " + this.status);
 
                 return this.status;
@@ -123,7 +123,7 @@ namespace DotNetNuke.Application
         public Version DatabaseVersion { get; private set; }
 
         /// <inheritdoc />
-        public string ApplicationMapPath { get => this.applicationMapPath ?? (this.applicationMapPath = GetCurrentDomainDirectory()); }
+        public string ApplicationMapPath { get => this.applicationMapPath ??= GetCurrentDomainDirectory(); }
 
         /// <inheritdoc />
         public bool IsInstalled()

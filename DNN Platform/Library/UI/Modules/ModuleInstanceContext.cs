@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Modules
     using System;
     using System.Collections;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Web;
     using System.Web.UI;
 
@@ -244,7 +245,7 @@ namespace DotNetNuke.UI.Modules
             string moduleIdParam = string.Empty;
             if (this.Configuration != null)
             {
-                moduleIdParam = string.Format("mid={0}", this.Configuration.ModuleID);
+                moduleIdParam = $"mid={this.Configuration.ModuleID}";
             }
 
             string[] parameters;
@@ -252,7 +253,7 @@ namespace DotNetNuke.UI.Modules
             {
                 parameters = new string[2 + additionalParameters.Length];
                 parameters[0] = moduleIdParam;
-                parameters[1] = string.Format("{0}={1}", keyName, keyValue);
+                parameters[1] = $"{keyName}={keyValue}";
                 Array.Copy(additionalParameters, 0, parameters, 2, additionalParameters.Length);
             }
             else
@@ -685,7 +686,7 @@ namespace DotNetNuke.UI.Modules
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.DeleteModule, Localization.GlobalResourceFile),
                         ModuleActionType.DeleteModule,
-                        this.Configuration.ModuleID.ToString(),
+                        this.Configuration.ModuleID.ToString(CultureInfo.InvariantCulture),
                         "action_delete.gif",
                         string.Empty,
                         confirmText,
@@ -701,7 +702,7 @@ namespace DotNetNuke.UI.Modules
                         this.GetNextActionID(),
                         Localization.GetString(ModuleActionType.ClearCache, Localization.GlobalResourceFile),
                         ModuleActionType.ClearCache,
-                        this.Configuration.ModuleID.ToString(),
+                        this.Configuration.ModuleID.ToString(CultureInfo.InvariantCulture),
                         "action_refresh.gif",
                         string.Empty,
                         false,

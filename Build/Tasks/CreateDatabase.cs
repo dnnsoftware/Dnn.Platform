@@ -4,6 +4,7 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using Cake.Common.Diagnostics;
@@ -21,23 +22,23 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            var deleteScript = "if db_id('Dnn_Platform') is not null DROP DATABASE Dnn_Platform;";
+            const string deleteScript = "if db_id('Dnn_Platform') is not null DROP DATABASE Dnn_Platform;";
 
             context.Information("Dropping LocalDb: {0}", this.ExecuteSqlScript(context, deleteScript));
 
-            var createDbScript = string.Format(
-                @"
-        CREATE DATABASE
-            [Dnn_Platform]
-        ON PRIMARY (
-           NAME=Dnn_data,
-           FILENAME = '{0}\Dnn_Platform.mdf'
-        )
-        LOG ON (
-            NAME=Dnn_log,
-            FILENAME = '{0}\Dnn_Platform.ldf'
-        )",
-                context.TempDir);
+            var createDbScript =
+                $"""
+                 CREATE DATABASE
+                     [Dnn_Platform]
+                 ON PRIMARY (
+                    NAME=Dnn_data,
+                    FILENAME = '{context.TempDir}\Dnn_Platform.mdf'
+                 )
+                 LOG ON (
+                     NAME=Dnn_log,
+                     FILENAME = '{context.TempDir}\Dnn_Platform.ldf'
+                 )
+                 """;
             var createDbStatus = this.ExecuteSqlScript(context, createDbScript);
             context.Information("Created LocalDb: {0}", createDbStatus);
 
@@ -64,7 +65,7 @@ namespace DotNetNuke.Build.Tasks
                     + ".SqlDataProvider");
 
                 var sqlDelimiterRegex = new System.Text.RegularExpressions.Regex(
-                    "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))",
+                    @"(?<=(?:[^\w]+|^))GO(?=(?: |\t)*?(?:\r?\n|$))",
                     System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Multiline);
                 string[] sqlStatements = sqlDelimiterRegex.Split(fileContents);
                 foreach (string statement in sqlStatements)
@@ -109,19 +110,15 @@ namespace DotNetNuke.Build.Tasks
                         .ToString();
                     var fileBits = currentFileToProcess.Split('.');
 
-                    int firstBit;
-                    int secondBit;
-                    int thirdBit;
-
-                    if (int.TryParse(fileBits[0], out firstBit)
-                        && int.TryParse(fileBits[1], out secondBit)
-                        && int.TryParse(fileBits[2], out thirdBit))
+                    if (int.TryParse(fileBits[0], out var firstBit)
+                        && int.TryParse(fileBits[1], out var secondBit)
+                        && int.TryParse(fileBits[2], out var thirdBit))
                     {
                         var schemaVersionBits = schemaVersion.Split('.');
 
-                        int schemaFirstBit = int.Parse(schemaVersionBits[0]);
-                        int schemaSecondBit = int.Parse(schemaVersionBits[1]);
-                        int schemaThirdBit = int.Parse(schemaVersionBits[2]);
+                        int schemaFirstBit = int.Parse(schemaVersionBits[0], CultureInfo.InvariantCulture);
+                        int schemaSecondBit = int.Parse(schemaVersionBits[1], CultureInfo.InvariantCulture);
+                        int schemaThirdBit = int.Parse(schemaVersionBits[2], CultureInfo.InvariantCulture);
 
                         if ((firstBit == schemaFirstBit && (secondBit >= schemaSecondBit && thirdBit >= schemaThirdBit))
                             || firstBit > schemaFirstBit)

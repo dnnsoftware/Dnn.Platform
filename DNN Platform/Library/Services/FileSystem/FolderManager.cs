@@ -334,7 +334,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var folders = new List<IFolderInfo>();
 
-            var cacheKey = string.Format(DataCache.FolderCacheKey, portalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.FolderCacheKey, portalId);
             CBO.Instance.GetCachedObject<List<FolderInfo>>(new CacheItemArgs(cacheKey, DataCache.FolderCacheTimeOut, DataCache.FolderCachePriority, portalId), this.GetFoldersSortedCallBack, false).ForEach(folders.Add);
 
             return folders;
@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var folders = new List<IFolderInfo>();
 
-            var cacheKey = string.Format(DataCache.FolderUserCacheKey, portalId, permissions, userId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.FolderUserCacheKey, portalId, permissions, userId);
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.FolderUserCacheTimeOut, DataCache.FolderUserCachePriority, portalId, permissions, userId);
             CBO.Instance.GetCachedObject<List<FolderInfo>>(cacheItemArgs, this.GetFoldersByPermissionSortedCallBack, false).ForEach(folders.Add);
 
@@ -428,12 +428,11 @@ namespace DotNetNuke.Services.FileSystem
 
             if (this.FolderExists(folder.PortalID, newFolderPath))
             {
-                throw new InvalidOperationException(string.Format(
-                    Localization.GetExceptionMessage(
-                        "CannotMoveFolderAlreadyExists",
-                        "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.",
-                        folder.FolderName,
-                        destinationFolder.FolderName)));
+                throw new InvalidOperationException(Localization.GetExceptionMessage(
+                    "CannotMoveFolderAlreadyExists",
+                    "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.",
+                    folder.FolderName,
+                    destinationFolder.FolderName));
             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
@@ -441,11 +440,10 @@ namespace DotNetNuke.Services.FileSystem
 
             if (!this.CanMoveBetweenFolderMappings(folderMapping, destinationFolderMapping))
             {
-                throw new InvalidOperationException(string.Format(
-                    Localization.GetExceptionMessage(
-                        "CannotMoveFolderBetweenFolderType",
-                        "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed",
-                        folder.FolderName)));
+                throw new InvalidOperationException(Localization.GetExceptionMessage(
+                    "CannotMoveFolderBetweenFolderType",
+                    "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed",
+                    folder.FolderName));
             }
 
             if (!this.IsMoveOperationValid(folder, destinationFolder, newFolderPath))
@@ -652,7 +650,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="permission">Used as base class for FolderPermissionInfo when there is no read permission already defined.</param>
         public virtual void AddAllUserReadPermission(IFolderInfo folder, PermissionInfo permission)
         {
-            var roleId = int.Parse(Globals.glbRoleAllUsers);
+            var roleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
 
             var folderPermission =
                 (from FolderPermissionInfo p in folder.FolderPermissions
@@ -848,7 +846,7 @@ namespace DotNetNuke.Services.FileSystem
                 var folderPermission = new FolderPermissionInfo(permission);
                 ((IFolderPermissionInfo)folderPermission).FolderId = folder.FolderID;
                 ((IFolderPermissionInfo)folderPermission).UserId = user.UserID;
-                ((IFolderPermissionInfo)folderPermission).RoleId = int.Parse(Globals.glbRoleNothing);
+                ((IFolderPermissionInfo)folderPermission).RoleId = int.Parse(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
                 folderPermission.AllowAccess = true;
 
                 folder.FolderPermissions.Add(folderPermission);

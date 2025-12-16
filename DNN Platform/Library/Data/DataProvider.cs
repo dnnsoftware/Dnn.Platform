@@ -184,7 +184,7 @@ namespace DotNetNuke.Data
             }
             finally
             {
-                if (transaction != null && transaction.Connection != null)
+                if (transaction is { Connection: not null, })
                 {
                     transaction.Connection.Close();
                 }
@@ -193,7 +193,7 @@ namespace DotNetNuke.Data
 
         public virtual object GetNull(object field)
         {
-            return Null.GetNull(field, DBNull.Value);
+            return Null.GetNull(field, DBNull.Value, CultureInfo.CurrentCulture);
         }
 
         public virtual IDataReader FindDatabaseVersion(int major, int minor, int build)
@@ -3348,7 +3348,7 @@ namespace DotNetNuke.Data
             }
             else
             {
-                portalID = Convert.ToInt32(logTypePortalID);
+                portalID = Convert.ToInt32(logTypePortalID, CultureInfo.InvariantCulture);
             }
 
             this.ExecuteNonQuery(
@@ -3447,26 +3447,26 @@ namespace DotNetNuke.Data
 
         public virtual void UpdateLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, int keepMostRecent, bool emailNotificationIsActive, int threshold, int notificationThresholdTime, int notificationThresholdTimeType, string mailFromAddress, string mailToAddress)
         {
-            int portalID;
             if (logTypeKey == "*")
             {
                 logTypeKey = string.Empty;
             }
 
+            int portalId;
             if (logTypePortalID == "*")
             {
-                portalID = -1;
+                portalId = -1;
             }
             else
             {
-                portalID = Convert.ToInt32(logTypePortalID);
+                portalId = Convert.ToInt32(logTypePortalID, CultureInfo.CurrentCulture);
             }
 
             this.ExecuteNonQuery(
                 "UpdateEventLogConfig",
                 id,
                 this.GetNull(logTypeKey),
-                this.GetNull(portalID),
+                this.GetNull(portalId),
                 loggingIsActive,
                 keepMostRecent,
                 emailNotificationIsActive,
@@ -4088,9 +4088,9 @@ namespace DotNetNuke.Data
                 if (dr.Read())
                 {
                     version = new Version(
-                        Convert.ToInt32(dr["Major"]),
-                        Convert.ToInt32(dr["Minor"]),
-                        Convert.ToInt32(dr["Build"]));
+                        Convert.ToInt32(dr["Major"], CultureInfo.InvariantCulture),
+                        Convert.ToInt32(dr["Minor"], CultureInfo.InvariantCulture),
+                        Convert.ToInt32(dr["Build"], CultureInfo.InvariantCulture));
                 }
             }
             catch (SqlException ex)

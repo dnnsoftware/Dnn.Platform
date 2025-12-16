@@ -202,11 +202,11 @@ namespace DotNetNuke.Common.Utilities
 
             return mode switch
             {
-                UserFolderElement.Root => (Convert.ToInt32(userId) & ByteOffset).ToString("000"),
+                UserFolderElement.Root => (userId & ByteOffset).ToString("000", CultureInfo.InvariantCulture),
                 UserFolderElement.SubFolder =>
-                    userId.ToString("00")
+                    userId.ToString("00", CultureInfo.InvariantCulture)
                         .Substring(
-                            userId.ToString("00").Length - SubfolderSeedLength,
+                            userId.ToString("00", CultureInfo.InvariantCulture).Length - SubfolderSeedLength,
                             SubfolderSeedLength),
                 _ => string.Empty,
             };
@@ -222,7 +222,7 @@ namespace DotNetNuke.Common.Utilities
 
             var fullPath = Path.Combine(Path.Combine(rootFolder, subFolder), user.UserID.ToString(CultureInfo.InvariantCulture));
 
-            return $"Users/{fullPath.Replace("\\", "/")}/";
+            return $"Users/{fullPath.Replace(@"\", "/")}/";
         }
 
         private static string GetHostMapPath()

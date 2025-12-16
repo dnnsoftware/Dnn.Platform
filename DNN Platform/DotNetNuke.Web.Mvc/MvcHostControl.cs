@@ -95,9 +95,9 @@ namespace DotNetNuke.Web.Mvc
                 }
 
                 var mvcString = RenderModule(this.result);
-                if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
+                if (!string.IsNullOrEmpty(Convert.ToString(mvcString, CultureInfo.InvariantCulture)))
                 {
-                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString)));
+                    this.Controls.Add(new LiteralControl(Convert.ToString(mvcString, CultureInfo.InvariantCulture)));
                 }
             }
             catch (Exception exc)

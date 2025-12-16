@@ -26,7 +26,7 @@ namespace DotNetNuke.Common.Lists
                 {
                     Id = li.EntryID,
                     Code = li.Value,
-                    FullName = string.Format("{0} ({1})", text, li.Value),
+                    FullName = $"{text} ({li.Value})",
                     Name = text,
                 };
                 c.NormalizedFullName = c.FullName.NormalizeString();
@@ -63,7 +63,7 @@ namespace DotNetNuke.Common.Lists
         /// <returns>The cache key string.</returns>
         public static string CacheKey(string locale)
         {
-            return string.Format("CountryList:{0}", locale);
+            return $"CountryList:{locale}";
         }
 
         /// <summary>Represents a country.</summary>

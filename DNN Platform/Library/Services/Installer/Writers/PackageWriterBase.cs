@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Installer.Writers
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Text;
@@ -636,11 +637,11 @@ namespace DotNetNuke.Services.Installer.Writers
                     string packageFilePath = packageFile.Path;
                     if (!string.IsNullOrEmpty(basePath))
                     {
-                        packageFilePath = packageFilePath.Replace(basePath + "\\", string.Empty);
+                        packageFilePath = packageFilePath.Replace($@"{basePath}\", string.Empty);
                     }
 
                     FileSystemUtils.AddToZip(ref stream, filepath, packageFile.Name, packageFilePath);
-                    this.Log.AddInfo(string.Format(Util.WRITER_SavedFile, packageFile.FullName));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_SavedFile, packageFile.FullName));
                 }
             }
         }
@@ -655,7 +656,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Log.StartJob(Util.WRITER_CreatingPackage);
             try
             {
-                this.Log.AddInfo(string.Format(Util.WRITER_CreateArchive, zipFileShortName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.WRITER_CreateArchive, zipFileShortName));
                 strmZipFile = File.Create(zipFileName);
                 ZipArchive strmZipStream = null;
                 try
@@ -673,14 +674,11 @@ namespace DotNetNuke.Services.Installer.Writers
                 catch (Exception ex)
                 {
                     Exceptions.Exceptions.LogException(ex);
-                    this.Log.AddFailure(string.Format(Util.WRITER_SaveFileError, ex));
+                    this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.WRITER_SaveFileError, ex));
                 }
                 finally
                 {
-                    if (strmZipStream != null)
-                    {
-                        strmZipStream.Dispose();
-                    }
+                    strmZipStream?.Dispose();
                 }
 
                 this.Log.EndJob(Util.WRITER_CreatedPackage);
@@ -688,7 +686,7 @@ namespace DotNetNuke.Services.Installer.Writers
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                this.Log.AddFailure(string.Format(Util.WRITER_SaveFileError, ex));
+                this.Log.AddFailure(string.Format(CultureInfo.InvariantCulture, Util.WRITER_SaveFileError, ex));
             }
             finally
             {

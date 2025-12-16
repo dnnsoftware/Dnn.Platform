@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web.UI.WebControls;
@@ -22,8 +23,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
         private const string MatchAllAttributes = "(\\S+)=[\"']?((?:.(?![\"']?\\s+(?:\\S+)=|[>\"']))+.)[\"']?";
 
-        private static readonly Regex LinkTagRegex = new Regex(string.Format(TagPattern, "link"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-        private static readonly Regex ScriptTagRegex = new Regex(string.Format(TagPattern, "script"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex LinkTagRegex = new Regex(string.Format(CultureInfo.InvariantCulture, TagPattern, "link"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex ScriptTagRegex = new Regex(string.Format(CultureInfo.InvariantCulture, TagPattern, "script"), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         private readonly IClientResourceController clientResourceController;
 

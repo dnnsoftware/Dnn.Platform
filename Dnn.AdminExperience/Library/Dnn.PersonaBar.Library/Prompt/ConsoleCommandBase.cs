@@ -7,6 +7,7 @@ namespace Dnn.PersonaBar.Library.Prompt
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Prompt.Models;
     using DotNetNuke.Entities.Portals;
@@ -136,7 +137,7 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         protected bool IsFlag(object input)
         {
-            var inputVal = Convert.ToString(input);
+            var inputVal = Convert.ToString(input, CultureInfo.InvariantCulture);
             return !string.IsNullOrEmpty(inputVal) && inputVal.StartsWith("--");
         }
 

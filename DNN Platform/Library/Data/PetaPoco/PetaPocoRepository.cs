@@ -46,7 +46,7 @@ namespace DotNetNuke.Data.PetaPoco
             // Make sure that the sql Condition contains an ORDER BY Clause
             if (!sqlCondition.ToUpperInvariant().Contains("ORDER BY"))
             {
-                sqlCondition = string.Format("{0} ORDER BY {1}", sqlCondition, this.mapper.GetTableInfo(typeof(T)).PrimaryKey);
+                sqlCondition = $"{sqlCondition} ORDER BY {this.mapper.GetTableInfo(typeof(T)).PrimaryKey}";
             }
 
             Page<T> petaPocoPage = this.database.Page<T>(pageIndex + 1, pageSize, DataUtil.ReplaceTokens(sqlCondition), args);
@@ -110,7 +110,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         private string GetScopeSql()
         {
-            return string.Format("WHERE {0} = @0", DataUtil.GetColumnName(typeof(T), this.Scope));
+            return $"WHERE {DataUtil.GetColumnName(typeof(T), this.Scope)} = @0";
         }
     }
 }

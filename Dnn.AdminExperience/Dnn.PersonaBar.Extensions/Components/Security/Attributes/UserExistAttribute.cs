@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Globalization;
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -20,11 +21,10 @@ namespace Dnn.PersonaBar.Security.Attributes
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;
-            int userId;
 
-            if (int.TryParse(value.ToString(), out userId))
+            if (int.TryParse(value.ToString(), out var userId))
             {
-                var portalSetting = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSetting = PortalController.Instance.GetCurrentSettings();
                 var user = UserController.Instance.GetUserById(portalSetting.PortalId, userId);
 
                 if (user != null)
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Security.Attributes
                     {
                         if (!user.IsInRole(roleName))
                         {
-                            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.UserNotMemberOfRole, Components.Constants.LocalResourcesFile), roleName));
+                            return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Components.Constants.UserNotMemberOfRole, Components.Constants.LocalResourcesFile), roleName));
                         }
                     }
 
@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Security.Attributes
                 }
             }
 
-            return new ValidationResult(string.Format(Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
+            return new ValidationResult(string.Format(CultureInfo.CurrentCulture, Localization.GetString(Components.Constants.NotValid, Components.Constants.LocalResourcesFile), propertyName, value.ToString()));
         }
     }
 }

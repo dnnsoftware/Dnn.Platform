@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -18,7 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <inheritdoc/>
         protected override WebControl CreateControlInternal(Control container)
         {
-            var literal = new Label { ID = this.ID + "_Label", Text = Convert.ToString(this.Value) };
+            var literal = new Label { ID = this.ID + "_Label", Text = Convert.ToString(this.Value, CultureInfo.InvariantCulture), };
             container.Controls.Add(literal);
             return literal;
         }

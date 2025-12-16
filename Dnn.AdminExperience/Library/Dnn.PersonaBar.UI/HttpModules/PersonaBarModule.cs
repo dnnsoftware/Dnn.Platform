@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.UI.HttpModules
 {
     using System;
+    using System.Globalization;
     using System.Web;
 
     using Dnn.PersonaBar.Library.AppEvents;
@@ -37,7 +38,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                     return;
                 }
 
-                this.ApplicationStart();
+                ApplicationStart();
                 hasAppStarted = true;
             }
         }
@@ -48,17 +49,17 @@ namespace Dnn.PersonaBar.UI.HttpModules
             EventsController.Instance.ApplicationEndEvent();
         }
 
-        private void ApplicationStart()
+        private static void ApplicationStart()
         {
             EventsController.Instance.ApplicationStartEvent();
 
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, this.OnSkinInit));
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinLoad, this.OnSkinLoad));
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinPreRender, this.OnSkinPreRender));
-            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinUnLoad, this.OnSkinUnLoad));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, OnSkinInit));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinLoad, OnSkinLoad));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinPreRender, OnSkinPreRender));
+            DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinUnLoad, OnSkinUnLoad));
         }
 
-        private void OnSkinInit(object sender, SkinEventArgs e)
+        private static void OnSkinInit(object sender, SkinEventArgs e)
         {
             IocUtil.GetInstanceContracts<ISkinEvents>().ForEach(instance =>
             {
@@ -69,6 +70,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 catch (Exception ex)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "{0}.Init threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName,
                         ex.Message,
@@ -77,7 +79,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
             });
         }
 
-        private void OnSkinLoad(object sender, SkinEventArgs e)
+        private static void OnSkinLoad(object sender, SkinEventArgs e)
         {
             IocUtil.GetInstanceContracts<ISkinEvents>().ForEach(instance =>
             {
@@ -88,6 +90,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 catch (Exception ex)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "{0}.Load threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName,
                         ex.Message,
@@ -96,7 +99,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
             });
         }
 
-        private void OnSkinPreRender(object sender, SkinEventArgs e)
+        private static void OnSkinPreRender(object sender, SkinEventArgs e)
         {
             IocUtil.GetInstanceContracts<ISkinEvents>().ForEach(instance =>
             {
@@ -107,6 +110,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 catch (Exception ex)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "{0}.PreRender threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName,
                         ex.Message,
@@ -115,7 +119,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
             });
         }
 
-        private void OnSkinUnLoad(object sender, SkinEventArgs e)
+        private static void OnSkinUnLoad(object sender, SkinEventArgs e)
         {
             IocUtil.GetInstanceContracts<ISkinEvents>().ForEach(instance =>
             {
@@ -126,6 +130,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 catch (Exception ex)
                 {
                     Logger.ErrorFormat(
+                        CultureInfo.InvariantCulture,
                         "{0}.UnLoad threw an exception.  {1}\r\n{2}",
                         instance.GetType().FullName,
                         ex.Message,

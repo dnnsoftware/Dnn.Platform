@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Users
                 case "passwordquestion":
                     return PropertyAccess.FormatString(objMembership.PasswordQuestion, format);
                 case "passwordresettoken":
-                    return PropertyAccess.FormatString(Convert.ToString(this.objUser.PasswordResetToken), format);
+                    return PropertyAccess.FormatString(Convert.ToString(this.objUser.PasswordResetToken, CultureInfo.InvariantCulture), format);
                 case "passwordresetexpiration":
                     return PropertyAccess.FormatString(this.objUser.PasswordResetExpiration.ToString(formatProvider), format);
                 case "updatepassword":

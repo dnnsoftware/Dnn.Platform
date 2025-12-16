@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Xml.XPath;
 
@@ -176,7 +177,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 CssClass = Util.ReadElement(menuNavigator, "css"),
                 IconFile = Util.ReadElement(menuNavigator, "icon"),
                 ParentId = Null.NullInteger,
-                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
+                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0"), CultureInfo.InvariantCulture),
                 AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").Equals("true", StringComparison.OrdinalIgnoreCase),
                 Enabled = true,
             };
@@ -205,7 +206,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 Controller = Util.ReadElement(menuNavigator, "controller"),
                 Container = Util.ReadElement(menuNavigator, "container"),
                 Path = Util.ReadElement(menuNavigator, "path"),
-                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
+                Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0"), CultureInfo.InvariantCulture),
                 Enabled = true,
             };
 

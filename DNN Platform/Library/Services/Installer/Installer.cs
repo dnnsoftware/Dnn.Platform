@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -451,7 +452,7 @@ namespace DotNetNuke.Services.Installer
                 string installOrder = Util.ReadAttribute(nav, "installOrder");
                 if (!string.IsNullOrEmpty(installOrder))
                 {
-                    order = int.Parse(installOrder);
+                    order = int.Parse(installOrder, CultureInfo.InvariantCulture);
                 }
 
                 this.Packages.Add(order, new PackageInstaller(nav.OuterXml, this.InstallerInfo));

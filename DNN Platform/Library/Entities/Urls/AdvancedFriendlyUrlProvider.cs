@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Text;
@@ -475,13 +476,11 @@ namespace DotNetNuke.Entities.Urls
                 if (aliasArray.Count > 0)
                 {
                     alias = aliasArray[0]; // nab the first one here
-                    messages.Add("Portal Id " + portalId.ToString() + " does not match http alias " + httpAlias +
-                                 " - " + alias.HTTPAlias + " was used instead");
+                    messages.Add($"Portal Id {portalId} does not match http alias {httpAlias} - {alias.HTTPAlias} was used instead");
                 }
                 else
                 {
-                    messages.Add("Portal Id " + portalId.ToString() +
-                                 " does not match http alias and no usable alias could be found");
+                    messages.Add($"Portal Id {portalId} does not match http alias and no usable alias could be found");
                 }
             }
 
@@ -1250,7 +1249,7 @@ namespace DotNetNuke.Entities.Urls
             string resultUrl,
             FriendlyUrlSettings settings)
         {
-            if (settings != null && settings.AllowDebugCode && HttpContext.Current != null)
+            if (settings is { AllowDebugCode: true, } && HttpContext.Current != null)
             {
                 HttpRequest request = HttpContext.Current.Request;
                 string debugCheck = CheckForDebug(request);
@@ -1260,7 +1259,7 @@ namespace DotNetNuke.Entities.Urls
 
                     // append the friendly url headers
                     HttpResponse response = HttpContext.Current.Response;
-                    string msgId = id.ToString("000");
+                    string msgId = id.ToString("000", CultureInfo.InvariantCulture);
                     int tabId = -1;
                     string tabName = "null";
                     if (tab != null)
@@ -1269,26 +1268,26 @@ namespace DotNetNuke.Entities.Urls
                         tabName = tab.TabName;
                     }
 
-                    msgId += "-" + tabId.ToString("000");
+                    msgId += "-" + tabId.ToString("000", CultureInfo.InvariantCulture);
 
-                    if (messages != null && messages.Count > 0)
+                    if (messages is { Count: > 0, })
                     {
                         response.AppendHeader(
-                            "X-Friendly-Url-" + msgId + ".00",
-                            "Messages for Tab " + tabId.ToString() + ", " + tabName + ", " + path + " calltype:" + method);
+                            $"X-Friendly-Url-{msgId}.00",
+                            $"Messages for Tab {tabId}, {tabName}, {path} calltype:{method}");
 
                         int i = 1;
                         foreach (string msg in messages)
                         {
-                            response.AppendHeader("X-Friendly-Url-" + msgId + "." + i.ToString("00"), msg);
+                            response.AppendHeader($"X-Friendly-Url-{msgId}.{i:00}", msg);
                             i++;
                         }
 
                         if (resultUrl != null)
                         {
                             response.AppendHeader(
-                                "X-Friendly-Url-" + msgId + ".99",
-                                "Path : " + path + " Generated Url : " + resultUrl);
+                                $"X-Friendly-Url-{msgId}.99",
+                                $"Path : {path} Generated Url : {resultUrl}");
                         }
                     }
                     else
@@ -1296,8 +1295,8 @@ namespace DotNetNuke.Entities.Urls
                         if (debugCheck == "all")
                         {
                             response.AppendHeader(
-                                "X-Friendly-Url-" + msgId + ".00",
-                                "Path : " + path + " Generated Url: " + resultUrl);
+                                $"X-Friendly-Url-{msgId}.00",
+                                $"Path : {path} Generated Url: {resultUrl}");
                         }
                     }
                 }
@@ -1363,8 +1362,7 @@ namespace DotNetNuke.Entities.Urls
             // Build new path and query string
             newPath = pathBuilder.ToString();
             qs = string.IsNullOrWhiteSpace(qs) ?
-                queryStringBuilder.ToString() :
-                string.Format("{0}&{1}", qs, queryStringBuilder);
+                queryStringBuilder.ToString() : $"{qs}&{queryStringBuilder}";
         }
 
         private static bool TransformStandardPath(ref string newPath, ref string newTabPath)

@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.UI.Services
 
                 if (reload)
                 {
-                    DataCache.RemoveCache(string.Format(DataCache.RoleGroupsCacheKey, this.PortalId));
+                    DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.RoleGroupsCacheKey, this.PortalId));
                 }
 
                 var groups = RoleController.GetRoleGroups(this.roleProvider, this.PortalId)

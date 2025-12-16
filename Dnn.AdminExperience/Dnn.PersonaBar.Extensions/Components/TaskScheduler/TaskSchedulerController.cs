@@ -169,7 +169,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             var schedulerIds = hostSettingsService.GetString(SchedulersToRunOnSameWebServerKey, string.Empty)
                 .Split([',',], StringSplitOptions.RemoveEmptyEntries)
                 .Where(x => int.TryParse(x, out var id))
-                .Select(x => int.Parse(x))
+                .Select(x => int.Parse(x, CultureInfo.InvariantCulture))
                 .ToArray();
 
             if (!schedulerIds.Contains(schedulerId))

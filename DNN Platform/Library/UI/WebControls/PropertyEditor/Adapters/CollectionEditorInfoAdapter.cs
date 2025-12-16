@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.UI.WebControls;
 
@@ -40,10 +41,8 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public bool UpdateValue(PropertyEditorEventArgs e)
         {
-            string nameDataField = Convert.ToString(this.fieldNames["Name"]);
-            string valueDataField = Convert.ToString(this.fieldNames["Value"]);
-            PropertyInfo objProperty;
-            string propertyName = string.Empty;
+            string nameDataField = Convert.ToString(this.fieldNames["Name"], CultureInfo.InvariantCulture);
+            string valueDataField = Convert.ToString(this.fieldNames["Value"], CultureInfo.InvariantCulture);
             bool changed = e.Changed;
             string name = e.Name;
             object oldValue = e.OldValue;
@@ -52,10 +51,10 @@ namespace DotNetNuke.UI.WebControls
             bool isDirty = Null.NullBoolean;
 
             // Get the Name Property
-            objProperty = this.dataSource.GetType().GetProperty(nameDataField);
+            var objProperty = this.dataSource.GetType().GetProperty(nameDataField);
             if (objProperty != null)
             {
-                propertyName = Convert.ToString(objProperty.GetValue(this.dataSource, null));
+                var propertyName = Convert.ToString(objProperty.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
 
                 // Do we have the item in the IEnumerable Collection being changed
                 propertyName = propertyName.Replace(" ", "_");
@@ -87,8 +86,8 @@ namespace DotNetNuke.UI.WebControls
         /// <inheritdoc/>
         public bool UpdateVisibility(PropertyEditorEventArgs e)
         {
-            string nameDataField = Convert.ToString(this.fieldNames["Name"]);
-            string dataField = Convert.ToString(this.fieldNames["ProfileVisibility"]);
+            string nameDataField = Convert.ToString(this.fieldNames["Name"], CultureInfo.InvariantCulture);
+            string dataField = Convert.ToString(this.fieldNames["ProfileVisibility"], CultureInfo.InvariantCulture);
             string name = e.Name;
             object newValue = e.Value;
             bool dirty = Null.NullBoolean;
@@ -97,7 +96,7 @@ namespace DotNetNuke.UI.WebControls
             PropertyInfo property = this.dataSource.GetType().GetProperty(nameDataField);
             if (property != null)
             {
-                string propertyName = Convert.ToString(property.GetValue(this.dataSource, null));
+                string propertyName = Convert.ToString(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
 
                 // Do we have the item in the IEnumerable Collection being changed
                 propertyName = propertyName.Replace(" ", "_");
@@ -115,18 +114,18 @@ namespace DotNetNuke.UI.WebControls
             return dirty;
         }
 
-        /// <summary>GetEditorInfo builds an EditorInfo object for a propoerty.</summary>
+        /// <summary>GetEditorInfo builds an EditorInfo object for a property.</summary>
         private EditorInfo GetEditorInfo()
         {
-            string categoryDataField = Convert.ToString(this.fieldNames["Category"]);
-            string editorDataField = Convert.ToString(this.fieldNames["Editor"]);
-            string nameDataField = Convert.ToString(this.fieldNames["Name"]);
-            string requiredDataField = Convert.ToString(this.fieldNames["Required"]);
-            string typeDataField = Convert.ToString(this.fieldNames["Type"]);
-            string validationExpressionDataField = Convert.ToString(this.fieldNames["ValidationExpression"]);
-            string valueDataField = Convert.ToString(this.fieldNames["Value"]);
-            string visibilityDataField = Convert.ToString(this.fieldNames["ProfileVisibility"]);
-            string maxLengthDataField = Convert.ToString(this.fieldNames["Length"]);
+            string categoryDataField = Convert.ToString(this.fieldNames["Category"], CultureInfo.InvariantCulture);
+            string editorDataField = Convert.ToString(this.fieldNames["Editor"], CultureInfo.InvariantCulture);
+            string nameDataField = Convert.ToString(this.fieldNames["Name"], CultureInfo.InvariantCulture);
+            string requiredDataField = Convert.ToString(this.fieldNames["Required"], CultureInfo.InvariantCulture);
+            string typeDataField = Convert.ToString(this.fieldNames["Type"], CultureInfo.InvariantCulture);
+            string validationExpressionDataField = Convert.ToString(this.fieldNames["ValidationExpression"], CultureInfo.InvariantCulture);
+            string valueDataField = Convert.ToString(this.fieldNames["Value"], CultureInfo.InvariantCulture);
+            string visibilityDataField = Convert.ToString(this.fieldNames["ProfileVisibility"], CultureInfo.InvariantCulture);
+            string maxLengthDataField = Convert.ToString(this.fieldNames["Length"], CultureInfo.InvariantCulture);
 
             var editInfo = new EditorInfo();
             PropertyInfo property;
@@ -138,7 +137,7 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(nameDataField);
                 if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Name = Convert.ToString(property.GetValue(this.dataSource, null));
+                    editInfo.Name = Convert.ToString(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
                 }
             }
 
@@ -151,7 +150,7 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(categoryDataField);
                 if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Category = Convert.ToString(property.GetValue(this.dataSource, null));
+                    editInfo.Category = Convert.ToString(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
                 }
             }
 
@@ -162,7 +161,7 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(valueDataField);
                 if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Value = Convert.ToString(property.GetValue(this.dataSource, null));
+                    editInfo.Value = Convert.ToString(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
                 }
             }
 
@@ -173,7 +172,7 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(typeDataField);
                 if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Type = Convert.ToString(property.GetValue(this.dataSource, null));
+                    editInfo.Type = Convert.ToString(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
                 }
             }
 
@@ -184,7 +183,7 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(editorDataField);
                 if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Editor = EditorInfo.GetEditor(Convert.ToInt32(property.GetValue(this.dataSource, null)));
+                    editInfo.Editor = EditorInfo.GetEditor(Convert.ToInt32(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture));
                 }
             }
 
@@ -198,13 +197,13 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(requiredDataField);
                 if (!((property == null) || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.Required = Convert.ToBoolean(property.GetValue(this.dataSource, null));
+                    editInfo.Required = Convert.ToBoolean(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
                 }
             }
 
             // Set ResourceKey Field
             editInfo.ResourceKey = editInfo.Name;
-            editInfo.ResourceKey = string.Format("{0}_{1}", this.name, editInfo.Name);
+            editInfo.ResourceKey = $"{this.name}_{editInfo.Name}";
 
             // Set Style
             editInfo.ControlStyle = new Style();
@@ -230,7 +229,7 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(validationExpressionDataField);
                 if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    editInfo.ValidationExpression = Convert.ToString(property.GetValue(this.dataSource, null));
+                    editInfo.ValidationExpression = Convert.ToString(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
                 }
             }
 
@@ -240,7 +239,7 @@ namespace DotNetNuke.UI.WebControls
                 property = this.dataSource.GetType().GetProperty(maxLengthDataField);
                 if (!(property == null || (property.GetValue(this.dataSource, null) == null)))
                 {
-                    int length = Convert.ToInt32(property.GetValue(this.dataSource, null));
+                    int length = Convert.ToInt32(property.GetValue(this.dataSource, null), CultureInfo.InvariantCulture);
                     var attributes = new object[1];
                     attributes[0] = new MaxLengthAttribute(length);
                     editInfo.Attributes = attributes;

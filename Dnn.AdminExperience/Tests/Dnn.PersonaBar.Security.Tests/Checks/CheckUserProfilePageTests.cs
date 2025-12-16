@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
 
     using Dnn.PersonaBar.Library.Dto;
     using Dnn.PersonaBar.Pages.Components;
@@ -280,21 +281,14 @@
             var permissionsData = new PagePermissions(false);
             if (allUsersCanView)
             {
-                permissionsData.RolePermissions = new List<RolePermission>
-                {
+                permissionsData.RolePermissions =
+                [
                     new RolePermission
                     {
-                        RoleId = int.Parse(Globals.glbRoleAllUsers),
-                        Permissions = new List<Permission>
-                        {
-                            new Permission
-                            {
-                                PermissionName = CheckUserProfilePage.ViewTab,
-                                AllowAccess = true,
-                            },
-                        },
+                        RoleId = int.Parse(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture),
+                        Permissions = [new Permission { PermissionName = CheckUserProfilePage.ViewTab, AllowAccess = true, },],
                     },
-                };
+                ];
             }
 
             return permissionsData;

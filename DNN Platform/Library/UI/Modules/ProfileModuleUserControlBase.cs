@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.Modules
             {
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    return int.Parse(this.Request.Params["UserId"]);
+                    return int.Parse(this.Request.Params["UserId"], CultureInfo.InvariantCulture);
                 }
 
                 return UserController.Instance.GetCurrentUserInfo().UserID;

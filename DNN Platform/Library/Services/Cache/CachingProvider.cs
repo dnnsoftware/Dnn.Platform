@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.Cache
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.Caching;
@@ -234,22 +235,22 @@ namespace DotNetNuke.Services.Cache
                     this.ClearHostCacheInternal(clearRuntime);
                     break;
                 case "Folder":
-                    this.ClearFolderCacheInternal(int.Parse(data), clearRuntime);
+                    this.ClearFolderCacheInternal(int.Parse(data, CultureInfo.InvariantCulture), clearRuntime);
                     break;
                 case "Module":
-                    this.ClearModuleCacheInternal(int.Parse(data), clearRuntime);
+                    this.ClearModuleCacheInternal(int.Parse(data, CultureInfo.InvariantCulture), clearRuntime);
                     break;
                 case "ModulePermissionsByPortal":
-                    this.ClearModulePermissionsCachesByPortalInternal(int.Parse(data), clearRuntime);
+                    this.ClearModulePermissionsCachesByPortalInternal(int.Parse(data, CultureInfo.InvariantCulture), clearRuntime);
                     break;
                 case "Portal":
-                    this.ClearPortalCacheInternal(int.Parse(data), false, clearRuntime);
+                    this.ClearPortalCacheInternal(int.Parse(data, CultureInfo.InvariantCulture), false, clearRuntime);
                     break;
                 case "PortalCascade":
-                    this.ClearPortalCacheInternal(int.Parse(data), true, clearRuntime);
+                    this.ClearPortalCacheInternal(int.Parse(data, CultureInfo.InvariantCulture), true, clearRuntime);
                     break;
                 case "Tab":
-                    this.ClearTabCacheInternal(int.Parse(data), clearRuntime);
+                    this.ClearTabCacheInternal(int.Parse(data, CultureInfo.InvariantCulture), clearRuntime);
                     break;
                 case "ServiceFrameworkRoutes":
                     ReloadServicesFrameworkRoutes();
@@ -284,17 +285,17 @@ namespace DotNetNuke.Services.Cache
         {
             foreach (DictionaryEntry objDictionaryEntry in HttpRuntime.Cache)
             {
-                if (Convert.ToString(objDictionaryEntry.Key).StartsWith(prefix))
+                if (Convert.ToString(objDictionaryEntry.Key, CultureInfo.InvariantCulture).StartsWith(prefix))
                 {
                     if (clearRuntime)
                     {
                         // remove item from runtime cache
-                        this.RemoveInternal(Convert.ToString(objDictionaryEntry.Key));
+                        this.RemoveInternal(Convert.ToString(objDictionaryEntry.Key, CultureInfo.InvariantCulture));
                     }
                     else
                     {
                         // Call provider's remove method
-                        this.Remove(Convert.ToString(objDictionaryEntry.Key));
+                        this.Remove(Convert.ToString(objDictionaryEntry.Key, CultureInfo.InvariantCulture));
                     }
                 }
             }
@@ -325,9 +326,9 @@ namespace DotNetNuke.Services.Cache
         {
             this.RemoveFormattedCacheKey(DataCache.FolderCacheKey, clearRuntime, portalId);
 
-            // FolderUserCacheKey also includes permissions and userId but we don't have that information
+            // FolderUserCacheKey also includes permissions and userId, but we don't have that information
             // here so we remove them using a prefix
-            var folderUserCachePrefix = GetCacheKey(string.Format("Folders|{0}|", portalId));
+            var folderUserCachePrefix = GetCacheKey(string.Format(CultureInfo.InvariantCulture, "Folders|{0}|", portalId));
             this.ClearCacheInternal(folderUserCachePrefix, clearRuntime);
 
             PermissionProvider.ResetCacheDependency(
@@ -361,13 +362,13 @@ namespace DotNetNuke.Services.Cache
 
         private void ClearModuleCacheInternal(int tabId, bool clearRuntime)
         {
-            var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleCacheKey, tabId);
             var tabModules = Cache.Get(cacheKey) as Dictionary<int, ModuleInfo>;
             if (tabModules != null && tabModules.Count != 0)
             {
                 foreach (var moduleInfo in tabModules.Values)
                 {
-                    cacheKey = string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID);
+                    cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID);
                     if (clearRuntime)
                     {
                         this.RemoveInternal(cacheKey);
@@ -402,19 +403,19 @@ namespace DotNetNuke.Services.Cache
             {
                 // At least attempt to remove default locale
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(this.hostSettings, portalId);
-                this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
-                this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
+                this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
                 this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, defaultLocale);
             }
             else
             {
                 foreach (Locale portalLocale in LocaleController.Instance.GetLocales(portalId).Values)
                 {
-                    this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, portalLocale.Code), clearRuntime);
+                    this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, portalId, portalLocale.Code), clearRuntime);
                     this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, portalLocale.Code);
                 }
 
-                this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
                 this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, Null.NullString);
             }
 
@@ -437,8 +438,8 @@ namespace DotNetNuke.Services.Cache
             this.ClearDesktopModuleCacheInternal(portalId, clearRuntime);
             this.ClearTabCacheInternal(portalId, clearRuntime);
 
-            this.RemoveCacheKey(string.Format(DataCache.RolesCacheKey, portalId), clearRuntime);
-            this.RemoveCacheKey(string.Format(DataCache.JournalTypesCacheKey, portalId), clearRuntime);
+            this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.RolesCacheKey, portalId), clearRuntime);
+            this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.JournalTypesCacheKey, portalId), clearRuntime);
         }
 
         private void ClearTabCacheInternal(int portalId, bool clearRuntime)
@@ -453,18 +454,18 @@ namespace DotNetNuke.Services.Cache
             {
                 // At least attempt to remove default locale
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(this.hostSettings, portalId);
-                this.RemoveCacheKey(string.Format(DataCache.TabPathCacheKey, defaultLocale, portalId), clearRuntime);
+                this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.TabPathCacheKey, defaultLocale, portalId), clearRuntime);
             }
             else
             {
                 foreach (Locale portalLocale in LocaleController.Instance.GetLocales(portalId).Values)
                 {
-                    this.RemoveCacheKey(string.Format(DataCache.TabPathCacheKey, portalLocale.Code, portalId), clearRuntime);
+                    this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.TabPathCacheKey, portalLocale.Code, portalId), clearRuntime);
                 }
             }
 
-            this.RemoveCacheKey(string.Format(DataCache.TabPathCacheKey, Null.NullString, portalId), clearRuntime);
-            this.RemoveCacheKey(string.Format(DataCache.TabSettingsCacheKey, portalId), clearRuntime);
+            this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.TabPathCacheKey, Null.NullString, portalId), clearRuntime);
+            this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.TabSettingsCacheKey, portalId), clearRuntime);
         }
 
         private void RemoveCacheKey(string cacheKey, bool clearRuntime)
@@ -486,12 +487,12 @@ namespace DotNetNuke.Services.Cache
             if (clearRuntime)
             {
                 // remove item from runtime cache
-                this.RemoveInternal(string.Format(GetCacheKey(cacheKeyBase), parameters));
+                this.RemoveInternal(string.Format(CultureInfo.InvariantCulture, GetCacheKey(cacheKeyBase), parameters));
             }
             else
             {
                 // Call provider's remove method
-                this.Remove(string.Format(GetCacheKey(cacheKeyBase), parameters));
+                this.Remove(string.Format(CultureInfo.InvariantCulture, GetCacheKey(cacheKeyBase), parameters));
             }
         }
     }

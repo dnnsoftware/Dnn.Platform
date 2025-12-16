@@ -4,6 +4,7 @@
 
 namespace Dnn.PersonaBar.Styles.Services
 {
+    using System.Globalization;
     using System.IO;
     using System.Web.Http;
 
@@ -56,7 +57,7 @@ namespace Dnn.PersonaBar.Styles.Services
             repo.SaveSettings(this.PortalId, settings);
 
             // Clear cache
-            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalStylesCacheKey, this.PortalId);
             DataCache.RemoveCache(cacheKey);
 
             // Overwrite the file

@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
 
@@ -45,7 +46,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             var page = TabController.Instance.GetTab(tabId, portalSettings.PortalId);
             if (page == null)
             {
-                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), tabId));
+                message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), tabId));
                 return null;
             }
 
@@ -129,7 +130,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var targetPage = TabController.Instance.GetTab(targetPageId, portalSettings.PortalId);
 
-            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
+            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
 
             if (targetPage == null)
             {
@@ -183,7 +184,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
                 }
             }
         }
@@ -207,7 +208,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 else
                 {
-                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_ModuleNotFound", Constants.LocalResourcesFile), moduleId, pageId));
                     return null;
                 }
             }
@@ -220,7 +221,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
             }
 
-            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
+            message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
             return null;
         }
 

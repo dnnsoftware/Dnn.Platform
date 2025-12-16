@@ -155,7 +155,7 @@ namespace DotNetNuke.Entities.Users
                     bool isVisible = ProfilePropertyAccess.CheckAccessLevel(settings, photoProperty, user, this.user);
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
-                        var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
+                        var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue, CultureInfo.InvariantCulture));
                         if (fileInfo != null)
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
@@ -462,19 +462,17 @@ namespace DotNetNuke.Entities.Users
             set
             {
                 string stringValue;
-                if (value is DateTime)
+                if (value is DateTime dateValue)
                 {
-                    var dateValue = (DateTime)value;
                     stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
                 }
-                else if (value is TimeZoneInfo)
+                else if (value is TimeZoneInfo timezoneValue)
                 {
-                    var timezoneValue = (TimeZoneInfo)value;
                     stringValue = timezoneValue.Id;
                 }
                 else
                 {
-                    stringValue = Convert.ToString(value);
+                    stringValue = Convert.ToString(value, CultureInfo.InvariantCulture);
                 }
 
                 this.SetProfileProperty(name, stringValue);
@@ -522,11 +520,11 @@ namespace DotNetNuke.Entities.Users
                     var dataType = controller.GetListEntryInfo("DataType", profileProp.DataType);
                     if (dataType == null)
                     {
-                        LoggerSource.Instance.GetLogger(typeof(UserProfile)).ErrorFormat("Invalid data type {0} for profile property {1}", profileProp.DataType, profileProp.PropertyName);
+                        LoggerSource.Instance.GetLogger(typeof(UserProfile)).ErrorFormat(CultureInfo.InvariantCulture, "Invalid data type {0} for profile property {1}", profileProp.DataType, profileProp.PropertyName);
                         return propValue;
                     }
 
-                    if (dataType.Value == "Country" || dataType.Value == "Region")
+                    if (dataType.Value is "Country" or "Region")
                     {
                         propValue = GetListValue(dataType.Value, propValue);
                     }

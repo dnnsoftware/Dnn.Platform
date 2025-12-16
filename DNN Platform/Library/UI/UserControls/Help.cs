@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.IO;
     using System.Web.UI.WebControls;
 
@@ -43,11 +44,11 @@ namespace DotNetNuke.UI.UserControls
 
             if (this.Request.QueryString["ctlid"] != null)
             {
-                moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
+                moduleControlId = int.Parse(this.Request.QueryString["ctlid"], CultureInfo.InvariantCulture);
             }
             else if (Host.EnableModuleOnLineHelp)
             {
-                this.helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", Host.HelpURL);
+                this.helpFrame.Text = $"<iframe src='{Host.HelpURL}' id='helpFrame' width='100%' height='500'></iframe>";
             }
 
             ModuleControlInfo objModuleControl = ModuleControlController.GetModuleControl(moduleControlId);
@@ -55,7 +56,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(objModuleControl.HelpURL) && Host.EnableModuleOnLineHelp)
                 {
-                    this.helpFrame.Text = string.Format("<iframe src='{0}' id='helpFrame' width='100%' height='500'></iframe>", objModuleControl.HelpURL);
+                    this.helpFrame.Text = $"<iframe src='{objModuleControl.HelpURL}' id='helpFrame' width='100%' height='500'></iframe>";
                 }
                 else
                 {
@@ -105,11 +106,11 @@ namespace DotNetNuke.UI.UserControls
                 this.cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
             }
 
-            if (this.Page.IsPostBack == false)
+            if (!this.Page.IsPostBack)
             {
                 if (this.Request.UrlReferrer != null)
                 {
-                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
+                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer, CultureInfo.InvariantCulture);
                 }
                 else
                 {
@@ -128,7 +129,7 @@ namespace DotNetNuke.UI.UserControls
         {
             try
             {
-                this.Response.Redirect(Convert.ToString(this.ViewState["UrlReferrer"]), true);
+                this.Response.Redirect(Convert.ToString(this.ViewState["UrlReferrer"], CultureInfo.InvariantCulture), true);
             }
             catch (Exception exc)
             {

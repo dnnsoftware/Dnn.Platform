@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     if (string.IsNullOrEmpty(this.ToolTip))
                     {
-                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
+                        this.ToolTip = Localization.GetString($"{this.Text}.ToolTip", this.LocalResourceFile);
                     }
 
                     if (string.IsNullOrEmpty(this.ToolTip))

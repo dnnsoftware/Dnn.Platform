@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
@@ -265,15 +266,15 @@ namespace DotNetNuke.Entities.Portals
             setting = settings.GetValueOrDefault("DataConsentTermsLastChange", string.Empty);
             if (!string.IsNullOrEmpty(setting))
             {
-                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, System.Globalization.CultureInfo.InvariantCulture);
+                portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, CultureInfo.InvariantCulture);
             }
 
             setting = settings.GetValueOrDefault("DataConsentConsentRedirect", "-1");
-            portalSettings.DataConsentConsentRedirect = int.Parse(setting);
+            portalSettings.DataConsentConsentRedirect = int.Parse(setting, CultureInfo.InvariantCulture);
             setting = settings.GetValueOrDefault("DataConsentUserDeleteAction", "0");
-            portalSettings.DataConsentUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting);
+            portalSettings.DataConsentUserDeleteAction = (PortalSettings.UserDeleteAction)int.Parse(setting, CultureInfo.InvariantCulture);
             setting = settings.GetValueOrDefault("DataConsentDelay", "1");
-            portalSettings.DataConsentDelay = int.Parse(setting);
+            portalSettings.DataConsentDelay = int.Parse(setting, CultureInfo.InvariantCulture);
             setting = settings.GetValueOrDefault("DataConsentDelayMeasurement", "d");
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));

@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Utilities
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -41,6 +42,7 @@ namespace DotNetNuke.Common.Utilities
             if (len != fs.Length)
             {
                 Logger.ErrorFormat(
+                    CultureInfo.InvariantCulture,
                     "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
                     filePath,
                     fs.Length,
@@ -69,6 +71,7 @@ namespace DotNetNuke.Common.Utilities
             if (len != fs.Length)
             {
                 Logger.ErrorFormat(
+                    CultureInfo.InvariantCulture,
                     "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
                     filePath,
                     fs.Length,
@@ -782,10 +785,9 @@ namespace DotNetNuke.Common.Utilities
                 if (len != fs.Length)
                 {
                     Logger.ErrorFormat(
-                        "Reading from " +
-                        filePath +
-                        " didn't read all data in buffer. " +
-                        "Requested to read {0} bytes, but was read {1} bytes",
+                        CultureInfo.InvariantCulture,
+                        "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
+                        filePath,
                         fs.Length,
                         len);
                 }

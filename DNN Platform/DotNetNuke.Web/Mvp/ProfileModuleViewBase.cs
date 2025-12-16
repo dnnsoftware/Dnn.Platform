@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.Mvp
                 int userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    userId = int.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"], CultureInfo.InvariantCulture);
                 }
 
                 return userId;

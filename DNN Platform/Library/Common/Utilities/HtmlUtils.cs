@@ -125,7 +125,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 if (email.IndexOf("@", StringComparison.Ordinal) != -1)
                 {
-                    formatEmail = string.Format("<a href=\"mailto:{0}\">{0}</a>", email);
+                    formatEmail = $"<a href=\"mailto:{email}\">{email}</a>";
                 }
                 else
                 {
@@ -556,7 +556,7 @@ namespace DotNetNuke.Common.Utilities
                 string searchAlias = portalAlias;
                 if (!portalAlias.EndsWith("/"))
                 {
-                    searchAlias = string.Format("{0}/", portalAlias);
+                    searchAlias = $"{portalAlias}/";
                 }
 
                 var exp = new Regex("((?:href|src)=&quot;)https?://" + searchAlias + "(.*?&quot;)", RegexOptions.IgnoreCase);

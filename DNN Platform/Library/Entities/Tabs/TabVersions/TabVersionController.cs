@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -74,7 +75,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 if (!lastTabVersion.IsPublished && !isPublished)
                 {
-                    throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
+                    throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
                 }
 
                 newVersion = lastTabVersion.Version + 1;
@@ -107,7 +108,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private static string GetTabVersionsCacheKey(int tabId)
         {
-            return string.Format(DataCache.TabVersionsCacheKey, tabId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.TabVersionsCacheKey, tabId);
         }
 
         private static void ClearCache(int tabId)

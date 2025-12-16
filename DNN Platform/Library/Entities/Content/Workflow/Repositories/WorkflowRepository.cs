@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common.Utilities;
@@ -148,7 +149,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         internal static string GetWorkflowItemKey(int workflowId)
         {
-            return string.Format(DataCache.ContentWorkflowCacheKey, workflowId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.ContentWorkflowCacheKey, workflowId);
         }
 
         /// <inheritdoc/>

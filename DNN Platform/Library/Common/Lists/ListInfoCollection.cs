@@ -5,6 +5,7 @@ namespace DotNetNuke.Common.Lists
 {
     using System;
     using System.Collections;
+    using System.Globalization;
 
     using DotNetNuke.Instrumentation;
 
@@ -82,7 +83,7 @@ namespace DotNetNuke.Common.Lists
                 return null;
             }
 
-            index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
+            index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()], CultureInfo.InvariantCulture);
             obj = this.List[index];
             return obj;
         }
@@ -93,7 +94,6 @@ namespace DotNetNuke.Common.Lists
         /// <returns>A list object.</returns>
         public object Item(string key, bool cache)
         {
-            int index;
             object obj = null;
             bool itemExists = false;
 
@@ -127,7 +127,7 @@ namespace DotNetNuke.Common.Lists
             }
             else
             {
-                index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
+                var index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()], CultureInfo.InvariantCulture);
                 obj = this.List[index];
             }
 

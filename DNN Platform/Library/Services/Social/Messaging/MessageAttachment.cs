@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Entities;
@@ -60,9 +61,9 @@ namespace DotNetNuke.Services.Social.Messaging
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.MessageAttachmentID = Convert.ToInt32(dr["MessageAttachmentID"]);
-            this.MessageID = Convert.ToInt32(dr["MessageID"]);
-            this.FileID = Convert.ToInt32(dr["FileID"]);
+            this.MessageAttachmentID = Convert.ToInt32(dr["MessageAttachmentID"], CultureInfo.InvariantCulture);
+            this.MessageID = Convert.ToInt32(dr["MessageID"], CultureInfo.InvariantCulture);
+            this.FileID = Convert.ToInt32(dr["FileID"], CultureInfo.InvariantCulture);
 
             // add audit column data
             this.FillInternal(dr);

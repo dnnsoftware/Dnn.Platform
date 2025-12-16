@@ -565,7 +565,7 @@ namespace DotNetNuke.Services.Mail
             };
             this.tokenReplace.User = this.sendingUser;
             string body = this.tokenReplace.ReplaceEnvironmentTokens(this.BodyFormat == MailFormat.Html ? this.confirmBodyHTML : this.confirmBodyText, parameters, "Custom");
-            string strSubject = string.Format(this.confirmSubject, subject);
+            string strSubject = string.Format(CultureInfo.CurrentCulture, this.confirmSubject, subject);
             if (!this.SuppressTokenReplace)
             {
                 strSubject = this.tokenReplace.ReplaceEnvironmentTokens(strSubject);
@@ -578,7 +578,7 @@ namespace DotNetNuke.Services.Mail
 
         /// <summary>check, if the user's language matches the current language filter.</summary>
         /// <param name="userLanguage">Language of the user.</param>
-        /// <returns>userlanguage matches current languageFilter.</returns>
+        /// <returns><paramref name="userLanguage"></paramref> matches current <see cref="LanguageFilter"/>.</returns>
         /// <remarks>if filter not set, true is returned.</remarks>
         private bool MatchLanguageFilter(string userLanguage)
         {

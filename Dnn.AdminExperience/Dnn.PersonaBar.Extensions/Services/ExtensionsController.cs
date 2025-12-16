@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -370,7 +371,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                             if (propValue == null || propValue.ToString() != value)
                             {
                                 var nativeValue = property.PropertyType == typeof(Version)
-                                    ? new Version(value) : Convert.ChangeType(value, property.PropertyType);
+                                    ? new Version(value) : Convert.ChangeType(value, property.PropertyType, CultureInfo.InvariantCulture);
                                 property.SetValue(package, nativeValue);
                                 needUpdate = true;
                             }
@@ -729,7 +730,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         {
             try
             {
-                var package = new PackageInfo { PortalID = packageSettings.PortalId };
+                var package = new PackageInfo { PortalID = packageSettings.PortalId, };
                 var type = package.GetType();
                 foreach (var kvp in packageSettings.Settings.Where(kpv => kpv.Value != null))
                 {
@@ -741,7 +742,8 @@ namespace Dnn.PersonaBar.Extensions.Services
                         if (propValue == null || propValue.ToString() != value)
                         {
                             var nativeValue = property.PropertyType == typeof(Version)
-                                ? new Version(value) : Convert.ChangeType(value, property.PropertyType);
+                                ? new Version(value)
+                                : Convert.ChangeType(value, property.PropertyType, CultureInfo.InvariantCulture);
                             property.SetValue(package, nativeValue);
                         }
                     }
@@ -1317,11 +1319,11 @@ namespace Dnn.PersonaBar.Extensions.Services
                         if (tab.BreadCrumbs.Count - 1 == index)
                         {
                             var url = Globals.AddHTTP(t.PortalID == Null.NullInteger ? this.PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList().OrderByDescending(a => a.IsPrimary).FirstOrDefault().HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
-                            returnValue.AppendFormat("<a target=\"_blank\" href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
+                            returnValue.AppendFormat(CultureInfo.InvariantCulture, "<a target=\"_blank\" href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                         }
                         else
                         {
-                            returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                            returnValue.Append(t.LocalizedTabName);
                         }
 
                         index = index + 1;

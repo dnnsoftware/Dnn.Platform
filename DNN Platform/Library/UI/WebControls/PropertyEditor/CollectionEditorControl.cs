@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.WebControls
     using System;
     using System.Collections;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Reflection;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -148,16 +149,15 @@ namespace DotNetNuke.UI.WebControls
         /// <returns>The category name or <see cref="Null.NullString"/>.</returns>
         protected override string GetCategory(object obj)
         {
-            PropertyInfo objProperty;
             string category = Null.NullString;
 
             // Get Category Field
             if (!string.IsNullOrEmpty(this.CategoryDataField))
             {
-                objProperty = obj.GetType().GetProperty(this.CategoryDataField);
+                var objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
-                    category = Convert.ToString(objProperty.GetValue(obj, null));
+                    category = Convert.ToString(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
                 }
             }
 
@@ -170,17 +170,16 @@ namespace DotNetNuke.UI.WebControls
         protected override string[] GetGroups(IEnumerable arrObjects)
         {
             var arrGroups = new ArrayList();
-            PropertyInfo objProperty;
 
             foreach (object obj in arrObjects)
             {
                 // Get Category Field
                 if (!string.IsNullOrEmpty(this.CategoryDataField))
                 {
-                    objProperty = obj.GetType().GetProperty(this.CategoryDataField);
+                    var objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                     if (!((objProperty == null) || (objProperty.GetValue(obj, null) == null)))
                     {
-                        string category = Convert.ToString(objProperty.GetValue(obj, null));
+                        string category = Convert.ToString(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
 
                         if (!arrGroups.Contains(category))
                         {
@@ -193,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
             var strGroups = new string[arrGroups.Count];
             for (int i = 0; i <= arrGroups.Count - 1; i++)
             {
-                strGroups[i] = Convert.ToString(arrGroups[i]);
+                strGroups[i] = Convert.ToString(arrGroups[i], CultureInfo.InvariantCulture);
             }
 
             return strGroups;
@@ -205,11 +204,10 @@ namespace DotNetNuke.UI.WebControls
         protected override bool GetRowVisibility(object obj)
         {
             bool isVisible = true;
-            PropertyInfo objProperty;
-            objProperty = obj.GetType().GetProperty(this.VisibleDataField);
+            var objProperty = obj.GetType().GetProperty(this.VisibleDataField);
             if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
             {
-                isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));
+                isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
             }
 
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
@@ -218,7 +216,7 @@ namespace DotNetNuke.UI.WebControls
                 objProperty = obj.GetType().GetProperty(this.RequiredDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {
-                    isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));
+                    isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null), CultureInfo.InvariantCulture);
                 }
             }
 

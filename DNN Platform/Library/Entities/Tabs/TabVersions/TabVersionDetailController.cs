@@ -5,6 +5,7 @@
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Common;
@@ -94,7 +95,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private static string GetTabVersionDetailCacheKey(int tabVersionId)
         {
-            return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);
+            return string.Format(CultureInfo.InvariantCulture, DataCache.TabVersionDetailsCacheKey, tabVersionId);
         }
     }
 }

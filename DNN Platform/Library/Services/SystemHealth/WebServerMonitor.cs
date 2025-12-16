@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.SystemHealth
 {
     using System;
+    using System.Globalization;
     using System.Linq;
 
     using DotNetNuke.Entities.Host;
@@ -52,7 +53,7 @@ namespace DotNetNuke.Services.SystemHealth
                 this.ScheduleHistoryItem.Succeeded = false;
                 this.ScheduleHistoryItem.AddLogNote($"Updating server health failed: {exc}.");
                 this.Errored(ref exc);
-                Logger.ErrorFormat("Error in WebServerMonitor: {0}. {1}", exc.Message, exc.StackTrace);
+                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error in WebServerMonitor: {0}. {1}", exc.Message, exc.StackTrace);
                 Exceptions.LogException(exc);
             }
         }

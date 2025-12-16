@@ -1,10 +1,11 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.InternalServices
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -43,21 +44,21 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                     }
 
                     string[] parameters = notification.Context.Split(':');
 
-                    var stateTransiction = new StateTransaction
+                    var stateTransaction = new StateTransaction
                     {
-                        ContentItemId = int.Parse(parameters[0]),
-                        CurrentStateId = int.Parse(parameters[2]),
+                        ContentItemId = int.Parse(parameters[0], CultureInfo.InvariantCulture),
+                        CurrentStateId = int.Parse(parameters[2], CultureInfo.InvariantCulture),
                         Message = new StateTransactionMessage(),
                         UserId = this.UserInfo.UserID,
                     };
-                    this.workflowEngine.DiscardState(stateTransiction);
+                    this.workflowEngine.DiscardState(stateTransaction);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                 }
             }
             catch (Exception exc)
@@ -79,21 +80,21 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                     }
 
                     string[] parameters = notification.Context.Split(':');
 
-                    var stateTransiction = new StateTransaction
+                    var stateTransaction = new StateTransaction
                     {
-                        ContentItemId = int.Parse(parameters[0]),
-                        CurrentStateId = int.Parse(parameters[2]),
+                        ContentItemId = int.Parse(parameters[0], CultureInfo.InvariantCulture),
+                        CurrentStateId = int.Parse(parameters[2], CultureInfo.InvariantCulture),
                         Message = new StateTransactionMessage(),
                         UserId = this.UserInfo.UserID,
                     };
-                    this.workflowEngine.CompleteState(stateTransiction);
+                    this.workflowEngine.CompleteState(stateTransaction);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                 }
             }
             catch (Exception exc)

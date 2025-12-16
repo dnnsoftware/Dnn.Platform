@@ -5,6 +5,7 @@ namespace DotNetNuke.UI.UserControls
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using System.Web.UI;
     using System.Web.UI.WebControls;
@@ -82,10 +83,10 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (this.Model != null)
                 {
-                    this.CreatedByUser = this.Model.CreatedByUserID.ToString();
-                    this.CreatedDate = this.Model.CreatedOnDate.ToString();
-                    this.LastModifiedByUser = this.Model.LastModifiedByUserID.ToString();
-                    this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString();
+                    this.CreatedByUser = this.Model.CreatedByUserID.ToString(CultureInfo.CurrentCulture);
+                    this.CreatedDate = this.Model.CreatedOnDate.ToString(CultureInfo.CurrentCulture);
+                    this.LastModifiedByUser = this.Model.LastModifiedByUserID.ToString(CultureInfo.CurrentCulture);
+                    this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString(CultureInfo.CurrentCulture);
                 }
 
                 // check to see if updated check is redundant
@@ -110,14 +111,14 @@ namespace DotNetNuke.UI.UserControls
         {
             if (CheckDateColumnRegex.IsMatch(this.CreatedByUser))
             {
-                if (int.Parse(this.CreatedByUser) == Null.NullInteger)
+                if (int.Parse(this.CreatedByUser, CultureInfo.CurrentCulture) == Null.NullInteger)
                 {
                     this.CreatedByUser = this.systemUser;
                 }
                 else
                 {
                     // contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.CreatedByUser));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.CreatedByUser, CultureInfo.CurrentCulture));
                     if (userInfo != null)
                     {
                         this.CreatedByUser = userInfo.DisplayName;
@@ -126,7 +127,7 @@ namespace DotNetNuke.UI.UserControls
             }
 
             string createdString = Localization.GetString("CreatedBy", Localization.GetResourceFile(this, MyFileName));
-            this.lblCreatedBy.Text = string.Format(createdString, this.CreatedByUser, this.CreatedDate);
+            this.lblCreatedBy.Text = string.Format(CultureInfo.CurrentCulture, createdString, this.CreatedByUser, this.CreatedDate);
         }
 
         private void ShowUpdatedString(bool isCreatorAndUpdater)
@@ -143,14 +144,14 @@ namespace DotNetNuke.UI.UserControls
                 {
                     this.LastModifiedByUser = this.CreatedByUser;
                 }
-                else if (int.Parse(this.LastModifiedByUser) == Null.NullInteger)
+                else if (int.Parse(this.LastModifiedByUser, CultureInfo.CurrentCulture) == Null.NullInteger)
                 {
                     this.LastModifiedByUser = this.systemUser;
                 }
                 else
                 {
                     // contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.LastModifiedByUser));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.LastModifiedByUser, CultureInfo.CurrentCulture));
                     if (userInfo != null)
                     {
                         this.LastModifiedByUser = userInfo.DisplayName;
@@ -159,7 +160,7 @@ namespace DotNetNuke.UI.UserControls
             }
 
             string updatedByString = Localization.GetString("UpdatedBy", Localization.GetResourceFile(this, MyFileName));
-            this.lblUpdatedBy.Text = string.Format(updatedByString, this.LastModifiedByUser, this.LastModifiedDate);
+            this.lblUpdatedBy.Text = string.Format(CultureInfo.CurrentCulture, updatedByString, this.LastModifiedByUser, this.LastModifiedDate);
         }
 
         [Serializable]

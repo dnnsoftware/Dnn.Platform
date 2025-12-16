@@ -4,6 +4,8 @@
 
 namespace DotNetNuke.Web.Api.Auth.ApiTokens
 {
+    using System.Globalization;
+
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
@@ -22,17 +24,17 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         {
             var lp = new LogProperties
               {
-                new LogDetailInfo("ApiTokenId", apiToken.ApiTokenId.ToString()),
+                new LogDetailInfo("ApiTokenId", apiToken.ApiTokenId.ToString(CultureInfo.InvariantCulture)),
                 new LogDetailInfo("TokenName", apiToken.TokenName),
-                new LogDetailInfo("ExpiresOn", apiToken.ExpiresOn.ToString()),
+                new LogDetailInfo("ExpiresOn", apiToken.ExpiresOn.ToString(CultureInfo.InvariantCulture)),
                 new LogDetailInfo("Created By", apiToken.CreatedByUsername),
-                new LogDetailInfo("Created On", apiToken.CreatedOnDate.ToString()),
+                new LogDetailInfo("Created On", apiToken.CreatedOnDate.ToString(CultureInfo.InvariantCulture)),
                 new LogDetailInfo("Scope", apiToken.Scope.ToString()),
                 new LogDetailInfo("Portal", apiToken.PortalName),
                 new LogDetailInfo("Keys", apiToken.Keys),
                 new LogDetailInfo("Revoked By", apiToken.RevokedByUsername),
-                new LogDetailInfo("Revoked On", apiToken.RevokedOnDate.ToString()),
-                new LogDetailInfo("Last Used On", apiToken.LastUsedOnDate.ToString()),
+                new LogDetailInfo("Revoked On", apiToken.RevokedOnDate?.ToString(CultureInfo.InvariantCulture) ?? string.Empty),
+                new LogDetailInfo("Last Used On", apiToken.LastUsedOnDate?.ToString(CultureInfo.InvariantCulture) ?? string.Empty),
               };
             return lp;
         }

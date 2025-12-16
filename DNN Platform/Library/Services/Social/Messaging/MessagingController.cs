@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
 
@@ -84,10 +85,10 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > MaxSubjectLength)
             {
-                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), MaxSubjectLength, message.Subject.Length));
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), MaxSubjectLength, message.Subject.Length));
             }
 
-            if (roles != null && roles.Count > 0 && !this.IsAdminOrHost(sender))
+            if (roles is { Count: > 0, } && !this.IsAdminOrHost(sender))
             {
                 if (!roles.All(role => sender.Social.Roles.Any(userRoleInfo => role.RoleID == userRoleInfo.RoleID && userRoleInfo.IsOwner)))
                 {
@@ -121,7 +122,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (sbTo.Length > MaxRecipients)
             {
-                throw new ArgumentException(string.Format(Localization.GetString("MsgToListTooBigError", Localization.ExceptionsResourceFile), MaxRecipients, sbTo.Length));
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Localization.GetString("MsgToListTooBigError", Localization.ExceptionsResourceFile), MaxRecipients, sbTo.Length));
             }
 
             // Cannot send message if within ThrottlingInterval
@@ -129,11 +130,11 @@ namespace DotNetNuke.Services.Social.Messaging
             if (waitTime > 0)
             {
                 var interval = this.GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingIntervalMinutes);
-                throw new ThrottlingIntervalNotMetException(string.Format(Localization.GetString("MsgThrottlingIntervalNotMet", Localization.ExceptionsResourceFile), interval));
+                throw new ThrottlingIntervalNotMetException(string.Format(CultureInfo.CurrentCulture, Localization.GetString("MsgThrottlingIntervalNotMet", Localization.ExceptionsResourceFile), interval));
             }
 
             // Cannot have attachments if it's not enabled
-            if (fileIDs != null && fileIDs.Count > 0 && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
+            if (fileIDs is { Count: > 0, } && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
             {
                 throw new AttachmentsNotAllowed(Localization.GetString("MsgAttachmentsNotAllowed", Localization.ExceptionsResourceFile));
             }

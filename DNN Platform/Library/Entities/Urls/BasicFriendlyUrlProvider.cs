@@ -6,6 +6,7 @@ namespace DotNetNuke.Entities.Urls
     using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using System.Web;
 
@@ -258,7 +259,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         if (tab != null)
                                         {
-                                            var tabId = Convert.ToInt32(pair[1]);
+                                            var tabId = Convert.ToInt32(pair[1], CultureInfo.InvariantCulture);
                                             if (tab.TabID == tabId)
                                             {
                                                 if (!string.IsNullOrEmpty(tab.TabPath) && this.IncludePageName)

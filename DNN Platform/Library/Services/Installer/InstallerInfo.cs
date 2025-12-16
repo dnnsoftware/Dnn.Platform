@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Installer
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -264,7 +265,7 @@ namespace DotNetNuke.Services.Installer
                     }
                 }
 
-                this.Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.FILE_ReadSuccess, file.FullName));
             }
 
             if (this.ManifestFile == null)
@@ -272,15 +273,12 @@ namespace DotNetNuke.Services.Installer
                 this.Log.AddFailure(Util.EXCEPTION_MissingDnn);
             }
 
-            if (this.Log.Valid)
-            {
-                this.Log.EndJob(Util.FILES_ReadingEnd);
-            }
-            else
+            if (!this.Log.Valid)
             {
                 this.Log.AddFailure(new ReadManifestException(Util.EXCEPTION_FileLoad));
-                this.Log.EndJob(Util.FILES_ReadingEnd);
             }
+
+            this.Log.EndJob(Util.FILES_ReadingEnd);
 
             // Close the Zip Input Stream as we have finished with it
             inputStream.Close();

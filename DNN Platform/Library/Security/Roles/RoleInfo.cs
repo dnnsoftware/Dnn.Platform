@@ -80,7 +80,7 @@ namespace DotNetNuke.Security.Roles
                     if (!string.IsNullOrEmpty(this.IconFile))
                     {
                         IFileInfo fileInfo =
-                            FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty)));
+                            FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty), CultureInfo.InvariantCulture));
                         if (fileInfo != null)
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
@@ -282,9 +282,9 @@ namespace DotNetNuke.Security.Roles
             switch (propName)
             {
                 case "roleid":
-                    return PropertyAccess.FormatString(this.RoleID.ToString(), format);
+                    return PropertyAccess.FormatString(this.RoleID.ToString(formatProvider), format);
                 case "groupid":
-                    return PropertyAccess.FormatString(this.RoleID.ToString(), format);
+                    return PropertyAccess.FormatString(this.RoleID.ToString(formatProvider), format);
                 case "status":
                     return PropertyAccess.FormatString(this.Status.ToString(), format);
                 case "groupname":
@@ -296,7 +296,7 @@ namespace DotNetNuke.Security.Roles
                 case "description":
                     return PropertyAccess.FormatString(this.Description, format);
                 case "usercount":
-                    return PropertyAccess.FormatString(this.UserCount.ToString(), format);
+                    return PropertyAccess.FormatString(this.UserCount.ToString(formatProvider), format);
                 case "street":
                     return PropertyAccess.FormatString(this.GetString("Street", string.Empty), format);
                 case "city":
@@ -310,7 +310,7 @@ namespace DotNetNuke.Security.Roles
                 case "website":
                     return PropertyAccess.FormatString(this.GetString("Website", string.Empty), format);
                 case "datecreated":
-                    return PropertyAccess.FormatString(this.CreatedOnDate.ToString(), format);
+                    return PropertyAccess.FormatString(this.CreatedOnDate.ToString(formatProvider), format);
                 case "photourl":
                     return PropertyAccess.FormatString(FormatUrl(this.PhotoURL), format);
                 case "stat_status":

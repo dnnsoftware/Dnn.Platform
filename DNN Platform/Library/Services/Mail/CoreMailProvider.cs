@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Mail
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -250,8 +251,8 @@ namespace DotNetNuke.Services.Mail
             }
 
             // port is guaranteed to be of max 5 digits numeric by the RegEx check
-            var port = int.Parse(smtpHostParts[1]);
-            if (port < 1 || port > 65535)
+            var port = int.Parse(smtpHostParts[1], CultureInfo.InvariantCulture);
+            if (port is < 1 or > 65535)
             {
                 return (null, null, Localize.GetString("SmtpInvalidPort"));
             }

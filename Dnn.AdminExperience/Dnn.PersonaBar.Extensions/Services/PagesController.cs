@@ -591,7 +591,7 @@ namespace Dnn.PersonaBar.Pages.Services
             {
                 pageTemplate.Clean();
                 var templateFilename = this.templateController.SaveAsTemplate(pageTemplate);
-                var response = string.Format(Localization.GetString("ExportedMessage"), templateFilename);
+                var response = string.Format(CultureInfo.CurrentCulture, Localization.GetString("ExportedMessage"), templateFilename);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
@@ -1372,6 +1372,7 @@ namespace Dnn.PersonaBar.Pages.Services
             var notificationType = notificationsController.GetNotificationType("TranslationSubmitted");
             var subject = LocalizeString("NewContentMessage.Subject");
             var body = string.Format(
+                CultureInfo.CurrentCulture,
                 LocalizeString("NewContentMessage.Body"),
                 tabInfo.TabName,
                 this.NavigationManager.NavigateURL(tabInfo.TabID, false, this.PortalSettings, Null.NullString, tabInfo.CultureCode),

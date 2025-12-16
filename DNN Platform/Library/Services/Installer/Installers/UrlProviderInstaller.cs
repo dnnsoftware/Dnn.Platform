@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Xml.XPath;
 
@@ -38,7 +39,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 // Ensure DesktopModule Cache is cleared
-                DataCache.RemoveCache(string.Format(DataCache.DesktopModuleCacheKey, Null.NullInteger));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, Null.NullInteger));
 
                 var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this.desktopModuleName, Null.NullInteger);
                 if (desktopModule != null)
@@ -58,7 +59,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 ExtensionUrlProviderController.SaveProvider(this.extensionUrlProvider);
 
                 this.Completed = true;
-                this.Log.AddInfo(string.Format(Util.URLPROVIDER_Registered, this.extensionUrlProvider.ProviderName));
+                this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.URLPROVIDER_Registered, this.extensionUrlProvider.ProviderName));
             }
             catch (Exception ex)
             {
@@ -122,7 +123,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
 
-                    this.Log.AddInfo(string.Format(Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
+                    this.Log.AddInfo(string.Format(CultureInfo.InvariantCulture, Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
                 }
             }
             catch (Exception ex)

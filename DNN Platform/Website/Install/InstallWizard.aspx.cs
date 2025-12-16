@@ -116,31 +116,13 @@ namespace DotNetNuke.Services.Install
         }
 
         /// <summary>Gets the current application version.</summary>
-        protected Version ApplicationVersion
-        {
-            get
-            {
-                return DotNetNukeContext.Current.Application.Version;
-            }
-        }
+        protected Version ApplicationVersion => DotNetNukeContext.Current.Application.Version;
 
         /// <summary>Gets the database version.</summary>
-        protected Version DatabaseVersion
-        {
-            get
-            {
-                return this.dataBaseVersion ?? (this.dataBaseVersion = DataProvider.Instance().GetVersion());
-            }
-        }
+        protected Version DatabaseVersion => this.dataBaseVersion ??= DataProvider.Instance().GetVersion();
 
         /// <summary>Gets the base version from the install template.</summary>
-        protected Version BaseVersion
-        {
-            get
-            {
-                return Upgrade.GetInstallVersion(this.InstallTemplate);
-            }
-        }
+        protected Version BaseVersion => Upgrade.GetInstallVersion(this.InstallTemplate);
 
         /// <summary>Gets the install template.</summary>
         protected XmlDocument InstallTemplate
@@ -915,14 +897,14 @@ namespace DotNetNuke.Services.Install
             var details = Localization.GetString("IsAbleToPerformDatabaseActionsCheck", localResourceFile);
             if (!InstallController.Instance.IsAbleToPerformDatabaseActions(connectionString))
             {
-                connectionResult = "ERROR: " + string.Format(Localization.GetString("IsAbleToPerformDatabaseActions", localResourceFile), details);
+                connectionResult = "ERROR: " + string.Format(CultureInfo.CurrentCulture, Localization.GetString("IsAbleToPerformDatabaseActions", localResourceFile), details);
             }
 
             // database actions check-running sql 2008 or higher
             details = Localization.GetString("IsValidSqlServerVersionCheck", localResourceFile);
             if (!InstallController.Instance.IsValidSqlServerVersion(connectionString))
             {
-                connectionResult = "ERROR: " + string.Format(Localization.GetString("IsValidSqlServerVersion", localResourceFile), details);
+                connectionResult = "ERROR: " + string.Format(CultureInfo.CurrentCulture, Localization.GetString("IsValidSqlServerVersion", localResourceFile), details);
             }
 
             return connectionResult;

@@ -6,6 +6,7 @@ namespace DotNetNuke.Security
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -978,7 +979,7 @@ namespace DotNetNuke.Security
             var hexString = new StringBuilder();
             foreach (var b in bytes)
             {
-                hexString.Append(string.Format("{0:X2}", b));
+                hexString.Append(string.Format(CultureInfo.InvariantCulture, "{0:X2}", b));
             }
 
             return hexString.ToString();

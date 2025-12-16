@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules.Actions;
@@ -102,7 +103,7 @@ namespace DotNetNuke.UI.Containers
             if (this.ModuleAction != null && this.ActionManager.IsVisible(this.ModuleAction))
             {
                 this.Text = this.ModuleAction.Title;
-                this.CommandArgument = this.ModuleAction.ID.ToString();
+                this.CommandArgument = this.ModuleAction.ID.ToString(CultureInfo.InvariantCulture);
 
                 if (this.DisplayIcon && (!string.IsNullOrEmpty(this.ModuleAction.Icon) || !string.IsNullOrEmpty(this.ImageUrl)))
                 {

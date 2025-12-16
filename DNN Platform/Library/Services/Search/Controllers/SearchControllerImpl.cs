@@ -342,7 +342,18 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if (searchQuery.BeginModifiedTimeUtc > DateTime.MinValue && searchQuery.EndModifiedTimeUtc >= searchQuery.BeginModifiedTimeUtc)
             {
-                query.Add(NumericRangeQuery.NewLongRange(Constants.ModifiedTimeTag, long.Parse(searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat)), long.Parse(searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat)), true, true), Occur.MUST);
+                query.Add(
+                    NumericRangeQuery.NewLongRange(
+                        Constants.ModifiedTimeTag,
+                        long.Parse(
+                            searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture),
+                            CultureInfo.CurrentCulture),
+                        long.Parse(
+                            searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat, CultureInfo.InvariantCulture),
+                            CultureInfo.CurrentCulture),
+                        true,
+                        true),
+                    Occur.MUST);
             }
 
             if (searchQuery.RoleId > 0)

@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.Mobile
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Xml.Serialization;
 
@@ -135,16 +136,16 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="dr">the data reader.</param>
         public void Fill(System.Data.IDataReader dr)
         {
-            this.Id = Convert.ToInt32(dr["Id"]);
-            this.PortalId = Convert.ToInt32(dr["PortalId"]);
+            this.Id = Convert.ToInt32(dr["Id"], CultureInfo.InvariantCulture);
+            this.PortalId = Convert.ToInt32(dr["PortalId"], CultureInfo.InvariantCulture);
             this.Name = dr["Name"].ToString();
-            this.Type = (RedirectionType)Convert.ToInt32(dr["Type"]);
-            this.SourceTabId = Convert.ToInt32(dr["SourceTabId"]);
-            this.IncludeChildTabs = Convert.ToBoolean(dr["IncludeChildTabs"]);
-            this.SortOrder = Convert.ToInt32(dr["SortOrder"]);
-            this.TargetType = (TargetType)Convert.ToInt32(dr["TargetType"]);
+            this.Type = (RedirectionType)Convert.ToInt32(dr["Type"], CultureInfo.InvariantCulture);
+            this.SourceTabId = Convert.ToInt32(dr["SourceTabId"], CultureInfo.InvariantCulture);
+            this.IncludeChildTabs = Convert.ToBoolean(dr["IncludeChildTabs"], CultureInfo.InvariantCulture);
+            this.SortOrder = Convert.ToInt32(dr["SortOrder"], CultureInfo.InvariantCulture);
+            this.TargetType = (TargetType)Convert.ToInt32(dr["TargetType"], CultureInfo.InvariantCulture);
             this.TargetValue = dr["TargetValue"];
-            this.Enabled = Convert.ToBoolean(dr["Enabled"]);
+            this.Enabled = Convert.ToBoolean(dr["Enabled"], CultureInfo.InvariantCulture);
         }
     }
 }

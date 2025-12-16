@@ -7,6 +7,7 @@ namespace DotNetNuke.Common.Utilities
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -680,26 +681,26 @@ namespace DotNetNuke.Common.Utilities
                 {
                     // Create the Object
                     objObject = (TValue)CreateObjectFromReader(typeof(TValue), dr, false);
-                    if (keyField == "KeyID" && objObject is IHydratable)
+                    if (keyField == "KeyID" && objObject is IHydratable hydratable)
                     {
                         // Get the value of the key field from the KeyID
-                        keyValue = (TKey)Null.SetNull(((IHydratable)objObject).KeyID, keyValue);
+                        keyValue = (TKey)Null.SetNull(hydratable.KeyID, keyValue);
                     }
                     else
                     {
                         // Get the value of the key field from the DataReader
                         if (typeof(TKey).Name == "Int32" && dr[keyField].GetType().Name == "Decimal")
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof(TKey), CultureInfo.InvariantCulture);
                         }
                         else if (typeof(TKey).Name.Equals("string", StringComparison.OrdinalIgnoreCase) &&
                                  dr[keyField].GetType().Name.Equals("dbnull", StringComparison.OrdinalIgnoreCase))
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey), CultureInfo.InvariantCulture);
                         }
                         else
                         {
-                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey), CultureInfo.InvariantCulture);
                         }
                     }
 
@@ -829,16 +830,16 @@ namespace DotNetNuke.Common.Utilities
         {
             PropertyInfo objPropertyInfo = null;
             Type propType = null;
-            object coloumnValue;
+            object columnValue;
             Type objDataType;
             int intIndex;
 
             // get cached object mapping for type
             ObjectMappingInfo objMappingInfo = GetObjectMapping(hydratedObject.GetType());
-            if (hydratedObject is BaseEntityInfo && !(hydratedObject is ScheduleItem))
+            if (hydratedObject is BaseEntityInfo info and not ScheduleItem)
             {
                 // Call the base classes fill method to populate base class properties
-                ((BaseEntityInfo)hydratedObject).FillBaseProperties(dr);
+                info.FillBaseProperties(dr);
             }
 
             // fill object with values from datareader
@@ -854,19 +855,19 @@ namespace DotNetNuke.Common.Utilities
                     if (objPropertyInfo.CanWrite)
                     {
                         // Get the Data Value from the data reader
-                        coloumnValue = dr.GetValue(intIndex);
+                        columnValue = dr.GetValue(intIndex);
 
                         // Get the Data Value's type
-                        objDataType = coloumnValue.GetType();
-                        if (coloumnValue == null || coloumnValue == DBNull.Value)
+                        objDataType = columnValue.GetType();
+                        if (columnValue == DBNull.Value)
                         {
                             // set property value to Null
                             objPropertyInfo.SetValue(hydratedObject, Null.SetNull(objPropertyInfo), null);
                         }
-                        else if (propType.Equals(objDataType))
+                        else if (propType == objDataType)
                         {
                             // Property and data objects are the same type
-                            objPropertyInfo.SetValue(hydratedObject, coloumnValue, null);
+                            objPropertyInfo.SetValue(hydratedObject, columnValue, null);
                         }
                         else
                         {
@@ -875,38 +876,38 @@ namespace DotNetNuke.Common.Utilities
                             if (propType.BaseType.Equals(typeof(Enum)))
                             {
                                 // check if value is numeric and if not convert to integer ( supports databases like Oracle )
-                                if (Globals.NumberMatchRegex.IsMatch(coloumnValue.ToString()))
+                                if (Globals.NumberMatchRegex.IsMatch(columnValue.ToString()))
                                 {
                                     objPropertyInfo.SetValue(
                                         hydratedObject,
-                                        Enum.ToObject(propType, Convert.ToInt32(coloumnValue)),
+                                        Enum.ToObject(propType, Convert.ToInt32(columnValue, CultureInfo.InvariantCulture)),
                                         null);
                                 }
                                 else
                                 {
-                                    objPropertyInfo.SetValue(hydratedObject, Enum.ToObject(propType, coloumnValue), null);
+                                    objPropertyInfo.SetValue(hydratedObject, Enum.ToObject(propType, columnValue), null);
                                 }
                             }
                             else if (propType == typeof(Guid))
                             {
-                                // guid is not a datatype common across all databases ( ie. Oracle )
+                                // guid is not a datatype common across all databases (e.g. Oracle)
                                 objPropertyInfo.SetValue(
                                     hydratedObject,
-                                    Convert.ChangeType(new Guid(coloumnValue.ToString()), propType),
+                                    Convert.ChangeType(new Guid(columnValue.ToString()), propType, CultureInfo.InvariantCulture),
                                     null);
                             }
                             else if (propType == typeof(Version))
                             {
-                                objPropertyInfo.SetValue(hydratedObject, new Version(coloumnValue.ToString()), null);
+                                objPropertyInfo.SetValue(hydratedObject, new Version(columnValue.ToString()), null);
                             }
-                            else if (coloumnValue is IConvertible)
+                            else if (columnValue is IConvertible)
                             {
-                                objPropertyInfo.SetValue(hydratedObject, ChangeType(coloumnValue, propType), null);
+                                objPropertyInfo.SetValue(hydratedObject, ChangeType(columnValue, propType, CultureInfo.InvariantCulture), null);
                             }
                             else
                             {
                                 // try explicit conversion
-                                objPropertyInfo.SetValue(hydratedObject, coloumnValue, null);
+                                objPropertyInfo.SetValue(hydratedObject, columnValue, null);
                             }
                         }
                     }
@@ -914,7 +915,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        private static object ChangeType(object obj, Type type)
+        private static object ChangeType(object obj, Type type, IFormatProvider formatProvider)
         {
             Type u = Nullable.GetUnderlyingType(type);
 
@@ -925,10 +926,10 @@ namespace DotNetNuke.Common.Utilities
                     return GetDefault(type);
                 }
 
-                return Convert.ChangeType(obj, u);
+                return Convert.ChangeType(obj, u, formatProvider);
             }
 
-            return Convert.ChangeType(obj, type);
+            return Convert.ChangeType(obj, type, formatProvider);
         }
 
         private static object GetDefault(Type type)

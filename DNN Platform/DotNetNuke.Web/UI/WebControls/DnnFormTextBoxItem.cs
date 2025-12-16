@@ -4,6 +4,7 @@
 namespace DotNetNuke.Web.UI.WebControls
 {
     using System;
+    using System.Globalization;
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
@@ -53,7 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.textBox.Attributes.Add("aria-label", this.DataField);
 
             // Load from ControlState
-            this.textBox.Text = Convert.ToString(this.Value);
+            this.textBox.Text = Convert.ToString(this.Value, CultureInfo.InvariantCulture);
             if (this.TextMode == TextBoxMode.Password)
             {
                 this.textBox.Attributes.Add("autocomplete", "off");
@@ -76,7 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (this.TextMode == TextBoxMode.Password && !this.ClearContentInPasswordMode)
             {
-                this.textBox.Attributes.Add("value", Convert.ToString(this.Value));
+                this.textBox.Attributes.Add("value", Convert.ToString(this.Value, CultureInfo.InvariantCulture));
             }
         }
 

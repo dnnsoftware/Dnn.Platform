@@ -54,15 +54,13 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
         private IStep RemoveSystemAttributeFromPackage()
         {
-            var commandFormat = string.Join(
-                Environment.NewLine,
-                "UPDATE {{databaseOwner}}{{objectQualifier}}Packages",
-                "SET IsSystemPackage = 0",
-                "WHERE [Name] = '{0}'");
-
             var step = this.GetService<IExecuteSqlStep>();
             step.Name = this.LocalizeFormat("UninstallStepRemoveSystemAttribute", this.PackageName);
-            step.CommandText = string.Format(commandFormat, this.PackageName);
+            step.CommandText = $$"""
+                                 UPDATE {databaseOwner}{objectQualifier}Packages
+                                 SET IsSystemPackage = 0
+                                 WHERE [Name] = '{{this.PackageName}}'
+                                 """;
 
             return step;
         }
@@ -83,14 +81,12 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
         private IStep DeleteDependencyRecords()
         {
-            var commandFormat = string.Join(
-                Environment.NewLine,
-                "DELETE FROM {{databaseOwner}}{{objectQualifier}}PackageDependencies",
-                "WHERE PackageName = '{0}'");
-
             var step = this.GetService<IExecuteSqlStep>();
             step.Name = this.LocalizeFormat("UninstallStepCleanupDependencyRecords", this.PackageName);
-            step.CommandText = string.Format(commandFormat, this.PackageName);
+            step.CommandText = $$"""
+                                 DELETE FROM {databaseOwner}{objectQualifier}PackageDependencies
+                                 WHERE PackageName = '{{this.PackageName}}'
+                                 """;
 
             return step;
         }

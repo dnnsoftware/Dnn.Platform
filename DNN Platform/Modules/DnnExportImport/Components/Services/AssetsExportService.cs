@@ -5,6 +5,7 @@ namespace Dnn.ExportImport.Components.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
@@ -68,7 +69,7 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = exportJob.PortalId;
             try
             {
-                var assetsFile = string.Format(this.assetsFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
+                var assetsFile = string.Format(CultureInfo.InvariantCulture, this.assetsFolder, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -106,21 +107,18 @@ namespace Dnn.ExportImport.Components.Services
                                 CBO.FillCollection<ExportFile>(
                                     DataProvider.Instance()
                                         .GetFiles(portalId, folder.FolderId, toDate, fromDate)).Where(x => x.Extension != Constants.TemplatesExtension).ToList();
-                            int? userId;
-                            if (IsUserFolder(folder.FolderPath, out userId))
+                            if (IsUserFolder(folder.FolderPath, out var userId))
                             {
                                 isUserFolder = true;
                                 folder.UserId = userId;
                                 folder.Username =
-                                    UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
+                                    UserController.GetUserById(portalId, userId)?.Username;
                             }
 
-                            if (folder.ParentId != null && folder.ParentId > 0)
+                            if (folder.ParentId is > 0)
                             {
                                 // If parent id exists then change the parent folder id to parent id.
-                                folder.ParentId =
-                                    this.Repository.GetItem<ExportFolder>(
-                                        x => x.FolderId == Convert.ToInt32(folder.ParentId))?.Id;
+                                folder.ParentId = this.Repository.GetItem<ExportFolder>(x => x.FolderId == folder.ParentId)?.Id;
                             }
 
                             this.Repository.CreateItem(folder, null);
@@ -180,9 +178,9 @@ namespace Dnn.ExportImport.Components.Services
             {
                 this.CheckPoint.StageData = currentIndex > 0 ? JsonConvert.SerializeObject(new { skip = currentIndex }) : null;
                 this.CheckPointStageCallback(this);
-                this.Result.AddSummary("Exported Folders", totalFolderExported.ToString());
-                this.Result.AddSummary("Exported Folder Permissions", totalFolderPermissionsExported.ToString());
-                this.Result.AddSummary("Exported Files", totalFilesExported.ToString());
+                this.Result.AddSummary("Exported Folders", totalFolderExported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Exported Folder Permissions", totalFolderPermissionsExported.ToString(CultureInfo.InvariantCulture));
+                this.Result.AddSummary("Exported Files", totalFilesExported.ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -210,8 +208,8 @@ namespace Dnn.ExportImport.Components.Services
             var currentIndex = skip;
             var portalId = importJob.PortalId;
             var portal = PortalController.Instance.GetPortal(portalId);
-            var assetsFile = string.Format(this.assetsFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
-            var userFolderPath = string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
+            var assetsFile = string.Format(CultureInfo.InvariantCulture, this.assetsFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
+            var userFolderPath = string.Format(CultureInfo.InvariantCulture, UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'));
             if (this.CheckPoint.Stage == 0)
             {
                 if (!File.Exists(assetsFile))
@@ -359,9 +357,9 @@ namespace Dnn.ExportImport.Components.Services
                         : null;
                     this.CheckPointStageCallback(this);
 
-                    this.Result.AddSummary("Imported Folders", totalFolderImported.ToString());
-                    this.Result.AddSummary("Imported Folder Permissions", totalFolderPermissionsImported.ToString());
-                    this.Result.AddSummary("Imported Files", totalFilesImported.ToString());
+                    this.Result.AddSummary("Imported Folders", totalFolderImported.ToString(CultureInfo.InvariantCulture));
+                    this.Result.AddSummary("Imported Folder Permissions", totalFolderPermissionsImported.ToString(CultureInfo.InvariantCulture));
+                    this.Result.AddSummary("Imported Files", totalFilesImported.ToString(CultureInfo.InvariantCulture));
 
                     if (Directory.Exists(userFolderPath) && currentIndex == 0)
                     {
@@ -377,13 +375,13 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportFolder>();
         }
 
-        private static bool IsUserFolder(string folderPath, out int? userId)
+        private static bool IsUserFolder(string folderPath, out int userId)
         {
-            userId = null;
+            userId = -1;
             var match = UserFolderEx.Match(folderPath);
             if (match.Success)
             {
-                userId = int.Parse(match.Groups[1].Value);
+                userId = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
             }
 
             return match.Success;
@@ -392,7 +390,7 @@ namespace Dnn.ExportImport.Components.Services
         private static void ProcessFolderPermission(ExportImportJob importJob, ImportDto importDto, ExportFolderPermission folderPermission, IEnumerable<ExportFolderPermission> localPermissions)
         {
             var portalId = importJob.PortalId;
-            var noRole = Convert.ToInt32(Globals.glbRoleNothing);
+            var noRole = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
             if (folderPermission == null)
             {
                 return;
@@ -436,7 +434,7 @@ namespace Dnn.ExportImport.Components.Services
                         existingFolderPermission.FolderPermissionId,
                         folderPermission.FolderId,
                         existingFolderPermission.PermissionId,
-                        existingFolderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing),
+                        existingFolderPermission.RoleId ?? Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture),
                         folderPermission.AllowAccess,
                         existingFolderPermission.UserId ?? Null.NullInteger,
                         modifiedBy);
@@ -453,8 +451,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (permissionId != null)
                 {
-                    folderPermission.PermissionId = Convert.ToInt32(permissionId);
-                    if (folderPermission.UserId != null && folderPermission.UserId > 0 && !string.IsNullOrEmpty(folderPermission.Username))
+                    folderPermission.PermissionId = permissionId.Value;
+                    if (folderPermission.UserId is > 0 && !string.IsNullOrEmpty(folderPermission.Username))
                     {
                         folderPermission.UserId = userId;
                         if (folderPermission.UserId == null)
@@ -585,7 +583,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var portal = PortalController.Instance.GetPortal(portalId);
             var tempUsersFolderPath =
-                $"{string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'))}{folder.FolderPath}";
+                string.Format(CultureInfo.InvariantCulture, UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\')) + folder.FolderPath;
             var newUsersFolderPath = $"{portal.HomeDirectoryMapPath}{folder.FolderPath}";
             if (!Directory.Exists(tempUsersFolderPath))
             {

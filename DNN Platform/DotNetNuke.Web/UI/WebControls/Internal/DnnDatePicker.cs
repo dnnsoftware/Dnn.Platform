@@ -21,8 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             get
             {
-                DateTime value;
-                if (!string.IsNullOrEmpty(this.Text) && DateTime.TryParse(this.Text, out value))
+                if (!string.IsNullOrEmpty(this.Text) && DateTime.TryParse(this.Text, CultureInfo.CurrentCulture, DateTimeStyles.None, out var value))
                 {
                     return value;
                 }
@@ -32,7 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             set
             {
-                this.Text = value?.ToString(this.Format) ?? string.Empty;
+                this.Text = value?.ToString(this.Format, CultureInfo.CurrentCulture) ?? string.Empty;
             }
         }
 

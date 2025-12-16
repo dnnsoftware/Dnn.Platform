@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Modules
 
             // Create pane node for private DeserializeModule method
             var docPane = new XmlDocument { XmlResolver = null };
-            docPane.LoadXml(string.Format("<pane><name>{0}</name></pane>", module.PaneName));
+            docPane.LoadXml($"<pane><name>{module.PaneName}</name></pane>");
 
             // Create ModuleInfo of Xml
             ModuleInfo sourceModule = DeserializeModule(nodeModule, docPane.DocumentElement, portalId, tabId, moduleDefinition.ModuleDefID);
@@ -192,7 +192,7 @@ namespace DotNetNuke.Entities.Modules
                     else
                     {
                         // Add instance
-                        module.ModuleID = Convert.ToInt32(hModules[templateModuleId]);
+                        module.ModuleID = Convert.ToInt32(hModules[templateModuleId], CultureInfo.InvariantCulture);
                         intModuleId = Instance.AddModule(module);
                     }
 
@@ -802,7 +802,7 @@ namespace DotNetNuke.Entities.Modules
                         newModule.CultureCode,
                         UserController.Instance.GetCurrentUserInfo().UserID);
 
-                    DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
+                    DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
 
                     // Update tab version details of old and new modules
                     var userId = UserController.Instance.GetCurrentUserInfo().UserID;
@@ -956,7 +956,7 @@ namespace DotNetNuke.Entities.Modules
             ModuleInfo module;
 
             // format cache key
-            string key = string.Format(DataCache.ModuleCacheKey, portalId);
+            string key = string.Format(CultureInfo.InvariantCulture, DataCache.ModuleCacheKey, portalId);
 
             // get module dictionary from cache
             var modules = DataCache.GetCache<Dictionary<string, ModuleInfo>>(key) ?? new Dictionary<string, ModuleInfo>();
@@ -988,7 +988,7 @@ namespace DotNetNuke.Entities.Modules
                     clonemodules[module.ModuleDefinition.FriendlyName] = module;
 
                     // set module caching settings
-                    int timeOut = DataCache.ModuleCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
+                    int timeOut = DataCache.ModuleCacheTimeOut * (int)Host.Host.PerformanceSetting;
 
                     // cache module dictionary
                     if (timeOut > 0)
@@ -1059,7 +1059,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>An ModuleInfo object.</returns>
         public ModuleInfo GetTabModule(int tabModuleID)
         {
-            var cacheKey = string.Format(DataCache.SingleTabModuleCacheKey, tabModuleID);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, tabModuleID);
             return CBO.GetCachedObject<ModuleInfo>(
                 new CacheItemArgs(cacheKey, DataCache.TabModuleCacheTimeOut, DataCache.TabModuleCachePriority),
                 c => CBO.FillObject<ModuleInfo>(DataProvider.GetTabModule(tabModuleID)));
@@ -1068,7 +1068,7 @@ namespace DotNetNuke.Entities.Modules
         /// <inheritdoc />
         public Dictionary<int, ModuleInfo> GetTabModules(int tabId)
         {
-            var cacheKey = string.Format(DataCache.TabModuleCacheKey, tabId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleCacheKey, tabId);
             return CBO.GetCachedObject<Dictionary<int, ModuleInfo>>(
                 new CacheItemArgs(
                 cacheKey,
@@ -1192,17 +1192,17 @@ namespace DotNetNuke.Entities.Modules
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat("Error localizing module, moduleId: {0}, full exception: {1}", sourceModule.ModuleID, ex);
+                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error localizing module, moduleId: {0}, full exception: {1}", sourceModule.ModuleID, ex);
             }
         }
 
         /// <summary>
-        /// MoveModule moes a Module from one Tab to another including all the
+        /// MoveModule moves a Module from one Tab to another including all the
         ///     TabModule settings.
         /// </summary>
-        /// <param name="moduleId">The Id of the module to move.</param>
-        /// <param name="fromTabId">The Id of the source tab.</param>
-        /// <param name="toTabId">The Id of the destination tab.</param>
+        /// <param name="moduleId">The ID of the module to move.</param>
+        /// <param name="fromTabId">The ID of the source tab.</param>
+        /// <param name="toTabId">The ID of the destination tab.</param>
         /// <param name="toPaneName">The name of the Pane on the destination tab where the module will end up.</param>
         public void MoveModule(int moduleId, int fromTabId, int toTabId, string toPaneName)
         {
@@ -1321,7 +1321,7 @@ namespace DotNetNuke.Entities.Modules
                     module.CultureCode,
                     currentUser.UserID);
 
-                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, module.TabModuleID));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, module.TabModuleID));
 
                 EventLogController.Instance.AddLog(module, PortalController.Instance.GetCurrentPortalSettings(), currentUser.UserID, string.Empty, EventLogController.EventLogType.TABMODULE_UPDATED);
 
@@ -1397,7 +1397,7 @@ namespace DotNetNuke.Entities.Modules
                                 targetModule.CultureCode,
                                 currentUser.UserID);
 
-                            DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, targetModule.TabModuleID));
+                            DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, targetModule.TabModuleID));
                             this.ClearCache(targetModule.TabID);
                         }
                     }
@@ -1432,7 +1432,7 @@ namespace DotNetNuke.Entities.Modules
                         dr = DataProvider.GetTabModuleOrder(tabId, paneName);
                         while (dr.Read())
                         {
-                            moduleOrder = Convert.ToInt32(dr["ModuleOrder"]);
+                            moduleOrder = Convert.ToInt32(dr["ModuleOrder"], CultureInfo.InvariantCulture);
                         }
                     }
                     catch (Exception ex)
@@ -1475,17 +1475,17 @@ namespace DotNetNuke.Entities.Modules
                 while (dr.Read())
                 {
                     int moduleCounter = 0;
-                    IDataReader dr2 = DataProvider.GetTabModuleOrder(tabId, Convert.ToString(dr["PaneName"]));
+                    IDataReader dr2 = DataProvider.GetTabModuleOrder(tabId, Convert.ToString(dr["PaneName"], CultureInfo.InvariantCulture));
                     try
                     {
                         while (dr2.Read())
                         {
                             moduleCounter += 1;
 
-                            var moduleId = Convert.ToInt32(dr2["ModuleID"]);
-                            var paneName = Convert.ToString(dr["PaneName"]);
-                            var isDeleted = Convert.ToBoolean(dr2["IsDeleted"]);
-                            var existingOrder = Convert.ToInt32(dr2["ModuleOrder"]);
+                            var moduleId = Convert.ToInt32(dr2["ModuleID"], CultureInfo.InvariantCulture);
+                            var paneName = Convert.ToString(dr["PaneName"], CultureInfo.InvariantCulture);
+                            var isDeleted = Convert.ToBoolean(dr2["IsDeleted"], CultureInfo.InvariantCulture);
+                            var existingOrder = Convert.ToInt32(dr2["ModuleOrder"], CultureInfo.InvariantCulture);
                             var newOrder = (moduleCounter * 2) - 1;
 
                             if (existingOrder == newOrder)
@@ -1604,7 +1604,7 @@ namespace DotNetNuke.Entities.Modules
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal Hashtable GetModuleSettings(int moduleId, int tabId)
         {
-            string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tabId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ModuleSettingsCacheKey, tabId);
 
             var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
@@ -1645,7 +1645,7 @@ namespace DotNetNuke.Entities.Modules
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         internal Hashtable GetTabModuleSettings(int tabModuleId, int tabId)
         {
-            string cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tabId);
+            string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsCacheKey, tabId);
 
             var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
@@ -1782,7 +1782,7 @@ namespace DotNetNuke.Entities.Modules
         {
             foreach (var tab in TabController.Instance.GetTabsByModuleID(moduleId).Values)
             {
-                string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
+                string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.ModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
             }
         }
@@ -1792,13 +1792,13 @@ namespace DotNetNuke.Entities.Modules
             var portalId = -1;
             foreach (var tab in TabController.Instance.GetTabsByTabModuleID(tabModuleId).Values)
             {
-                var cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tab.TabID);
+                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
 
                 if (portalId != tab.PortalID)
                 {
                     portalId = tab.PortalID;
-                    cacheKey = string.Format(DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? string.Empty);
+                    cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TabModuleSettingsNameCacheKey, portalId, settingName ?? string.Empty);
                     DataCache.RemoveCache(cacheKey);
                 }
             }
@@ -1880,10 +1880,10 @@ namespace DotNetNuke.Entities.Modules
                 switch (roleName)
                 {
                     case Globals.glbRoleAllUsersName:
-                        roleID = Convert.ToInt32(Globals.glbRoleAllUsers);
+                        roleID = Convert.ToInt32(Globals.glbRoleAllUsers, CultureInfo.InvariantCulture);
                         break;
                     case Globals.glbRoleUnauthUserName:
-                        roleID = Convert.ToInt32(Globals.glbRoleUnauthUser);
+                        roleID = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                         break;
                     default:
                         var role = RoleController.Instance.GetRole(portalId, r => r.RoleName == roleName);
@@ -2235,7 +2235,7 @@ namespace DotNetNuke.Entities.Modules
             // Copy each setting to the new TabModule instance
             foreach (DictionaryEntry setting in fromModule.TabModuleSettings)
             {
-                this.UpdateTabModuleSetting(toModule.TabModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+                this.UpdateTabModuleSetting(toModule.TabModuleID, Convert.ToString(setting.Key, CultureInfo.InvariantCulture), Convert.ToString(setting.Value, CultureInfo.InvariantCulture));
             }
         }
 
@@ -2249,33 +2249,33 @@ namespace DotNetNuke.Entities.Modules
                 var newModule = sourceModule.Clone();
                 newModule.ModuleID = Null.NullInteger;
 
-                string translatorRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", sourceModule.CultureCode), sourceModule.PortalID, string.Empty).TrimEnd(';');
+                string translatorRoles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{sourceModule.CultureCode}", sourceModule.PortalID, string.Empty).TrimEnd(';');
 
                 // Add the default translators for this language, view and edit permissions
                 var permissionController = new PermissionController();
                 var viewPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
                 var editPermissionsList = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "EDIT");
-                PermissionInfo viewPermisison = null;
-                PermissionInfo editPermisison = null;
+                PermissionInfo viewPermission = null;
+                PermissionInfo editPermission = null;
 
                 // View
                 if (viewPermissionsList != null && viewPermissionsList.Count > 0)
                 {
-                    viewPermisison = (PermissionInfo)viewPermissionsList[0];
+                    viewPermission = (PermissionInfo)viewPermissionsList[0];
                 }
 
                 // Edit
                 if (editPermissionsList != null && editPermissionsList.Count > 0)
                 {
-                    editPermisison = (PermissionInfo)editPermissionsList[0];
+                    editPermission = (PermissionInfo)editPermissionsList[0];
                 }
 
-                if (viewPermisison != null || editPermisison != null)
+                if (viewPermission != null || editPermission != null)
                 {
                     foreach (string translatorRole in translatorRoles.Split(';'))
                     {
-                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, viewPermisison, "VIEW");
-                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, editPermisison, "EDIT");
+                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, viewPermission, "VIEW");
+                        AddModulePermission(ref newModule, sourceModule.PortalID, translatorRole, editPermission, "EDIT");
                     }
                 }
 
@@ -2286,7 +2286,7 @@ namespace DotNetNuke.Entities.Modules
                 this.AddModuleInternal(newModule);
 
                 // copy module settings
-                DataCache.RemoveCache(string.Format(DataCache.ModuleSettingsCacheKey, sourceModule.TabID));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.ModuleSettingsCacheKey, sourceModule.TabID));
                 var settings = this.GetModuleSettings(sourceModule.ModuleID, sourceModule.TabID);
 
                 // update tabmodule
@@ -2317,12 +2317,12 @@ namespace DotNetNuke.Entities.Modules
                     newModule.CultureCode,
                     currentUser.UserID);
 
-                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, newModule.TabModuleID));
 
                 // Copy each setting to the new TabModule instance
                 foreach (DictionaryEntry setting in settings)
                 {
-                    this.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key), Convert.ToString(setting.Value));
+                    this.UpdateModuleSetting(newModule.ModuleID, Convert.ToString(setting.Key, CultureInfo.InvariantCulture), Convert.ToString(setting.Value, CultureInfo.InvariantCulture));
                 }
 
                 try
@@ -2431,8 +2431,7 @@ namespace DotNetNuke.Entities.Modules
         {
             foreach (string key in updatedModule.ModuleSettings.Keys)
             {
-                string sKey = key;
-                this.UpdateModuleSettingInternal(updatedModule.ModuleID, sKey, Convert.ToString(updatedModule.ModuleSettings[sKey]), false);
+                this.UpdateModuleSettingInternal(updatedModule.ModuleID, key, Convert.ToString(updatedModule.ModuleSettings[key], CultureInfo.InvariantCulture), false);
             }
 
             this.UpdateTabModuleVersionsByModuleID(updatedModule.ModuleID);
@@ -2442,7 +2441,7 @@ namespace DotNetNuke.Entities.Modules
         {
             foreach (string sKey in updatedTabModule.TabModuleSettings.Keys)
             {
-                this.UpdateTabModuleSetting(updatedTabModule.TabModuleID, sKey, Convert.ToString(updatedTabModule.TabModuleSettings[sKey]));
+                this.UpdateTabModuleSetting(updatedTabModule.TabModuleID, sKey, Convert.ToString(updatedTabModule.TabModuleSettings[sKey], CultureInfo.InvariantCulture));
             }
         }
 
@@ -2502,7 +2501,7 @@ namespace DotNetNuke.Entities.Modules
                     this.DeleteModule(moduleInfo.ModuleID);
                 }
 
-                DataCache.RemoveCache(string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID));
+                DataCache.RemoveCache(string.Format(CultureInfo.InvariantCulture, DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID));
                 this.ClearCache(moduleInfo.TabID);
             }
         }

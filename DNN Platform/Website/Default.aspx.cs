@@ -841,7 +841,7 @@ namespace DotNetNuke.Framework
 
         private string GetCssVariablesStylesheet()
         {
-            var cacheKey = string.Format(DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalStylesCacheKey, this.PortalSettings.PortalId);
             var cacheArgs = new CacheItemArgs(
                 cacheKey,
                 DataCache.PortalCacheTimeOut,

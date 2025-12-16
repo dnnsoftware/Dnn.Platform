@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Social.Notifications
 {
     using System;
     using System.Data;
+    using System.Globalization;
     using System.Xml.Serialization;
 
     using DotNetNuke.Common.Utilities;
@@ -91,7 +92,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            this.NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"], CultureInfo.InvariantCulture);
             this.Name = dr["Name"].ToString();
             this.Description = Null.SetNullString(dr["Description"]);
             var timeToLive = Null.SetNullInteger(dr["TTL"]);

@@ -8,6 +8,7 @@ namespace DotNetNuke.UI.WebControls
     using System.ComponentModel;
     using System.Drawing;
     using System.Drawing.Drawing2D;
+    using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -225,7 +226,7 @@ namespace DotNetNuke.UI.WebControls
         /// <returns><see langword="true"/> if the data is valid, otherwise <see langword="false"/>.</returns>
         public bool Validate(string userData)
         {
-            var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, userData);
             var cacheObj = DataCache.GetCache(cacheKey);
 
             if (cacheObj == null)
@@ -325,7 +326,7 @@ namespace DotNetNuke.UI.WebControls
             // the request might go to another server in the farm. Also, in a system
             // with a single server or web-farm, the cache might be cleared
             // which will cause a problem in such case unless sticky sessions are used.
-            var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, challenge);
             DataCache.SetCache(
                 cacheKey,
                 challenge,
@@ -354,11 +355,11 @@ namespace DotNetNuke.UI.WebControls
                 // Load the CAPTCHA Text from the ViewState
                 if (myState[1] != null)
                 {
-                    this.captchaText = Convert.ToString(myState[1]);
+                    this.captchaText = Convert.ToString(myState[1], CultureInfo.InvariantCulture);
                 }
             }
 
-            // var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
+            // var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.CaptchaCacheKey, masterPortalId);
             // _CaptchaText
         }
 
@@ -424,7 +425,7 @@ namespace DotNetNuke.UI.WebControls
             this.TextBoxStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Style, "width:" + this.Width);
-            writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, this.captchaText.Length.ToString());
+            writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, this.captchaText.Length.ToString(CultureInfo.InvariantCulture));
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             if (!string.IsNullOrEmpty(this.AccessKey))
             {
@@ -438,7 +439,7 @@ namespace DotNetNuke.UI.WebControls
 
             if (this.TabIndex > 0)
             {
-                writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, this.TabIndex.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, this.TabIndex.ToString(CultureInfo.InvariantCulture));
             }
 
             if (this.userText == this.captchaText)
@@ -598,7 +599,7 @@ namespace DotNetNuke.UI.WebControls
                         charPath.AddString(
                             c.ToString(),
                             f.FontFamily,
-                            Convert.ToInt32(f.Style),
+                            (int)f.Style,
                             f.Size,
                             new PointF(charX, yOffset),
                             new StringFormat());

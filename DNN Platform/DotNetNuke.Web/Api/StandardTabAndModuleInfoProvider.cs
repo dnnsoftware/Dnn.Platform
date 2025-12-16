@@ -5,6 +5,7 @@
 namespace DotNetNuke.Web.Api
 {
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Net.Http;
     using System.Web;
@@ -169,7 +170,7 @@ namespace DotNetNuke.Web.Api
 
                 if (Logger.IsWarnEnabled)
                 {
-                    Logger.WarnFormat("The specified moniker ({0}) is not defined in the system", monikerValue);
+                    Logger.WarnFormat(CultureInfo.InvariantCulture, "The specified moniker ({0}) is not defined in the system", monikerValue);
                 }
             }
 

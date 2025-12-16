@@ -128,17 +128,17 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.Options.Extensions.Count > 0)
             {
                 var extensionsText = this.Options.Extensions.Aggregate(string.Empty, (current, extension) => current.Append(extension, ", "));
-                this.Options.Resources.InvalidFileExtensions = string.Format(this.Options.Resources.InvalidFileExtensions, extensionsText);
+                this.Options.Resources.InvalidFileExtensions = string.Format(CultureInfo.CurrentCulture, this.Options.Resources.InvalidFileExtensions, extensionsText);
             }
 
             if (this.Options.MaxFiles > 0)
             {
-                this.Options.Resources.TooManyFiles = string.Format(this.Options.Resources.TooManyFiles, this.Options.MaxFiles.ToString(CultureInfo.InvariantCulture));
+                this.Options.Resources.TooManyFiles = string.Format(CultureInfo.CurrentCulture, this.Options.Resources.TooManyFiles, this.Options.MaxFiles.ToString(CultureInfo.InvariantCulture));
             }
 
             if (!this.SupportHost)
             {
-                this.Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString();
+                this.Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString(CultureInfo.InvariantCulture);
             }
 
             this.Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
@@ -148,9 +148,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Options.FolderPicker.Services.SortTreeMethod = "ItemListService/SortFolders";
             this.Options.FolderPicker.Services.ServiceRoot = "InternalServices";
 
-            var optionsAsJsonString = Json.Serialize(this.Options);
-
-            var script = string.Format("dnn.createFileUpload({0});{1}", optionsAsJsonString, Environment.NewLine);
+            var script = $"dnn.createFileUpload({Json.Serialize(this.Options)});{Environment.NewLine}";
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

@@ -119,12 +119,12 @@ namespace DotNetNuke.Common.Utilities
 
             foreach (XmlElement xmlItem in xmlDoc.SelectNodes(rootname + "/item"))
             {
-                int key = Convert.ToInt32(xmlItem.GetAttribute("key"));
+                int key = Convert.ToInt32(xmlItem.GetAttribute("key"), CultureInfo.InvariantCulture);
 
                 var objValue = Activator.CreateInstance<TValue>();
 
                 // Create the XmlSerializer
-                var xser = new XmlSerializer(objValue.GetType());
+                var xmlSerializer = new XmlSerializer(objValue.GetType());
 
                 // A reader is needed to read the XML document.
                 var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
@@ -135,7 +135,7 @@ namespace DotNetNuke.Common.Utilities
 
                 // Use the Deserialize method to restore the object's state, and store it
                 // in the Hashtable
-                objDictionary.Add(key, (TValue)xser.Deserialize(reader));
+                objDictionary.Add(key, (TValue)xmlSerializer.Deserialize(reader));
             }
 
             return objDictionary;
@@ -208,7 +208,7 @@ namespace DotNetNuke.Common.Utilities
             string strValue = GetAttributeValue(navigator, attributeName);
             if (!string.IsNullOrEmpty(strValue))
             {
-                intValue = Convert.ToInt32(strValue);
+                intValue = Convert.ToInt32(strValue, CultureInfo.InvariantCulture);
             }
 
             return intValue;
@@ -221,7 +221,7 @@ namespace DotNetNuke.Common.Utilities
             string strValue = GetAttributeValue(navigator, attributeName);
             if (!string.IsNullOrEmpty(strValue))
             {
-                intValue = Convert.ToInt64(strValue);
+                intValue = Convert.ToInt64(strValue, CultureInfo.InvariantCulture);
             }
 
             return intValue;
@@ -360,7 +360,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
         /// <returns>The node value parsed as a <see cref="DateTime"/> or <paramref name="defaultValue"/>.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value will be returned.</remarks>
         /// <seealso cref="Convert.ToDateTime(string)"/>
         public static DateTime GetNodeValueDate(XmlNode objNode, string nodeName, DateTime defaultValue)
         {
@@ -370,7 +370,7 @@ namespace DotNetNuke.Common.Utilities
                 string strValue = objNode[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
                 {
-                    dateValue = Convert.ToDateTime(strValue);
+                    dateValue = Convert.ToDateTime(strValue, CultureInfo.InvariantCulture);
                     if (dateValue.Date.Equals(Null.NullDate.Date))
                     {
                         dateValue = Null.NullDate;
@@ -401,7 +401,7 @@ namespace DotNetNuke.Common.Utilities
                 return defaultValue;
             }
 
-            var dateValue = Convert.ToDateTime(strValue);
+            var dateValue = Convert.ToDateTime(strValue, CultureInfo.InvariantCulture);
             if (dateValue.Date.Equals(Null.NullDate.Date))
             {
                 return Null.NullDate;
@@ -414,7 +414,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <returns>The node value parsed as an <see cref="int"/> or <c>0</c>.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value (0) will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value (0) will be returned.</remarks>
         /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XmlNode node, string nodeName)
         {
@@ -426,7 +426,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="nodeName">Child node to look for.</param>
         /// <param name="defaultValue">Default value to return.</param>
         /// <returns>The node value parsed as an <see cref="int"/> or <paramref name="defaultValue"/>.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value will be returned.</remarks>
         /// <seealso cref="Convert.ToInt32(string)"/>
         public static int GetNodeValueInt(XmlNode node, string nodeName, int defaultValue)
         {
@@ -436,7 +436,7 @@ namespace DotNetNuke.Common.Utilities
                 string strValue = node[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
                 {
-                    intValue = Convert.ToInt32(strValue);
+                    intValue = Convert.ToInt32(strValue, CultureInfo.InvariantCulture);
                 }
             }
 
@@ -473,14 +473,14 @@ namespace DotNetNuke.Common.Utilities
                 return defaultValue;
             }
 
-            return Convert.ToInt32(strValue);
+            return Convert.ToInt32(strValue, CultureInfo.InvariantCulture);
         }
 
         /// <summary>Gets the value of node.</summary>
         /// <param name="node">Parent node.</param>
         /// <param name="nodeName">Child node to look for.</param>
         /// <returns>The value of the node or <c>0</c> if the node doesn't exist or doesn't have a value.</returns>
-        /// <remarks>If the node does not exist or it causes any error the default value (0) will be returned.</remarks>
+        /// <remarks>If the node does not exist, or it causes any error the default value (0) will be returned.</remarks>
         /// <seealso cref="Convert.ToSingle(string)"/>
         public static float GetNodeValueSingle(XmlNode node, string nodeName)
         {
@@ -559,9 +559,6 @@ namespace DotNetNuke.Common.Utilities
             string strString;
             if (source.Count != 0)
             {
-                XmlSerializer xser;
-                StringWriter sw;
-
                 var xmlDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xmlRoot = xmlDoc.CreateElement(rootName);
                 xmlDoc.AppendChild(xmlRoot);
@@ -572,14 +569,14 @@ namespace DotNetNuke.Common.Utilities
                     XmlElement xmlItem = xmlDoc.CreateElement("item");
 
                     // Save the key name and the object type
-                    xmlItem.SetAttribute("key", Convert.ToString(key));
+                    xmlItem.SetAttribute("key", Convert.ToString(key, CultureInfo.InvariantCulture));
                     xmlItem.SetAttribute("type", source[key].GetType().AssemblyQualifiedName);
 
                     // Serialize the object
                     var xmlObject = new XmlDocument { XmlResolver = null };
-                    xser = new XmlSerializer(source[key].GetType());
-                    sw = new StringWriter();
-                    xser.Serialize(sw, source[key]);
+                    var xmlSerializer = new XmlSerializer(source[key].GetType());
+                    var sw = new StringWriter();
+                    xmlSerializer.Serialize(sw, source[key]);
                     xmlObject.LoadXml(sw.ToString());
 
                     // import and append the node to the root

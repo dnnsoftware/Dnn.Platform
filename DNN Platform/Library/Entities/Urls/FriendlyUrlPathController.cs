@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Urls
                     if (user != null && !string.IsNullOrEmpty(user.VanityUrl))
                     {
                         doReplacement = true;
-                        urlName = (!string.IsNullOrEmpty(settings.VanityUrlPrefix)) ? string.Format("{0}/{1}", settings.VanityUrlPrefix, user.VanityUrl) : user.VanityUrl;
+                        urlName = (!string.IsNullOrEmpty(settings.VanityUrlPrefix)) ? $"{settings.VanityUrlPrefix}/{user.VanityUrl}" : user.VanityUrl;
                         urlWasChanged = true;
                     }
 
@@ -182,7 +182,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             // replacing for the parent tab id
                             string childTabPath = TabIndexController.GetTabPath(tab, options, parentTraceId);
-                            if (string.IsNullOrEmpty(childTabPath) == false)
+                            if (!string.IsNullOrEmpty(childTabPath))
                             {
                                 // remove the parent tab path from the child tab path
                                 TabInfo profilePage = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
