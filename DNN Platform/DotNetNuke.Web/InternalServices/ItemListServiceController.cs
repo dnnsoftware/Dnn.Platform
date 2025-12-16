@@ -313,7 +313,7 @@ namespace DotNetNuke.Web.InternalServices
                 terms.AddRange(new[]
                 {
                     from t in termRep.GetTermsByVocabulary(v.VocabularyId)
-                    where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
+                    where string.IsNullOrEmpty(q) || t.Name.Contains(q, StringComparison.OrdinalIgnoreCase)
                     select new { text = t.Name, value = t.TermId },
                 });
             }
@@ -409,7 +409,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                searchFunc = f => f.FileName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
+                searchFunc = f => f.FileName.Contains(searchText, StringComparison.OrdinalIgnoreCase)
                                   && (filterList == null || filterList.Contains(f.Extension.ToLowerInvariant()));
             }
 
@@ -418,9 +418,9 @@ namespace DotNetNuke.Web.InternalServices
 
         private NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
         {
-            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
+            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey, }, };
             var portals = this.GetPortalGroup(sortOrder);
-            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto, }).ToList();
             return treeNode;
         }
 
