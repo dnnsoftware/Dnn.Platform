@@ -51,12 +51,11 @@ namespace DotNetNuke.Web.Api
 
         protected static string GetAntiForgeryCookieValue(HttpActionContext actionContext)
         {
-            IEnumerable<string> cookies;
-            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out cookies))
+            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out var cookies))
             {
                 foreach (var cookieValue in cookies)
                 {
-                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
+                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.OrdinalIgnoreCase);
                     if (nameIndex > -1)
                     {
                         var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;

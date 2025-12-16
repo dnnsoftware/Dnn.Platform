@@ -28,7 +28,7 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            context.Information("Computing packages checksums...");
+            context.Information("Computing packages checksums…");
 
             var sb = new StringBuilder();
             sb.AppendLine($"## MD5 Checksums")
@@ -45,9 +45,7 @@ namespace DotNetNuke.Build.Tasks
                     using (var stream = File.OpenRead(file.FullPath))
                     {
                         var hashBytes = md5.ComputeHash(stream);
-                        hash = BitConverter.ToString(hashBytes)
-                            .Replace("-", string.Empty)
-                            .ToLowerInvariant();
+                        hash = Convert.ToHexStringLower(hashBytes);
                     }
                 }
 

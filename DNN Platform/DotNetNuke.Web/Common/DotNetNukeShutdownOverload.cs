@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -177,7 +177,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }
@@ -190,7 +190,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
             }
 
-            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.InvariantCultureIgnoreCase))
+            if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
                 ShceduleShutdown();
             }
