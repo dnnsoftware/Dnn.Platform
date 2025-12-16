@@ -263,7 +263,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     cultureCode,
                     package,
                     providerPackage.PackageID,
-                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"),
+                    providerPath.Substring(2).Replace("/", @"\"),
                     fileName,
                     createZip);
             }
@@ -276,22 +276,22 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetResourceFile(string type, string language, int portalId)
         {
-            string resourcefilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+            string resourceFilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
             if (language != Localization.SystemLocale)
             {
-                resourcefilename = resourcefilename + "." + language;
+                resourceFilename = resourceFilename + "." + language;
             }
 
             if (type == "Portal")
             {
-                resourcefilename = resourcefilename + "." + "Portal-" + portalId;
+                resourceFilename = resourceFilename + "." + "Portal-" + portalId;
             }
             else if (type == "Host")
             {
-                resourcefilename = resourcefilename + "." + "Host";
+                resourceFilename = resourceFilename + "." + "Host";
             }
 
-            return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
+            return HttpContext.Current.Server.MapPath(resourceFilename + ".resx");
         }
 
         private static bool IsAnalyzerType(Type type)
