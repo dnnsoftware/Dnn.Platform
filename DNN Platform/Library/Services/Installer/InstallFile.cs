@@ -183,18 +183,18 @@ namespace DotNetNuke.Services.Installer
             int i = fileName.Replace("\\", "/").LastIndexOf("/", StringComparison.Ordinal);
             if (i < 0)
             {
-                this.Name = fileName.Substring(0, fileName.Length);
+                this.Name = fileName.Substring(0);
                 this.Path = string.Empty;
             }
             else
             {
-                this.Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
+                this.Name = fileName.Substring(i + 1);
                 this.Path = fileName.Substring(0, i);
             }
 
             if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]"))
             {
-                this.Name = fileName.Substring(10, fileName.Length - 10);
+                this.Name = fileName.Substring(10);
                 this.Path = fileName.Substring(0, 10);
             }
 
