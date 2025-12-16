@@ -352,7 +352,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 foreach (var openedNodeChild in openedNode.Children)
                 {
-                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.OrdinalIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
@@ -759,7 +759,7 @@ namespace DotNetNuke.Web.InternalServices
             foreach (var openedNodeChild in openedNode.Children)
             {
                 var portalIdString = openedNodeChild.Data.Id;
-                var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
+                var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.OrdinalIgnoreCase));
                 if (treeNodeChild == null)
                 {
                     continue;
@@ -797,7 +797,7 @@ namespace DotNetNuke.Web.InternalServices
                 foreach (var openedNodeChild in openedNode.Children)
                 {
                     var portalIdString = openedNodeChild.Data.Id;
-                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.OrdinalIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
@@ -1007,7 +1007,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 foreach (var openedNodeChild in openedNode.Children)
                 {
-                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.OrdinalIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;

@@ -287,7 +287,7 @@ namespace DotNetNuke.Entities.Portals
 
             // remove parent folder if its empty.
             var parentFolder = Directory.GetParent(physicalPath);
-            while (parentFolder != null && !parentFolder.FullName.Equals(serverPath.TrimEnd('\\'), StringComparison.InvariantCultureIgnoreCase))
+            while (parentFolder != null && !parentFolder.FullName.Equals(serverPath.TrimEnd('\\'), StringComparison.OrdinalIgnoreCase))
             {
                 if (parentFolder.GetDirectories().Length + parentFolder.GetFiles().Length == 0)
                 {
@@ -710,7 +710,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -761,7 +761,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -1471,7 +1471,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 var currentFileName = Path.GetFileName(templateFilePath);
                 var langs = languageFileNames
-                                .Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.InvariantCultureIgnoreCase))
+                                .Where(x => GetTemplateName(x).Equals(currentFileName, StringComparison.OrdinalIgnoreCase))
                                 .Select(x => GetCultureCode(x))
                                 .Distinct()
                                 .ToList();
@@ -2287,7 +2287,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
                 }
             }
             catch (Exception exc)

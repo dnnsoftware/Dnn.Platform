@@ -62,7 +62,7 @@ public abstract class PackageComponentTask : FrostingTask<Context>
         var assemblies =
             from XmlNode assemblyNode in manifest.SelectNodes("//assembly")
             from XmlNode childNode in assemblyNode.ChildNodes
-            where childNode.LocalName.Equals("name")
+            where childNode.LocalName.Equals("name", System.StringComparison.Ordinal)
             select childNode;
 
         foreach (var assemblyNameNode in assemblies)
@@ -76,7 +76,7 @@ public abstract class PackageComponentTask : FrostingTask<Context>
                 append: true);
 
             var versionNode = assemblyNameNode.ParentNode?.ChildNodes.Cast<XmlNode>()
-                .SingleOrDefault(childNode => childNode.LocalName.Equals("version"));
+                .SingleOrDefault(childNode => childNode.LocalName.Equals("version", System.StringComparison.Ordinal));
             if (versionNode != null)
             {
                 versionNode.InnerText = context.GetAssemblyFileVersion(assemblyPath);

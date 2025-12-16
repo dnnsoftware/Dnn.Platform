@@ -572,7 +572,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 strDefaultSkinPath = strDefaultSkinPath.Substring(0, strDefaultSkinPath.Length - 1);
             }
 
-            return skinPath.Equals(strDefaultSkinPath, StringComparison.InvariantCultureIgnoreCase);
+            return skinPath.Equals(strDefaultSkinPath, StringComparison.OrdinalIgnoreCase);
         }
 
         private static string FormatThemePath(PortalSettings portalSettings, string themePath, string fileName, ThemeType type)

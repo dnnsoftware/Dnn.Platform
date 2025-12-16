@@ -445,7 +445,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             using (var testCommand = new SqlCommand("select serverproperty('Edition')", sqlConnection))
                             {
                                 var result = testCommand.ExecuteScalar();
-                                isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.InvariantCultureIgnoreCase);
+                                isValidVersion = result.ToString().Equals("SQL Azure", StringComparison.OrdinalIgnoreCase);
                             }
                         }
                     }

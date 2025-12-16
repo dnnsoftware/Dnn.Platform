@@ -168,7 +168,7 @@ public class LocalUpgradeService : ILocalUpgradeService
     public async Task DeleteLocalUpgrade(string packageName, CancellationToken cancellationToken)
     {
         var upgrades = await this.GetLocalUpgrades(cancellationToken);
-        var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(packageName, StringComparison.InvariantCultureIgnoreCase));
+        var upgrade = upgrades.FirstOrDefault(u => u.PackageName.Equals(packageName, StringComparison.OrdinalIgnoreCase));
         var packagePath = Path.Combine(this.UpgradeDirectoryPath, upgrade.PackageName + ".zip");
 
         if (File.Exists(packagePath))

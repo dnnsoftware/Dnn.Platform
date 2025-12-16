@@ -72,7 +72,7 @@ Namespace DotNetNuke.UI.Utilities
             'Parse through the browsers to find a match based on name/minversion
             For Each browser As Browser In browsers
                 'Check by browser name and min version
-                If (Not String.IsNullOrEmpty(browser.Name) AndAlso browser.Name.ToLower.Equals(strBrowser.ToLower) AndAlso browser.MinVersion <= dblVersion) Then
+                If (Not String.IsNullOrEmpty(browser.Name) AndAlso browser.Name.Equals(strBrowser, StringComparison.OrdinalIgnoreCase) AndAlso browser.MinVersion <= dblVersion) Then
                     _hasMatch = True
                     Exit For
                 End If

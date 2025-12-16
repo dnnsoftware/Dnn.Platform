@@ -406,7 +406,7 @@ namespace Dnn.ExportImport.Components.Services
                     (x.FolderPath == folderPermission.FolderPath ||
                      (string.IsNullOrEmpty(x.FolderPath) && string.IsNullOrEmpty(folderPermission.FolderPath))) &&
                     x.PermissionCode == folderPermission.PermissionCode && x.PermissionKey == folderPermission.PermissionKey
-                    && x.PermissionName.Equals(folderPermission.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
+                    && x.PermissionName.Equals(folderPermission.PermissionName, StringComparison.OrdinalIgnoreCase) &&
                     x.RoleId == roleId && x.UserId == userId);
 
             var isUpdate = false;

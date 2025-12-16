@@ -54,7 +54,7 @@ namespace DotNetNuke.Security.Profile
                         while (dr.Read())
                         {
                             // Ensure the data reader returned is valid
-                            if (!string.Equals(dr.GetName(0), "ProfileID", StringComparison.InvariantCultureIgnoreCase))
+                            if (!string.Equals(dr.GetName(0), "ProfileID", StringComparison.OrdinalIgnoreCase))
                             {
                                 break;
                             }

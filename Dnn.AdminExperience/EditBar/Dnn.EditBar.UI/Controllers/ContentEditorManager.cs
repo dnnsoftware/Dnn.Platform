@@ -556,7 +556,7 @@ namespace Dnn.EditBar.UI.Controllers
             try
             {
                 var methodInfo = typeof(ScriptManager).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
-                            .First(i => i.Name.Equals("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel"));
+                            .First(i => i.Name.Equals("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel", StringComparison.Ordinal));
                 methodInfo.Invoke(ScriptManager.GetCurrent(this.Page), [sender,]);
             }
             catch (Exception ex)

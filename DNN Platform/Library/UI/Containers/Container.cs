@@ -217,10 +217,10 @@ namespace DotNetNuke.UI.Containers
 
             var showMessage = false;
             var adminMessage = Null.NullString;
-            if (viewRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
-                            && (moduleEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
+            if (viewRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase)
+                            && (moduleEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase)
                                     || string.IsNullOrEmpty(moduleEditRoles))
-                            && pageEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
+                            && pageEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase))
             {
                 adminMessage = Localization.GetString("ModuleVisibleAdministrator.Text");
                 showMessage = !this.ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();

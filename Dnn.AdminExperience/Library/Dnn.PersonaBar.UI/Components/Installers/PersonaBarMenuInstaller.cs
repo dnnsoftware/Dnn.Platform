@@ -177,7 +177,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 IconFile = Util.ReadElement(menuNavigator, "icon"),
                 ParentId = Null.NullInteger,
                 Order = Convert.ToInt32(Util.ReadElement(menuNavigator, "order", "0")),
-                AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").Equals("true", StringComparison.InvariantCultureIgnoreCase),
+                AllowHost = Util.ReadElement(menuNavigator, "allowHost", "true").Equals("true", StringComparison.OrdinalIgnoreCase),
                 Enabled = true,
             };
 

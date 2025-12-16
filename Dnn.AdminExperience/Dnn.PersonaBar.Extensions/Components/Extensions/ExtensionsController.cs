@@ -178,7 +178,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     }
                 }
 
-                if (packageType.Equals("corelanguagepack", StringComparison.InvariantCultureIgnoreCase))
+                if (packageType.Equals("corelanguagepack", StringComparison.OrdinalIgnoreCase))
                 {
                     GetAvailableLanguagePacks(validPackages);
                 }
@@ -247,7 +247,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return string.Empty;
             }
 
-            if (packageInfo.PackageType.Equals("MODULE", StringComparison.CurrentCultureIgnoreCase))
+            if (packageInfo.PackageType.Equals("MODULE", StringComparison.OrdinalIgnoreCase))
             {
                 if (portalId == Null.NullInteger)
                 {
@@ -423,7 +423,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                             if (
                                 installedLanguages.Any(
                                     l =>
-                                        LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant())
+                                        LocaleController.Instance.GetLocale(l.LanguageID).Code.ToLowerInvariant().Equals(cultureCode.ToLowerInvariant(), StringComparison.Ordinal)
                                         && installedPackages.First(p => p.PackageID == l.PackageID).Version >= ver))
                             {
                                 continue;

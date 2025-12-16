@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.WebControls
             var dataChanged = false;
             var presentValue = this.StringValue;
             var postedValue = this.EditorText;
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 this.Value = postedValue;
                 dataChanged = true;

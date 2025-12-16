@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
             {
                 packageType = "LanguagePack";
             }
@@ -476,7 +476,7 @@ namespace DotNetNuke.Services.Installer
             {
                 packageType = Util.ReadAttribute(rootNav, "type");
             }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
             {
                 packageType = "LanguagePack";
             }

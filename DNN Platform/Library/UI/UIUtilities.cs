@@ -98,7 +98,7 @@ namespace DotNetNuke.UI
                 }
             }
 
-            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
+            if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.OrdinalIgnoreCase) || key.Equals("help", StringComparison.OrdinalIgnoreCase)))
             {
                 if (!int.TryParse(request.QueryString["moduleid"], out moduleId))
                 {

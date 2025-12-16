@@ -796,7 +796,7 @@ namespace DotNetNuke.Services.Upgrade
                 superUser.Profile.PreferredLocale = locale;
                 superUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
 
-                if (updatePassword.Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                if (updatePassword.Equals("true", StringComparison.OrdinalIgnoreCase))
                 {
                     superUser.Membership.UpdatePassword = true;
                 }
@@ -891,7 +891,7 @@ namespace DotNetNuke.Services.Upgrade
                         bool settingIsSecure = false;
                         if (secureAttrib != null)
                         {
-                            if (secureAttrib.Value.Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                            if (secureAttrib.Value.Equals("true", StringComparison.OrdinalIgnoreCase))
                             {
                                 settingIsSecure = true;
                             }
@@ -1025,7 +1025,7 @@ namespace DotNetNuke.Services.Upgrade
                 // install LP that contains templates if installing in a different language
                 var installConfig = InstallController.Instance.GetInstallConfig();
                 string culture = installConfig.InstallCulture;
-                if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
+                if (!culture.Equals("en-us", StringComparison.OrdinalIgnoreCase))
                 {
                     string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
                     string lpAndTemplates = $@"{installFolder}\installlanguage.resources";
@@ -1686,7 +1686,7 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, string.Empty);
                 url += "&type=" + packageType;
                 url += "&name=" + packageName;
-                if (packageType.Equals("module", StringComparison.InvariantCultureIgnoreCase))
+                if (packageType.Equals("module", StringComparison.OrdinalIgnoreCase))
                 {
                     var moduleType = (from m in InstalledModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
                     if (moduleType != null)
@@ -2027,7 +2027,7 @@ namespace DotNetNuke.Services.Upgrade
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
 
-            return defaultTemplates.FirstOrDefault(x => x.CultureCode.Equals(currentCulture, StringComparison.InvariantCultureIgnoreCase)) ??
+            return defaultTemplates.FirstOrDefault(x => x.CultureCode.Equals(currentCulture, StringComparison.OrdinalIgnoreCase)) ??
                    defaultTemplates.FirstOrDefault(x => x.CultureCode.StartsWith(currentCulture.Substring(0, 2), StringComparison.InvariantCultureIgnoreCase)) ??
                    defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode)) ??
                    throw new TemplateNotFoundException("Unable to locate specified portal template: " + templateFileName);

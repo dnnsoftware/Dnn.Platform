@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Assets
                 return 0;
             }
 
-            return string.Compare(this.GetFolderPath(folderIdA), this.GetFolderPath(folderIdB));
+            return string.Compare(this.GetFolderPath(folderIdA), this.GetFolderPath(folderIdB), System.StringComparison.Ordinal);
         }
 
         private string GetFolderPath(int folderId)

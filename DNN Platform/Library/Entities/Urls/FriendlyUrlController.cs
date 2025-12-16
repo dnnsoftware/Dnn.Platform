@@ -1062,13 +1062,13 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
 
                         var tabUrl = path.Replace(Globals.AddHTTP(settings.PortalAlias.HTTPAlias), string.Empty);
 
-                        if (tabUrl.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase))
+                        if (tabUrl.Equals("/" + url, StringComparison.OrdinalIgnoreCase))
                         {
                             isUnique = false;
                             break;
                         }
                     }
-                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.InvariantCultureIgnoreCase)))
+                    else if (tab.TabUrls.Any(u => u.Url.Equals("/" + url, StringComparison.OrdinalIgnoreCase)))
                     {
                         isUnique = false;
                         break;

@@ -273,7 +273,7 @@ namespace DotNetNuke.Security.Roles
         {
             roleGroupName = roleGroupName.Trim();
             return this.GetRoleGroupsInternal(portalId).SingleOrDefault(
-                r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.InvariantCultureIgnoreCase));
+                r => roleGroupName.Equals(r.RoleGroupName.Trim(), StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>Get the RoleGroups for a portal.</summary>

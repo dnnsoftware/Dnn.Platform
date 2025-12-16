@@ -223,7 +223,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             var userId = -1;
             var cacheCleared = false;
-            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.InvariantCultureIgnoreCase);
+            var isProfilePic = "profilepic".Equals(context.Request.QueryString["mode"], StringComparison.OrdinalIgnoreCase);
             if (isProfilePic)
             {
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))

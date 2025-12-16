@@ -227,7 +227,7 @@ namespace DotNetNuke.Entities.Urls
                                             break; // that's it, we're finished
                                         }
 
-                                        if (parmPart.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
+                                        if (parmPart.Equals("tabid", StringComparison.OrdinalIgnoreCase))
                                         {
                                             tabIdNext = true;
                                         }

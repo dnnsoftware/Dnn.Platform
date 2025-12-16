@@ -586,7 +586,7 @@ namespace DotNetNuke.UI.Skins
                 }
 
                 // process skin object
-                if (attributeNode.Equals("dotnetnuke/server", StringComparison.InvariantCultureIgnoreCase))
+                if (attributeNode.Equals("dotnetnuke/server", StringComparison.OrdinalIgnoreCase))
                 {
                     // we have a valid skin object specification
                     this.Messages += SkinController.FormatMessage(oBJECT_PROC, token, 2, false);

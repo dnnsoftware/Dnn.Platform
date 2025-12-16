@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Users.Components
                 username,
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
-            if (!cleanUsername.Equals(username))
+            if (!cleanUsername.Equals(username, StringComparison.Ordinal))
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }

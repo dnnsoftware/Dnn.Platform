@@ -476,7 +476,7 @@ namespace DotNetNuke.UI.Modules
             foreach (object obj in this.PortalSettings.ActiveTab.Panes)
             {
                 var pane = obj as string;
-                if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.InvariantCultureIgnoreCase))
+                if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.OrdinalIgnoreCase))
                 {
                     this.moduleMoveActions.Actions.Add(
                         this.GetNextActionID(),

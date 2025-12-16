@@ -1773,7 +1773,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                 var oldAnalyzer = HostController.Instance.GetString("Search_CustomAnalyzer", string.Empty);
                 var newAnalyzer = request.SearchCustomAnalyzer.Trim();
-                if (!oldAnalyzer.Equals(newAnalyzer))
+                if (!oldAnalyzer.Equals(newAnalyzer, StringComparison.Ordinal))
                 {
                     HostController.Instance.Update("Search_CustomAnalyzer", newAnalyzer);
 

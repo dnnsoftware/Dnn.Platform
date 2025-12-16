@@ -1775,7 +1775,7 @@ namespace DotNetNuke.Entities.Urls
                             if (requestedUrlAliasEnd > Null.NullInteger)
                             {
                                 // 818 : when a site root is used for a custom page Url, then check for max length within bounds
-                                if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).Equals("default.aspx", StringComparison.InvariantCultureIgnoreCase))
+                                if ((requestedUrl.Length - requestedUrlAliasEnd) >= 12 && requestedUrl.Substring(requestedUrlAliasEnd).Equals("default.aspx", StringComparison.OrdinalIgnoreCase))
                                 {
                                     requestedUrl = requestedUrl.Substring(0, requestedUrl.Length - 12);
 
@@ -2520,7 +2520,7 @@ namespace DotNetNuke.Entities.Urls
                 // look for a 404 result from the rewrite, because of a deleted page or rule
                 if (!finished && result.Action == ActionType.Output404)
                 {
-                    if (result.OriginalPath.Equals(result.HttpAlias, StringComparison.InvariantCultureIgnoreCase)
+                    if (result.OriginalPath.Equals(result.HttpAlias, StringComparison.OrdinalIgnoreCase)
                         && result.PortalAlias != null
                         && result.Reason != RedirectReason.Deleted_Page
                         && result.Reason != RedirectReason.Disabled_Page)

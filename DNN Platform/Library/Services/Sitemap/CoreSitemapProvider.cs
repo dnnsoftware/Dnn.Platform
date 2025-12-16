@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Sitemap
             var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
             var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
                         .Where(t => (!t.IsSystem
-                                    && !ps.ContentLocalizationEnabled) || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.InvariantCultureIgnoreCase)));
+                                    && !ps.ContentLocalizationEnabled) || (languagePublished && t.CultureCode.Equals(currentLanguage, StringComparison.OrdinalIgnoreCase)));
             foreach (TabInfo tab in tabs)
             {
                 try

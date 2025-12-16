@@ -364,7 +364,7 @@ namespace DotNetNuke.UI.Skins
                 if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                 {
                     // process embedded zip files
-                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    if (objZipEntry.FullName.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
                     {
                         using (var objMemoryStream = new MemoryStream())
                         {
@@ -373,7 +373,7 @@ namespace DotNetNuke.UI.Skins
                             strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                         }
                     }
-                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
+                    else if (objZipEntry.FullName.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.OrdinalIgnoreCase))
                     {
                         using (var objMemoryStream = new MemoryStream())
                         {
@@ -521,7 +521,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="skinFile">The File Name without extension.</param>
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
-            if (skinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
+            if (skinFolder.Equals("_default", StringComparison.OrdinalIgnoreCase))
             {
                 // host folder
                 return skinFile;

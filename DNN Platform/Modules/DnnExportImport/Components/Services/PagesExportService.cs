@@ -198,7 +198,7 @@ namespace Dnn.ExportImport.Components.Services
             var createdBy = Util.GetUserIdByName(this.exportImportJob, otherTab.CreatedByUserID, otherTab.CreatedByUserName);
             var modifiedBy = Util.GetUserIdByName(this.exportImportJob, otherTab.LastModifiedByUserID, otherTab.LastModifiedByUserName);
             var localTab = localTabs.FirstOrDefault(t => otherTab.UniqueId.Equals(t.UniqueId)) ?? localTabs.FirstOrDefault(t =>
-                  otherTab.TabPath.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
+                  otherTab.TabPath.Equals(t.TabPath, StringComparison.OrdinalIgnoreCase)
                   && IsSameCulture(t.CultureCode, otherTab.CultureCode));
 
             var isParentPresent = this.IsParentTabPresentInExport(otherTab, exportedTabs, localTabs);
@@ -397,7 +397,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         var path = exportedTab.TabPath.Substring(0, index);
                         var localTab = localTabs.FirstOrDefault(t =>
-                            path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
+                            path.Equals(t.TabPath, StringComparison.OrdinalIgnoreCase)
                             && IsSameCulture(t.CultureCode, exportedTab.CultureCode));
                         if (localTab != null)
                         {
@@ -802,7 +802,7 @@ namespace Dnn.ExportImport.Components.Services
 
                 var local = isNew ? null : localTabPermissions.FirstOrDefault(
                     x => x.PermissionCode == other.PermissionCode && x.PermissionKey == other.PermissionKey
-                    && x.PermissionName.Equals(other.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
+                    && x.PermissionName.Equals(other.PermissionName, StringComparison.OrdinalIgnoreCase) &&
                     x.RoleID == roleId && x.UserID == userId);
                 var isUpdate = false;
                 if (local != null)

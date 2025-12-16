@@ -187,7 +187,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 return null;
             }
 
-            if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.CurrentCultureIgnoreCase))
+            if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.OrdinalIgnoreCase))
             {
                 if (Logger.IsTraceEnabled)
                 {

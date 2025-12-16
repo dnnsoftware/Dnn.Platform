@@ -246,7 +246,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var theme in exportThemes)
             {
                 var packageName = theme.Substring(0, theme.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                if (!themePackages.Any(p => p.Equals(packageName, StringComparison.InvariantCultureIgnoreCase)))
+                if (!themePackages.Any(p => p.Equals(packageName, StringComparison.OrdinalIgnoreCase)))
                 {
                     themePackages.Add(packageName);
                 }

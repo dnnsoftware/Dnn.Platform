@@ -813,7 +813,7 @@ namespace DotNetNuke.UI.Skins
                         case "article":
                         case "aside":
                             // content pane
-                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
+                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.OrdinalIgnoreCase))
                             {
                                 // Add to the PortalSettings (for use in the Control Panel)
                                 this.PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);

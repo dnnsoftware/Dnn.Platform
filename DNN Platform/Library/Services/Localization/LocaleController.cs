@@ -222,14 +222,14 @@ namespace DotNetNuke.Services.Localization
 
                 // if ((!dicLocales.ContainsKey(localeCode)))
                 string locale = localeCode;
-                if (dicLocales.FirstOrDefault(x => string.Equals(x.Key, locale, StringComparison.CurrentCultureIgnoreCase)).Key == null)
+                if (dicLocales.FirstOrDefault(x => string.Equals(x.Key, locale, StringComparison.OrdinalIgnoreCase)).Key == null)
                 {
                     // if localecode is neutral (en, es,...) try to find a locale that has the same language
                     if (localeCode.IndexOf("-", StringComparison.Ordinal) == -1)
                     {
                         foreach (string strLocale in dicLocales.Keys)
                         {
-                            if (string.Equals(strLocale.Split('-')[0], localeCode, StringComparison.CurrentCultureIgnoreCase))
+                            if (string.Equals(strLocale.Split('-')[0], localeCode, StringComparison.OrdinalIgnoreCase))
                             {
                                 // set the requested _localecode to the full locale
                                 localeCode = strLocale;

@@ -462,7 +462,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             if (!string.IsNullOrEmpty(pageType))
             {
-                pages = pages.Where(p => string.Equals(Globals.GetURLType(p.Url).ToString(), pageType, StringComparison.CurrentCultureIgnoreCase));
+                pages = pages.Where(p => string.Equals(Globals.GetURLType(p.Url).ToString(), pageType, StringComparison.OrdinalIgnoreCase));
             }
 
             if (!string.IsNullOrEmpty(tags))
@@ -1399,7 +1399,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         private static bool HasTags(string tags, IEnumerable<Term> terms)
         {
-            return tags.Split(',').All(tag => terms.Any(t => string.Equals(t.Name, tag, StringComparison.CurrentCultureIgnoreCase)));
+            return tags.Split(',').All(tag => terms.Any(t => string.Equals(t.Name, tag, StringComparison.OrdinalIgnoreCase)));
         }
 
         private static void ChangeContentWorkflow(TabInfo tab, PageSettings pageSettings)

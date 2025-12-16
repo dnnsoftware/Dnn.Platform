@@ -150,7 +150,7 @@ namespace DotNetNuke.Entities.Modules
                 if (this.Request.QueryString["ctl"] != null)
                 {
                     string ctl = this.Request.QueryString["ctl"];
-                    if (ctl.Equals("edit", StringComparison.InvariantCultureIgnoreCase))
+                    if (ctl.Equals("edit", StringComparison.OrdinalIgnoreCase))
                     {
                         isEdit = true;
                     }
@@ -182,7 +182,7 @@ namespace DotNetNuke.Entities.Modules
                         if (this.Request.QueryString["ctl"] != null)
                         {
                             string ctl = this.Request.QueryString["ctl"];
-                            if (ctl.Equals("profile", StringComparison.InvariantCultureIgnoreCase))
+                            if (ctl.Equals("profile", StringComparison.OrdinalIgnoreCase))
                             {
                                 isProfile = true;
                             }

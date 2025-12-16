@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Tabs
         public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
         {
             var items = this.GetTabModuleSettingsByName(settingName);
-            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase));
+            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.OrdinalIgnoreCase));
             var keyValuePairs = matches as KeyValuePair<int, string>[] ?? matches.ToArray();
             if (keyValuePairs.Length != 0)
             {

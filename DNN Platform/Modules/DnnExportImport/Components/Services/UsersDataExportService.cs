@@ -195,7 +195,7 @@ namespace Dnn.ExportImport.Components.Services
                                             }
 
                                             var value = userProfile.PropertyValue;
-                                            if (userProfile.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase) && (value = this.GetUserPhotoId(portalId, value, user)) == null)
+                                            if (userProfile.PropertyName.Equals("photo", StringComparison.OrdinalIgnoreCase) && (value = this.GetUserPhotoId(portalId, value, user)) == null)
                                             {
                                                 continue;
                                             }
