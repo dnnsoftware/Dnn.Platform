@@ -1369,7 +1369,7 @@ namespace DotNetNuke.Services.FileSystem
                     objResponse.AppendHeader("content-disposition", "inline; filename=\"" + file.FileName + "\"");
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException("contentDisposition");
+                    throw new ArgumentOutOfRangeException(nameof(contentDisposition));
             }
 
             // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)

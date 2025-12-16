@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Connections
         {
             if (dictionary == null)
             {
-                throw new ArgumentNullException("dictionary");
+                throw new ArgumentNullException(nameof(dictionary));
             }
 
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
@@ -45,12 +45,7 @@ namespace DotNetNuke.Services.Connections
 
             public DynamicJsonObject(IDictionary<string, object> dictionary)
             {
-                if (dictionary == null)
-                {
-                    throw new ArgumentNullException("dictionary");
-                }
-
-                this.dictionary = dictionary;
+                this.dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
             }
 
             public override string ToString()

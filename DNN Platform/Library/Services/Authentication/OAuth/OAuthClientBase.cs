@@ -405,12 +405,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             if (hashAlgorithm == null)
             {
-                throw new ArgumentNullException("hashAlgorithm");
+                throw new ArgumentNullException(nameof(hashAlgorithm));
             }
 
             if (string.IsNullOrEmpty(data))
             {
-                throw new ArgumentNullException("data");
+                throw new ArgumentNullException(nameof(data));
             }
 
             byte[] dataBuffer = Encoding.ASCII.GetBytes(data);
@@ -713,7 +713,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return null;
         }
 
-        private string GenerateSignatureBase(Uri url, string token, string callbackurl, string oauthVerifier, string httpMethod, string timeStamp, string nonce, out string normalizedUrl, out List<QueryParameter> requestParameters)
+        private string GenerateSignatureBase(Uri url, string token, string callbackUrl, string oauthVerifier, string httpMethod, string timeStamp, string nonce, out string normalizedUrl, out List<QueryParameter> requestParameters)
         {
             if (token == null)
             {
@@ -722,7 +722,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (string.IsNullOrEmpty(httpMethod))
             {
-                throw new ArgumentNullException("httpMethod");
+                throw new ArgumentNullException(nameof(httpMethod));
             }
 
             requestParameters = GetQueryParameters(url.Query);
@@ -732,9 +732,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
             requestParameters.Add(new QueryParameter(OAuthSignatureMethodKey, HMACSHA1SignatureType));
             requestParameters.Add(new QueryParameter(OAuthConsumerKeyKey, this.APIKey));
 
-            if (!string.IsNullOrEmpty(callbackurl))
+            if (!string.IsNullOrEmpty(callbackUrl))
             {
-                requestParameters.Add(new QueryParameter(OAuthCallbackKey, UrlEncode(callbackurl)));
+                requestParameters.Add(new QueryParameter(OAuthCallbackKey, UrlEncode(callbackUrl)));
             }
 
             if (!string.IsNullOrEmpty(oauthVerifier))

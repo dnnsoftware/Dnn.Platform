@@ -26,12 +26,7 @@ namespace DotNetNuke.Web.Mvc
 
         public DnnMvcHandler(RequestContext requestContext)
         {
-            if (requestContext == null)
-            {
-                throw new ArgumentNullException("requestContext");
-            }
-
-            this.RequestContext = requestContext;
+            this.RequestContext = requestContext ?? throw new ArgumentNullException(nameof(requestContext));
         }
 
         public static bool DisableMvcResponseHeader { get; set; }

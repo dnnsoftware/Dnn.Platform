@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            throw new ArgumentException(ErrorMessage, "binaryReader");
+            throw new ArgumentException(ErrorMessage, nameof(binaryReader));
         }
 
         private static bool StartsWith(byte[] thisBytes, byte[] thatBytes)

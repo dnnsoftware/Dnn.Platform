@@ -747,7 +747,7 @@ namespace DotNetNuke.Entities.Users
                 case UserCreateStatus.InvalidLastName:
                     return Localization.GetString("InvalidLastName");
                 default:
-                    throw new ArgumentException("Unknown UserCreateStatus value encountered", "userRegistrationStatus");
+                    throw new ArgumentException("Unknown UserCreateStatus value encountered", nameof(userRegistrationStatus));
             }
         }
 

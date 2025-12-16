@@ -196,7 +196,7 @@ namespace DotNetNuke.Collections
 
             if (!dictionary.Contains(key))
             {
-                throw new ArgumentException("dictionary does not contain a value for the given key", "key");
+                throw new ArgumentException("dictionary does not contain a value for the given key", nameof(key));
             }
 
             return converter(dictionary[key]);
