@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { AddIcon,
+import {
+    AddIcon,
     EditIcon,
     CardViewIcon,
     ListViewIcon,
@@ -114,11 +115,12 @@ export default class IconButton extends Component {
      
     render() {
         const {props} = this;
+        const Icon = this.getIcon();
 
         if (typeof props.onClick === "function") {
-            return <a href="#" className={this.getClassName() } style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} onClick={this.onClick.bind(this) }  aria-label={props.type} />;
+            return <a href="#" className={this.getClassName()} style={this.getStyle()} onClick={this.onClick.bind(this)} aria-label={props.type}><Icon /></a>;
         } else {
-            return <span className="icon-flat"  style={this.getStyle() } dangerouslySetInnerHTML={{ __html: this.getIcon() }} />;
+            return <span className="icon-flat" style={this.getStyle()}><Icon /></span>;
         }
     }
 }

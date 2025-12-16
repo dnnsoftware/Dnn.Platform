@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Collapse from "react-collapse";
 import SearchBox from "../SearchBox";
 import {ArrowDownIcon, ArrowRightIcon, CheckboxUncheckedIcon, CheckboxCheckedIcon, CheckboxPartialCheckedIcon, PagesIcon} from "../SvgIcons";
+import Html from "../Html";
 import "./style.less";
 import Service from "./Service";
 import PagePickerScrollbar from "./PagePickerScrollbar";
@@ -300,13 +301,13 @@ class PagePicker extends Component {
             const parentNotSelectable = isCurrentOrDescendant ? isCurrentOrDescendant : this.props.currentTabId === parseInt(page.TabId);
             
             return <li key={page.TabId} className={"page-item page-" + page.TabId + (page.HasChildren ? " has-children" : "") + (page.IsOpen ? " opened" : " closed") }>
-                {(!page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowRightIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
-                {(page.IsOpen && page.HasChildren) && <div className="arrow-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.getDescendants.bind(this, page, null) }></div>}
+                {(!page.IsOpen && page.HasChildren) && <div className="arrow-icon" onClick={this.getDescendants.bind(this, page, null) }><ArrowRightIcon /></div>}
+                {(page.IsOpen && page.HasChildren) && <div className="arrow-icon" onClick={this.getDescendants.bind(this, page, null) }><ArrowDownIcon /></div>}
                 <div className={this.getSelected(page, parentNotSelectable) } onClick={page.Selectable && !parentNotSelectable ? this.onPageSelect.bind(this, page) : void (0) }>
                     { props.ShowIcon &&
-                        <div className={pageClass } dangerouslySetInnerHTML={{ __html: pageIcon }}></div>
+                        <div className={pageClass }><pageIcon /></div>
                     }
-                    {props.IsMultiSelect && <div  dangerouslySetInnerHTML={{ __html: checkboxIcon }}></div>}
+                    {props.IsMultiSelect && <div ><checkboxIcon /></div>}
                     <div className={textClass }>{page.Name}</div>
                 </div>
                 {page.ChildTabs !== null && page.ChildTabs.length > 0 &&
@@ -583,7 +584,7 @@ class PagePicker extends Component {
                         </div>
                     }
                     {props.IsInDropDown && props.withIcon &&
-                        <div className="dropdown-icon" dangerouslySetInnerHTML={{ __html: ArrowDownIcon }} onClick={this.toggleDropdown.bind(this) }></div>
+                        <div className="dropdown-icon" onClick={this.toggleDropdown.bind(this) }><ArrowDownIcon /></div>
                     }
                     {props.IsInDropDown &&
                         <div className={"collapsible-content" + (state.dropDownOpen ? " open" : "") } style={props.style}>
@@ -602,13 +603,13 @@ class PagePicker extends Component {
                                     />
                                 }
                                 {picker}
-                                {props.ShowCount && <div className="count" dangerouslySetInnerHTML={{ __html: this.getCountText() }}></div>}
+                                {props.ShowCount && <div className="count"><Html html={this.getCountText()} /></div>}
                             </Collapse>
                         </div>
                     }
                     {
                         !props.IsInDropDown && <div className="page-picker-content">{ picker }
-                            {props.ShowCount && <div className="count" dangerouslySetInnerHTML={{ __html: this.getCountText() }}></div>}
+                            {props.ShowCount && <div className="count"><Html html={this.getCountText()} /></div>}
                         </div>
                     }
 

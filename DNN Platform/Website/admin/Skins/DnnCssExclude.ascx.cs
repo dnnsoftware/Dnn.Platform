@@ -5,18 +5,15 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
 
-    using ClientDependency.Core;
-    using ClientDependency.Core.Controls;
-
     /// <summary>A control which causes CSS to no longer be included on the page.</summary>
     public partial class DnnCssExclude : SkinObjectBase
     {
         public string Name { get; set; }
 
         /// <inheritdoc/>
-        protected override void OnLoad(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
-            base.OnLoad(e);
+            base.OnInit(e);
             this.ctlExclude.Name = this.Name;
         }
     }

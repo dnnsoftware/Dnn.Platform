@@ -188,7 +188,7 @@ class UserRoles extends Component {
                                 valueField="roleId"
                                 textField="roleName"/>
                             <div className="add-role-button" onClick={this.onAddRole.bind(this) }>
-                                <div className={"extension-action"} title={Localization.get("Add")} dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}></div>
+                                <div className={"extension-action"} title={Localization.get("Add")}><SvgIcons.AddIcon /></div>
                                 {Localization.get("Add") }
                             </div>
                         </span>

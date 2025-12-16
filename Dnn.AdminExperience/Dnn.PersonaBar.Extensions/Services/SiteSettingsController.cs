@@ -3126,6 +3126,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         EnablePopups = portalSettings.EnablePopUps,
                         InjectModuleHyperLink = portalSettings.InjectModuleHyperLink,
                         InlineEditorEnabled = portalSettings.InlineEditorEnabled,
+                        AllowJsInModuleHeaders = portalSettings.AllowJsInModuleHeaders,
+                        AllowJsInModuleFooters = portalSettings.AllowJsInModuleFooters,
                         ShowQuickModuleAddMenu = portalSettings.ShowQuickModuleAddMenu,
                         EnabledVersioning = TabVersionSettings.Instance.IsVersioningEnabled(pid),
                         MaxNumberOfVersions = TabVersionSettings.Instance.GetMaxNumberOfVersions(pid),
@@ -3157,6 +3159,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "EnablePopups", request.EnablePopups.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "InjectModuleHyperLink", request.InjectModuleHyperLink.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "InlineEditorEnabled", request.InlineEditorEnabled.ToString(), false, null, false);
+                PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleHeaders", request.AllowJsInModuleHeaders.ToString(), false, null, false);
+                PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleFooters", request.AllowJsInModuleFooters.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);
                 if (request.AllowedExtensionsWhitelist == this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString())
                 {

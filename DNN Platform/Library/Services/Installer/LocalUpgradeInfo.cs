@@ -20,4 +20,10 @@ public record LocalUpgradeInfo
 
     /// <summary>Gets or sets the version of the upgrade package.</summary>
     public Version Version { get; set; }
+
+    /// <summary>Gets or sets the minimal DNN Version to upgrade from.</summary>
+    public Version MinDnnVersion { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the upgrade can be installed.</summary>
+    public bool CanInstall { get; set; }
 }

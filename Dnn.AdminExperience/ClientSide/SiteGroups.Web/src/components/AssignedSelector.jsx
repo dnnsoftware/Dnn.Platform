@@ -54,26 +54,22 @@ class AssignedSelector extends React.Component {
                         href=""
                         className={"move-item single-right" + (leftSelected ? " enabled" : "")}
                         onClick={() => this.props.moveItemsRight()}
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowRightIcon }}
-                    ></div>
+                    ><SvgIcons.ArrowRightIcon /></div>
                     <div
                         href=""
                         className={"move-item single-left" + (rightSelected ? " enabled" : "")}
                         onClick={() => this.props.moveItemsLeft()}
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowLeftIcon }}
-                    ></div>
+                    ><SvgIcons.ArrowLeftIcon /></div>
                     <div
                         href=""
                         className={"move-item double-right" + (unassignedPortals.length > 0 ? " enabled" : "")}
                         onClick={() => this.props.moveAll("right")}
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.DoubleArrowRightIcon }}
-                    ></div>
+                    ><SvgIcons.DoubleArrowRightIcon /></div>
                     <div
                         href=""
                         className={"move-item double-left" + (assignedPortals.length > 0 ? " enabled" : "")}
                         onClick={() => this.props.moveAll("left")}
-                        dangerouslySetInnerHTML={{ __html: SvgIcons.DoubleArrowLeftIcon }}
-                    ></div>
+                    ><SvgIcons.DoubleArrowLeftIcon /></div>
                 </GridCell>
                 <GridCell columnSize={45} className="selector-box">
                     <h6>{Resx.get("EditModule_Assigned.Label")}</h6>

@@ -129,8 +129,9 @@ export class PersonaBarTreeInContextMenu extends Component {
             return (<Menu>
                 {
                     visibleMenus.map(menu => {
+                        let MenuIcon = menu.icon;
                         return <MenuItem key={menu.key} onMenuAction={menu.onClick.bind(this, menu.key, item, menu.OnClickAction)}>
-                            <div className="icon" dangerouslySetInnerHTML={{ __html: menu.icon }} />
+                            <div className="icon"><MenuIcon /></div>
                             <div className="label">{menu.title}</div>
                         </MenuItem>;
                     })

@@ -9,7 +9,7 @@ import { Button, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import ModePanel from "./modePanel";
 import util from "../../utils";
 import resx from "../../resources";
-import svgIcon from "./../svg/edit.svg?raw";
+import EditIcon from "./../svg/edit.svg";
 
 class TopPane extends Component {
     constructor() {
@@ -159,7 +159,7 @@ class TopPane extends Component {
                         <div className="topPane-middle-common">
                             <div className="topPane-middle-common-title" style={{maxWidth: "60%"}}>{resx.get("plSchedulerMode")}</div>
                             <div>
-                                <div className={props.status === "SHUTTING_DOWN" ? "editIconDisabled" : "editIcon"} dangerouslySetInnerHTML={{ __html: svgIcon }} onClick={this.toggleModePanel.bind(this)} />
+                                <div className={props.status === "SHUTTING_DOWN" ? "editIconDisabled" : "editIcon"} onClick={this.toggleModePanel.bind(this)}><EditIcon /></div>
                                 <div className="collapsible-content">
                                     {props.schedulerDelay &&
                                         <ModePanel

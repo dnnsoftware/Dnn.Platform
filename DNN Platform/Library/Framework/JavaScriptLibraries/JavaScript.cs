@@ -4,6 +4,7 @@
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
@@ -11,7 +12,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -23,9 +26,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-
+    using DotNetNuke.Web.Client.ResourceManager;
     using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -386,7 +388,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             var library = GetHighestVersionLibrary(appStatus, jsname);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, false);
             }
             else
             {
@@ -405,7 +407,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                                               .FirstOrDefault(isValidLibrary);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, false);
                 return true;
             }
 
@@ -413,7 +415,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             library = GetHighestVersionLibrary(appStatus, jsname);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, false);
                 LogCollision(eventLogger, portalSettings, $"Requested:{jsname}:{version}:{specific}.Resolved:{library.Version}");
                 return true;
             }
@@ -426,7 +428,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
             if (library != null)
             {
-                AddItemRequest(library.JavaScriptLibraryID);
+                AddItemRequest(library, true);
             }
             else
             {
@@ -435,9 +437,27 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static void AddItemRequest(int javaScriptLibraryId)
+        private static void AddItemRequest(JavaScriptLibrary library, bool forceVersion)
         {
-            HttpContextSource.Current.Items[ScriptPrefix + javaScriptLibraryId] = true;
+            HttpContextSource.Current.Items[ScriptPrefix + library.JavaScriptLibraryID] = true;
+            var controller = GetClientResourcesController();
+            controller.CreateScript(GetScriptPath(null, null, library.LibraryName))
+                .SetNameAndVersion(library.LibraryName, library.Version.ToString(), forceVersion)
+                .SetProvider(GetScriptLocation(library))
+                .SetPriority(GetFileOrder(library))
+                .Register();
+            var dependencies = GetAllDependencies(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), library);
+            foreach (var dependency in dependencies)
+            {
+                if (HttpContextSource.Current.Items[ScriptPrefix + dependency.JavaScriptLibraryID] == null)
+                {
+                    controller.CreateScript(GetScriptPath(null, null, dependency.LibraryName))
+                        .SetNameAndVersion(dependency.LibraryName, dependency.Version.ToString(), false)
+                        .SetProvider(GetScriptLocation(dependency))
+                        .SetPriority(GetFileOrder(dependency))
+                        .Register();
+                }
+            }
         }
 
         private static void AddPreInstallOrLegacyItemRequest(string jsl)
@@ -531,7 +551,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 }
             }
 
-            return "~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName;
+            var formatVersion = Globals.FormatVersion(js.Version, "00", 3, "_");
+            return $"~/Resources/libraries/{js.LibraryName}/{formatVersion}/{js.FileName}";
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)
@@ -539,11 +560,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (js.PreferredScriptLocation)
             {
                 case ScriptLocation.PageHead:
-                    return "DnnPageHeaderProvider";
+                    return Abstractions.ClientResources.ClientResourceProviders.DnnPageHeaderProvider;
                 case ScriptLocation.BodyBottom:
-                    return "DnnFormBottomProvider";
+                    return Abstractions.ClientResources.ClientResourceProviders.DnnFormBottomProvider;
                 case ScriptLocation.BodyTop:
-                    return "DnnBodyProvider";
+                    return Abstractions.ClientResources.ClientResourceProviders.DnnBodyProvider;
             }
 
             return string.Empty;
@@ -552,8 +573,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private static IEnumerable<string> GetScriptVersions(IApplicationStatusInfo appStatus)
         {
             var orderedScripts = (from object item in HttpContextSource.Current.Items.Keys
-                                           where item.ToString().StartsWith(ScriptPrefix)
-                                           select item.ToString().Substring(4)).ToList();
+                                  where item.ToString().StartsWith(ScriptPrefix)
+                                  select item.ToString().Substring(4)).ToList();
             orderedScripts.Sort();
             var finalScripts = orderedScripts.ToList();
             foreach (var libraryId in orderedScripts)
@@ -602,9 +623,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 EventLogType.SCRIPT_COLLISION);
             var strMessage = Localization.GetString("ScriptCollision", Localization.SharedResourceFile);
-            if (HttpContextSource.Current?.Handler is Page page)
+
+            if (HttpContextSource.Current != null)
             {
-                Skin.AddPageMessage(page, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+                var pageService = Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
+                pageService.AddMessage(new PageMessage(string.Empty, strMessage, PageMessageType.Warning, string.Empty, PagePriority.Default));
             }
         }
 
@@ -653,16 +676,22 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             switch (jsl.LibraryName)
             {
                 case CommonJs.jQuery:
-                    return (int)FileOrder.Js.jQuery;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.jQuery;
                 case CommonJs.jQueryMigrate:
-                    return (int)FileOrder.Js.jQueryMigrate;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.jQueryMigrate;
                 case CommonJs.jQueryUI:
-                    return (int)FileOrder.Js.jQueryUI;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.jQueryUI;
                 case CommonJs.HoverIntent:
-                    return (int)FileOrder.Js.HoverIntent;
+                    return (int)Abstractions.ClientResources.FileOrder.Js.HoverIntent;
                 default:
-                    return jsl.PackageID + (int)FileOrder.Js.DefaultPriority;
+                    return jsl.PackageID + (int)Abstractions.ClientResources.FileOrder.Js.DefaultPriority;
             }
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

@@ -5,6 +5,7 @@ import InfoIcon from "./InfoIcon";
 import ErrorIcon from "./ErrorIcon";
 import GlobalIcon from "./GlobalIcon";
 import CustomIcon from "./CustomIcon";
+import Html from "../Html";
 import "./style.less";
 
 const getTooltipText = function (messages) {
@@ -68,7 +69,9 @@ class Tooltip extends Component {
                                 {...props.overlayAttributes}
                                 className={classNames.join(" ")}
                             >
-                                <div className="tooltip-inner" style={{maxWidth: maxWidth}} dangerouslySetInnerHTML={{__html: message}} />
+                                <div className="tooltip-inner" style={{maxWidth: maxWidth}}>
+                                    <Html html={message} />
+                                </div>
                             </div>
                         );
                     }}

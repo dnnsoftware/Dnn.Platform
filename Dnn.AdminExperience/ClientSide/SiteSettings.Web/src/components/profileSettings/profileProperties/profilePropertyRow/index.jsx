@@ -24,7 +24,7 @@ class ProfilePropertyRow extends Component {
     getBooleanDisplay(prop) {
         if (this.props.id !== "add") {
             if (prop) {
-                return <div className="checkMarkIcon" dangerouslySetInnerHTML={{ __html: SvgIcons.CheckMarkIcon }}></div>;
+                return <div className="checkMarkIcon"><SvgIcons.CheckMarkIcon /></div>;
             }
             else return <span>&nbsp; </span>;
         }
@@ -61,11 +61,11 @@ class ProfilePropertyRow extends Component {
                         <div className="property-item item-row-visible">
                             {this.getBooleanDisplay(props.visible)}</div>
                         <div className="property-item item-row-editButton">
-                            <div className={opened ? "order-icon-hidden" : "order-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.DragRowIcon }} ></div>
+                            <div className={opened ? "order-icon-hidden" : "order-icon"}><SvgIcons.DragRowIcon /></div>
                             {!this.isSystemProperty(props.name) &&
-                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete}></div>
+                                <div className={opened ? "delete-icon-hidden" : "delete-icon"} onClick={props.onDelete}><SvgIcons.TrashIcon /></div>
                             }
-                            <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }} onClick={this.toggle.bind(this)}></div>
+                            <div className={opened ? "edit-icon-active" : "edit-icon"} onClick={this.toggle.bind(this)}><SvgIcons.EditIcon /></div>
                         </div>
                     </div>
                 </div>

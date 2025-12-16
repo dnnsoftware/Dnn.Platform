@@ -102,10 +102,8 @@ class ResourceEditor extends Component {
         return (<div className="dnn-language-resource-editor">
             {renderMulti ? this.renderMulti() : this.renderSingle()}
             {props.enabled && 
-            <div 
-                className="edit-svg" 
-                dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}
-                onClick={this.onEnterFullMode.bind(this)}>
+            <div className="edit-svg" onClick={this.onEnterFullMode.bind(this)}>
+                <SvgIcons.EditIcon />
             </div>
             }
             {props.enabled && 

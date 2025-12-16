@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
- 
-const CustomIcon = props => (
-    <div dangerouslySetInnerHTML={{ __html: props.icon }} />
-);
+ const CustomIcon = props => {
+    let Icon = props.icon;
+    return <div><Icon /></div>;
+};
 CustomIcon.propTypes = {
     icon: PropTypes.string
 };

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Folders from "./Folders";
 import { Scrollbars } from "react-custom-scrollbars";
-const searchIcon = require("!raw-loader!./img/search.svg").default;
+import SearchIcon from "./img/search.svg";
 
 export default class FolderPicker extends Component {
 
@@ -74,7 +74,7 @@ export default class FolderPicker extends Component {
                     <div className="search">
                         <input type="text" value={this.state.searchFolderText} onChange={this.onChangeSearchFolderText.bind(this) } placeholder={this.props.searchFoldersPlaceHolderText} aria-label="Search" />
                         {this.state.searchFolderText && <div onClick={this.clearSearch.bind(this)} className="clear-button">×</div>}
-                        <div className="search-icon" dangerouslySetInnerHTML={{ __html: searchIcon }} />
+                        <div className="search-icon"><SearchIcon /></div>
                     </div>
                     <div className="items">
                         <Scrollbars className="scrollArea content-vertical"

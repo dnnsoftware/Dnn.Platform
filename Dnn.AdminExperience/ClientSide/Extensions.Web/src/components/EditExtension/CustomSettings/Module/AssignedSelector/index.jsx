@@ -34,10 +34,10 @@ class AssignedSelector extends Component {
                     </Scrollbars>
                 </GridCell>
                 <GridCell columnSize={10} className="selector-controls">
-                    <div href="" className="move-item single-right" onClick={props.moveItemsRight.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowRightIcon }}></div>
-                    <div href="" className="move-item single-left" onClick={props.moveItemsLeft.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.ArrowLeftIcon }}></div>
-                    <div href="" className="move-item double-right" onClick={props.moveAll.bind(this, "right")} dangerouslySetInnerHTML={{ __html: SvgIcons.DoubleArrowRightIcon }}></div>
-                    <div href="" className="move-item double-left" onClick={props.moveAll.bind(this)} dangerouslySetInnerHTML={{ __html: SvgIcons.DoubleArrowLeftIcon }}></div>
+                    <div href="" className="move-item single-right" onClick={props.moveItemsRight.bind(this)}><SvgIcons.ArrowRightIcon /></div>
+                    <div href="" className="move-item single-left" onClick={props.moveItemsLeft.bind(this)}><SvgIcons.ArrowLeftIcon /></div>
+                    <div href="" className="move-item double-right" onClick={props.moveAll.bind(this, "right")}><SvgIcons.DoubleArrowRightIcon /></div>
+                    <div href="" className="move-item double-left" onClick={props.moveAll.bind(this)}><SvgIcons.DoubleArrowLeftIcon /></div>
                 </GridCell>
                 <GridCell columnSize={45} className="selector-box">
                     <h6>{Localization.get("EditModule_Assigned.Label")}</h6>

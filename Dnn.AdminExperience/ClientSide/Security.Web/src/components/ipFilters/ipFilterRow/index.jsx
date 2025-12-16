@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import { Collapsible } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import resx from "../../../resources";
-import allowIcon from "./../../svg/checkbox.svg?raw";
-import denyIcon from "./../../svg/cross_out.svg?raw";
-import editIcon from "./../../svg/edit.svg?raw";
-import deleteIcon from "./../../svg/trash.svg?raw";
+import AllowIcon from "./../../svg/checkbox.svg";
+import DenyIcon from "./../../svg/cross_out.svg";
+import EditIcon from "./../../svg/edit.svg";
+import DeleteIcon from "./../../svg/trash.svg";
 
 class IpFilterRow extends Component {
     constructor() {
@@ -35,7 +35,7 @@ class IpFilterRow extends Component {
             if (props.ruleType === 1) {
                 return (
                     <div className="item-row-ruleType-display">
-                        <div className="allow-icon" dangerouslySetInnerHTML={{ __html: allowIcon }} />
+                        <div className="allow-icon"><AllowIcon /></div>
                         <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("AllowIP") }</div>
                     </div>
                 );
@@ -43,7 +43,7 @@ class IpFilterRow extends Component {
             else {
                 return (
                     <div className="item-row-ruleType-display">
-                        <div className="deny-icon" dangerouslySetInnerHTML={{ __html: denyIcon }} />
+                        <div className="deny-icon"><DenyIcon /></div>
                         <div style={{ paddingLeft: "10px", paddingTop: 3, float: "left" }}>{resx.get("DenyIP") }</div>
                     </div>
                 );
@@ -75,8 +75,8 @@ class IpFilterRow extends Component {
                             </div>
                             {props.id !== "add" && !props.readOnly &&
                                 <div className="ip-filter-item item-row-editButton">
-                                    <div className={opened ? "delete-icon-hidden" : "delete-icon"} dangerouslySetInnerHTML={{ __html: deleteIcon }} onClick={this.props.onDelete.bind(this) }></div>
-                                    <div className={opened ? "edit-icon-active" : "edit-icon"} dangerouslySetInnerHTML={{ __html: editIcon }} onClick={this.toggle.bind(this) } />
+                                    <div className={opened ? "delete-icon-hidden" : "delete-icon"} onClick={this.props.onDelete.bind(this) }><DeleteIcon /></div>
+                                    <div className={opened ? "edit-icon-active" : "edit-icon"} onClick={this.toggle.bind(this) }><EditIcon /></div>
                                 </div>
                             }
                         </div>

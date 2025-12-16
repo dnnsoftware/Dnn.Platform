@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import {pageHierarchyManager} from "./pages.pageHierarchy";
 import utils from "../../utils";
 import "./css/pages-hierarchy.css";
-import html from "./pages.html?raw";
+import Html from "../Html";
+import pagesHtml from "./pages.html?raw";
 
 class PageHierarchy extends Component {
     componentDidMount() {
@@ -53,7 +54,7 @@ class PageHierarchy extends Component {
     }
     
     render() {
-        return <div ref={node => this.node = node} dangerouslySetInnerHTML={{__html: html}} />;  
+        return <div ref={node => this.node = node}><Html html={pagesHtml} /></div>;  
     }
 } 
 
