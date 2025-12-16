@@ -127,7 +127,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.InvariantCultureIgnoreCase));
+                    this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.OrdinalIgnoreCase));
 
                     writer.RenderEndTag();
                 }
@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.InvariantCultureIgnoreCase));
+                    this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.Equals("horizontal", StringComparison.OrdinalIgnoreCase));
 
                     writer.RenderEndTag();
                 }
@@ -332,14 +332,14 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (!string.IsNullOrEmpty(t))
                     {
                         string tagName = t.Trim(' ');
-                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select term).SingleOrDefault();
+                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase) select term).SingleOrDefault();
 
                         if (existingTerm == null)
                         {
                             // Not tagged
                             TermController termController = new TermController();
                             Term term =
-                                (from te in termController.GetTermsByVocabulary(TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
+                                (from te in termController.GetTermsByVocabulary(TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.OrdinalIgnoreCase) select te).
                                     SingleOrDefault();
                             if (term == null)
                             {

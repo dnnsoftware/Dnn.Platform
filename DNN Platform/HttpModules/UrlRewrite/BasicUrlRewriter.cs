@@ -636,7 +636,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     foreach (KeyValuePair<string, Locale> key in dicLocales)
                                     {
-                                        if (key.Key.ToLower().Equals(culturePart.ToLower()))
+                                        if (key.Key.ToLower().Equals(culturePart.ToLower(), StringComparison.Ordinal))
                                         {
                                             cultureCode = key.Value.Code;
                                             tabPath = tabPath.Replace("/" + culturePart, string.Empty);
@@ -666,7 +666,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         if (tabID != Null.NullInteger)
                         {
                             string sendToUrl = "~/" + Globals.glbDefaultPage + "?TabID=" + tabID;
-                            if (!cultureCode.Equals(string.Empty))
+                            if (!cultureCode.Equals(string.Empty, StringComparison.Ordinal))
                             {
                                 sendToUrl = sendToUrl + "&language=" + cultureCode;
                             }

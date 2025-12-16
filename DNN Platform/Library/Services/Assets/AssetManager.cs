@@ -235,7 +235,7 @@ namespace DotNetNuke.Services.Assets
                 return folder;
             }
 
-            if (folder.FolderName.Equals(newFolderName, StringComparison.InvariantCultureIgnoreCase))
+            if (folder.FolderName.Equals(newFolderName, StringComparison.OrdinalIgnoreCase))
             {
                 folder.FolderPath = ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
                 return FolderManager.Instance.UpdateFolder(folder);
@@ -477,7 +477,7 @@ namespace DotNetNuke.Services.Assets
 
         private static string GetNewFolderPath(string newFolderName, IFolderInfo folder)
         {
-            if (folder.FolderName.Equals(newFolderName, StringComparison.InvariantCultureIgnoreCase))
+            if (folder.FolderName.Equals(newFolderName, StringComparison.OrdinalIgnoreCase))
             {
                 return folder.FolderPath;
             }

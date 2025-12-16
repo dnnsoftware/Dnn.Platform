@@ -494,7 +494,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("newFolderName", newFolderName);
 
-            if (folder.FolderName.Equals(newFolderName))
+            if (folder.FolderName.Equals(newFolderName, StringComparison.Ordinal))
             {
                 return;
             }
@@ -838,9 +838,9 @@ namespace DotNetNuke.Services.FileSystem
 
             foreach (PermissionInfo permission in PermissionController.GetPermissionsByFolder())
             {
-                if (!permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase) &&
-                    !permission.PermissionKey.Equals("WRITE", StringComparison.InvariantCultureIgnoreCase) &&
-                    !permission.PermissionKey.Equals("BROWSE", StringComparison.InvariantCultureIgnoreCase))
+                if (!permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase) &&
+                    !permission.PermissionKey.Equals("WRITE", StringComparison.OrdinalIgnoreCase) &&
+                    !permission.PermissionKey.Equals("BROWSE", StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
@@ -853,7 +853,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 folder.FolderPermissions.Add(folderPermission);
 
-                if (permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase))
+                if (permission.PermissionKey.Equals("READ", StringComparison.OrdinalIgnoreCase))
                 {
                     this.AddAllUserReadPermission(folder, permission);
                 }

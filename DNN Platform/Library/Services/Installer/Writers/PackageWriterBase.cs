@@ -492,7 +492,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     filePath = "[app_code]" + filePath;
                 }
 
-                if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
+                if (!file.Extension.Equals(".dnn", StringComparison.OrdinalIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
                 {
                     this.AddFile(Path.Combine(filePath, file.Name));
                 }
@@ -558,8 +558,8 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
 
                 if (
-                    !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.InvariantCultureIgnoreCase) ||
-                      fileName.Equals("dotnetnuke.webutility", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.InvariantCultureIgnoreCase)))
+                    !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.OrdinalIgnoreCase) ||
+                      fileName.Equals("dotnetnuke.webutility", StringComparison.OrdinalIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.OrdinalIgnoreCase)))
                 {
                     this.AddFile(fileName + ".dll");
                 }

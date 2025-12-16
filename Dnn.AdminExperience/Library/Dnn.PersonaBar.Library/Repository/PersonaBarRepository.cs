@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Library.Repository
         /// <inheritdoc/>
         public MenuItem GetMenuItem(string identifier)
         {
-            return this.GetMenu().AllItems.ToList().FirstOrDefault(m => m.Identifier.Equals(identifier, StringComparison.InvariantCultureIgnoreCase));
+            return this.GetMenu().AllItems.ToList().FirstOrDefault(m => m.Identifier.Equals(identifier, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <inheritdoc/>

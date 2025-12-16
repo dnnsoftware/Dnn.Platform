@@ -121,9 +121,9 @@ namespace Dnn.PersonaBar.Prompt.Services
             try
             {
                 var args = command.Args;
-                var isHelpCmd = args.First().Equals("HELP", StringComparison.CurrentCultureIgnoreCase);
-                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].Equals("LEARN", StringComparison.CurrentCultureIgnoreCase);
-                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].Equals("SYNTAX", StringComparison.CurrentCultureIgnoreCase);
+                var isHelpCmd = args.First().Equals("HELP", StringComparison.OrdinalIgnoreCase);
+                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].Equals("LEARN", StringComparison.OrdinalIgnoreCase);
+                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].Equals("SYNTAX", StringComparison.OrdinalIgnoreCase);
                 var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : string.Empty) : args.First().ToUpper();
                 if (isHelpSyntax)
                 {
@@ -289,8 +289,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                                 result.PagingInfo.TotalPages);
 
                             var args = command.Args;
-                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.InvariantCultureIgnoreCase))
-                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.InvariantCultureIgnoreCase)).Count()
+                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.OrdinalIgnoreCase))
+                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.OrdinalIgnoreCase)).Count()
                                 : -1;
                             if (indexOfPage > -1)
                             {
@@ -373,8 +373,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                                 result.PagingInfo.TotalPages);
 
                             var args = command.Args;
-                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.InvariantCultureIgnoreCase))
-                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.InvariantCultureIgnoreCase)).Count()
+                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.OrdinalIgnoreCase))
+                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.OrdinalIgnoreCase)).Count()
                                 : -1;
                             if (indexOfPage > -1)
                             {

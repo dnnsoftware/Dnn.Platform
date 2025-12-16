@@ -275,7 +275,7 @@ namespace DotNetNuke.Security.Membership
                 newUsername,
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
-            if (!userName.Equals(newUsername))
+            if (!userName.Equals(newUsername, StringComparison.Ordinal))
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }
@@ -949,12 +949,12 @@ namespace DotNetNuke.Security.Membership
                 displayName = HttpUtility.HtmlEncode(displayName);
             }
 
-            if (!firstName.Equals(user.FirstName))
+            if (!firstName.Equals(user.FirstName, StringComparison.Ordinal))
             {
                 user.FirstName = firstName;
             }
 
-            if (!lastName.Equals(user.LastName))
+            if (!lastName.Equals(user.LastName, StringComparison.Ordinal))
             {
                 user.LastName = lastName;
             }
@@ -1275,7 +1275,7 @@ namespace DotNetNuke.Security.Membership
         private static UserInfo FillUserAndProfile(int portalId, IDataReader dr)
         {
             UserInfo user = null;
-            bool bContinue = string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase);
+            bool bContinue = string.Equals(dr.GetName(0), "UserID", StringComparison.OrdinalIgnoreCase);
 
             // Ensure the data reader returned is valid
             if (bContinue)
@@ -1360,7 +1360,7 @@ namespace DotNetNuke.Security.Membership
                     if (dr.Read())
                     {
                         // Ensure the data reader returned is valid
-                        if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
+                        if (string.Equals(dr.GetName(0), "UserID", StringComparison.OrdinalIgnoreCase))
                         {
                             bContinue = true;
                         }

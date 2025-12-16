@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
         private static string ChangeFormatForBooleansIfNeeded(Type propertyType, string propertyValue)
         {
-            if (!propertyType.Name.Equals("Boolean"))
+            if (!propertyType.Name.Equals("Boolean", StringComparison.Ordinal))
             {
                 return propertyValue;
             }
@@ -98,12 +98,12 @@ namespace DotNetNuke.Entities.Modules.Settings
                 return propertyValue;
             }
 
-            if (propertyValue.Equals("1"))
+            if (propertyValue.Equals("1", StringComparison.Ordinal))
             {
                 return bool.TrueString;
             }
 
-            if (propertyValue.Equals("0"))
+            if (propertyValue.Equals("0", StringComparison.Ordinal))
             {
                 return bool.FalseString;
             }

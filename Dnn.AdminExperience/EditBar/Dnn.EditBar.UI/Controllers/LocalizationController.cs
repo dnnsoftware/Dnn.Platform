@@ -73,10 +73,10 @@ namespace Dnn.EditBar.UI.Controllers
 
         private static void AssertHeaderValue(IEnumerable<XmlNode> headers, string key, string value)
         {
-            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.InvariantCultureIgnoreCase));
+            var header = headers.FirstOrDefault(x => GetNameAttribute(x).Equals(key, StringComparison.OrdinalIgnoreCase));
             if (header != null)
             {
-                if (!header.InnerText.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                if (!header.InnerText.Equals(value, StringComparison.OrdinalIgnoreCase))
                 {
                     throw new LocalizationException($"Resource header '{key}' != '{value}'");
                 }

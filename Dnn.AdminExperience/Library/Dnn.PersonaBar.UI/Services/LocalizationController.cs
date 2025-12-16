@@ -158,13 +158,13 @@ namespace Dnn.PersonaBar.UI.Services
         private Dictionary<string, string> GetLocalizedDictionary(string relativePath, string culture)
         {
             var localizedDict = Dnn.PersonaBar.Library.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
-            if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
+            if (!culture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase))
             {
                 var fallbackCulture = this.GetFallbackCulture(culture);
                 var folder = Path.GetDirectoryName(relativePath)?.Replace("\\", "/");
                 var fileName = Path.GetFileNameWithoutExtension(relativePath)?
                                 .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), string.Empty);
-                var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase)
+                var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase)
                                     ? string.Empty : "." + fallbackCulture;
                 var fallbackFilePath = $"{folder}//{fileName}{culturePart}.resx";
                 if (!File.Exists(HttpContext.Current.Server.MapPath(fallbackFilePath)))
@@ -224,14 +224,14 @@ namespace Dnn.PersonaBar.UI.Services
                 }
 
                 var filePath = Path.Combine(folder, key + ".resx");
-                if (!culture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase))
+                if (!culture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase))
                 {
                     var cultureSpecificFileName = $"{key}.{culture}.resx";
                     var cultureSpecificFile = allFiles.FirstOrDefault(f =>
                     {
                         var name = Path.GetFileName(f);
                         return !string.IsNullOrEmpty(name)
-                                    && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
+                                    && name.Equals(cultureSpecificFileName, StringComparison.OrdinalIgnoreCase);
                     });
 
                     if (string.IsNullOrEmpty(cultureSpecificFile))
@@ -242,7 +242,7 @@ namespace Dnn.PersonaBar.UI.Services
                         {
                             var name = Path.GetFileName(f);
                             return !string.IsNullOrEmpty(name)
-                                        && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
+                                        && name.Equals(cultureSpecificFileName, StringComparison.OrdinalIgnoreCase);
                         });
                     }
 

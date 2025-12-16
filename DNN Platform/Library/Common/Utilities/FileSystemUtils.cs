@@ -409,7 +409,7 @@ namespace DotNetNuke.Common.Utilities
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
                     var applicationPath = appStatus.ApplicationMapPath + "\\";
                     if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
-                        directoryInfo.FullName.Equals(applicationPath, StringComparison.InvariantCultureIgnoreCase))
+                        directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
@@ -477,7 +477,7 @@ namespace DotNetNuke.Common.Utilities
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
                     var applicationPath = appStatus.ApplicationMapPath + "\\";
                     if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
-                        directoryInfo.FullName.Equals(applicationPath, StringComparison.InvariantCultureIgnoreCase))
+                        directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }

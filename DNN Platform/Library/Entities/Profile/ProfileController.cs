@@ -369,7 +369,7 @@ namespace DotNetNuke.Entities.Profile
                 string propertyValue = propertyDefinition.PropertyValue;
                 if (propertyDefinition.IsDirty)
                 {
-                    if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.InvariantCultureIgnoreCase))
+                    if (propertyName.Equals(UserProfile.USERPROFILE_Photo, StringComparison.OrdinalIgnoreCase))
                     {
                         photoChanged = true;
                     }

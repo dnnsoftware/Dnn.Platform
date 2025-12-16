@@ -327,7 +327,7 @@ namespace DotNetNuke.Entities.Urls
                         DeletedTabHandlingTypeSetting, this.PortalId, DeletedTabHandlingType.Do404Error.ToString());
                 }
 
-                return "do301redirecttoportalhome".Equals(this.deletedTabHandling, StringComparison.InvariantCultureIgnoreCase)
+                return "do301redirecttoportalhome".Equals(this.deletedTabHandling, StringComparison.OrdinalIgnoreCase)
                     ? DeletedTabHandlingType.Do301RedirectToPortalHome
                     : DeletedTabHandlingType.Do404Error;
             }

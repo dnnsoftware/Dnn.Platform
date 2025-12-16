@@ -169,7 +169,7 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         IPortalAliasInfo IPortalAliasService.GetPortalAlias(string alias, int portalId) =>
             this.GetPortalAliasesInternal()
-                .SingleOrDefault((portalAliasInfo) => portalAliasInfo.Key.Equals(alias, StringComparison.InvariantCultureIgnoreCase) && ((IPortalAliasInfo)portalAliasInfo.Value).PortalId == portalId).Value;
+                .SingleOrDefault((portalAliasInfo) => portalAliasInfo.Key.Equals(alias, StringComparison.OrdinalIgnoreCase) && ((IPortalAliasInfo)portalAliasInfo.Value).PortalId == portalId).Value;
 
         /// <inheritdoc />
         IPortalAliasInfo IPortalAliasService.GetPortalAliasByPortalAliasId(int portalAliasId) =>

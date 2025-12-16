@@ -251,7 +251,7 @@ namespace DotNetNuke.UI.Skins
             // select current skin
             for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
             {
-                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.InvariantCultureIgnoreCase))
+                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.OrdinalIgnoreCase))
                 {
                     this.cboSkin.Items[intIndex].Selected = true;
                     break;

@@ -517,7 +517,7 @@ namespace DotNetNuke.UI.UserControls
                         else
                         {
                             string mCustomUrl = this.txtUrl.Text;
-                            if (mCustomUrl.Equals("http://", StringComparison.InvariantCultureIgnoreCase))
+                            if (mCustomUrl.Equals("http://", StringComparison.OrdinalIgnoreCase))
                             {
                                 r = string.Empty;
                             }

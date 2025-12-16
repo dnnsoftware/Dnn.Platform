@@ -179,12 +179,12 @@ namespace DotNetNuke.Entities.Tabs
 
         public TabInfo WithTabNameAndParentId(string tabName, int parentId)
         {
-            return (from t in this.list where t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
+            return (from t in this.list where t.TabName.Equals(tabName, StringComparison.OrdinalIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
         }
 
         public TabInfo WithTabName(string tabName)
         {
-            return (from t in this.list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
+            return (from t in this.list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.OrdinalIgnoreCase) select t).FirstOrDefault();
         }
 
         internal void RefreshCache(int tabId, TabInfo updatedTab)

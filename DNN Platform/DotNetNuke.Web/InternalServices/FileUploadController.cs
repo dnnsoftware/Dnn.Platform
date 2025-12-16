@@ -630,7 +630,7 @@ namespace DotNetNuke.Web.InternalServices
                 result.Path = result.FileId > 0 ? path : string.Empty;
                 result.FileName = fileName;
 
-                if (extract && extension.Equals("zip", StringComparison.InvariantCultureIgnoreCase))
+                if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
                 {
                     FileManager.Instance.DeleteFile(file);
                 }

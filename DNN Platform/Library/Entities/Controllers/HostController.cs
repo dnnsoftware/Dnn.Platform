@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Controllers
                 }
                 else
                 {
-                    retValue = settingValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || settingValue.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
+                    retValue = settingValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || settingValue.Equals("TRUE", StringComparison.OrdinalIgnoreCase);
                 }
             }
             catch (Exception exc)

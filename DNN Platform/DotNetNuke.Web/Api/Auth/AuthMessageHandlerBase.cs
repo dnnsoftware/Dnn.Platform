@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             return !string.IsNullOrEmpty(value) &&
-                   value.Equals("XmlHttpRequest", StringComparison.InvariantCultureIgnoreCase);
+                   value.Equals("XmlHttpRequest", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>Sets the current principal for the request.</summary>
@@ -122,7 +122,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <returns>True if <see cref="ForceSsl"/> matcher the request scheme; false otherwise.</returns>
         private bool MustEnforceSslInRequest(HttpRequestMessage request)
         {
-            return !this.ForceSsl || request.RequestUri.Scheme.Equals("HTTPS", StringComparison.InvariantCultureIgnoreCase);
+            return !this.ForceSsl || request.RequestUri.Scheme.Equals("HTTPS", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

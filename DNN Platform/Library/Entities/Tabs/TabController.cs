@@ -912,7 +912,7 @@ namespace DotNetNuke.Entities.Tabs
 
                 foreach (PortalAliasInfo a in aliasLookup.Values)
                 {
-                    if (a.HTTPAlias.Equals(checkAlias, StringComparison.InvariantCultureIgnoreCase))
+                    if (a.HTTPAlias.Equals(checkAlias, StringComparison.OrdinalIgnoreCase))
                     {
                         return true;
                     }

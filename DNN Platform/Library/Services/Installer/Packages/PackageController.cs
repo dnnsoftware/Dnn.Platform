@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 {
                     var fileName = entry.FullName;
                     string extension = Path.GetExtension(fileName);
-                    if (extension != null && (extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) || extension.Equals(".dnn5", StringComparison.InvariantCultureIgnoreCase)))
+                    if (extension != null && (extension.Equals(".dnn", StringComparison.OrdinalIgnoreCase) || extension.Equals(".dnn5", StringComparison.OrdinalIgnoreCase)))
                     {
                         // Manifest
                         var manifest = entry.ReadTextFile();
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.Installer.Packages
                             {
                                 packageType = XmlUtils.GetAttributeValue(rootNav, "type");
                             }
-                            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+                            else if (rootNav.Name.Equals("languagepack", StringComparison.OrdinalIgnoreCase))
                             {
                                 packageType = "LanguagePack";
                             }

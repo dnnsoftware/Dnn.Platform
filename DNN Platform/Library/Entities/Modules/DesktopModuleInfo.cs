@@ -619,7 +619,7 @@ namespace DotNetNuke.Entities.Modules
                             var commonValue = reader.GetAttribute("common");
                             if (!string.IsNullOrEmpty(commonValue))
                             {
-                                this.IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                                this.IsCommon = commonValue.Equals("true", StringComparison.OrdinalIgnoreCase);
                             }
 
                             reader.Read();

@@ -359,7 +359,7 @@ namespace DotNetNuke.Web.InternalServices
                 var groupedResult = results.SingleOrDefault(g => g.DocumentTypeName == preview.DocumentTypeName);
                 if (groupedResult != null)
                 {
-                    if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
+                    if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl, StringComparison.Ordinal)))
                     {
                         groupedResult.Results.Add(new BasicView
                         {

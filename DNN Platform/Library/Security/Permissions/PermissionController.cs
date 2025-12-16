@@ -31,7 +31,7 @@ namespace DotNetNuke.Security.Permissions
             var permissionsBuilder = new StringBuilder();
             foreach (PermissionInfoBase permission in permissions)
             {
-                if (permissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
+                if (permissionKey.Equals(permission.PermissionKey, StringComparison.OrdinalIgnoreCase))
                 {
                     // Deny permissions are prefixed with a "!"
                     string prefix = !permission.AllowAccess ? "!" : string.Empty;
@@ -301,8 +301,8 @@ namespace DotNetNuke.Security.Permissions
 
         private static IEnumerable<PermissionInfo> GetPermissionByCodeAndKeyEnumerable(string permissionCode, string permissionKey)
         {
-            return GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.InvariantCultureIgnoreCase)
-                                               && p.PermissionKey.Equals(permissionKey, StringComparison.InvariantCultureIgnoreCase));
+            return GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.OrdinalIgnoreCase)
+                                               && p.PermissionKey.Equals(permissionKey, StringComparison.OrdinalIgnoreCase));
         }
 
         private static IEnumerable<PermissionInfo> GetPermissionsByModuleDefIdEnumerable(int moduleDefId)

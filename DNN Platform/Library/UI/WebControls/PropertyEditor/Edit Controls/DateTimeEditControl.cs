@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             postedValue = postedValue.AddMinutes(int.Parse(postedMinutes));
-            if (!this.is24HourClock && postedAMPM.Equals("PM"))
+            if (!this.is24HourClock && postedAMPM.Equals("PM", StringComparison.Ordinal))
             {
                 postedValue = postedValue.AddHours(12);
             }

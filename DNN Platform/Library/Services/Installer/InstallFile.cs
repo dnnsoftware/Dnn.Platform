@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Installer
                 this.Path = fileName.Substring(0, 10);
             }
 
-            if (this.Name.Equals("manifest.xml", StringComparison.InvariantCultureIgnoreCase))
+            if (this.Name.Equals("manifest.xml", StringComparison.OrdinalIgnoreCase))
             {
                 this.Type = InstallFileType.Manifest;
             }
@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Installer
                         this.Type = InstallFileType.Resources;
                         break;
                     default:
-                        if (this.Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || this.Extension.Equals("sql", StringComparison.InvariantCultureIgnoreCase))
+                        if (this.Extension.EndsWith("dataprovider", StringComparison.InvariantCultureIgnoreCase) || this.Extension.Equals("sql", StringComparison.OrdinalIgnoreCase))
                         {
                             this.Type = InstallFileType.Script;
                         }

@@ -627,7 +627,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                 var parsePackage = this.ParsePackageFile(packagePath);
                 var invalidPackage = !parsePackage.Success
-                                        || !parsePackage.PackageType.Equals("CoreLanguagePack")
+                                        || !parsePackage.PackageType.Equals("CoreLanguagePack", StringComparison.Ordinal)
                                         || !parsePackage.Name.EndsWith(cultureCode, StringComparison.InvariantCultureIgnoreCase);
 
                 if (invalidPackage)
@@ -861,7 +861,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     var files = Directory.GetFiles(folder.Path, "*.ascx");
 
                     // exclude module folders
-                    if (files.Length == 0 || folder.Path.Equals("admin", StringComparison.InvariantCultureIgnoreCase))
+                    if (files.Length == 0 || folder.Path.Equals("admin", StringComparison.OrdinalIgnoreCase))
                     {
                         var path = GetFolderPath(folder);
                         folders.Add(path);
@@ -1402,7 +1402,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private static bool IsSpecialFolder(string folderName)
         {
-            return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower()));
+            return SpecialModuleFolders.Any(specialFolder => specialFolder.ToLower().Equals(folderName.ToLower(), StringComparison.Ordinal));
         }
 
         private static List<ModuleFolderDto> GetModulesFolders(string ownerFolder)

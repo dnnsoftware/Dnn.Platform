@@ -220,7 +220,7 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
                     || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
-                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }

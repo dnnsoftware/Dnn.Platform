@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.SqlConsole.Components
             var connections = new List<string>();
             foreach (ConnectionStringSettings connection in ConfigurationManager.ConnectionStrings)
             {
-                if (!connection.Name.Equals("localmysqlserver", StringComparison.InvariantCultureIgnoreCase) && !connection.Name.Equals("localsqlserver", StringComparison.InvariantCultureIgnoreCase))
+                if (!connection.Name.Equals("localmysqlserver", StringComparison.OrdinalIgnoreCase) && !connection.Name.Equals("localsqlserver", StringComparison.OrdinalIgnoreCase))
                 {
                     connections.Add(connection.Name);
                 }

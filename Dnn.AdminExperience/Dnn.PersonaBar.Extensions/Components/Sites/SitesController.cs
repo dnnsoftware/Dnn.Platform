@@ -315,7 +315,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     message = string.Format(Localization.GetString("CreatePortalHomeFolderExists.Error", this.LocalResourcesFile), homeDir);
                 }
 
-                if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.Equals("portals/", StringComparison.InvariantCultureIgnoreCase))
+                if (homeDir.Contains("admin") || homeDir.Contains("DesktopModules") || homeDir.Equals("portals/", StringComparison.OrdinalIgnoreCase))
                 {
                     error = true;
                     message = Localization.GetString("InvalidHomeFolder", this.LocalResourcesFile);
@@ -580,10 +580,10 @@ namespace Dnn.PersonaBar.Sites.Components
         {
             public int Compare(IPortalTemplateInfo x, IPortalTemplateInfo y)
             {
-                var cultureCompare = string.Compare(x.CultureCode, y.CultureCode, StringComparison.CurrentCulture);
+                var cultureCompare = string.Compare(x.CultureCode, y.CultureCode, StringComparison.Ordinal);
                 if (cultureCompare == 0)
                 {
-                    return string.Compare(x.Name, y.Name, StringComparison.CurrentCulture);
+                    return string.Compare(x.Name, y.Name, StringComparison.Ordinal);
                 }
 
                 // put blank cultures last

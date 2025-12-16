@@ -185,22 +185,22 @@ namespace DotNetNuke.Services.Installer.Installers
                     // This is the initial script when installing
                     this.installScript = file;
                 }
-                else if (type.Equals("preupgrade", StringComparison.InvariantCultureIgnoreCase))
+                else if (type.Equals("preupgrade", StringComparison.OrdinalIgnoreCase))
                 {
                     this.preUpgradeScripts.Add(file);
                 }
                 else if (file.Name.StartsWith("upgrade.", StringComparison.InvariantCultureIgnoreCase)
-                    || type.Equals("postupgrade", StringComparison.InvariantCultureIgnoreCase))
+                    || type.Equals("postupgrade", StringComparison.OrdinalIgnoreCase))
                 {
                     this.postUpgradeScripts.Add(file);
                 }
-                else if (type.Equals("install", StringComparison.InvariantCultureIgnoreCase))
+                else if (type.Equals("install", StringComparison.OrdinalIgnoreCase))
                 {
                     // These are the Install/Upgrade scripts
                     this.InstallScripts[file.Version] = file;
                 }
                 else if (file.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase)
-                    || type.Equals("uninstall", StringComparison.InvariantCultureIgnoreCase))
+                    || type.Equals("uninstall", StringComparison.OrdinalIgnoreCase))
                 {
                     // These are the Uninstall scripts
                     this.UnInstallScripts[file.Version] = file;
@@ -281,7 +281,7 @@ namespace DotNetNuke.Services.Installer.Installers
             if (fileExtension != null)
             {
                 fileExtension = fileExtension.Substring(1);
-                return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.InvariantCultureIgnoreCase) || fileExtension.Equals("sql", StringComparison.InvariantCultureIgnoreCase);
+                return this.ProviderConfiguration.DefaultProvider.Equals(fileExtension, StringComparison.OrdinalIgnoreCase) || fileExtension.Equals("sql", StringComparison.OrdinalIgnoreCase);
             }
             else
             {

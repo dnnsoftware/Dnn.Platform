@@ -243,7 +243,7 @@ namespace Dnn.PersonaBar.Users.Components
 
             UserController.UpdateUser(portalId, user);
 
-            if (requestPortalSettings.Registration.UseEmailAsUserName && (!user.Username.Equals(user.Email, StringComparison.InvariantCultureIgnoreCase)))
+            if (requestPortalSettings.Registration.UseEmailAsUserName && (!user.Username.Equals(user.Email, StringComparison.OrdinalIgnoreCase)))
             {
                 UserController.ChangeUsername(user.UserID, user.Email);
             }

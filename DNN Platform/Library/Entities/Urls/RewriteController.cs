@@ -875,7 +875,7 @@ namespace DotNetNuke.Entities.Urls
                             for (var x = 1; x <= urlParams.Length - 1; x++)
                             {
                                 if (urlParams[x].Trim().Length > 0 &&
-                                    !urlParams[x].Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
+                                    !urlParams[x].Equals(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                                 {
                                     rewritePath = rewritePath + "&" + urlParams[x].Replace(".aspx", string.Empty).Trim() + "=";
                                     if (x < (urlParams.Length - 1))
@@ -1153,9 +1153,9 @@ namespace DotNetNuke.Entities.Urls
                     string thisParm = urlParms[i];
 
                     // here's the thing - we either take the last one and put it at the start, or just go two-by-two
-                    if (!thisParm.Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
+                    if (!thisParm.Equals(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (thisParm.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
+                        if (thisParm.Equals("tabid", StringComparison.OrdinalIgnoreCase))
                         {
                             skip = true;
 
@@ -1204,7 +1204,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
 
                                 // 786 : redirect ctl/terms etc
-                                if (keyName != null && keyName.Equals("ctl", StringComparison.InvariantCultureIgnoreCase))
+                                if (keyName != null && keyName.Equals("ctl", StringComparison.OrdinalIgnoreCase))
                                 {
                                     RequestRedirectOnBuiltInUrl(urlParm, parmString.ToString(), result);
                                 }
