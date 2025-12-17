@@ -59,34 +59,32 @@ namespace DotNetNuke.Data.PetaPoco
         {
             if (dataTable.Rows.Count > 0)
             {
-                using (var con = new SqlConnection(connectionString))
-                using (var cmd = new SqlCommand(procedureName, con))
+                using var con = new SqlConnection(connectionString);
+                using var cmd = new SqlCommand(procedureName, con);
+                if (!tableParameterName.StartsWith("@", StringComparison.Ordinal))
                 {
-                    if (!tableParameterName.StartsWith("@"))
-                    {
-                        tableParameterName = "@" + tableParameterName;
-                    }
-
-                    if (timeoutSec > 0)
-                    {
-                        cmd.CommandTimeout = timeoutSec;
-                    }
-
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue(tableParameterName, dataTable);
-                    con.Open();
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error("[2] Error executing SQL: " + cmd.CommandText + Environment.NewLine + ex.Message);
-                        throw;
-                    }
-
-                    con.Close();
+                    tableParameterName = "@" + tableParameterName;
                 }
+
+                if (timeoutSec > 0)
+                {
+                    cmd.CommandTimeout = timeoutSec;
+                }
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue(tableParameterName, dataTable);
+                con.Open();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("[2] Error executing SQL: " + cmd.CommandText + Environment.NewLine + ex.Message);
+                    throw;
+                }
+
+                con.Close();
             }
         }
 
@@ -102,7 +100,7 @@ namespace DotNetNuke.Data.PetaPoco
                 using (var con = new SqlConnection(connectionString))
                 using (var cmd = new SqlCommand(procedureName, con))
                 {
-                    if (!tableParameterName.StartsWith("@"))
+                    if (!tableParameterName.StartsWith("@", StringComparison.Ordinal))
                     {
                         tableParameterName = "@" + tableParameterName;
                     }
@@ -142,7 +140,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         public static IDataReader ExecuteReader(string connectionString, CommandType type, int timeoutSec, string sql, params object[] args)
         {
-            var database = new Database(connectionString, SqlProviderName) { EnableAutoSelect = false };
+            var database = new Database(connectionString, SqlProviderName) { EnableAutoSelect = false, };
 
             if (type == CommandType.StoredProcedure)
             {
@@ -161,7 +159,7 @@ namespace DotNetNuke.Data.PetaPoco
             catch (Exception ex)
             {
                 // very special case for installation
-                if (!sql.EndsWith("GetDatabaseVersion"))
+                if (!sql.EndsWith("GetDatabaseVersion", StringComparison.Ordinal))
                 {
                     Logger.Error("[3] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
                 }

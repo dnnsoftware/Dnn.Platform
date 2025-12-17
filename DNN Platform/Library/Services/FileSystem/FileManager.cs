@@ -695,7 +695,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The flag as a boolean value.</returns>
         public virtual bool IsImageFile(IFileInfo file)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLowerInvariant().Replace(".", string.Empty) + ",") > -1;
+            return (Globals.ImageFileTypes + ",").Contains(file.Extension.Replace(".", string.Empty) + ",", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>Moves the specified file into the specified folder.</summary>
@@ -1225,7 +1225,7 @@ namespace DotNetNuke.Services.FileSystem
 
             var folderPath = PathUtils.Instance.RemoveTrailingSlash(zipFolder);
 
-            if (folderPath.IndexOf("/") == -1)
+            if (!folderPath.Contains("/", StringComparison.Ordinal))
             {
                 var newFolderPath = destinationFolder.FolderPath + PathUtils.Instance.FormatFolderPath(folderPath);
                 if (!folderManager.FolderExists(destinationFolder.PortalID, newFolderPath))

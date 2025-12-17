@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private static List<QueryParameter> GetQueryParameters(string parameters)
         {
-            if (parameters.StartsWith("?"))
+            if (parameters.StartsWith("?", StringComparison.Ordinal))
             {
                 parameters = parameters.Remove(0, 1);
             }
@@ -438,7 +438,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 string[] p = parameters.Split('&');
                 foreach (string s in p)
                 {
-                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix))
+                    if (!string.IsNullOrEmpty(s) && !s.StartsWith(OAuthParameterPrefix, StringComparison.OrdinalIgnoreCase))
                     {
                         if (s.IndexOf('=') > -1)
                         {

@@ -155,15 +155,15 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             try
                             {
-                                var checkFolder = file.Replace(tempFolder + "\\", string.Empty).Split('\\')[0];
-                                var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
+                                var checkFolder = file.Replace($@"{tempFolder}\", string.Empty).Split('\\')[0];
+                                var relativePath = file.Substring($@"{tempFolder}\{checkFolder}\".Length);
                                 string targetPath;
 
                                 if (checkFolder == "_default")
                                 {
                                     targetPath = Path.Combine(Globals.HostMapPath, relativePath);
                                 }
-                                else if (checkFolder.EndsWith("-System"))
+                                else if (checkFolder.EndsWith("-System", StringComparison.OrdinalIgnoreCase))
                                 {
                                     targetPath = Path.Combine(portalSettings.HomeSystemDirectoryMapPath, relativePath);
                                 }

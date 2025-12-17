@@ -180,8 +180,8 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void Initialize(string folder)
         {
-            this.BasePath = Path.Combine("DesktopModules", folder).Replace("/", "\\");
-            this.AppCodePath = Path.Combine("App_Code", folder).Replace("/", "\\");
+            this.BasePath = Path.Combine("DesktopModules", folder).Replace("/", @"\");
+            this.AppCodePath = Path.Combine("App_Code", folder).Replace("/", @"\");
             this.AssemblyPath = "bin";
         }
 
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Installer.Writers
             // we are going to drill down through the folders to add the files
             foreach (string fileName in Directory.GetFiles(folder))
             {
-                string name = fileName.Replace(basePath + "\\", string.Empty);
+                string name = fileName.Replace(basePath + @"\", string.Empty);
                 this.AddFile(name, name);
             }
         }

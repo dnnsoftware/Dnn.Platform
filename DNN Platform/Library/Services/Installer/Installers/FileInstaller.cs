@@ -37,13 +37,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string physicalBasePath = this.PhysicalSitePath + "\\" + this.BasePath;
-                if (!physicalBasePath.EndsWith("\\"))
+                string physicalBasePath = this.PhysicalSitePath + @"\" + this.BasePath;
+                if (!physicalBasePath.EndsWith(@"\", StringComparison.Ordinal))
                 {
-                    physicalBasePath += "\\";
+                    physicalBasePath += @"\";
                 }
 
-                return physicalBasePath.Replace("/", "\\");
+                return physicalBasePath.Replace("/", @"\");
             }
         }
 
@@ -243,7 +243,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             else
             {
-                fileName = pathNav.Value + "\\";
+                fileName = pathNav.Value + @"\";
             }
 
             // Get the name

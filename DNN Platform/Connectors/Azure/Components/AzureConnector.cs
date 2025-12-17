@@ -439,10 +439,8 @@ namespace Dnn.AzureConnector.Components
                 var removableFolders =
                     folders.Where(
                         f => f.FolderMappingID == folderMappingId && !folders1.Any(f2 => f2.FolderID != f.FolderID &&
-                                                                                         f2.FolderPath.StartsWith(
-                                                                                             f.FolderPath) &&
-                                                                                         f2.FolderMappingID !=
-                                                                                         folderMappingId));
+                                                                                         f2.FolderPath.StartsWith(f.FolderPath, StringComparison.OrdinalIgnoreCase) &&
+                                                                                         f2.FolderMappingID != folderMappingId));
 
                 if (removableFolders.Any())
                 {

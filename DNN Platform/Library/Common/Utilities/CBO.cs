@@ -979,8 +979,7 @@ namespace DotNetNuke.Common.Utilities
 
         private static string GetPrimaryKey(Type objType)
         {
-            string primaryKey = DefaultPrimaryKey;
-            return primaryKey;
+            return DefaultPrimaryKey;
         }
 
         private static string GetTableName(Type objType)
@@ -991,7 +990,7 @@ namespace DotNetNuke.Common.Utilities
             if (string.IsNullOrEmpty(tableName))
             {
                 tableName = objType.Name;
-                if (tableName.EndsWith("Info"))
+                if (tableName.EndsWith("Info", StringComparison.Ordinal))
                 {
                     // Remove Info ending
                     tableName = tableName.Replace("Info", string.Empty);

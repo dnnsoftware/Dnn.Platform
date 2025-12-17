@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.Journal
             try
             {
                 this.BaseUrl = Globals.ApplicationPath;
-                this.BaseUrl = this.BaseUrl.EndsWith("/") ? this.BaseUrl : this.BaseUrl + "/";
+                this.BaseUrl = this.BaseUrl.EndsWith("/", StringComparison.Ordinal) ? this.BaseUrl : this.BaseUrl + "/";
                 this.BaseUrl += "DesktopModules/Journal/";
 
                 this.ProfilePage = this.navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" });

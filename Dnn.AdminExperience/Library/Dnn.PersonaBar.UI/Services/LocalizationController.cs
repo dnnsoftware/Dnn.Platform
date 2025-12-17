@@ -134,7 +134,7 @@ namespace Dnn.PersonaBar.UI.Services
             foreach (var resourcesFile in resourceFiles)
             {
                 var key = resourcesFile.Key;
-                var relativePath = resourcesFile.Value.Replace(this.appStatus.ApplicationMapPath, "~").Replace("\\", "/");
+                var relativePath = resourcesFile.Value.Replace(this.appStatus.ApplicationMapPath, "~").Replace(@"\", "/");
                 if (File.Exists(HttpContext.Current.Server.MapPath(relativePath)))
                 {
                     var keys = this.GetLocalizedDictionary(relativePath, culture);
@@ -161,7 +161,7 @@ namespace Dnn.PersonaBar.UI.Services
             if (!culture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase))
             {
                 var fallbackCulture = this.GetFallbackCulture(culture);
-                var folder = Path.GetDirectoryName(relativePath)?.Replace("\\", "/");
+                var folder = Path.GetDirectoryName(relativePath)?.Replace(@"\", "/");
                 var fileName = Path.GetFileNameWithoutExtension(relativePath)?
                                 .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), string.Empty);
                 var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.OrdinalIgnoreCase)
@@ -213,7 +213,7 @@ namespace Dnn.PersonaBar.UI.Services
                     continue;
                 }
 
-                if (key.Contains("."))
+                if (key.Contains(".", StringComparison.Ordinal))
                 {
                     key = key.Substring(0, key.IndexOf(".", StringComparison.InvariantCultureIgnoreCase));
                 }

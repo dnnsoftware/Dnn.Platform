@@ -665,7 +665,7 @@ internal class JournalControllerImpl : IJournalController
         {
             journalItem.SecuritySet = "E,";
         }
-        else if (!journalItem.SecuritySet.EndsWith(","))
+        else if (!journalItem.SecuritySet.EndsWith(",", StringComparison.Ordinal))
         {
             journalItem.SecuritySet += ",";
             originalSecuritySet = journalItem.SecuritySet;
@@ -746,7 +746,7 @@ internal class JournalControllerImpl : IJournalController
         for (var i = 0; i < role.Settings.Keys.Count; i++)
         {
             var key = role.Settings.Keys.ElementAt(i);
-            if (key.StartsWith("stat_"))
+            if (key.StartsWith("stat_", StringComparison.OrdinalIgnoreCase))
             {
                 role.Settings[key] = "0";
             }

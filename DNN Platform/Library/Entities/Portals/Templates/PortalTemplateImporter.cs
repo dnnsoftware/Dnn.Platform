@@ -1231,7 +1231,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
                     var fileName = Path.GetFileName(filePath);
 
-                    var folderPath = filePath.Substring(0, filePath.LastIndexOf(fileName));
+                    var folderPath = filePath.Substring(0, filePath.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                     var folder = folderManager.GetFolder(portalId, folderPath);
 
                     var file = fileManager.GetFile(folder, fileName);

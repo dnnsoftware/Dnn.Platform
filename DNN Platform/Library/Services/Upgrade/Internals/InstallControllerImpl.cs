@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             string connection = Config.GetConnectionString();
             foreach (string connectionParam in connection.Split(';'))
             {
-                int index = connectionParam.IndexOf("=");
+                int index = connectionParam.IndexOf("=", StringComparison.Ordinal);
                 if (index > 0)
                 {
                     string key = connectionParam.Substring(0, index);

@@ -147,9 +147,9 @@ namespace DotNetNuke.Entities.Portals
                 }
 
                 // create the subhost default.aspx file
-                if (!File.Exists(childPath + "\\" + Globals.glbDefaultPage))
+                if (!File.Exists(childPath + @"\" + Globals.glbDefaultPage))
                 {
-                    File.Copy(Globals.HostMapPath + "subhost.aspx", childPath + "\\" + Globals.glbDefaultPage);
+                    File.Copy(Globals.HostMapPath + "subhost.aspx", childPath + @"\" + Globals.glbDefaultPage);
                 }
             }
             catch (Exception exc)

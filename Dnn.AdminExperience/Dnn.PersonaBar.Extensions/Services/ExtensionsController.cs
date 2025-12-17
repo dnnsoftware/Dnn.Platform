@@ -211,8 +211,11 @@ namespace Dnn.PersonaBar.Extensions.Services
             foreach (var folder in controlfolders)
             {
                 var moduleControls = Directory.EnumerateFiles(folder, "*.*", SearchOption.TopDirectoryOnly)
-                    .Count(s => s.EndsWith(".ascx") || s.EndsWith(".cshtml") ||
-                                s.EndsWith(".vbhtml") || s.EndsWith(".html") || s.EndsWith(".htm"));
+                    .Count(s => s.EndsWith(".ascx", StringComparison.OrdinalIgnoreCase) ||
+                                s.EndsWith(".cshtml", StringComparison.OrdinalIgnoreCase) ||
+                                s.EndsWith(".vbhtml", StringComparison.OrdinalIgnoreCase) ||
+                                s.EndsWith(".html", StringComparison.OrdinalIgnoreCase) ||
+                                s.EndsWith(".htm", StringComparison.OrdinalIgnoreCase));
                 if (moduleControls > 0)
                 {
                     var shortFolder = folder.Substring(appPathLen).Replace('\\', '/');
@@ -421,7 +424,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(packageId);
                 var rootFolder = Path.Combine(Globals.ApplicationMapPath, "DesktopModules", desktopModule.FolderName);
                 var controls = Directory.GetFiles(rootFolder, "*.ascx", SearchOption.AllDirectories)
-                    .Select(f => f.Replace(Globals.ApplicationMapPath, "~").Replace("\\", "/"))
+                    .Select(f => f.Replace(Globals.ApplicationMapPath, "~").Replace(@"\", "/"))
                     .ToList();
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, controls);
@@ -597,7 +600,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     return this.Request.CreateResponse(HttpStatusCode.NotFound);
                 }
 
-                if (fileName.EndsWith(".resources"))
+                if (fileName.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
                 {
                     fileName = fileName.Replace(".resources", ".zip");
                 }
@@ -884,8 +887,8 @@ namespace Dnn.PersonaBar.Extensions.Services
         public HttpResponseMessage GetModuleFolders(string ownerFolder)
         {
             if (!string.IsNullOrEmpty(ownerFolder) &&
-                (ownerFolder.Replace("\\", "/").Contains("/")
-                 || ownerFolder.StartsWith(".")))
+                (ownerFolder.Replace(@"\", "/").Contains("/", StringComparison.Ordinal)
+                 || ownerFolder.StartsWith(".", StringComparison.Ordinal)))
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidFolder");
             }
@@ -912,7 +915,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         [RequireHost]
         public HttpResponseMessage GetModuleFiles(string ownerFolder, string moduleFolder, FileType type)
         {
-            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith("."))) || string.IsNullOrEmpty(moduleFolder) || moduleFolder.Replace("\\", "/").Contains("/") || moduleFolder.StartsWith("."))
+            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace(@"\", "/").Contains("/", StringComparison.Ordinal) || ownerFolder.StartsWith(".", StringComparison.Ordinal))) || string.IsNullOrEmpty(moduleFolder) || moduleFolder.Replace(@"\", "/").Contains("/", StringComparison.Ordinal) || moduleFolder.StartsWith(".", StringComparison.Ordinal))
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidFolder");
             }
@@ -952,18 +955,18 @@ namespace Dnn.PersonaBar.Extensions.Services
         [RequireHost]
         public HttpResponseMessage CreateFolder([FromUri] string ownerFolder, [FromUri] string moduleFolder)
         {
-            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace("\\", "/").Contains("/") || ownerFolder.StartsWith(".")))
-                || (!string.IsNullOrEmpty(moduleFolder) && (moduleFolder.Replace("\\", "/").Contains("/") || moduleFolder.StartsWith("."))))
+            if ((!string.IsNullOrEmpty(ownerFolder) && (ownerFolder.Replace(@"\", "/").Contains("/", StringComparison.Ordinal) || ownerFolder.StartsWith(".", StringComparison.Ordinal)))
+                || (!string.IsNullOrEmpty(moduleFolder) && (moduleFolder.Replace(@"\", "/").Contains("/", StringComparison.Ordinal) || moduleFolder.StartsWith(".", StringComparison.Ordinal))))
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "InvalidFolder");
             }
 
             try
             {
-                var parentFolderPath = Globals.ApplicationMapPath + "\\DesktopModules";
+                var parentFolderPath = $@"{Globals.ApplicationMapPath}\DesktopModules";
                 if (!string.IsNullOrEmpty(ownerFolder))
                 {
-                    parentFolderPath += "\\" + ownerFolder;
+                    parentFolderPath += @"\" + ownerFolder;
 
                     if (!Directory.Exists(parentFolderPath))
                     {
@@ -973,7 +976,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                 if (!string.IsNullOrEmpty(moduleFolder))
                 {
-                    parentFolderPath += "\\" + moduleFolder;
+                    parentFolderPath += @"\" + moduleFolder;
 
                     if (!Directory.Exists(parentFolderPath))
                     {
@@ -1072,13 +1075,13 @@ namespace Dnn.PersonaBar.Extensions.Services
                     {
                         foreach (var file in Directory.GetFiles(filePath, "*.dnn"))
                         {
-                            var fileName = file.Replace(filePath + "\\", string.Empty);
+                            var fileName = file.Replace(filePath + @"\", string.Empty);
                             packageManifestDto.Manifests.Add(fileName, GetFileContent(writer.BasePath, fileName));
                         }
 
                         foreach (var file in Directory.GetFiles(filePath, "*.dnn.resources"))
                         {
-                            var fileName = file.Replace(filePath + "\\", string.Empty);
+                            var fileName = file.Replace(filePath + @"\", string.Empty);
                             packageManifestDto.Manifests.Add(fileName, GetFileContent(writer.BasePath, fileName));
                         }
                     }
@@ -1108,12 +1111,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                 // Display regular files
                 foreach (var file in writer.Files.Values)
                 {
-                    if (file.Path.StartsWith(".git"))
+                    if (file.Path.StartsWith(".git", StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
-                    if (!file.Name.StartsWith(".git"))
+                    if (!file.Name.StartsWith(".git", StringComparison.OrdinalIgnoreCase))
                     {
                         packageManifestDto.Files.Add(file.FullName);
                     }
@@ -1236,12 +1239,12 @@ namespace Dnn.PersonaBar.Extensions.Services
                         break;
                 }
 
-                if (!manifestName.EndsWith(".dnn"))
+                if (!manifestName.EndsWith(".dnn", StringComparison.Ordinal))
                 {
                     manifestName += ".dnn";
                 }
 
-                if (!packageManifestDto.ArchiveName.EndsWith(".zip"))
+                if (!packageManifestDto.ArchiveName.EndsWith(".zip", StringComparison.Ordinal))
                 {
                     packageManifestDto.ArchiveName += ".zip";
                 }
@@ -1289,7 +1292,7 @@ namespace Dnn.PersonaBar.Extensions.Services
 
                 // add code files
                 files.AddRange(writer.Files.Values.Where(
-                    f => !f.Path.StartsWith(".") && !f.Name.StartsWith(".")).Select(file => file.FullName));
+                    f => !f.Path.StartsWith(".", StringComparison.Ordinal) && !f.Name.StartsWith(".", StringComparison.Ordinal)).Select(file => file.FullName));
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, files);
             }
@@ -1361,10 +1364,10 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         private static string GetFolderPath(ModuleFolderDto folder)
         {
-            var path = folder.Path.Replace(Path.GetDirectoryName(folder.Path) + "\\", string.Empty);
+            var path = folder.Path.Replace(Path.GetDirectoryName(folder.Path) + @"\", string.Empty);
             if (folder.IsSpecial)
             {
-                path = folder.SpecialType + "\\" + path;
+                path = folder.SpecialType + @"\" + path;
             }
 
             return path;

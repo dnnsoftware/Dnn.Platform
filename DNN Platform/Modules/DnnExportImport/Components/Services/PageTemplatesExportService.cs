@@ -84,7 +84,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.Repository.CreateItem(template, null);
                         totalTemplatesExported += 1;
                         var folderOffset = portal.HomeDirectoryMapPath.Length +
-                                           (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
+                                           (portal.HomeDirectoryMapPath.EndsWith(@"\", StringComparison.Ordinal) ? 0 : 1);
 
                         var folder = FolderManager.Instance.GetFolder(template.FolderId);
                         CompressionUtil.AddFileToArchive(

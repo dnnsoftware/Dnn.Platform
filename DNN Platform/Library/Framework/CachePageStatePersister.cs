@@ -30,7 +30,7 @@ namespace DotNetNuke.Framework
             string key = this.Page.Request.Params[ViewStateCacheKey];
 
             // Abort if cache key is not available or valid
-            if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_"))
+            if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_", StringComparison.OrdinalIgnoreCase))
             {
                 throw new InvalidViewStateCacheKeyException("Missing valid " + ViewStateCacheKey);
             }

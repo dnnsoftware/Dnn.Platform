@@ -5,6 +5,7 @@ namespace DotNetNuke.Common
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Data;
     using System.Diagnostics;
@@ -183,7 +184,7 @@ namespace DotNetNuke.Common
         public static readonly Regex BaseTagRegex = new Regex("<base[^>]*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         /// <summary>Finds common file escaping characters.</summary>
-        public static readonly Regex FileEscapingRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
+        public static readonly Regex FileEscapingRegex = new Regex(@"[\\/]\.\.[\\/]", RegexOptions.Compiled);
 
         /// <summary>Checks if a string is a valid Windows file extension.</summary>
         public static readonly Regex FileExtensionRegex = new Regex(@"\..+;", RegexOptions.Compiled);
@@ -195,15 +196,16 @@ namespace DotNetNuke.Common
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         /// <summary>Checks for invalid usernames.</summary>
-        public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
+        public static readonly string USERNAME_UNALLOWED_ASCII = @"!""#$%&'()*+,/:;<=>?[\]^`{|}";
 
-        private const string tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; // this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
+        private const string tabPathInvalidCharsEx = @"[&\? \./'#:\*]"; // this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
 
         private static readonly Regex TabPathInvalidCharsRx = new Regex(tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
+        private static readonly HashSet<string> AdminControlKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "tab", "module", "importmodule", "exportmodule", "help", };
         private static string applicationPath;
         private static string desktopModulePath;
         private static string imagePath;
@@ -787,11 +789,10 @@ namespace DotNetNuke.Common
         /// <returns>absolute server path.</returns>
         public static string GetAbsoluteServerPath(HttpRequest request)
         {
-            string strServerPath;
-            strServerPath = request.MapPath(request.ApplicationPath);
-            if (!strServerPath.EndsWith("\\"))
+            var strServerPath = request.MapPath(request.ApplicationPath);
+            if (!strServerPath.EndsWith(@"\", StringComparison.Ordinal))
             {
-                strServerPath += "\\";
+                strServerPath += @"\";
             }
 
             return strServerPath;
@@ -799,9 +800,9 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the ApplicationName for the MemberRole API.</summary>
         /// <remarks>
-        /// This overload is used to get the current ApplcationName.  The Application
+        /// This overload is used to get the current ApplicationName.  The Application
         /// Name is in the form Prefix_Id, where Prefix is the object qualifier
-        /// for this instance of DotNetNuke, and Id is the current PortalId for normal
+        /// for this instance of DotNetNuke, and ID is the current PortalId for normal
         /// users or glbSuperUserAppName for SuperUsers.
         /// </remarks>
         /// <returns>A string representing the application name.</returns>
@@ -844,7 +845,7 @@ namespace DotNetNuke.Common
 
             // Get the Object Qualifier from the Provider Configuration
             string objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (!string.IsNullOrEmpty(objectQualifier) && !objectQualifier.EndsWith("_"))
+            if (!string.IsNullOrEmpty(objectQualifier) && !objectQualifier.EndsWith("_", StringComparison.Ordinal))
             {
                 objectQualifier += "_";
             }
@@ -1171,16 +1172,16 @@ namespace DotNetNuke.Common
             string parentFolderName;
             if (portalId == Null.NullInteger)
             {
-                parentFolderName = HostMapPath.Replace("/", "\\");
+                parentFolderName = HostMapPath.Replace("/", @"\");
             }
             else
             {
                 PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
-                parentFolderName = objPortal.HomeDirectoryMapPath.Replace("/", "\\");
+                parentFolderName = objPortal.HomeDirectoryMapPath.Replace("/", @"\");
             }
 
-            string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
-            return strFolderpath.Substring(parentFolderName.Length).Replace("\\", "/");
+            string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
+            return strFolderpath.Substring(parentFolderName.Length).Replace(@"\", "/");
         }
 
         /// <summary>The GetTotalRecords method gets the number of Records returned.</summary>
@@ -1225,7 +1226,7 @@ namespace DotNetNuke.Common
             {
                 var fileName = Path.GetFileName(url);
 
-                var folderPath = url.Substring(0, url.LastIndexOf(fileName));
+                var folderPath = url.Substring(0, url.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                 var folder = FolderManager.Instance.GetFolder(portalId, folderPath);
 
                 if (folder != null)
@@ -1246,7 +1247,7 @@ namespace DotNetNuke.Common
         /// <returns>encoded value.</returns>
         public static string HTTPPOSTEncode(string strPost)
         {
-            strPost = strPost.Replace("\\", string.Empty);
+            strPost = strPost.Replace(@"\", string.Empty);
             strPost = HttpUtility.UrlEncode(strPost);
             strPost = strPost.Replace("%2f", "/");
             return strPost;
@@ -1513,7 +1514,6 @@ namespace DotNetNuke.Common
             bool isAdminSkin = Null.NullBoolean;
             if (HttpContext.Current != null)
             {
-                string adminKeys = "tab,module,importmodule,exportmodule,help";
                 string controlKey = string.Empty;
                 if (HttpContext.Current.Request.QueryString["ctl"] != null)
                 {
@@ -1529,8 +1529,8 @@ namespace DotNetNuke.Common
                     }
                 }
 
-                isAdminSkin = (!string.IsNullOrEmpty(controlKey) && controlKey != "view" && moduleID != -1) ||
-                               (!string.IsNullOrEmpty(controlKey) && adminKeys.IndexOf(controlKey) != -1 && moduleID == -1);
+                isAdminSkin = (!string.IsNullOrEmpty(controlKey) && !string.Equals(controlKey, "view", StringComparison.OrdinalIgnoreCase) && moduleID != -1) ||
+                               (!string.IsNullOrEmpty(controlKey) && AdminControlKeys.Contains(controlKey) && moduleID == -1);
             }
 
             return isAdminSkin;
@@ -1570,7 +1570,7 @@ namespace DotNetNuke.Common
             // Obtain PortalSettings from Current Context
             var portalSettings = PortalController.Instance.GetCurrentSettings();
             var strRSS = new StringBuilder();
-            var strRelativePath = domainName + fileName.Substring(fileName.IndexOf("\\Portals", StringComparison.InvariantCultureIgnoreCase)).Replace("\\", "/");
+            var strRelativePath = domainName + fileName.Substring(fileName.IndexOf("\\Portals", StringComparison.InvariantCultureIgnoreCase)).Replace(@"\", "/");
             strRelativePath = strRelativePath.Substring(0, strRelativePath.LastIndexOf("/", StringComparison.InvariantCulture));
             try
             {
@@ -1686,40 +1686,37 @@ namespace DotNetNuke.Common
         /// </remarks>
         public static string ManageTokenUploadDirectory(string strHTML, string strUploadDirectory, string strToken)
         {
-            int tokenStartPosition;
-            int endOfUrl;
             int urlStartPosition = 0;
-            int tokenLength;
-            string strURL;
             var sbBuff = new StringBuilder(string.Empty);
             if (!string.IsNullOrEmpty(strHTML))
             {
-                tokenLength = strToken.Length + 2;
+                var tokenLength = strToken.Length + 2;
                 string uploadDirectory = strUploadDirectory.ToLowerInvariant();
 
-                tokenStartPosition = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
+                var tokenStartPosition = strHTML.IndexOf(strToken + "=\"", StringComparison.OrdinalIgnoreCase);
                 while (tokenStartPosition != -1)
                 {
                     sbBuff.Append(strHTML.Substring(urlStartPosition, tokenStartPosition - urlStartPosition + tokenLength)); // keep characters left of URL
                     urlStartPosition = tokenStartPosition + tokenLength;
-                    endOfUrl = strHTML.IndexOf("\"", urlStartPosition);
+                    var endOfUrl = strHTML.IndexOf("\"", urlStartPosition, StringComparison.Ordinal);
+                    string strUrl;
                     if (endOfUrl >= 0)
                     {
-                        strURL = strHTML.Substring(urlStartPosition, endOfUrl - urlStartPosition).ToLowerInvariant();
+                        strUrl = strHTML.Substring(urlStartPosition, endOfUrl - urlStartPosition).ToLowerInvariant();
                     }
                     else
                     {
-                        strURL = strHTML.Substring(urlStartPosition).ToLowerInvariant();
+                        strUrl = strHTML.Substring(urlStartPosition).ToLowerInvariant();
                     }
 
                     // add upload directory if we are linking internally and the upload directory is not already included
-                    if (!strURL.Contains("://") && !strURL.StartsWith("/") && !strURL.StartsWith(uploadDirectory))
+                    if (!strUrl.Contains("://", StringComparison.Ordinal) && !strUrl.StartsWith("/", StringComparison.Ordinal) && !strUrl.StartsWith(uploadDirectory, StringComparison.OrdinalIgnoreCase))
                     {
                         sbBuff.Append(strUploadDirectory);
                     }
 
-                    // find position of next occurrance:
-                    tokenStartPosition = strHTML.IndexOf(strToken + "=\"", urlStartPosition + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                    // find position of next occurrence:
+                    tokenStartPosition = strHTML.IndexOf(strToken + "=\"", urlStartPosition + strUrl.Length + 2, StringComparison.OrdinalIgnoreCase);
                 }
 
                 if (urlStartPosition > -1)
@@ -2182,9 +2179,13 @@ namespace DotNetNuke.Common
         {
             if (!string.IsNullOrEmpty(strURL))
             {
-                if (strURL.IndexOf("mailto:") == -1 && strURL.IndexOf("://") == -1 && strURL.IndexOf("~") == -1 && strURL.IndexOf("\\\\") == -1)
+                if (!strURL.Contains("mailto:", StringComparison.OrdinalIgnoreCase)
+                    && !strURL.Contains("://", StringComparison.Ordinal)
+                    && !strURL.Contains("~", StringComparison.Ordinal)
+                    && !strURL.Contains(@"\\", StringComparison.Ordinal))
                 {
-                    strURL = ((HttpContext.Current != null && UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request)) ? "https://" : "http://") + strURL;
+                    var secure = HttpContext.Current != null && UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
+                    strURL = (secure ? "https://" : "http://") + strURL;
                 }
             }
 
@@ -2243,7 +2244,7 @@ namespace DotNetNuke.Common
         public static string FormatHelpUrl(string helpUrl, PortalSettings objPortalSettings, string name, string version)
         {
             string strURL = helpUrl;
-            if (strURL.IndexOf("?") != -1)
+            if (strURL.Contains("?", StringComparison.Ordinal))
             {
                 strURL += "&helpculture=";
             }
@@ -2252,7 +2253,7 @@ namespace DotNetNuke.Common
                 strURL += "?helpculture=";
             }
 
-            if (!string.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant()))
+            if (!string.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString()))
             {
                 strURL += Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant();
             }
@@ -2383,7 +2384,11 @@ namespace DotNetNuke.Common
                 return TabType.Normal;
             }
 
-            if (url.StartsWith("mailto:", StringComparison.InvariantCultureIgnoreCase) == false && url.IndexOf("://") == -1 && url.StartsWith("~") == false && url.StartsWith("\\\\") == false && url.StartsWith("/") == false)
+            if (!url.StartsWith("mailto:", StringComparison.OrdinalIgnoreCase)
+                && !url.Contains("://", StringComparison.Ordinal)
+                && !url.StartsWith("~", StringComparison.Ordinal)
+                && !url.StartsWith(@"\\", StringComparison.Ordinal)
+                && !url.StartsWith("/", StringComparison.Ordinal))
             {
                 if (NumberMatchRegex.IsMatch(url))
                 {
@@ -2734,8 +2739,8 @@ namespace DotNetNuke.Common
                 Exceptions.ProcessHttpException(exc);
             }
 
-            string strDoubleDecodeURL = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Server.UrlDecode(queryString));
-            if (queryString.IndexOf("..") != -1 || strDoubleDecodeURL.IndexOf("..") != -1)
+            string strDoubleDecodeUrl = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Server.UrlDecode(queryString));
+            if (queryString.Contains("..", StringComparison.Ordinal) || strDoubleDecodeUrl.Contains("..", StringComparison.Ordinal))
             {
                 Exceptions.ProcessHttpException();
             }
@@ -2788,7 +2793,7 @@ namespace DotNetNuke.Common
             }
 
             // String does not contain a ~, so just return Url
-            if (url.StartsWith("~") == false)
+            if (!url.StartsWith("~", StringComparison.Ordinal))
             {
                 return url;
             }
@@ -3377,7 +3382,7 @@ namespace DotNetNuke.Common
                 cdv = "&cdv=" + DateTime.Now.Ticks;
             }
 
-            if (childPortalAlias.StartsWith(ApplicationPath))
+            if (childPortalAlias.StartsWith(ApplicationPath, StringComparison.OrdinalIgnoreCase))
             {
                 return childPortalAlias + query + cdv;
             }
@@ -3385,9 +3390,9 @@ namespace DotNetNuke.Common
             return ApplicationPath + childPortalAlias + query + cdv;
         }
 
-        /// <summary>Formats an email address as a cloacked html link.</summary>
+        /// <summary>Formats an email address as a cloaked html link.</summary>
         /// <param name="email">The formatted email address.</param>
-        /// <returns>A cloacked html link.</returns>
+        /// <returns>A cloaked html link.</returns>
         [DnnDeprecated(7, 0, 0, "This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail", RemovalVersion = 11)]
         public static partial string FormatEmail(string email)
         {
@@ -3446,13 +3451,13 @@ namespace DotNetNuke.Common
             foreach (string fileLoopVariable in files)
             {
                 file = fileLoopVariable;
-                if (file.IndexOf(".") > -1)
+                if (file.Contains(".", StringComparison.Ordinal))
                 {
-                    strExtension = file.Substring(file.LastIndexOf(".") + 1);
+                    strExtension = file.Substring(file.LastIndexOf(".", StringComparison.Ordinal) + 1);
                 }
 
                 string fileName = file.Substring(currentDirectory.FullName.Length);
-                if (strExtensions.IndexOf(strExtension, StringComparison.InvariantCultureIgnoreCase) != -1 || string.IsNullOrEmpty(strExtensions))
+                if (strExtensions.Contains(strExtension, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(strExtensions))
                 {
                     arrFileList.Add(new FileItem(fileName, fileName));
                 }
@@ -3472,16 +3477,16 @@ namespace DotNetNuke.Common
             string parentFolderName = null;
             if (IsHostTab(portalSettings.ActiveTab.TabID))
             {
-                parentFolderName = HostMapPath.Replace("/", "\\");
+                parentFolderName = HostMapPath.Replace("/", @"\");
             }
             else
             {
-                parentFolderName = portalSettings.HomeDirectoryMapPath.Replace("/", "\\");
+                parentFolderName = portalSettings.HomeDirectoryMapPath.Replace("/", @"\");
             }
 
-            string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
+            string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
 
-            return strFolderpath.Substring(parentFolderName.Length).Replace("\\", "/");
+            return strFolderpath.Substring(parentFolderName.Length).Replace(@"\", "/");
         }
 
         /// <summary>Gets a LinkClick url for tracking purposes.</summary>

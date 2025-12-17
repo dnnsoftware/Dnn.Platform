@@ -10,7 +10,6 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>NU1701</NoWarn>
-    <WarningsNotAsErrors>CA1310</WarningsNotAsErrors>
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Maintenance.xml</DocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

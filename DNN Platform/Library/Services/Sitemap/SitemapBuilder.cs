@@ -265,7 +265,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 IPortalAliasInfo portalAlias = arr[0];
                 portalName = Globals.GetPortalDomainName(ps.PortalAlias.HTTPAlias, null, true);
-                if (portalAlias.HttpAlias.IndexOf("/") > -1)
+                if (portalAlias.HttpAlias.IndexOf("/", StringComparison.Ordinal) > -1)
                 {
                     portalName = PortalController.GetPortalFolder(portalAlias.HttpAlias);
                 }

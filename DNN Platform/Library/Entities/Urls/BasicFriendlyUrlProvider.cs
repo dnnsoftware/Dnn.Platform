@@ -84,13 +84,13 @@ namespace DotNetNuke.Entities.Urls
         private static string AddPage(string path, string pageName)
         {
             string friendlyPath = path;
-            if (friendlyPath.EndsWith("/"))
+            if (friendlyPath.EndsWith("/", StringComparison.Ordinal))
             {
-                friendlyPath = friendlyPath + pageName;
+                friendlyPath = $"{friendlyPath}{pageName}";
             }
             else
             {
-                friendlyPath = friendlyPath + "/" + pageName;
+                friendlyPath = $"{friendlyPath}/{pageName}";
             }
 
             return friendlyPath;
@@ -115,7 +115,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string friendlyPath = path;
             string matchString = string.Empty;
-            if (string.IsNullOrEmpty(portalAlias) == false)
+            if (!string.IsNullOrEmpty(portalAlias))
             {
                 string httpAlias = Globals.AddHTTP(portalAlias).ToLowerInvariant();
                 if (HttpContext.Current?.Items["UrlRewrite:OriginalUrl"] != null)
@@ -123,7 +123,7 @@ namespace DotNetNuke.Entities.Urls
                     string originalUrl =
                         HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString().ToLowerInvariant();
                     httpAlias = Globals.AddPort(httpAlias, originalUrl);
-                    if (originalUrl.StartsWith(httpAlias))
+                    if (originalUrl.StartsWith(httpAlias, StringComparison.OrdinalIgnoreCase))
                     {
                         matchString = httpAlias;
                     }
@@ -155,7 +155,7 @@ namespace DotNetNuke.Entities.Urls
                         // manage the case where the current hostname is www.domain.com and the portalalias is domain.com
                         // (this occurs when www.domain.com is not listed as portal alias for the portal, but domain.com is)
                         string wwwHttpAlias = Globals.AddHTTP("www." + portalAlias);
-                        if (originalUrl.StartsWith(wwwHttpAlias))
+                        if (originalUrl.StartsWith(wwwHttpAlias, StringComparison.OrdinalIgnoreCase))
                         {
                             matchString = wwwHttpAlias;
                         }
@@ -169,9 +169,9 @@ namespace DotNetNuke.Entities.Urls
 
             if (!string.IsNullOrEmpty(matchString))
             {
-                if (path.IndexOf("~", StringComparison.Ordinal) != -1)
+                if (path.Contains("~", StringComparison.Ordinal))
                 {
-                    friendlyPath = friendlyPath.Replace(matchString.EndsWith("/") ? "~/" : "~", matchString);
+                    friendlyPath = friendlyPath.Replace(matchString.EndsWith("/", StringComparison.Ordinal) ? "~/" : "~", matchString);
                 }
                 else
                 {
@@ -183,7 +183,7 @@ namespace DotNetNuke.Entities.Urls
                 friendlyPath = Globals.ResolveUrl(friendlyPath);
             }
 
-            if (friendlyPath.StartsWith("//") && isPagePath)
+            if (friendlyPath.StartsWith("//", StringComparison.Ordinal) && isPagePath)
             {
                 friendlyPath = friendlyPath.Substring(1);
             }
@@ -225,7 +225,7 @@ namespace DotNetNuke.Entities.Urls
                 friendlyPath = queryStringMatch.Groups[1].Value;
                 friendlyPath = DefaultPageRx.Replace(friendlyPath, string.Empty);
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
-                if (queryString.StartsWith("?"))
+                if (queryString.StartsWith("?", StringComparison.Ordinal))
                 {
                     queryString = queryString.TrimStart(Convert.ToChar("?"));
                 }
@@ -237,7 +237,7 @@ namespace DotNetNuke.Entities.Urls
                     string[] pair = nameValuePairs[i].Split(Convert.ToChar("="));
 
                     // Add name part of name/value pair
-                    if (friendlyPath.EndsWith("/"))
+                    if (friendlyPath.EndsWith("/", StringComparison.Ordinal))
                     {
                         pathToAppend = pathToAppend + pair[0];
                     }

@@ -407,11 +407,11 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 strPath = Path.Combine(appStatus.ApplicationMapPath, strPath);
-                if (strPath.EndsWith("\\") && Directory.Exists(strPath))
+                if (strPath.EndsWith(@"\", StringComparison.Ordinal) && Directory.Exists(strPath))
                 {
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
-                    var applicationPath = appStatus.ApplicationMapPath + "\\";
-                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
+                    var applicationPath = $@"{appStatus.ApplicationMapPath}\";
+                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase) ||
                         directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
@@ -475,11 +475,11 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 strPath = Path.Combine(appStatus.ApplicationMapPath, strPath);
-                if (strPath.EndsWith("\\") && await Directory.ExistsAsync(strPath))
+                if (strPath.EndsWith(@"\", StringComparison.Ordinal) && await Directory.ExistsAsync(strPath))
                 {
                     var directoryInfo = new System.IO.DirectoryInfo(strPath);
-                    var applicationPath = appStatus.ApplicationMapPath + "\\";
-                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.InvariantCultureIgnoreCase) ||
+                    var applicationPath = $@"{appStatus.ApplicationMapPath}\";
+                    if (!directoryInfo.FullName.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase) ||
                         directoryInfo.FullName.Equals(applicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
@@ -761,7 +761,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>A valid Windows path.</returns>
         public static string FixPath(string input)
         {
-            return string.IsNullOrEmpty(input) ? input : input.Trim().Replace("/", "\\");
+            return string.IsNullOrEmpty(input) ? input : input.Trim().Replace("/", @"\");
         }
 
         /// <summary>Adds a file to a zip.</summary>

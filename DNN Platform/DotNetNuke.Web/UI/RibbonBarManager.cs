@@ -440,7 +440,7 @@ namespace DotNetNuke.Web.UI
             {
                 Logger.Error(ex);
 
-                if (ex.Message.StartsWith("Page Exists"))
+                if (ex.Message.StartsWith("Page Exists", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new DotNetNukeException(ex.Message, DotNetNukeErrorCode.PageExists);
                 }

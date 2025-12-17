@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
     using System.Globalization;
     using System.Text;
 
@@ -25,7 +26,7 @@ namespace DotNetNuke.ExtensionPoints
             }
 
             var icon = extension.Icon;
-            if (icon.StartsWith("~/"))
+            if (icon.StartsWith("~/", StringComparison.Ordinal))
             {
                 icon = Globals.ResolveUrl(icon);
             }

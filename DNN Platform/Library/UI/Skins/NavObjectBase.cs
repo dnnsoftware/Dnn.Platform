@@ -2833,24 +2833,24 @@ namespace DotNetNuke.UI.Skins
 
         private string GetPath(string strPath)
         {
-            if (strPath.IndexOf("[SKINPATH]") > -1)
+            if (strPath.Contains("[SKINPATH]", StringComparison.OrdinalIgnoreCase))
             {
                 return strPath.Replace("[SKINPATH]", this.PortalSettings.ActiveTab.SkinPath);
             }
-            else if (strPath.IndexOf("[APPIMAGEPATH]") > -1)
+
+            if (strPath.Contains("[APPIMAGEPATH]", StringComparison.OrdinalIgnoreCase))
             {
                 return strPath.Replace("[APPIMAGEPATH]", Globals.ApplicationPath + "/images/");
             }
-            else if (strPath.IndexOf("[HOMEDIRECTORY]") > -1)
+
+            if (strPath.Contains("[HOMEDIRECTORY]", StringComparison.OrdinalIgnoreCase))
             {
                 return strPath.Replace("[HOMEDIRECTORY]", this.PortalSettings.HomeDirectory);
             }
-            else
+
+            if (strPath.StartsWith("~", StringComparison.Ordinal))
             {
-                if (strPath.StartsWith("~"))
-                {
-                    return this.ResolveUrl(strPath);
-                }
+                return this.ResolveUrl(strPath);
             }
 
             return strPath;

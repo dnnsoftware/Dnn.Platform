@@ -452,7 +452,7 @@ namespace DotNetNuke.Services.Install
         /// <returns>A string representing the result of the action.</returns>
         public string ProcessAction(string someAction)
         {
-            // First check that we are not being targetted by an AJAX HttpPost, so get the current DB version
+            // First check that we are not being targeted by an AJAX HttpPost, so get the current DB version
             string strProviderPath = this.dataProvider.GetProviderPath();
             string nextVersion = this.GetNextScriptVersion(strProviderPath, this.DatabaseVersion);
             if (someAction != nextVersion)
@@ -834,7 +834,7 @@ namespace DotNetNuke.Services.Install
 
         private static void GetInstallerLocales(IApplicationStatusInfo appStatus)
         {
-            var filePath = appStatus.ApplicationMapPath + LocalesFile.Replace("/", "\\");
+            var filePath = appStatus.ApplicationMapPath + LocalesFile.Replace("/", @"\");
 
             if (File.Exists(filePath))
             {

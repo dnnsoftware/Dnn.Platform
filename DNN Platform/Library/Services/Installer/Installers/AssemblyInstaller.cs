@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Installer.Installers
         protected override string ItemNodeName => "assembly";
 
         /// <summary>Gets the PhysicalBasePath for the assemblies.</summary>
-        protected override string PhysicalBasePath => this.PhysicalSitePath + "\\";
+        protected override string PhysicalBasePath => this.PhysicalSitePath + @"\";
 
         /// <inheritdoc />
         protected override void DeleteFile(InstallFile file)

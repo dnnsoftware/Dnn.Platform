@@ -60,13 +60,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string physicalBasePath = this.RootPath + this.SkinRoot + "\\" + this.skinPackage.SkinName;
-                if (!physicalBasePath.EndsWith("\\"))
+                string physicalBasePath = this.RootPath + this.SkinRoot + @"\" + this.skinPackage.SkinName;
+                if (!physicalBasePath.EndsWith(@"\", StringComparison.Ordinal))
                 {
-                    physicalBasePath += "\\";
+                    physicalBasePath += @"\";
                 }
 
-                return physicalBasePath.Replace("/", "\\");
+                return physicalBasePath.Replace("/", @"\");
             }
         }
 

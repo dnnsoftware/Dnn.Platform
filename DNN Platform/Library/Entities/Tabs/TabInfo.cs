@@ -1093,7 +1093,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private void IconFileGetter(ref string iconFile, string iconRaw)
         {
-            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
+            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~", StringComparison.Ordinal)) || this.PortalID == Null.NullInteger)
             {
                 iconFile = iconRaw;
             }

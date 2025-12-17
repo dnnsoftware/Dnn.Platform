@@ -604,7 +604,7 @@ namespace DotNetNuke.Services.Localization
             {
                 if (Globals.ApplicationPath != "/portals")
                 {
-                    if (cacheKey.StartsWith(Globals.ApplicationPath))
+                    if (cacheKey.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         cacheKey = cacheKey.Substring(Globals.ApplicationPath.Length);
                     }
@@ -612,7 +612,7 @@ namespace DotNetNuke.Services.Localization
                 else
                 {
                     cacheKey = "~" + cacheKey;
-                    if (cacheKey.StartsWith("~" + Globals.ApplicationPath))
+                    if (cacheKey.StartsWith("~" + Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase))
                     {
                         cacheKey = cacheKey.Substring(Globals.ApplicationPath.Length + 1);
                     }

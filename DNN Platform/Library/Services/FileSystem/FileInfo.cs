@@ -169,7 +169,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (!string.IsNullOrEmpty(physicalPath))
                 {
-                    physicalPath = physicalPath.Replace("/", "\\");
+                    physicalPath = physicalPath.Replace("/", @"\");
                 }
 
                 return physicalPath;
@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.FileSystem
             set
             {
                 // Make sure folder name ends with /
-                if (!string.IsNullOrEmpty(value) && !value.EndsWith("/"))
+                if (!string.IsNullOrEmpty(value) && !value.EndsWith("/", StringComparison.Ordinal))
                 {
                     value = value + "/";
                 }

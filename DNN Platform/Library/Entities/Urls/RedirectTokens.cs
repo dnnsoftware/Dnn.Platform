@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Text.RegularExpressions;
@@ -367,13 +368,13 @@ namespace DotNetNuke.Entities.Urls
                 if (p == "?")
                 {
                     result = result.Replace(tokenAndValue, string.Empty);
-                    if (result.Contains("?&"))
+                    if (result.Contains("?&", StringComparison.Ordinal))
                     {
                         result = result.Replace("?&", "?");
                     }
                     else
                     {
-                        if (result.EndsWith("?") || result.EndsWith("&"))
+                        if (result.EndsWith("?", StringComparison.Ordinal) || result.EndsWith("&", StringComparison.Ordinal))
                         {
                             // trim end
                             result = result.Substring(0, result.Length - 1);

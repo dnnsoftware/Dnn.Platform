@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.UI
                 if (string.IsNullOrEmpty(controlName))
                 {
                     controlName = targetControl.GetType().BaseType.Name;
-                    if (controlName.StartsWith("Rad") || controlName.StartsWith("Dnn"))
+                    if (controlName.StartsWith("Rad", StringComparison.Ordinal) || controlName.StartsWith("Dnn", StringComparison.Ordinal))
                     {
                         controlName = controlName.Substring(3);
                     }

@@ -146,7 +146,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     var name = GetNameAttribute(navigator);
 
                     const string textPostFix = ".Text";
-                    if (name.EndsWith(textPostFix))
+                    if (name.EndsWith(textPostFix, StringComparison.Ordinal))
                     {
                         name = name.Substring(0, name.Length - textPostFix.Length);
                     }

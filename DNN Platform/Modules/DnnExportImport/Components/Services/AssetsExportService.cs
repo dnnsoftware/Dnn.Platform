@@ -136,8 +136,7 @@ namespace Dnn.ExportImport.Components.Services
 
                             this.Repository.CreateItems(files, folder.Id);
                             totalFilesExported += files.Count;
-                            var folderOffset = portal.HomeDirectoryMapPath.Length +
-                                               (portal.HomeDirectoryMapPath.EndsWith("\\") ? 0 : 1);
+                            var folderOffset = portal.HomeDirectoryMapPath.Length + (portal.HomeDirectoryMapPath.EndsWith(@"\", StringComparison.Ordinal) ? 0 : 1);
 
                             if (folder.StorageLocation != (int)FolderController.StorageLocationTypes.DatabaseSecure)
                             {
@@ -601,12 +600,12 @@ namespace Dnn.ExportImport.Components.Services
                 var mFile in
                     files.Select(file => new System.IO.FileInfo(file)))
             {
-                if (File.Exists(dirInfo + "\\" + mFile.Name))
+                if (File.Exists(dirInfo + @"\" + mFile.Name))
                 {
-                    File.Delete(dirInfo + "\\" + mFile.Name);
+                    File.Delete(dirInfo + @"\" + mFile.Name);
                 }
 
-                mFile.MoveTo(dirInfo + "\\" + mFile.Name);
+                mFile.MoveTo(dirInfo + @"\" + mFile.Name);
             }
         }
 
@@ -681,14 +680,14 @@ namespace Dnn.ExportImport.Components.Services
             {
                 folder.FolderMappingId = folderMapping.FolderMappingID;
                 var createdBy = Util.GetUserIdByName(importJob, folder.CreatedByUserId, folder.CreatedByUserName);
-                if (folder.ParentId != null && folder.ParentId > 0)
+                if (folder.ParentId is > 0)
                 {
                     // Find the previously created parent folder id.
                     folder.ParentId = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.ParentFolderPath ?? string.Empty))?.FolderId;
                 }
 
                 // ignore folders which start with Users but are not user folders.
-                if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
+                if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath, StringComparison.OrdinalIgnoreCase))
                 {
                     folder.FolderId = DotNetNuke.Data.DataProvider.Instance()
                         .AddFolder(
@@ -709,7 +708,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 // Case when the folder is a user folder.
-                else if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
+                else if (folder.UserId is > 0 && !string.IsNullOrEmpty(folder.Username))
                 {
                     var userInfo = UserController.GetUserByName(portalId, folder.Username);
                     if (userInfo == null)

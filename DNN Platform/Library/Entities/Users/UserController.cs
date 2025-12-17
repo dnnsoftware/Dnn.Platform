@@ -798,7 +798,7 @@ namespace DotNetNuke.Entities.Users
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)
                 {
-                    int index = kvp.Key.IndexOf("_");
+                    int index = kvp.Key.IndexOf("_", StringComparison.Ordinal);
                     if (index > 0)
                     {
                         // Get the prefix
@@ -837,7 +837,7 @@ namespace DotNetNuke.Entities.Users
 
             if (currentPortalSettings != null)
             {
-                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_")))
+                foreach (var kvp in currentPortalSettings.Where(kvp => kvp.Key.StartsWith("Redirect_", StringComparison.OrdinalIgnoreCase)))
                 {
                     settings[kvp.Key] = kvp.Value;
                 }
@@ -1610,7 +1610,7 @@ namespace DotNetNuke.Entities.Users
             var childPortalAlias = GetChildPortalAlias();
             var cdv = GetProfilePictureCdv(userId);
 
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+            return childPortalAlias.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase)
                 ? childPortalAlias + url + cdv
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }
@@ -1641,7 +1641,7 @@ namespace DotNetNuke.Entities.Users
             var childPortalAlias = Globals.ResolveUrl(this.GetUserProfilePictureUrl(userId, width, height));
             var cdv = GetProfilePictureCdv(portalId, userId);
 
-            return childPortalAlias.StartsWith(Globals.ApplicationPath)
+            return childPortalAlias.StartsWith(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase)
                 ? childPortalAlias + url + cdv
                 : Globals.ApplicationPath + childPortalAlias + url + cdv;
         }

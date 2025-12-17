@@ -341,15 +341,15 @@ namespace DotNetNuke.UI.Containers
                 string folderName = this.ModuleConfiguration.DesktopModule.FolderName;
 
                 string stylesheet = string.Empty;
-                if (string.IsNullOrEmpty(folderName) == false)
+                if (!string.IsNullOrEmpty(folderName))
                 {
-                    if (controlSrc.EndsWith(".mvc"))
+                    if (controlSrc.EndsWith(".mvc", StringComparison.OrdinalIgnoreCase))
                     {
-                        stylesheet = Globals.ApplicationPath + "/DesktopModules/MVC/" + folderName.Replace("\\", "/") + "/module.css";
+                        stylesheet = $"{Globals.ApplicationPath}/DesktopModules/MVC/{folderName.Replace(@"\", "/")}/module.css";
                     }
                     else
                     {
-                        stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
+                        stylesheet = $"{Globals.ApplicationPath}/DesktopModules/{folderName.Replace(@"\", "/")}/module.css";
                     }
 
                     this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
@@ -358,7 +358,7 @@ namespace DotNetNuke.UI.Containers
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
                 if (ix >= 0)
                 {
-                    stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
+                    stylesheet = $"{Globals.ApplicationPath}/{controlSrc.Substring(0, ix + 1)}module.css";
                     this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
                 }
             }

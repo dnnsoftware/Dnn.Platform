@@ -399,7 +399,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 string folderPath;
                 if (!string.IsNullOrEmpty(this.FilePath))
                 {
-                    fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
+                    fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/", StringComparison.Ordinal) + 1);
                     folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, string.Empty);
                 }
                 else
@@ -573,7 +573,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool IsUserFolder(string folderPath)
         {
             UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
-            return folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format(CultureInfo.InvariantCulture, "/{0}/", user.UserID));
+            return folderPath.StartsWith("users/", StringComparison.OrdinalIgnoreCase) && folderPath.EndsWith(string.Format(CultureInfo.InvariantCulture, "/{0}/", user.UserID), StringComparison.OrdinalIgnoreCase);
         }
 
         private void LoadFiles()
@@ -785,7 +785,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 if (string.IsNullOrEmpty(this.lblMessage.Text))
                 {
-                    var fileName = this.txtFile.PostedFile.FileName.Substring(this.txtFile.PostedFile.FileName.LastIndexOf("\\") + 1);
+                    var fileName = this.txtFile.PostedFile.FileName.Substring(this.txtFile.PostedFile.FileName.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                     this.SetFilePath(fileName);
                 }
             }

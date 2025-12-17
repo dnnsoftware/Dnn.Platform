@@ -799,7 +799,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         // to handle legacy scenarios before the introduction of the FileServerHandler
                         var fileName = Path.GetFileName(url);
-                        var folderPath = url.Substring(0, url.LastIndexOf(fileName));
+                        var folderPath = url.Substring(0, url.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                         var folder = FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
                         var fileId = -1;
                         if (folder != null)
@@ -1144,7 +1144,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (url != string.Empty)
                         {
                             // Let's use the new URL
-                            fileName = url.Substring(url.LastIndexOf("/") + 1);
+                            fileName = url.Substring(url.LastIndexOf("/", StringComparison.Ordinal) + 1);
                             folderPath = url.Replace(fileName, string.Empty);
                         }
                         else

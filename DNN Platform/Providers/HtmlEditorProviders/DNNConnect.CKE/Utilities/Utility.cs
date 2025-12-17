@@ -221,7 +221,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             input = regS.Replace(input, "s");
             input = regSS.Replace(input, "S");
             input = regDot.Replace(input, ".");         // full-width dot       -> ASCII period
-            input = regBackslash.Replace(input, "\\");  // backslash-like chars -> ASCII backslash
+            input = regBackslash.Replace(input, @"\");  // backslash-like chars -> ASCII backslash
 
             input = input.Replace("�", string.Empty);
 
@@ -271,11 +271,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
         {
             if (!string.IsNullOrEmpty(portalSettings.HomeDirectoryMapPath) && folderPath.Length >= portalSettings.HomeDirectoryMapPath.Length)
             {
-                folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace("\\", "/");
+                folderPath = folderPath.Substring(portalSettings.HomeDirectoryMapPath.Length).Replace(@"\", "/");
             }
             else
             {
-                folderPath = folderPath.Replace("\\", "/");
+                folderPath = folderPath.Replace(@"\", "/");
             }
 
             return FolderManager.Instance.GetFolder(portalSettings.PortalId, folderPath);
@@ -524,6 +524,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
             {
                 return false;
             }
+        }
+
+        private static bool Contains(this string @this, string value, StringComparison comparisonType)
+        {
+            return @this.IndexOf(value, comparisonType) > -1;
         }
     }
 }

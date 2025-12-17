@@ -144,7 +144,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                // this needs to execute always to the client script code is registred in InvokePopupCal
+                // this needs to execute always to the client script code is registered in InvokePopupCal
                 this.cmdStartCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtStartDate);
                 this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
                 if (!this.Page.IsPostBack)
@@ -153,12 +153,12 @@ namespace DotNetNuke.UI.UserControls
                     {
                         this.lblLogURL.Text = this.URL; // saved for loading Log grid
                         TabType urlType = Globals.GetURLType(this.URL);
-                        if (urlType == TabType.File && this.URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
+                        if (urlType == TabType.File && !this.URL.StartsWith("fileid=", StringComparison.OrdinalIgnoreCase))
                         {
                             // to handle legacy scenarios before the introduction of the FileServerHandler
                             var fileName = Path.GetFileName(this.URL);
 
-                            var folderPath = this.URL.Substring(0, this.URL.LastIndexOf(fileName));
+                            var folderPath = this.URL.Substring(0, this.URL.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
                             var folder = FolderManager.Instance.GetFolder(this.PortalSettings.PortalId, folderPath);
 
                             var file = FileManager.Instance.GetFile(folder, fileName);
@@ -173,7 +173,7 @@ namespace DotNetNuke.UI.UserControls
                             if (string.IsNullOrEmpty(this.FormattedURL))
                             {
                                 this.lblURL.Text = Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, false);
-                                if (!this.lblURL.Text.StartsWith("http") && !this.lblURL.Text.StartsWith("mailto"))
+                                if (!this.lblURL.Text.StartsWith("http", StringComparison.OrdinalIgnoreCase) && !this.lblURL.Text.StartsWith("mailto", StringComparison.OrdinalIgnoreCase))
                                 {
                                     this.lblURL.Text = Globals.AddHTTP(this.Request.Url.Host) + this.lblURL.Text;
                                 }
@@ -190,7 +190,7 @@ namespace DotNetNuke.UI.UserControls
                                 this.pnlTrack.Visible = true;
                                 if (string.IsNullOrEmpty(this.TrackingURL))
                                 {
-                                    if (!this.URL.StartsWith("http"))
+                                    if (!this.URL.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                                     {
                                         this.lblTrackingURL.Text = Globals.AddHTTP(this.Request.Url.Host);
                                     }

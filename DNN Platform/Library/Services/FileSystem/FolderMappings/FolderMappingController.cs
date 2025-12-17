@@ -70,8 +70,12 @@ namespace DotNetNuke.Services.FileSystem
 
                 // Remove the folders with the provided mapping that doesn't have child folders with other mapping (only in the database and filesystem)
                 var folders1 = folders; // copy the variable to not access a modified closure
-                var removableFolders = folders.Where(f => f.FolderMappingID == folderMappingID && !folders1.Any(f2 => f2.FolderID != f.FolderID &&
-                                f2.FolderPath.StartsWith(f.FolderPath) && f2.FolderMappingID != folderMappingID));
+                var removableFolders = folders.Where(f =>
+                    f.FolderMappingID == folderMappingID &&
+                    !folders1.Any(f2 =>
+                        f2.FolderID != f.FolderID &&
+                        f2.FolderPath.StartsWith(f.FolderPath, StringComparison.OrdinalIgnoreCase) &&
+                        f2.FolderMappingID != folderMappingID));
 
                 if (removableFolders.Any())
                 {

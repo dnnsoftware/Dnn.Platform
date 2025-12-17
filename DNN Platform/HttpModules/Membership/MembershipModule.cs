@@ -205,7 +205,7 @@ namespace DotNetNuke.HttpModules.Membership
             var auth = HttpContext.Current.Request.Headers.Get("Authorization");
             if (!string.IsNullOrEmpty(auth))
             {
-                if (auth.StartsWith("Negotiate"))
+                if (auth.StartsWith("Negotiate", StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }

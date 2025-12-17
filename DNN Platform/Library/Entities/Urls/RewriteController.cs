@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Urls
                             replaced = true;
                         }
                     }
-                    else if (result.EndsWith("/"))
+                    else if (result.EndsWith("/", StringComparison.Ordinal))
                     {
                         result = result.Substring(0, result.Length - 1);
                         replaced = true;
@@ -300,7 +300,7 @@ namespace DotNetNuke.Entities.Urls
                 parentTraceId);
 
             // clean up and prepare the url for scanning
-            if (url.EndsWith("/"))
+            if (url.EndsWith("/", StringComparison.Ordinal))
             {
                 url = url.TrimEnd('/');
             }
@@ -724,7 +724,7 @@ namespace DotNetNuke.Entities.Urls
             if (querystring != string.Empty)
             {
                 // set up the querystring and the fullUrl to include the querystring
-                if (querystring.StartsWith("?") == false)
+                if (!querystring.StartsWith("?", StringComparison.Ordinal))
                 {
                     querystring = "?" + querystring;
                 }
@@ -756,10 +756,10 @@ namespace DotNetNuke.Entities.Urls
         {
             isPhysicalResource = false;
             checkFurtherForRewrite = true;
-            if (File.Exists(physicalPath) && !physicalPath.EndsWith("\\_noext.aspx"))
+            if (File.Exists(physicalPath) && !physicalPath.EndsWith(@"\_noext.aspx", StringComparison.OrdinalIgnoreCase))
             {
                 // resource found
-                string appPath = Globals.ApplicationMapPath + "\\default.aspx";
+                string appPath = $@"{Globals.ApplicationMapPath}\default.aspx";
                 bool isDefaultAspxPath = false;
                 if (!string.Equals(physicalPath, appPath, StringComparison.OrdinalIgnoreCase))
                 {
@@ -871,7 +871,7 @@ namespace DotNetNuke.Entities.Urls
                         // if a match is found here, there is the potential for a 'friendlier' url
                         if (sesUrlParams.Trim().Length > 0)
                         {
-                            sesUrlParams = sesUrlParams.Replace("\\", "/");
+                            sesUrlParams = sesUrlParams.Replace(@"\", "/");
                             var urlParams = sesUrlParams.Split('/');
                             for (var x = 1; x <= urlParams.Length - 1; x++)
                             {
@@ -895,7 +895,7 @@ namespace DotNetNuke.Entities.Urls
                         rewritePath = AddQueryStringToRewritePath(rewritePath, queryString);
 
                         // 832 : check for leading ~ - if not there, then redirect
-                        if (sendTo.StartsWith("~"))
+                        if (sendTo.StartsWith("~", StringComparison.Ordinal))
                         {
                             doRewrite = true;
                             SetRewriteParameters(ref result, rewritePath);
@@ -1244,7 +1244,7 @@ namespace DotNetNuke.Entities.Urls
                 if (stripLoneParm)
                 {
                     newUrl = UrlParamsRegex.Replace(newUrl, "&");
-                    if (newUrl.EndsWith("&"))
+                    if (newUrl.EndsWith("&", StringComparison.Ordinal))
                     {
                         newUrl = newUrl.Substring(0, newUrl.Length - 1);
                     }
@@ -1365,7 +1365,7 @@ namespace DotNetNuke.Entities.Urls
                                 // makes sure the newUrl has got a trailing ampersand or a ? to start the query string
                                 if (newUrl.Contains("?"))
                                 {
-                                    if (newUrl.EndsWith("&") == false)
+                                    if (newUrl.EndsWith("&", StringComparison.Ordinal) == false)
                                     {
                                         newUrl += "&";
                                     }
@@ -1377,7 +1377,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
 
                                 // makes sure the new parms string hasn't got a starting ampersand
-                                if (parms.StartsWith("&"))
+                                if (parms.StartsWith("&", StringComparison.Ordinal))
                                 {
                                     parms = parms.Substring(1);
                                 }
@@ -1418,7 +1418,7 @@ namespace DotNetNuke.Entities.Urls
             if (queryString != string.Empty)
             {
                 bool rewritePathHasQuery = rewritePath.IndexOf("?", StringComparison.Ordinal) != -1;
-                if (queryString.StartsWith("?"))
+                if (queryString.StartsWith("?", StringComparison.Ordinal))
                 {
                     queryString = queryString.Substring(1);
                 }
@@ -1497,7 +1497,7 @@ namespace DotNetNuke.Entities.Urls
                 // on other server software installed (apparently)
                 // so check the raw Url and the url, and see if they are the same except for the /default.aspx
                 string rawUrl = result.RawUrl;
-                if (url.ToLowerInvariant().EndsWith(rawUrl + defaultPage.ToLowerInvariant()))
+                if (url.ToLowerInvariant().EndsWith(rawUrl + defaultPage, StringComparison.OrdinalIgnoreCase))
                 {
                     // special case - change the url to be equal to the raw Url
                     url = url.Substring(0, url.Length - defaultPage.Length);
@@ -1519,7 +1519,7 @@ namespace DotNetNuke.Entities.Urls
                     if (portal.HomeTabId == -1)
                     {
                         string tabKey = url;
-                        if (tabKey.EndsWith("/"))
+                        if (tabKey.EndsWith("/", StringComparison.Ordinal))
                         {
                             tabKey = tabKey.TrimEnd('/');
                         }
@@ -1570,18 +1570,18 @@ namespace DotNetNuke.Entities.Urls
 
                         if (checkForCustomAlias)
                         {
-                            // ok, this isnt' a chosen portal alias, check the list of custom aliases
+                            // ok, this isn't a chosen portal alias, check the list of custom aliases
                             List<string> customAliasesForTabs = TabIndexController.GetCustomPortalAliases(settings);
                             if (customAliasesForTabs != null && customAliasesForTabs.Contains(portalAlias.HTTPAlias.ToLowerInvariant()))
                             {
                                 // ok, the alias is used as a custom tab, so now look in the dictionary to see if it's used a 'root' context
                                 string tabKey = url.ToLowerInvariant();
-                                if (tabKey.EndsWith("/"))
+                                if (tabKey.EndsWith("/", StringComparison.Ordinal))
                                 {
                                     tabKey = tabKey.TrimEnd('/');
                                 }
 
-                                if (tabKey.EndsWith("/default.aspx"))
+                                if (tabKey.EndsWith("/default.aspx", StringComparison.OrdinalIgnoreCase))
                                 {
                                     tabKey = tabKey.Substring(0, tabKey.Length - 13); // 13 = "/default.aspx".length
                                 }
@@ -1815,7 +1815,7 @@ namespace DotNetNuke.Entities.Urls
                         var tabPath = tabLookUpKey.Split(TabKeySeparators, StringSplitOptions.None)[1];
                         using (tabDict.GetReadLock())
                         {
-                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith(TabKeySeparator + tabPath)))
+                            foreach (var key in tabDict.Keys.Where(k => k.EndsWith(TabKeySeparator + tabPath, StringComparison.OrdinalIgnoreCase)))
                             {
                                 if (tabDict[key].Contains("language=" + currentLocale))
                                 {

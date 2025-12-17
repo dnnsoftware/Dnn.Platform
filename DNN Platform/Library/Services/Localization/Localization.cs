@@ -628,30 +628,30 @@ namespace DotNetNuke.Services.Localization
 
         public static string GetResourceFileName(string resourceFileName, string language, string mode, int portalId)
         {
-            if (!resourceFileName.EndsWith(".resx"))
+            if (!resourceFileName.EndsWith(".resx", StringComparison.OrdinalIgnoreCase))
             {
                 resourceFileName += ".resx";
             }
 
             if (language != SystemLocale)
             {
-                if (resourceFileName.ToLowerInvariant().EndsWith(".en-us.resx"))
+                if (resourceFileName.EndsWith(".en-us.resx", StringComparison.OrdinalIgnoreCase))
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 11) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 11)}.{language}.resx";
                 }
                 else
                 {
-                    resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + language + ".resx";
+                    resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.{language}.resx";
                 }
             }
 
             if (mode == "Host")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Host.resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Host.resx";
             }
             else if (mode == "Portal")
             {
-                resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Portal-" + portalId + ".resx";
+                resourceFileName = $"{resourceFileName.Substring(0, resourceFileName.Length - 5)}.Portal-{portalId}.resx";
             }
 
             return resourceFileName;

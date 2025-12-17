@@ -484,7 +484,7 @@ namespace DotNetNuke.Web.InternalServices
 
             int portalId;
             int parentIdAsInt;
-            if (parentId.StartsWith(PortalPrefix))
+            if (parentId.StartsWith(PortalPrefix, StringComparison.Ordinal))
             {
                 parentIdAsInt = -1;
                 if (!int.TryParse(parentId.Replace(PortalPrefix, string.Empty), out portalId))

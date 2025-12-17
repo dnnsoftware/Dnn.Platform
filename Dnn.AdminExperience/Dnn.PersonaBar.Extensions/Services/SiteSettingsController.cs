@@ -2904,11 +2904,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 switch (type)
                 {
                     case "Module":
-                        foreach (
-                            DesktopModuleInfo objDm in
-                                DesktopModuleController.GetDesktopModules(Null.NullInteger).Values)
+                        foreach (var objDm in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values)
                         {
-                            if (!objDm.FolderName.StartsWith("Admin/"))
+                            if (!objDm.FolderName.StartsWith("Admin/", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (Null.IsNull(objDm.Version))
                                 {
@@ -2918,7 +2916,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                                 {
                                     modules.Add(
                                         new KeyValuePair<string, int>(
-                                            objDm.FriendlyName + " [" + objDm.Version + "]",
+                                            $"{objDm.FriendlyName} [{objDm.Version}]",
                                             objDm.DesktopModuleID));
                                 }
                             }
@@ -3447,13 +3445,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private string GetAbsoluteServerPath()
         {
-            var httpContext = this.Request.Properties["MS_HttpContext"] as HttpContextWrapper;
-            if (httpContext != null)
+            if (this.Request.Properties["MS_HttpContext"] is HttpContextWrapper httpContext)
             {
                 var strServerPath = httpContext.Request.MapPath(httpContext.Request.ApplicationPath);
-                if (!strServerPath.EndsWith("\\"))
+                if (!strServerPath.EndsWith(@"\", StringComparison.Ordinal))
                 {
-                    strServerPath += "\\";
+                    strServerPath += @"\";
                 }
 
                 return strServerPath;

@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 type = "Install";
                 version = new Version(0, 0, 0).ToString(3);
             }
-            else if (fileName.StartsWith("Install"))
+            else if (fileName.StartsWith("Install", StringComparison.OrdinalIgnoreCase))
             {
                 // Install.xx.xx.xx.SqlDataprovider
                 type = "Install";

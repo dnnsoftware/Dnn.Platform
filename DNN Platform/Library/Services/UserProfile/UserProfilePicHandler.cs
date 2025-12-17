@@ -203,7 +203,7 @@ namespace DotNetNuke.Services.UserProfile
 
         private static bool IsImageExtension(string extension)
         {
-            if (!extension.StartsWith("."))
+            if (!extension.StartsWith(".", StringComparison.Ordinal))
             {
                 extension = $".{extension}";
             }

@@ -382,7 +382,7 @@ namespace DotNetNuke.Common.Utilities
         public static string GetDataBaseOwner()
         {
             var databaseOwner = GetDefaultProvider("data").Attributes["databaseOwner"];
-            if (!string.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
+            if (!string.IsNullOrEmpty(databaseOwner) && !databaseOwner.EndsWith(".", StringComparison.Ordinal))
             {
                 databaseOwner += ".";
             }
@@ -444,7 +444,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var provider = GetDefaultProvider("data");
             var objectQualifier = provider.Attributes["objectQualifier"];
-            if (!string.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
+            if (!string.IsNullOrEmpty(objectQualifier) && !objectQualifier.EndsWith("_", StringComparison.Ordinal))
             {
                 objectQualifier += "_";
             }

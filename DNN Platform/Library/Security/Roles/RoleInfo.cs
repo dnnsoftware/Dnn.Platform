@@ -564,7 +564,7 @@ namespace DotNetNuke.Security.Roles
 
         private static string FormatUrl(string url)
         {
-            if (url.StartsWith("/") && HttpContext.Current != null)
+            if (url.StartsWith("/", StringComparison.Ordinal) && HttpContext.Current != null)
             {
                 // server absolute path
                 return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;

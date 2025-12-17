@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Urls
                         // append any extra remaining path value to the end
                         if (!string.IsNullOrEmpty(remainingPath))
                         {
-                            if (remainingPath.StartsWith("/") == false)
+                            if (!remainingPath.StartsWith("/", StringComparison.Ordinal))
                             {
                                 changedPath += "/" + remainingPath;
                             }
@@ -251,7 +251,7 @@ namespace DotNetNuke.Entities.Urls
             if (!string.IsNullOrEmpty(otherParametersPath))
             {
                 // remove the trailing slash from otherParamtersPath if it exists, because the other parameters may be anywhere in the path
-                if (otherParametersPath.EndsWith("/"))
+                if (otherParametersPath.EndsWith("/", StringComparison.Ordinal))
                 {
                     otherParametersPath = otherParametersPath.Substring(0, otherParametersPath.Length - 1);
                 }
@@ -292,17 +292,17 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 // add back the remainders
-                if (rem1ParmsGp != null && rem1ParmsGp.Success)
+                if (rem1ParmsGp is { Success: true, })
                 {
                     remainingPath = rem1ParmsGp.Value;
                 }
 
-                if (rem2ParmsGp != null && rem2ParmsGp.Success)
+                if (rem2ParmsGp is { Success: true, })
                 {
                     remainingPath += rem2ParmsGp.Value;
                 }
 
-                if (remainingPath.EndsWith("/"))
+                if (remainingPath.EndsWith("/", StringComparison.Ordinal))
                 {
                     remainingPath = remainingPath.Substring(0, remainingPath.Length - 1);
                 }
@@ -325,7 +325,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
 
-                if (remainingPath.Length > 0 && remainingPath.StartsWith("/") == false)
+                if (remainingPath.Length > 0 && !remainingPath.StartsWith("/", StringComparison.Ordinal))
                 {
                     remainingPath = "/" + remainingPath;
                 }

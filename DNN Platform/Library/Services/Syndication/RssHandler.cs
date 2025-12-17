@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 foreach (var result in searchResults)
                 {
-                    if (!result.UniqueKey.StartsWith(Constants.ModuleMetaDataPrefixTag) && TabPermissionController.CanViewPage())
+                    if (!result.UniqueKey.StartsWith(Constants.ModuleMetaDataPrefixTag, StringComparison.Ordinal) && TabPermissionController.CanViewPage())
                     {
                         if (this.Settings.ActiveTab.StartDate < DateTime.Now && this.Settings.ActiveTab.EndDate > DateTime.Now)
                         {

@@ -171,7 +171,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 return Null.NullInteger;
             }
 
-            if (!controlSrc.EndsWith(".ascx"))
+            if (!controlSrc.EndsWith(".ascx", StringComparison.Ordinal))
             {
                 controlSrc += ".ascx";
             }

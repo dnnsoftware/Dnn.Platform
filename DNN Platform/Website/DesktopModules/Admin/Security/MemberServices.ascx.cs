@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.Admin.Security
             try
             {
                 string serverPath = this.Request.ApplicationPath;
-                if (!serverPath.EndsWith("/"))
+                if (!serverPath.EndsWith("/", StringComparison.Ordinal))
                 {
                     serverPath += "/";
                 }

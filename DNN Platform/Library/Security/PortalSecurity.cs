@@ -267,7 +267,7 @@ namespace DotNetNuke.Security
                     if (!string.IsNullOrEmpty(role))
                     {
                         // Deny permission
-                        if (role.StartsWith("!"))
+                        if (role.StartsWith("!", StringComparison.Ordinal))
                         {
                             // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                             if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
@@ -804,11 +804,11 @@ namespace DotNetNuke.Security
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
-            // clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
+            // clear any authentication provider tokens that match *UserToken convention e.g. FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
             var authCookies = HttpContext.Current.Request.Cookies.AllKeys;
             foreach (var authCookie in authCookies)
             {
-                if (authCookie.EndsWith("UserToken"))
+                if (authCookie.EndsWith("UserToken", StringComparison.OrdinalIgnoreCase))
                 {
                     var auth = HttpContext.Current.Response.Cookies[authCookie];
                     if (auth != null)
@@ -930,7 +930,7 @@ namespace DotNetNuke.Security
             if (!string.IsNullOrEmpty(roleName))
             {
                 // Deny permission
-                if (roleName.StartsWith("!"))
+                if (roleName.StartsWith("!", StringComparison.Ordinal))
                 {
                     // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                     if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))

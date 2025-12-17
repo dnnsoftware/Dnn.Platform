@@ -28,17 +28,20 @@ namespace DotNetNuke.ExtensionPoints
             foreach (var extension in extensionPointManager.GetContextMenuItemExtensionPoints(this.Module, this.Group))
             {
                 var icon = extension.Icon;
-                if (icon.StartsWith("~/"))
+                if (icon.StartsWith("~/", StringComparison.Ordinal))
                 {
                     icon = Globals.ResolveUrl(icon);
                 }
 
-                str.Append(@"<li id=""" + extension.CtxMenuItemId + @""" class=""" + extension.CssClass + @""">
-    <a id=""" + extension.CtxMenuItemId + @"_link"" href=""#"" onclick=""" + extension.Action + @""" >
-        <img id=""" + extension.CtxMenuItemId + @"_icon"" alt=""" + extension.AltText + @""" src=""" + icon + @""" title=""" + extension.AltText + @""">
-        <span id=""" + extension.CtxMenuItemId + @"_text"">" + extension.Text + @"</span>
-    </a>
-</li>");
+                str.Append(
+                    $"""
+                     <li id="{extension.CtxMenuItemId}" class="{extension.CssClass}">
+                         <a id="{extension.CtxMenuItemId}_link" href="#" onclick="{extension.Action}" >
+                             <img id="{extension.CtxMenuItemId}_icon" alt="{extension.AltText}" src="{icon}" title="{extension.AltText}">
+                             <span id="{extension.CtxMenuItemId}_text">{extension.Text}</span>
+                         </a>
+                     </li>
+                     """);
             }
 
             this.content = str.ToString();

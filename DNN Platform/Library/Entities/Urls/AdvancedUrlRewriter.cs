@@ -890,16 +890,16 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    if (ceSection != null && ceSection.Mode == CustomErrorsMode.Off)
+                    if (ceSection is { Mode: CustomErrorsMode.Off, })
                     {
                         errorPageHtml.Write(errorPageHtmlHeader);
-                        errorPageHtml.Write("<div style='font-weight:bolder'>Exception:</div><div>" + ex.Message + "</div>");
-                        errorPageHtml.Write("<div style='font-weight:bolder'>Stack Trace:</div><div>" + ex.StackTrace + "</div>");
+                        errorPageHtml.Write($"<div style='font-weight:bolder'>Exception:</div><div>{ex.Message}</div>");
+                        errorPageHtml.Write($"<div style='font-weight:bolder'>Stack Trace:</div><div>{ex.StackTrace}</div>");
                         errorPageHtml.Write("<div style='font-weight:bolder'>Administrators</div>");
                         errorPageHtml.Write("<div>You can see this exception because the customErrors attribute in the web.config is set to 'off'.  Change this value to 'on' or 'RemoteOnly' to show Error Handling</div>");
                         try
                         {
-                            if (errUrl != null && errUrl.StartsWith("~"))
+                            if (errUrl != null && errUrl.StartsWith("~", StringComparison.Ordinal))
                             {
                                 errUrl = VirtualPathUtility.ToAbsolute(errUrl);
                             }
@@ -908,7 +908,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             if (errUrl != null)
                             {
-                                errorPageHtml.Write("<div>The error handling would have shown this page : <a href='" + errUrl + "'>" + errUrl + "</a></div>");
+                                errorPageHtml.Write($"<div>The error handling would have shown this page : <a href='{errUrl}'>{errUrl}</a></div>");
                             }
                             else
                             {
@@ -1621,7 +1621,7 @@ namespace DotNetNuke.Entities.Urls
                     // 610 don't always end with '/' - reverses previous setting
                     // 687 don't double-check 301 redirects.  'CheckFor301' is less concise than 'Redirect301'
                     // DNN-21906: if the redirect is for splash page, then we should continue the 302 redirect.
-                    if (requestUri.AbsolutePath.EndsWith("/") && result.Action != ActionType.Redirect301 && result.Reason != RedirectReason.Requested_SplashPage)
+                    if (requestUri.AbsolutePath.EndsWith("/", StringComparison.Ordinal) && result.Action != ActionType.Redirect301 && result.Reason != RedirectReason.Requested_SplashPage)
                     {
                         result.Action = ActionType.CheckFor301;
                     }
@@ -1870,7 +1870,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
 
                                 // DNN-9158: prevent SSL Offloading infinite redirects
-                                if (!result.IsSecureConnection && result.IsSSLOffloaded && bestFriendlyNoScheme.StartsWith("https"))
+                                if (!result.IsSecureConnection && result.IsSSLOffloaded && bestFriendlyNoScheme.StartsWith("https", StringComparison.OrdinalIgnoreCase))
                                 {
                                     bestFriendlyNoScheme = $"http://{bestFriendlyNoScheme.Substring(8)}";
                                 }
@@ -2411,8 +2411,7 @@ namespace DotNetNuke.Entities.Urls
                         }
 
                         // 852: add skinSrc to path if it exists and if it's not already there
-                        string debugMessage;
-                        RewriteController.AddSkinToRewritePath(result.TabId, result.PortalId, ref rewritePath, skin, out debugMessage);
+                        RewriteController.AddSkinToRewritePath(result.TabId, result.PortalId, ref rewritePath, skin, out var debugMessage);
                         result.RewritePath = rewritePath; // reset back from ref temp var
                         if (debugMessage != null)
                         {
@@ -2424,16 +2423,16 @@ namespace DotNetNuke.Entities.Urls
                 if (!finished && result.DoRewrite)
                 {
                     // if so, do the rewrite
-                    if (result.RewritePath.StartsWith(result.Scheme) || result.RewritePath.StartsWith(Globals.glbDefaultPage) == false)
+                    if (result.RewritePath.StartsWith(result.Scheme, StringComparison.OrdinalIgnoreCase) || !result.RewritePath.StartsWith(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (result.RewritePath.Contains(Globals.glbDefaultPage) == false)
+                        if (!result.RewritePath.Contains(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                         {
                             RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
                         }
                         else
                         {
                             // if there is no TabId and we have the domain
-                            if (!result.RewritePath.ToLowerInvariant().Contains("tabId="))
+                            if (!result.RewritePath.Contains("tabId=", StringComparison.OrdinalIgnoreCase))
                             {
                                 RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
                             }
@@ -2607,7 +2606,7 @@ namespace DotNetNuke.Entities.Urls
                                     // 702 : don't check final url until checked for null reference first
                                     if (result.FinalUrl != null)
                                     {
-                                        if (result.FinalUrl.StartsWith("https://"))
+                                        if (result.FinalUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                                         {
                                             if (showDebug)
                                             {
@@ -2733,25 +2732,24 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    if (result.DoRewrite == false && result.CanRewrite != StateBoolean.False && !finished &&
+                    if (!result.DoRewrite && result.CanRewrite != StateBoolean.False && !finished &&
                         result.Action == ActionType.Continue)
                     {
                         // 739 : catch no-extension 404 errors
                         string pathWithNoQs = result.OriginalPath;
-                        if (pathWithNoQs.Contains("?"))
+                        if (pathWithNoQs.Contains("?", StringComparison.Ordinal))
                         {
                             pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
                         }
 
-                        if (!pathWithNoQs.Substring(pathWithNoQs.Length - 5, 5).Contains("."))
+                        if (!pathWithNoQs.AsSpan(pathWithNoQs.Length - 5, 5).Contains(".", StringComparison.Ordinal))
                         {
                             // no page extension, output a 404 if the Url is not found
                             // 766 : check for physical path before passing off as a 404 error
                             // 829 : change to use action physical path
                             // 893 : filter by regex pattern to exclude urls which are valid, but show up as extensionless
                             if ((request != null && Directory.Exists(result.PhysicalPath))
-                                ||
-                                Regex.IsMatch(pathWithNoQs, settings.ValidExtensionlessUrlsRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                                || Regex.IsMatch(pathWithNoQs, settings.ValidExtensionlessUrlsRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                             {
                                 // do nothing : it's a request for a valid physical path, maybe including a default document
                                 result.VirtualPath = StateBoolean.False;
@@ -3013,7 +3011,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);
-                    if (result.PortalAlias == null && result.DomainName.EndsWith("/"))
+                    if (result.PortalAlias == null && result.DomainName.EndsWith("/", StringComparison.Ordinal))
                     {
                         result.DomainName = result.DomainName.TrimEnd('/');
                         result.PortalAlias = PortalAliasController.Instance.GetPortalAlias(result.DomainName);

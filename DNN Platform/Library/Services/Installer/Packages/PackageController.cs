@@ -167,13 +167,13 @@ namespace DotNetNuke.Services.Installer.Packages
                                 }
 
                                 package.Description = XmlUtils.GetNodeValue(nav, "description");
-                                package.FileName = file.Replace(installPath + "\\", string.Empty);
+                                package.FileName = file.Replace(installPath + @"\", string.Empty);
 
-                                XPathNavigator foldernameNav;
+                                XPathNavigator folderNameNav;
                                 switch (package.PackageType)
                                 {
                                     case "Module":
-                                        // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                                        // In Dynamics modules, a component:type=File can have a basePath pointing to the App_Code folder. This is not a correct FolderName
                                         // To ensure that FolderName is DesktopModules...
                                         var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
                                         if (!string.IsNullOrEmpty(folderNameValue))
@@ -183,26 +183,26 @@ namespace DotNetNuke.Services.Installer.Packages
 
                                         break;
                                     case "Auth_System":
-                                        foldernameNav = nav.SelectSingleNode("components/component/files");
-                                        if (foldernameNav != null)
+                                        folderNameNav = nav.SelectSingleNode("components/component/files");
+                                        if (folderNameNav != null)
                                         {
-                                            package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                                            package.FolderName = Util.ReadElement(folderNameNav, "basePath").Replace('\\', '/');
                                         }
 
                                         break;
                                     case "Container":
-                                        foldernameNav = nav.SelectSingleNode("components/component/containerFiles");
-                                        if (foldernameNav != null)
+                                        folderNameNav = nav.SelectSingleNode("components/component/containerFiles");
+                                        if (folderNameNav != null)
                                         {
-                                            package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                                            package.FolderName = Globals.glbContainersPath + Util.ReadElement(folderNameNav, "containerName").Replace('\\', '/');
                                         }
 
                                         break;
                                     case "Skin":
-                                        foldernameNav = nav.SelectSingleNode("components/component/skinFiles");
-                                        if (foldernameNav != null)
+                                        folderNameNav = nav.SelectSingleNode("components/component/skinFiles");
+                                        if (folderNameNav != null)
                                         {
-                                            package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                                            package.FolderName = Globals.glbSkinsPath + Util.ReadElement(folderNameNav, "skinName").Replace('\\', '/');
                                         }
 
                                         break;
@@ -215,7 +215,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                 {
                                     if ((iconFileNav.Value != string.Empty) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
                                     {
-                                        if (iconFileNav.Value.StartsWith("~/"))
+                                        if (iconFileNav.Value.StartsWith("~/", StringComparison.Ordinal))
                                         {
                                             package.IconFile = iconFileNav.Value;
                                         }
@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                         else
                                         {
                                             package.IconFile = (string.IsNullOrEmpty(package.FolderName) ? string.Empty : package.FolderName + "/") + iconFileNav.Value;
-                                            package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
+                                            package.IconFile = (!package.IconFile.StartsWith("~/", StringComparison.Ordinal)) ? "~/" + package.IconFile : package.IconFile;
                                         }
                                     }
                                 }
@@ -379,14 +379,14 @@ namespace DotNetNuke.Services.Installer.Packages
         internal static string GetSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName, string startWith)
         {
             string result = string.Empty;
-            var foldernameNav = manifestNav.Select(xpath);
+            var folderNameNav = manifestNav.Select(xpath);
 
-            if (foldernameNav != null)
+            if (folderNameNav != null)
             {
-                while (foldernameNav.MoveNext())
+                while (folderNameNav.MoveNext())
                 {
-                    var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
-                    if (!string.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
+                    var elementValue = Util.ReadElement(folderNameNav.Current, elementName);
+                    if (!string.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith, StringComparison.OrdinalIgnoreCase))
                     {
                         result = elementValue;
                         break;

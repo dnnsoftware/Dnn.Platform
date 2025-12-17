@@ -19,7 +19,7 @@ namespace DotNetNuke.Common.Utilities
         public static void CheckZipEntry(this ZipArchiveEntry input)
         {
             var fullName = input.FullName.Replace('\\', '/');
-            if (fullName.StartsWith("..") || fullName.Contains("/../"))
+            if (fullName.StartsWith("..", StringComparison.Ordinal) || fullName.Contains("/../", StringComparison.Ordinal))
             {
                 throw new IllegalZipFileException("Illegal Zip File");
             }
@@ -28,10 +28,8 @@ namespace DotNetNuke.Common.Utilities
         public static string ReadTextFile(this ZipArchiveEntry input)
         {
             var text = string.Empty;
-            using (var reader = new StreamReader(input.Open()))
-            {
-                text = reader.ReadToEnd();
-            }
+            using var reader = new StreamReader(input.Open());
+            text = reader.ReadToEnd();
 
             return text;
         }
@@ -65,7 +63,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial void CheckZipEntry(this ZipEntry input)
         {
             var fullName = input.Name.Replace('\\', '/');
-            if (fullName.StartsWith("..") || fullName.Contains("/../"))
+            if (fullName.StartsWith("..", StringComparison.Ordinal) || fullName.Contains("/../", StringComparison.Ordinal))
             {
                 throw new IllegalZipFileException("Illegal Zip File");
             }

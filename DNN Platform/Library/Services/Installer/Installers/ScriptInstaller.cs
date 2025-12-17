@@ -253,7 +253,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             // This check needs to be included because the Unicode Byte Order mark results in an extra character at the start of the file
             // The extra character - '?' - causes an error with the database.
-            if (strScript.StartsWith("?"))
+            if (strScript.StartsWith("?", StringComparison.Ordinal))
             {
                 strScript = strScript.Substring(1);
             }

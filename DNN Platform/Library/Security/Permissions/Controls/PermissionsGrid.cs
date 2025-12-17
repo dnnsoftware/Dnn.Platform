@@ -1093,7 +1093,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.lblErrorMessage = new Label
             {
                 // TODO Remove DEBUG test
-                Text = "<br />" + (errorKey.StartsWith("DEBUG") ? errorKey : Localization.GetString(errorKey)),
+                Text = "<br />" + (errorKey.StartsWith("DEBUG", StringComparison.Ordinal) ? errorKey : Localization.GetString(errorKey)),
                 CssClass = "NormalRed",
             };
             this.pnlPermissions.Controls.Add(this.lblErrorMessage);

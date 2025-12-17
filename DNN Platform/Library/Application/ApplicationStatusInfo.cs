@@ -52,7 +52,7 @@ namespace DotNetNuke.Application
                 string strMessage = DataProvider.Instance().GetProviderPath();
 
                 // get current database version from DB
-                if (!strMessage.StartsWith("ERROR:"))
+                if (!strMessage.StartsWith("ERROR:", StringComparison.Ordinal))
                 {
                     try
                     {
@@ -65,7 +65,7 @@ namespace DotNetNuke.Application
                     }
                 }
 
-                if (strMessage.StartsWith("ERROR"))
+                if (strMessage.StartsWith("ERROR", StringComparison.Ordinal))
                 {
                     if (this.IsInstalled())
                     {
@@ -209,7 +209,7 @@ namespace DotNetNuke.Application
         /// <returns><see langword="true"/> if current request is for install; otherwise, <see langword="false"/>.</returns>
         private static bool IsInstallationURL()
         {
-            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace("\\", "/");
+            string requestURL = HttpContext.Current.Request.RawUrl.ToLowerInvariant().Replace(@"\", "/");
             return requestURL.Contains("/install.aspx") || requestURL.Contains("/installwizard.aspx");
         }
 
@@ -240,7 +240,7 @@ namespace DotNetNuke.Application
             return false;
         }
 
-        /// <summary>Determines whether has InstallVersion set.</summary>
+        /// <summary>Determines whether the config has InstallVersion set.</summary>
         /// <returns><see langword="true"/> if has installation date; otherwise, <see langword="false"/>.</returns>
         private static bool HasInstallVersion()
         {
@@ -251,8 +251,8 @@ namespace DotNetNuke.Application
         /// <returns>returns the domain directory.</returns>
         private static string GetCurrentDomainDirectory()
         {
-            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
-            if (dir.Length > 3 && dir.EndsWith("\\"))
+            var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", @"\");
+            if (dir.Length > 3 && dir.EndsWith(@"\", StringComparison.Ordinal))
             {
                 dir = dir.Substring(0, dir.Length - 1);
             }

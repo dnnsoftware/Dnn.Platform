@@ -71,12 +71,12 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                 }
             }
 
-            if (path.StartsWith("/"))
+            if (path.StartsWith("/", StringComparison.Ordinal))
             {
                 path = path.Substring(1);
             }
 
-            if (!path.StartsWith("~") && !path.Contains(":"))
+            if (!path.StartsWith("~", StringComparison.Ordinal) && !path.Contains(":"))
             {
                 foreach (var root in roots)
                 {

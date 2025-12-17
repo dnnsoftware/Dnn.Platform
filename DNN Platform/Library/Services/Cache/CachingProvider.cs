@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Cache
         {
             foreach (DictionaryEntry objDictionaryEntry in HttpRuntime.Cache)
             {
-                if (Convert.ToString(objDictionaryEntry.Key, CultureInfo.InvariantCulture).StartsWith(prefix))
+                if (Convert.ToString(objDictionaryEntry.Key, CultureInfo.InvariantCulture).StartsWith(prefix, StringComparison.Ordinal))
                 {
                     if (clearRuntime)
                     {

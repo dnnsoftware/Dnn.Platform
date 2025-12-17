@@ -251,7 +251,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var defaultTable = this.LoadFile(pid, resourceMode, "Default", locale);
 
                 var fullPath = Path.GetFileName(this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty));
-                var folder = this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty).Replace("\\" + resourceFile, string.Empty);
+                var folder = this.ResourceFile(pid, locale, resourceMode).Replace(Globals.ApplicationMapPath, string.Empty).Replace(@"\" + resourceFile, string.Empty);
 
                 // check edit table and if empty, just use default
                 if (editTable.Count == 0)
@@ -643,7 +643,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private static IEnumerable<KeyValuePair<string, string>> GetResxFiles(string path)
         {
-            var sysLocale = Localization.SystemLocale.ToLowerInvariant();
+            var sysLocale = Localization.SystemLocale;
             return
                 from file in Directory.GetFiles(path, "*.resx")
                 select new FileInfo(file) into fileInfo
@@ -656,7 +656,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             var folderInfo = new DirectoryInfo(path);
 
-            if (path.ToLowerInvariant().EndsWith(Localization.LocalResourceDirectory))
+            if (path.EndsWith(Localization.LocalResourceDirectory, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }

@@ -483,12 +483,12 @@ namespace DotNetNuke.Services.Installer.Writers
             foreach (FileInfo file in files)
             {
                 string filePath = folder.FullName.Replace(rootPath, string.Empty);
-                if (filePath.StartsWith("\\"))
+                if (filePath.StartsWith(@"\", StringComparison.Ordinal))
                 {
                     filePath = filePath.Substring(1);
                 }
 
-                if (folder.FullName.ToLowerInvariant().Contains("app_code"))
+                if (folder.FullName.Contains("app_code", StringComparison.OrdinalIgnoreCase))
                 {
                     filePath = "[app_code]" + filePath;
                 }
@@ -546,21 +546,23 @@ namespace DotNetNuke.Services.Installer.Writers
             fileName = assemblyNav.Value;
             XPathNavigator buildPathNav = rootNav.SelectSingleNode("proj:PropertyGroup/proj:OutputPath", manager);
             string buildPath = buildPathNav.Value.Replace("..\\", string.Empty);
-            buildPath = buildPath.Replace(this.AssemblyPath + "\\", string.Empty);
+            buildPath = buildPath.Replace(this.AssemblyPath + @"\", string.Empty);
             this.AddFile(Path.Combine(buildPath, fileName + ".dll"));
 
             // Check for referenced assemblies
             foreach (XPathNavigator itemNav in rootNav.Select("proj:ItemGroup/proj:Reference", manager))
             {
                 fileName = Util.ReadAttribute(itemNav, "Include");
-                if (fileName.IndexOf(",") > -1)
+                if (fileName.Contains(",", StringComparison.Ordinal))
                 {
-                    fileName = fileName.Substring(0, fileName.IndexOf(","));
+                    fileName = fileName.Substring(0, fileName.IndexOf(",", StringComparison.Ordinal));
                 }
 
-                if (
-                    !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.OrdinalIgnoreCase) ||
-                      fileName.Equals("dotnetnuke.webutility", StringComparison.OrdinalIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.OrdinalIgnoreCase)))
+                if (!(fileName.StartsWith("system", StringComparison.OrdinalIgnoreCase)
+                      || fileName.StartsWith("microsoft", StringComparison.OrdinalIgnoreCase)
+                      || fileName.Equals("dotnetnuke", StringComparison.OrdinalIgnoreCase)
+                      || fileName.Equals("dotnetnuke.webutility", StringComparison.OrdinalIgnoreCase)
+                      || fileName.Equals("dotnetnuke.webcontrols", StringComparison.OrdinalIgnoreCase)))
                 {
                     this.AddFile(fileName + ".dll");
                 }
@@ -629,7 +631,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 else
                 {
-                    filepath = Path.Combine(Path.Combine(this.applicationStatusInfo.ApplicationMapPath, basePath), packageFile.FullName.Replace(basePath + "\\", string.Empty));
+                    filepath = Path.Combine(Path.Combine(this.applicationStatusInfo.ApplicationMapPath, basePath), packageFile.FullName.Replace(basePath + @"\", string.Empty));
                 }
 
                 if (File.Exists(filepath))

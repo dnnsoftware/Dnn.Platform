@@ -58,7 +58,7 @@ namespace DotNetNuke.Data
             get
             {
                 string databaseOwner = this.Settings["databaseOwner"];
-                if (!string.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
+                if (!string.IsNullOrEmpty(databaseOwner) && !databaseOwner.EndsWith(".", StringComparison.Ordinal))
                 {
                     databaseOwner += ".";
                 }
@@ -77,7 +77,7 @@ namespace DotNetNuke.Data
             get
             {
                 string objectQualifier = this.Settings["objectQualifier"];
-                if (!string.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
+                if (!string.IsNullOrEmpty(objectQualifier) && !objectQualifier.EndsWith("_", StringComparison.Ordinal))
                 {
                     objectQualifier += "_";
                 }

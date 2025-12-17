@@ -758,7 +758,7 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual bool IsValidFolderPath(string folderPath)
         {
             var illegalInFolderPath = new Regex($"[{Regex.Escape(new string(Path.GetInvalidPathChars()))}]", RegexOptions.Compiled);
-            return !illegalInFolderPath.IsMatch(folderPath) && !folderPath.TrimEnd('/', '\\').EndsWith(".");
+            return !illegalInFolderPath.IsMatch(folderPath) && !folderPath.TrimEnd('/', '\\').EndsWith(".", StringComparison.Ordinal);
         }
 
         /// <summary>Adds a log entry.</summary>
@@ -783,7 +783,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="newFolderPath">The new folder path.</param>
         internal void DeleteFilesFromCache(int portalId, string newFolderPath)
         {
-            var folders = this.GetFolders(portalId).Where(f => f.FolderPath.StartsWith(newFolderPath));
+            var folders = this.GetFolders(portalId).Where(f => f.FolderPath.StartsWith(newFolderPath, StringComparison.OrdinalIgnoreCase));
             foreach (var folderInfo in folders)
             {
                 var fileIds = this.GetFiles(folderInfo).Select(f => f.FileId);
@@ -1197,7 +1197,7 @@ namespace DotNetNuke.Services.FileSystem
 
                     foreach (var dn in DirectoryWrapper.Instance.GetDirectories(dir))
                     {
-                        if (((FileWrapper.Instance.GetAttributes(dn) & FileAttributes.Hidden) == FileAttributes.Hidden || dn.StartsWith("_")) && hideFoldersEnabled)
+                        if (((FileWrapper.Instance.GetAttributes(dn) & FileAttributes.Hidden) == FileAttributes.Hidden || dn.StartsWith("_", StringComparison.Ordinal)) && hideFoldersEnabled)
                         {
                             continue;
                         }
@@ -1355,7 +1355,7 @@ namespace DotNetNuke.Services.FileSystem
             // Update ExistsInFolderMapping if the Parent Does Not ExistsInFolderMapping
             var mergedTreeItems = mergedTree.Values;
             foreach (var mergedItem in mergedTreeItems.Where(m => m.ExistsInFolderMapping
-                                       && mergedTreeItems.Any(mt2 => !mt2.ExistsInFolderMapping && m.FolderPath.StartsWith(mt2.FolderPath))))
+                                       && mergedTreeItems.Any(mt2 => !mt2.ExistsInFolderMapping && m.FolderPath.StartsWith(mt2.FolderPath, StringComparison.OrdinalIgnoreCase))))
             {
                 mergedItem.ExistsInFolderMapping = false;
             }
@@ -1393,7 +1393,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             // Destination folder cannot be a child mapped folder from the folder to move
-            return !destinationFolder.MappedPath.StartsWith(folderToMove.MappedPath) && this.IsMoveOperationValid(folderToMove, newFolderPath);
+            return !destinationFolder.MappedPath.StartsWith(folderToMove.MappedPath, StringComparison.OrdinalIgnoreCase) && this.IsMoveOperationValid(folderToMove, newFolderPath);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1409,7 +1409,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             // newParentFolder cannot be a child of folderToMove
-            return !newFolderPath.StartsWith(folderToMove.FolderPath);
+            return !newFolderPath.StartsWith(folderToMove.FolderPath, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
@@ -1516,7 +1516,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             this.RenameFolderInFileSystem(folder, newFolderPath);
 
-            var folderInfos = this.GetFolders(folder.PortalID).Where(f => f.FolderPath != string.Empty && f.FolderPath.StartsWith(folder.FolderPath)).ToArray();
+            var folderInfos = this.GetFolders(folder.PortalID).Where(f => f.FolderPath != string.Empty && f.FolderPath.StartsWith(folder.FolderPath, StringComparison.OrdinalIgnoreCase)).ToArray();
             var tmpFolderPath = folder.FolderPath;
 
             foreach (var folderInfo in folderInfos)
@@ -1782,14 +1782,14 @@ namespace DotNetNuke.Services.FileSystem
         {
             var originalFolderPath = folder.FolderPath;
 
-            var folderInfos = this.GetFolders(folder.PortalID).Where(f => f.FolderPath != string.Empty && f.FolderPath.StartsWith(originalFolderPath)).ToArray();
+            var folderInfos = this.GetFolders(folder.PortalID).Where(f => f.FolderPath != string.Empty && f.FolderPath.StartsWith(originalFolderPath, StringComparison.OrdinalIgnoreCase)).ToArray();
 
             foreach (var folderInfo in folderInfos)
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folderInfo.FolderMappingID);
                 var provider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-                var folderPath = newFolderPath + (newFolderPath.EndsWith("/") ? string.Empty : "/") + folderInfo.FolderPath.Substring(originalFolderPath.Length);
+                var folderPath = newFolderPath + (newFolderPath.EndsWith("/", StringComparison.Ordinal) ? string.Empty : "/") + folderInfo.FolderPath.Substring(originalFolderPath.Length);
 
                 var parentFolder = this.GetParentFolder(folder.PortalID, folderPath);
                 folderInfo.ParentID = parentFolder.FolderID;
@@ -2120,7 +2120,7 @@ namespace DotNetNuke.Services.FileSystem
 
             // Pre-compute allowed folders once
             var allowedFolderPaths = this.GetFolders(folder.PortalID)
-                .Where(f => f.FolderPath.StartsWith(folder.FolderPath) &&
+                .Where(f => f.FolderPath.StartsWith(folder.FolderPath, StringComparison.OrdinalIgnoreCase) &&
                            FolderPermissionController.Instance.CanViewFolder(f))
                 .Select(f => f.FolderPath)
                 .ToHashSet();

@@ -299,7 +299,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string appURL = Globals.ApplicationURL();
-            if (appURL.IndexOf("?") == Null.NullInteger)
+            if (appURL.IndexOf("?", StringComparison.Ordinal) == Null.NullInteger)
             {
                 appURL += "?def=ErrorMessage";
             }
@@ -337,7 +337,7 @@ namespace DotNetNuke.Services.Exceptions
                 if (!string.IsNullOrEmpty(url))
                 {
                     // redirect
-                    if (url.IndexOf("error=terminate") != -1)
+                    if (url.Contains("error=terminate", StringComparison.OrdinalIgnoreCase))
                     {
                         HttpContext.Current.Response.Clear();
                         HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");

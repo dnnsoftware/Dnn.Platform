@@ -221,7 +221,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     var url = match.Groups[3].Value;
                     var changed = false;
 
-                    if (url.StartsWith("/"))
+                    if (url.StartsWith("/", StringComparison.Ordinal))
                     {
                         if (!string.IsNullOrEmpty(Globals.ApplicationPath))
                         {
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             changed = true;
                         }
                     }
-                    else if (url.StartsWith("~/"))
+                    else if (url.StartsWith("~/", StringComparison.Ordinal))
                     {
                         url = Globals.ResolveUrl(url);
                         changed = true;

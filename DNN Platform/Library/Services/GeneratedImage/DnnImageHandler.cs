@@ -131,8 +131,8 @@ namespace DotNetNuke.Services.GeneratedImage
             string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
-            Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
-            Color backColor = string.IsNullOrEmpty(parameters["backcolor"]) ? Color.White : (parameters["backcolor"].StartsWith("#") ? ColorTranslator.FromHtml(parameters["backcolor"]) : Color.FromName(parameters["backcolor"]));
+            Color color = string.IsNullOrEmpty(parameters["color"]) ? Color.White : (parameters["color"].StartsWith("#", StringComparison.Ordinal) ? ColorTranslator.FromHtml(parameters["color"]) : Color.FromName(parameters["color"]));
+            Color backColor = string.IsNullOrEmpty(parameters["backcolor"]) ? Color.White : (parameters["backcolor"].StartsWith("#", StringComparison.Ordinal) ? ColorTranslator.FromHtml(parameters["backcolor"]) : Color.FromName(parameters["backcolor"]));
 
             // Do we have a border ?
             int border = string.IsNullOrEmpty(parameters["border"]) ? 0 : Convert.ToInt32(parameters["border"], CultureInfo.InvariantCulture);
@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             // allow only site resources when using the url parameter
                             IPortalAliasController portalAliasController = PortalAliasController.Instance;
                             var uriValidator = new UriValidator(portalAliasController);
-                            if (!url.StartsWith("http") || !uriValidator.UriBelongsToSite(new Uri(url)))
+                            if (!url.StartsWith("http", StringComparison.OrdinalIgnoreCase) || !uriValidator.UriBelongsToSite(new Uri(url)))
                             {
                                 return this.GetEmptyImageInfo();
                             }
@@ -479,7 +479,7 @@ namespace DotNetNuke.Services.GeneratedImage
             var normalizeFilePath = NormalizeFilePath(filePath.Trim());
 
             // Resources file cannot be served
-            if (filePath.EndsWith(".resources"))
+            if (filePath.EndsWith(".resources", StringComparison.OrdinalIgnoreCase))
             {
                 return false;
             }
@@ -490,8 +490,8 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private static string NormalizeFilePath(string filePath)
         {
-            var normalizeFilePath = filePath.Replace("\\", "/");
-            if (!normalizeFilePath.StartsWith("/"))
+            var normalizeFilePath = filePath.Replace(@"\", "/");
+            if (!normalizeFilePath.StartsWith("/", StringComparison.Ordinal))
             {
                 normalizeFilePath = "/" + normalizeFilePath;
             }

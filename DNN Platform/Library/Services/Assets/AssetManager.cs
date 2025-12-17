@@ -280,7 +280,7 @@ namespace DotNetNuke.Services.Assets
 
             var folderPath = PathUtils.Instance.FormatFolderPath(
                 PathUtils.Instance.FormatFolderPath(
-                PathUtils.Instance.StripFolderPath(parentFolder.FolderPath).Replace("\\", "/")) + filterFolderName);
+                PathUtils.Instance.StripFolderPath(parentFolder.FolderPath).Replace(@"\", "/")) + filterFolderName);
 
             mappedPath = PathUtils.Instance.FormatFolderPath(mappedPath);
 
@@ -292,7 +292,7 @@ namespace DotNetNuke.Services.Assets
             try
             {
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(parentFolder.PortalID, folderMappingId);
-                return FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace("\\", "/"));
+                return FolderManager.Instance.AddFolder(folderMapping, folderPath, mappedPath.Replace(@"\", "/"));
             }
             catch (FolderAlreadyExistsException)
             {

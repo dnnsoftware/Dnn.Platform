@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install/launchautoinstall", string.Empty).Replace("/install", string.Empty).Replace("/runinstall", string.Empty);
             }
 
-            var serverPath = Globals.ApplicationMapPath + "\\";
+            var serverPath = Globals.ApplicationMapPath + @"\";
 
             // Get the Portal Alias
             var portalAlias = domain;
@@ -80,9 +80,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 email = "admin@" + domain.Replace("www.", string.Empty);
 
                 // Remove any domain subfolder information ( if it exists )
-                if (email.IndexOf("/") != -1)
+                if (email.IndexOf("/", StringComparison.Ordinal) != -1)
                 {
-                    email = email.Substring(0, email.IndexOf("/"));
+                    email = email.Substring(0, email.IndexOf("/", StringComparison.Ordinal));
                 }
             }
 
@@ -91,7 +91,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (!culture.Equals("en-us", StringComparison.OrdinalIgnoreCase))
             {
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
-                string lpFilePath = installFolder + "\\installlanguage.resources";
+                string lpFilePath = $@"{installFolder}\installlanguage.resources";
 
                 if (File.Exists(lpFilePath))
                 {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var childPath = string.Empty;
             if (portal.IsChild)
             {
-                childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
+                childPath = portalAlias.Substring(portalAlias.LastIndexOf("/", StringComparison.Ordinal) + 1);
             }
 
             // Create Folder Mappings config

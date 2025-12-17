@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
         private static bool IsImageExtension(string extension)
         {
-            if (!extension.StartsWith("."))
+            if (!extension.StartsWith(".", StringComparison.Ordinal))
             {
                 extension = $".{extension}";
             }

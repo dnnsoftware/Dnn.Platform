@@ -421,10 +421,10 @@ namespace DotNetNuke.UI.Skins
             var list = new List<InstalledSkinInfo>();
             foreach (string folder in Directory.GetDirectories(Path.Combine(Globals.HostMapPath, "Skins")))
             {
-                if (!folder.EndsWith(Globals.glbHostSkinFolder))
+                if (!folder.EndsWith(Globals.glbHostSkinFolder, StringComparison.OrdinalIgnoreCase))
                 {
                     var skin = new InstalledSkinInfo();
-                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
+                    skin.SkinName = folder.Substring(folder.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
                     skin.InUse = IsFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
                     list.Add(skin);
                 }
@@ -685,8 +685,8 @@ namespace DotNetNuke.UI.Skins
         private static bool IsFallbackSkin(string skinPath)
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
-            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", "\\");
-            if (defaultSkinPath.EndsWith("\\"))
+            string defaultSkinPath = (Globals.HostMapPath + SkinController.RootSkin + defaultSkin.Folder).Replace("/", @"\");
+            if (defaultSkinPath.EndsWith(@"\", StringComparison.Ordinal))
             {
                 defaultSkinPath = defaultSkinPath.Substring(0, defaultSkinPath.Length - 1);
             }

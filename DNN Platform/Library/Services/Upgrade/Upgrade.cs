@@ -396,7 +396,7 @@ namespace DotNetNuke.Services.Upgrade
                     string description = XmlUtils.GetNodeValue(node.CreateNavigator(), "description");
                     string keyWords = XmlUtils.GetNodeValue(node.CreateNavigator(), "keywords");
                     string templateFileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "templatefile");
-                    string serverPath = Globals.ApplicationMapPath + "\\";
+                    string serverPath = Globals.ApplicationMapPath + @"\";
                     bool isChild = bool.Parse(XmlUtils.GetNodeValue(node.CreateNavigator(), "ischild"));
                     string homeDirectory = XmlUtils.GetNodeValue(node.CreateNavigator(), "homedirectory");
 
@@ -420,9 +420,9 @@ namespace DotNetNuke.Services.Upgrade
                         email = "admin@" + domain.Replace("www.", string.Empty);
 
                         // Remove any domain subfolder information ( if it exists )
-                        if (email.IndexOf("/") != -1)
+                        if (email.IndexOf("/", StringComparison.Ordinal) != -1)
                         {
-                            email = email.Substring(0, email.IndexOf("/"));
+                            email = email.Substring(0, email.IndexOf("/", StringComparison.Ordinal));
                         }
                     }
 
@@ -598,14 +598,14 @@ namespace DotNetNuke.Services.Upgrade
         public static void ExecuteScripts(string strProviderPath)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "ExecuteScripts:" + strProviderPath);
-            string scriptPath = Globals.ApplicationMapPath + "\\Install\\Scripts\\";
+            string scriptPath = $@"{Globals.ApplicationMapPath}\Install\Scripts\";
             if (Directory.Exists(scriptPath))
             {
                 string[] files = Directory.GetFiles(scriptPath);
                 foreach (string file in files)
                 {
                     // Execute if script is a provider script
-                    if (file.IndexOf("." + DefaultProvider) != -1)
+                    if (file.Contains("." + DefaultProvider, StringComparison.OrdinalIgnoreCase))
                     {
                         ExecuteScript(file, true);
 
@@ -629,7 +629,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void ExecuteScript(string file)
         {
             // Execute if script is a provider script
-            if (file.IndexOf("." + DefaultProvider) != -1)
+            if (file.Contains("." + DefaultProvider, StringComparison.OrdinalIgnoreCase))
             {
                 ExecuteScript(file, true);
             }
@@ -644,7 +644,7 @@ namespace DotNetNuke.Services.Upgrade
             string installTemplate = Config.GetSetting("InstallTemplate");
             try
             {
-                xmlDoc.Load(Globals.ApplicationMapPath + "\\Install\\" + installTemplate);
+                xmlDoc.Load($@"{Globals.ApplicationMapPath}\Install\{installTemplate}");
             }
             catch
             {
@@ -657,12 +657,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// <summary>SetInstallTemplate saves the XmlDocument back to Installation Template specified in web.config.</summary>
         /// <param name="xmlDoc">The Xml Document to save.</param>
-        /// <returns>A string which contains the error massage - if appropriate.</returns>
+        /// <returns>A string which contains the error message - if appropriate.</returns>
         public static string SetInstallTemplate(XmlDocument xmlDoc)
         {
             string errorMessage = Null.NullString;
             string installTemplate = Config.GetSetting("InstallTemplate");
-            string filePath = Globals.ApplicationMapPath + "\\Install\\" + installTemplate;
+            string filePath = $@"{Globals.ApplicationMapPath}\Install\{installTemplate}";
             try
             {
                 // ensure the file is not read-only
@@ -915,12 +915,12 @@ namespace DotNetNuke.Services.Upgrade
                                     settingValue = "support@" + domainName;
 
                                     // Remove any folders
-                                    settingValue = settingValue.Substring(0, settingValue.IndexOf("/"));
+                                    settingValue = settingValue.Substring(0, settingValue.IndexOf("/", StringComparison.Ordinal));
 
                                     // Remove port number
-                                    if (settingValue.IndexOf(":") != -1)
+                                    if (settingValue.Contains(":", StringComparison.Ordinal))
                                     {
-                                        settingValue = settingValue.Substring(0, settingValue.IndexOf(":"));
+                                        settingValue = settingValue.Substring(0, settingValue.IndexOf(":", StringComparison.Ordinal));
                                     }
                                 }
 

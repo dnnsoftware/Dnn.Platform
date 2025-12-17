@@ -277,7 +277,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
             }
 
             // Path is either a relative path including the application path or a path starting with a tilde or a path relative to the path name alias
-            filePath = filePath.Replace("\\", "/");
+            filePath = filePath.Replace(@"\", "/");
             if (!string.IsNullOrEmpty(pathNameAlias))
             {
                 if (this.PathNameAliases.TryGetValue(pathNameAlias, out var alias))

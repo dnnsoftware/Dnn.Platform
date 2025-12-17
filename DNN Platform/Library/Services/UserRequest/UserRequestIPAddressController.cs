@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.UserRequest
                     userIPAddress = userIPAddress.Split(':')[0];
                 }
                 else if (ipFamily == IPAddressFamily.IPv6
-                    && userIPAddress.StartsWith("[") && userIPAddress.Contains(']'))
+                    && userIPAddress.StartsWith("[", StringComparison.Ordinal) && userIPAddress.Contains(']'))
                 {
                     userIPAddress = userIPAddress.Split(']')[0].Substring(1);
                 }

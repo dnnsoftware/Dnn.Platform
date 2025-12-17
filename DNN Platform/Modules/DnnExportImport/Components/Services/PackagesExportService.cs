@@ -198,7 +198,7 @@ namespace Dnn.ExportImport.Components.Services
                 return false;
             }
 
-            return fileInfo.Name.StartsWith("Skin_") || fileInfo.Name.StartsWith("Container_");
+            return fileInfo.Name.StartsWith("Skin_", StringComparison.OrdinalIgnoreCase) || fileInfo.Name.StartsWith("Container_", StringComparison.OrdinalIgnoreCase);
         }
 
         private static ExportPackage GenerateExportPackage(string filePath)

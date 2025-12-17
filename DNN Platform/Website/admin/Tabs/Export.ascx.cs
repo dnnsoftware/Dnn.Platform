@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     if (folder != null)
                     {
                         var filename = folder.FolderPath + this.txtFile.Text + ".page.template";
-                        filename = filename.Replace("/", "\\");
+                        filename = filename.Replace("/", @"\");
 
                         var xmlTemplate = new XmlDocument { XmlResolver = null };
                         XmlNode nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));

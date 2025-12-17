@@ -114,7 +114,7 @@ namespace DotNetNuke.Common.Lists
             if (!itemExists)
             {
                 var ctlLists = new ListController();
-                string listName = key.Substring(key.IndexOf(":") + 1);
+                string listName = key.Substring(key.IndexOf(":", StringComparison.Ordinal) + 1);
                 string parentKey = key.Replace(listName, string.Empty).TrimEnd(':');
                 ListInfo listInfo = ctlLists.GetListInfo(listName, parentKey);
 

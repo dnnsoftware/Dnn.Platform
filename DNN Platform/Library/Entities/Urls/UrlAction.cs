@@ -279,7 +279,7 @@ namespace DotNetNuke.Entities.Urls
 
         private void Constructor(string scheme, string applicationPath, string physicalPath)
         {
-            if (scheme.EndsWith("://") == false)
+            if (!scheme.EndsWith("://", StringComparison.Ordinal))
             {
                 this.Scheme = scheme + "://";
             }

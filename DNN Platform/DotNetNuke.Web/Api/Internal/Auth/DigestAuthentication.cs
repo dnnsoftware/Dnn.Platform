@@ -129,7 +129,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         private string GenerateUnhashedDigest()
         {
             string a1 =
-                $"{this.request.RequestParams["username"].Replace("\\\\", "\\")}:{this.request.RequestParams["realm"]}:{this.password}";
+                $"{this.request.RequestParams["username"].Replace("\\\\", @"\")}:{this.request.RequestParams["realm"]}:{this.password}";
             string ha1 = CreateMd5HashBinHex(a1);
             string a2 = $"{this.request.HttpMethod}:{this.request.RequestParams["uri"]}";
             string ha2 = CreateMd5HashBinHex(a2);

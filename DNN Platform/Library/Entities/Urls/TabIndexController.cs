@@ -264,15 +264,15 @@ namespace DotNetNuke.Entities.Urls
                     portalAliasInfo = portalAliasCollection.SingleOrDefault(a => a.HTTPAlias == currentAlias);
                     if (portalAliasInfo != null)
                     {
-                        string httpAlias = portalAliasInfo.HTTPAlias.ToLowerInvariant();
+                        string httpAlias = portalAliasInfo.HTTPAlias;
                         if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;
                         }
 
-                        httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
-                        if (httpAlias.StartsWith(portalAlias, StringComparison.InvariantCultureIgnoreCase) && portalAliasInfo.PortalID == portalId)
+                        httpAlias = httpAlias.StartsWith("www.", StringComparison.OrdinalIgnoreCase) ? httpAlias.Substring("www.".Length) : $"www.{httpAlias}";
+                        if (httpAlias.StartsWith(portalAlias, StringComparison.OrdinalIgnoreCase) && portalAliasInfo.PortalID == portalId)
                         {
                             retValue = portalAliasInfo;
                             break;
@@ -371,7 +371,7 @@ namespace DotNetNuke.Entities.Urls
                 // allow for additional qs parameters
                 if (!string.IsNullOrEmpty(redirect.QueryString))
                 {
-                    rewritePath += redirect.QueryString.StartsWith("&") ? redirect.QueryString : "&" + redirect.QueryString;
+                    rewritePath += redirect.QueryString.StartsWith("&", StringComparison.Ordinal) ? redirect.QueryString : "&" + redirect.QueryString;
                 }
 
                 string redirectTabPath = redirect.Url;

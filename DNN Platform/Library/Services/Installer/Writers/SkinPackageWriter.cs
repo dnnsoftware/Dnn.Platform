@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Installer.Writers
             foreach (FileInfo file in files)
             {
                 string filePath = folder.FullName.Replace(rootPath, string.Empty);
-                if (filePath.StartsWith("\\"))
+                if (filePath.StartsWith(@"\", StringComparison.Ordinal))
                 {
                     filePath = filePath.Substring(1);
                 }

@@ -78,18 +78,18 @@ namespace DotNetNuke.UI.Skins
             if (folderPath.IndexOf(Globals.HostMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "G";
-                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(Globals.HostMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
             else if (folderPath.IndexOf(PortalSettings.Current.HomeSystemDirectoryMapPath, StringComparison.InvariantCultureIgnoreCase) != -1)
             {
                 skinType = "S";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
             else
             {
                 // to be compliant with all versions
                 skinType = "L";
-                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
+                skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace(@"\", "/");
             }
 
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -164,7 +164,7 @@ namespace DotNetNuke.UI.Skins
             string strSkinSrc = skinSrc;
             if (!string.IsNullOrEmpty(strSkinSrc))
             {
-                strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/") + 1);
+                strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/", StringComparison.Ordinal) + 1);
             }
 
             return strSkinSrc;
@@ -480,7 +480,7 @@ namespace DotNetNuke.UI.Skins
             {
                 foreach (string skinFolder in Directory.GetDirectories(root))
                 {
-                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder))
+                    if (!skinFolder.EndsWith(Globals.glbHostSkinFolder, StringComparison.OrdinalIgnoreCase))
                     {
                         AddSkinFiles(skins, skinRoot, skinFolder, GlobalSkinPrefix);
                     }

@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     if (file.Path.ToLowerInvariant().Contains(this.basePath.ToLowerInvariant()))
                     {
-                        path = file.Path.ToLowerInvariant().Replace(this.basePath.ToLowerInvariant() + "\\", string.Empty);
+                        path = file.Path.ToLowerInvariant().Replace(this.basePath.ToLowerInvariant() + @"\", string.Empty);
                     }
                 }
 

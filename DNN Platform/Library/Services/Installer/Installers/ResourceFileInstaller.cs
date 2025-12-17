@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Installer.Installers
                             // Write path
                             writer.WriteElementString(
                                 "path",
-                                entry.FullName.Substring(0, entry.FullName.IndexOf(fileName)));
+                                entry.FullName.Substring(0, entry.FullName.IndexOf(fileName, StringComparison.OrdinalIgnoreCase)));
 
                             // Write name
                             writer.WriteElementString("name", fileName);

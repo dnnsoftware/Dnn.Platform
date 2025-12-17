@@ -109,11 +109,11 @@ namespace DotNetNuke.UI.Containers
                 {
                     if (!string.IsNullOrEmpty(this.ImageUrl))
                     {
-                        this.ImageUrl = this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.ImageUrl;
+                        this.ImageUrl = this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/", StringComparison.Ordinal) + 1) + this.ImageUrl;
                     }
                     else
                     {
-                        if (this.ModuleAction.Icon.IndexOf("/") > Null.NullInteger)
+                        if (this.ModuleAction.Icon.IndexOf("/", StringComparison.Ordinal) > Null.NullInteger)
                         {
                             this.ImageUrl = this.ModuleAction.Icon;
                         }

@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.ModuleCache
             IDictionaryEnumerator cacheEnum = CachingProvider.Instance().GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith($"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}|"))
+                if (cacheEnum.Key.ToString().StartsWith($"{CachePrefix}|{tabModuleId.ToString(CultureInfo.InvariantCulture)}|", StringComparison.Ordinal))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }

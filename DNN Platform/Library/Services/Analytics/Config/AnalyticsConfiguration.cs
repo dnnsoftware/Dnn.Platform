@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
                 if (config == null)
                 {
-                    filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
+                    filePath = PortalSettings.Current.HomeDirectoryMapPath + @"\" + analyticsEngineName + ".config";
 
                     if (!File.Exists(filePath))
                     {
@@ -143,7 +143,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 string filePath = string.Empty;
 
                 // Create a FileStream for the Config file
-                filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
+                filePath = PortalSettings.Current.HomeDirectoryMapPath + @"\" + analyticsEngineName + ".config";
                 if (File.Exists(filePath))
                 {
                     File.SetAttributes(filePath, FileAttributes.Normal);

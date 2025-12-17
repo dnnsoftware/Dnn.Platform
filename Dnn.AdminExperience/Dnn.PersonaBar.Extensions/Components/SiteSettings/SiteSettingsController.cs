@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
             var authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(authPackage.PackageID);
             var authPath = authSystem.LoginControlSrc.Substring(0, authSystem.LoginControlSrc.LastIndexOf("/", StringComparison.Ordinal));
-            return this.CreatePackage(cultureCode, package, authPackage.PackageID, authPath.Replace("/", "\\"), fileName, createZip);
+            return this.CreatePackage(cultureCode, package, authPackage.PackageID, authPath.Replace("/", @"\"), fileName, createZip);
         }
 
         public bool CreateCorePackage(string cultureCode, string fileName, bool createZip)
@@ -152,7 +152,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
             this.files = new Dictionary<string, InstallFile>();
             this.CreateCorePackage(cultureCode, fileName, false);
-            foreach (var desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values.Where(desktopModule => !desktopModule.FolderName.StartsWith("Admin/")))
+            foreach (var desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values.Where(desktopModule => !desktopModule.FolderName.StartsWith("Admin/", StringComparison.OrdinalIgnoreCase)))
             {
                 this.CreateModulePackage(cultureCode, desktopModule, false);
             }

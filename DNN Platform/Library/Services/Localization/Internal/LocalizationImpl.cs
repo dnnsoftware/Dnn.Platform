@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Localization.Internal
                     lang = lang.Substring(0, 2);
 
                     // check for language match e.g. en-GB == en-US because en == en
-                    var match = values.FirstOrDefault(x => x.StartsWith(lang));
+                    var match = values.FirstOrDefault(x => x.StartsWith(lang, StringComparison.OrdinalIgnoreCase));
                     if (match != null)
                     {
                         return match;

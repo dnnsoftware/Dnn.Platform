@@ -159,7 +159,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             var results = new List<TabInfo>();
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId)
                 .Where(kvp => (kvp.Value.CultureCode == defaultLocale || string.IsNullOrEmpty(kvp.Value.CultureCode))
-                && !kvp.Value.IsDeleted && !kvp.Value.IsSystem && !kvp.Value.TabPath.StartsWith("//Admin"));
+                && !kvp.Value.IsDeleted && !kvp.Value.IsSystem && !kvp.Value.TabPath.StartsWith("//Admin", StringComparison.OrdinalIgnoreCase));
 
             foreach (var kvp in portalTabs)
             {
@@ -246,7 +246,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
         {
             return (
                 from kvp in TabController.Instance.GetTabsByPortal(portalId)
-                where !kvp.Value.TabPath.StartsWith("//Admin")
+                where !kvp.Value.TabPath.StartsWith("//Admin", StringComparison.OrdinalIgnoreCase)
                       && !kvp.Value.IsDeleted
                       && !kvp.Value.IsSystem
                 select kvp.Value)

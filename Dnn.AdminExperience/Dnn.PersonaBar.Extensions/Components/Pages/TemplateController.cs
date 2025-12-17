@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 var folder = GetTemplateFolder() ?? CreateTemplateFolder();
 
                 filename = $"{folder.FolderPath}{template.Name}.page.template";
-                filename = filename.Replace("/", "\\");
+                filename = filename.Replace("/", @"\");
 
                 var xmlTemplate = new XmlDocument { XmlResolver = null };
                 var nodePortal = xmlTemplate.AppendChild(xmlTemplate.CreateElement("portal"));

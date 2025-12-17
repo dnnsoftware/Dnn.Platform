@@ -229,7 +229,7 @@ Namespace DotNetNuke.UI.Utilities
                 If Len(m_sScriptPath) > 0 Then
                     script = m_sScriptPath
                 ElseIf Not System.Web.HttpContext.Current Is Nothing Then
-                    If System.Web.HttpContext.Current.Request.ApplicationPath.EndsWith("/") Then
+                    If System.Web.HttpContext.Current.Request.ApplicationPath.EndsWith("/", StringComparison.Ordinal) Then
                         script = System.Web.HttpContext.Current.Request.ApplicationPath & "js/"
                     Else
                         script = System.Web.HttpContext.Current.Request.ApplicationPath & "/js/"
@@ -277,7 +277,7 @@ Namespace DotNetNuke.UI.Utilities
                 If String.IsNullOrEmpty(strValue) = False Then
                     Try
                         'fix serialization issues with invalid json objects
-                        If strValue.StartsWith("`"c) Then
+                        If strValue.StartsWith("`"c, StringComparison.Ordinal) Then
                             strValue = strValue.Substring(1).Replace("`", """")
                         End If
 
@@ -299,7 +299,7 @@ Namespace DotNetNuke.UI.Utilities
             Dim ctlVar As HtmlInputHidden = ClientVariableControl(objPage)
             ctlVar.Value = MSAJAX.Serialize(objDict)
             'minimize payload by using ` for ", which serializes to &quot;
-            If ctlVar.Value.IndexOf("`") = -1 Then
+            If ctlVar.Value.IndexOf("`", StringComparison.Ordinal) = -1 Then
                 'prefix the value with ` to denote that we escaped it (it was safe)
                 ctlVar.Value = "`" & ctlVar.Value.Replace("""", "`")
             End If
@@ -454,7 +454,7 @@ Namespace DotNetNuke.UI.Utilities
             If strClientStatusCallBack Is Nothing Then strClientStatusCallBack = "null"
             If Len(strPostChildrenOfId) = 0 Then
                 strPostChildrenOfId = "null"
-            ElseIf strPostChildrenOfId.StartsWith("'") = False Then
+            ElseIf strPostChildrenOfId.StartsWith("'", StringComparison.Ordinal) = False Then
                 strPostChildrenOfId = "'" & strPostChildrenOfId & "'"
             End If
             Dim strControlID As String = objControl.ID
@@ -492,7 +492,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetClientVariable(ByVal objPage As Page, ByVal strVar As String) As String
             Dim strPair As String = GetClientVariableNameValuePair(objPage, strVar)
-            If strPair.IndexOf(COLUMN_DELIMITER) > -1 Then
+            If strPair.IndexOf(COLUMN_DELIMITER, StringComparison.Ordinal) > -1 Then
                 Return Split(strPair, COLUMN_DELIMITER)(1)
             Else
                 Return ""
@@ -515,7 +515,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Function GetClientVariable(ByVal objPage As Page, ByVal strVar As String, ByVal strDefaultValue As String) As String
             Dim strPair As String = GetClientVariableNameValuePair(objPage, strVar)
-            If strPair.IndexOf(COLUMN_DELIMITER) > -1 Then
+            If strPair.IndexOf(COLUMN_DELIMITER, StringComparison.Ordinal) > -1 Then
                 Return Split(strPair, COLUMN_DELIMITER)(1)
             Else
                 Return strDefaultValue

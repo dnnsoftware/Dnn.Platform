@@ -554,16 +554,16 @@ namespace DotNetNuke.Common.Utilities
             foreach (string portalAlias in aliases)
             {
                 string searchAlias = portalAlias;
-                if (!portalAlias.EndsWith("/"))
+                if (!portalAlias.EndsWith("/", StringComparison.Ordinal))
                 {
                     searchAlias = $"{portalAlias}/";
                 }
 
                 var exp = new Regex("((?:href|src)=&quot;)https?://" + searchAlias + "(.*?&quot;)", RegexOptions.IgnoreCase);
 
-                if (portalAlias.Contains("/"))
+                if (portalAlias.Contains("/", StringComparison.Ordinal))
                 {
-                    html = exp.Replace(html, "$1" + portalAlias.Substring(portalAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase)) + "/$2");
+                    html = exp.Replace(html, "$1" + portalAlias.Substring(portalAlias.IndexOf("/", StringComparison.Ordinal)) + "/$2");
                 }
                 else
                 {

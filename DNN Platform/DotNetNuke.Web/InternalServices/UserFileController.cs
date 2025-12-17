@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.InternalServices
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
         private static readonly char[] FileExtensionSeparator = [',',];
+        private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "jpg", "png", "gif", "jpe", "jpeg", "tiff", };
         private readonly IFolderManager folderManager = FolderManager.Instance;
 
         [DnnAuthorize]
@@ -76,16 +77,15 @@ namespace DotNetNuke.Web.InternalServices
         {
             return file.ContentType == null
                        ? string.Empty
-                       : (file.ContentType.StartsWith("image/")
+                       : (file.ContentType.StartsWith("image/", StringComparison.Ordinal)
                             ? file.ContentType.Replace("image/", string.Empty)
                             : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
         }
 
         private static bool IsImageFile(string relativePath)
         {
-            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff" };
-            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1).ToLowerInvariant();
-            return acceptedExtensions.Contains(extension);
+            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1);
+            return ImageExtensions.Contains(extension);
         }
 
         private static string GetFileSize(int sizeInBytes)

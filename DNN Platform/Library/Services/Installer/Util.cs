@@ -480,9 +480,11 @@ namespace DotNetNuke.Services.Installer
             FileExtensionWhitelist whiteList = Host.AllowedExtensionWhitelist;
 
             // Check the White Lists
-            string strExtension = file.Extension.ToLowerInvariant();
-            if (strExtension == "dnn" || whiteList.IsAllowedExtension(strExtension) || packageWhiteList.Contains(strExtension) ||
-                 (packageWhiteList.Contains("*dataprovider") && strExtension.EndsWith("dataprovider")))
+            string strExtension = file.Extension;
+            if (string.Equals(strExtension, "dnn", StringComparison.OrdinalIgnoreCase)
+                || whiteList.IsAllowedExtension(strExtension)
+                || packageWhiteList.Contains(strExtension, StringComparison.OrdinalIgnoreCase)
+                || (packageWhiteList.Contains("*dataprovider", StringComparison.OrdinalIgnoreCase) && strExtension.EndsWith("dataprovider", StringComparison.OrdinalIgnoreCase)))
             {
                 // Install File is Valid
                 return true;
@@ -584,7 +586,7 @@ namespace DotNetNuke.Services.Installer
             var filename = string.Empty;
             if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
-                filename = package.IconFile.StartsWith("~/" + package.FolderName) ? package.IconFile.Remove(0, ("~/" + package.FolderName).Length).TrimStart('/') : package.IconFile;
+                filename = package.IconFile.StartsWith("~/" + package.FolderName, StringComparison.OrdinalIgnoreCase) ? package.IconFile.Remove(0, ("~/" + package.FolderName).Length).TrimStart('/') : package.IconFile;
             }
 
             return filename;
@@ -595,7 +597,7 @@ namespace DotNetNuke.Services.Installer
             var iconFile = string.Empty;
             if ((package.IconFile != null) && (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Auth_System", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)))
             {
-                iconFile = !package.IconFile.StartsWith("~/") ? "~/" + package.FolderName + "/" + package.IconFile : package.IconFile;
+                iconFile = !package.IconFile.StartsWith("~/", StringComparison.Ordinal) ? $"~/{package.FolderName}/{package.IconFile}" : package.IconFile;
             }
 
             return iconFile;
@@ -832,7 +834,7 @@ namespace DotNetNuke.Services.Installer
             if (!doPOST && data != null && data.Length > 0)
             {
                 string restoftheurl = Encoding.ASCII.GetString(data);
-                if (url != null && url.IndexOf("?") <= 0)
+                if (url != null && url.IndexOf("?", StringComparison.Ordinal) <= 0)
                 {
                     url = url + "?";
                 }
@@ -872,7 +874,7 @@ namespace DotNetNuke.Services.Installer
                 wreq.Credentials = new NetworkCredential(username, password);
             }
 
-            if (doPOST && data != null && data.Length > 0)
+            if (doPOST && data is { Length: > 0, })
             {
                 wreq.ContentType = "application/x-www-form-urlencoded";
                 Stream request = wreq.GetRequestStream();
@@ -881,26 +883,26 @@ namespace DotNetNuke.Services.Installer
             }
 
             filename = string.Empty;
-            WebResponse wrsp = wreq.GetResponse();
-            string cd = wrsp.Headers["Content-Disposition"];
-            if (cd != null && cd.Trim() != string.Empty && cd.StartsWith("attachment"))
+            WebResponse response = wreq.GetResponse();
+            string cd = response.Headers["Content-Disposition"];
+            if (cd != null && cd.Trim() != string.Empty && cd.StartsWith("attachment", StringComparison.OrdinalIgnoreCase))
             {
-                if (cd.IndexOf("filename") > -1 && cd.Substring(cd.IndexOf("filename")).IndexOf("=") > -1)
+                if (cd.IndexOf("filename", StringComparison.OrdinalIgnoreCase) > -1 && cd.Substring(cd.IndexOf("filename", StringComparison.OrdinalIgnoreCase)).IndexOf("=", StringComparison.Ordinal) > -1)
                 {
-                    string filenameParam = cd.Substring(cd.IndexOf("filename"));
+                    string filenameParam = cd.Substring(cd.IndexOf("filename", StringComparison.OrdinalIgnoreCase));
 
-                    if (filenameParam.IndexOf("\"") > -1)
+                    if (filenameParam.IndexOf("\"", StringComparison.Ordinal) > -1)
                     {
-                        filename = filenameParam.Substring(filenameParam.IndexOf("\"") + 1).TrimEnd(Convert.ToChar("\"")).TrimEnd(Convert.ToChar("\\"));
+                        filename = filenameParam.Substring(filenameParam.IndexOf("\"", StringComparison.Ordinal) + 1).TrimEnd('"').TrimEnd('\\');
                     }
                     else
                     {
-                        filename = filenameParam.Substring(filenameParam.IndexOf("=") + 1);
+                        filename = filenameParam.Substring(filenameParam.IndexOf("=", StringComparison.Ordinal) + 1);
                     }
                 }
             }
 
-            return wrsp;
+            return response;
         }
 
         public static void DeployExtension(WebResponse wr, string myfile, string installFolder)

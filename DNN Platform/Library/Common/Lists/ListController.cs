@@ -153,7 +153,7 @@ namespace DotNetNuke.Common.Lists
 
         /// <summary>Deletes a list.</summary>
         /// <param name="list">The <see cref="ListInfo"/> reference for the list to delete.</param>
-        /// <param name="includeChildren">A value indicating wheter to also delete the children items for this list.</param>
+        /// <param name="includeChildren">A value indicating whether to also delete the children items for this list.</param>
         public void DeleteList(ListInfo list, bool includeChildren)
         {
             if (list == null)
@@ -161,15 +161,14 @@ namespace DotNetNuke.Common.Lists
                 return;
             }
 
-            var lists = new SortedList<string, ListInfo>();
-            lists.Add(list.Key, list);
+            var lists = new SortedList<string, ListInfo> { { list.Key, list }, };
 
             // add Children
             if (includeChildren)
             {
                 foreach (KeyValuePair<string, ListInfo> listPair in GetListInfoDictionary(list.PortalID))
                 {
-                    if (listPair.Value.ParentList.StartsWith(list.Key))
+                    if (listPair.Value.ParentList.StartsWith(list.Key, StringComparison.OrdinalIgnoreCase))
                     {
                         lists.Add(listPair.Value.Key.Replace(":", "."), listPair.Value);
                     }

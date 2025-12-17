@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System;
     using System.Globalization;
     using System.Web;
 
@@ -39,7 +40,7 @@ namespace DotNetNuke.UI.Modules.Html5
                     return this.request.ApplicationPath;
                 case "relativeapppath":
                     // RelativeAppPath is like ApplicationPath, but will always end with a forward slash (/)
-                    return this.request.ApplicationPath.EndsWith("/")
+                    return this.request.ApplicationPath.EndsWith("/", StringComparison.Ordinal)
                         ? this.request.ApplicationPath
                         : $"{this.request.ApplicationPath}/";
             }

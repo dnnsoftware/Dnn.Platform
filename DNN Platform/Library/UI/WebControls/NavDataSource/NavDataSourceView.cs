@@ -3,13 +3,13 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
     using System.Web.UI;
 
     /// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>
     public class NavDataSourceView : HierarchicalDataSourceView
     {
         private readonly string sKey;
-        private string sNamespace = "MyNS";
 
         /// <summary>Initializes a new instance of the <see cref="NavDataSourceView"/> class.</summary>
         /// <param name="viewPath">The view path by which to filter nav nodes.</param>
@@ -19,9 +19,9 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.sKey = string.Empty;
             }
-            else if (viewPath.IndexOf("\\") > -1)
+            else if (viewPath.IndexOf(@"\", StringComparison.Ordinal) > -1)
             {
-                this.sKey = viewPath.Substring(viewPath.LastIndexOf("\\") + 1);
+                this.sKey = viewPath.Substring(viewPath.LastIndexOf(@"\", StringComparison.Ordinal) + 1);
             }
             else
             {
@@ -29,18 +29,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public string Namespace
-        {
-            get
-            {
-                return this.sNamespace;
-            }
-
-            set
-            {
-                this.sNamespace = value;
-            }
-        }
+        public string Namespace { get; set; } = "MyNS";
 
         /// <summary>
         /// Starting with the rootNode, recursively build a list of
@@ -53,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var objPages = new NavDataPageHierarchicalEnumerable();
             DNNNodeCollection objNodes;
-            objNodes = Navigation.GetNavigationNodes(this.sNamespace);
+            objNodes = Navigation.GetNavigationNodes(this.Namespace);
             if (!string.IsNullOrEmpty(this.sKey))
             {
                 objNodes = objNodes.FindNodeByKey(this.sKey).DNNNodes;

@@ -541,7 +541,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 if (!string.IsNullOrEmpty(js.CDNPath))
                 {
                     var cdnPath = js.CDNPath;
-                    if (cdnPath.StartsWith("//"))
+                    if (cdnPath.StartsWith("//", StringComparison.Ordinal))
                     {
                         var useSecurePath = request == null || UrlUtils.IsSecureConnectionOrSslOffload(request);
                         cdnPath = $"{(useSecurePath ? "https" : "http")}:{cdnPath}";
@@ -574,7 +574,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             var orderedScripts = (
                 from object item in HttpContextSource.Current.Items.Keys
-                where item.ToString().StartsWith(ScriptPrefix)
+                where item.ToString().StartsWith(ScriptPrefix, StringComparison.Ordinal)
                 select item.ToString().Substring(4))
                 .ToList();
             orderedScripts.Sort();

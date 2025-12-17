@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <inheritdoc/>
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
-            if (format == null || !format.StartsWith(FileSizeFormat))
+            if (format == null || !format.StartsWith(FileSizeFormat, StringComparison.Ordinal))
             {
                 return DefaultFormat(format, arg, formatProvider);
             }

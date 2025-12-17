@@ -455,9 +455,8 @@ namespace Dnn.EditBar.UI.Controllers
                 if (!string.IsNullOrEmpty(pendingData))
                 {
                     var tabId = this.PortalSettings.ActiveTab.TabID;
-                    int moduleId;
-                    if (pendingData.StartsWith("module-")
-                        && int.TryParse(pendingData.Substring(7), out moduleId))
+                    if (pendingData.StartsWith("module-", StringComparison.OrdinalIgnoreCase)
+                        && int.TryParse(pendingData.Substring(7), out var moduleId))
                     {
                         var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                         if (module != null)
@@ -501,7 +500,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 var cookie = this.Request.Cookies["CEM_CallbackData"];
                 var callbackData = cookie.Value;
-                if (!string.IsNullOrEmpty(callbackData) && callbackData.StartsWith("module-"))
+                if (!string.IsNullOrEmpty(callbackData) && callbackData.StartsWith("module-", StringComparison.OrdinalIgnoreCase))
                 {
                     var moduleId = Convert.ToInt32(callbackData.Substring(7), CultureInfo.InvariantCulture);
 

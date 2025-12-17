@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Actions
 {
+    using System;
+
     using DotNetNuke.Security;
 
     /// <summary>
@@ -286,20 +288,20 @@ namespace DotNetNuke.Entities.Modules.Actions
                 string controlKey = string.Empty;
                 if (!string.IsNullOrEmpty(this.Url))
                 {
-                    int startIndex = this.Url.IndexOf("/ctl/");
+                    int startIndex = this.Url.IndexOf("/ctl/", StringComparison.OrdinalIgnoreCase);
                     int endIndex = -1;
                     if (startIndex > -1)
                     {
                         startIndex += 4;
-                        endIndex = this.Url.IndexOf("/", startIndex + 1);
+                        endIndex = this.Url.IndexOf("/", startIndex + 1, StringComparison.Ordinal);
                     }
                     else
                     {
-                        startIndex = this.Url.IndexOf("ctl=");
+                        startIndex = this.Url.IndexOf("ctl=", StringComparison.OrdinalIgnoreCase);
                         if (startIndex > -1)
                         {
                             startIndex += 4;
-                            endIndex = this.Url.IndexOf("&", startIndex + 1);
+                            endIndex = this.Url.IndexOf("&", startIndex + 1, StringComparison.Ordinal);
                         }
                     }
 

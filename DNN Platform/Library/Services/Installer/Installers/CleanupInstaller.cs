@@ -154,12 +154,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 return false; // no rooted paths
             }
 
-            if (path.StartsWith(Path.DirectorySeparatorChar.ToString()))
+            if (path.StartsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
             {
                 return false; // no absolute paths
             }
 
-            if (path.IndexOf("..", StringComparison.InvariantCultureIgnoreCase) >= 0)
+            if (path.Contains("..", StringComparison.Ordinal))
             {
                 return false; // no relative paths outside the app root
             }

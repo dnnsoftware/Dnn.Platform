@@ -64,7 +64,7 @@ namespace DotNetNuke.Security.Permissions
             string permissionsString = permissionsBuilder.ToString();
 
             // ensure leading delimiter
-            if (!permissionsString.StartsWith(";"))
+            if (!permissionsString.StartsWith(";", StringComparison.Ordinal))
             {
                 permissionsString = permissionsString.Insert(0, ";");
             }

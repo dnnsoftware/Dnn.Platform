@@ -102,12 +102,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
 
             if (!string.IsNullOrEmpty(servers))
             {
-                if (!servers.StartsWith(","))
+                if (!servers.StartsWith(",", StringComparison.Ordinal))
                 {
                     servers = "," + servers;
                 }
 
-                if (!servers.EndsWith(","))
+                if (!servers.EndsWith(",", StringComparison.Ordinal))
                 {
                     servers = servers + ",";
                 }

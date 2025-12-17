@@ -480,17 +480,17 @@ namespace DotNetNuke.UI.Skins
             /// </remarks>
             private string ObjectMatchHandler(Match m)
             {
-                string oBJECT_PROC = Util.GetLocalizedString("ProcessObject");
-                string oBJECT_SKIN = Util.GetLocalizedString("SkinObject");
-                string oBJECT_PANE = Util.GetLocalizedString("PaneObject");
-                string cONTROL_FORMAT = Util.GetLocalizedString("ControlFormat");
-                string oBJECT_NOTFOUND = Util.GetLocalizedString("ObjectNotFound");
+                string processObject = Util.GetLocalizedString("ProcessObject");
+                string skinObject = Util.GetLocalizedString("SkinObject");
+                string pangeObject = Util.GetLocalizedString("PaneObject");
+                string controlFormat = Util.GetLocalizedString("ControlFormat");
+                string objectNotFound = Util.GetLocalizedString("ObjectNotFound");
 
                 // "token" string matches will be in the form of (" id=".." codetype=".." codebase=".." etc...><param name=".." value=".." />")
                 // we need to assume properly formatted HTML - attributes will be enclosed in double quotes and there will no spaces between assignments ( ie. attribute="value" )
 
                 // extract the embedded object attributes (" id=".." codetype=".." codebase=".." etc...")
-                string embeddedObjectAttributes = m.Groups["token"].Value.Substring(0, m.Groups["token"].Value.IndexOf(">"));
+                string embeddedObjectAttributes = m.Groups["token"].Value.Substring(0, m.Groups["token"].Value.IndexOf(">", StringComparison.Ordinal));
 
                 // split into array
                 string[] attributes = embeddedObjectAttributes.Split(' ');
@@ -501,16 +501,13 @@ namespace DotNetNuke.UI.Skins
                 string controlName = string.Empty;
 
                 // iterate and process valid attributes
-                string[] attribute;
-                string attributeName;
-                string attributeValue;
                 foreach (string strAttribute in attributes)
                 {
                     if (strAttribute != string.Empty)
                     {
-                        attribute = strAttribute.Split('=');
-                        attributeName = attribute[0].Trim();
-                        attributeValue = attribute[1].Trim().Replace("\"", string.Empty);
+                        var attribute = strAttribute.Split('=');
+                        var attributeName = attribute[0].Trim();
+                        var attributeValue = attribute[1].Trim().Replace("\"", string.Empty);
                         switch (attributeName.ToLowerInvariant())
                         {
                             case "id":
@@ -530,7 +527,7 @@ namespace DotNetNuke.UI.Skins
                 if (attributeNode.Equals("dotnetnuke/server", StringComparison.OrdinalIgnoreCase))
                 {
                     // we have a valid skin object specification
-                    this.Messages += SkinController.FormatMessage(oBJECT_PROC, token, 2, false);
+                    this.Messages += SkinController.FormatMessage(processObject, token, 2, false);
 
                     // if the embedded object is a recognized skin object
                     if (this.ControlList.ContainsKey(token) || token == "CONTENTPANE")
@@ -539,15 +536,15 @@ namespace DotNetNuke.UI.Skins
 
                         if (this.ControlList.ContainsKey(token))
                         {
-                            this.Messages += SkinController.FormatMessage(oBJECT_SKIN, (string)this.ControlList[token], 2, false);
+                            this.Messages += SkinController.FormatMessage(skinObject, (string)this.ControlList[token], 2, false);
                         }
                         else
                         {
-                            this.Messages += SkinController.FormatMessage(oBJECT_PANE, token, 2, false);
+                            this.Messages += SkinController.FormatMessage(pangeObject, token, 2, false);
                         }
 
                         // process embedded object params
-                        string parameters = m.Groups["token"].Value.Substring(m.Groups["token"].Value.IndexOf(">") + 1);
+                        string parameters = m.Groups["token"].Value.Substring(m.Groups["token"].Value.IndexOf(">", StringComparison.Ordinal) + 1);
                         parameters = parameters.Replace("<param name=\"", string.Empty);
                         parameters = parameters.Replace("\" value", string.Empty);
                         parameters = parameters.Replace("/>", string.Empty);
@@ -574,7 +571,7 @@ namespace DotNetNuke.UI.Skins
                             }
 
                             // return the control statement
-                            this.Messages += SkinController.FormatMessage(cONTROL_FORMAT, "&lt;" + skinControl + " /&gt;", 2, false);
+                            this.Messages += SkinController.FormatMessage(controlFormat, "&lt;" + skinControl + " /&gt;", 2, false);
                             skinControl = "<" + skinControl + "/>";
                         }
                         else
@@ -592,7 +589,7 @@ namespace DotNetNuke.UI.Skins
                             skinControl += parameters + "></div";
 
                             // return the control statement
-                            this.Messages += SkinController.FormatMessage(cONTROL_FORMAT, "&lt;" + skinControl + "&gt;", 2, false);
+                            this.Messages += SkinController.FormatMessage(controlFormat, "&lt;" + skinControl + "&gt;", 2, false);
                             skinControl = "<" + skinControl + ">";
                         }
 
@@ -601,7 +598,7 @@ namespace DotNetNuke.UI.Skins
                     else
                     {
                         // return the unmodified embedded object
-                        this.Messages += SkinController.FormatMessage(oBJECT_NOTFOUND, token, 2, false);
+                        this.Messages += SkinController.FormatMessage(objectNotFound, token, 2, false);
                         return "<object" + m.Groups["token"].Value + "</object>";
                     }
                 }
@@ -752,13 +749,13 @@ namespace DotNetNuke.UI.Skins
                 string strNewTag = strOldTag;
 
                 // we do not want to process object tags to DotNetNuke widgets
-                if (!m.Groups[0].Value.ToLowerInvariant().Contains("codetype=\"dotnetnuke/client\""))
+                if (!m.Groups[0].Value.Contains("codetype=\"dotnetnuke/client\"", StringComparison.OrdinalIgnoreCase))
                 {
                     switch (this.ParseOption)
                     {
                         case SkinParser.Localized:
                             // if the tag does not contain the localized path
-                            if (strNewTag.IndexOf(this.SkinPath) == -1)
+                            if (!strNewTag.Contains(this.SkinPath, StringComparison.OrdinalIgnoreCase))
                             {
                                 // insert the localized path
                                 strNewTag = m.Groups["tag"].Value + this.SkinPath + m.Groups["content"].Value + m.Groups["endtag"].Value;
@@ -767,14 +764,14 @@ namespace DotNetNuke.UI.Skins
                             break;
                         case SkinParser.Portable:
                             // if the tag does not contain a reference to the skinpath
-                            if (strNewTag.IndexOf("<%= skinpath %>", StringComparison.InvariantCultureIgnoreCase) == -1)
+                            if (!strNewTag.Contains("<%= skinpath %>", StringComparison.OrdinalIgnoreCase))
                             {
                                 // insert the skinpath
                                 strNewTag = m.Groups["tag"].Value + "<%= SkinPath %>" + m.Groups["content"].Value + m.Groups["endtag"].Value;
                             }
 
                             // if the tag contains the localized path
-                            if (strNewTag.IndexOf(this.SkinPath) != -1)
+                            if (strNewTag.Contains(this.SkinPath, StringComparison.OrdinalIgnoreCase))
                             {
                                 // remove the localized path
                                 strNewTag = strNewTag.Replace(this.SkinPath, string.Empty);

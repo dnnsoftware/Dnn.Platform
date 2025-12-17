@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix)))
+                if (cacheEnum.Key.ToString().StartsWith(cachePrefix, StringComparison.Ordinal))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             IDictionaryEnumerator cacheEnum = Cache.GetEnumerator();
             while (cacheEnum.MoveNext())
             {
-                if (cacheEnum.Key.ToString().StartsWith($"{cachePrefix}{tabId.ToString(CultureInfo.InvariantCulture)}_"))
+                if (cacheEnum.Key.ToString().StartsWith($"{cachePrefix}{tabId.ToString(CultureInfo.InvariantCulture)}_", StringComparison.Ordinal))
                 {
                     keys.Add(cacheEnum.Key.ToString());
                 }

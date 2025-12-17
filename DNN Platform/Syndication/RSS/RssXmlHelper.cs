@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.Syndication
 
         private static string ResolveAppRelativeLinkToUrl(string link)
         {
-            if (!string.IsNullOrEmpty(link) && link.StartsWith("~/"))
+            if (!string.IsNullOrEmpty(link) && link.StartsWith("~/", StringComparison.Ordinal))
             {
                 HttpContext context = HttpContext.Current;
 

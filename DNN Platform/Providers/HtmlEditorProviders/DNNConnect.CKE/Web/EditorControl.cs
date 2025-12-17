@@ -865,7 +865,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 // Get Parent ModuleID From this ClientID
                 string sClientId = this.ClientID.Substring(this.ClientID.IndexOf("ctr") + 3);
 
-                sClientId = sClientId.Remove(this.ClientID.IndexOf("_"));
+                sClientId = sClientId.Remove(this.ClientID.IndexOf("_", StringComparison.Ordinal));
 
                 if (!int.TryParse(sClientId, out this.parentModulId))
                 {
@@ -1014,7 +1014,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 return formattedUrl;
             }
 
-            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//"))
+            if (inputUrl.StartsWith("http://") || inputUrl.StartsWith("https://") || inputUrl.StartsWith("//", StringComparison.Ordinal))
             {
                 formattedUrl = inputUrl;
             }
@@ -1246,7 +1246,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 // Is boolean state or string
                 if (value.Equals("true", StringComparison.InvariantCultureIgnoreCase)
                     || value.Equals("false", StringComparison.InvariantCultureIgnoreCase) || value.StartsWith("[")
-                    || value.StartsWith("{") || Utility.IsNumeric(value))
+                    || value.StartsWith("{", StringComparison.Ordinal) || Utility.IsNumeric(value))
                 {
                     if (value.Equals("True"))
                     {

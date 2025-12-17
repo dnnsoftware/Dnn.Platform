@@ -164,7 +164,7 @@ namespace Dnn.PersonaBar.Sites.Components
             var match = defaultTemplates.FirstOrDefault(x => x.CultureCode == currentCulture);
             if (match == null)
             {
-                match = defaultTemplates.FirstOrDefault(x => x.CultureCode.StartsWith(currentCulture.Substring(0, 2)));
+                match = defaultTemplates.FirstOrDefault(x => x.CultureCode.StartsWith(currentCulture.Substring(0, 2), StringComparison.Ordinal));
             }
 
             if (match == null)
@@ -524,7 +524,7 @@ namespace Dnn.PersonaBar.Sites.Components
 
             imagePath = "~/" + imagePath.Replace(Globals.ApplicationMapPath, string.Empty)
                 .TrimStart('\\')
-                .Replace("\\", "/");
+                .Replace(@"\", "/");
 
             return Globals.ResolveUrl(imagePath);
         }
