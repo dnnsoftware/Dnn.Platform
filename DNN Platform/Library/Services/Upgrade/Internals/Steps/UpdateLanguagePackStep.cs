@@ -26,11 +26,11 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var installConfig = InstallController.Instance.GetInstallConfig();
             string culture = installConfig.InstallCulture;
 
-            if (culture.ToLowerInvariant() != "en-us")
+            if (!culture.Equals("en-us", StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
-                    // need apply the Licensing module after packages installed, so that we can know whats the edition of install instance. CE/PE/EE
+                    // need apply the Licensing module after packages installed, so that we can know what's the edition of install instance. CE/PE/EE
                     var document = Config.Load();
                     var licensingNode = document.SelectSingleNode("/configuration/system.webServer/modules/add[@name='Licensing']");
                     if (licensingNode != null)

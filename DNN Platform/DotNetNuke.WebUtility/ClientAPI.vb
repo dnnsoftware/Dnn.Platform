@@ -1,16 +1,17 @@
 ﻿' Copyright (c) .NET Foundation. All rights reserved.
 ' Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
+Imports System.Collections.Generic
+Imports System.Globalization
+Imports System.Reflection
 Imports System.Web
 Imports System.Web.UI
 Imports System.Web.UI.HtmlControls
 Imports System.Web.UI.WebControls
-Imports System.Reflection
-Imports System.Globalization
-Imports System.Collections.Generic
-Imports System.Text.RegularExpressions
-Imports DotNetNuke.Web.Client
-Imports DotNetNuke.Web.Client.ClientResourceManagement
+
+Imports DotNetNuke.Abstractions.ClientResources
+Imports DotNetNuke.Web.Client.ResourceManager
+Imports Microsoft.Extensions.DependencyInjection
 
 Namespace DotNetNuke.UI.Utilities
 
@@ -276,7 +277,7 @@ Namespace DotNetNuke.UI.Utilities
                 If String.IsNullOrEmpty(strValue) = False Then
                     Try
                         'fix serialization issues with invalid json objects
-                        If strValue.IndexOf("`") = 0 Then
+                        If strValue.StartsWith("`"c) Then
                             strValue = strValue.Substring(1).Replace("`", """")
                         End If
 
@@ -320,8 +321,11 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Private Shared Function GetClientVariableNameValuePair(ByVal objPage As Page, ByVal strVar As String) As String
             Dim objDict As Generic.Dictionary(Of String, String) = GetClientVariableList(objPage)
-            If objDict.ContainsKey(strVar) Then
-                Return strVar & COLUMN_DELIMITER & objDict(strVar)
+
+            Dim value As String = Nothing
+
+            If objDict.TryGetValue(strVar, value) Then
+                Return strVar & COLUMN_DELIMITER & value
             End If
             Return ""
         End Function
@@ -663,6 +667,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Sub RegisterClientReference(ByVal objPage As Page, ByVal eRef As ClientNamespaceReferences)
+            Dim controller As IClientResourceController = GetClientResourcesController(objPage)
             Select Case eRef
                 Case ClientNamespaceReferences.dnn
                     If Not IsClientScriptBlockRegistered(objPage, "dnn.js") Then
@@ -679,26 +684,26 @@ Namespace DotNetNuke.UI.Utilities
                 Case ClientNamespaceReferences.dnn_dom
                     RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
                 Case ClientNamespaceReferences.dnn_dom_positioning
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.dom.positioning.js")
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
+                    controller.CreateScript(ScriptPath & "dnn.dom.positioning.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnDomPositioning).Register()
 
                 Case ClientNamespaceReferences.dnn_xml
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xml.js", FileOrder.Js.DnnXml)
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
+                    controller.CreateScript(ScriptPath & "dnn.xml.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXml).Register()
 
-                            If BrowserSupportsFunctionality(ClientFunctionality.XMLJS) Then
-                        ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xml.jsparser.js", FileOrder.Js.DnnXmlJsParser)
-                        End If
+                    If BrowserSupportsFunctionality(ClientFunctionality.XMLJS) Then
+                        controller.CreateScript(ScriptPath & "dnn.xml.jsparser.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlJsParser).Register()
+                    End If
                 Case ClientNamespaceReferences.dnn_xmlhttp
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xmlhttp.js", FileOrder.Js.DnnXmlHttp)
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn)
+                    controller.CreateScript(ScriptPath & "dnn.xmlhttp.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttp).Register()
 
-                            If BrowserSupportsFunctionality(ClientFunctionality.XMLHTTPJS) Then
-                        ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.xmlhttp.jsxmlhttprequest.js", FileOrder.Js.DnnXmlHttpJsXmlHttpRequest)
-                        End If
+                    If BrowserSupportsFunctionality(ClientFunctionality.XMLHTTPJS) Then
+                        controller.CreateScript(ScriptPath & "dnn.xmlhttp.jsxmlhttprequest.js").SetPriority(Abstractions.ClientResources.FileOrder.Js.DnnXmlHttpJsXmlHttpRequest).Register()
+                    End If
                 Case ClientNamespaceReferences.dnn_motion
-                        RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom_positioning)
-                    ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.motion.js")
+                    RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom_positioning)
+                    controller.CreateScript(ScriptPath & "dnn.motion.js").Register()
 
             End Select
         End Sub
@@ -765,7 +770,7 @@ Namespace DotNetNuke.UI.Utilities
         ''' </history>
         ''' -----------------------------------------------------------------------------
         Public Shared Function RegisterDNNVariableControl(ByVal objParent As System.Web.UI.Control) As HtmlInputHidden
-            Dim ctlVar As System.Web.UI.HtmlControls.HtmlInputHidden = GetDNNVariableControl(objParent)
+            Dim ctlVar As NonNamingHiddenInput = GetDNNVariableControl(objParent)
 
             If ctlVar Is Nothing Then
                 Dim oForm As Control = FindForm(objParent)
@@ -831,14 +836,14 @@ Namespace DotNetNuke.UI.Utilities
         ''' -----------------------------------------------------------------------------
         Public Shared Sub RegisterPostBackEventHandler(ByVal objParent As Control, ByVal strEventName As String, ByVal objDelegate As ClientAPIPostBackControl.PostBackEvent, ByVal blnMultipleHandlers As Boolean)
             Const CLIENTAPI_POSTBACKCTL_ID As String = "ClientAPIPostBackCtl"
-            Dim objCtl As Control = Globals.FindControlRecursive(objParent.Page, CLIENTAPI_POSTBACKCTL_ID)           'DotNetNuke.Globals.FindControlRecursive(objParent, CLIENTAPI_POSTBACKCTL_ID)
+            Dim objCtl As ClientAPIPostBackControl = Globals.FindControlRecursive(objParent.Page, CLIENTAPI_POSTBACKCTL_ID)           'DotNetNuke.Globals.FindControlRecursive(objParent, CLIENTAPI_POSTBACKCTL_ID)
             If objCtl Is Nothing Then
                 objCtl = New ClientAPIPostBackControl(objParent.Page, strEventName, objDelegate)
                 objCtl.ID = CLIENTAPI_POSTBACKCTL_ID
                 objParent.Controls.Add(objCtl)
                 ClientAPI.RegisterClientVariable(objParent.Page, "__dnn_postBack", GetPostBackClientHyperlink(objCtl, "[DATA]"), True)
             ElseIf blnMultipleHandlers Then
-                CType(objCtl, ClientAPIPostBackControl).AddEventHandler(strEventName, objDelegate)
+                objCtl.AddEventHandler(strEventName, objDelegate)
             End If
         End Sub
 
@@ -860,7 +865,8 @@ Namespace DotNetNuke.UI.Utilities
             If BrowserSupportsFunctionality(ClientFunctionality.DHTML) Then
 
                 RegisterClientReference(objPage, ClientNamespaceReferences.dnn_dom)
-                ClientResourceManager.RegisterScript(objPage, ScriptPath & "dnn.util.tablereorder.js")
+                Dim controller As IClientResourceController = GetClientResourcesController(objPage)
+                controller.CreateScript(ScriptPath & "dnn.util.tablereorder.js").Register()
 
                 AddAttribute(objButton, "onclick", "if (dnn.util.tableReorderMove(this," & CInt(blnUp) & ",'" & strKey & "')) return false;")
                 Dim objParent As Control = objButton.Parent
@@ -890,7 +896,7 @@ Namespace DotNetNuke.UI.Utilities
             If Len(ClientAPI.GetClientVariable(objPage, strKey)) > 0 Then
                 Return ClientAPI.GetClientVariable(objPage, strKey).Split(","c)
             Else
-                Return New String() {}
+                Return Array.Empty(Of String)
             End If
         End Function
 
@@ -974,7 +980,7 @@ Namespace DotNetNuke.UI.Utilities
                     ret = False
                 End If
             Else
-                Throw New Exception("Control does not have CallbackMethodAttribute")
+                Throw New InvalidOperationException("Control does not have CallbackMethodAttribute")
             End If
 
             Return ret
@@ -991,14 +997,14 @@ Namespace DotNetNuke.UI.Utilities
             Dim mi As MethodInfo = controlType.GetMethod(methodName, (BindingFlags.Public Or (BindingFlags.Static Or BindingFlags.Instance)))
 
             If (mi Is Nothing) Then
-                Throw New Exception(String.Format("Class: {0} does not have the method: {1}", controlType.FullName, methodName))
+                Throw New InvalidOperationException($"Class: {controlType.FullName} does not have the method: {methodName}")
             End If
             Dim methodParams As ParameterInfo() = mi.GetParameters
 
             'only allow methods with attribute to be called 
             Dim methAttr As ControlMethodAttribute = DirectCast(Attribute.GetCustomAttribute(mi, GetType(ControlMethodAttribute)), ControlMethodAttribute)
             If methAttr Is Nothing OrElse args.Count <> methodParams.Length Then
-                Throw New Exception(String.Format("Class: {0} does not have the method: {1}", controlType.FullName, methodName))
+                Throw New InvalidOperationException($"Class: {controlType.FullName} does not have the method: {methodName}")
             End If
 
             Dim targetArgs As Object() = New Object(args.Count - 1) {}
@@ -1058,7 +1064,7 @@ Namespace DotNetNuke.UI.Utilities
             For Each pair As KeyValuePair(Of String, Object) In dict
                 pi = TheType.GetProperty(pair.Key)
                 If Not pi Is Nothing AndAlso pi.CanWrite AndAlso Not pair.Value Is Nothing Then
-                    TheType.InvokeMember(pair.Key, System.Reflection.BindingFlags.SetProperty, Nothing, item, New Object() {pair.Value})
+                    TheType.InvokeMember(pair.Key, BindingFlags.SetProperty, Nothing, item, New Object() {pair.Value}, CultureInfo.InvariantCulture)
                 End If
             Next
             Return item
@@ -1084,6 +1090,19 @@ Namespace DotNetNuke.UI.Utilities
 
 
 #End Region
+
+        Friend Shared Function GetClientResourcesController(ByVal page As Page) As IClientResourceController
+            Dim serviceProvider As IServiceProvider = GetCurrentServiceProvider(page.Request.RequestContext.HttpContext)
+            Return serviceProvider.GetRequiredService(Of IClientResourceController)()
+        End Function
+
+        Friend Shared Function GetCurrentServiceProvider(ByVal context As HttpContextBase) As IServiceProvider
+            Return GetScope(context.Items).ServiceProvider
+        End Function
+
+        Friend Shared Function GetScope(ByVal httpContextItems As IDictionary) As IServiceScope
+            Return TryCast(httpContextItems(GetType(IServiceScope)), IServiceScope)
+        End Function
 
     End Class
 

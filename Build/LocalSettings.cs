@@ -33,6 +33,9 @@ namespace DotNetNuke.Build
         /// <summary>Gets or sets the path to the database files.</summary>
         public string DatabasePath { get; set; } = string.Empty;
 
+        /// <summary>Gets or sets a value indicating whether to copy the sample projects to the build output.</summary>
+        public bool CopySampleProjects { get; set; }
+
         /// <summary>Gets or sets the version to use for the build.</summary>
         public string Version { get; set; } = "auto";
     }

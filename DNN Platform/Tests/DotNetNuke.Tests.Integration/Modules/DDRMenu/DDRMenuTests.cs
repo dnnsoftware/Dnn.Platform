@@ -7,6 +7,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using DNN.Integration.Test.Framework;
     using DNN.Integration.Test.Framework.Controllers;
@@ -31,9 +32,9 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
         }
 
         [OneTimeSetUp]
-        public override void TestFixtureSetUp()
+        public override async Task TestFixtureSetUp()
         {
-            base.TestFixtureSetUp();
+            await base.TestFixtureSetUp();
         }
 
         [Test]

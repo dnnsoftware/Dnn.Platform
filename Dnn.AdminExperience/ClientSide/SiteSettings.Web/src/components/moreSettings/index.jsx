@@ -379,6 +379,22 @@ class MoreSettingsPanelBody extends Component {
                                     )}
                                 />
                             </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("plAllowJsInModuleHeaders.Help")}
+                                    label={resx.get("plAllowJsInModuleHeaders")}
+                                />
+                                <Switch
+                                    onText={resx.get("SwitchOn")}
+                                    offText={resx.get("SwitchOff")}
+                                    value={state.otherSettings.AllowJsInModuleHeaders}
+                                    onChange={this.onSettingChange.bind(
+                                        this,
+                                        "AllowJsInModuleHeaders"
+                                    )}
+                                />
+                            </InputGroup>
                         </div>
                         <div key="column-one-right" className="right-column">
                             <InputGroup>
@@ -410,6 +426,22 @@ class MoreSettingsPanelBody extends Component {
                                     onChange={this.onSettingChange.bind(
                                         this,
                                         "ShowQuickModuleAddMenu"
+                                    )}
+                                />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
+                                    tooltipMessage={resx.get("plAllowJsInModuleFooters.Help")}
+                                    label={resx.get("plAllowJsInModuleFooters")}
+                                />
+                                <Switch
+                                    onText={resx.get("SwitchOn")}
+                                    offText={resx.get("SwitchOff")}
+                                    value={state.otherSettings.AllowJsInModuleFooters}
+                                    onChange={this.onSettingChange.bind(
+                                        this,
+                                        "AllowJsInModuleFooters"
                                     )}
                                 />
                             </InputGroup>

@@ -4,6 +4,7 @@ import { GridCell, SvgIcons } from "@dnnsoftware/dnn-react-common";
 import styles from "./style.module.less";
 import ColumnSizes from "../ExtensionColumnSizes";
 import InUseModal from "../InUseModal";
+import Html from "../../../../Html";
 
 class ExtensionDetailRow extends Component {
     constructor() {
@@ -46,7 +47,7 @@ class ExtensionDetailRow extends Component {
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[1]} style={{ padding: "0 35px" }}>
                         <span className="package-name">{props._package.friendlyName}</span>
-                        <p dangerouslySetInnerHTML={{ __html: props._package.description }}></p>
+                        <p><Html html={props._package.description} /></p>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[2]}>
                         <p>{props._package.version}</p>
@@ -60,8 +61,8 @@ class ExtensionDetailRow extends Component {
                         </a>
                     </GridCell>
                     <GridCell columnSize={ColumnSizes[5]} style={{ paddingRight: 0 }}>
-                        {(props._package.canDelete && props.isHost) && <div className="extension-action" dangerouslySetInnerHTML={{ __html: SvgIcons.TrashIcon }} onClick={props.onDelete}></div>}
-                        <div className="extension-action" onClick={props.onEdit.bind(this, props._package.packageId)} dangerouslySetInnerHTML={{ __html: SvgIcons.EditIcon }}></div>
+                        {(props._package.canDelete && props.isHost) && <div className="extension-action" onClick={props.onDelete}><SvgIcons.TrashIcon /></div>}
+                        <div className="extension-action" onClick={props.onEdit.bind(this, props._package.packageId)}><SvgIcons.EditIcon /></div>
                     </GridCell>
                 </GridCell >
                 {state.inUseModalOpen &&

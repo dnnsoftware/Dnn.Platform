@@ -180,19 +180,19 @@ namespace DotNetNuke.Entities.Content
             this.contentController.UpdateContentItem(contentItem);
         }
 
-        private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
+        private int[] GetFilesByContent(int contentItemId, string type)
         {
             var contentItem = this.contentController.GetContentItem(contentItemId);
             if (contentItem == null)
             {
-                throw new ApplicationException(string.Format("Cannot find ContentItem ID {0}", contentItemId));
+                throw new ContentItemNotFoundException($"Cannot find ContentItem ID {contentItemId}");
             }
 
             var serialized = contentItem.Metadata[type];
 
             if (string.IsNullOrEmpty(serialized))
             {
-                return new int[0];
+                return [];
             }
 
             try
@@ -201,8 +201,7 @@ namespace DotNetNuke.Entities.Content
             }
             catch (FormatException ex)
             {
-                throw new ApplicationException(
-                    string.Format("ContentItem metadata has become corrupt (ID {0}): invalid file ID", contentItemId), ex);
+                throw new CorruptMetadataException($"ContentItem metadata has become corrupt (ID {contentItemId}): invalid file ID", ex);
             }
         }
     }

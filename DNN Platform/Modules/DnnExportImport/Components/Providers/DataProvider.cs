@@ -14,7 +14,7 @@ namespace Dnn.ExportImport.Components.Providers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Permissions;
 
-    internal class DataProvider
+    internal sealed class DataProvider
     {
         private static readonly DataProvider Provider;
 
@@ -301,7 +301,7 @@ namespace Dnn.ExportImport.Components.Providers
                             this.dataProvider.ExecuteReader("GetPermissions")))
                     .FirstOrDefault(x => x.PermissionCode == permissionCode &&
                     x.PermissionKey == permissionKey
-                    && x.PermissionName.Equals(permissionName, StringComparison.InvariantCultureIgnoreCase))?.PermissionID;
+                    && x.PermissionName.Equals(permissionName, StringComparison.OrdinalIgnoreCase))?.PermissionID;
         }
 
         public IDataReader GetAllPortalTabs(int portalId, bool includeDeleted, bool includeSystem, DateTime toDate, DateTime? fromDate)

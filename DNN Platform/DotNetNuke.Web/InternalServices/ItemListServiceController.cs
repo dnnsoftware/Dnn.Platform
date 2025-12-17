@@ -313,7 +313,7 @@ namespace DotNetNuke.Web.InternalServices
                 terms.AddRange(new[]
                 {
                     from t in termRep.GetTermsByVocabulary(v.VocabularyId)
-                    where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
+                    where string.IsNullOrEmpty(q) || t.Name.Contains(q, StringComparison.OrdinalIgnoreCase)
                     select new { text = t.Name, value = t.TermId },
                 });
             }
@@ -321,7 +321,7 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);
         }
 
-        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, int parentId, IList<int> filterTabs = null)
+        private static List<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, int parentId, List<int> filterTabs = null)
         {
             return tabs.Where(tab => tab.ParentId == parentId).Select(tab => new ItemDto
             {
@@ -332,14 +332,14 @@ namespace DotNetNuke.Web.InternalServices
             }).ToList();
         }
 
-        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, string parentId)
+        private static List<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, string parentId)
         {
             int id;
             id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
             return GetChildrenOf(tabs, id);
         }
 
-        private static void SortPagesRecursevely(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
+        private static void SortPagesRecursively(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
         {
             if (openedNode == null)
             {
@@ -352,13 +352,13 @@ namespace DotNetNuke.Web.InternalServices
             {
                 foreach (var openedNodeChild in openedNode.Children)
                 {
-                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.OrdinalIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
                     }
 
-                    SortPagesRecursevely(tabs, treeNodeChild, openedNodeChild, sortOrder);
+                    SortPagesRecursively(tabs, treeNodeChild, openedNodeChild, sortOrder);
                 }
             }
         }
@@ -376,11 +376,51 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        private static List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
+        {
+            var filterTabs = new List<int>();
+            if (!string.IsNullOrEmpty(roles))
+            {
+                var roleList = roles.Split(';').Select(int.Parse);
+
+                filterTabs.AddRange(
+                    tabs.Where(
+                            t =>
+                                t.TabPermissions.Cast<TabPermissionInfo>()
+                                    .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
+                        .Where(t => !disabledNotSelectable || !t.DisableLink)
+                        .Select(t => t.TabID));
+            }
+            else
+            {
+                filterTabs.AddRange(tabs.Where(t => !disabledNotSelectable || !t.DisableLink).Select(t => t.TabID));
+            }
+
+            return filterTabs;
+        }
+
+        private static IEnumerable<IFileInfo> GetFiles(IFolderInfo parentFolder, string filter, string searchText)
+        {
+            Func<IFileInfo, bool> searchFunc;
+            var filterList = string.IsNullOrEmpty(filter) ? null : filter.ToLowerInvariant().Split(',').ToList();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                searchFunc = f => filterList == null || filterList.Contains(f.Extension.ToLowerInvariant());
+            }
+            else
+            {
+                searchFunc = f => f.FileName.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+                                  && (filterList == null || filterList.Contains(f.Extension.ToLowerInvariant()));
+            }
+
+            return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
+        }
+
         private NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
         {
-            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
+            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey, }, };
             var portals = this.GetPortalGroup(sortOrder);
-            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto, }).ToList();
             return treeNode;
         }
 
@@ -400,7 +440,7 @@ namespace DotNetNuke.Web.InternalServices
         private IEnumerable<PortalInfo> GetMyPortalGroup()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-            if (groups.Any())
+            if (groups.Length != 0)
             {
                 var mygroup = (from @group in groups
                                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
@@ -429,7 +469,7 @@ namespace DotNetNuke.Web.InternalServices
                 return sortedTree;
             }
 
-            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
             var children = ApplySort(GetChildrenOf(tabs, Null.NullInteger, filterTabs), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             sortedTree.Children = children;
             return sortedTree;
@@ -536,7 +576,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
 
             var pages = tabs.Select(tab => new ItemDto
             {
@@ -611,7 +651,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(tabs, roles, disabledNotSelectable);
 
             var pages = tabs.Select(tab => new ItemDto
             {
@@ -677,7 +717,7 @@ namespace DotNetNuke.Web.InternalServices
                 return sortedTree;
             }
 
-            SortPagesRecursevely(pages, sortedTree, openedNodesTree, sortOrder);
+            SortPagesRecursively(pages, sortedTree, openedNodesTree, sortOrder);
             return sortedTree;
         }
 
@@ -719,7 +759,7 @@ namespace DotNetNuke.Web.InternalServices
             foreach (var openedNodeChild in openedNode.Children)
             {
                 var portalIdString = openedNodeChild.Data.Id;
-                var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
+                var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.OrdinalIgnoreCase));
                 if (treeNodeChild == null)
                 {
                     continue;
@@ -757,7 +797,7 @@ namespace DotNetNuke.Web.InternalServices
                 foreach (var openedNodeChild in openedNode.Children)
                 {
                     var portalIdString = openedNodeChild.Data.Id;
-                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.OrdinalIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
@@ -791,17 +831,16 @@ namespace DotNetNuke.Web.InternalServices
         private NTree<ItemDto> GetTreePathForPageInternal(string itemId, int sortOrder, bool includePortalTree = false, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "")
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            int itemIdAsInt;
-            if (string.IsNullOrEmpty(itemId) || !int.TryParse(itemId, out itemIdAsInt))
+            if (string.IsNullOrEmpty(itemId) || !int.TryParse(itemId, out var itemIdAsInt))
             {
                 return tree;
             }
 
             var portals = PortalController.GetPortalDictionary();
             int portalId;
-            if (portals.ContainsKey(itemIdAsInt))
+            if (portals.TryGetValue(itemIdAsInt, out var pid))
             {
-                portalId = portals[itemIdAsInt];
+                portalId = pid;
             }
             else
             {
@@ -847,13 +886,12 @@ namespace DotNetNuke.Web.InternalServices
 
             var parentId = page.ParentId;
             var parentTab = parentId > 0 ? pages.SingleOrDefault(t => t.TabID == parentId) : null;
-            var filterTabs = this.FilterTabsByRole(pages, roles, disabledNotSelectable);
+            var filterTabs = FilterTabsByRole(pages, roles, disabledNotSelectable);
             while (parentTab != null)
             {
-                // load all sibiling
-                var siblingTabs = GetChildrenOf(pages, parentId, filterTabs);
-                siblingTabs = ApplySort(siblingTabs, sortOrder);
-                var siblingTabsTree = siblingTabs.Select(t => new NTree<ItemDto> { Data = t }).ToList();
+                // load all siblings
+                var siblingTabs = ApplySort(GetChildrenOf(pages, parentId, filterTabs), sortOrder);
+                var siblingTabsTree = siblingTabs.Select(t => new NTree<ItemDto> { Data = t, }).ToList();
 
                 // attach the tree
                 if (selfTree.Children != null)
@@ -885,8 +923,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             // retain root pages
-            var rootTabs = GetChildrenOf(pages, Null.NullInteger, filterTabs);
-            rootTabs = ApplySort(rootTabs, sortOrder);
+            var rootTabs = ApplySort(GetChildrenOf(pages, Null.NullInteger, filterTabs), sortOrder);
             var rootTree = rootTabs.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
 
             foreach (var node in rootTree)
@@ -930,29 +967,6 @@ namespace DotNetNuke.Web.InternalServices
             return tree;
         }
 
-        private List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
-        {
-            var filterTabs = new List<int>();
-            if (!string.IsNullOrEmpty(roles))
-            {
-                var roleList = roles.Split(';').Select(int.Parse);
-
-                filterTabs.AddRange(
-                    tabs.Where(
-                            t =>
-                                t.TabPermissions.Cast<TabPermissionInfo>()
-                                    .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
-                        .Where(t => !disabledNotSelectable || !t.DisableLink)
-                        .Select(t => t.TabID));
-            }
-            else
-            {
-                filterTabs.AddRange(tabs.Where(t => !disabledNotSelectable || !t.DisableLink).Select(t => t.TabID));
-            }
-
-            return filterTabs;
-        }
-
         private NTree<ItemDto> GetFoldersInternal(int portalId, int sortOrder, string permissions, int parentFolderId = -1)
         {
             var tree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
@@ -993,7 +1007,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 foreach (var openedNodeChild in openedNode.Children)
                 {
-                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.OrdinalIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
@@ -1033,8 +1047,8 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var hasPermission = string.IsNullOrEmpty(permission) ?
-                (this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ")) :
-                this.HasPermission(parentFolder, permission.ToUpper());
+                this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ") :
+                this.HasPermission(parentFolder, permission);
             if (!hasPermission)
             {
                 return new List<ItemDto>();
@@ -1118,7 +1132,7 @@ namespace DotNetNuke.Web.InternalServices
 
             var hasPermission = string.IsNullOrEmpty(permission) ?
                 (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
-                this.HasPermission(folder, permission.ToUpper());
+                this.HasPermission(folder, permission);
             if (!hasPermission)
             {
                 return new NTree<ItemDto>();
@@ -1189,14 +1203,14 @@ namespace DotNetNuke.Web.InternalServices
 
         private bool HasPermission(IFolderInfo folder, string permissionKey)
         {
-            var hasPermision = this.PortalSettings.UserInfo.IsSuperUser;
+            var hasPermission = this.PortalSettings.UserInfo.IsSuperUser;
 
-            if (!hasPermision && folder != null)
+            if (!hasPermission && folder != null)
             {
-                hasPermision = FolderPermissionController.HasFolderPermission(folder.FolderPermissions, permissionKey);
+                hasPermission = FolderPermissionController.HasFolderPermission(folder.FolderPermissions, permissionKey);
             }
 
-            return hasPermision;
+            return hasPermission;
         }
 
         private IEnumerable<IFolderInfo> GetFolderDescendants(IFolderInfo parentFolder, string searchText, string permission)
@@ -1211,10 +1225,9 @@ namespace DotNetNuke.Web.InternalServices
                 searchFunc = folder => folder.FolderName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
 
-            permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(parentFolder).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
-                    (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
+                    this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ") :
                     this.HasPermission(folder, permission)) && searchFunc(folder));
         }
 
@@ -1235,20 +1248,18 @@ namespace DotNetNuke.Web.InternalServices
                 searchFunc = folder => folder.FolderName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
 
-            permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(portalId).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
-                    (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
+                    this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ") :
                     this.HasPermission(folder, permission)) && searchFunc(folder));
         }
 
         private bool HasChildren(IFolderInfo parentFolder, string permission)
         {
-            permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(parentFolder).Any(folder =>
-                (string.IsNullOrEmpty(permission) ?
-                    (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
-                    this.HasPermission(folder, permission)));
+                string.IsNullOrEmpty(permission) ?
+                    this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ") :
+                    this.HasPermission(folder, permission));
         }
 
         private NTree<ItemDto> GetFilesInternal(int portalId, int parentId, string filter, string searchText, int sortOrder, string permissions)
@@ -1289,8 +1300,8 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var hasPermission = string.IsNullOrEmpty(permission) ?
-                (this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ")) :
-                this.HasPermission(parentFolder, permission.ToUpper());
+                this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ") :
+                this.HasPermission(parentFolder, permission);
             if (!hasPermission)
             {
                 return new List<ItemDto>();
@@ -1301,7 +1312,7 @@ namespace DotNetNuke.Web.InternalServices
                 return new List<ItemDto>();
             }
 
-            var files = this.GetFiles(parentFolder, filter, searchText);
+            var files = GetFiles(parentFolder, filter, searchText);
 
             var filesDto = files.Select(f => new ItemDto
             {
@@ -1314,23 +1325,6 @@ namespace DotNetNuke.Web.InternalServices
             var sortedList = ApplySort(filesDto, sortOrder);
 
             return sortedList;
-        }
-
-        private IEnumerable<IFileInfo> GetFiles(IFolderInfo parentFolder, string filter, string searchText)
-        {
-            Func<IFileInfo, bool> searchFunc;
-            var filterList = string.IsNullOrEmpty(filter) ? null : filter.ToLowerInvariant().Split(',').ToList();
-            if (string.IsNullOrEmpty(searchText))
-            {
-                searchFunc = f => filterList == null || filterList.Contains(f.Extension.ToLowerInvariant());
-            }
-            else
-            {
-                searchFunc = f => f.FileName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1
-                                  && (filterList == null || filterList.Contains(f.Extension.ToLowerInvariant()));
-            }
-
-            return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
         }
 
         private bool IsPortalIdValid(int portalId)

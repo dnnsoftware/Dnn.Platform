@@ -35,7 +35,7 @@ namespace DotNetNuke.Common.Utilities
         /// <inheritdoc />
         public string ToDisplayString(IEnumerable<string> additionalExtensions)
         {
-            IEnumerable<string> allExtensions = this.CombineLists(additionalExtensions);
+            var allExtensions = this.CombineLists(additionalExtensions);
             return "*" + string.Join(", *", allExtensions.ToArray());
         }
 
@@ -48,8 +48,8 @@ namespace DotNetNuke.Common.Utilities
         /// <inheritdoc />
         public bool IsAllowedExtension(string extension, IEnumerable<string> additionalExtensions)
         {
-            List<string> allExtensions = this.CombineLists(additionalExtensions).ToList();
-            if (!allExtensions.Any())
+            var allExtensions = this.CombineLists(additionalExtensions).ToList();
+            if (allExtensions.Count == 0)
             {
                 return true;
             }
@@ -100,6 +100,11 @@ namespace DotNetNuke.Common.Utilities
             return new FileExtensionWhitelist(string.Join(",", this.extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
         }
 
+        private static IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
+        {
+            return additionalExtensions.Select(ext => (ext.StartsWith(".") ? ext : "." + ext).ToLowerInvariant());
+        }
+
         private IEnumerable<string> CombineLists(IEnumerable<string> additionalExtensions)
         {
             if (additionalExtensions == null)
@@ -109,18 +114,13 @@ namespace DotNetNuke.Common.Utilities
 
             // toList required to ensure that multiple enumerations of the list are possible
             var additionalExtensionsList = additionalExtensions.ToList();
-            if (!additionalExtensionsList.Any())
+            if (additionalExtensionsList.Count == 0)
             {
                 return this.extensions;
             }
 
-            var normalizedExtensions = this.NormalizeExtensions(additionalExtensionsList);
+            var normalizedExtensions = NormalizeExtensions(additionalExtensionsList);
             return this.extensions.Union(normalizedExtensions);
-        }
-
-        private IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
-        {
-            return additionalExtensions.Select(ext => (ext.StartsWith(".") ? ext : "." + ext).ToLowerInvariant());
         }
     }
 }

@@ -136,7 +136,7 @@ namespace Dnn.ExportImport.Components.Services
             if (File.Exists(packageZipFile))
             {
                 CompressionUtil.UnZipArchive(packageZipFile, tempFolder);
-                var exporeFiles = Directory.Exists(tempFolder) ? Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories) : new string[0];
+                var exporeFiles = Directory.Exists(tempFolder) ? Directory.GetFiles(tempFolder, "*.*", SearchOption.AllDirectories) : [];
                 var portalSettings = new PortalSettings(importDto.PortalId);
                 this.importCount = exporeFiles.Length;
 
@@ -219,13 +219,14 @@ namespace Dnn.ExportImport.Components.Services
             return this.importCount;
         }
 
-        private IList<string> GetExportThemes()
+        private List<string> GetExportThemes()
         {
-            var exportThemes = new List<string>();
-
-            // get site level themes
-            exportThemes.Add(this.portalSettings.DefaultPortalSkin);
-            exportThemes.Add(this.portalSettings.DefaultPortalContainer);
+            var exportThemes = new List<string>
+            {
+                // get site level themes
+                this.portalSettings.DefaultPortalSkin,
+                this.portalSettings.DefaultPortalContainer,
+            };
 
             if (!exportThemes.Contains(this.portalSettings.DefaultAdminSkin))
             {
@@ -245,7 +246,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var theme in exportThemes)
             {
                 var packageName = theme.Substring(0, theme.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                if (!themePackages.Any(p => p.Equals(packageName, StringComparison.InvariantCultureIgnoreCase)))
+                if (!themePackages.Any(p => p.Equals(packageName, StringComparison.OrdinalIgnoreCase)))
                 {
                     themePackages.Add(packageName);
                 }
@@ -254,7 +255,7 @@ namespace Dnn.ExportImport.Components.Services
             return themePackages;
         }
 
-        private IList<string> LoadExportThemesForPages()
+        private List<string> LoadExportThemesForPages()
         {
             var exportThemes = new List<string>();
 
@@ -274,7 +275,7 @@ namespace Dnn.ExportImport.Components.Services
             return exportThemes;
         }
 
-        private IList<string> LoadExportContainersForModules()
+        private List<string> LoadExportContainersForModules()
         {
             var exportThemes = new List<string>();
 

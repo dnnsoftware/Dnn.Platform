@@ -44,7 +44,7 @@ class JobDetails extends Component {
                 }
                 else {
                     return <div>
-                        <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                        <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                         <div style={{ float: "right" }}>
                             {detail.ProcessedItemsString + " / " + detail.TotalItemsString + " (" + (detail.ProcessedItems / detail.TotalItems * 100).toFixed(1) + "%)"}
                         </div>
@@ -72,7 +72,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item users">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                 <div style={{ float: "right" }}>
                                     {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>
@@ -99,7 +99,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item users">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                 <div style={{ float: "right" }}>
                                     {usersData.ProcessedItemsString + " / " + usersData.TotalItemsString + " (" + (usersData.ProcessedItems / usersData.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>
@@ -129,7 +129,7 @@ class JobDetails extends Component {
                         />
                         <div className="import-summary-item">
                             <div>
-                                <div className="cycle-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.CycleIcon }} />
+                                <div className="cycle-icon"><SvgIcons.CycleIcon /></div>
                                 <div style={{ float: "right" }}>
                                     {users.ProcessedItemsString + " / " + users.TotalItemsString + " (" + (users.ProcessedItems / users.TotalItems * 100).toFixed(1) + "%)"}
                                 </div>

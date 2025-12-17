@@ -28,10 +28,11 @@
     "DNN Platform/Modules/ResourceManager/ResourceManager.Web",
     "DNN Platform/Modules/BulkInstall/BulkInstall.Web",
     "DNN Platform/Skins/Aperture",
-    "DNN Platform/Dnn.ClientSide"
+    "DNN Platform/Dnn.ClientSide",
+    "DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact"
   ],
   "devDependencies": {
-    "lerna": "^8.1.9"
+    "lerna": "^9.0.0"
   },
   "scripts": {
     "build": "lerna run build --stream",
@@ -45,5 +46,5 @@
   "resolutions": {
     "@types/ws": "8.5.4"
   },
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "yarn@4.10.3"
 }

@@ -188,7 +188,6 @@ class Performance extends Component {
             <GridCell className="dnn-servers-grid-panel newSection" style={{ paddingLeft: 0 }}>
                 <Label className="header-title" label={localization.get("PerformanceTab_ClientResourceManagementTitle")} />
             </GridCell>
-            <WarningBlock label={localization.get("PerformanceTab_MinifactionWarning")} />
             <GridSystem>
                 <div className="leftPane">
                     <InputGroup>
@@ -203,38 +202,7 @@ class Performance extends Component {
                     <Button type="secondary" style={{ marginBottom: "40px" }} disable={props.incrementingVersion}
                         onClick={this.onIncrementVersion.bind(this)}>{localization.get("PerformanceTab_IncrementVersion")}</Button>
                 </div>
-                <div className="rightPane borderSeparation">
-                    <RadioButtonBlock options={this.getClientResourcesManagementModeOptions()}
-                        label={localization.get("PerformanceTab_ClientResourcesManagementMode")}
-                        tooltip={localization.get("PerformanceTab_ClientResourcesManagementMode.Help")}
-                        onChange={this.onChangeField.bind(this, "clientResourcesManagementMode")}
-                        value={props.performanceSettings.clientResourcesManagementMode} />
-                    <SwitchBlock label={localization.get("PerformanceTab_EnableCompositeFiles")}
-                        onText={localization.get("SwitchOn")}
-                        offText={localization.get("SwitchOff")}
-                        tooltip={localization.get("PerformanceTab_EnableCompositeFiles.Help")}
-                        value={enableCompositeFiles}
-                        onChange={this.onChangeField.bind(this, enableCompositeFilesKey)}
-                        isGlobal={areGlobalSettings} 
-                        globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
-                    <SwitchBlock label={localization.get("PerformanceTab_MinifyCss")}
-                        onText={localization.get("SwitchOn")}
-                        offText={localization.get("SwitchOff")}
-                        tooltip={localization.get("PerformanceTab_MinifyCss.Help")}
-                        value={enableCompositeFiles ? minifyCss : false}
-                        readOnly={!enableCompositeFiles}
-                        onChange={this.onChangeField.bind(this, minifyCssKey)}
-                        isGlobal={areGlobalSettings} 
-                        globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
-                    <SwitchBlock label={localization.get("PerformanceTab_MinifyJs")}
-                        onText={localization.get("SwitchOn")}
-                        offText={localization.get("SwitchOff")}
-                        tooltip={localization.get("PerformanceTab_MinifyJs.Help")}
-                        value={enableCompositeFiles ? minifyJs : false}
-                        readOnly={!enableCompositeFiles}
-                        onChange={this.onChangeField.bind(this, minifyJsKey)}
-                        isGlobal={areGlobalSettings} 
-                        globalTooltipStyle={{margin: "8px 0px 0px 5px"}}/>
+                <div className="rightPane">
                 </div>
             </GridSystem>
             <div className="clear" />

@@ -13,7 +13,9 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Upgrade;
 
-    /// <summary>HtmlUtils is a Utility class that provides Html Utility methods.</summary>
+    using Ganss.Xss;
+
+    /// <summary>HtmlUtils is a Utility class that provides HTML Utility methods.</summary>
     public partial class HtmlUtils
     {
         // Create Regular Expression objects
@@ -579,5 +581,81 @@ namespace DotNetNuke.Common.Utilities
         /// <inheritdoc cref="HttpUtility.JavaScriptStringEncode(string,bool)"/>
         public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
             => new HtmlString(HttpUtility.JavaScriptStringEncode(value, addDoubleQuotes));
+
+        /// <summary>Sanitize the given HTML, removing element which could include JavaScript.</summary>
+        /// <param name="htmlInput">The HTML to sanitize.</param>
+        /// <returns>The sanitized HTML.</returns>
+        public static string CleanOutOfJavascript(string htmlInput)
+        {
+            var sanitizer = new HtmlSanitizer();
+
+            // We need to disallow all attributes that might contain JS
+            sanitizer.AllowedAttributes.Remove("onclick");
+            sanitizer.AllowedAttributes.Remove("onmouseover");
+            sanitizer.AllowedAttributes.Remove("onmouseout");
+            sanitizer.AllowedAttributes.Remove("onkeypress");
+            sanitizer.AllowedAttributes.Remove("onkeydown");
+            sanitizer.AllowedAttributes.Remove("onkeyup");
+
+            // We need to disallow tags like '<form action="javascript:submitForm()">'
+            sanitizer.AllowedSchemes.Remove("javascript");
+
+            // Tags like '<script>' are obviously not allowed
+            sanitizer.AllowedTags.Remove("script");
+
+            return sanitizer.Sanitize(htmlInput);
+        }
+
+        /// <summary>Determines whether the given <paramref name="htmlInput"/> contains any JavaScript.</summary>
+        /// <param name="htmlInput">The HTML to check.</param>
+        /// <returns><see langword="true"/> if <paramref name="htmlInput"/> contains JavaScript, otherwise <see langword="false"/>.</returns>
+        public static bool ContainsJavaScript(string htmlInput)
+        {
+            if (string.IsNullOrEmpty(htmlInput))
+            {
+                return false;
+            }
+
+            string cleaned = CleanOutOfJavascript(htmlInput);
+
+            // Strip all HTML syntax characters and whitespace for comparison
+            string strippedOriginal = StripHtmlSyntax(htmlInput);
+            string strippedCleaned = StripHtmlSyntax(cleaned);
+
+            // If the stripped versions are different, JavaScript was likely removed
+            return !string.Equals(strippedOriginal, strippedCleaned, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>Sanitizes the given <paramref name="rawHtmlInput"/> if <paramref name="allowJavaScript"/> is <see langword="false"/>.</summary>
+        /// <param name="rawHtmlInput">The raw HTML input.</param>
+        /// <param name="allowJavaScript">Whether to allow JavaScript in the HTML.</param>
+        /// <returns>The HTML, potentially sanitized.</returns>
+        public static string SanitizeHtmlIfNeeded(string rawHtmlInput, bool allowJavaScript)
+        {
+            // If input is null or empty: nothing to do
+            if (string.IsNullOrEmpty(rawHtmlInput))
+            {
+                return string.Empty;
+            }
+
+            // If JavaScript is not allowed: HTML must be sanitized
+            if (!allowJavaScript)
+            {
+                return CleanOutOfJavascript(rawHtmlInput);
+            }
+
+            return rawHtmlInput;
+        }
+
+        private static string StripHtmlSyntax(string html)
+        {
+            if (string.IsNullOrEmpty(html))
+            {
+                return string.Empty;
+            }
+
+            // Remove all whitespace and HTML syntax characters
+            return Regex.Replace(html, @"[\s<>/""'=]", string.Empty);
+        }
     }
 }

@@ -208,7 +208,7 @@ namespace DotNetNuke.Entities.Users
                     var socialRoles = this.Social.Roles;
                     if (socialRoles.Count == 0)
                     {
-                        return new string[0];
+                        return [];
                     }
                     else
                     {

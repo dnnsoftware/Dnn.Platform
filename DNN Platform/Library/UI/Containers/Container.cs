@@ -4,11 +4,13 @@
 namespace DotNetNuke.UI.Containers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Application;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
@@ -19,21 +21,36 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Containers.EventListeners;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Container is the base for the Containers.</summary>
     public class Container : UserControl
     {
         private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly IClientResourceController clientResourceController;
         private HtmlContainerControl contentPane;
         private ModuleInfo moduleConfiguration;
         private ModuleHost moduleHost;
+
+        /// <summary>Initializes a new instance of the <see cref="Container"/> class.</summary>
+        [Obsolete("Use Container(IClientResourceController) instead. Scheduled removal in v12.0.0.")]
+        public Container()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Container"/> class.</summary>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public Container(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+        }
 
         /// <summary>Gets the ModuleControl object that this container is displaying.</summary>
         /// <returns>A ModuleHost object.</returns>
@@ -53,44 +70,22 @@ namespace DotNetNuke.UI.Containers
 
         /// <summary>Gets and sets the ModuleInfo object that this container is displaying.</summary>
         /// <returns>A ModuleInfo object.</returns>
-        public ModuleInfo ModuleConfiguration
-        {
-            get
-            {
-                return this.moduleConfiguration;
-            }
-        }
+        public ModuleInfo ModuleConfiguration => this.moduleConfiguration;
 
         /// <summary>Gets the ModuleHost object that this container is displaying.</summary>
         /// <returns>A ModuleHost object.</returns>
-        public ModuleHost ModuleHost
-        {
-            get
-            {
-                return this.moduleHost;
-            }
-        }
+        public ModuleHost ModuleHost => this.moduleHost;
 
         /// <summary>Gets the Parent Container for this container.</summary>
         /// <returns>A String.</returns>
-        public Skins.Skin ParentSkin
-        {
-            get
-            {
-                // This finds a reference to the containing skin
-                return Skins.Skin.GetParentSkin(this);
-            }
-        }
+        public Skins.Skin ParentSkin =>
+
+            // This finds a reference to the containing skin
+            Skins.Skin.GetParentSkin(this);
 
         /// <summary>Gets the Path for this container.</summary>
         /// <returns>A String.</returns>
-        public string ContainerPath
-        {
-            get
-            {
-                return this.TemplateSourceDirectory + "/";
-            }
-        }
+        public string ContainerPath => this.TemplateSourceDirectory + "/";
 
         /// <summary>Gets or sets the Source for this container.</summary>
         /// <returns>A String.</returns>
@@ -100,23 +95,12 @@ namespace DotNetNuke.UI.Containers
 
         /// <summary>Gets the Content Pane Control (Id="ContentPane").</summary>
         /// <returns>An HtmlContainerControl.</returns>
-        protected HtmlContainerControl ContentPane
-        {
-            get
-            {
-                return this.contentPane ?? (this.contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
-            }
-        }
+        protected HtmlContainerControl ContentPane => this.contentPane ??= this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl;
 
         /// <summary>Gets the Portal Settings for the current Portal.</summary>
         /// <returns>A PortalSettings object.</returns>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public void SetModuleConfiguration(ModuleInfo configuration)
         {
@@ -233,10 +217,10 @@ namespace DotNetNuke.UI.Containers
 
             var showMessage = false;
             var adminMessage = Null.NullString;
-            if (viewRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
-                            && (moduleEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
+            if (viewRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase)
+                            && (moduleEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase)
                                     || string.IsNullOrEmpty(moduleEditRoles))
-                            && pageEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
+                            && pageEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.OrdinalIgnoreCase))
             {
                 adminMessage = Localization.GetString("ModuleVisibleAdministrator.Text");
                 showMessage = !this.ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();
@@ -314,7 +298,7 @@ namespace DotNetNuke.UI.Containers
                     this.ContentPane.Controls.Add(this.LoadControl(this.PortalSettings.DefaultModuleActionMenu));
 
                     // register admin.css
-                    ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
+                    this.clientResourceController.RegisterStylesheet(Globals.HostPath + "admin.css", FileOrder.Css.AdminCss, true);
                 }
 
                 // Process Module Header
@@ -354,8 +338,8 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessStylesheets(bool includeModuleCss)
         {
-            ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
-            ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
+            this.clientResourceController.RegisterStylesheet(this.ContainerPath + "container.css", FileOrder.Css.ContainerCss, true);
+            this.clientResourceController.RegisterStylesheet(this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss, true);
 
             // process the base class module properties
             if (includeModuleCss)
@@ -375,14 +359,14 @@ namespace DotNetNuke.UI.Containers
                         stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
                     }
 
-                    ClientResourceManager.RegisterStyleSheet(this.Page, stylesheet, FileOrder.Css.ModuleCss);
+                    this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
                 }
 
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
                 if (ix >= 0)
                 {
                     stylesheet = Globals.ApplicationPath + "/" + controlSrc.Substring(0, ix + 1) + "module.css";
-                    ClientResourceManager.RegisterStyleSheet(this.Page, stylesheet, FileOrder.Css.ModuleCss);
+                    this.clientResourceController.RegisterStylesheet(stylesheet, FileOrder.Css.ModuleCss, true);
                 }
             }
         }

@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Build;
 
+using System;
 using System.Diagnostics;
 
 using Cake.Common.IO;
@@ -18,6 +19,8 @@ public static class ContextExtensions
     /// <returns>The file version.</returns>
     public static string GetAssemblyFileVersion(this Context context, FilePath assemblyPath)
     {
-        return FileVersionInfo.GetVersionInfo(context.MakeAbsolute(assemblyPath).FullPath).FileVersion;
+        var versionInfo = FileVersionInfo.GetVersionInfo(context.MakeAbsolute(assemblyPath).FullPath);
+        var fileVersion = versionInfo.FileVersion;
+        return Version.TryParse(fileVersion, out _) ? fileVersion : $"{versionInfo.FileMajorPart}.{versionInfo.FileMinorPart}.{versionInfo.FileBuildPart}";
     }
 }

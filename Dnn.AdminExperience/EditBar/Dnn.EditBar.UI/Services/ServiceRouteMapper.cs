@@ -13,6 +13,8 @@ namespace Dnn.EditBar.UI.Services
 
     public class ServiceRouteMapper : IServiceRouteMapper
     {
+        private static readonly string[] Namespaces = new[] { "Dnn.EditBar.UI.Services" };
+
         /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute routeManager)
         {
@@ -20,7 +22,7 @@ namespace Dnn.EditBar.UI.Services
                 "editBar/Common",
                 "default",
                 "{controller}/{action}",
-                new[] { "Dnn.EditBar.UI.Services" });
+                Namespaces);
         }
     }
 }

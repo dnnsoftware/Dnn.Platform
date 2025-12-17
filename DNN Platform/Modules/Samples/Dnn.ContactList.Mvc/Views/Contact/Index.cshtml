@@ -1,0 +1,96 @@
+﻿@using DotNetNuke.Collections
+@using DotNetNuke.Web.Mvc.Helpers
+@inherits DotNetNuke.Web.Mvc.Framework.DnnWebViewPage<DotNetNuke.Collections.IPagedList<Dnn.ContactList.Api.Contact>>
+
+<div class="contactList-container">
+    <div class="contactList-grid">
+    @foreach (var contact in Model)
+    {
+        Html.RenderPartial("_ContactPartial", contact, null);
+    }
+    </div>
+    <div class="contactList-pagination">
+        @if (Model.HasPreviousPage)
+        {
+            <a href="@Url.Action("Index", "Contact", new {pageIndex = Model.PageIndex - 1})" class="pagination-btn"><i class="fa fa-arrow-left"></i></a>
+        }
+        <span class="pagination-text">@Dnn.LocalizeString("PageOf").Replace("[PageIndex]", (@Model.PageIndex + 1).ToString()).Replace("[PageCount]", @Model.PageCount.ToString())</span>
+        @if (Model.HasNextPage)
+        {
+            <a href="@Url.Action("Index", "Contact", new {pageIndex = Model.PageIndex + 1})" class="pagination-btn"><i class="fa fa-arrow-right"></i></a>
+        }
+    </div>
+    @if (@Dnn.ModuleContext.IsEditable && Convert.ToBoolean(Dnn.ModuleContext.Configuration.ModuleSettings.GetValueOrDefault("AllowContactCreation", false)))
+    {
+        <div class="buttons">
+            <a class="dnnPrimaryAction" href="@Url.Action("Edit", new {ctl = "Edit"})">@Dnn.LocalizeString("AddContact")</a>
+        </div>
+    }
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log('I am called');
+            var rvtoken = $("input[name='__RequestVerificationToken']").val();
+            var ModuleId = @Dnn.ModuleContext.ModuleId;
+            var TabId = @Dnn.ModuleContext.TabId;
+            var siteRoot = dnn.getVar("sf_siteRoot", "/");
+            var jsonResult = function() {
+                $.ajax({
+                    url: siteRoot + "DesktopModules/MVC/ContactList/Contact/GetJsonResult",
+                    method: "Get",
+                    headers: {
+                        "ModuleId": ModuleId,
+                        "TabId": TabId,
+                        "RequestVerificationToken": rvtoken
+                    }
+                })
+                    .done(function(data) {
+                        $('@Html.Raw("#jsonresult_userid_" + Dnn.ModuleContext.ModuleId)').html(data.UserID);
+                        $('@Html.Raw("#jsonresult_portalid_" + Dnn.ModuleContext.ModuleId)').html(data.PortalId);
+                        $('@Html.Raw("#jsonresult_alias_" + Dnn.ModuleContext.ModuleId)').html(data.Alias);
+                        $('@Html.Raw("#jsonresult_time_" + Dnn.ModuleContext.ModuleId)').html(data.Time);
+                    });
+            }
+            var partialResult = function() {
+                $.ajax({
+                    url: siteRoot + "DesktopModules/MVC/ContactList/Contact/GetDemoPartial",
+                    method: "Get",
+                    headers: {
+                        "ModuleId": ModuleId,
+                        "TabId": TabId,
+                        "RequestVerificationToken": rvtoken
+                    }
+                })
+                    .done(function(data) {
+                        if (console && console.log) {
+                            $('@Html.Raw("#partialupdates" + Dnn.ModuleContext.ModuleId)').html(data);
+                        }
+                    });
+            }
+
+            partialResult();
+            jsonResult();
+
+            setInterval(function() {
+                //Partial update call
+                partialResult();
+                //Json update call
+                jsonResult();
+            }, 10000);
+        });
+    </script>
+}
+<h2>Return Partial and Json Demo</h2>
+<h5>Partial View</h5>
+<div id='@Html.Raw("partialupdates" + Dnn.ModuleContext.ModuleId)'></div>
+<h5>Json Result</h5>
+<div id='@Html.Raw("jsonupdates" + Dnn.ModuleContext.ModuleId)'>
+    <div>Current User Id: <span id='@Html.Raw("jsonresult_userid_" + Dnn.ModuleContext.ModuleId)'></span></div>
+    <div>Portal Id: <span id='@Html.Raw("jsonresult_portalid_" + Dnn.ModuleContext.ModuleId)'></span></div>
+    <div>Portal Alias: <span id='@Html.Raw("jsonresult_alias_" + Dnn.ModuleContext.ModuleId)'></span></div>
+    <div>Current Time: <span id='@Html.Raw("jsonresult_time_" + Dnn.ModuleContext.ModuleId)'></span></div>
+</div>
+<h6>Update happens every 10 secs.</h6>
+<div>(View calls in browser's network tab for more details)</div>

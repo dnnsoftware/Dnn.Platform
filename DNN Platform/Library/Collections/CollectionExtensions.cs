@@ -83,7 +83,7 @@ namespace DotNetNuke.Collections
         /// <returns>A <see cref="Func{String,Boolean}" /> instance.</returns>
         public static Func<string, bool> GetFlexibleBooleanParsingFunction()
         {
-            return GetFlexibleBooleanParsingFunction(new[] { "true", "on", "1", "yes" });
+            return GetFlexibleBooleanParsingFunction("true", "on", "1", "yes");
         }
 
         /// <summary>Gets a converter function which parses a <see cref="string"/> value into a <see cref="bool"/>.</summary>
@@ -196,7 +196,7 @@ namespace DotNetNuke.Collections
 
             if (!dictionary.Contains(key))
             {
-                throw new ArgumentException("dictionary does not contain a value for the given key", "key");
+                throw new ArgumentException("dictionary does not contain a value for the given key", nameof(key));
             }
 
             return converter(dictionary[key]);
@@ -864,6 +864,27 @@ namespace DotNetNuke.Collections
             res.PageCount = list.PageCount;
             res.TotalCount = list.TotalCount;
             res.Data = list;
+            return res;
+        }
+
+        /// <summary>
+        /// Converts the specified IPagedList to a Serializable Paged List.
+        /// </summary>
+        /// <typeparam name="T">The type of items in the list.</typeparam>
+        /// <typeparam name="TU">The type of items in the serialized list.</typeparam>
+        /// <param name="list">The IPagedList results from the database.</param>
+        /// <param name="cast">A function to convert from type T to type U.</param>
+        /// <returns>A serialized list of type U.</returns>
+        public static SerializablePagedList<TU> Serialize<T, TU>(this IPagedList<T> list, Func<T, TU> cast)
+        {
+            var res = new SerializablePagedList<TU>();
+            res.PageIndex = list.PageIndex;
+            res.PageSize = list.PageSize;
+            res.IsFirstPage = list.IsFirstPage;
+            res.IsLastPage = list.IsLastPage;
+            res.PageCount = list.PageCount;
+            res.TotalCount = list.TotalCount;
+            res.Data = list.Select(x => cast(x));
             return res;
         }
 

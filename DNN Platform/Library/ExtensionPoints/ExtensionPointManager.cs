@@ -88,7 +88,7 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IToolBarButtonExtensionPoint> GetToolBarButtonExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
             return from e in this.toolbarButtonExtensionPoints
-                   where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;
         }
@@ -180,7 +180,7 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
             return from e in this.menuItems
-                   where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;
         }
@@ -198,7 +198,7 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IGridColumnExtensionPoint> GetGridColumnExtensionPoints(string module, string group, IExtensionPointFilter filter)
         {
             return from e in this.gridColumns
-                   where this.FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
+                   where FilterCondition(e.Metadata, module, @group) && filter.Condition(e.Metadata)
                    orderby e.Value.Order
                    select e.Value;
         }
@@ -211,7 +211,7 @@ namespace DotNetNuke.ExtensionPoints
             return new CompositionContainer(catalog, true);
         }
 
-        private bool FilterCondition(IExtensionPointData data, string module, string group)
+        private static bool FilterCondition(IExtensionPointData data, string module, string group)
         {
             return data.Module == module && (string.IsNullOrEmpty(@group) || data.Group == @group);
         }

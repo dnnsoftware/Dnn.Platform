@@ -14,6 +14,7 @@ namespace Dnn.Modules.Console
 
     using Dnn.Modules.Console.Components;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
@@ -22,10 +23,10 @@ namespace Dnn.Modules.Console
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the module view logic.</summary>
@@ -34,6 +35,7 @@ namespace Dnn.Modules.Console
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourceController clientResourceController;
 
         private string defaultSize = string.Empty;
         private string defaultView = string.Empty;
@@ -42,17 +44,19 @@ namespace Dnn.Modules.Console
 
         /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
         public ViewConsole()
-            : this(null, null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
-        public ViewConsole(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript)
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public ViewConsole(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets a value indicating whether the module settings allow size change.</summary>
@@ -213,7 +217,7 @@ namespace Dnn.Modules.Console
             {
                 this.javaScript.RequestRegistration(CommonJs.jQuery);
 
-                ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/admin/console/scripts/jquery.console.js");
+                this.clientResourceController.RegisterScript("~/desktopmodules/admin/console/scripts/jquery.console.js");
 
                 this.DetailView.ItemDataBound += this.RepeaterItemDataBound;
 

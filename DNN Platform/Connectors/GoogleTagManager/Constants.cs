@@ -10,7 +10,7 @@ namespace DNN.Connectors.GoogleTagManager
     using System.Web;
 
     /// <summary>Lists constants used across the connector.</summary>
-    internal class Constants
+    internal static class Constants
     {
         /// <summary>The path to the resource file used for localization.</summary>
         public const string LocalResourceFile = "~/DesktopModules/Connectors/GoogleTagManager/App_LocalResources/SharedResources.resx";

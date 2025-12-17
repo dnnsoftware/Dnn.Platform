@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
@@ -46,7 +45,7 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
-
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
     using Assembly = System.Reflection.Assembly;
@@ -797,7 +796,7 @@ namespace DotNetNuke.Services.Upgrade
                 superUser.Profile.PreferredLocale = locale;
                 superUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
 
-                if (updatePassword.ToLowerInvariant() == "true")
+                if (updatePassword.Equals("true", StringComparison.OrdinalIgnoreCase))
                 {
                     superUser.Membership.UpdatePassword = true;
                 }
@@ -892,7 +891,7 @@ namespace DotNetNuke.Services.Upgrade
                         bool settingIsSecure = false;
                         if (secureAttrib != null)
                         {
-                            if (secureAttrib.Value.ToLowerInvariant() == "true")
+                            if (secureAttrib.Value.Equals("true", StringComparison.OrdinalIgnoreCase))
                             {
                                 settingIsSecure = true;
                             }
@@ -1020,16 +1019,16 @@ namespace DotNetNuke.Services.Upgrade
                 Globals.SetStatus(Globals.UpgradeStatus.None);
 
                 // download LP (and templates) if not using en-us
-                IInstallationStep ensureLpAndTemplate = new UpdateLanguagePackStep();
+                var ensureLpAndTemplate = new UpdateLanguagePackStep();
                 ensureLpAndTemplate.Execute();
 
                 // install LP that contains templates if installing in a different language
                 var installConfig = InstallController.Instance.GetInstallConfig();
                 string culture = installConfig.InstallCulture;
-                if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
+                if (!culture.Equals("en-us", StringComparison.OrdinalIgnoreCase))
                 {
                     string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
-                    string lpAndTemplates = installFolder + "\\installlanguage.resources";
+                    string lpAndTemplates = $@"{installFolder}\installlanguage.resources";
 
                     if (File.Exists(lpAndTemplates))
                     {
@@ -1612,6 +1611,9 @@ namespace DotNetNuke.Services.Upgrade
                 UpdateConfig(providerPath, ver, true);
             }
 
+            // Removing ClientDependency Resources config from web.config
+            ClientResourceManager.RemoveConfiguration();
+
             DataProvider.Instance().SetCorePackageVersions();
 
             // perform general application upgrades
@@ -1684,7 +1686,7 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&version=" + Globals.FormatVersion(version, "00", 3, string.Empty);
                 url += "&type=" + packageType;
                 url += "&name=" + packageName;
-                if (packageType.ToLowerInvariant() == "module")
+                if (packageType.Equals("module", StringComparison.OrdinalIgnoreCase))
                 {
                     var moduleType = (from m in InstalledModulesController.GetInstalledModules() where m.ModuleName == packageName select m).SingleOrDefault();
                     if (moduleType != null)
@@ -2025,10 +2027,10 @@ namespace DotNetNuke.Services.Upgrade
             var defaultTemplates =
                 templates.Where(x => Path.GetFileName(x.TemplateFilePath) == templateFileName).ToList();
 
-            return defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant() == currentCulture) ??
-                   defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant().StartsWith(currentCulture.Substring(0, 2))) ??
+            return defaultTemplates.FirstOrDefault(x => x.CultureCode.Equals(currentCulture, StringComparison.OrdinalIgnoreCase)) ??
+                   defaultTemplates.FirstOrDefault(x => x.CultureCode.StartsWith(currentCulture.Substring(0, 2), StringComparison.InvariantCultureIgnoreCase)) ??
                    defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode)) ??
-                   throw new Exception("Unable to locate specified portal template: " + templateFileName);
+                   throw new TemplateNotFoundException("Unable to locate specified portal template: " + templateFileName);
         }
 
         internal static IPortalTemplateInfo FindBestTemplate(string templateFileName)
@@ -2528,11 +2530,8 @@ namespace DotNetNuke.Services.Upgrade
 
                     var isInstalled = false;
                     PackageController.ParsePackage(file, installPackagePath, packages, invalidPackages);
-                    if (packages.ContainsKey(file))
+                    if (packages.TryGetValue(file, out var package))
                     {
-                        // check whether have version conflict and remove old version.
-                        var package = packages[file];
-
                         var installedPackage = PackageController.Instance.GetExtensionPackage(
                             Null.NullInteger,
                             p => p.Name.Equals(package.Name, StringComparison.OrdinalIgnoreCase)
@@ -2551,7 +2550,7 @@ namespace DotNetNuke.Services.Upgrade
                                 oldPackages.Add(new KeyValuePair<string, PackageInfo>(file, package));
                             }
 
-                            if (oldPackages.Any())
+                            if (oldPackages.Count != 0)
                             {
                                 foreach (var oldPackage in oldPackages)
                                 {
@@ -2706,21 +2705,17 @@ namespace DotNetNuke.Services.Upgrade
                 cultureCode = Localization.SystemLocale;
             }
 
-            if (resourcesDict.ContainsKey(cultureCode))
+            if (resourcesDict.TryGetValue(cultureCode, out var doc))
             {
-                return resourcesDict[cultureCode];
+                return doc;
             }
 
             try
             {
-                var languageFilePath = Path.Combine(
-                    Globals.HostMapPath,
-                    string.Format("Default Website.template.{0}.resx", cultureCode));
+                var languageFilePath = Path.Combine(Globals.HostMapPath, $"Default Website.template.{cultureCode}.resx");
                 if (!File.Exists(languageFilePath))
                 {
-                    languageFilePath = Path.Combine(
-                        Globals.HostMapPath,
-                        string.Format("Default Website.template.{0}.resx", Localization.SystemLocale));
+                    languageFilePath = Path.Combine(Globals.HostMapPath, $"Default Website.template.{Localization.SystemLocale}.resx");
                 }
 
                 var xmlDocument = new XmlDocument { XmlResolver = null };

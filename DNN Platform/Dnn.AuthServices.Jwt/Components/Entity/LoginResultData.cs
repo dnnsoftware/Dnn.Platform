@@ -29,5 +29,10 @@ namespace Dnn.AuthServices.Jwt.Components.Entity
         /// <summary>Gets or sets any error message.</summary>
         [JsonIgnore]
         public string Error { get; set; }
+
+        /// <summary>Gets deprecation warnings about the JWT token format (included in all responses).</summary>
+        [JsonProperty("deprecationNotice")]
+        public string DeprecationNotice =>
+            "The role claim format in JWT tokens is deprecated. Please use http://schemas.microsoft.com/ws/2008/06/identity/claims/role instead. The legacy role claim will be removed in DNN Platform v12.0.0.";
     }
 }

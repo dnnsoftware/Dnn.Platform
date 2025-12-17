@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Syndication
     using DotNetNuke.Instrumentation;
 
     /// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
-    internal class RssDownloadManager
+    internal sealed class RssDownloadManager
     {
         private const string RSSDir = "/RSS/";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));

@@ -1,11 +1,10 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-    log as LogActions
-} from "../../actions";
+import { log as LogActions } from "../../actions";
 import LogItemRow from "./LogItemRow";
 import EmailPanel from "./EmailPanel";
+import Html from "../Html";
 import { Checkbox, Dropdown, Pager, TextOverflowWrapper } from "@dnnsoftware/dnn-react-common";
 import "./style.less";
 import util from "../../utils";
@@ -229,7 +228,7 @@ class AdminLogPanelBody extends Component {
                     index={index}
                     key={"logTerm-" + index}
                     closeOnClick={true}>
-                    <div className="log-detail" dangerouslySetInnerHTML={{ __html: term.LogProperties }}></div>
+                    <div className="log-detail"><Html html={term.LogProperties} /></div>
                 </LogItemRow>
             );
         });

@@ -93,7 +93,7 @@ export default class ContentLoadWrapper extends Component {
             {this.props.loadError &&
                 <div className="try-load-again">
                     <div>
-                        <div className="upload-icon" dangerouslySetInnerHTML={{ __html: ErrorStateIcon }} />
+                        <div className="upload-icon">ErrorStateIcon</div>
                         <p>{this.props.failedToLoadText}</p>
                         <span onClick={this.onTryAgain.bind(this)}>[{this.props.tryAgainText}]</span>
                     </div>

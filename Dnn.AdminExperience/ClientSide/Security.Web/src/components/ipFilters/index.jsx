@@ -7,8 +7,8 @@ import IpFilterEditor from "./ipfilterEditor";
 import util from "../../utils";
 import resx from "../../resources";
 import { SvgIcons } from "@dnnsoftware/dnn-react-common";
+import WarningIcon from "./../svg/error.svg";
 import styles from "./style.module.less";
-import warningIcon from "./../svg/error.svg?raw";
  
 
 let tableFields = [];
@@ -122,13 +122,13 @@ class IpFiltersPanelBody extends Component {
                     <div className="ip-filter-topbar">
                         {!this.props.enableIPChecking &&
                             <div className="warning-container">
-                                <div className="warning-icon" dangerouslySetInnerHTML={{ __html: warningIcon }} />
+                                <div className="warning-icon"><WarningIcon /></div>
                                 {resx.get("IPFiltersDisabled") }
                             </div>
                         }
                         <div className="AddItemRow">
                             <div className={opened ? "AddItemBox-active" : "AddItemBox"} onClick={this.toggle.bind(this, opened ? "" : "add") }>
-                                <div className="add-icon" dangerouslySetInnerHTML={{ __html: SvgIcons.AddIcon }}>
+                                <div className="add-icon"><SvgIcons.AddIcon />
                                 </div> {resx.get("cmdAdd") }
                             </div>
                         </div>

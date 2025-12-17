@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { GridCell, MultiLineInputWithError, Button, Checkbox } from "@dnnsoftware/dnn-react-common";
 import { Scrollbars } from "react-custom-scrollbars";
 import Localization from "localization";
+import Html from "../../Html";
 import "./style.less";
 
 const inputStyle = { width: "100%" };
@@ -21,7 +22,7 @@ class License extends Component {
         return (
             <GridCell className="extension-license extension-form">
                 {props.installationMode && <h6>{Localization.get("InstallExtension_License.Header")}</h6>}
-                {props.installationMode && <p dangerouslySetInnerHTML={{ __html: Localization.get("InstallExtension_License.HelpText").replace("\\n", "<br/>") }}></p>}
+                {props.installationMode && <p><Html html={Localization.get("InstallExtension_License.HelpText").replace("\\n", "<br/>") } /></p>}
                 {!props.readOnly &&
                     <MultiLineInputWithError
                         label={!props.installationMode && Localization.get("InstallExtension_License.Header")}
@@ -31,7 +32,7 @@ class License extends Component {
                         onChange={props.onChange && props.onChange.bind(this, "license")} />}
                 {props.readOnly &&
                     <Scrollbars style={licenseBoxStyle}>
-                        <div className="read-only-license" dangerouslySetInnerHTML={{ __html: value }}></div>
+                        <div className="read-only-license"><Html html={value} /></div>
                     </Scrollbars>
                 }
                 <Checkbox

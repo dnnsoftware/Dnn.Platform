@@ -15,15 +15,15 @@ namespace DotNetNuke.ComponentModel
         {
             if (installers == null)
             {
-                throw new ArgumentNullException("installers");
+                throw new ArgumentNullException(nameof(installers));
             }
 
             VerifyContainer();
-            foreach (IComponentInstaller installer in installers)
+            foreach (var installer in installers)
             {
                 if (installer == null)
                 {
-                    throw new ArgumentNullException("installers");
+                    throw new ArgumentNullException(nameof(installers), "Item in installers was null");
                 }
 
                 installer.InstallComponents(Container);

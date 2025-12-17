@@ -1,31 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <!-- Make sure start same folder .NET Core CLI and Visual Studio -->
     <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
     <RootNamespace>DotNetNuke.Build</RootNamespace>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618</WarningsNotAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFramework>net10.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,CA1305,CA1716,CA1725,CA5351</WarningsNotAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Cake.BuildSystems.Module" Version="7.1.0" />
+    <PackageReference Include="Cake.BuildSystems.Module" Version="8.0.0" />
     <PackageReference Include="Cake.FileHelpers" Version="7.0.0" />
-    <PackageReference Include="Cake.Frosting" Version="5.0.0" />
+    <PackageReference Include="Cake.Frosting" Version="6.0.0" />
     <PackageReference Include="Cake.Frosting.Git" Version="5.0.1" />
-    <PackageReference Include="Cake.Issues" Version="5.5.0" />
-    <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="5.5.0" />
+    <PackageReference Include="Cake.Issues" Version="5.9.1" />
+    <PackageReference Include="Cake.Frosting.Issues.MsBuild" Version="5.9.1" />
     <PackageReference Include="Cake.Json" Version="7.0.1" />
     <PackageReference Include="Cake.XdtTransform" Version="2.0.0" />
     <PackageReference Include="Dnn.CakeUtils" Version="2.1.0" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

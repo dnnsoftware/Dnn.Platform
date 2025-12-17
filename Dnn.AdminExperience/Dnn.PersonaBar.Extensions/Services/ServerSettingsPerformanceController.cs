@@ -81,10 +81,7 @@ namespace Dnn.PersonaBar.Servers.Services
                     HostEnableCompositeFiles = this.hostSettings.CrmEnableCompositeFiles,
                     HostMinifyCss = this.hostSettings.CrmMinifyCss,
                     HostMinifyJs = this.hostSettings.CrmMinifyJs,
-                    CurrentPortalVersion = this.GetPortalVersion(portalId),
-                    PortalEnableCompositeFiles = Parse(PortalController.GetPortalSetting(ClientResourceSettings.EnableCompositeFilesKey, portalId, "false")),
-                    PortalMinifyCss = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyCssKey, portalId, "false")),
-                    PortalMinifyJs = Parse(PortalController.GetPortalSetting(ClientResourceSettings.MinifyJsKey, portalId, "false")),
+                    CurrentPortalVersion = GetPortalVersion(portalId),
 
                     // Options
                     CachingProviderOptions = this.performanceController.GetCachingProviderOptions(),
@@ -187,16 +184,10 @@ namespace Dnn.PersonaBar.Servers.Services
                 if (request.ClientResourcesManagementMode == "h")
                 {
                     PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
-                    this.hostSettingsService.Update(ClientResourceSettings.EnableCompositeFilesKey, request.HostEnableCompositeFiles.ToString(CultureInfo.InvariantCulture));
-                    this.hostSettingsService.Update(ClientResourceSettings.MinifyCssKey, request.HostMinifyCss.ToString(CultureInfo.InvariantCulture));
-                    this.hostSettingsService.Update(ClientResourceSettings.MinifyJsKey, request.HostMinifyJs.ToString(CultureInfo.InvariantCulture));
                 }
                 else
                 {
                     PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.EnableCompositeFilesKey, request.PortalEnableCompositeFiles.ToString(CultureInfo.InvariantCulture), false);
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.MinifyCssKey, request.PortalMinifyCss.ToString(CultureInfo.InvariantCulture), false);
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.MinifyJsKey, request.PortalMinifyJs.ToString(CultureInfo.InvariantCulture), false);
                 }
 
                 DataCache.ClearCache();
@@ -210,11 +201,10 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private int GetPortalVersion(int portalId)
+        private static int GetPortalVersion(int portalId)
         {
             var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
-            int version;
-            if (int.TryParse(settingValue, out version))
+            if (int.TryParse(settingValue, out var version))
             {
                 if (version == 0)
                 {

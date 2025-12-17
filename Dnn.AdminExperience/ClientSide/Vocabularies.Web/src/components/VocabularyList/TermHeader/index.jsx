@@ -4,8 +4,8 @@ import { Collapsible as Collapse, TextOverflowWrapper, GridCell, Button } from "
 import styles from "./style.module.less";
 import util from "utils";
 import LocalizedResources from "resources";
-import simpleTypeIcon from "./svg/vocabulary_simple.svg?raw";
-import hierarchyTypeIcon from "./svg/vocabulary_hierarchy.svg?raw";
+import SimpleTypeIcon from "./svg/vocabulary_simple.svg";
+import HierarchyTypeIcon from "./svg/vocabulary_hierarchy.svg";
 
 
 class TermHeader extends Component {
@@ -76,13 +76,12 @@ class TermHeader extends Component {
      
     render() {
         const {props, state} = this;
-        const svgIcon = props.type === 1 ? simpleTypeIcon : hierarchyTypeIcon;
+        const TypeIcon = props.type === 1 ? SimpleTypeIcon : HierarchyTypeIcon;
         return (
             <div ref={node => this.node = node} className={"" + styles.collapsibleComponent + " " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this)}>
                     <div className="term-header">
-                        <div className="term-icon" dangerouslySetInnerHTML={{ __html: svgIcon }}>
-                        </div>
+                        <div className="term-icon"><TypeIcon /></div>
                         <div className="term-label">
 
                             <TextOverflowWrapper text={props.header} maxWidth={200} />

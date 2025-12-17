@@ -134,7 +134,8 @@ class ListView extends Component {
          
         let i = 0;
         return portalButtons.map((_button) => {
-            let element = <div key={`portalButton_${i}`} dangerouslySetInnerHTML={{ __html: _button.icon }} title={_button.title} onClick={_button.onClick}></div>;
+            let ButtonIcon = _button.icon;
+            let element = <div key={`portalButton_${i}`} title={_button.title} onClick={_button.onClick}><ButtonIcon /></div>;
             i++;
             return element;
         });

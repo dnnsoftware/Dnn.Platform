@@ -7,6 +7,7 @@ namespace DotNetNuke.Entities.Portals
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
@@ -215,6 +216,8 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", this.hostSettings.EnableUrlLanguage);
             portalSettings.HideFoldersEnabled = settings.GetValueOrDefault("HideFoldersEnabled", true);
             portalSettings.InlineEditorEnabled = settings.GetValueOrDefault("InlineEditorEnabled", true);
+            portalSettings.AllowJsInModuleHeaders = settings.GetValueOrDefault("AllowJsInModuleHeaders", true);
+            portalSettings.AllowJsInModuleFooters = settings.GetValueOrDefault("AllowJsInModuleFooters", true);
             portalSettings.SearchIncludeCommon = settings.GetValueOrDefault("SearchIncludeCommon", this.hostSettings.SearchIncludeCommon);
             portalSettings.SearchIncludeNumeric = settings.GetValueOrDefault("SearchIncludeNumeric", this.hostSettings.SearchIncludeNumeric);
             portalSettings.SearchIncludedTagInfoFilter = settings.GetValueOrDefault("SearchIncludedTagInfoFilter", this.hostSettings.SearchIncludedTagInfoFilter);
@@ -232,20 +235,20 @@ namespace DotNetNuke.Entities.Portals
 
             portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.ModuleEditor;
             var setting = settings.GetValueOrDefault("ControlPanelSecurity", string.Empty);
-            if (setting.Equals("TAB", StringComparison.InvariantCultureIgnoreCase))
+            if (setting.Equals("TAB", StringComparison.OrdinalIgnoreCase))
             {
                 portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
             }
 
             portalSettings.DefaultControlPanelMode = PortalSettings.Mode.View;
             setting = settings.GetValueOrDefault("ControlPanelMode", string.Empty);
-            if (setting.Equals("EDIT", StringComparison.InvariantCultureIgnoreCase))
+            if (setting.Equals("EDIT", StringComparison.OrdinalIgnoreCase))
             {
                 portalSettings.DefaultControlPanelMode = PortalSettings.Mode.Edit;
             }
 
             setting = settings.GetValueOrDefault("ControlPanelVisibility", string.Empty);
-            portalSettings.DefaultControlPanelVisibility = !setting.Equals("MIN", StringComparison.InvariantCultureIgnoreCase);
+            portalSettings.DefaultControlPanelVisibility = !setting.Equals("MIN", StringComparison.OrdinalIgnoreCase);
 
             setting = settings.GetValueOrDefault("TimeZone", string.Empty);
             if (!string.IsNullOrEmpty(setting))
@@ -277,6 +280,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
         {
             var breadCrumbs = new List<TabInfo>();
@@ -357,7 +361,7 @@ namespace DotNetNuke.Entities.Portals
             activeTab.ContainerPath = SkinController.FormatSkinPath(activeTab.ContainerSrc);
         }
 
-        private static void GetBreadCrumbs(IList<TabInfo> breadCrumbs, int tabId, int portalId)
+        private static void GetBreadCrumbs(List<TabInfo> breadCrumbs, int tabId, int portalId)
         {
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
             var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);

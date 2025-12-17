@@ -61,14 +61,13 @@ module.exports = (env, argv) => {
                     use: ["url-loader?mimetype=application/font-woff"],
                 },
                 {
-                    test: /\.svg$/i,
-                    resourceQuery: /raw/, // *.svg?raw
-                    use: "raw-loader",
+                    test: /\.(ttf|eot|)(\?v=[0-9].[0-9].[0-9])?$/,
+                    use: ["file-loader?name=[name].[ext]"],
                 },
                 {
-                    test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
-                    resourceQuery: { not: /raw/ }, // Exclude *.svg?raw from file-loader
-                    use: ["file-loader?name=[name].[ext]"],
+                    test: /\.svg$/i,
+                    issuer: /\.[jt]sx?$/,
+                    use: ["@svgr/webpack"],
                 },
             ],
         },

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common
 {
     using System;
+    using System.Globalization;
     using System.IO;
     using System.Reflection;
     using System.Threading;
@@ -137,20 +138,19 @@ namespace DotNetNuke.Common
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
-                    LogTypeKey = EventLogType.APPLICATION_SHUTTING_DOWN.ToString(),
+                    LogTypeKey = nameof(EventLogType.APPLICATION_SHUTTING_DOWN),
                 };
                 log.AddProperty("Shutdown Details", shutdownDetail);
                 LogController.Instance.AddLog(log);
 
                 // enhanced shutdown logging
-                var runtime = typeof(HttpRuntime).InvokeMember(
-                    "_theRuntime",
-                    BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
-                    null,
-                    null,
-                    null) as HttpRuntime;
-
-                if (runtime == null)
+                if (typeof(HttpRuntime).InvokeMember(
+                        "_theRuntime",
+                        BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
+                        null,
+                        null,
+                        null,
+                        CultureInfo.InvariantCulture) is not HttpRuntime runtime)
                 {
                     Logger.InfoFormat("Application shutting down. Reason: {0}", shutdownDetail);
                 }
@@ -161,14 +161,16 @@ namespace DotNetNuke.Common
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
                         null,
                         runtime,
-                        null) as string;
+                        null,
+                        CultureInfo.InvariantCulture) as string;
 
                     var shutDownStack = runtime.GetType().InvokeMember(
                         "_shutDownStack",
                         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField,
                         null,
                         runtime,
-                        null) as string;
+                        null,
+                        CultureInfo.InvariantCulture) as string;
 
                     Logger.Info("Application shutting down. Reason: " + shutdownDetail
                                 + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage

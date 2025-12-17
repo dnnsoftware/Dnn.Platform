@@ -3,11 +3,10 @@
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
   </PropertyGroup>
   <Import Project="..\..\DNN_Platform.build" />
-  <Target Name="AfterBuild" DependsOnTargets="DebugProject">
-  </Target>
-  <Target Name="DebugProject">
+  <Target Name="CopyBin" BeforeTargets="Build">
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Microsoft.Extensions.FileSystemGlobbing.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\BouncyCastle.Crypto.dll" DestinationFolder="$(WebsitePath)/bin" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\System.Text.Encoding.CodePages.dll" DestinationFolder="$(WebsitePath)/bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.dll" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.pdb" DestinationFolder="$(WebsitePath)\bin" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\DotNetNuke.xml" DestinationFolder="$(WebsitePath)\bin" />

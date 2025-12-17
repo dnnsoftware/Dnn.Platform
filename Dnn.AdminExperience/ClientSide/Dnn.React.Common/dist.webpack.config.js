@@ -18,7 +18,16 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, use: ["babel-loader"] },
+            { 
+                test: /\.(js|jsx|ts|tsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                    options: {
+                        presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
+                    },
+                },
+            },
             { test: /\.less$/, use:
                 [
                     "style-loader",
@@ -41,14 +50,14 @@ module.exports = {
             { test: /\.(ttf|woff)$/, use: ["url-loader?limit=8192"] },
             { test: /\.css$/, use: ["style-loader!css-loader"] },
             { test: /\.(gif|png)$/, use: ["url-loader?mimetype=image/png"] },
-            { test: /\.(svg)$/, use: ["raw-loader"] },
+            { test: /\.(svg)$/, issuer: /\.[jt]sx?$/, use: ["@svgr/webpack"], },
             { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, use: ["url-loader?mimetype=application/font-woff"] },
             { test: /\.(ttf|eot)(\?v=[0-9].[0-9].[0-9])?$/, use: ["file-loader?name=[name].[ext]"] }
         ]
     },
     externals: ["react", "prop-types", nodeExternals()], // in order to ignore all modules in node_modules folder
     resolve: {
-        extensions: [".js", ".json", ".jsx"],
+        extensions: [".js", ".json", ".jsx", ".ts", ".tsx"],
         modules: [
             path.resolve(__dirname, "./src"), // Look in src first
             path.resolve("./node_modules"), // Try local node_modules

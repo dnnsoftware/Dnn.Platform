@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.Services.Parameters.ContainsKey("parentId") ? Convert.ToInt32(this.Services.Parameters["parentId"]) : Null.NullInteger;
+                return this.Services.Parameters.TryGetValue("parentId", out var parentId) ? Convert.ToInt32(parentId) : Null.NullInteger;
             }
 
             set
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string Filter
         {
-            get { return this.Services.Parameters.ContainsKey("filter") ? this.Services.Parameters["filter"] : string.Empty; }
+            get { return this.Services.Parameters.TryGetValue("filter", out var filter) ? filter : string.Empty; }
             set { this.Services.Parameters["filter"] = value; }
         }
 

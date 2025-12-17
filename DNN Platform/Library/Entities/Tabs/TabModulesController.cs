@@ -47,6 +47,12 @@ namespace DotNetNuke.Entities.Tabs
 
             foreach (ModuleInfo module in configuredModules)
             {
+                if (PortalSettings.Current != null)
+                {
+                    module.Header = HtmlUtils.SanitizeHtmlIfNeeded(module.Header, PortalSettings.Current.AllowJsInModuleHeaders);
+                    module.Footer = HtmlUtils.SanitizeHtmlIfNeeded(module.Footer, PortalSettings.Current.AllowJsInModuleFooters);
+                }
+
                 module.PaneModuleCount = objPaneModules[module.PaneName];
             }
 
@@ -82,9 +88,9 @@ namespace DotNetNuke.Entities.Tabs
         public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
         {
             var items = this.GetTabModuleSettingsByName(settingName);
-            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase));
+            var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.OrdinalIgnoreCase));
             var keyValuePairs = matches as KeyValuePair<int, string>[] ?? matches.ToArray();
-            if (keyValuePairs.Any())
+            if (keyValuePairs.Length != 0)
             {
                 return keyValuePairs.Select(kpv => kpv.Key).ToList();
             }

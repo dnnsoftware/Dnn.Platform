@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.UI.Services
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Net;
     using System.Net.Http;
@@ -26,6 +27,7 @@ namespace Dnn.PersonaBar.UI.Services
         private readonly Library.Controllers.TabsController controller = new Library.Controllers.TabsController();
 
         /// <summary>Gets the local resource file path.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         /// GET: api/Tabs/GetPortalTabs

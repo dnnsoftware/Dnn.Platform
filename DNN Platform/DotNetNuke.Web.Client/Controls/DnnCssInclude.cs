@@ -4,25 +4,45 @@
 
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Web.UI;
 
-    using ClientDependency.Core.Controls;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Web.Client.Cdf;
+    using DotNetNuke.Web.Client.ResourceManager;
 
     /// <summary>Registers a CSS resource.</summary>
-    public class DnnCssInclude : CssInclude
+    public class DnnCssInclude : ClientResourceInclude
     {
+        private readonly IClientResourceController clientResourceController;
+
         /// <summary>Initializes a new instance of the <see cref="DnnCssInclude"/> class.</summary>
-        public DnnCssInclude()
+        /// <param name="clientResourceController">The client resources controller.</param>
+        public DnnCssInclude(IClientResourceController clientResourceController)
         {
-            this.ForceProvider = ClientResourceManager.DefaultCssProvider;
+            this.clientResourceController = clientResourceController;
+            this.ForceProvider = ClientResourceProviders.DefaultCssProvider;
+            this.DependencyType = ClientDependencyType.Css;
         }
+
+        /// <inheritdoc cref="ILinkResource.Media" />
+        public string CssMedia { get; set; }
+
+        /// <inheritdoc cref="ILinkResource.Preload" />
+        public bool Preload { get; set; }
 
         /// <inheritdoc/>
         protected override void OnLoad(System.EventArgs e)
         {
-            base.OnLoad(e);
+            var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
+                .SetMedia(this.CssMedia);
+            if (this.Preload)
+            {
+                stylesheet.SetPreload();
+            }
 
-            this.PathNameAlias = this.PathNameAlias.ToLowerInvariant();
+            this.RegisterResource(stylesheet);
+            base.OnLoad(e);
         }
 
         /// <inheritdoc/>
@@ -30,7 +50,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)
             {
-                writer.Write("<!--CDF({0}|{1}|{2}|{3})-->", this.DependencyType, this.FilePath, this.ForceProvider, this.Priority);
+                writer.Write("<!--CDF(Css|{0}|{1}|{2})-->", this.FilePath, this.ForceProvider, this.Priority);
             }
         }
     }

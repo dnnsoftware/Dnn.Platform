@@ -60,15 +60,15 @@ namespace DotNetNuke.UI.Skins
         // ReSharper disable InconsistentNaming
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
+        public static readonly string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
+        public static readonly string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
-        public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
+        public static readonly string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
         // ReSharper restore InconsistentNaming
         private readonly ModuleInjectionManager moduleInjectionManager;
@@ -214,7 +214,8 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="iconSrc">The Icon to display.</param>
-        public static void AddPageMessage(Page page, string heading, string message, string iconSrc)
+        [DnnDeprecated(10, 2, 0, "Please use IPageService.AddMessage")]
+        public static partial void AddPageMessage(Page page, string heading, string message, string iconSrc)
         {
             AddPageMessage(page, heading, message, ModuleMessage.ModuleMessageType.GreenSuccess, iconSrc);
         }
@@ -224,7 +225,8 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="iconSrc">The Icon to display.</param>
-        public static void AddPageMessage(Skin skin, string heading, string message, string iconSrc)
+        [DnnDeprecated(10, 2, 0, "Please use IPageService.AddMessage")]
+        public static partial void AddPageMessage(Skin skin, string heading, string message, string iconSrc)
         {
             AddPageMessage(skin, heading, message, ModuleMessage.ModuleMessageType.GreenSuccess, iconSrc);
         }
@@ -234,7 +236,8 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="moduleMessageType">The type of the message.</param>
-        public static void AddPageMessage(Skin skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
+        [DnnDeprecated(10, 2, 0, "Please use IPageService.AddMessage")]
+        public static partial void AddPageMessage(Skin skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddPageMessage(skin, heading, message, moduleMessageType, Null.NullString);
         }
@@ -244,7 +247,8 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading.</param>
         /// <param name="message">The Message Text.</param>
         /// <param name="moduleMessageType">The type of the message.</param>
-        public static void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
+        [DnnDeprecated(10, 2, 0, "Please use IPageService.AddMessage")]
+        public static partial void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
             AddPageMessage(page, heading, message, moduleMessageType, Null.NullString);
         }
@@ -474,6 +478,26 @@ namespace DotNetNuke.UI.Skins
             this.ActionEventListeners.Add(new ModuleActionEventListener(moduleId, e));
         }
 
+        /// <summary>AddPageMessage adds a Page Message control to the Skin.</summary>
+        /// <param name="control">The control.</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
+        /// <param name="iconSrc">The Icon to display.</param>
+        internal static void AddPageMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
+
+                if (contentPane != null)
+                {
+                    ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
+                    contentPane.Controls.AddAt(0, moduleMessage);
+                }
+            }
+        }
+
         /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
@@ -491,7 +515,7 @@ namespace DotNetNuke.UI.Skins
             // Register any error messages on the Skin
             if (this.Request.QueryString["error"] != null && this.hostSettings.ShowCriticalErrors)
             {
-                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
+                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError, string.Empty);
 
                 if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
                 {
@@ -507,7 +531,7 @@ namespace DotNetNuke.UI.Skins
             if (!TabPermissionController.CanAdminPage() && !success)
             {
                 // only display the warning to non-administrators (administrators will see the errors)
-                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
+                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
             }
 
             this.InvokeSkinEvents(SkinEventType.OnSkinInit);
@@ -520,7 +544,7 @@ namespace DotNetNuke.UI.Skins
                     messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContextSource.Current.Items[OnInitMessageType].ToString(), true);
                 }
 
-                AddPageMessage(this, string.Empty, HttpContextSource.Current.Items[OnInitMessage].ToString(), messageType);
+                AddPageMessage(this, string.Empty, HttpContextSource.Current.Items[OnInitMessage].ToString(), messageType, string.Empty);
 
                 this.javaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -604,20 +628,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        private static void AddPageMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
-        {
-            if (!string.IsNullOrEmpty(message))
-            {
-                Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
-
-                if (contentPane != null)
-                {
-                    ModuleMessage moduleMessage = GetModuleMessageControl(heading, message, moduleMessageType, iconSrc);
-                    contentPane.Controls.AddAt(0, moduleMessage);
-                }
-            }
-        }
-
         private static Control FindControlRecursive(Control rootControl, string controlId)
         {
             if (rootControl.ID == controlId)
@@ -682,6 +692,26 @@ namespace DotNetNuke.UI.Skins
             }
 
             return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
+        }
+
+        private static void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
+        {
+            // If tab exists but ContentItem not, then we create it
+            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
+            {
+                TabController.Instance.CreateContentItem(tabInfo);
+                TabController.Instance.UpdateTab(tabInfo);
+            }
+        }
+
+        private static void EnsureContentItemForModule(ModuleInfo module)
+        {
+            // If module exists but ContentItem not, then we create it
+            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
+            {
+                ModuleController.Instance.CreateContentItem(module);
+                ModuleController.Instance.UpdateModule(module);
+            }
         }
 
         private bool CheckExpired()
@@ -783,7 +813,7 @@ namespace DotNetNuke.UI.Skins
                         case "article":
                         case "aside":
                             // content pane
-                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
+                            if (!objPaneControl.ID.Equals("controlpanel", StringComparison.OrdinalIgnoreCase))
                             {
                                 // Add to the PortalSettings (for use in the Control Panel)
                                 this.PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
@@ -811,7 +841,7 @@ namespace DotNetNuke.UI.Skins
             }
 
             // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
-            this.EnsureContentItemForModule(module);
+            EnsureContentItemForModule(module);
 
             var pane = this.GetPane(module);
             if (pane != null)
@@ -837,7 +867,7 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-                AddPageMessage(this, string.Empty, message, ModuleMessage.ModuleMessageType.YellowWarning);
+                AddPageMessage(this, string.Empty, message, ModuleMessage.ModuleMessageType.YellowWarning, string.Empty);
             }
         }
 
@@ -847,7 +877,7 @@ namespace DotNetNuke.UI.Skins
             if (TabPermissionController.CanViewPage())
             {
                 // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
-                this.EnsureContentItemForTab(this.PortalSettings.ActiveTab);
+                EnsureContentItemForTab(this.PortalSettings.ActiveTab);
 
                 // Versioning checks.
                 if (!TabController.CurrentPage.HasAVisibleVersion)
@@ -891,7 +921,8 @@ namespace DotNetNuke.UI.Skins
                         this,
                         string.Empty,
                         string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
-                        ModuleMessage.ModuleMessageType.RedError);
+                        ModuleMessage.ModuleMessageType.RedError,
+                        string.Empty);
                 }
             }
             else
@@ -911,26 +942,6 @@ namespace DotNetNuke.UI.Skins
             }
 
             return success;
-        }
-
-        private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
-        {
-            // If tab exists but ContentItem not, then we create it
-            if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
-            {
-                TabController.Instance.CreateContentItem(tabInfo);
-                TabController.Instance.UpdateTab(tabInfo);
-            }
-        }
-
-        private void EnsureContentItemForModule(ModuleInfo module)
-        {
-            // If module exists but ContentItem not, then we create it
-            if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
-            {
-                ModuleController.Instance.CreateContentItem(module);
-                ModuleController.Instance.UpdateModule(module);
-            }
         }
 
         private void ProcessPanes()

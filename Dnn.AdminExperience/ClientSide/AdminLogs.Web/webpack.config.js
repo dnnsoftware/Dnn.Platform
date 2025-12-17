@@ -30,9 +30,14 @@ module.exports = (env, argv) => {
         module: {
             rules: [
                 {
-                    test: /\.(js|jsx)$/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
-                    use: ["babel-loader"],
+                    use: {
+                        loader: "babel-loader",
+                        options: {
+                            presets: ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
+                        },
+                    },
                 },
                 {
                     test: /\.(less|css)$/,
@@ -59,7 +64,7 @@ module.exports = (env, argv) => {
         },
 
         resolve: {
-            extensions: [".js", ".json", ".jsx"],
+            extensions: [".js", ".json", ".jsx", ".ts", ".tsx"],
             modules: [
                 path.resolve("./src"), // Look in src first
                 path.resolve("./node_modules"), // Try local node_modules

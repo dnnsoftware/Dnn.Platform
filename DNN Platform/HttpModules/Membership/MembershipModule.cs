@@ -4,13 +4,16 @@
 namespace DotNetNuke.HttpModules.Membership
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Security.Principal;
     using System.Threading;
     using System.Web;
     using System.Web.Security;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -61,15 +64,18 @@ namespace DotNetNuke.HttpModules.Membership
         }
 
         /// <summary>Gets the name of the module.</summary>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ModuleName => "DNNMembershipModule";
 
         /// <summary>Called when unverified user skin initialize.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="SkinEventArgs"/> instance containing the event data.</param>
+        [Obsolete("This method has been deprecated. No equivalent. Scheduled removal in v11.0.0.")]
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
+            var pageService = Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
             var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name);
-            UI.Skins.Skin.AddPageMessage(e.Skin, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+            pageService.AddMessage(new PageMessage(string.Empty, strMessage, PageMessageType.Warning, string.Empty, PagePriority.Site));
         }
 
         /// <summary>Authenticates the request.</summary>
@@ -189,7 +195,7 @@ namespace DotNetNuke.HttpModules.Membership
             application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
-        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.</summary>
+        /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="System.Web.IHttpModule" />.</summary>
         public void Dispose()
         {
         }
@@ -214,7 +220,7 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
                     || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
-                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }

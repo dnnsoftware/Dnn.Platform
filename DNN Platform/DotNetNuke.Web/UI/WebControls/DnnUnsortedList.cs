@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls
     /// </remarks>
     public class DnnUnsortedList : WebControl, INamingContainer
     {
-        private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> listItems = null;
+        private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> listItems;
 
         /// <summary>Initializes a new instance of the <see cref="DnnUnsortedList"/> class.</summary>
         public DnnUnsortedList()
