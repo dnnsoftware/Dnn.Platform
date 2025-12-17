@@ -25,7 +25,7 @@
             $("#panelLoading").show();
         });
         SwitchView($("#ListViewState").val());
-        $('input[type="submit"],.LinkNormal,.LinkDisabled').button(), $(".Toolbar").buttonset();
+        $('input[type="submit"],.LinkNormal,.LinkDisabled').button(), $(".Toolbar").controlgroup();
         $("#txtWidth,#txtHeight").spinner({
             min: 0,
             max: 640,
