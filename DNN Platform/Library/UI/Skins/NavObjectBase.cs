@@ -6,6 +6,7 @@ namespace DotNetNuke.UI.Skins
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Common;
@@ -2397,6 +2398,7 @@ namespace DotNetNuke.UI.Skins
             return objNodes;
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         protected string GetValue(string strVal, string strDefault)
         {
             if (string.IsNullOrEmpty(strVal))

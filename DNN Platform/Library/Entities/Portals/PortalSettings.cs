@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities.Portals
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web;
@@ -197,32 +198,18 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the currently logged in user.</summary>
         /// <value>The current user information.</value>
-        public UserInfo UserInfo
-        {
-            get
-            {
-                return UserController.Instance.GetCurrentUserInfo();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public UserInfo UserInfo => UserController.Instance.GetCurrentUserInfo();
 
         /// <summary>Gets the mode the user is viewing the page in.</summary>
         [Obsolete("Deprecated in DotNetNuke 9.8.1. Use Personalization.GetUserMode() instead. Scheduled removal in v11.0.0.")]
-        public Mode UserMode
-        {
-            get => Personalization.GetUserMode();
-        }
+        public Mode UserMode => Personalization.GetUserMode();
 
         /// <inheritdoc />
-        public bool IsLocked
-        {
-            get { return this.IsThisPortalLocked || Host.Host.IsLocked; }
-        }
+        public bool IsLocked => this.IsThisPortalLocked || Host.Host.IsLocked;
 
         /// <inheritdoc />
-        public bool IsThisPortalLocked
-        {
-            get { return PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false); }
-        }
+        public bool IsThisPortalLocked => PortalController.GetPortalSettingAsBoolean("IsLocked", this.PortalId, false);
 
         /// <inheritdoc/>
         public string PageHeadText

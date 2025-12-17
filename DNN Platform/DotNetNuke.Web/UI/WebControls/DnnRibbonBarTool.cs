@@ -122,13 +122,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
             set
             {
-                if (this.AllTools.ContainsKey(value))
+                if (this.AllTools.TryGetValue(value, out var toolInfo))
                 {
-                    this.ToolInfo = this.AllTools[value];
+                    this.ToolInfo = toolInfo;
                 }
                 else
                 {
-                    throw new NotSupportedException("Tool not found [" + value + "]");
+                    throw new NotSupportedException($"Tool not found [{value}]");
                 }
             }
         }
@@ -375,9 +375,9 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 isHostTool = this.ToolInfo.IsHostTool;
             }
-            else if (this.AllTools.ContainsKey(toolName))
+            else if (this.AllTools.TryGetValue(toolName, out var tool))
             {
-                isHostTool = this.AllTools[toolName].IsHostTool;
+                isHostTool = tool.IsHostTool;
             }
 
             if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
@@ -428,9 +428,9 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         friendlyName = this.ToolInfo.ModuleFriendlyName;
                     }
-                    else if (this.AllTools.ContainsKey(toolName))
+                    else if (this.AllTools.TryGetValue(toolName, out var toolInfo))
                     {
-                        friendlyName = this.AllTools[toolName].ModuleFriendlyName;
+                        friendlyName = toolInfo.ModuleFriendlyName;
                     }
 
                     if (!string.IsNullOrEmpty(friendlyName))

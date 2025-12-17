@@ -37,6 +37,7 @@ namespace Dnn.ExportImport.Repository
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc/>
@@ -266,13 +267,12 @@ namespace Dnn.ExportImport.Repository
             collection.Update(documentsToUpdate);
         }
 
-        private void Dispose(bool isDisposing)
+        protected virtual void Dispose(bool disposing)
         {
-            var temp = Interlocked.Exchange(ref this.liteDb, null);
-            temp?.Dispose();
-            if (isDisposing)
+            if (disposing)
             {
-                GC.SuppressFinalize(this);
+                var temp = Interlocked.Exchange(ref this.liteDb, null);
+                temp?.Dispose();
             }
         }
 

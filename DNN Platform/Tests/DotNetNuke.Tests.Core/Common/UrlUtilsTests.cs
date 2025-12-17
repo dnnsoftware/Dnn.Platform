@@ -102,7 +102,7 @@ public class UrlUtilsTests
     public void EncryptParameterReplacesPaddingSymbols()
     {
         var result = UrlUtils.EncryptParameter("D", "key");
-        Assert.That(result.EndsWith("%3d"), Is.True);
+        Assert.That(result, Does.EndWith("%3d"));
     }
 
     [Test]

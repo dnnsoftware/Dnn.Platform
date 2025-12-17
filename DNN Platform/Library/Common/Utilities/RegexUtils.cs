@@ -4,6 +4,7 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
+    using System.Globalization;
     using System.Text.RegularExpressions;
     using System.Web.Caching;
 
@@ -24,7 +25,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 key = (options & RegexOptions.CultureInvariant) != 0
                     ? pattern.ToUpperInvariant()
-                    : pattern.ToUpper();
+                    : pattern.ToUpper(CultureInfo.CurrentCulture);
             }
 
             // // should not allow for compiled dynamic regex object

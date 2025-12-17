@@ -16,6 +16,8 @@ namespace DotNetNuke.Tests.Core.Collections
     using DotNetNuke.Collections;
     using NUnit.Framework;
 
+    using CollectionExtensions = DotNetNuke.Collections.CollectionExtensions;
+
     [TestFixture]
     public class CollectionExtensionTests
     {

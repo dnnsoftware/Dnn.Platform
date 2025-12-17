@@ -37,7 +37,9 @@ namespace Dnn.PersonaBar.Prompt.Services
     public class CommandController : ControllerBase, IServiceRouteMapper
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
-        private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
+        private static readonly string[] DenyList = ["smtppassword", "password", "pwd", "pass", "apikey",];
+        private static readonly string[] Namespaces = ["Dnn.PersonaBar.Prompt.Services",];
+        private static readonly char[] Separators = [',', '|', ' ',];
 
         private readonly IServiceProvider serviceProvider;
         private readonly ICommandRepository commandRepository;
@@ -119,10 +121,10 @@ namespace Dnn.PersonaBar.Prompt.Services
             try
             {
                 var args = command.Args;
-                var isHelpCmd = args.First().ToUpper() == "HELP";
-                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "LEARN";
-                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].ToUpper() == "SYNTAX";
-                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : string.Empty) : args.First().ToUpper();
+                var isHelpCmd = args.First().Equals("HELP", StringComparison.OrdinalIgnoreCase);
+                var isHelpLearn = isHelpCmd && args.Length > 1 && args[1].Equals("LEARN", StringComparison.OrdinalIgnoreCase);
+                var isHelpSyntax = isHelpCmd && args.Length > 1 && args[1].Equals("SYNTAX", StringComparison.OrdinalIgnoreCase);
+                var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpperInvariant() : string.Empty) : args.First().ToUpperInvariant();
                 if (isHelpSyntax)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new CommandHelp()
@@ -146,7 +148,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         startTime,
                         string.Format(
                             Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
-                            cmdName.ToLower()));
+                            cmdName.ToLowerInvariant()));
                 }
 
                 // first look in new commands, then in the old commands
@@ -156,11 +158,11 @@ namespace Dnn.PersonaBar.Prompt.Services
                     var allCommands = this.oldCommandRepository.GetCommands();
 
                     // if no command found notify
-                    if (!allCommands.ContainsKey(cmdName))
+                    if (!allCommands.TryGetValue(cmdName, out var oldCommand))
                     {
                         var sbError = new StringBuilder();
                         var suggestion = Utilities.GetSuggestedCommand(cmdName);
-                        sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLower());
+                        sbError.AppendFormat(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile), cmdName.ToLowerInvariant());
                         if (!string.IsNullOrEmpty(suggestion))
                         {
                             sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
@@ -169,7 +171,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                         return this.AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
                     }
 
-                    return this.TryRunOldCommand(command, allCommands[cmdName].CommandType, args, isHelpCmd, startTime);
+                    return this.TryRunOldCommand(command, oldCommand.CommandType, args, isHelpCmd, startTime);
                 }
                 else
                 {
@@ -186,20 +188,20 @@ namespace Dnn.PersonaBar.Prompt.Services
         /// <inheritdoc/>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
+            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, Namespaces);
         }
 
         private static string FilterCommand(string command)
         {
-            var blackList = BlackList;
-            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
-                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (promptBlackList.Length > 0)
+            var blackList = DenyList;
+            var promptDenyList = HostController.Instance.GetString("PromptBlackList", string.Empty)
+                .Split(Separators, StringSplitOptions.RemoveEmptyEntries);
+            if (promptDenyList.Length > 0)
             {
-                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
+                blackList = blackList.Concat(promptDenyList).Distinct().ToArray();
             }
 
-            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
+            var args = command.Split(Separators, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
             foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
                         .Where(lowerKey => args.Any(arg => arg.Replace("-", string.Empty) == lowerKey)))
             {
@@ -287,8 +289,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                                 result.PagingInfo.TotalPages);
 
                             var args = command.Args;
-                            var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
-                                ? args.TakeWhile(arg => arg.ToLowerInvariant() != "--page").Count()
+                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.OrdinalIgnoreCase))
+                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.OrdinalIgnoreCase)).Count()
                                 : -1;
                             if (indexOfPage > -1)
                             {
@@ -371,8 +373,8 @@ namespace Dnn.PersonaBar.Prompt.Services
                                 result.PagingInfo.TotalPages);
 
                             var args = command.Args;
-                            var indexOfPage = args.Any(x => x.ToLowerInvariant() == "--page")
-                                ? args.TakeWhile(arg => arg.ToLowerInvariant() != "--page").Count()
+                            var indexOfPage = args.Any(x => x.Equals("--page", StringComparison.OrdinalIgnoreCase))
+                                ? args.TakeWhile(arg => !arg.Equals("--page", StringComparison.OrdinalIgnoreCase)).Count()
                                 : -1;
                             if (indexOfPage > -1)
                             {

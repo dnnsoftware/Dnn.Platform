@@ -13,18 +13,12 @@ namespace DotNetNuke.Collections.Internal
         /// <returns>An instance of <see cref="ILockStrategy"/> that uses the specified strategy.</returns>
         public static ILockStrategy Create(LockingStrategy strategy)
         {
-            switch (strategy)
+            return strategy switch
             {
-                case LockingStrategy.ReaderWriter:
-
-                    return new ReaderWriterLockStrategy();
-                case LockingStrategy.Exclusive:
-
-                    return new ExclusiveLockStrategy();
-                default:
-
-                    throw new ArgumentOutOfRangeException();
-            }
+                LockingStrategy.ReaderWriter => new ReaderWriterLockStrategy(),
+                LockingStrategy.Exclusive => new ExclusiveLockStrategy(),
+                _ => throw new ArgumentOutOfRangeException(nameof(strategy), strategy, "Unexpected strategy, ReaderWriter and Exclusive are supported values."),
+            };
         }
     }
 }

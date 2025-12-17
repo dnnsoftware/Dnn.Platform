@@ -175,7 +175,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             bool dataChanged = false;
             string presentValue = this.StringValue;
             string postedValue = postCollection[postDataKey + "_control"];
-            if (!presentValue.Equals(postedValue))
+            if (!presentValue.Equals(postedValue, StringComparison.Ordinal))
             {
                 if (string.IsNullOrEmpty(postedValue))
                 {

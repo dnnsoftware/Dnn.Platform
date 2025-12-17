@@ -191,11 +191,11 @@ namespace Dnn.ExportImport.Components.Services
                 var scope = otherScopeTypes.FirstOrDefault(s => s.ScopeTypeID == other.ScopeTypeID);
 
                 var scopeId = other.ScopeID ?? Null.NullInteger;
-                if (scope != null && scope.ScopeType.Equals("Application", StringComparison.InvariantCultureIgnoreCase))
+                if (scope != null && scope.ScopeType.Equals("Application", StringComparison.OrdinalIgnoreCase))
                 {
                     scopeId = Null.NullInteger;
                 }
-                else if (scope != null && scope.ScopeType.Equals("Portal", StringComparison.InvariantCultureIgnoreCase))
+                else if (scope != null && scope.ScopeType.Equals("Portal", StringComparison.OrdinalIgnoreCase))
                 {
                     scopeId = importDto.PortalId;
                 }

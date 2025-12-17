@@ -154,7 +154,7 @@ namespace DotNetNuke.Instrumentation
 
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelDebug))
             {
-                if (!args.Any())
+                if (args.Length == 0)
                 {
                     Logger.Debug(format);
                 }
@@ -211,7 +211,7 @@ namespace DotNetNuke.Instrumentation
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelInfo))
             {
-                if (!args.Any())
+                if (args.Length == 0)
                 {
                     Logger.Info(format);
                 }
@@ -266,7 +266,7 @@ namespace DotNetNuke.Instrumentation
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelWarn))
             {
-                if (!args.Any())
+                if (args.Length == 0)
                 {
                     Logger.Warn(format);
                 }
@@ -333,7 +333,7 @@ namespace DotNetNuke.Instrumentation
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelError))
             {
-                if (!args.Any())
+                if (args.Length == 0)
                 {
                     Logger.ErrorFormat(format);
                 }
@@ -388,7 +388,7 @@ namespace DotNetNuke.Instrumentation
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelFatal))
             {
-                if (!args.Any())
+                if (args.Length == 0)
                 {
                     Logger.Fatal(format);
                 }

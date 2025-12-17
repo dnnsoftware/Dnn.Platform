@@ -5,6 +5,7 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
 
@@ -67,6 +68,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <param name="pageIndex">Page index to get.</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
         /// <returns>A sequence of <seealso cref="ImportPackageInfo"/> instances.</returns>
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<ImportPackageInfo> GetImportPackages(
             out int total,
             string keyword,
@@ -82,12 +84,12 @@ namespace Dnn.ExportImport.Components.Controllers
             var importPackagesList = importPackages as IList<ImportPackageInfo> ?? importPackages.ToList();
 
             importPackages = !string.IsNullOrEmpty(keyword)
-                ? importPackagesList.Where(this.GetImportPackageFilterFunc(keyword))
+                ? importPackagesList.Where(GetImportPackageFilterFunc(keyword))
                 : importPackagesList;
 
             total = importPackages.Count();
             string sortOrder;
-            var orderByFunc = this.GetImportPackageOrderByFunc(order, out sortOrder);
+            var orderByFunc = GetImportPackageOrderByFunc(order, out sortOrder);
             importPackages = sortOrder == "asc"
                 ? importPackages.OrderBy(orderByFunc)
                 : importPackages.OrderByDescending(orderByFunc);
@@ -162,7 +164,7 @@ namespace Dnn.ExportImport.Components.Controllers
                    File.Exists(Path.Combine(folderPath, Constants.ExportZipDbName)));
         }
 
-        private Func<ImportPackageInfo, bool> GetImportPackageFilterFunc(string keyword)
+        private static Func<ImportPackageInfo, bool> GetImportPackageFilterFunc(string keyword)
         {
             Func<ImportPackageInfo, bool> keywordFunc =
                 packageInfo =>
@@ -171,7 +173,7 @@ namespace Dnn.ExportImport.Components.Controllers
             return keywordFunc;
         }
 
-        private Func<ImportPackageInfo, object> GetImportPackageOrderByFunc(string orderBy, out string order)
+        private static Func<ImportPackageInfo, object> GetImportPackageOrderByFunc(string orderBy, out string order)
         {
             orderBy = orderBy.ToLowerInvariant();
             order = orderBy == "newest" ? "desc" : "asc";

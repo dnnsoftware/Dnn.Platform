@@ -43,9 +43,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        public virtual bool CheckBoxes { get; set; } = false;
+        public virtual bool CheckBoxes { get; set; }
 
-        public virtual bool MultipleSelect { get; set; } = false;
+        public virtual bool MultipleSelect { get; set; }
 
         public virtual string OnClientSelectedIndexChanged { get; set; }
 

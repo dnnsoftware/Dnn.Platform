@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Framework.Providers;
@@ -13,6 +14,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 
     public class PerformanceController
     {
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public object GetPageStatePersistenceOptions()
         {
             return new[]
@@ -22,16 +24,19 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
             };
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<KeyValuePair<string, string>> GetModuleCacheProviders()
         {
-            return this.GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
+            return GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<KeyValuePair<string, string>> GetPageCacheProviders()
         {
-            return this.GetFilteredProviders(OutputCachingProvider.GetProviderList(), "OutputCachingProvider");
+            return GetFilteredProviders(OutputCachingProvider.GetProviderList(), "OutputCachingProvider");
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<KeyValuePair<string, string>> GetCachingProviderOptions()
         {
             var providers = ProviderConfiguration.GetProviderConfiguration("caching").Providers;
@@ -39,6 +44,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
             return (from object key in providers.Keys select new KeyValuePair<string, string>((string)key, (string)key)).ToList();
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public object GetCacheSettingOptions()
         {
             return new[]
@@ -50,6 +56,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
             };
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public object GetCacheabilityOptions()
         {
             return new[]
@@ -62,15 +69,18 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
             };
         }
 
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string GetCachingProvider()
         {
             return ProviderConfiguration.GetProviderConfiguration("caching").DefaultProvider;
         }
 
-        private IEnumerable<KeyValuePair<string, string>> GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
+        private static IEnumerable<KeyValuePair<string, string>> GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
         {
-            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new KeyValuePair<string, string>(filteredkey, provider.Key);
-            return providers;
+            return
+                from provider in providerList
+                let filteredKey = provider.Key.Replace(keyFilter, string.Empty)
+                select new KeyValuePair<string, string>(filteredKey, provider.Key);
         }
     }
 }

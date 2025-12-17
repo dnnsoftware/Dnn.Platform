@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Skins
 {
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web.UI;
 
     using DotNetNuke.Entities.Portals;
@@ -19,22 +20,12 @@ namespace DotNetNuke.UI.Skins
         /// <summary>Gets the portal Settings for this Skin Control.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         /// <summary>Gets a value indicating whether we are in Admin Mode.</summary>
-        public bool AdminMode
-        {
-            get
-            {
-                return TabPermissionController.CanAdminPage();
-            }
-        }
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
+        public bool AdminMode => TabPermissionController.CanAdminPage();
 
         /// <summary>Gets or sets the associated ModuleControl for this SkinControl.</summary>
         public IModuleControl ModuleControl { get; set; }

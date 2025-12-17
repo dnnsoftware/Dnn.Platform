@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Definitions
 {
-    using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Web;
     using System.Xml;
@@ -35,6 +35,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
     public class ModuleDefinitionValidator : XmlValidatorBase
     {
+        [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public ModuleDefinitionVersion GetModuleDefinitionVersion(Stream xmlStream)
         {
             ModuleDefinitionVersion retValue;
@@ -126,7 +127,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                     schemaPath = "components\\ResourceInstaller\\ModuleDef_V2Provider.xsd";
                     break;
                 case ModuleDefinitionVersion.VUnknown:
-                    throw new Exception(GetLocalizedString("EXCEPTION_LoadFailed"));
+                    throw new UnknownModuleDefinitionVersionException(GetLocalizedString("EXCEPTION_LoadFailed"));
             }
 
             return Path.Combine(Globals.ApplicationMapPath, schemaPath);

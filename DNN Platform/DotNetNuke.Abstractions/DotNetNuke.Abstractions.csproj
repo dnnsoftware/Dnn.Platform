@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootDirectory>$(MSBuildProjectDirectory)\..\..</RootDirectory>
-    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Abstractions.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CA1018,CA1305,CA1707,CA1710,CA1716,CA1720</WarningsNotAsErrors>
+    <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/DotNetNuke.Abstractions.xml</DocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,12 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\SolutionInfo.cs">
-      <Link>SolutionInfo.cs</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 

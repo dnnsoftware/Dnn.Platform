@@ -6,10 +6,8 @@ namespace DotNetNuke.Maintenance.Shims
 {
     using DotNetNuke.Common.Utilities;
 
-    /// <summary>
-    /// Implementation of <see cref="IDataCache"/> that relies on the <see cref="DataCache"/> class.
-    /// </summary>
-    internal class DataCacheShim : IDataCache
+    /// <summary>Implementation of <see cref="IDataCache"/> that relies on the <see cref="DataCache"/> class.</summary>
+    internal sealed class DataCacheShim : IDataCache
     {
         /// <inheritdoc/>
         public void ClearCache()

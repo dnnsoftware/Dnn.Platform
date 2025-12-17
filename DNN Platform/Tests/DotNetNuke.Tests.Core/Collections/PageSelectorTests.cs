@@ -79,7 +79,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_OutOfRange));
+            Assert.Throws<ArgumentOutOfRangeException>(() => selector.GetPage(Constants.PAGE_OutOfRange));
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
 
             // Assert
-            Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_NegativeIndex));
+            Assert.Throws<ArgumentOutOfRangeException>(() => selector.GetPage(Constants.PAGE_NegativeIndex));
         }
     }
 }

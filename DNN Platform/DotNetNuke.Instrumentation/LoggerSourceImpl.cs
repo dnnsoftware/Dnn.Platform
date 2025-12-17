@@ -30,7 +30,7 @@ namespace DotNetNuke.Instrumentation
             return new Logger(LogManager.GetLogger(name).Logger, null);
         }
 
-        private class Logger : LoggerWrapperImpl, ILog
+        private sealed class Logger : LoggerWrapperImpl, ILog
         {
             private const string ConfigFile = "DotNetNuke.log4net.config";
             private static readonly object ConfigLock = new object();

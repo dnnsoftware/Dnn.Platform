@@ -425,7 +425,7 @@ namespace DotNetNuke.Common
             {
                 var listController = new ListController();
                 var listEntries = listController.GetListEntryInfoItems("ImageTypes");
-                if (listEntries == null || listEntries.Count() == 0)
+                if (listEntries == null || !listEntries.Any())
                 {
                     return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
                 }
@@ -435,13 +435,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets a value indicating for how long the application has been running.</summary>
-        public static TimeSpan ElapsedSinceAppStart
-        {
-            get
-            {
-                return AppStopwatch.Elapsed;
-            }
-        }
+        public static TimeSpan ElapsedSinceAppStart => AppStopwatch.Elapsed;
 
         /// <summary>Gets or sets the name of the IIS app.</summary>
         /// <value>
@@ -451,7 +445,7 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets or sets the name of the server.</summary>
         /// <value>
-        /// server name in config file or the server's marchine name.
+        /// server name in config file or the server's machine name.
         /// </value>
         public static string ServerName { get; set; }
 
@@ -1539,7 +1533,10 @@ namespace DotNetNuke.Common
                 int moduleID = -1;
                 if (HttpContext.Current.Request.QueryString["mid"] != null)
                 {
-                    int.TryParse(HttpContext.Current.Request.QueryString["mid"], out moduleID);
+                    if (!int.TryParse(HttpContext.Current.Request.QueryString["mid"], out moduleID))
+                    {
+                        moduleID = -1;
+                    }
                 }
 
                 isAdminSkin = (!string.IsNullOrEmpty(controlKey) && controlKey != "view" && moduleID != -1) ||
@@ -1589,35 +1586,35 @@ namespace DotNetNuke.Common
             {
                 while (dr.Read())
                 {
-                    int field;
-                    int.TryParse((dr[syndicateField] ?? string.Empty).ToString(), out field);
-                    if (field > 0)
+                    if (!int.TryParse((dr[syndicateField] ?? string.Empty).ToString(), out var field) || field <= 0)
                     {
-                        strRSS.AppendLine(" <item>");
-                        strRSS.AppendLine("  <title>" + dr[titleField] + "</title>");
-                        var drUrl = (dr["URL"] ?? string.Empty).ToString();
-                        if (drUrl.IndexOf("://", StringComparison.InvariantCulture) == -1)
-                        {
-                            strRSS.Append("  <link>");
-                            if (NumberMatchRegex.IsMatch(drUrl))
-                            {
-                                strRSS.Append(domainName + "/" + glbDefaultPage + "?tabid=" + dr[urlField]);
-                            }
-                            else
-                            {
-                                strRSS.Append(strRelativePath + dr[urlField]);
-                            }
+                        continue;
+                    }
 
-                            strRSS.AppendLine("</link>");
+                    strRSS.AppendLine(" <item>");
+                    strRSS.AppendLine("  <title>" + dr[titleField] + "</title>");
+                    var drUrl = (dr["URL"] ?? string.Empty).ToString();
+                    if (drUrl.IndexOf("://", StringComparison.InvariantCulture) == -1)
+                    {
+                        strRSS.Append("  <link>");
+                        if (NumberMatchRegex.IsMatch(drUrl))
+                        {
+                            strRSS.Append(domainName + "/" + glbDefaultPage + "?tabid=" + dr[urlField]);
                         }
                         else
                         {
-                            strRSS.AppendLine("  <link>" + dr[urlField] + "</link>");
+                            strRSS.Append(strRelativePath + dr[urlField]);
                         }
 
-                        strRSS.AppendLine("  <description>" + portalSettings.PortalName + " " + GetMediumDate(dr[createdDateField].ToString()) + "</description>");
-                        strRSS.AppendLine(" </item>");
+                        strRSS.AppendLine("</link>");
                     }
+                    else
+                    {
+                        strRSS.AppendLine("  <link>" + dr[urlField] + "</link>");
+                    }
+
+                    strRSS.AppendLine("  <description>" + portalSettings.PortalName + " " + GetMediumDate(dr[createdDateField].ToString()) + "</description>");
+                    strRSS.AppendLine(" </item>");
                 }
             }
             catch (Exception ex)
@@ -2030,10 +2027,10 @@ namespace DotNetNuke.Common
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validClassLookupDictionary.GetReadLock())
             {
-                if (validClassLookupDictionary.ContainsKey(inputValue))
+                if (validClassLookupDictionary.TryGetValue(inputValue, out var className))
                 {
                     // Return value
-                    returnValue = validClassLookupDictionary[inputValue];
+                    returnValue = className;
                     idFound = true;
                 }
             }
@@ -2085,10 +2082,10 @@ namespace DotNetNuke.Common
             bool idFound = Null.NullBoolean;
             using (ISharedCollectionLock readLock = validIDLookupDictionary.GetReadLock())
             {
-                if (validIDLookupDictionary.ContainsKey(inputValue))
+                if (validIDLookupDictionary.TryGetValue(inputValue, out var id))
                 {
                     // Return value
-                    returnValue = validIDLookupDictionary[inputValue];
+                    returnValue = id;
                     idFound = true;
                 }
             }
@@ -2365,14 +2362,14 @@ namespace DotNetNuke.Common
                 return TabType.Normal;
             }
 
-            if (url.ToLowerInvariant().StartsWith("mailto:") == false && url.IndexOf("://") == -1 && url.StartsWith("~") == false && url.StartsWith("\\\\") == false && url.StartsWith("/") == false)
+            if (url.StartsWith("mailto:", StringComparison.InvariantCultureIgnoreCase) == false && url.IndexOf("://") == -1 && url.StartsWith("~") == false && url.StartsWith("\\\\") == false && url.StartsWith("/") == false)
             {
                 if (NumberMatchRegex.IsMatch(url))
                 {
                     return TabType.Tab;
                 }
 
-                if (url.ToLowerInvariant().StartsWith("userid="))
+                if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return TabType.Member;
                 }
@@ -3554,17 +3551,15 @@ namespace DotNetNuke.Common
             bool result = string.IsNullOrEmpty(strExtensions);
             if (!result)
             {
-                filename = filename.ToUpper();
-                strExtensions = strExtensions.ToUpper();
                 foreach (string extension in strExtensions.Split(','))
                 {
                     string ext = extension.Trim();
-                    if (!ext.StartsWith("."))
+                    if (!ext.StartsWith(".", StringComparison.Ordinal))
                     {
                         ext = "." + extension;
                     }
 
-                    result = filename.EndsWith(extension);
+                    result = filename.EndsWith(ext, StringComparison.OrdinalIgnoreCase);
                     if (result)
                     {
                         break;
