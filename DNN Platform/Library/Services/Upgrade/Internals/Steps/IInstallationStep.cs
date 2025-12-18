@@ -4,9 +4,11 @@
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>This event gets fired when any activity gets recorded.</summary>
     /// <param name="status">The details text.</param>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public delegate void ActivityEventHandler(string status);
 
     /// <summary>Interface for an Installation Step.</summary>

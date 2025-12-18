@@ -96,6 +96,7 @@ namespace DotNetNuke.Entities.Urls
 
         public string DomainName { get; set; }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public Exception Ex { get; set; }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]

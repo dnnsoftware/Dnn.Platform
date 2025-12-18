@@ -5,6 +5,7 @@
 namespace DotNetNuke.Common.Internal
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web;
 
@@ -16,6 +17,7 @@ namespace DotNetNuke.Common.Internal
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A collection of Dnn global methods and properties.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class GlobalsImpl : IGlobals
     {
         /// <summary>Initializes a new instance of the <see cref="GlobalsImpl"/> class.</summary>

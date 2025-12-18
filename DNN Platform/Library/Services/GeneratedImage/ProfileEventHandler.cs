@@ -7,6 +7,7 @@ namespace DotNetNuke.Services.GeneratedImage
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     using DotNetNuke.Common.Utilities;
@@ -15,6 +16,7 @@ namespace DotNetNuke.Services.GeneratedImage
     /// <summary>this class handles profile changes.</summary>
     [Export(typeof(IProfileEventHandlers))]
     [ExportMetadata("MessageType", "ProfileEventHandler")]
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class ProfileEventHandler : IProfileEventHandlers
     {
         /// <summary>This method add the updated user id into cache to clear image from disk before returning to UI.</summary>

@@ -4,9 +4,11 @@
 namespace DotNetNuke.Services.Journal.Internal
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Common.Utilities;
 
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class InternalJournalControllerImpl : IInternalJournalController
     {
         private readonly IJournalDataService dataService;

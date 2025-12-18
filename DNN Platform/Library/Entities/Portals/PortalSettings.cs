@@ -80,10 +80,11 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portal">The portal info.</param>
         public PortalSettings(int tabId, PortalInfo portal)
         {
-            this.PortalId = portal != null ? portal.PortalID : Null.NullInteger;
+            this.PortalId = portal?.PortalID ?? Null.NullInteger;
             this.BuildPortalSettings(tabId, portal);
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum ControlPanelPermission
         {
             /// <summary>A page editor.</summary>

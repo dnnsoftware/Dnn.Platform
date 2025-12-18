@@ -6,7 +6,9 @@
 namespace Dnn.ExportImport.Dto.Pages
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class ExportTabPermission : BasicExportImportDto
     {
         public int TabPermissionID { get; set; }

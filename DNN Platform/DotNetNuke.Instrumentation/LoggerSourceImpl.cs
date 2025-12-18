@@ -5,6 +5,7 @@
 namespace DotNetNuke.Instrumentation
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
 
@@ -16,6 +17,7 @@ namespace DotNetNuke.Instrumentation
     using log4net.Util;
 
     /// <summary>An <see cref="ILoggerSource"/> implementation.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public class LoggerSourceImpl : ILoggerSource
     {
         /// <inheritdoc/>

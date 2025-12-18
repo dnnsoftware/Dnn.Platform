@@ -19,6 +19,7 @@ Namespace DotNetNuke.UI.Utilities
     ''' 	[Jon Henning]	9/15/2004	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
+    <SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification := "Breaking change")>
     Public Class ClientAPIPostBackEventArgs
         <SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification := "Breaking change")>
         Public EventName As String

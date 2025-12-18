@@ -85,7 +85,7 @@ namespace DotNetNuke.Security
             new Regex("javascript:", RxOptions),
             new Regex("vbscript:", RxOptions),
             new Regex("unescape", RxOptions),
-            new Regex("alert[\\s(&nbsp;)]*\\([\\s(&nbsp;)]*'?[\\s(&nbsp;)]*[\"(&quot;)]?", RxOptions),
+            new Regex(@"alert[\s(&nbsp;)]*\([\s(&nbsp;)]*'?[\s(&nbsp;)]*[""(&quot;)]?", RxOptions),
             new Regex(@"eval*.\(", RxOptions),
         };
 
@@ -99,6 +99,7 @@ namespace DotNetNuke.Security
         /// together.
         /// </summary>
         [Flags]
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public enum FilterFlag
         {
             /// <summary>Replaces line breaks with <c>&lt;br&gt;</c> tags.</summary>

@@ -151,11 +151,13 @@ namespace DotNetNuke.Common
         /// Email address regex pattern that covers most scenarios.
         /// </summary>
         /// <value>A regex that covers most emails in a performant way.</value>
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public const string glbEmailRegEx =
             @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
 
         /// <summary>User Name regex pattern.</summary>
         /// <value></value>
+        [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
         public const string glbUserNameRegEx = @"";
 
         /// <summary>User Name default minimum length.</summary>

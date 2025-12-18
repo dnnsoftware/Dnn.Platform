@@ -15,6 +15,7 @@ namespace DotNetNuke.Modules.NavigationProvider
     using DotNetNuke.UI.WebControls;
 
     /// <summary>Provides a renderer for navigation.</summary>
+    [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
     public abstract partial class NavigationProvider : UserControlBase
     {
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
