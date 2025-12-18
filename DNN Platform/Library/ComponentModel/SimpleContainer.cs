@@ -9,7 +9,7 @@ namespace DotNetNuke.ComponentModel
 
     using DotNetNuke.Collections.Internal;
 
-    public class SimpleContainer : AbstractContainer
+    public class SimpleContainer : AbstractContainer, IDisposable
     {
         private readonly string name;
         private readonly ComponentBuilderCollection componentBuilders = new ComponentBuilderCollection();
@@ -169,6 +169,24 @@ namespace DotNetNuke.ComponentModel
             using (this.componentDependencies.GetWriteLock())
             {
                 this.componentDependencies[name] = dependencies;
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.componentBuilders?.Dispose();
+                this.componentDependencies?.Dispose();
+                this.componentTypes?.Dispose();
+                this.registeredComponents?.Dispose();
             }
         }
 

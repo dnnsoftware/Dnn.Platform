@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.Skins
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The Pane class represents a Pane within the Skin.</summary>
-    public class Pane
+    public class Pane : IDisposable
     {
         private const string CPaneOutline = "paneOutline";
         private HtmlGenericControl containerWrapperControl;
@@ -255,6 +255,22 @@ namespace DotNetNuke.UI.Skins
                         }
                     }
                 }
+            }
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.containerWrapperControl?.Dispose();
+                this.PaneControl?.Dispose();
             }
         }
 

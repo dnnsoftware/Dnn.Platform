@@ -24,10 +24,10 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Log.EventLog;
 
     /// <summary>The Installer class provides a single entrypoint for Package Installation.</summary>
-    public class Installer
+    public class Installer : IDisposable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
-        private readonly Stream inputStream;
+        private readonly MemoryStream inputStream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Installer"/> class.
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Installer
         /// the physical path to the temporary install folder and a string representing
         /// the physical path to the root of the site.
         /// </summary>
-        /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
+        /// <param name="tempFolder">The physical path to the zip file containing the package.</param>
         /// <param name="manifest">The manifest filename.</param>
         /// <param name="physicalSitePath">The physical path to the root of the site.</param>
         /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
@@ -297,7 +297,7 @@ namespace DotNetNuke.Services.Installer
             // Clear Host Cache
             DataCache.ClearHostCache(true);
 
-            if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
+            if (Config.GetFcnMode() == nameof(Config.FcnMode.Disabled))
             {
                 // force application restart after the new changes only when FCN is disabled
                 Config.Touch();
@@ -356,7 +356,22 @@ namespace DotNetNuke.Services.Installer
             return true;
         }
 
-        private static void BackupStreamIntoFile(Stream stream, PackageInfo package)
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.inputStream?.Dispose();
+            }
+        }
+
+        private static void BackupStreamIntoFile(MemoryStream stream, PackageInfo package)
         {
             try
             {

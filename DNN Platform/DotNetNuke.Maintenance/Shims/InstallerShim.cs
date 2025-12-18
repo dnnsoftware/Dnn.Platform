@@ -4,11 +4,13 @@
 
 namespace DotNetNuke.Maintenance.Shims
 {
+    using System;
+
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
 
     /// <summary>An implementation of <see cref="IInstaller"/> that relies on the <see cref="Installer"/> class.</summary>
-    internal sealed class InstallerShim : IInstaller
+    internal sealed class InstallerShim : IInstaller, IDisposable
     {
         private readonly Installer installer;
 
@@ -22,6 +24,12 @@ namespace DotNetNuke.Maintenance.Shims
         public bool UnInstall(bool deleteFiles)
         {
             return this.installer.UnInstall(deleteFiles);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            this.installer?.Dispose();
         }
     }
 }

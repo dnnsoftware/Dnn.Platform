@@ -275,11 +275,11 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    // dispose managed resrources here
+                    // dispose managed resources here
                     this.dict = null;
                 }
 
-                // dispose unmanaged resrources here
+                // dispose unmanaged resources here
                 this.lockController.Dispose();
                 this.lockController = null;
                 this.isDisposed = true;
