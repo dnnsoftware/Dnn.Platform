@@ -6,6 +6,7 @@ namespace DotNetNuke.Services.Localization
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
@@ -100,6 +101,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="createKey">if set to <see langword="true"/> a new key will be created if not found.</param>
         /// <returns>If the value could be saved then true will be returned, otherwise false.</returns>
         /// <exception cref="System.Exception">Any file io error or similar will lead to exceptions.</exception>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool SaveString(string key, string value, string resourceFileRoot, string language, PortalSettings portalSettings, CustomizedLocale resourceType, bool createFile, bool createKey)
         {
             try

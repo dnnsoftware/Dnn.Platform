@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.UI.HttpModules
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Web;
 
@@ -24,6 +25,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
         private static bool hasAppStarted;
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             if (hasAppStarted)

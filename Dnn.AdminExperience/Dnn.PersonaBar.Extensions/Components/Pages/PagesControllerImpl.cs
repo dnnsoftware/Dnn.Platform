@@ -331,6 +331,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public TabInfo SavePageDetails(PortalSettings settings, PageSettings pageSettings)
         {
             this.PortalSettings = settings ?? PortalController.Instance.GetCurrentPortalSettings();
@@ -359,6 +360,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<TabInfo> GetPageList(PortalSettings settings, int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false, bool includeSubpages = false)
         {
             var portalSettings = settings ?? PortalController.Instance.GetCurrentPortalSettings();
@@ -758,6 +760,7 @@ namespace Dnn.PersonaBar.Pages.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public PageSettings GetPageSettings(int pageId, PortalSettings requestPortalSettings = null)
         {
             var tab = this.GetPageDetails(pageId);

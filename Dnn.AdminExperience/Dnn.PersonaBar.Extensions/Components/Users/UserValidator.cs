@@ -5,6 +5,7 @@
 namespace Dnn.PersonaBar.Users.Components
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Net;
 
     using Dnn.PersonaBar.Library.Helper;
@@ -37,6 +38,7 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public ConsoleErrorResultModel ValidateUser(int? userId, PortalSettings portalSettings, UserInfo currentUserInfo, out UserInfo userInfo)
         {
             userInfo = null;
@@ -45,8 +47,7 @@ namespace Dnn.PersonaBar.Users.Components
                 return new ConsoleErrorResultModel(Localization.GetString("Prompt_NoUserId", Constants.LocalResourcesFile));
             }
 
-            KeyValuePair<HttpStatusCode, string> response;
-            userInfo = this.userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out response);
+            userInfo = this.userControllerWrapper.GetUser(userId.Value, portalSettings, currentUserInfo, out var response);
 
             if (userInfo == null)
             {

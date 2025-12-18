@@ -5,6 +5,7 @@ namespace DotNetNuke.Services.ModuleCache
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Security.Cryptography;
@@ -108,6 +109,7 @@ namespace DotNetNuke.Services.ModuleCache
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] output)
         {
             try

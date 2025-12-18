@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.Journal.Internal
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IList<JournalItem> GetJournalItemsByProfile(int portalId, int moduleId, int currentUserId, int profileId, int rowIndex, int maxRows)
         {
             return
@@ -34,6 +35,7 @@ namespace DotNetNuke.Services.Journal.Internal
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IList<JournalItem> GetJournalItemsByGroup(int portalId, int moduleId, int currentUserId, int groupId, int rowIndex, int maxRows)
         {
             return
@@ -48,6 +50,7 @@ namespace DotNetNuke.Services.Journal.Internal
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IList<JournalItem> GetJournalItems(int portalId, int moduleId, int currentUserId, int rowIndex, int maxRows)
         {
             return
@@ -67,6 +70,7 @@ namespace DotNetNuke.Services.Journal.Internal
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveFilters(int portalId, int moduleId, int journalTypeId)
         {
             this.dataService.Journal_TypeFilters_Save(portalId, moduleId, journalTypeId);

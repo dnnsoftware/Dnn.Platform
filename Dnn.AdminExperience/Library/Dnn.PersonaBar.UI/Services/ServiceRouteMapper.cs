@@ -6,6 +6,7 @@ namespace Dnn.PersonaBar.UI.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using Dnn.PersonaBar.Library;
@@ -17,6 +18,7 @@ namespace Dnn.PersonaBar.UI.Services
     public class ServiceRouteMapper : IServiceRouteMapper
     {
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void RegisterRoutes(IMapRoute routeManager)
         {
             // get all persona bar services from persona bar modules.

@@ -269,6 +269,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
             this.value = state;

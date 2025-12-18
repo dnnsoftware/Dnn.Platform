@@ -5,6 +5,7 @@
 namespace DotNetNuke.ExtensionPoints
 {
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Text;
     using System.Web;
@@ -23,6 +24,7 @@ namespace DotNetNuke.ExtensionPoints
         public bool IsHost { get; set; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter output)
         {
             var extensionPointManager = new ExtensionPointManager();

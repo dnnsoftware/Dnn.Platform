@@ -325,6 +325,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool RestoreUser(UserInfo user, out string errorMessage)
         {
             errorMessage = null;

@@ -72,6 +72,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>Renders the html for this WebControl to the output.</summary>
         /// <param name="output">The output to write to.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter output)
         {
             output.Write(this.HtmlOutput);

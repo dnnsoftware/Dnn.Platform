@@ -8,6 +8,7 @@ namespace DotNetNuke.Security.Roles
     using System.Collections.Generic;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
@@ -196,18 +197,18 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>GetUserRoles gets a collection of User/Role objects from the Data Store.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <param name="userName">The user to fetch roles for.</param>
         /// <param name="roleName">The role to fetch users for.</param>
         /// <returns>An ArrayList of UserRoleInfo objects.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override ArrayList GetUserRoles(int portalId, string userName, string roleName)
         {
             return CBO.FillCollection(this.dataProvider.GetUserRolesByUsername(portalId, userName, roleName), typeof(UserRoleInfo));
         }
 
         /// <summary>Get the users in a role (as User objects).</summary>
-        /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
-        /// retrieved.</param>
+        /// <param name="portalId">ID of the portal (If -1 all roles for all portals are retrieved).</param>
         /// <param name="roleName">The role to fetch users for.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         public override ArrayList GetUsersByRoleName(int portalId, string roleName)
@@ -269,6 +270,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
             roleGroupName = roleGroupName.Trim();

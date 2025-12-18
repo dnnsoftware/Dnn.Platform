@@ -4,6 +4,7 @@
 namespace DotNetNuke.Entities.Users
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
     using DotNetNuke.Services.Tokens;
@@ -20,15 +21,10 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <inheritdoc/>
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
-        }
+        public CacheLevel Cacheability => CacheLevel.notCacheable;
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             UserMembership objMembership = this.objUser.Membership;

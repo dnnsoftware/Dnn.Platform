@@ -7,6 +7,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web;
     using System.Web.Configuration;
@@ -155,6 +156,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override IClientCapability GetClientCapabilityById(string deviceId)
         {
             Requires.NotNullOrEmpty("deviceId", deviceId);

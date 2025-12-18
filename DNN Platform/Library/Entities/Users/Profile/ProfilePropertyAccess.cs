@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Users
 // ReSharper restore CheckNamespace
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web;
@@ -210,13 +211,13 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
-            if (currentScope >= Scope.DefaultSettings && this.user != null && this.user.Profile != null)
+            if (currentScope >= Scope.DefaultSettings && this.user is { Profile: not null, })
             {
                 var profile = this.user.Profile;
-                var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
-                                                        .SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.OrdinalIgnoreCase));
+                var property = profile.ProfileProperties.SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.OrdinalIgnoreCase));
 
                 if (property != null)
                 {

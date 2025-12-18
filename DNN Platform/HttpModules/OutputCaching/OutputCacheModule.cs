@@ -8,6 +8,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Net;
     using System.Web;
@@ -35,6 +36,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication httpApp)
         {
             this.app = httpApp;

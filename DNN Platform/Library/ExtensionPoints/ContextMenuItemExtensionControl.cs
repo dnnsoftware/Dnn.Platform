@@ -6,6 +6,7 @@ namespace DotNetNuke.ExtensionPoints
 {
     using System;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Text;
     using System.Web.UI;
 
@@ -48,6 +49,7 @@ namespace DotNetNuke.ExtensionPoints
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter output)
         {
             output.Write(this.content);

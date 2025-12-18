@@ -6,6 +6,7 @@ namespace DotNetNuke.ComponentModel
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Collections.Internal;
 
@@ -43,6 +44,7 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type type)
         {
             using (this.registeredComponents.GetWriteLock())
@@ -133,6 +135,7 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void RegisterComponent(string name, Type contractType, Type type, ComponentLifeStyleType lifestyle)
         {
             this.AddComponentType(contractType);

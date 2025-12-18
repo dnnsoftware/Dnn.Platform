@@ -176,6 +176,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void Render(HtmlTextWriter output)
         {
             if (this.PageNumbers == null)

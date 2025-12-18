@@ -5,6 +5,7 @@ namespace Dnn.PersonaBar.Prompt.Components
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Net;
@@ -220,10 +221,11 @@ namespace Dnn.PersonaBar.Prompt.Components
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
             pageIndex = pageIndex < 0 ? 0 : pageIndex;
-            pageSize = pageSize > 0 && pageSize <= 100 ? pageSize : 10;
+            pageSize = pageSize is > 0 and <= 100 ? pageSize : 10;
             moduleName = moduleName?.Replace("*", string.Empty);
             moduleTitle = moduleTitle?.Replace("*", string.Empty);
             var modules = ModuleController.Instance.GetModules(portalSettings.PortalId)

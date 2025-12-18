@@ -41,9 +41,11 @@ namespace DotNetNuke.HttpModules.Compression
         protected Stream BaseStream { get; }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override long Seek(long offset, SeekOrigin direction) => throw new NotSupportedException();
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void SetLength(long length) => throw new NotSupportedException();
 
         /// <inheritdoc/>

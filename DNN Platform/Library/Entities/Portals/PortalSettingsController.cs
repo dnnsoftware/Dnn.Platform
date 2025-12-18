@@ -48,6 +48,7 @@ namespace DotNetNuke.Entities.Portals
             Globals.GetCurrentServiceProvider().GetRequiredService<IPortalSettingsController>();
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public virtual void ConfigureActiveTab(PortalSettings portalSettings)
         {
             var activeTab = portalSettings.ActiveTab;

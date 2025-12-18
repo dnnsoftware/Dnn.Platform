@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.GeneratedImage
         /// <summary>This method add the updated user id into cache to clear image from disk before returning to UI.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="profileArgs">The event arguments.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void ProfileUpdated(object sender, ProfileEventArgs profileArgs)
         {
             if (profileArgs?.User == null || profileArgs.OldProfile == null)

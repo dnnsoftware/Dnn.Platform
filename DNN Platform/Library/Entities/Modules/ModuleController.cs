@@ -876,6 +876,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="tabID">ID of the page.</param>
         /// <param name="ignoreCache">flag, if data shall not be taken from cache.</param>
         /// <returns>ModuleInfo object.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public ModuleInfo GetModule(int moduleID, int tabID, bool ignoreCache)
         {
             ModuleInfo modInfo = null;

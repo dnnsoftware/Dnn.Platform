@@ -67,6 +67,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void DeleteFile(InstallFile file)
         {
         }
@@ -177,23 +178,22 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RollbackFile(InstallFile insFile)
         {
-            using (var unzip = new ZipArchive(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open)))
+            using var unzip = new ZipArchive(new FileStream(insFile.InstallerInfo.TempInstallFolder + insFile.FullName, FileMode.Open));
+            foreach (var entry in unzip.FileEntries())
             {
-                foreach (var entry in unzip.FileEntries())
+                // Check for Backups
+                if (File.Exists(insFile.BackupPath + entry.FullName))
                 {
-                    // Check for Backups
-                    if (File.Exists(insFile.BackupPath + entry.FullName))
-                    {
-                        // Restore File
-                        Util.RestoreFile(new InstallFile(entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
-                    }
-                    else
-                    {
-                        // Delete File
-                        Util.DeleteFile(entry.FullName, this.PhysicalBasePath, this.Log);
-                    }
+                    // Restore File
+                    Util.RestoreFile(new InstallFile(entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
+                }
+                else
+                {
+                    // Delete File
+                    Util.DeleteFile(entry.FullName, this.PhysicalBasePath, this.Log);
                 }
             }
         }

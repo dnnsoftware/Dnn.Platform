@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Log.EventLog
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Text;
@@ -117,6 +118,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void AddProperty(string propertyName, string propertyValue)
         {
             try

@@ -4,6 +4,7 @@
 namespace DotNetNuke.Data.PetaPoco
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Reflection;
     using System.Threading;
 
@@ -95,6 +96,7 @@ namespace DotNetNuke.Data.PetaPoco
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type sourceType)
         {
             return null;

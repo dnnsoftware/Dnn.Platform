@@ -6,6 +6,7 @@ namespace Dnn.EditBar.UI.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Framework.Reflections;
@@ -13,9 +14,10 @@ namespace Dnn.EditBar.UI.Services
 
     public class ServiceRouteMapper : IServiceRouteMapper
     {
-        private static readonly string[] Namespaces = new[] { "Dnn.EditBar.UI.Services" };
+        private static readonly string[] Namespaces = ["Dnn.EditBar.UI.Services",];
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void RegisterRoutes(IMapRoute routeManager)
         {
             routeManager.MapHttpRoute(

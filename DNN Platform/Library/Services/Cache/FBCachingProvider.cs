@@ -82,6 +82,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {
             base.Remove(key);

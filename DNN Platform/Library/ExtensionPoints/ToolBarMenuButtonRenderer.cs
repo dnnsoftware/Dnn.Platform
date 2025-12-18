@@ -5,6 +5,7 @@
 namespace DotNetNuke.ExtensionPoints
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Text;
 
@@ -13,6 +14,7 @@ namespace DotNetNuke.ExtensionPoints
     public class ToolBarMenuButtonRenderer : IExtensionControlRenderer
     {
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetOutput(IExtensionPoint extensionPoint)
         {
             var extension = (IToolBarMenuButtonExtensionPoint)extensionPoint;

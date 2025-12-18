@@ -11,7 +11,7 @@
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>1591</NoWarn>
-    <WarningsNotAsErrors>CS0618,SA1600,CA1725,CA3075</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,CA3075</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>

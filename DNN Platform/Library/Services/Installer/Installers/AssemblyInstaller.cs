@@ -4,6 +4,7 @@
 namespace DotNetNuke.Services.Installer.Installers
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
     using System.Security;
@@ -36,6 +37,7 @@ namespace DotNetNuke.Services.Installer.Installers
         protected override string PhysicalBasePath => this.PhysicalSitePath + @"\";
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void DeleteFile(InstallFile file)
         {
             // Attempt to unregister assembly
@@ -63,6 +65,7 @@ namespace DotNetNuke.Services.Installer.Installers
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override bool InstallFile(InstallFile file)
         {
             bool bSuccess = true;

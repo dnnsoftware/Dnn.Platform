@@ -5,6 +5,7 @@
 namespace DotNetNuke.Entities.Content.Workflow
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     using DotNetNuke.Entities.Content.Workflow.Repositories;
@@ -24,6 +25,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         private readonly IWorkflowStatePermissionsRepository statePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool HasStateReviewerPermission(PortalSettings settings, UserInfo user, int stateId)
         {
             var permissions = this.statePermissionsRepository.GetWorkflowStatePermissionByState(stateId);

@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
+    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
 
@@ -54,6 +55,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void DeleteFolderMapping(int portalID, int folderMappingID)
         {
             var folderManager = FolderManager.Instance;
@@ -122,12 +124,14 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public FolderMappingInfo GetFolderMapping(int folderMappingID)
         {
             return CBO.FillObject<FolderMappingInfo>(DataProvider.GetFolderMapping(folderMappingID));
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public FolderMappingInfo GetFolderMapping(int portalId, int folderMappingID)
         {
             return this.GetFolderMappings(portalId).SingleOrDefault(fm => fm.FolderMappingID == folderMappingID);
@@ -152,12 +156,14 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void AddDefaultFolderTypes(int portalID)
         {
             DataProvider.AddDefaultFolderTypes(portalID);
         }
 
         /// <inheritdoc/>
+        [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public Hashtable GetFolderMappingSettings(int folderMappingID)
         {
             var strCacheKey = CacheKeyPrefix + folderMappingID;
