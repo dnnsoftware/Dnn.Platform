@@ -116,10 +116,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
         {
             var typeLocator = new TypeLocator();
             return typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible &&
+                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } &&
                      typeof(T).IsAssignableFrom(t) &&
                      (IgnoreVersionMatchCheck(t) || VersionMatched(t)));
         }

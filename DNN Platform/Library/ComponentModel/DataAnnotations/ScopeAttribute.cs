@@ -6,6 +6,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     using System;
 
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class ScopeAttribute : Attribute
     {
         /// <summary>Initializes a new instance of the <see cref="ScopeAttribute"/> class.</summary>
