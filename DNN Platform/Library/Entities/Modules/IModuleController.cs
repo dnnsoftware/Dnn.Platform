@@ -6,13 +6,14 @@ namespace DotNetNuke.Entities.Modules
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
     /// <summary>
-    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
+    /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should be used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.
     /// </summary>
     public interface IModuleController
@@ -20,6 +21,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>add a module to a page.</summary>
         /// <param name="module">moduleInfo for the module to create.</param>
         /// <returns>ID of the created module.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         int AddModule(ModuleInfo module);
 
         /// <summary>Clears the module cache based on the page (tabid).</summary>
@@ -52,6 +54,7 @@ namespace DotNetNuke.Entities.Modules
         /// 2. add a content item.
         /// </summary>
         /// <param name="module">the module to add a content item for.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void CreateContentItem(ModuleInfo module);
 
         /// <summary>
@@ -150,7 +153,7 @@ namespace DotNetNuke.Entities.Modules
         ArrayList GetModulesByDefinition(int portalID, string definitionName);
 
         /// <summary>Gets the modules by DesktopModuleId.</summary>
-        /// <param name="desktopModuleId">The Desktop Module Id.</param>
+        /// <param name="desktopModuleId">The Desktop Module ID.</param>
         /// <returns>module collection.</returns>
         ArrayList GetModulesByDesktopModuleId(int desktopModuleId);
 
@@ -177,6 +180,7 @@ namespace DotNetNuke.Entities.Modules
         /// <returns>ArrayList of ModuleInfo.</returns>
         IList<ModuleInfo> GetTabModulesByModule(int moduleID);
 
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void InitialModulePermission(ModuleInfo module, int tabId, int permissionType);
 
         void LocalizeModule(ModuleInfo sourceModule, Locale locale);
@@ -194,6 +198,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>Update module settings and permissions in database from ModuleInfo.</summary>
         /// <param name="module">ModuleInfo of the module to update.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         void UpdateModule(ModuleInfo module);
 
         /// <summary>set/change the module position within a pane on a page.</summary>
@@ -223,17 +228,19 @@ namespace DotNetNuke.Entities.Modules
 
         /// <summary>Updates the translation status.</summary>
         /// <param name="localizedModule">The localized module.</param>
-        /// <param name="isTranslated">if set to <see langword="true"/> will mark the module as translated].</param>
+        /// <param name="isTranslated">if set to <see langword="true"/> will mark the module as translated.</param>
         void UpdateTranslationStatus(ModuleInfo localizedModule, bool isTranslated);
 
         /// <summary>Check if a ModuleInfo belongs to the referenced Tab or not.</summary>
         /// <param name="module">A ModuleInfo object to be checked.</param>
         /// <returns>True is TabId points to a different tab from initial Tab where the module was added. Otherwise, False.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         bool IsSharedModule(ModuleInfo module);
 
         /// <summary>Get the Tab ID corresponding to the initial Tab where the module was added.</summary>
         /// <param name="module">A ModuleInfo object to be checked.</param>
-        /// <returns>The Tab Id from initial Tab where the module was added.</returns>
+        /// <returns>The Tab ID from initial Tab where the module was added.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         int GetMasterTabId(ModuleInfo module);
     }
 }

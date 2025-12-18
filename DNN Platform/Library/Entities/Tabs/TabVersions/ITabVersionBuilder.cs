@@ -5,6 +5,7 @@
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Entities.Modules;
 
@@ -85,6 +86,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <summary>Get the latest version or 1 if module is not versionable.</summary>
         /// <param name="module">The ModuleInfo to be queried.</param>
         /// <returns>The latest version of the module.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         int GetModuleContentLatestVersion(ModuleInfo module);
     }
 }

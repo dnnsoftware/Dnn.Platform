@@ -302,6 +302,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Returns a flag indicating whether the current user can administer a module.</summary>
         /// <param name="module">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual bool CanAdminModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(AdminModulePermissionKey));
@@ -310,6 +311,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Returns a flag indicating whether the current user can delete a module.</summary>
         /// <param name="module">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual bool CanDeleteModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(DeleteModulePermissionKey));
@@ -318,6 +320,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Returns a flag indicating whether the current user can edit module content.</summary>
         /// <param name="module">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual bool CanEditModuleContent(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ContentModulePermissionKey));
@@ -326,6 +329,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Returns a flag indicating whether the current user can export a module.</summary>
         /// <param name="module">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual bool CanExportModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ExportModulePermissionKey));
@@ -334,6 +338,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Returns a flag indicating whether the current user can import a module.</summary>
         /// <param name="module">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual bool CanImportModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ImportModulePermissionKey));
@@ -342,6 +347,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Returns a flag indicating whether the current user can manage a module's settings.</summary>
         /// <param name="module">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual bool CanManageModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ManageModulePermissionKey));
@@ -350,6 +356,7 @@ namespace DotNetNuke.Security.Permissions
         /// <summary>Returns a flag indicating whether the current user can view a module.</summary>
         /// <param name="module">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual bool CanViewModule(ModuleInfo module)
         {
             bool canView;
@@ -504,6 +511,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// <summary>SaveModulePermissions updates a Module's permissions.</summary>
         /// <param name="module">The Module to update.</param>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual void SaveModulePermissions(ModuleInfo module)
         {
             if (module.ModulePermissions != null)

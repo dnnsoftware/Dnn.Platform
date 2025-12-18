@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Modules
 {
+    using System.Diagnostics.CodeAnalysis;
+
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
 
@@ -13,6 +15,7 @@ namespace DotNetNuke.UI.Modules
         /// <param name="module">The module to be injected.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <returns><see langword="true"/> if the module can be injected, otherwise <see langword="false"/>.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings);
     }
 }

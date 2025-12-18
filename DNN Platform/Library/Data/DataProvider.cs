@@ -2335,6 +2335,7 @@ namespace DotNetNuke.Data
             }
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual int AddPropertyDefinition(int portalId, int moduleDefId, int dataType, string defaultValue, string propertyCategory, string propertyName, bool readOnly, bool required, string validationExpression, int viewOrder, bool visible, int length, int defaultVisibility, int createdByUserId)
         {
             int retValue;
@@ -2410,6 +2411,7 @@ namespace DotNetNuke.Data
                 lastUpdatedDate);
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         public virtual void UpdatePropertyDefinition(int propertyDefinitionId, int dataType, string defaultValue, string propertyCategory, string propertyName, bool readOnly, bool required, string validation, int viewOrder, bool visible, int length, int defaultVisibility, int lastModifiedByUserId)
         {
             this.ExecuteNonQuery(

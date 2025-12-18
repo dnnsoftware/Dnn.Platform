@@ -5,6 +5,7 @@
 namespace DotNetNuke.Data
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Collections;
 
@@ -41,26 +42,28 @@ namespace DotNetNuke.Data
 
         /// <summary>Returns all the items in the repository as an enumerable list.</summary>
         /// <returns>The list of items.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         IEnumerable<T> Get();
 
         /// <summary>Returns an enumerable list of items filtered by scope.</summary>
         /// <remarks>
         /// This overload should be used to get a list of items for a specific module
-        /// instance or for a specific portal dependening on how the items in the repository
+        /// instance or for a specific portal depending on how the items in the repository
         /// are scoped.
         /// </remarks>
         /// <typeparam name="TScopeType">The type of the scope field.</typeparam>
         /// <param name="scopeValue">The value of the scope to filter by.</param>
         /// <returns>The list of items.</returns>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         IEnumerable<T> Get<TScopeType>(TScopeType scopeValue);
 
-        /// <summary>Get an individual item based on the items Id field.</summary>
-        /// <typeparam name="TProperty">The type of the Id field.</typeparam>
-        /// <param name="id">The value of the Id field.</param>
+        /// <summary>Get an individual item based on the items ID field.</summary>
+        /// <typeparam name="TProperty">The type of the ID field.</typeparam>
+        /// <param name="id">The value of the ID field.</param>
         /// <returns>An item.</returns>
         T GetById<TProperty>(TProperty id);
 
-        /// <summary>Get an individual item based on the items Id field.</summary>
+        /// <summary>Get an individual item based on the items ID field.</summary>
         /// <remarks>
         /// This overload should be used to get an item for a specific module
         /// instance or for a specific portal dependening on how the items in the repository

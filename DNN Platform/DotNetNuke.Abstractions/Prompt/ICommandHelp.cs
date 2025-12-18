@@ -4,6 +4,7 @@
 namespace DotNetNuke.Abstractions.Prompt
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>This is used to send the result back to the client when a user asks help for a command.</summary>
     public interface ICommandHelp
@@ -21,6 +22,7 @@ namespace DotNetNuke.Abstractions.Prompt
         string ResultHtml { get; set; }
 
         /// <summary>Gets or sets any error produced while trying to retrieve help for this command.</summary>
+        [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
         string Error { get; set; }
     }
 }
